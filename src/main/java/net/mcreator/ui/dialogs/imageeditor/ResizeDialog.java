@@ -45,7 +45,7 @@ public class ResizeDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(layer.getWidth(), 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 0, 10000, 1));
 		JCheckBox type = new JCheckBox();
-		JCheckBox adaptCanvas = new JCheckBox();
+		JCheckBox affectCanvas = new JCheckBox();
 
 		JButton ok = L10N.button("action.common.resize");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -57,7 +57,9 @@ public class ResizeDialog extends MCreatorDialog {
 
 		ok.addActionListener(e -> {
 			layer.resize((int) width.getValue(), (int) height.getValue(), type.isSelected());
-			if (adaptCanvas.isSelected()) {
+			if (affectCanvas.isSelected() && (layer.getX() < 0 || layer.getY() < 0
+					|| (layer.getWidth() + layer.getX()) > canvas.getWidth()
+					|| (layer.getHeight() + layer.getY()) > canvas.getHeight())) {
 				UUID uuid = UUID.randomUUID();
 				versionManager.addRevision(new Modification(canvas, layer).setUUID(uuid));
 				int dx = layer.getX();
@@ -65,23 +67,16 @@ public class ResizeDialog extends MCreatorDialog {
 				if (dx < 0 || dy < 0) {
 					for (Layer lay : canvas) {
 						Relocation reloc = new Relocation(canvas, lay);
-						if (dx != 0)
+						if (dx < 0)
 							lay.setX(lay.getX() - dx);
-						if (dy != 0)
+						if (dy < 0)
 							lay.setY(lay.getY() - dy);
 						reloc.setAfter(lay);
 						versionManager.addRevision(reloc.setUUID(uuid));
 					}
 				}
-				if (canvas.getWidth() < (layer.getWidth() + Math.abs(dx)) || canvas.getHeight() < (layer.getHeight()
-						+ Math.abs(dy))) {
-					if (canvas.getWidth() < layer.getWidth() && dx < 0)
-						dx += layer.getWidth() - canvas.getWidth();
-					if (canvas.getHeight() < layer.getHeight() && dy < 0)
-						dy += layer.getHeight() - canvas.getHeight();
-					canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + Math.abs(dx)),
-							Math.max(canvas.getHeight(), layer.getHeight() + Math.abs(dy)), uuid);
-				}
+				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + dx) + Math.max(-dx, 0),
+						Math.max(canvas.getHeight(), layer.getHeight() + dy) + Math.max(-dy, 0), uuid);
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
@@ -97,7 +92,7 @@ public class ResizeDialog extends MCreatorDialog {
 		constraints.add(L10N.label("dialog.imageeditor.resize_enable_anti_aliasing"));
 		constraints.add(type);
 		constraints.add(L10N.label("dialog.imageeditor.resize_affect_canvas"));
-		constraints.add(adaptCanvas);
+		constraints.add(affectCanvas);
 
 		layoutConstraints.gridx = 0;
 		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
