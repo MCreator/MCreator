@@ -5,13 +5,14 @@ templates:
     deleteWhenConditionFalse: true
     condition: doesGenerateInWorld()
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/plants/@NAMEFeature.java"
-  - template: json/plant_item.json.ftl
-    writer: json
-    name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: plant/plantblockentity.java.ftl
     deleteWhenConditionFalse: true
     condition: hasTileEntity
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
+
+  - template: json/plant_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
 
   - template: json/block.json.ftl
     condition: "renderType #= 12"
