@@ -148,3 +148,163 @@
 }
 </#if>
 </#macro>
+
+
+<#-- Block-related triggers -->
+<#macro onDestroyedByPlayer procedure="">
+<#if hasProcedure(procedure)>
+@Override public boolean removedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, boolean willHarvest, FluidState fluid) {
+	boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate"
+	}/>
+	return retval;
+}
+</#if>
+</#macro>
+
+<#macro onDestroyedByExplosion procedure="">
+<#if hasProcedure(procedure)>
+@Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
+	super.wasExploded(world, pos, e);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onEntityCollides procedure="">
+<#if hasProcedure(procedure)>
+@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
+	super.entityInside(blockstate, world, pos, entity);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onBlockAdded procedure="" scheduleTick=false tickRate=0>
+<#if scheduleTick || hasProcedure(procedure)>
+@Override public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
+	super.onPlace(blockstate, world, pos, oldState, moving);
+	<#if scheduleTick>
+		world.getBlockTicks().scheduleTick(pos, this, ${tickRate});
+	</#if>
+	<#if hasProcedure(procedure)>
+		<@procedureCode procedure, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate",
+			"oldState": "oldState",
+			"moving": "moving"
+		}/>
+	</#if>
+}
+</#if>
+</#macro>
+
+<#macro onEntityWalksOn procedure="">
+<#if hasProcedure(procedure)>
+@Override public void stepOn(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
+	super.stepOn(world, pos, blockstate, entity);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onBlockPlacedBy procedure="">
+<#if hasProcedure(procedure)>
+@Override public void setPlacedBy(Level world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
+	super.setPlacedBy(world, pos, blockstate, entity, itemstack);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate",
+		"itemstack": "itemstack"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onStartToDestroy procedure="">
+<#if hasProcedure(procedure)>
+@Override public void attack(BlockState blockstate, Level world, BlockPos pos, Player entity) {
+	super.attack(blockstate, world, pos, entity);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onRedstoneOrNeighborChanged onRedstoneOn="" onRedstoneOff="" onNeighborChanged="">
+<#if hasProcedure(onRedstoneOn) || hasProcedure(onRedstoneOff) || hasProcedure(onNeighborChanged)>
+@Override public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+	super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
+	<#if hasProcedure(onRedstoneOn) || hasProcedure(onRedstoneOff)>
+		if (world.getBestNeighborSignal(pos) > 0) {
+			<#if hasProcedure(onRedstoneOn)>
+			<@procedureCode onRedstoneOn, {
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
+			}/>
+			</#if>
+		}
+		<#if hasProcedure(onRedstoneOff)> else {
+			<@procedureCode onRedstoneOff, {
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
+			}/>
+		}
+		</#if>
+	</#if>
+	<#if hasProcedure(onNeighborChanged)>
+	<@procedureCode onNeighborChanged, {
+	   	"x": "pos.getX()",
+	   	"y": "pos.getY()",
+	   	"z": "pos.getZ()",
+	   	"world": "world",
+	   	"blockstate": "blockstate"
+	}/>
+	</#if>
+}
+</#if>
+</#macro>
