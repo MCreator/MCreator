@@ -33,6 +33,8 @@
 
 package ${package}.item;
 
+import net.minecraft.sounds.SoundEvent;
+
 public abstract class ${name}Item extends ArmorItem {
 
 	public ${name}Item(EquipmentSlot slot, Item.Properties properties) {
@@ -49,9 +51,9 @@ public abstract class ${name}Item extends ArmorItem {
 				return ${data.enchantability};
 			}
 
-			@Override public net.minecraft.sounds.SoundEvent getEquipSound() {
+			@Override public SoundEvent getEquipSound() {
 				<#if data.equipSound??>
-				return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
+				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
 				return null;
 				</#if>

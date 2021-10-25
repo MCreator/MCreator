@@ -38,6 +38,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.Tag;
+import net.minecraft.sounds.SoundEvent;
 
 <#assign extendsClass = "PathfinderMob">
 
@@ -215,23 +216,23 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
    	<#if data.livingSound.getMappedValue()?has_content>
-	@Override public net.minecraft.sounds.SoundEvent getAmbientSound() {
-		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
+	@Override public SoundEvent getAmbientSound() {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
 	</#if>
 
    	<#if data.stepSound?has_content && data.stepSound.getMappedValue()?has_content>
 	@Override public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound((net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
+		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
 	}
 	</#if>
 
-	@Override public net.minecraft.sounds.SoundEvent getHurtSound(DamageSource ds) {
-		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
+	@Override public SoundEvent getHurtSound(DamageSource ds) {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
 	}
 
-	@Override public net.minecraft.sounds.SoundEvent getDeathSound() {
-		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
+	@Override public SoundEvent getDeathSound() {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
 
 	<#if hasProcedure(data.onStruckByLightning)>
