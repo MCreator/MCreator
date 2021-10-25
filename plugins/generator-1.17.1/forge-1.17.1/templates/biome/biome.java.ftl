@@ -312,14 +312,18 @@ import java.util.function.BiConsumer;
 
         MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder().setPlayerCanSpawn();
         <#list data.spawnEntries as spawnEntry>
-        	<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
-        	<#if entity != "null">
-            <#if !entity.toString().contains(".CustomEntity")>
-            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+            <#if !spawnEntry.entity.getUnmappedValue().contains("CUSTOM:")>
+                <#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
+                <#if entity != "null">
+                mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+		    			new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+                </#if>
             <#else>
-            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnSettings.SpawnerData(${entity.toString().replace(".CustomEntity", "")}.entity, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+                    new MobSpawnSettings.SpawnerData(${JavaModName}Entities
+                        .${generator.getRegistryNameForModElement(spawnEntry.entity.getUnmappedValue()?replace("CUSTOM:", ""))?upper_case},
+                        ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
             </#if>
-        	</#if>
         </#list>
 
         return new Biome.BiomeBuilder()
@@ -340,13 +344,13 @@ import java.util.function.BiConsumer;
     <#if data.biomeDictionaryTypes?has_content>
         BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
         <#list data.biomeDictionaryTypes as biomeDictionaryType>
-        BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
+            BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
     	</#list>
     	);
     </#if>
     <#if data.spawnBiome>
-    BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
-        new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
+        BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
+            new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
     </#if>
     }
     </#if>
