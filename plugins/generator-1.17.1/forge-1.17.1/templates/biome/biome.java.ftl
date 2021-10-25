@@ -35,6 +35,7 @@ package ${package}.world.biome;
 
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -50,16 +51,16 @@ import java.util.function.BiConsumer;
                 .foliageColorOverride(${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)})
                 .grassColorOverride(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)})
                 <#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-                    .ambientLoopSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.ambientSound}")))
+                    .ambientLoopSound(new SoundEvent(new ResourceLocation("${data.ambientSound}")))
                 </#if>
                 <#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-                    .ambientMoodSound(new AmbientMoodSettings(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
+                    .ambientMoodSound(new AmbientMoodSettings(new SoundEvent(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
                 </#if>
                 <#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-                    .ambientAdditionsSound(new AmbientAdditionsSettings(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.additionsSound}")), 0.0111D))
+                    .ambientAdditionsSound(new AmbientAdditionsSettings(new SoundEvent(new ResourceLocation("${data.additionsSound}")), 0.0111D))
                 </#if>
                 <#if data.music?has_content && data.music.getMappedValue()?has_content>
-                    .backgroundMusic(new Music(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")), 12000, 24000, true))
+                    .backgroundMusic(new Music(new SoundEvent(new ResourceLocation("${data.music}")), 12000, 24000, true))
                 </#if>
                 <#if data.spawnParticles>
                     .ambientParticle(new AmbientParticleSettings(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
