@@ -65,4 +65,16 @@ public final class GeneratorTemplate {
 		dataModel.put(key, value);
 	}
 
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		return file.equals(((GeneratorTemplate) o).file);
+	}
+
+	@Override public int hashCode() {
+		return file.hashCode();
+	}
+
 }
