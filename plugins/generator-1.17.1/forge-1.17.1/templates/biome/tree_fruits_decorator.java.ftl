@@ -36,11 +36,11 @@ public class ${name}FruitDecorator extends CocoaDecorator {
 
     public static final ${name}FruitDecorator instance = new ${name}FruitDecorator();
     public static com.mojang.serialization.Codec<${name}FruitDecorator> codec;
-    public static TreeDecoratorType tdt;
+    public static TreeDecoratorType<?> tdt;
 
     static {
         codec = com.mojang.serialization.Codec.unit(() -> instance);
-        tdt = new TreeDecoratorType(codec);
+        tdt = new TreeDecoratorType<>(codec);
         tdt.setRegistryName("${registryname}_ctd");
         ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
