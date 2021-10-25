@@ -22,7 +22,10 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.Block;
+import net.mcreator.element.types.GameRule;
 import net.mcreator.element.types.Recipe;
+import net.mcreator.element.types.Tool;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
@@ -30,6 +33,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,6 +56,10 @@ import java.util.stream.Collectors;
 
 	public boolean hasVariables() {
 		return workspace.getVariableElements().size() > 0;
+	}
+
+	public boolean hasJavaModels() {
+		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public boolean hasSounds() {
@@ -162,12 +170,31 @@ import java.util.stream.Collectors;
 		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
 	}
 
-	public boolean hasBrewingRecipes() {
+	public boolean hasGameRulesOfType(String type) {
 		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.RECIPE) {
-				GeneratableElement ge = element.getGeneratableElement();
-				if (ge instanceof Recipe)
-					if (((Recipe) ge).recipeType.equals("Brewing"))
+			if (element.getType() == ModElementType.GAMERULE) {
+				if (element.getGeneratableElement() instanceof GameRule gr)
+					if (gr.type.equals(type))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasBlocksMineableWith(String tool) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.BLOCK) {
+				if (element.getGeneratableElement() instanceof Block block)
+					if (block.destroyTool.equals(tool))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasToolsOfType(String type) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.TOOL) {
+				if (element.getGeneratableElement() instanceof Tool tool)
+					if (tool.toolType.equals(type))
 						return true;
 			}
 		return false;

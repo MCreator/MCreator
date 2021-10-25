@@ -29,6 +29,7 @@ import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateConditionParser;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -80,6 +81,8 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
+	private final BaseDataModelProvider baseDataModelProvider;
+
 	public Generator(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 		this.generatorName = workspace.getWorkspaceSettings().getCurrentGenerator();
@@ -87,6 +90,8 @@ public class Generator implements IGenerator, Closeable {
 		this.LOG = LogManager.getLogger("Generator " + generatorName);
 
 		this.generatorConfiguration = GENERATOR_CACHE.get(generatorName);
+
+		this.baseDataModelProvider = new BaseDataModelProvider(this);
 
 		this.templateGenerator = new TemplateGenerator(generatorConfiguration.getTemplateGeneratorConfiguration(),
 				this);
@@ -139,6 +144,10 @@ public class Generator implements IGenerator, Closeable {
 
 	public MinecraftCodeProvider getMinecraftCodeProvider() {
 		return minecraftCodeProvider;
+	}
+
+	public BaseDataModelProvider getBaseDataModelProvider() {
+		return baseDataModelProvider;
 	}
 
 	public File getGeneratorPackageRoot() {
@@ -197,6 +206,9 @@ public class Generator implements IGenerator, Closeable {
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 
+		// run other source tasks
+		runSetupTasks(generatorConfiguration.getSourceSetupTasks());
+
 		// generate lang files
 		LanguageFilesGenerator.generateLanguageFiles(this, workspace,
 				generatorConfiguration.getLanguageFileSpecification());
@@ -236,7 +248,7 @@ public class Generator implements IGenerator, Closeable {
 			return Collections.emptyList();
 		}
 
-		List<GeneratorFile> generatorFiles = new ArrayList<>();
+		Set<GeneratorFile> generatorFiles = new HashSet<>();
 
 		// generate all source files
 		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element.getModElement(),
@@ -251,8 +263,12 @@ public class Generator implements IGenerator, Closeable {
 				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
 						element.getAdditionalTemplateData());
 
-				generatorFiles.add(new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer")));
+				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
+						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+
+				// only preserve the last instance of template for a file
+				generatorFiles.remove(generatorFile);
+				generatorFiles.add(generatorFile);
 			}
 		}
 
@@ -289,7 +305,7 @@ public class Generator implements IGenerator, Closeable {
 		// do additional tasks if mod element has them
 		element.finalizeModElementGeneration();
 
-		return generatorFiles;
+		return new ArrayList<>(generatorFiles);
 	}
 
 	/**
@@ -341,11 +357,17 @@ public class Generator implements IGenerator, Closeable {
 
 		List<?> templates = generatorConfiguration.getBaseTemplates();
 		for (Object template : templates) {
+			TemplateConditionParser.Operator operator = TemplateConditionParser.Operator.AND;
 			Object conditionRaw = ((Map<?, ?>) template).get("condition");
+			if (conditionRaw == null) {
+				conditionRaw = ((Map<?, ?>) template).get("condition_any");
+				operator = TemplateConditionParser.Operator.OR;
+			}
 
 			String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
 
-			if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, workspace.getWorkspaceInfo())) {
+			if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
+					workspace.getWorkspaceInfo(), operator)) {
 				if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 					if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 						new File(name).delete(); // if template is skipped, we delete its potential file
@@ -409,8 +431,11 @@ public class Generator implements IGenerator, Closeable {
 					}
 				}
 			} else {
-				globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.name().toLowerCase(Locale.ENGLISH) + "s",
-						baseTypeListMap.get(baseType)));
+				globalTemplatesList.forEach(
+						e -> e.addDataModelEntry(baseType.getPluralName().toLowerCase(Locale.ENGLISH),
+								baseTypeListMap.get(baseType).stream()
+										.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID()))
+										.collect(Collectors.toList())));
 
 				files.addAll(globalTemplatesList);
 			}
@@ -430,16 +455,21 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null)
 			return new ArrayList<>();
 
-		List<GeneratorTemplate> files = new ArrayList<>();
+		Set<GeneratorTemplate> files = new HashSet<>();
 		List<?> templates = (List<?>) map.get("global_templates");
 		if (templates != null) {
 			for (Object template : templates) {
 				String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
 
+				TemplateConditionParser.Operator operator = TemplateConditionParser.Operator.AND;
 				Object conditionRaw = ((Map<?, ?>) template).get("condition");
+				if (conditionRaw == null) {
+					conditionRaw = ((Map<?, ?>) template).get("condition_any");
+					operator = TemplateConditionParser.Operator.OR;
+				}
 
-				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw,
-						workspace.getWorkspaceInfo())) {
+				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
+						workspace.getWorkspaceInfo(), operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file
@@ -447,14 +477,18 @@ public class Generator implements IGenerator, Closeable {
 					continue;
 				}
 
-				files.add(new GeneratorTemplate(new File(name),
-						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template));
+				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
+						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template);
+
+				// only keep the last template for given file
+				files.remove(generatorTemplate);
+				files.add(generatorTemplate);
 
 				templateID.getAndIncrement();
 			}
 		}
 
-		return files;
+		return new ArrayList<>(files);
 	}
 
 	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(ModElement element) {
@@ -475,13 +509,19 @@ public class Generator implements IGenerator, Closeable {
 			return null;
 		}
 
-		List<GeneratorTemplate> files = new ArrayList<>();
+		Set<GeneratorTemplate> files = new HashSet<>();
 		List<?> templates = (List<?>) map.get("templates");
 		if (templates != null) {
 			int templateID = 0;
 			for (Object template : templates) {
 				String rawname = (String) ((Map<?, ?>) template).get("name");
+
+				TemplateConditionParser.Operator operator = TemplateConditionParser.Operator.AND;
 				Object conditionRaw = ((Map<?, ?>) template).get("condition");
+				if (conditionRaw == null) {
+					conditionRaw = ((Map<?, ?>) template).get("condition_any");
+					operator = TemplateConditionParser.Operator.OR;
+				}
 
 				if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
 					if (generatableElement == null) {
@@ -497,7 +537,8 @@ public class Generator implements IGenerator, Closeable {
 						GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
 								.replace("@registryname", element.getRegistryName())));
 
-				if (TemplateConditionParser.shoudSkipTemplateBasedOnCondition(conditionRaw, generatableElement)) {
+				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
+						operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
 						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file
@@ -516,14 +557,18 @@ public class Generator implements IGenerator, Closeable {
 						excludefile.delete();
 				}
 
-				files.add(new GeneratorTemplate(new File(name),
-						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template));
+				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
+						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template);
+
+				// only preserve the last template for given file
+				files.remove(generatorTemplate);
+				files.add(generatorTemplate);
 
 				templateID++;
 			}
 		}
 
-		return files;
+		return new ArrayList<>(files);
 	}
 
 	public ModElement getModElementThisFileBelongsTo(File file) {
@@ -556,7 +601,7 @@ public class Generator implements IGenerator, Closeable {
 		return null;
 	}
 
-	private void generateFiles(List<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
+	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
 		// first create Java files if they do not exist already
 		// so the imports get properly organised in the next step
 		if (formatAndOrganiseImports) {
@@ -583,12 +628,15 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void runResourceSetupTasks() {
-		List<?> setupTaks = generatorConfiguration.getResourceSetupTasks();
+		runSetupTasks(generatorConfiguration.getResourceSetupTasks());
+	}
+
+	public void runSetupTasks(List<?> setupTaks) {
 		if (setupTaks != null) {
 			setupTaks.forEach(task -> {
 				String taskType = (String) ((Map<?, ?>) task).get("task");
 				switch (taskType) {
-				case "empty_dir":
+				case "empty_dir" -> {
 					String dir = (String) ((Map<?, ?>) task).get("dir");
 					List<?> excludes_raw = (List<?>) ((Map<?, ?>) task).get("excludes");
 					List<String> excludes = new ArrayList<>();
@@ -601,8 +649,8 @@ public class Generator implements IGenerator, Closeable {
 						FileIO.emptyDirectory(new File(GeneratorTokens.replaceTokens(workspace, dir)),
 								excludes.toArray(new String[0]));
 					}
-					break;
-				case "sync_dir": {
+				}
+				case "sync_dir" -> {
 					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
@@ -610,16 +658,14 @@ public class Generator implements IGenerator, Closeable {
 								new File(to)); // first delete existing contents of the destination directory
 						FileIO.copyDirectory(new File(from), new File(to));
 					}
-					break;
 				}
-				case "copy_file": {
+				case "copy_file" -> {
 					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					if (workspace.getFolderManager().isFileInWorkspace(new File(to)) && new File(from).isFile())
 						FileIO.copyFile(new File(from), new File(to));
-					break;
 				}
-				case "copy_and_resize_image": {
+				case "copy_and_resize_image" -> {
 					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					int w = Integer.parseInt(
@@ -642,14 +688,15 @@ public class Generator implements IGenerator, Closeable {
 							LOG.warn("Failed to read image file for resizing", e);
 						}
 					}
-					break;
 				}
-				case "copy_models": {
+				case "copy_models" -> {
 					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
 					if (!workspace.getFolderManager().isFileInWorkspace(new File(to, "model.dummy")))
 						break;
-					String type = (String) ((Map<?, ?>) task).get("type");
+
 					List<Model> modelList = Model.getModels(workspace);
+
+					String type = (String) ((Map<?, ?>) task).get("type");
 					switch (type) {
 					case "OBJ":
 						for (Model model : modelList)
@@ -682,8 +729,23 @@ public class Generator implements IGenerator, Closeable {
 								FileIO.writeStringToFile(notextures, new File(to, model.getFile().getName()));
 							}
 						break;
+					case "JAVA_viatemplate":
+						String template = GeneratorTokens.replaceTokens(workspace,
+								(String) ((Map<?, ?>) task).get("template"));
+						for (Model model : modelList)
+							if (model.getType() == Model.Type.JAVA) {
+								String modelCode = FileIO.readFileToString(model.getFile());
+								try {
+									modelCode = templateGenerator.generateFromTemplate(template, new HashMap<>(
+											Map.of("modelname", model.getReadableName(), "model", modelCode)));
+								} catch (TemplateGeneratorException e) {
+									e.printStackTrace();
+								}
+								ClassWriter.writeClassToFileWithoutQueue(workspace, modelCode,
+										new File(to, model.getReadableName() + ".java"), true);
+							}
+						break;
 					}
-					break;
 				}
 				}
 			});

@@ -30,26 +30,56 @@
 
 <#-- @formatter:off -->
 
-<#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
 
 package ${package}.init;
 
+<#assign hasBlocks = false>
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
 
-    private static final List<Item> REGISTRY = new ArrayList();
+    private static final List<Item> REGISTRY = new ArrayList<>();
 
     <#list items as item>
-    public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        <#if item.getModElement().getTypeString() == "armor">
+            <#if item.enableHelmet>
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
+            </#if>
+            <#if item.enableBody>
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
+            </#if>
+            <#if item.enableLeggings>
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
+            </#if>
+            <#if item.enableBoots>
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
+            </#if>
+        <#elseif item.getModElement().getTypeString() == "dimension">
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
+            <#assign hasBlocks = true>
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+        <#elseif item.getModElement().getTypeString() == "livingentity">
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+                    ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
+                    .tab(CreativeModeTab.MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
+        <#else>
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        </#if>
     </#list>
 
     private static Item register(Item item) {
 		REGISTRY.add(item);
     	return item;
     }
+
+    <#if hasBlocks>
+	private static Item register(Block block, CreativeModeTab tab) {
+		return register(new BlockItem(block, new Item.Properties().tab(tab)).setRegistryName(block.getRegistryName()));
+	}
+    </#if>
 
 	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Item[0]));

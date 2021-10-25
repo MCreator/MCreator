@@ -7,4 +7,4 @@
 		});
 		return _retval.get();
 	}
-}.getItemStack((int)(${input$slotid}), ${input$entity}))
+}.getItemStack(${opt.toInt(input$slotid)}, ${input$entity}))

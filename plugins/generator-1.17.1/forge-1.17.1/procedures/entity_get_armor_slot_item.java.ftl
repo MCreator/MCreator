@@ -1,1 +1,2 @@
-/*@ItemStack*/(${input$entity} instanceof LivingEntity _ent_getArmor ? _ent_getArmor.getItemBySlot(EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, (int) ${input$slotid})):ItemStack.EMPTY)
+<#include "mcelements.ftl">
+/*@ItemStack*/(${input$entity} instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(${toArmorSlot(input$slotid)}):ItemStack.EMPTY)

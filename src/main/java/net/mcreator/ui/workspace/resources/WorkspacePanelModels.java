@@ -282,7 +282,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		}
 
 		@Override public Model getElementAt(int index) {
-			if (index < filterItems.size())
+			if (!filterItems.isEmpty() && index < filterItems.size())
 				return filterItems.get(index);
 			else
 				return null;

@@ -1,1 +1,1 @@
-(world.dimensionType().moonPhase(world.dayTime()))
+/*@int*/(world.dimensionType().moonPhase(world.dayTime()))

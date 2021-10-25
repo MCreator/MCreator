@@ -1,3 +1,3 @@
 [
-    ".rotateAngleY = f2 / 20.f;"
+    ".yRot = ageInTicks / 20.f;"
 ]

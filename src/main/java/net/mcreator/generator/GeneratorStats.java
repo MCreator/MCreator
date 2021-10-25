@@ -18,6 +18,7 @@
 
 package net.mcreator.generator;
 
+import com.google.gson.Gson;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
@@ -25,7 +26,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -82,69 +83,80 @@ public class GeneratorStats {
 		}
 
 		// load dummy values
-		coverageInfo.put("procedures", 100d);
-		coverageInfo.put("triggers", 100d);
-		coverageInfo.put("jsontriggers", 100d);
-		coverageInfo.put("aitasks", 100d);
+		coverageInfo.put("procedures" , 100d);
+		coverageInfo.put("triggers" , 100d);
+		coverageInfo.put("jsontriggers" , 100d);
+		coverageInfo.put("aitasks" , 100d);
 
 		// lazy load actual values
 		new Thread(() -> {
 			generatorProcedures = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
-			coverageInfo.put("procedures", Math.min((((double) generatorProcedures.size()) / (
-					BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks().size() + 4)) * 100, 100));
+							generatorConfiguration.getGeneratorName() + ".procedures" , ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
+					.collect(Collectors.toSet());
+			coverageInfo.put("procedures" , Math.min(
+					(((double) generatorProcedures.size()) / (BlocklyLoader.INSTANCE.getProcedureBlockLoader()
+							.getDefinedBlocks().size())) * 100, 100));
 
 			generatorTriggers = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
-			coverageInfo.put("triggers", Math.min(
+							generatorConfiguration.getGeneratorName() + ".triggers" , ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
+					.collect(Collectors.toSet());
+			coverageInfo.put("triggers" , Math.min(
 					(((double) generatorTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 							.getExternalTrigers().size()) * 100, 100));
 
 			jsonTriggers = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".jsontriggers", ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
-			coverageInfo.put("jsontriggers", Math.min((((double) jsonTriggers.size()) / (
-					BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks().size() + 1)) * 100, 100));
+							generatorConfiguration.getGeneratorName() + ".jsontriggers" , ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
+					.collect(Collectors.toSet());
+			coverageInfo.put("jsontriggers" , Math.min(
+					(((double) jsonTriggers.size()) / (BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks()
+							.size())) * 100, 100));
 
 			generatorAITasks = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".aitasks", ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
-			coverageInfo.put("aitasks", Math.min(
+							generatorConfiguration.getGeneratorName() + ".aitasks" , ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet());
+			coverageInfo.put("aitasks" , Math.min(
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
 		}).start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
-			baseCoverageInfo.put("variables", CoverageStatus.NONE);
+			baseCoverageInfo.put("variables" , CoverageStatus.NONE);
 		} else {
-			baseCoverageInfo.put("variables",
+			baseCoverageInfo.put("variables" ,
 					generatorConfiguration.getVariableTypes().getSupportedVariableTypes().size()
 							== VariableTypeLoader.INSTANCE.getAllVariableTypes().stream()
 							.filter(e -> !e.isReturnTypeOnly()).count() ? CoverageStatus.FULL : CoverageStatus.PARTIAL);
 		}
 
-		baseCoverageInfo.put("model_json",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_json"));
-		baseCoverageInfo.put("model_java",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
-		baseCoverageInfo.put("model_obj",
-				forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_obj"));
+		if (generatorConfiguration.getJavaModelsKey().equals("legacy")) {
+			baseCoverageInfo.put("model_java" ,
+					forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
+		} else {
+			baseCoverageInfo.put("model_java" , CoverageStatus.FULL);
+		}
 
-		baseCoverageInfo.put("textures", generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
+		String resourceTasksJSON = new Gson().toJson(generatorConfiguration.getResourceSetupTasks());
+		baseCoverageInfo.put("model_json" ,
+				resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_obj" ,
+				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
+
+		baseCoverageInfo.put("textures" , generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
 				CoverageStatus.NONE :
 				CoverageStatus.FULL);
 
-		baseCoverageInfo.put("i18n", generatorConfiguration.getLanguageFileSpecification().isEmpty() ?
+		baseCoverageInfo.put("i18n" , generatorConfiguration.getLanguageFileSpecification().isEmpty() ?
 				CoverageStatus.NONE :
 				CoverageStatus.FULL);
 
-		baseCoverageInfo.put("sounds", generatorConfiguration.getSpecificRoot("sounds_dir") == null ?
+		baseCoverageInfo.put("sounds" , generatorConfiguration.getSpecificRoot("sounds_dir") == null ?
 				CoverageStatus.NONE :
 				CoverageStatus.FULL);
 
-		baseCoverageInfo.put("structures", generatorConfiguration.getSpecificRoot("structures_dir") == null ?
+		baseCoverageInfo.put("structures" , generatorConfiguration.getSpecificRoot("structures_dir") == null ?
 				CoverageStatus.NONE :
 				CoverageStatus.FULL);
 	}

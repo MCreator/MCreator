@@ -1,0 +1,10 @@
+templates:
+  - template: particle.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/particle/@NAMEParticle.java"
+  - template: json/particle.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/particles/@registryname.json"
+
+global_templates:
+  - template: elementinits/particles.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameParticles.java"
