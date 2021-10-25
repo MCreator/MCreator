@@ -44,4 +44,15 @@ public class GeneratorFile {
 		return writer;
 	}
 
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		return file.equals(((GeneratorFile) o).file);
+	}
+
+	@Override public int hashCode() {
+		return file.hashCode();
+	}
 }
