@@ -46,9 +46,17 @@ package ${package}.init;
         </#if>
         <#if block.tintType != "No tint">
             <#assign hasTintedBlocks = true>
+            <#if block.isItemTinted>
+                <#assign hasTintedBlockItems = true>
+            </#if>
         </#if>
-        <#if block.tintType != "No tint" && block.isItemTinted>
-            <#assign hasTintedBlockItems = true>
+    <#elseif block.getModElement().getTypeString() == "plant">
+        <#assign hasTransparentBlocks = true> <#-- Plants always have cutout transparency -->
+        <#if block.tintType != "No tint">
+            <#assign hasTintedBlocks = true>
+            <#if block.isItemTinted>
+                <#assign hasTintedBlockItems = true>
+            </#if>
         </#if>
     </#if>
 </#list>
@@ -84,6 +92,8 @@ package ${package}.init;
                     <#if block.transparencyType != "SOLID" || block.hasTransparency>
                         ${block.getModElement().getName()}Block.registerRenderLayer();
                     </#if>
+                <#elseif block.getModElement().getTypeString() == "plant">
+                    ${block.getModElement().getName()}Block.registerRenderLayer();
                 </#if>
             </#list>
 		}
@@ -92,7 +102,7 @@ package ${package}.init;
         <#if hasTintedBlocks>
         @SubscribeEvent public static void blockColorLoad(ColorHandlerEvent.Block event) {
 	    	<#list blocks as block>
-                <#if block.getModElement().getTypeString() == "block">
+                <#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
                     <#if block.tintType != "No tint">
                          ${block.getModElement().getName()}Block.blockColorLoad(event);
                     </#if>
@@ -104,7 +114,7 @@ package ${package}.init;
         <#if hasTintedBlockItems>
         @SubscribeEvent public static void itemColorLoad(ColorHandlerEvent.Item event) {
 	    	<#list blocks as block>
-                <#if block.getModElement().getTypeString() == "block">
+                <#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
                     <#if block.tintType != "No tint" && block.isItemTinted>
                          ${block.getModElement().getName()}Block.itemColorLoad(event);
                     </#if>
@@ -112,7 +122,6 @@ package ${package}.init;
             </#list>
 		}
         </#if>
-
     }
 	</#if>
 
