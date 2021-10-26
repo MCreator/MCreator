@@ -76,21 +76,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		super(PROPERTIES);
 	}
 
-	/*@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(still, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(flowing, RenderType.getTranslucent());
-	}
-
-	@Override public void initElements() {
-		<#if data.extendsForgeFlowingFluid()>
-		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
-		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
-		<#else>
-		still = (FlowingFluid) new ForgeFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
-		flowing = (FlowingFluid) new ForgeFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
-		</#if>
-	}*/
-
 	<#if data.spawnParticles>
 	@Override public ParticleOptions getDripParticle() {
 		return ${data.dripParticle};
@@ -118,10 +103,13 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 
 	<#if hasProcedure(data.beforeReplacingBlock)>
 	@Override protected void beforeDestroyingBlock(LevelAccessor world, BlockPos pos, BlockState blockstate) {
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.beforeReplacingBlock/>
+		<@procedureCode data.beforeReplacingBlock, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+		}/>
 	}
 	</#if>
 

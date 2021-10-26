@@ -53,6 +53,15 @@ package ${package}.init;
 	@SubscribeEvent public static void registerFluids(RegistryEvent.Register<Fluid> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Fluid[0]));
 	}
+
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
+	    	<#list fluids as fluid>
+			ItemBlockRenderTypes.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}, RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}, RenderType.translucent());
+            </#list>
+		}
+	}
 }
 
 <#-- @formatter:on -->

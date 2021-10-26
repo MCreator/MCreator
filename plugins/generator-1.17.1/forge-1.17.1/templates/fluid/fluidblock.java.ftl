@@ -79,11 +79,14 @@ public class ${name}Block extends LiquidBlock {
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
 		super.tick(blockstate, world, pos, random);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onTickUpdate/>
-		world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
+		<@procedureCode data.onTickUpdate, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+		}/>
+		world.getBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 	}
 	</#if>
 
