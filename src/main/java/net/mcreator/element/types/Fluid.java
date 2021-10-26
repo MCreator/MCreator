@@ -147,6 +147,12 @@ import java.util.List;
 		return generateBucket && !specialInfo.isEmpty();
 	}
 
+	public boolean hasCustomBlock() {
+		return flammability != 0 || fireSpreadSpeed != 0 || lightOpacity != 1 || onBlockAdded != null
+				|| onNeighbourChanges != null || onTickUpdate != null || onEntityCollides != null
+				|| onRandomUpdateEvent != null || onDestroyedByExplosion != null;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
 

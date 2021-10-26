@@ -41,7 +41,7 @@ public class ${name}FluidAttributes extends FluidAttributes {
 		}
 	}
 
-	protected ${name}FluidAttributes(CustomFluidAttributes.Builder builder, Fluid fluid) {
+	protected ${name}FluidAttributes(Builder builder, Fluid fluid) {
 		super(builder, fluid);
 	}
 

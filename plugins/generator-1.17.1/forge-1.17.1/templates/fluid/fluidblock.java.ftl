@@ -37,17 +37,15 @@ import net.minecraft.world.level.material.Material;
 
 public class ${name}Block extends LiquidBlock {
 	public ${name}Block() {
-		super(() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
+		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			BlockBehaviour.Properties.of(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 			<#else>
 			BlockBehaviour.Properties.of(Material.${data.type})
 			</#if>
 			.strength(${data.resistance}f)
-			<#if data.emissiveRendering>
-			.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
-			</#if>
-			.lightLevel(s -> ${data.luminance})
+			<#if data.emissiveRendering>.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)</#if>
+			<#if data.luminance != 0>.lightLevel(s -> ${data.luminance})</#if>
 		);
 		setRegistryName("${registryname}");
 	}
@@ -76,7 +74,7 @@ public class ${name}Block extends LiquidBlock {
 
 	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate), data.tickRate/>
 
-	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourBlockChanges/>
+	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourChanges/>
 
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {

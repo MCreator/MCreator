@@ -40,12 +40,12 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			() -> ${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()},
 			<#if data.extendsFluidAttributes()>${name}</#if>FluidAttributes
 			.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
-				.luminosity(${data.luminosity})
-				.density(${data.density})
-				.viscosity(${data.viscosity})
-				.temperature(${data.temperature})
+				<#if data.luminosity != 0>.luminosity(${data.luminosity})</#if>
+				<#if data.density != 1000>.density(${data.density})</#if>
+				<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
+				<#if data.temperature != 300>.temperature(${data.temperature})</#if>
 				<#if data.isGas>.gaseous()</#if>
-				.rarity(Rarity.${data.rarity})
+				<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 				<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 				.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
 				</#if>
@@ -66,9 +66,9 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 				</#if>)
 				.explosionResistance(${data.resistance}f)
 				<#if data.canMultiply>.canMultiply()</#if>
-				.tickRate(${data.flowRate})
-				.levelDecreasePerBlock(${data.levelDecrease})
-				.slopeFindDistance(${data.slopeFindDistance})
+				<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
+				<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
+				<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
 				<#if data.generateBucket>.bucket(() -> ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET)</#if>
 				.block(() -> (LiquidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()});
 
@@ -79,9 +79,9 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	/*@Override @OnlyIn(Dist.CLIENT) public void clientLoad(FMLClientSetupEvent event) {
 		RenderTypeLookup.setRenderLayer(still, RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(flowing, RenderType.getTranslucent());
-	}*/
+	}
 
-	/*@Override public void initElements() {
+	@Override public void initElements() {
 		<#if data.extendsForgeFlowingFluid()>
 		still = (FlowingFluid) new CustomFlowingFluid.Source(fluidproperties).setRegistryName("${registryname}");
 		flowing = (FlowingFluid) new CustomFlowingFluid.Flowing(fluidproperties).setRegistryName("${registryname}_flowing");
@@ -91,40 +91,38 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		</#if>
 	}*/
 
-	<#if data.extendsForgeFlowingFluid()>
-		<#if data.spawnParticles>
-		@Override public ParticleOptions getDripParticle() {
-			return ${data.dripParticle};
-		}
-		</#if>
+	<#if data.spawnParticles>
+	@Override public ParticleOptions getDripParticle() {
+		return ${data.dripParticle};
+	}
+	</#if>
 
-		<#if data.flowStrength != 1>
-		@Override public Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState fluidstate) {
-			return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
-		}
-		</#if>
+	<#if data.flowStrength != 1>
+	@Override public Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState fluidstate) {
+		return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
+	}
+	</#if>
 
-		<#if hasProcedure(data.flowCondition)>
-		@Override protected boolean canSpreadTo(BlockGetter worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, FluidState toFluidState, Fluid fluidIn) {
-			boolean condition = true;
-			if (worldIn instanceof LevelAccessor world) {
-				int x = fromPos.getX();
-				int y = fromPos.getY();
-				int z = fromPos.getZ();
-				condition = <@procedureOBJToConditionCode data.flowCondition/>;
-			}
-			return super.canSpreadTo(worldIn, fromPos, blockstate, direction, toPos, intostate, toFluidState, fluidIn) && condition;
+	<#if hasProcedure(data.flowCondition)>
+	@Override protected boolean canSpreadTo(BlockGetter worldIn, BlockPos fromPos, BlockState blockstate, Direction direction, BlockPos toPos, BlockState intostate, FluidState toFluidState, Fluid fluidIn) {
+		boolean condition = true;
+		if (worldIn instanceof LevelAccessor world) {
+			int x = fromPos.getX();
+			int y = fromPos.getY();
+			int z = fromPos.getZ();
+			condition = <@procedureOBJToConditionCode data.flowCondition/>;
 		}
-		</#if>
+		return super.canSpreadTo(worldIn, fromPos, blockstate, direction, toPos, intostate, toFluidState, fluidIn) && condition;
+	}
+	</#if>
 
-		<#if hasProcedure(data.beforeReplacingBlock)>
-		@Override protected void beforeDestroyingBlock(LevelAccessor world, BlockPos pos, BlockState blockstate) {
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.beforeReplacingBlock/>
-		}
-		</#if>
+	<#if hasProcedure(data.beforeReplacingBlock)>
+	@Override protected void beforeDestroyingBlock(LevelAccessor world, BlockPos pos, BlockState blockstate) {
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		<@procedureOBJToCode data.beforeReplacingBlock/>
+	}
 	</#if>
 
 	public static class Source extends ${name}Fluid {
@@ -145,8 +143,7 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	public static class Flowing extends ${name}Fluid {
 		public Flowing() {
 			super();
-			registerDefaultState(getStateDefinition().any().setValue(LEVEL, 7));
-			setRegistryName("${registryname}_flowing");
+			setRegistryName("flowing_${registryname}");
 		}
 
 		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {

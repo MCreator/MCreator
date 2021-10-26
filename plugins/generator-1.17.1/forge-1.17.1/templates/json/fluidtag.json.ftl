@@ -5,7 +5,7 @@
         <#list w.getElementsOfType("fluid") as mod>
             <#if mod.getGeneratableElement().type.toString()?lower_case == var_type>
                 <#assign elements += ["${modid}:${mod.getRegistryName()?lower_case}"]>
-                <#assign elements += ["${modid}:${mod.getRegistryName()?lower_case}_flowing"]>
+                <#assign elements += ["${modid}:flowing_${mod.getRegistryName()?lower_case}"]>
             </#if>
         </#list>
 

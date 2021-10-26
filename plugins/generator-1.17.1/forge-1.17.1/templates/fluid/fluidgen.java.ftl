@@ -41,7 +41,7 @@ public class ${name}Feature extends LakeFeature {
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
 				.configured(new BlockStateConfiguration(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState()))
 				.rangeUniform(VerticalAnchor.aboveBottom(0), VerticalAnchor.belowTop(0))
-				.squared().rarity(4);
+				.squared().rarity(${data.frequencyOnChunks});
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content>
