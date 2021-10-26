@@ -97,7 +97,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder undergroundBlock;
 
 	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 1000, 1));
-	private final JSpinner maxWaterDepth = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
 	private MCItemHolder treeVines;
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
@@ -412,10 +411,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp5.add(L10N.label("elementgui.biome.minimal_height"));
 		sbbp5.add(minHeight);
 
-		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/max_water_depth"),
-				L10N.label("elementgui.biome.max_water_depth")));
-		sbbp5.add(maxWaterDepth);
-
 		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/stem_block"),
 				L10N.label("elementgui.biome.stem_block"), new Color(49, 148, 53)));
 		sbbp5.add(PanelUtils.join(treeStem));
@@ -573,20 +568,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private void updateBiomeTreesForm() {
 		if (customTrees.isSelected()) {
 			minHeight.setEnabled(true);
-			maxWaterDepth.setEnabled(true);
 			treeVines.setEnabled(true);
 			treeStem.setEnabled(true);
 			treeBranch.setEnabled(true);
 			treeFruits.setEnabled(true);
-			maxWaterDepth.setEnabled(true);
 		} else {
 			minHeight.setEnabled(false);
-			maxWaterDepth.setEnabled(false);
 			treeVines.setEnabled(false);
 			treeStem.setEnabled(false);
 			treeBranch.setEnabled(false);
 			treeFruits.setEnabled(false);
-			maxWaterDepth.setEnabled(false);
 		}
 	}
 
@@ -608,7 +599,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem.setBlock(biome.treeStem);
 		treeBranch.setBlock(biome.treeBranch);
 		treeFruits.setBlock(biome.treeFruits);
-		maxWaterDepth.setValue(biome.maxWaterDepth);
 
 		if (biome.treeType == biome.TREES_CUSTOM) {
 			vanillaTrees.setSelected(false);
@@ -724,7 +714,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeStem = treeStem.getBlock();
 		biome.treeBranch = treeBranch.getBlock();
 		biome.treeFruits = treeFruits.getBlock();
-		biome.maxWaterDepth = (int) maxWaterDepth.getValue();
 		biome.spawnBiome = spawnBiome.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();
