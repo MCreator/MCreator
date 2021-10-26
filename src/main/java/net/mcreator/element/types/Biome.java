@@ -27,7 +27,9 @@ import net.mcreator.workspace.elements.ModElement;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement {
 
@@ -81,7 +83,6 @@ import java.util.List;
 	public String vanillaTreeType;
 	public int treeType;
 	public int minHeight;
-	public int maxWaterDepth;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
@@ -136,6 +137,14 @@ import java.util.List;
 		public int weight;
 		public String spawnType;
 
+	}
+
+	public boolean hasFruits() {
+		return !treeFruits.isEmpty();
+	}
+
+	public boolean hasVines() {
+		return !treeVines.isEmpty();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

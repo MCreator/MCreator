@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 
 package ${package}.item;
 
@@ -186,17 +187,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		</#if>
     </#if>
 
-    <#if hasProcedure(data.onRightClickedInAir)>
-    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-			ItemStack itemstack = ar.getObject();
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-    		<@procedureOBJToCode data.onRightClickedInAir/>
-			return ar;
-		}
-	</#if>
+    <@onRightClickedInAir data.onRightClickedInAir/>
 
 	<@commonMethods/>
 
@@ -247,17 +238,7 @@ public class ${name}Item extends Item {
 		return true;
 	}
 	
-    <#if hasProcedure(data.onRightClickedInAir)>
-    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-			ItemStack itemstack = ar.getObject();
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-    		<@procedureOBJToCode data.onRightClickedInAir/>
-			return ar;
-		}
-	</#if>
+	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
@@ -317,17 +298,7 @@ public class ${name}Item extends FishingRodItem {
 		}
 	</#if>
 
-	<#if hasProcedure(data.onEntityHitWith)>
-    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-			boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			Level world = entity.level;
-    		<@procedureOBJToCode data.onEntityHitWith/>
-			return retval;
-		}
-	</#if>
+	<@onEntityHitWith data.onEntityHitWith/>
     
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		ItemStack itemstack = entity.getItemInHand(hand);
@@ -439,51 +410,13 @@ public class ${name}Item extends FishingRodItem {
     	}
     </#if>
 
-    <#if hasProcedure(data.onCrafted)>
-    	@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
-    		super.onCraftedBy(itemstack, world, entity);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<@procedureOBJToCode data.onCrafted/>
-    	}
-    </#if>
+	<@onCrafted data.onCrafted/>
 
-    <#if hasProcedure(data.onEntitySwing)>
-    	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-    		boolean retval = super.onEntitySwing(itemstack, entity);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		Level world = entity.level;
-    		<@procedureOBJToCode data.onEntitySwing/>
-    		return retval;
-    	}
-    </#if>
+	<@onEntitySwing data.onEntitySwing/>
 
-    <#if hasProcedure(data.onStoppedUsing)>
-    	@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-    		super.releaseUsing(itemstack, world, entity, time);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<@procedureOBJToCode data.onStoppedUsing/>
-    	}
-    </#if>
+	<@onStoppedUsing data.onStoppedUsing/>
 
-    <#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
-    	@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-    		super.inventoryTick(itemstack, world, entity, slot, selected);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<#if hasProcedure(data.onItemInUseTick)>
-    		if (selected)
-    			<@procedureOBJToCode data.onItemInUseTick/>
-    		</#if>
-    		<@procedureOBJToCode data.onItemInInventoryTick/>
-    	}
-    </#if>
+	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
     <#if data.hasGlow>
     	@Override public boolean isFoil(ItemStack itemstack) {
