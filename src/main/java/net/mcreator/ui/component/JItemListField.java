@@ -211,14 +211,18 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setIcon(null);
 
 			if (value instanceof MappableElement) {
-				setText(((MappableElement) value).getMappedValueOrFallbackToUnmapped());
-				if (!((MappableElement) value).canProperlyMap()) {
+				setText(((MappableElement) value).getUnmappedValue().replace("CUSTOM:", "")
+						.replace("Blocks.", "").replace("Items.", ""));
+				if(((MappableElement) value).getUnmappedValue().contains("CUSTOM:"))
+					setIcon(UIRES.get("18px.mod"));
+				if (!((MappableElement) value).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));
-				}
 			} else if (value instanceof File) {
 				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
-				setText(value.toString());
+				setText(value.toString().replace("CUSTOM:", ""));
+				if(value.toString().contains("CUSTOM:"))
+					setIcon(UIRES.get("18px.mod"));
 			}
 
 			return this;
