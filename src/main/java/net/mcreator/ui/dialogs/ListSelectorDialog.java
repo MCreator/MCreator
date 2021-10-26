@@ -62,8 +62,10 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 			dispose();
 		});
 
+		message.setBorder(BorderFactory.createEmptyBorder(7, 2, 2, 0));
+
 		var top = PanelUtils.northAndCenterElement(message,
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.list_selector.filter"), filterField));
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.list_selector.filter"), filterField), 5, 5);
 
 		top.setBorder(BorderFactory.createEmptyBorder(4, 6, 7, 0));
 
@@ -76,7 +78,7 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		add("Center", mainComponent);
 		add("South", PanelUtils.centerInPanel(selectButton));
 
-		setSize(300, 360);
+		setSize(360, 360);
 
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
