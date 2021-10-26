@@ -127,12 +127,13 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 						.setRotation(Rotation.<#if data.randomlyRotateStructure>values()[context.random().nextInt(3)]<#else>NONE</#if>)
 						.setRandom(context.random())
 						.addProcessor(BlockIgnoreProcessor.${data.ignoreBlocks?replace("AIR_AND_STRUCTURE_BLOCK", "STRUCTURE_AND_AIR")})
-						.setIgnoreEntities(false), context.random(), 4))
-					anyPlaced = true;
+						.setIgnoreEntities(false), context.random(), 4)) {
+					<#if hasProcedure(data.onStructureGenerated)>
+						<@procedureOBJToCode data.onStructureGenerated/>
+					</#if>
 
-				<#if hasProcedure(data.onStructureGenerated)>
-					<@procedureOBJToCode data.onStructureGenerated/>
-				</#if>
+					anyPlaced = true;
+				}
 			}
 
 			return anyPlaced;
