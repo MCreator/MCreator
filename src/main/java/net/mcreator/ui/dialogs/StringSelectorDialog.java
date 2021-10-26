@@ -19,10 +19,13 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +35,7 @@ import java.util.function.Predicate;
 public class StringSelectorDialog extends ListSelectorDialog<String> {
 	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider) {
 		super(mcreator, entryProvider.andThen(Arrays::asList));
+		list.setCellRenderer(new StringListCellRenderer());
 	}
 
 	@Override Predicate<String> getFilter(String term) {
@@ -55,5 +59,16 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 		dataListSelector.setTitle(title);
 		dataListSelector.setVisible(true);
 		return dataListSelector.list.getSelectedValuesList();
+	}
+
+	static class StringListCellRenderer extends DefaultListCellRenderer {
+		@Override
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			label.setText(value.toString().replace("CUSTOM:", ""));
+			if(value.toString().contains("CUSTOM:"))
+				label.setIcon(UIRES.get("18px.mod"));
+			return label;
+		}
 	}
 }

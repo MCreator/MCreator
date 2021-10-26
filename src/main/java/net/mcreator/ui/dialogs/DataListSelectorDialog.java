@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -63,7 +64,9 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			label.setText(((DataListEntry) value).getReadableName());
+			label.setText(((DataListEntry) value).getReadableName().replace("CUSTOM:", ""));
+			if(((DataListEntry) value).getReadableName().contains("CUSTOM:"))
+				label.setIcon(UIRES.get("18px.mod"));
 			return label;
 		}
 	}
