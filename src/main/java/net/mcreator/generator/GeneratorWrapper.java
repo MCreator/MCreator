@@ -23,10 +23,10 @@ import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.RecipeType;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.util.FilenameUtilsPatched;
 
 import java.util.Arrays;
 import java.util.List;
@@ -113,10 +113,6 @@ import java.util.stream.Collectors;
 		return elementName;
 	}
 
-	public Workspace getWorkspace() {
-		return generator.getWorkspace();
-	}
-
 	public String getRegistryNameForModElement(String modElement) {
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null)
@@ -129,20 +125,28 @@ import java.util.stream.Collectors;
 	public String getResourceLocationForModElement(String modElement) {
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null) {
-			// check if we are dealing with namespaced element
-			if (NamespacedGeneratableElement.class.isAssignableFrom(element.getType().getModElementStorageClass())) {
-				GeneratableElement namespacedgeneratableemenet = element.getGeneratableElement();
-				if (namespacedgeneratableemenet instanceof NamespacedGeneratableElement) {
-					return ((NamespacedGeneratableElement) namespacedgeneratableemenet).getResourceLocation();
-				}
-			}
-
-			// otherwise we use a normal registry name
-			return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
+			return getResourceLocationForModElement(element);
 		}
 
 		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
+	}
+
+	public String getResourceLocationForModElement(ModElement element) {
+		// check if we are dealing with namespaced element
+		if (NamespacedGeneratableElement.class.isAssignableFrom(element.getType().getModElementStorageClass())) {
+			GeneratableElement namespacedgeneratableemenet = element.getGeneratableElement();
+			if (namespacedgeneratableemenet instanceof NamespacedGeneratableElement) {
+				return ((NamespacedGeneratableElement) namespacedgeneratableemenet).getResourceLocation();
+			}
+		}
+
+		// otherwise we use a normal registry name
+		return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
+	}
+
+	public Workspace getWorkspace() {
+		return generator.getWorkspace();
 	}
 
 }

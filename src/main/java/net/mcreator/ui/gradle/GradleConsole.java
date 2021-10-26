@@ -284,6 +284,8 @@ public class GradleConsole extends JPanel {
 		pan.clearConsole();
 		searchBar.reinstall(pan);
 
+		textAccent = null;
+
 		SimpleAttributeSet keyWord = new SimpleAttributeSet();
 		StyleConstants.setFontSize(keyWord, 4);
 		pan.insertString("\n", keyWord);
