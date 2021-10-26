@@ -45,7 +45,7 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
 			String title, String message) {
 		var stringSelector = new StringSelectorDialog(mcreator, entryProvider);
-		stringSelector.message.setText(message);
+		stringSelector.setMessage(message);
 		stringSelector.setTitle(title);
 		stringSelector.setVisible(true);
 		return stringSelector.list.getSelectedValue();
@@ -54,7 +54,7 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	public static List<String> openMultiSelectorDialog(MCreator mcreator,
 			Function<Workspace, String[]> entryProvider, String title, String message) {
 		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider);
-		dataListSelector.message.setText(message);
+		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);
 		dataListSelector.setVisible(true);

@@ -93,4 +93,8 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 			}
 		});
 	}
+
+	public void setMessage(String message) {
+		this.message.setText(message);
+	}
 }

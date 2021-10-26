@@ -44,7 +44,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	public static DataListEntry openSelectorDialog(MCreator mcreator, Function<Workspace, List<DataListEntry>> entryProvider,
 			String title, String message) {
 		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
-		dataListSelector.message.setText(message);
+		dataListSelector.setMessage(message);
 		dataListSelector.setTitle(title);
 		dataListSelector.setVisible(true);
 		return dataListSelector.list.getSelectedValue();
@@ -53,7 +53,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
 			Function<Workspace, List<DataListEntry>> entryProvider, String title, String message) {
 		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
-		dataListSelector.message.setText(message);
+		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);
 		dataListSelector.setVisible(true);
