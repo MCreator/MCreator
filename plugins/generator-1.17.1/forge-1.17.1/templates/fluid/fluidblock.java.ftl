@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
+<#include "../triggers.java.ftl">
 
 package ${package}.block;
 
@@ -73,28 +74,9 @@ public class ${name}Block extends LiquidBlock {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onBlockAdded) || hasProcedure(data.onTickUpdate)>
-	@Override public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-		super.onPlace(blockstate, world, pos, oldState, moving);
-		<#if hasProcedure(data.onTickUpdate)>
-		world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
-		</#if>
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onBlockAdded/>
-	}
-	</#if>
+	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate), data.tickRate/>
 
-	<#if hasProcedure(data.onNeighbourChanges)>
-	@Override public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean isMoving) {
-		super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, isMoving);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onNeighbourBlockChanges/>
-	}
-	</#if>
+	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourBlockChanges/>
 
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
@@ -107,34 +89,9 @@ public class ${name}Block extends LiquidBlock {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onEntityCollides)>
-	@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-		super.entityInside(blockstate, world, pos, entity);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onEntityCollides/>
-	}
-	</#if>
+	<@onEntityCollides data.onEntityCollides/>
 
-	<#if hasProcedure(data.onRandomUpdateEvent)>
-	@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
-		super.animateTick(blockstate, world, pos, random);
-		Player entity = Minecraft.getInstance().player;
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onRandomUpdateEvent/>
-	}
-	</#if>
+	<@onAnimateTick data.onRandomUpdateEvent/>
 
-	<#if hasProcedure(data.onDestroyedByExplosion)>
-	@Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
-		super.wasExploded(world, pos, e);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onDestroyedByExplosion/>
-	}
-	</#if>
+	<@onDestroyedByExplosion data.onDestroyedByExplosion/>
 }
