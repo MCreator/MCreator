@@ -199,7 +199,8 @@ public class BlocklyPanel extends JFXPanel {
 	}
 
 	public void addBlocksFromXML(String xml) {
-		xml = cleanupXML(xml).replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"); // escape single quotes and new lines
+		xml = cleanupXML(xml).replace("'", "\\'").replace("\n", "\\n")
+				.replace("\r", "\\r"); // escape single quotes and new lines
 		executeJavaScriptSynchronously(
 				"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + xml + "'), workspace)");
 	}

@@ -36,7 +36,8 @@ public class BooleanBlock implements IBlockGenerator {
 			master.append(element.getTextContent().toLowerCase(Locale.ENGLISH));
 		} else {
 			master.append("true");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.boolean")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.boolean")));
 		}
 		master.append(")");
 	}

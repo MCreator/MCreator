@@ -39,9 +39,9 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.annotation.Nullable;
 import javax.swing.*;

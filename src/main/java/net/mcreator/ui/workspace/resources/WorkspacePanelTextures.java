@@ -33,9 +33,9 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
 import java.awt.*;

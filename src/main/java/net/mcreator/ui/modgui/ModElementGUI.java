@@ -23,7 +23,6 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
-import net.mcreator.ui.action.impl.gradle.BuildWorkspaceAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
 import net.mcreator.ui.component.UnsupportedComponent;

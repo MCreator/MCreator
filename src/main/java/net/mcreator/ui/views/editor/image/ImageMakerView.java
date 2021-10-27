@@ -37,8 +37,8 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
