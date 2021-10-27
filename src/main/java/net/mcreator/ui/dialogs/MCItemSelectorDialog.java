@@ -23,36 +23,22 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.TagsNameValidator;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
-public class MCItemSelectorDialog extends MCreatorDialog {
+public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
-	private final FilterModel model = new FilterModel();
 	private final JList<MCItem> list = new JList<>(model);
 	private final JTextField jtf = new JTextField(16);
-	private final JTextField filterField = new JTextField(14);
-	private final JPanel mainComponent;
-
-	private final MCItem.ListProvider blocksConsumer;
-
-	private final MCreator mcreator;
 
 	private ActionListener itemSelectedListener;
 
@@ -62,30 +48,11 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags,
 			boolean hasPotions) {
-		super(mcreator);
-
-		this.mcreator = mcreator;
-		this.blocksConsumer = blocksConsumer;
+		super(mcreator, blocksConsumer::provide);
 
 		setTitle(L10N.t("dialog.item_selector.title"));
-		setModal(true);
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		list.setCellRenderer(new Render());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		filterField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void removeUpdate(DocumentEvent arg0) {
-				model.refilter();
-			}
-
-			@Override public void insertUpdate(DocumentEvent arg0) {
-				model.refilter();
-			}
-
-			@Override public void changedUpdate(DocumentEvent arg0) {
-				model.refilter();
-			}
-		});
 
 		jtf.setEnabled(false);
 		jtf.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
@@ -101,10 +68,10 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		});
 
 		JPanel buttons = new JPanel();
-		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		JButton cancelButton = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
-		JButton naprej = L10N.button("dialog.item_selector.use_selected");
-		naprej.addActionListener(e -> {
+		JButton useSelectedButton = L10N.button("dialog.item_selector.use_selected");
+		useSelectedButton.addActionListener(e -> {
 			setVisible(false);
 			if (itemSelectedListener != null)
 				itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
@@ -155,22 +122,25 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 			});
 		}
 
-		buttons.add(naprej);
+		buttons.add(useSelectedButton);
 
-		add("South", PanelUtils.westAndEastElement(PanelUtils.centerInPanel(naprej2), buttons));
+		add("South", PanelUtils.westAndEastElement(PanelUtils.centerInPanel(cancelButton), buttons));
 
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		list.setVisibleRowCount(0);
 
 		list.addListSelectionListener(event -> {
 			MCItem bl = list.getSelectedValue();
-			jtf.setText(bl.getReadableName());
+			if (bl != null)
+				jtf.setText(bl.getReadableName());
 		});
 
-		naprej2.addActionListener(event -> setVisible(false));
+		cancelButton.addActionListener(event -> {
+			list.clearSelection();
+			setVisible(false);
+		});
 
 		ComponentUtils.deriveFont(jtf, 15);
-		ComponentUtils.deriveFont(filterField, 15);
 
 		JComponent top;
 		JButton all = L10N.button("dialog.item_selector.all");
@@ -196,7 +166,7 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 		top.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
 
-		mainComponent = new JPanel(new BorderLayout());
+		JPanel mainComponent = new JPanel(new BorderLayout());
 		mainComponent.add("North", top);
 
 		mainComponent.add("Center", new JScrollPane(list));
@@ -209,6 +179,13 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 		setLocationRelativeTo(mcreator);
+
+		this.addWindowListener(new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				list.clearSelection();
+				dispose();
+			}
+		});
 	}
 
 	public void setItemSelectedListener(ActionListener itemSelectedListener) {
@@ -238,70 +215,14 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 	}
 
-	private class FilterModel extends DefaultListModel<MCItem> {
-		ArrayList<MCItem> items;
-		ArrayList<MCItem> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public MCItem getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(MCItem o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof MCItem) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		private void refilter() {
-			filterItems.clear();
-			String term = filterField.getText();
-			filterItems.addAll(items.stream().filter(item ->
-							item.getName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH))
-									|| item.getReadableName().toLowerCase(Locale.ENGLISH)
-									.contains(term.toLowerCase(Locale.ENGLISH)) || item.getDescription()
-									.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)) || item.getType()
-									.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
-					.collect(Collectors.toList()));
-			fireContentsChanged(this, 0, getSize());
-		}
-	}
-
-	@Override public void setVisible(boolean visible) {
-		if (visible) {
-			reloadElements();
-		}
-		super.setVisible(visible);
-	}
-
-	private void reloadElements() {
-		model.removeAllElements();
-		blocksConsumer.provide(mcreator.getWorkspace()).forEach(model::addElement);
+	@Override Predicate<MCItem> getFilter(String term) {
+		String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
+		return item ->
+				item.getName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm)
+						|| item.getReadableName().toLowerCase(Locale.ENGLISH)
+						.contains(lowercaseTerm) || item.getDescription()
+						.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getType()
+						.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm);
 	}
 
 	public MCItem getSelectedMCItem() {
@@ -310,30 +231,14 @@ public class MCItemSelectorDialog extends MCreatorDialog {
 
 	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
 		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
-		bsd.reloadElements();
-		JComponent mainComponent = bsd.mainComponent;
-		mainComponent.setPreferredSize(new Dimension(870, 380));
-
-		JOptionPane pane = new JOptionPane(mainComponent);
-		JDialog dialog = pane.createDialog(parent, L10N.t("dialog.item_selector.selector"));
-		bsd.setItemSelectedListener(e -> dialog.dispose());
-		dialog.setVisible(true);
-
+		bsd.setVisible(true);
 		return bsd.list.getSelectedValue();
 	}
 
 	public static List<MCItem> openMultiSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
 		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
-		bsd.reloadElements();
-		JComponent mainComponent = bsd.mainComponent;
-		mainComponent.setPreferredSize(new Dimension(870, 380));
 		bsd.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		JOptionPane pane = new JOptionPane(mainComponent);
-		JDialog dialog = pane.createDialog(parent, L10N.t("dialog.item_selector.title"));
-		bsd.setItemSelectedListener(e -> dialog.dispose());
-		dialog.setVisible(true);
-
+		bsd.setVisible(true);
 		return bsd.list.getSelectedValuesList();
 	}
 

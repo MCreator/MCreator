@@ -19,17 +19,13 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
-import javax.swing.*;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EntityListField extends JItemListField<EntityEntry> {
 
@@ -40,18 +36,8 @@ public class EntityListField extends JItemListField<EntityEntry> {
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
-		JList<String> vlist = new JList<>(
-				ElementUtil.loadAllEntities(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
-						.toArray(String[]::new));
-		int option = JOptionPane.showOptionDialog(mcreator,
-				PanelUtils.northAndCenterElement(L10N.label("dialog.list_field.entity_message"),
-						new JScrollPane(vlist)), L10N.t("dialog.list_field.entity_title"), JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, null, null);
-
-		if (option == JOptionPane.OK_OPTION && vlist.getSelectedValue() != null) {
-			return vlist.getSelectedValuesList().stream().map(e -> new EntityEntry(mcreator.getWorkspace(), e))
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllEntities,
+				L10N.t("dialog.list_field.entity_title"), L10N.t("dialog.list_field.entity_message"))
+			.stream().map(e -> new EntityEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }
