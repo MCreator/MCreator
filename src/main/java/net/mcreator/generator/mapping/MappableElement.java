@@ -55,19 +55,6 @@ public abstract class MappableElement {
 		return value;
 	}
 
-	public String getMappedValueOrFallbackToUnmapped() {
-		try {
-			String retval = mapper.getMapping(value);
-			if (retval.contains("@") || retval.contains(
-					NameMapper.UNKNOWN_ELEMENT)) // we failed to map some of the values
-				return value;
-			else
-				return retval;
-		} catch (Exception e) {
-			return value;
-		}
-	}
-
 	public boolean canProperlyMap() {
 		String mapped = mapper.getMapping(value);
 		return !mapped.contains("@") && !mapped.contains(

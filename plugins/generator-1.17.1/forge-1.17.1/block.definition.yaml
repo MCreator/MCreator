@@ -380,22 +380,22 @@ global_templates:
     variables: "type=pickaxe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/pickaxe.json"
     deleteWhenConditionFalse: true
-    condition: hasBlocksPickaxeMineable()
+    condition: ${w.hasBlocksMineableWith('pickaxe')}
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=axe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/axe.json"
     deleteWhenConditionFalse: true
-    condition: hasBlocksAxeMineable()
+    condition: ${w.hasBlocksMineableWith('axe')}
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=shovel"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/shovel.json"
     deleteWhenConditionFalse: true
-    condition: hasBlocksShovelMineable()
+    condition: ${w.hasBlocksMineableWith('shovel')}
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=hoe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
     deleteWhenConditionFalse: true
-    condition: hasBlocksHoeMineable()
+    condition: ${w.hasBlocksMineableWith('hoe')}

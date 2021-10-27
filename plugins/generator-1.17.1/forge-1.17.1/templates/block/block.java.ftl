@@ -32,6 +32,7 @@
 <#include "../boundingboxes.java.ftl">
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
+<#include "../triggers.java.ftl">
 <#include "../particles.java.ftl">
 
 package ${package}.block;
@@ -509,34 +510,9 @@ public class ${name}Block extends
 		</#if>
 	</#if>
 
-	<#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
-	@Override public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-		super.onPlace(blockstate, world, pos, oldState, moving);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
-		world.getBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
-	    </#if>
-		<@procedureOBJToCode data.onBlockAdded/>
-	}
-	</#if>
+	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && !data.tickRandomly, data.tickRate/>
 
-	<#if hasProcedure(data.onRedstoneOn) || hasProcedure(data.onRedstoneOff) || hasProcedure(data.onNeighbourBlockChanges)>
-	@Override
-	public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-		super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		if (world.getBestNeighborSignal(new BlockPos(x, y, z)) > 0) {
-			<@procedureOBJToCode data.onRedstoneOn/>
-		} else {
-			<@procedureOBJToCode data.onRedstoneOff/>
-		}
-		<@procedureOBJToCode data.onNeighbourBlockChanges/>
-	}
-	</#if>
+	<@onRedstoneOrNeighborChanged data.onRedstoneOn, data.onRedstoneOff, data.onNeighbourBlockChanges/>
 
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void <#if data.tickRandomly && (data.blockBase?has_content && data.blockBase == "Stairs")>randomTick<#else>tick</#if>
@@ -570,68 +546,17 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if hasProcedure(data.onDestroyedByPlayer)>
-	@Override
-	public boolean removedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, boolean willHarvest, FluidState fluid) {
-		boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onDestroyedByPlayer/>
-		return retval;
-	}
-	</#if>
+	<@onDestroyedByPlayer data.onDestroyedByPlayer/>
 
-	<#if hasProcedure(data.onDestroyedByExplosion)>
-	@Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
-		super.wasExploded(world, pos, e);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onDestroyedByExplosion/>
-	}
-	</#if>
+	<@onDestroyedByExplosion data.onDestroyedByExplosion/>
 
-	<#if hasProcedure(data.onStartToDestroy)>
-	@Override public void attack(BlockState blockstate, Level world, BlockPos pos, Player entity) {
-		super.attack(blockstate, world, pos, entity);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onStartToDestroy/>
-	}
-	</#if>
+	<@onStartToDestroy data.onStartToDestroy/>
 
-	<#if hasProcedure(data.onEntityCollides)>
-	@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-		super.entityInside(blockstate, world, pos, entity);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onEntityCollides/>
-	}
-	</#if>
+	<@onEntityCollides data.onEntityCollides/>
 
-	<#if hasProcedure(data.onEntityWalksOn)>
-	@Override public void stepOn(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
-		super.stepOn(world, pos, blockstate, entity);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onEntityWalksOn/>
-	}
-	</#if>
+	<@onEntityWalksOn data.onEntityWalksOn/>
 
-	<#if hasProcedure(data.onBlockPlayedBy)>
-	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
-		super.setPlacedBy(world, pos, blockstate, entity, itemstack);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onBlockPlayedBy/>
-	}
-	</#if>
+	<@onBlockPlacedBy data.onBlockPlayedBy/>
 
 	<#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
 	@Override

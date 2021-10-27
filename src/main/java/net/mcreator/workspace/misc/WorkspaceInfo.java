@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GameRule;
 import net.mcreator.element.types.Recipe;
+import net.mcreator.element.types.Tool;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
@@ -179,41 +180,21 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
-	public boolean hasBlocksPickaxeMineable() {
+	public boolean hasBlocksMineableWith(String tool) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.BLOCK) {
 				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("pickaxe"))
+					if (block.destroyTool.equals(tool))
 						return true;
 			}
 		return false;
 	}
 
-	public boolean hasBlocksAxeMineable() {
+	public boolean hasToolsOfType(String type) {
 		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("axe"))
-						return true;
-			}
-		return false;
-	}
-
-	public boolean hasBlocksShovelMineable() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("shovel"))
-						return true;
-			}
-		return false;
-	}
-
-	public boolean hasBlocksHoeMineable() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals("hoe"))
+			if (element.getType() == ModElementType.TOOL) {
+				if (element.getGeneratableElement() instanceof Tool tool)
+					if (tool.toolType.equals(type))
 						return true;
 			}
 		return false;

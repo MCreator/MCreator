@@ -113,10 +113,6 @@ import java.util.stream.Collectors;
 		return elementName;
 	}
 
-	public Workspace getWorkspace() {
-		return generator.getWorkspace();
-	}
-
 	public String getRegistryNameForModElement(String modElement) {
 		ModElement element = generator.getWorkspace().getModElementByName(modElement);
 		if (element != null)
@@ -147,6 +143,10 @@ import java.util.stream.Collectors;
 
 		// otherwise we use a normal registry name
 		return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
+	}
+
+	public Workspace getWorkspace() {
+		return generator.getWorkspace();
 	}
 
 }
