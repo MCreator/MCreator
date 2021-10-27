@@ -20,8 +20,10 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -61,13 +63,15 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 		return dataListSelector.list.getSelectedValuesList();
 	}
 
-	static class StringListCellRenderer extends DefaultListCellRenderer {
+	private class StringListCellRenderer extends DefaultListCellRenderer {
+
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			label.setText(value.toString().replace("CUSTOM:", ""));
 			if(value.toString().contains("CUSTOM:"))
-				label.setIcon(UIRES.get("18px.mod"));
+				setIcon(new ImageIcon(ImageUtils.resize(
+						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			return label;
 		}
 	}

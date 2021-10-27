@@ -29,15 +29,13 @@ import java.util.List;
 
 public class BiomeListField extends JItemListField<BiomeEntry> {
 
-	private final MCreator frame;
-
-	public BiomeListField(MCreator frame) {
-		this.frame = frame;
+	public BiomeListField(MCreator mcreator) {
+		super(mcreator);
 	}
 
 	@Override protected List<BiomeEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(frame, ElementUtil::loadAllBiomes,
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllBiomes,
 				L10N.t("dialog.list_field.biome_list_title"), L10N.t("dialog.list_field.biome_list_message"))
-			.stream().map(e -> new BiomeEntry(frame.getWorkspace(), e)).toList();
+			.stream().map(e -> new BiomeEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }

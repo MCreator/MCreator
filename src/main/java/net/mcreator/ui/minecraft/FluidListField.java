@@ -29,15 +29,13 @@ import java.util.List;
 
 public class FluidListField extends JItemListField<Fluid> {
 
-	private final MCreator frame;
-
-	public FluidListField(MCreator frame) {
-		this.frame = frame;
+	public FluidListField(MCreator mcreator) {
+		super(mcreator);
 	}
 
 	@Override protected List<Fluid> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(frame, ElementUtil::loadAllFluids,
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllFluids,
 				L10N.t("dialog.list_field.fluid_title"), L10N.t("dialog.list_field.fluid_message"))
-			.stream().map(e -> new Fluid(frame.getWorkspace(), e)).toList();
+			.stream().map(e -> new Fluid(mcreator.getWorkspace(), e)).toList();
 	}
 }

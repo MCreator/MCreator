@@ -28,14 +28,12 @@ import java.util.List;
 
 public class BiomeDictionaryTypeListField extends JItemListField<String> {
 
-	private final MCreator frame;
-
-	public BiomeDictionaryTypeListField(MCreator frame) {
-		this.frame = frame;
+	public BiomeDictionaryTypeListField(MCreator mcreator) {
+		super(mcreator);
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(frame,
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
 				w -> ElementUtil.loadBiomeDictionaryTypes(),
 				L10N.t("dialog.list_field.biome_dictionary_title"), L10N.t("dialog.list_field.biome_dictionary_message"));
 	}

@@ -29,10 +29,8 @@ import java.util.List;
 
 public class EntityListField extends JItemListField<EntityEntry> {
 
-	private final MCreator mcreator;
-
 	public EntityListField(MCreator mcreator) {
-		this.mcreator = mcreator;
+		super(mcreator);
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {

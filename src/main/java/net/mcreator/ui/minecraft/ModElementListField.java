@@ -30,16 +30,15 @@ import java.util.Locale;
 
 public class ModElementListField extends JItemListField<String> {
 
-	private final MCreator frame;
-	private final ModElementType type;
+	private final ModElementType<?> type;
 
-	public ModElementListField(MCreator frame, ModElementType type) {
-		this.frame = frame;
+	public ModElementListField(MCreator mcreator, ModElementType<?> type) {
+		super(mcreator);
 		this.type = type;
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(frame, w -> w.getModElements().stream()
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> w.getModElements().stream()
 				.filter(e -> e.getType() == this.type).map(ModElement::getName).toArray(String[]::new),
 				L10N.t("dialog.list_field.mod_element_title"),
 				L10N.t("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)));

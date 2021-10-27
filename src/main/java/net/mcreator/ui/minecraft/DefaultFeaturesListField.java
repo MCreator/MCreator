@@ -28,14 +28,12 @@ import java.util.List;
 
 public class DefaultFeaturesListField extends JItemListField<String> {
 
-	private MCreator frame;
-
-	public DefaultFeaturesListField(MCreator frame) {
-		this.frame = frame;
+	public DefaultFeaturesListField(MCreator mcreator) {
+		super(mcreator);
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(frame, w -> ElementUtil.loadDefaultFeatures(),
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> ElementUtil.loadDefaultFeatures(),
 				L10N.t("dialog.list_field.biome_default_feature_title"),
 				L10N.t("dialog.list_field.biome_default_feature_message"));
 	}

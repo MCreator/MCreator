@@ -20,8 +20,9 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -41,8 +42,8 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		return e -> e.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
-	public static DataListEntry openSelectorDialog(MCreator mcreator, Function<Workspace, List<DataListEntry>> entryProvider,
-			String title, String message) {
+	public static DataListEntry openSelectorDialog(MCreator mcreator,
+			Function<Workspace, List<DataListEntry>> entryProvider, String title, String message) {
 		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
 		dataListSelector.setMessage(message);
 		dataListSelector.setTitle(title);
@@ -60,13 +61,16 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		return dataListSelector.list.getSelectedValuesList();
 	}
 
-	static class DataListCellRenderer extends DefaultListCellRenderer {
+	private class DataListCellRenderer extends DefaultListCellRenderer {
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			label.setText(((DataListEntry) value).getReadableName().replace("CUSTOM:", ""));
-			if(((DataListEntry) value).getReadableName().contains("CUSTOM:"))
-				label.setIcon(UIRES.get("18px.mod"));
+			if (((DataListEntry) value).getName().contains("CUSTOM:"))
+				setIcon(new ImageIcon(ImageUtils.resize(
+						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), ((DataListEntry) value).getName())
+								.getImage(), 18)));
 			return label;
 		}
 	}

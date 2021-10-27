@@ -29,10 +29,8 @@ import java.util.List;
 
 public class EnchantmentListField extends JItemListField<Enchantment> {
 
-	private final MCreator mcreator;
-
 	public EnchantmentListField(MCreator mcreator) {
-		this.mcreator = mcreator;
+		super(mcreator);
 	}
 
 	@Override protected List<Enchantment> getElementsToAdd() {

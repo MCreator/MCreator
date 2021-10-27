@@ -28,14 +28,12 @@ import java.util.List;
 
 public class DimensionListField extends JItemListField<String> {
 
-	private final MCreator frame;
-
-	public DimensionListField(MCreator frame) {
-		this.frame = frame;
+	public DimensionListField(MCreator mcreator) {
+		super(mcreator);
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(frame, ElementUtil::loadAllDimensions,
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllDimensions,
 				L10N.t("dialog.list_field.dimension_title"), L10N.t("dialog.list_field.dimension_message"));
 	}
 }
