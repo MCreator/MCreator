@@ -310,7 +310,7 @@ import java.util.stream.Collectors;
 		if (doesGenerateInWorld())
 			baseTypes.add(BaseType.FEATURE);
 
-		if(hasInventory)
+		if (hasInventory)
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;

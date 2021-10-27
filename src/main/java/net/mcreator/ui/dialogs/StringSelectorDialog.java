@@ -19,10 +19,8 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
@@ -53,8 +51,8 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 		return stringSelector.list.getSelectedValue();
 	}
 
-	public static List<String> openMultiSelectorDialog(MCreator mcreator,
-			Function<Workspace, String[]> entryProvider, String title, String message) {
+	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			String title, String message) {
 		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -66,10 +64,11 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	private class StringListCellRenderer extends DefaultListCellRenderer {
 
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			label.setText(value.toString().replace("CUSTOM:", ""));
-			if(value.toString().contains("CUSTOM:"))
+			if (value.toString().contains("CUSTOM:"))
 				setIcon(new ImageIcon(ImageUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			return label;

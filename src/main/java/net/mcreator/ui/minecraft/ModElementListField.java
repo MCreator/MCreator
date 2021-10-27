@@ -38,9 +38,9 @@ public class ModElementListField extends JItemListField<String> {
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> w.getModElements().stream()
-				.filter(e -> e.getType() == this.type).map(ModElement::getName).toArray(String[]::new),
-				L10N.t("dialog.list_field.mod_element_title"),
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
+				w -> w.getModElements().stream().filter(e -> e.getType() == this.type).map(ModElement::getName)
+						.toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
 				L10N.t("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)));
 	}
 }

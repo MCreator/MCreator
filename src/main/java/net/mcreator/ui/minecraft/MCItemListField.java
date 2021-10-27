@@ -19,7 +19,6 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
@@ -64,8 +63,8 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
 
-			setToolTipText(value.getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
-					.replace("Items.", ""));
+			setToolTipText(
+					value.getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", ""));
 
 			setIcon(new ImageIcon(ImageUtils.resize(
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 22)));

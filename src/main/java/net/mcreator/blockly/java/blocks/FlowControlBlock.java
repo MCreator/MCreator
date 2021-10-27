@@ -34,7 +34,8 @@ public class FlowControlBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append(element.getTextContent().toLowerCase(Locale.ENGLISH)).append(";");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.flow_control", L10N.t("blockly.warnings.skip"))));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.flow_control", L10N.t("blockly.warnings.skip"))));
 		}
 	}
 

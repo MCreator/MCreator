@@ -36,6 +36,7 @@ import java.util.function.Function;
 /**
  * This abstract class provides a default look for searchable list selectors, similar to that of JOptionPane, but
  * featuring a search bar.
+ *
  * @param <T> The type of elements contained in the list
  */
 public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> {

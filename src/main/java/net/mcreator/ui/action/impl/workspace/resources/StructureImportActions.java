@@ -78,9 +78,8 @@ public class StructureImportActions {
 						for (File generatedsect : generated != null ? generated : new File[0]) {
 							structures = new File(generatedsect, "/structures/").listFiles();
 							for (File structure : structures != null ? structures : new File[0]) {
-								mcstucts.add(new Structure(
-										save.getName() + ": " + FilenameUtilsPatched.removeExtension(structure.getName()),
-										structure));
+								mcstucts.add(new Structure(save.getName() + ": " + FilenameUtilsPatched.removeExtension(
+										structure.getName()), structure));
 							}
 						}
 					}

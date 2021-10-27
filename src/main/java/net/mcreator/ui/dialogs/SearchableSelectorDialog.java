@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * This abstract class provides a filter field and a filter model for searchable selectors.
+ *
  * @param <T> The type of the elements in this selector dialog
  */
 public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
@@ -111,15 +112,14 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		void refilter() {
 			filterEntries.clear();
 			String term = filterField.getText();
-			filterEntries.addAll(entries.stream()
-					.filter(getFilter(term))
-					.collect(Collectors.toList()));
+			filterEntries.addAll(entries.stream().filter(getFilter(term)).collect(Collectors.toList()));
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
 
 	/**
 	 * The filter used by the search bar
+	 *
 	 * @param term The text contained in the search bar
 	 * @return The predicate that will be used to filter the elements
 	 */

@@ -27,9 +27,7 @@ import net.mcreator.workspace.elements.ModElement;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement {
 
