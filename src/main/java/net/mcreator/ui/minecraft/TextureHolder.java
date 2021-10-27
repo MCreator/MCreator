@@ -21,8 +21,8 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;

@@ -48,7 +48,8 @@ public class CancelEventBlock implements IBlockGenerator {
 				}
 
 				if (trigger == null) {
-					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.cancel_event.null")));
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.cancel_event.null")));
 				} else if (!trigger.cancelable) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.cancel_event.not_cancellable")));
