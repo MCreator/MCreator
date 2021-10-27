@@ -137,7 +137,7 @@ import java.util.Map;
 
 	public String[][] getRecipeMatrix(Map<String, MItemBlock> mappings) {
 		MItemBlock[][] elements = getOptimisedRecipe();
-		String[][] retVal = new String[elements.length][elements.length];
+		String[][] retVal = new String[elements.length][elements[0].length];
 		final int[] num = { 0 };
 		mappings.put("esc", new MItemBlock(null, "")); // this allows us to use this map for preventing duplicates
 		for (int r = 0; r < elements.length; r++) {
@@ -149,9 +149,8 @@ import java.util.Map;
 					retVal[row][col] = " ";
 				} else if (mappings.containsValue(value)) {
 					mappings.forEach((k, v) -> {
-						if (!k.equals("esc") && v.equals(value)) {
+						if (!k.equals("esc") && v.equals(value))
 							retVal[row][col] = k;
-						}
 					});
 				} else {
 					String str = value.mapper.getMapping(value.getUnmappedValue(), 1).replace("#", "");
