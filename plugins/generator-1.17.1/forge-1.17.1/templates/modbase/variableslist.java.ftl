@@ -125,15 +125,15 @@ import net.minecraft.nbt.Tag;
 		public void syncData(LevelAccessor world) {
 			this.setDirty();
 
-			if (world instanceof Level && !world.isClientSide())
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(((Level) world)::dimension), new SavedDataSyncMessage(1, this));
+			if (world instanceof Level level && !level.isClientSide())
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(level::dimension), new SavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
 
 		public static WorldVariables get(LevelAccessor world) {
-			if (world instanceof ServerLevel) {
-				return ((ServerLevel) world).getDataStorage().computeIfAbsent(e -> WorldVariables.load(e), WorldVariables::new, DATA_NAME);
+			if (world instanceof ServerLevel level) {
+				return level.getDataStorage().computeIfAbsent(e -> WorldVariables.load(e), WorldVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -184,8 +184,8 @@ import net.minecraft.nbt.Tag;
 		static MapVariables clientSide = new MapVariables();
 
 		public static MapVariables get(LevelAccessor world) {
-			if (world instanceof ServerLevelAccessor) {
-				return ((ServerLevelAccessor) world).getLevel().getServer().getLevel(Level.OVERWORLD).getDataStorage()
+			if (world instanceof ServerLevelAccessor serverLevelAcc) {
+				return serverLevelAcc.getLevel().getServer().getLevel(Level.OVERWORLD).getDataStorage()
 						.computeIfAbsent(e -> MapVariables.load(e), MapVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
@@ -274,8 +274,8 @@ import net.minecraft.nbt.Tag;
 		</#list>
 
 		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayer)
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) entity), new PlayerVariablesSyncMessage(this));
+			if (entity instanceof ServerPlayer serverPlayer)
+			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerVariablesSyncMessage(this));
 		}
 
 		public Tag writeNBT() {
