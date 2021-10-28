@@ -1,4 +1,18 @@
 <#-- @formatter:off -->
+<#macro procedureCode object dependencies={}>
+    <#compress>
+    ${object.getName()}Procedure.execute(ImmutableMap.<String, Object>builder()
+    <#assign deps = [] />
+    <#list object.getDependencies(generator.getWorkspace()) as dependency>
+        <#assign deps += [dependency.getName()] />
+    </#list>
+    <#list dependencies as name, value>
+        <#if deps?seq_contains(name)>.put("${name}", ${value})</#if>
+    </#list>
+    .build());
+    </#compress>
+</#macro>
+
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 

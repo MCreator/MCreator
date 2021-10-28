@@ -18,6 +18,7 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
@@ -38,6 +39,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -227,6 +229,10 @@ import java.util.stream.Collectors;
 		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
 	}
 
+	public boolean doesGenerateInWorld() {
+		return spawnWorldTypes.size() > 0;
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
@@ -296,6 +302,18 @@ import java.util.stream.Collectors;
 		if (textureName.equals(""))
 			return getMainTexture();
 		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
+	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
+
+		if (doesGenerateInWorld())
+			baseTypes.add(BaseType.FEATURE);
+
+		if (hasInventory)
+			baseTypes.add(BaseType.BLOCKENTITY);
+
+		return baseTypes;
 	}
 
 }

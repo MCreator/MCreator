@@ -1,14 +1,2 @@
-/*@ItemStack*/(new Object(){
-	public ItemStack getItemStack(int sltid) {
-		if(${input$entity} instanceof ServerPlayer _player) {
-			AbstractContainerMenu _current = _player.containerMenu;
-			if(_current instanceof Supplier) {
-				Object invobj = ((Supplier) _current).get();
-				if(invobj instanceof Map) {
-					return ((Slot) ((Map) invobj).get(sltid)).getItem();
-				}
-			}
-		}
-		return ItemStack.EMPTY;
-	}
-}.getItemStack((int)(${input$slotid})))
+/*@ItemStack*/(${input$entity} instanceof ServerPlayer _plrSlotItem && _plrSlotItem.containerMenu instanceof Supplier _splr && _splr.get() instanceof Map _slt ?
+	((Slot) _slt.get(${opt.toInt(input$slotid)})).getItem() : ItemStack.EMPTY)

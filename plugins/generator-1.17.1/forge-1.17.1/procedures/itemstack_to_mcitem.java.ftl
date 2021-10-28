@@ -1,1 +1,1 @@
-/*@ItemStack*/(itemstack)
+/*@ItemStack*/itemstack

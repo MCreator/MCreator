@@ -37,7 +37,8 @@ public class ImageEditorUndoAction extends BasicAction {
 		});
 		setIcon(UIRES.get("img_editor.undo"));
 		setTooltip(L10N.t("action.image_editor.undo.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
+				tab.getContent() instanceof ImageMakerView imageMakerView && !imageMakerView.getVersionManager()
+						.firstRevision()));
 	}
 }

@@ -64,9 +64,10 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 				master.append(ProcedureCodeOptimizer.removeParentheses(codeB));
 				master.append(")");
 			}
-		}else {
-			master.append(blocktype.equals("logic_binary_ops") ? "(true)" : "0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.binary_operations")));
+		} else {
+			master.append(blocktype.equals("logic_binary_ops") ? "(true)" : "/*@int*/0");
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.binary_operations")));
 		}
 	}
 
