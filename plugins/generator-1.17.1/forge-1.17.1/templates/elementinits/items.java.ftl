@@ -66,7 +66,7 @@ package ${package}.init;
         <#elseif item.getModElement().getTypeString() == "livingentity">
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
                     ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
-                    .tab(CreativeModeTab.MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
+                    .tab(CreativeModeTab.TAB_MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
         <#else>
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
         </#if>

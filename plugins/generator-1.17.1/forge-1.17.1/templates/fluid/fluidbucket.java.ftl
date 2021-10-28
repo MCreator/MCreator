@@ -38,8 +38,8 @@ public class ${name}BucketItem extends BucketItem {
 
 	public ${name}BucketItem() {
 		super(() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
-			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(${data.creativeTab}).rarity(Rarity.${data.rarity})
-			<#if data.creativeTab??>.tab(${data.creativeTab})<#else>.tab(CreativeModeTab.TAB_MISC)</#if>);
+			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.${data.rarity})
+			<#if data.creativeTab?has_content>.tab(${data.creativeTab})<#else>.tab(CreativeModeTab.TAB_MISC)</#if>);
 		setRegistryName("${registryname}_bucket");
 	}
 

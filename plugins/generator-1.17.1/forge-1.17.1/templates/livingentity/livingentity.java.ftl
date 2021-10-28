@@ -242,6 +242,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double y = this.getY();
 		double z = this.getZ();
 		Entity entity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.onStruckByLightning/>
 	}
     </#if>
@@ -253,6 +254,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
+			Level world = this.level;
 			<@procedureOBJToCode data.whenMobFalls/>
 		</#if>
 
@@ -274,6 +276,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
+			Level world = this.level;
 			Entity sourceentity = source.getEntity();
 			<@procedureOBJToCode data.whenMobIsHurt/>
 		</#if>
@@ -339,6 +342,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double z = this.getZ();
 		Entity sourceentity = source.getEntity();
 		Entity entity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.whenMobDies/>
 	}
     </#if>
@@ -483,6 +487,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
+			Level world = this.level;
 			<#if hasReturnValue(data.onRightClickedOn)>
 				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/>;
 			<#else>
@@ -502,6 +507,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double y = this.getY();
 		double z = this.getZ();
 		Entity sourceentity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.whenThisMobKillsAnother/>
 	}
     </#if>
@@ -513,6 +519,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double y = this.getY();
 		double z = this.getZ();
 		Entity entity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.onMobTickUpdate/>
 	}
     </#if>
@@ -521,6 +528,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public void playerTouch(Player sourceentity) {
 		super.playerTouch(sourceentity);
 		Entity entity = this;
+		Level world = this.level;
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();

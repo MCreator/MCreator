@@ -39,7 +39,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().tab(${data.creativeTab})<#if data.usageCount != 0>.durability(${data.usageCount})<#else>.maxStackSize(${data.stackSize})</#if>);
+		super(new Item.Properties().tab(${data.creativeTab})<#if data.usageCount != 0>.durability(${data.usageCount})<#else>.stacksTo(${data.stackSize})</#if>);
 		setRegistryName("${registryname}");
 	}
 
