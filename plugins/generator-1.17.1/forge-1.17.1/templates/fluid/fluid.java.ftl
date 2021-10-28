@@ -32,9 +32,8 @@
 
 package ${package}.fluid;
 
-import net.minecraft.world.level.material.Material;
-
 public abstract class ${name}Fluid extends ForgeFlowingFluid {
+
 	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
 			() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
 			() -> ${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()},
@@ -147,5 +146,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			return false;
 		}
 	}
+
 }
 <#-- @formatter:on -->
