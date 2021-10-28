@@ -58,15 +58,8 @@ package ${package}.init;
             </#if>
         <#elseif item.getModElement().getTypeString() == "dimension">
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
-        <#elseif item.getModElement().getTypeString() == "fluid">
-            <#if item.hasCustomBucket()>
+        <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
             public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(new ${item.getModElement().getName()}BucketItem());
-            <#else>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(
-                new BucketItem(() -> ${JavaModName}Fluids.${item.getModElement().getRegistryNameUpper()},
-                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(${item.creativeTab}).rarity(Rarity.${item.rarity})
-                    <#if item.creativeTab??>.tab(${item.creativeTab})<#else>.tab(CreativeModeTab.TAB_MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_bucket"));
-            </#if>
         <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
             <#assign hasBlocks = true>
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});

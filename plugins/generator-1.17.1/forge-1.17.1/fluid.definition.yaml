@@ -2,8 +2,6 @@ templates:
   - template: fluid/fluid.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/fluid/@NAMEFluid.java"
   - template: fluid/fluidblock.java.ftl
-    deleteWhenConditionFalse: true
-    condition: hasCustomBlock()
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
   - template: fluid/fluidattributes.java.ftl
     deleteWhenConditionFalse: true
@@ -11,7 +9,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/fluid/attributes/@NAMEFluidAttributes.java"
   - template: fluid/fluidbucket.java.ftl
     deleteWhenConditionFalse: true
-    condition: hasCustomBucket()
+    condition: generateBucket
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEBucketItem.java"
   - template: fluid/fluidgen.java.ftl
     deleteWhenConditionFalse: true

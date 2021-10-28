@@ -34,8 +34,6 @@
 
 package ${package}.world.features.lakes;
 
-import com.mojang.serialization.Codec;
-
 public class ${name}Feature extends LakeFeature {
 	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
