@@ -31,9 +31,8 @@
 
 package ${package}.fluid.attributes;
 
-import net.minecraft.block.material.Material;
-
 public class ${name}FluidAttributes extends FluidAttributes {
+
 	public static class CustomBuilder extends FluidAttributes.Builder {
 		protected CustomBuilder(ResourceLocation stillTexture, ResourceLocation flowingTexture,
 				BiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory) {
@@ -41,12 +40,12 @@ public class ${name}FluidAttributes extends FluidAttributes {
 		}
 	}
 
-	protected ${name}FluidAttributes(Builder builder, Fluid fluid) {
-		super(builder, fluid);
-	}
-
 	public static CustomBuilder builder(ResourceLocation stillTexture, ResourceLocation flowingTexture) {
 		return new CustomBuilder(stillTexture, flowingTexture, ${name}FluidAttributes::new);
+	}
+
+	protected ${name}FluidAttributes(Builder builder, Fluid fluid) {
+		super(builder, fluid);
 	}
 
 	<#if data.isFluidTinted()>
@@ -65,7 +64,8 @@ public class ${name}FluidAttributes extends FluidAttributes {
 			Minecraft.getInstance().level.getBiome(pos).getFogColor()
 		<#else>
 			Minecraft.getInstance().level.getBiome(pos).getWaterFogColor()
-		</#if>| 0xFF000000;
+		</#if> | 0xFF000000;
 	}
 	</#if>
+
 }
