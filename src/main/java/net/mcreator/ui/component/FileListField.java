@@ -18,23 +18,21 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.FileDialogs;
 
-import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 public class FileListField extends JItemListField<File> {
 
-	private final Window window;
-
-	public FileListField(Window window) {
-		this.window = window;
+	public FileListField(MCreator window) {
+		super(window);
 	}
 
 	@Override protected List<File> getElementsToAdd() {
-		return Arrays.asList(FileDialogs.getMultiOpenDialog(window, new String[] { ".ogg" }));
+		return Arrays.asList(FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".ogg" }));
 	}
 
 }

@@ -39,10 +39,10 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
 import net.mcreator.util.DesktopUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
-import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.annotation.Nullable;
 import javax.swing.*;

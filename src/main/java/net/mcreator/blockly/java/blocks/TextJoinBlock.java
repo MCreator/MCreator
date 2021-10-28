@@ -51,7 +51,8 @@ public class TextJoinBlock implements IBlockGenerator {
 						match = true;
 						String code = BlocklyToCode.directProcessOutputBlock(master, element);
 						// Remove parentheses, unless it contains operations with same or lower precedence
-						inputCodes.add(code.contains("instanceof") ? code :
+						inputCodes.add(code.contains("instanceof") ?
+								code :
 								ProcedureCodeOptimizer.removeParentheses(code, "+-><=&|^?"));
 						break;
 					}
