@@ -68,16 +68,6 @@ package ${package}.init;
     <#list blocks as block>
         <#if block.getModElement().getTypeString() == "dimension">
             public static final Block ${block.getModElement().getRegistryNameUpper()}_PORTAL = register(new ${block.getModElement().getName()}PortalBlock());
-        <#elseif block.getModElement().getTypeString() == "fluid" && !block.hasCustomBlock()>
-            public static final Block ${block.getModElement().getRegistryNameUpper()} = register(new LiquidBlock(${JavaModName}Fluids.${block.getModElement().getRegistryNameUpper()},
-			<#if generator.map(block.colorOnMap, "mapcolors") != "DEFAULT">
-			BlockBehaviour.Properties.of(Material.${block.type}, MaterialColor.${generator.map(block.colorOnMap, "mapcolors")})
-			<#else>
-			BlockBehaviour.Properties.of(Material.${block.type})
-			</#if>
-			.strength(${block.resistance}f)
-			<#if block.emissiveRendering>.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)</#if>
-			<#if block.luminance != 0>.lightLevel(s -> ${block.luminance})</#if>).setRegistryName("${block.getModElement().getRegistryName()}"));
         <#else>
             public static final Block ${block.getModElement().getRegistryNameUpper()} = register(new ${block.getModElement().getName()}Block());
         </#if>
