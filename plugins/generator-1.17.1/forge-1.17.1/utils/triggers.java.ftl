@@ -308,3 +308,19 @@
 }
 </#if>
 </#macro>
+
+<#macro onAnimateTick procedure="">
+<#if hasProcedure(procedure)>
+@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
+	super.animateTick(blockstate, world, pos, random);
+	<@procedureCode procedure, {
+	   	"x": "pos.getX()",
+	   	"y": "pos.getY()",
+	   	"z": "pos.getZ()",
+	   	"world": "world",
+	   	"entity": "Minecraft.getInstance().player",
+	   	"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
