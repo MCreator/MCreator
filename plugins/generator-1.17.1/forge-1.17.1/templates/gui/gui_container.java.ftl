@@ -229,8 +229,8 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 				<@procedureOBJToCode data.onClosed/>
 			</#if>
 
-			if (!bound && (playerIn instanceof ServerPlayer)) {
-				if (!playerIn.isAlive() || playerIn instanceof ServerPlayer && ((ServerPlayer)playerIn).hasDisconnected()) {
+			if (!bound && playerIn instanceof ServerPlayer serverPlayer) {
+				if (!serverPlayer.isAlive() || serverPlayer.hasDisconnected()) {
 					for(int j = 0; j < internal.getSlots(); ++j) {
 						<#list data.components as component>
 							<#if component.getClass().getSimpleName()?ends_with("Slot") && !component.dropItemsWhenNotBound>

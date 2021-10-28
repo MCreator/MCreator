@@ -322,8 +322,7 @@ public class ${name}Block extends
 
 	<#if hasProcedure(data.placingCondition)>
 	@Override public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos) {
-		if (worldIn instanceof LevelAccessor) {
-			LevelAccessor world = (LevelAccessor) worldIn;
+		if (worldIn instanceof LevelAccessor world) {
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
@@ -525,7 +524,7 @@ public class ${name}Block extends
 		<@procedureOBJToCode data.onTickUpdate/>
 
 		<#if !data.tickRandomly>
-		world.getBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+		world.getBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 		</#if>
 	}
 	</#if>
@@ -562,25 +561,23 @@ public class ${name}Block extends
 	@Override
 	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 		super.use(blockstate, world, pos, entity, hand, hit);
-
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-
 		<#if data.shouldOpenGUIOnRightClick()>
-			if(entity instanceof ServerPlayer) {
-				NetworkHooks.openGui((ServerPlayer) entity, new MenuProvider() {
-					@Override public Component getDisplayName() {
-						return new TextComponent("${data.name}");
-					}
-					@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-						return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
-					}
-				}, new BlockPos(x, y, z));
-			}
+		if(entity instanceof ServerPlayer player) {
+			NetworkHooks.openGui(player, new MenuProvider() {
+				@Override public Component getDisplayName() {
+					return new TextComponent("${data.name}");
+				}
+				@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+					return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos));
+				}
+			}, pos);
+		}
 		</#if>
 
 		<#if hasProcedure(data.onRightClicked)>
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
 			double hitX = hit.getLocation().x;
 			double hitY = hit.getLocation().y;
 			double hitZ = hit.getLocation().z;
@@ -603,7 +600,7 @@ public class ${name}Block extends
 	<#if data.hasInventory>
 		@Override public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
 			BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-			return tileEntity instanceof MenuProvider ? (MenuProvider) tileEntity : null;
+			return tileEntity instanceof MenuProvider menuProvider ? menuProvider : null;
 		}
 
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
@@ -621,8 +618,8 @@ public class ${name}Block extends
 		@Override public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
 			if (state.getBlock() != newState.getBlock()) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
-				if (blockEntity instanceof ${name}BlockEntity) {
-					Containers.dropContents(world, pos, (${name}BlockEntity) blockEntity);
+				if (blockEntity instanceof ${name}BlockEntity be) {
+					Containers.dropContents(world, pos, be);
 					world.updateNeighbourForOutputSignal(pos, this);
 				}
 
@@ -638,8 +635,8 @@ public class ${name}Block extends
 
 	    @Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
 			BlockEntity tileentity = world.getBlockEntity(pos);
-			if (tileentity instanceof ${name}BlockEntity)
-				return AbstractContainerMenu.getRedstoneSignalFromContainer((${name}BlockEntity) tileentity);
+			if (tileentity instanceof ${name}BlockEntity be)
+				return AbstractContainerMenu.getRedstoneSignalFromContainer(be);
 			else
 				return 0;
 		}
