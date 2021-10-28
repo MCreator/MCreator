@@ -36,8 +36,6 @@
 
 package ${package}.init;
 
-import net.minecraft.world.level.material.Material;
-
 <#assign hasTransparentBlocks = false>
 <#assign hasTintedBlocks = false>
 <#assign hasTintedBlockItems = false>
