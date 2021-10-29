@@ -240,15 +240,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockAdded data.onBlockAdded, false, 0/>
 
-	<#if hasProcedure(data.onTickUpdate)>
-	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
-		super.tick(blockstate, world, pos, random);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onTickUpdate/>
-	}
-	</#if>
+	<@onBlockTick data.onTickUpdate, false, 0/>
 
 	<#if data.plantType == "growapable">
 	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos blockpos, Random random) {
@@ -269,16 +261,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRandomUpdateEvent)>
-	@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
-		super.animateTick(blockstate, world, pos, random);
-		Player entity = Minecraft.getInstance().player;
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onRandomUpdateEvent/>
-	}
-	</#if>
+	<@onAnimateTick data.onRandomUpdateEvent/>
 
 	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourBlockChanges/>
 
@@ -292,24 +275,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockPlacedBy data.onBlockPlacedBy/>
 
-	<#if hasProcedure(data.onRightClicked)>
-	@Override public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
-		super.use(blockstate, world, pos, entity, hand, hit);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		double hitX = hit.getLocation().x();
-		double hitY = hit.getLocation().y();
-		double hitZ = hit.getLocation().z();
-		Direction direction = hit.getDirection();
-		<#if hasReturnValue(data.onRightClicked)>
-			return <@procedureOBJToInteractionResultCode data.onRightClicked/>;
-		<#else>
-			<@procedureOBJToCode data.onRightClicked/>
-			return InteractionResult.SUCCESS;
-		</#if>
-	}
-	</#if>
+	<@onBlockRightClicked data.onRightClicked/>
 
 	<#if data.hasTileEntity>
 	@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

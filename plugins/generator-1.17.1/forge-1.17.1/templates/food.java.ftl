@@ -85,24 +85,7 @@ public class ${name}Item extends Item {
 
 	<@onRightClickedInAir data.onRightClicked/>
 
-	<#if hasProcedure(data.onRightClickedOnBlock)>
-	@Override public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
-		Level world = context.getLevel();
-  		BlockPos pos = context.getClickedPos();
-  		Player entity = context.getPlayer();
-  		Direction direction = context.getClickedFace();
-  		BlockState blockstate = world.getBlockState(pos);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<#if hasReturnValue(data.onRightClickedOnBlock)>
-		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-		<#else>
-		<@procedureOBJToCode data.onRightClickedOnBlock/>
-		return InteractionResult.PASS;
-		</#if>
-	}
-	</#if>
+	<@onItemUseFirst data.onRightClickedOnBlock/>
 
 	<#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
 	@Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
