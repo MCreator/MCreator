@@ -240,7 +240,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockAdded data.onBlockAdded, false, 0/>
 
-	<@onBlockTick data.onTickUpdate, false, data.tickRate/>
+	<@onBlockTick data.onTickUpdate, false, 0/>
 
 	<#if data.plantType == "growapable">
 	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos blockpos, Random random) {
