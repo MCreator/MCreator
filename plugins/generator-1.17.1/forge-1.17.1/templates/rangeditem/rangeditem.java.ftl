@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#include "../triggers.java.ftl">
 <#include "../procedures.java.ftl">
 
 package ${package}.item;
@@ -48,17 +49,7 @@ public class ${name}Item extends Item {
 		return new InteractionResultHolder(InteractionResult.SUCCESS, entity.getItemInHand(hand));
 	}
 
-	<#if hasProcedure(data.onEntitySwing)>
-	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntitySwing/>
-		return retval;
-	}
-	</#if>
+	<@onEntitySwing data.onEntitySwing/>
 
 	<#if data.specialInfo?has_content>
 	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {

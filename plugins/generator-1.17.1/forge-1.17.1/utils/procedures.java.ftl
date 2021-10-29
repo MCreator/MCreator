@@ -17,6 +17,15 @@
     </#compress>
 </#macro>
 
+<#macro procedureCodeWithOptResult object defaultResult dependencies={}>
+    <#if hasReturnValue(object)>
+        return <@procedureCode object dependencies/>
+    <#else>
+        <@procedureCode object dependencies/>
+        return ${defaultResult};
+    </#if>
+</#macro>
+
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 
