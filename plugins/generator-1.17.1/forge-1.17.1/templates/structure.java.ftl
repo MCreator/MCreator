@@ -86,12 +86,19 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 		if(!dimensionCriteria)
 			return false;
 
+		if(template == null)
+			template = context.level().getLevel().getStructureManager()
+					.getOrCreate(new ResourceLocation("${modid}" ,"${data.structure}"));
+
+		if(template == null)
+			return false;
+
 		if ((context.random().nextInt(1000000) + 1) <= ${data.spawnProbability}) {
 			boolean anyPlaced = false;
 			int count = context.random().nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
 			for(int a = 0; a < count; a++) {
-				int i = (context.origin().getX() >> 4) << 4 + context.random().nextInt(16);
-				int k = (context.origin().getZ() >> 4) << 4 + context.random().nextInt(16);
+				int i = context.origin().getX() + context.random().nextInt(16);
+				int k = context.origin().getZ() + context.random().nextInt(16);
 
 				int j = context.level().getHeight(Heightmap.Types.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>, i, k);
 				<#if data.spawnLocation=="Ground">
@@ -121,19 +128,12 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 					continue;
 				</#if>
 
-				if(template == null)
-					template = context.level().getLevel().getStructureManager()
-							.getOrCreate(new ResourceLocation("${modid}" ,"${data.structure}"));
-
-				if(template == null)
-					return false;
-
 				if(template.placeInWorld(context.level(), spawnTo, spawnTo, new StructurePlaceSettings()
 						.setMirror(Mirror.<#if data.randomlyRotateStructure>values()[context.random().nextInt(2)]<#else>NONE</#if>)
 						.setRotation(Rotation.<#if data.randomlyRotateStructure>values()[context.random().nextInt(3)]<#else>NONE</#if>)
 						.setRandom(context.random())
 						.addProcessor(BlockIgnoreProcessor.${data.ignoreBlocks?replace("AIR_AND_STRUCTURE_BLOCK", "STRUCTURE_AND_AIR")})
-						.setIgnoreEntities(false), context.random(), 4)) {
+						.setIgnoreEntities(false), context.random(), 2)) {
 					<#if hasProcedure(data.onStructureGenerated)>
 						<@procedureOBJToCode data.onStructureGenerated/>
 					</#if>
