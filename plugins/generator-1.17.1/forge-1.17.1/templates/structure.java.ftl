@@ -49,6 +49,16 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	null;
 	</#if>
 
+	<#if data.restrictionBlocks?has_content>
+	private final List<Block> base_blocks = List.of(
+		<#list data.restrictionBlocks as restrictionBlock>
+			${mappedBlockToBlock(restrictionBlock)}<#if restrictionBlock?has_next>,</#if>
+		</#list>
+	);
+	</#if>
+
+	private StructureTemplate template = null;
+
 	public ${name}Feature() {
 		super(NoneFeatureConfiguration.CODEC);
 	}
@@ -77,18 +87,11 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 			return false;
 
 		if ((context.random().nextInt(1000000) + 1) <= ${data.spawnProbability}) {
-			ChunkPos chunkpos = new ChunkPos(context.origin());
-			StructureTemplate template = context.level().getLevel().getStructureManager()
-					.getOrCreate(new ResourceLocation("${modid}" ,"${data.structure}"));
-
-			if(template == null)
-				return false;
-
 			boolean anyPlaced = false;
 			int count = context.random().nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
 			for(int a = 0; a < count; a++) {
-				int i = chunkpos.getMinBlockX() + context.random().nextInt(16);
-				int k = chunkpos.getMinBlockZ() + context.random().nextInt(16);
+				int i = (context.origin().getX() >> 4) << 4 + context.random().nextInt(16);
+				int k = (context.origin().getZ() >> 4) << 4 + context.random().nextInt(16);
 
 				int j = context.level().getHeight(Heightmap.Types.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>, i, k);
 				<#if data.spawnLocation=="Ground">
@@ -100,11 +103,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				</#if>
 
 				<#if data.restrictionBlocks?has_content>
-				if (!List.of(
-							<#list data.restrictionBlocks as restrictionBlock>
-								${mappedBlockToBlock(restrictionBlock)}<#if restrictionBlock?has_next>,</#if>
-							</#list>
-						).contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
+				if (!base_blocks.contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
 					continue;
 				</#if>
 
@@ -121,6 +120,13 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				if (!<@procedureOBJToConditionCode data.generateCondition/>)
 					continue;
 				</#if>
+
+				if(template == null)
+					template = context.level().getLevel().getStructureManager()
+							.getOrCreate(new ResourceLocation("${modid}" ,"${data.structure}"));
+
+				if(template == null)
+					return false;
 
 				if(template.placeInWorld(context.level(), spawnTo, spawnTo, new StructurePlaceSettings()
 						.setMirror(Mirror.<#if data.randomlyRotateStructure>values()[context.random().nextInt(2)]<#else>NONE</#if>)
