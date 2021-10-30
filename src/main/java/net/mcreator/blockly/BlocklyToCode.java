@@ -207,6 +207,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	/**
 	 * Helper method to process an output block and remove surrounding parentheses if possible
+	 *
 	 * @param element The element to process
 	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
@@ -217,6 +218,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	/**
 	 * Helper method to get the code of an output block and remove surrounding parentheses if possible
+	 *
 	 * @param element The element to process
 	 * @return The generated code of the element with parentheses optimization
 	 * @throws TemplateGeneratorException If the template can't be generated

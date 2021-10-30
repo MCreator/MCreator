@@ -20,9 +20,10 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.help.HelpLoader;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.locale.LocaleRegistration;
 import net.mcreator.util.locale.UTF8Control;
-import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,20 +80,29 @@ public class L10N {
 					ResourceBundle rb = ResourceBundle.getBundle("lang/texts", value, PluginLoader.INSTANCE,
 							new UTF8Control());
 					return new LocaleRegistration(rb,
-							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
+							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d),
+							HelpLoader.getCoverageForLocale(value));
 				}));
 
-		supportedLocales.put(DEFAULT_LOCALE, new LocaleRegistration(rb_en, 100));
+		supportedLocales.put(DEFAULT_LOCALE, new LocaleRegistration(rb_en, 100, 100));
 	}
 
 	public static Set<Locale> getSupportedLocales() {
 		return supportedLocales.keySet();
 	}
 
-	public static int getLocaleSupport(Locale locale) {
+	public static int getUITextsLocaleSupport(Locale locale) {
 		LocaleRegistration localeRegistration = supportedLocales.get(locale);
 		if (localeRegistration != null)
-			return localeRegistration.percentage();
+			return localeRegistration.uiTextsPercentage();
+
+		return 0;
+	}
+
+	public static int getHelpTipsSupport(Locale locale) {
+		LocaleRegistration localeRegistration = supportedLocales.get(locale);
+		if (localeRegistration != null)
+			return localeRegistration.helpTipsPercentage();
 
 		return 0;
 	}

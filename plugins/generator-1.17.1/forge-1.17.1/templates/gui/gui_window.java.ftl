@@ -191,10 +191,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addRenderableWidget(new Button(${component.x}, ${component.y}, ${component.width}, ${component.height},
 						new TextComponent("${component.text}"), e -> {
+							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
 								${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 							}
+							</#if>
 					}
 				)
                 <#if hasProcedure(component.displayCondition)>

@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#include "../triggers.java.ftl">
 <#include "../procedures.java.ftl">
 
 package ${package}.item;
@@ -39,7 +40,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().tab(${data.creativeTab})<#if data.usageCount != 0>.durability(${data.usageCount})<#else>.maxStackSize(${data.stackSize})</#if>);
+		super(new Item.Properties().tab(${data.creativeTab})<#if data.usageCount != 0>.durability(${data.usageCount})<#else>.stacksTo(${data.stackSize})</#if>);
 		setRegistryName("${registryname}");
 	}
 
@@ -48,17 +49,7 @@ public class ${name}Item extends Item {
 		return new InteractionResultHolder(InteractionResult.SUCCESS, entity.getItemInHand(hand));
 	}
 
-	<#if hasProcedure(data.onEntitySwing)>
-	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntitySwing/>
-		return retval;
-	}
-	</#if>
+	<@onEntitySwing data.onEntitySwing/>
 
 	<#if data.specialInfo?has_content>
 	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
@@ -78,7 +69,7 @@ public class ${name}Item extends Item {
 	}
 
 	<#if data.hasGlow>
-	@Override public boolean isFoil(ItemStack itemstack) {
+	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 	    <#if hasProcedure(data.glowCondition)>
 		Player entity = Minecraft.getInstance().player;
 		Level world = entity.level;
@@ -109,8 +100,7 @@ public class ${name}Item extends Item {
 	<#if data.shootConstantly>
 		@Override public void onUsingTick(ItemStack itemstack, LivingEntity entityLiving, int count) {
 			Level world = entityLiving.level;
-			if (!world.isClientSide() && entityLiving instanceof ServerPlayer) {
-				ServerPlayer entity = (ServerPlayer) entityLiving;
+			if (!world.isClientSide() && entityLiving instanceof ServerPlayer entity) {
 				double x = entity.getX();
 				double y = entity.getY();
 				double z = entity.getZ();

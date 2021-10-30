@@ -22,8 +22,10 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GameRule;
 import net.mcreator.element.types.Recipe;
+import net.mcreator.element.types.Tool;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
@@ -91,21 +93,21 @@ import java.util.stream.Collectors;
 				.toString();
 	}
 
-	public <T extends MappableElement> List<T> filterBrokenReferences(List<T> input) {
+	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
 		if (input == null)
-			return Collections.emptyList();
+			return Collections.emptySet();
 
-		List<T> retval = new ArrayList<>();
+		Set<MappableElement.Unique> retval = new HashSet<>();
 		for (T t : input) {
 			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
 				if (workspace.getModElementByName(internalWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
-					retval.add(t);
+					retval.add(new MappableElement.Unique(t));
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
 							.replaceFirst("CUSTOM:", ""));
 				}
 			} else {
-				retval.add(t);
+				retval.add(new MappableElement.Unique(t));
 			}
 		}
 		return retval;
@@ -168,22 +170,31 @@ import java.util.stream.Collectors;
 		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
 	}
 
-	public boolean hasBrewingRecipes() {
-		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.RECIPE) {
-				GeneratableElement ge = element.getGeneratableElement();
-				if (ge instanceof Recipe)
-					if (((Recipe) ge).recipeType.equals("Brewing"))
-						return true;
-			}
-		return false;
-	}
-
 	public boolean hasGameRulesOfType(String type) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.GAMERULE) {
 				if (element.getGeneratableElement() instanceof GameRule gr)
 					if (gr.type.equals(type))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasBlocksMineableWith(String tool) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.BLOCK) {
+				if (element.getGeneratableElement() instanceof Block block)
+					if (block.destroyTool.equals(tool))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasToolsOfType(String type) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.TOOL) {
+				if (element.getGeneratableElement() instanceof Tool tool)
+					if (tool.toolType.equals(type))
 						return true;
 			}
 		return false;

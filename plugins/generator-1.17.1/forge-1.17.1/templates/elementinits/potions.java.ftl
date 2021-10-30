@@ -41,7 +41,7 @@ package ${package}.init;
     private static final List<Potion> REGISTRY = new ArrayList<>();
 
     <#list potions as potion>
-    public static Potion ${potion.getModElement().getRegistryNameUpper()} = register(new Potion(
+    public static final Potion ${potion.getModElement().getRegistryNameUpper()} = register(new Potion(
         <#list potion.effects as effect>
         new MobEffectInstance(${effect.effect}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#if effect?has_next>,</#if>
         </#list>)

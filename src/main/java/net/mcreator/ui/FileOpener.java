@@ -31,8 +31,7 @@ public class FileOpener {
 
 	public static void openFile(MCreator mcreator, Object file) {
 		if (CodeEditorView.isFileSupported(file.toString())) {
-			if ((file instanceof FileNode)) {
-				FileNode node = (FileNode) file;
+			if ((file instanceof FileNode node)) {
 				ProjectFileOpener.openCodeFileRO(mcreator, node);
 			} else if ((file instanceof File)) {
 				ProjectFileOpener.openCodeFile(mcreator, (File) file);
