@@ -582,14 +582,14 @@ public class ${name}Block extends
 			double hitY = hit.getLocation().y;
 			double hitZ = hit.getLocation().z;
 			Direction direction = hit.getDirection();
-			<#if hasReturnValue(data.onRightClicked)>
+			<#if hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 			InteractionResult result = <@procedureOBJToInteractionResultCode data.onRightClicked/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClicked/>
 			</#if>
 		</#if>
 
-		<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
+		<#if data.shouldOpenGUIOnRightClick() || !hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 		return InteractionResult.SUCCESS;
 		<#else>
 		return result;

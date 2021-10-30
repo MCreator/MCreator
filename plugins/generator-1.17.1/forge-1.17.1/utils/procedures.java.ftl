@@ -17,8 +17,8 @@
     </#compress>
 </#macro>
 
-<#macro procedureCodeWithOptResult object defaultResult dependencies={}>
-    <#if hasReturnValue(object)>
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
+    <#if hasReturnValueOf(object, type)>
         return <@procedureCode object dependencies/>
     <#else>
         <@procedureCode object dependencies/>
@@ -88,8 +88,8 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
-    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
+<#function hasReturnValueOf object="" type="">
+    <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
 
 <#-- @formatter:on -->
