@@ -28,7 +28,8 @@ import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.Scanners;
+import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -97,7 +98,9 @@ public class PluginLoader extends URLClassLoader {
 			}
 		}
 
-		this.reflections = new Reflections(new ResourcesScanner(), this);
+		this.reflections = new Reflections(
+				new ConfigurationBuilder().setClassLoaders(new ClassLoader[] { this }).setUrls(getURLs())
+						.setScanners(Scanners.Resources).setExpandSuperTypes(false));
 
 		checkForPluginUpdates();
 	}
@@ -112,7 +115,7 @@ public class PluginLoader extends URLClassLoader {
 
 	public Set<String> getResources(@Nullable String pkg, @Nullable Pattern pattern) {
 		Set<String> reflectionsRetval =
-				pattern != null ? this.reflections.getResources(pattern) : this.reflections.getResources(e -> true);
+				pattern != null ? this.reflections.getResources(pattern) : this.reflections.getResources(".*");
 		if (pkg == null)
 			return reflectionsRetval;
 		return reflectionsRetval.stream().filter(e -> e.replace("/", ".").startsWith(pkg)).collect(Collectors.toSet());

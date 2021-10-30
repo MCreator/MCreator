@@ -25,7 +25,7 @@ import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.JSONWriter;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +51,7 @@ public class ModelUtils {
 	}
 
 	public static void copyOBJorMTLApplyTextureMapping(File objFrom, File objTo, Model model, String prefix) {
-		if (FilenameUtils.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
+		if (FilenameUtilsPatched.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
 			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
 					model);
 

@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _plr ? _plr.getAbilities().getFlyingSpeed():0)
+/*@float*/(${input$entity} instanceof Player _plr ? _plr.getAbilities().getFlyingSpeed():0)

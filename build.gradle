@@ -3,7 +3,7 @@ plugins {
     id "idea"
     id "de.undercouch.download" version "4.1.2"
     id 'edu.sc.seis.launch4j' version '2.5.1'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0.1'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1'
     id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
@@ -58,61 +58,64 @@ dependencies {
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
     // from maven
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6' // 2.7+ problem with : in filenames: NTFS ADS separator
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
     implementation group: 'foxtrot', name: 'foxtrot-core', version: '4.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.8'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.22.2.Final'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.22.2.Final'
+    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.23.2.Final'
+    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.23.2.Final'
     implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.2'
-    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.1'
-    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.1') { dep -> dep.exclude group: 'org.mozilla', module: 'rhino' }
-    implementation group: 'org.reflections', name: 'reflections', version: '0.9.9' // https://github.com/ronmamo/reflections/issues/81
+    implementation group: 'org.reflections', name: 'reflections', version: '0.10.1'
+    implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.11.0.202103091610-r'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.13.0.202109080827-r'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.32'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.1.1'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.16.1'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.16.1'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.16.1'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.3'
+    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.2'
+    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.2') {
+        dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
+    }
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.1'
 
     // JFX natives
-    win64 group: 'org.openjfx', name: 'javafx-base', version: '16', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-controls', version: '16', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '16', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-media', version: '16', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-web', version: '16', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-swing', version: '16', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-base', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-controls', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-media', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-web', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-swing', version: '17.0.1', classifier: 'win'
 
-    mac64 group: 'org.openjfx', name: 'javafx-base', version: '16', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '16', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '16', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-media', version: '16', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-web', version: '16', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '16', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-base', version: '17.0.1', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '17.0.1', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.1', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-media', version: '17.0.1', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-web', version: '17.0.1', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '17.0.1', classifier: 'mac'
 
-    linux64 group: 'org.openjfx', name: 'javafx-base', version: '16', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '16', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '16', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-media', version: '16', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-web', version: '16', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '16', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-base', version: '17.0.1', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '17.0.1', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.1', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-media', version: '17.0.1', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-web', version: '17.0.1', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '17.0.1', classifier: 'linux'
 }
 
 javafx {
-    version = "16"
-    modules = [ 'javafx.web', 'javafx.swing' ]
+    version = "17.0.1"
+    modules = ['javafx.web', 'javafx.swing']
     configuration = 'provided' // we provide natives during deployment or with SDK
 }
 

@@ -36,15 +36,40 @@
 
 package ${package}.init;
 
+<#assign hasTransparentBlocks = false>
+<#assign hasTintedBlocks = false>
+<#assign hasTintedBlockItems = false>
+<#list blocks as block>
+    <#if block.getModElement().getTypeString() == "block">
+        <#if block.transparencyType != "SOLID" || block.hasTransparency || block.tintType != "No tint">
+            <#assign hasTransparentBlocks = true>
+        </#if>
+        <#if block.tintType != "No tint">
+            <#assign hasTintedBlocks = true>
+            <#if block.isItemTinted>
+                <#assign hasTintedBlockItems = true>
+            </#if>
+        </#if>
+    <#elseif block.getModElement().getTypeString() == "plant">
+        <#assign hasTransparentBlocks = true> <#-- Plants always have cutout transparency -->
+        <#if block.tintType != "No tint">
+            <#assign hasTintedBlocks = true>
+            <#if block.isItemTinted>
+                <#assign hasTintedBlockItems = true>
+            </#if>
+        </#if>
+    </#if>
+</#list>
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Blocks {
 
-    private static final List<Block> REGISTRY = new ArrayList();
+    private static final List<Block> REGISTRY = new ArrayList<>();
 
     <#list blocks as block>
         <#if block.getModElement().getTypeString() == "dimension">
-            public static Block ${block.getModElement().getRegistryNameUpper()}_PORTAL = register(new ${block.getModElement().getName()}PortalBlock());
+            public static final Block ${block.getModElement().getRegistryNameUpper()}_PORTAL = register(new ${block.getModElement().getName()}PortalBlock());
         <#else>
-            public static Block ${block.getModElement().getRegistryNameUpper()} = register(new ${block.getModElement().getName()}Block());
+            public static final Block ${block.getModElement().getRegistryNameUpper()} = register(new ${block.getModElement().getName()}Block());
         </#if>
     </#list>
 
@@ -56,6 +81,49 @@ package ${package}.init;
 	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
 	}
+
+	<#if hasTransparentBlocks || hasTintedBlocks || hasTintedBlockItems>
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+
+        <#if hasTransparentBlocks>
+	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
+	    	<#list blocks as block>
+                <#if block.getModElement().getTypeString() == "block">
+                    <#if block.transparencyType != "SOLID" || block.hasTransparency>
+                        ${block.getModElement().getName()}Block.registerRenderLayer();
+                    </#if>
+                <#elseif block.getModElement().getTypeString() == "plant">
+                    ${block.getModElement().getName()}Block.registerRenderLayer();
+                </#if>
+            </#list>
+		}
+        </#if>
+
+        <#if hasTintedBlocks>
+        @SubscribeEvent public static void blockColorLoad(ColorHandlerEvent.Block event) {
+	    	<#list blocks as block>
+                <#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
+                    <#if block.tintType != "No tint">
+                         ${block.getModElement().getName()}Block.blockColorLoad(event);
+                    </#if>
+                </#if>
+            </#list>
+		}
+        </#if>
+
+        <#if hasTintedBlockItems>
+        @SubscribeEvent public static void itemColorLoad(ColorHandlerEvent.Item event) {
+	    	<#list blocks as block>
+                <#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
+                    <#if block.tintType != "No tint" && block.isItemTinted>
+                         ${block.getModElement().getName()}Block.itemColorLoad(event);
+                    </#if>
+                </#if>
+            </#list>
+		}
+        </#if>
+    }
+	</#if>
 
 }
 

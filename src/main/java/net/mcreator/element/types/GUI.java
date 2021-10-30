@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.io.FileIO;
@@ -79,6 +80,26 @@ import java.util.List;
 			}
 		}
 		return currentMax;
+	}
+
+	public boolean hasButtonEvents() {
+		for (GUIComponent component : components)
+			if (component instanceof Button)
+				if (((Button) component).onClick != null && ((Button) component).onClick.getName() != null)
+					return true;
+		return false;
+	}
+
+	public boolean hasSlotEvents() {
+		for (GUIComponent component : components)
+			if (component instanceof Slot)
+				if ((((Slot) component).onSlotChanged != null && ((Slot) component).onSlotChanged.getName() != null)
+						|| (((Slot) component).onTakenFromSlot != null
+						&& ((Slot) component).onTakenFromSlot.getName() != null) || (
+						((Slot) component).onStackTransfer != null
+								&& ((Slot) component).onStackTransfer.getName() != null))
+					return true;
+		return false;
 	}
 
 	@Override public void finalizeModElementGeneration() {

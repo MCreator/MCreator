@@ -81,7 +81,6 @@ import java.util.List;
 	public String vanillaTreeType;
 	public int treeType;
 	public int minHeight;
-	public int maxWaterDepth;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
@@ -136,6 +135,14 @@ import java.util.List;
 		public int weight;
 		public String spawnType;
 
+	}
+
+	public boolean hasFruits() {
+		return !treeFruits.isEmpty();
+	}
+
+	public boolean hasVines() {
+		return !treeVines.isEmpty();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

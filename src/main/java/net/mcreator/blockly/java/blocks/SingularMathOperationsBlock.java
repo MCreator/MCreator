@@ -40,12 +40,26 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 			else if (element.getNodeName().equals("value") && element.getAttribute("name").equals("NUM"))
 				num = element;
 		}
-		if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && num != null) {
+		if (operationType != null && JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && num != null) {
+			String numCode = master.directProcessOutputBlockWithoutParentheses(num);
+			master.append(switch (operationType) { // We add the proper marker for these operations
+				case "ABS" -> {
+					if (numCode.startsWith("/*@int*/"))
+						yield "/*@int*/";
+					else if (numCode.startsWith("/*@float*/"))
+						yield "/*@float*/";
+					yield "";
+				}
+				case "ROUND" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ?
+						"/*@int*/" :
+						"/*@float*/";
+				case "SIGNUM" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ? "/*@float*/" : "";
+				default -> "";
+			});
 			master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
-			master.processOutputBlockWithoutParentheses(num);
-			master.append(")");
+			master.append(numCode).append(")");
 		} else {
-			master.append("0");
+			master.append("/*@int*/0");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					"One of math blocks is empty. Using value 0 for it."));
 		}

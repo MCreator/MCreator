@@ -18,6 +18,7 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
@@ -31,6 +32,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -118,4 +120,9 @@ import java.util.Map;
 	@Override public String getTexture() {
 		return texture;
 	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		return List.of(BaseType.ITEM, BaseType.ENTITY);
+	}
+
 }

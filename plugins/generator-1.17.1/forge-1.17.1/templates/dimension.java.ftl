@@ -40,17 +40,15 @@ package ${package}.world.dimension;
 
 		@SubscribeEvent public static void registerFillerBlocks(FMLCommonSetupEvent event) {
 			event.enqueueWork(() -> {
-				try {
-					ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
-							.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "f_64983_"))
-							.add(${mappedBlockToBlock(data.mainFillerBlock)}).build(), "f_64983_");
+				WorldCarver.CAVE.replaceableBlocks = new ImmutableSet.Builder<Block>()
+						.addAll(WorldCarver.CAVE.replaceableBlocks)
+						.add(${mappedBlockToBlock(data.mainFillerBlock)})
+						.build();
 
-					ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CANYON, new ImmutableSet.Builder<Block>()
-							.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CANYON, "f_64983_"))
-							.add(${mappedBlockToBlock(data.mainFillerBlock)}).build(), "f_64983_");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				WorldCarver.CANYON.replaceableBlocks = new ImmutableSet.Builder<Block>()
+						.addAll(WorldCarver.CANYON.replaceableBlocks)
+						.add(${mappedBlockToBlock(data.mainFillerBlock)})
+						.build();
 			});
 		}
 
@@ -76,15 +74,7 @@ package ${package}.world.dimension;
 
 			};
 
-			event.enqueueWork(() -> {
-				try {
-					Object2ObjectMap<ResourceLocation, DimensionSpecialEffects> effectsRegistry =
-							(Object2ObjectMap<ResourceLocation, DimensionSpecialEffects>) ObfuscationReflectionHelper.getPrivateValue(DimensionSpecialEffects.class, null, "f_108857_");
-					effectsRegistry.put(new ResourceLocation("${modid}:${registryname}"), customEffect);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+			event.enqueueWork(() -> DimensionSpecialEffects.EFFECTS.put(new ResourceLocation("${modid}:${registryname}"), customEffect));
 		}
 
 	}

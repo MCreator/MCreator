@@ -28,7 +28,7 @@ import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
 import java.io.File;
@@ -70,7 +70,7 @@ public class StructureImportActions {
 						File[] structures = new File(save, "/structures/").listFiles();
 						for (File structure : structures != null ? structures : new File[0]) {
 							mcstucts.add(new Structure(
-									save.getName() + ": " + FilenameUtils.removeExtension(structure.getName()),
+									save.getName() + ": " + FilenameUtilsPatched.removeExtension(structure.getName()),
 									structure));
 						}
 						// support >1.13
@@ -78,9 +78,8 @@ public class StructureImportActions {
 						for (File generatedsect : generated != null ? generated : new File[0]) {
 							structures = new File(generatedsect, "/structures/").listFiles();
 							for (File structure : structures != null ? structures : new File[0]) {
-								mcstucts.add(new Structure(
-										save.getName() + ": " + FilenameUtils.removeExtension(structure.getName()),
-										structure));
+								mcstucts.add(new Structure(save.getName() + ": " + FilenameUtilsPatched.removeExtension(
+										structure.getName()), structure));
 							}
 						}
 					}

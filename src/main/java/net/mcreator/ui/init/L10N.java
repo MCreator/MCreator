@@ -21,8 +21,11 @@ package net.mcreator.ui.init;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.util.locale.LocaleLoader;
+import net.mcreator.ui.help.HelpLoader;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.locale.LocaleRegistration;
 import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.locale.UTF8Control;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,24 +77,33 @@ public class L10N {
 		double countAll = Collections.list(rb_en.getKeys()).size();
 
 		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
-		supportedLocales = localeFiles.stream().map(FilenameUtils::getBaseName).filter(e -> e.contains("_"))
+		supportedLocales = localeFiles.stream().map(FilenameUtilsPatched::getBaseName).filter(e -> e.contains("_"))
 				.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
 					ResourceBundle rb = LocaleLoader.getBundle("lang/texts", value);
 					return new LocaleRegistration(rb,
-							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d));
+							(int) Math.ceil(Collections.list(rb.getKeys()).size() / countAll * 100d),
+							HelpLoader.getCoverageForLocale(value));
 				}));
 
-		supportedLocales.put(DEFAULT_LOCALE, new LocaleRegistration(rb_en, 100));
+		supportedLocales.put(DEFAULT_LOCALE, new LocaleRegistration(rb_en, 100, 100));
 	}
 
 	public static Set<Locale> getSupportedLocales() {
 		return supportedLocales.keySet();
 	}
 
-	public static int getLocaleSupport(Locale locale) {
+	public static int getUITextsLocaleSupport(Locale locale) {
 		LocaleRegistration localeRegistration = supportedLocales.get(locale);
 		if (localeRegistration != null)
-			return localeRegistration.percentage();
+			return localeRegistration.uiTextsPercentage();
+
+		return 0;
+	}
+
+	public static int getHelpTipsSupport(Locale locale) {
+		LocaleRegistration localeRegistration = supportedLocales.get(locale);
+		if (localeRegistration != null)
+			return localeRegistration.helpTipsPercentage();
 
 		return 0;
 	}
