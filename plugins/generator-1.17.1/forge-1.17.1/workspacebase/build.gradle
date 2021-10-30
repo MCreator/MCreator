@@ -19,6 +19,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 minecraft {
     mappings channel: 'official', version: '1.17.1'
 
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     runs {
         client {
             workingDirectory project.file('run')

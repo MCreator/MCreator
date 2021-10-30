@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -61,17 +62,19 @@ public class GetVariableBlock implements IBlockGenerator {
 				if (scope.equals("global") && !master.getWorkspace().getVariableElements().stream()
 						.map(VariableElement::getName).collect(Collectors.toList()).contains(name)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Variable get block is bound to a variable that does not exist. Remove this block!"));
+							L10N.t("blockly.errors.variables.invalid_var", L10N.t("blockly.block.get_var"),
+									L10N.t("blockly.errors.remove_block"))));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
 						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
 						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Variable get block is bound to a local variable that does not exist. Remove this block!"));
+							L10N.t("blockly.errors.variables.invalid_local_var", L10N.t("blockly.block.get_var"),
+									L10N.t("blockly.errors.remove_block"))));
 					return;
 				} else if (scope.equals("local") && !(master instanceof BlocklyToProcedure)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"This editor does not support local variables!"));
+							L10N.t("blockly.warnings.variables.local_scope_unsupported")));
 					return;
 				} else if (scope.equalsIgnoreCase("local")) {
 					List<StatementInput> statementInputList = master.getStatementInputsMatching(
@@ -79,7 +82,7 @@ public class GetVariableBlock implements IBlockGenerator {
 					if (!statementInputList.isEmpty()) {
 						for (StatementInput statementInput : statementInputList) {
 							master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-									"Statement " + statementInput.name + " does not support local variables."));
+									L10N.t("blockly.errors.variables.no_local_scope.statement", statementInput.name)));
 							break;
 						}
 						return;
@@ -91,7 +94,8 @@ public class GetVariableBlock implements IBlockGenerator {
 					} else if (entityInput == null && (scope.equals("PLAYER_LIFETIME") || scope.equals(
 							"PLAYER_PERSISTENT"))) {
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								"Get variable block for player variable is missing entity input."));
+								L10N.t("blockly.errors.variables.missing_entity_input",
+										L10N.t("blockly.block.get_var"))));
 						return;
 					}
 				}
@@ -100,8 +104,7 @@ public class GetVariableBlock implements IBlockGenerator {
 						scope.toUpperCase(Locale.ENGLISH)).get("get");
 				if (getterTemplate == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Current generator does not support getting variables of type " + type + " in " + scope
-									+ " scope"));
+							L10N.t("blockly.errors.variables.no_getter_support", type, scope)));
 					return;
 				}
 
@@ -124,7 +127,7 @@ public class GetVariableBlock implements IBlockGenerator {
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"One of the get variable blocks is improperly defined."));
+					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get"))));
 		}
 	}
 

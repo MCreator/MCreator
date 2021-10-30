@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity _ent_elyFly?_ent_elyFly.isFallFlying():false)
+(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.isFallFlying():false)

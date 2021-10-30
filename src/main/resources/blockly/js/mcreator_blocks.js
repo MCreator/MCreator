@@ -278,7 +278,9 @@ Blockly.defineBlocksWithJsonArray([
                     ["Bitwise OR", "BOR"],
                     ["Bitwise XOR", "BXOR"],
                     ["Min", "MIN"],
-                    ["Max", "MAX"]
+                    ["Max", "MAX"],
+                    ["hypot", "HYPOT"],
+                    ["atan2", "ATAN2"]
                 ]
             },
             {
@@ -303,7 +305,9 @@ Blockly.defineBlocksWithJsonArray([
                     ["%{BKY_MATH_ROUND_OPERATOR_ROUNDUP}", "ROUNDUP"],
                     ["%{BKY_MATH_ROUND_OPERATOR_ROUNDDOWN}", "ROUNDDOWN"],
                     ["%{BKY_MATH_SINGLE_OP_ROOT}", 'ROOT'],
+                    ['cube root', 'CUBEROOT'],
                     ["%{BKY_MATH_SINGLE_OP_ABSOLUTE}", 'ABS'],
+                    ['signum', 'SIGNUM'],
                     ['ln', 'LN'],
                     ['log10', 'LOG10'],
                     ["%{BKY_MATH_TRIG_SIN}", "SIN"],
@@ -322,7 +326,6 @@ Blockly.defineBlocksWithJsonArray([
                 "check": "Number"
             }
         ],
-        "inputsInline": true,
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },

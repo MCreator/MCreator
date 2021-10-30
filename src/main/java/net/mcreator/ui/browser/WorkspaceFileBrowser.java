@@ -37,7 +37,7 @@ import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.util.DesktopUtils;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.swing.*;
@@ -360,7 +360,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			for (LibraryInfo libraryInfo : libraryInfos) {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && ZipIO.checkIfZip(libraryFile)) {
-					String libName = FilenameUtils.removeExtension(libraryFile.getName());
+					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
 					if (libName.equals("rt"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
 					else

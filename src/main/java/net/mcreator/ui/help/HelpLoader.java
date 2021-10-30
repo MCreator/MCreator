@@ -21,8 +21,8 @@ package net.mcreator.ui.help;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.HtmlUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -34,10 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class HelpLoader {
@@ -50,17 +47,27 @@ public class HelpLoader {
 
 	public static void preloadCache() {
 		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(
-				e -> DEFAULT_CACHE.put(FilenameUtils.removeExtension(e.replaceFirst("help/default/", "")),
+				e -> DEFAULT_CACHE.put(FilenameUtilsPatched.removeExtension(e.replaceFirst("help/default/", "")),
 						FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
 
 		PluginLoader.INSTANCE.getResources("help." + L10N.getLocaleString(), Pattern.compile("^[^$].*\\.md")).forEach(
-				e -> LOCALIZED_CACHE.put(
-						FilenameUtils.removeExtension(e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
+				e -> LOCALIZED_CACHE.put(FilenameUtilsPatched.removeExtension(
+								e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
 						FileIO.readResourceToString(PluginLoader.INSTANCE, e, StandardCharsets.UTF_8)));
 
 		List<Extension> extensionList = Arrays.asList(TablesExtension.create(), AutolinkExtension.create());
 		parser = Parser.builder().extensions(extensionList).build();
 		renderer = HtmlRenderer.builder().extensions(extensionList).build();
+	}
+
+	public static int getCoverageForLocale(Locale locale) {
+		int langcount = PluginLoader.INSTANCE.getResources("help." + locale.toString(), Pattern.compile("^[^$].*\\.md"))
+				.size();
+
+		if (langcount == 0)
+			return 0;
+
+		return Math.min(100, (int) Math.ceil(langcount * 100d / (double) DEFAULT_CACHE.size()));
 	}
 
 	@Nullable private static String getFromCache(String key) {

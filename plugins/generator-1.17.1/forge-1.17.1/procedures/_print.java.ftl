@@ -1,1 +1,1 @@
-${JavaModName}.LOGGER.info(${value});
+${JavaModName}.LOGGER.info(${opt.removeParentheses(value)});

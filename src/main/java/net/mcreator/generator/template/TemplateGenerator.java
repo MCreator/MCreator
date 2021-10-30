@@ -23,6 +23,7 @@ import freemarker.template.TemplateException;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
+import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TemplateGenerator {
 
@@ -43,7 +45,7 @@ public class TemplateGenerator {
 	public TemplateGenerator(TemplateGeneratorConfiguration templateGeneratorConfiguration, Generator generator) {
 		this.generator = generator;
 		this.templateGeneratorConfiguration = templateGeneratorConfiguration;
-		this.baseDataModelProvider = new BaseDataModelProvider(generator);
+		this.baseDataModelProvider = generator.getBaseDataModelProvider();
 	}
 
 	public String generateElementFromTemplate(GeneratableElement element, String templateName,
@@ -67,6 +69,9 @@ public class TemplateGenerator {
 
 		dataModel.put("variables", generator.getWorkspace().getVariableElements());
 		dataModel.put("sounds", generator.getWorkspace().getSoundElements());
+		dataModel.put("javamodels",
+				Model.getModels(generator.getWorkspace()).stream().filter(model -> model.getType() == Model.Type.JAVA)
+						.collect(Collectors.toList()));
 
 		return generateTemplate(templateName, dataModel);
 	}

@@ -27,7 +27,7 @@ import net.mcreator.util.GSONClone;
 import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -65,8 +65,8 @@ public class BranchSwitchAction {
 				git.reset().setMode(ResetCommand.ResetType.HARD).call();
 				git.checkout().setCreateBranch(
 								!git.branchList().call().stream().map(Ref::getName).collect(Collectors.toList())
-										.contains("refs/heads/" + FilenameUtils.getName(branchToSwitchTo)))
-						.setName(FilenameUtils.getName(branchToSwitchTo)).call();
+										.contains("refs/heads/" + FilenameUtilsPatched.getName(branchToSwitchTo)))
+						.setName(FilenameUtilsPatched.getName(branchToSwitchTo)).call();
 
 				// possible refactor after sync start
 				mcreator.getWorkspace().reloadFromFS();
@@ -86,7 +86,7 @@ public class BranchSwitchAction {
 				// possible refactor after sync end
 
 				mcreator.statusBar.setPersistentMessage(
-						L10N.t("statusbar.vcs.switched_working_branch", FilenameUtils.getName(branchToSwitchTo)));
+						L10N.t("statusbar.vcs.switched_working_branch", FilenameUtilsPatched.getName(branchToSwitchTo)));
 
 				mcreator.statusBar.reloadVCSStatus();
 

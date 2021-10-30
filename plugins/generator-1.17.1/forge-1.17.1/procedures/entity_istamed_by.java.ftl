@@ -1,2 +1,2 @@
-(${input$entity} instanceof TamableAnimal _tam_isTamedBy && ${input$tamedBy} instanceof LivingEntity _ent_isOwner
-        ? _tam_isTamedBy.isOwnedBy(_ent_isOwner):false)
+(${input$entity} instanceof TamableAnimal _tamIsTamedBy && ${input$tamedBy} instanceof LivingEntity _livEnt
+        ? _tamIsTamedBy.isOwnedBy(_livEnt):false)

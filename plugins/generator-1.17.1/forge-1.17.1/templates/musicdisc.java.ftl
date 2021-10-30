@@ -33,7 +33,6 @@
 
 package ${package}.item;
 
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.network.chat.Component;
 
 public class ${name}Item extends RecordItem {
@@ -43,7 +42,7 @@ public class ${name}Item extends RecordItem {
 		super(0, ${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}")),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		<#else>
-		super(0, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
+		super(0, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		</#if>
 
@@ -51,7 +50,7 @@ public class ${name}Item extends RecordItem {
 	}
 
 	<#if data.hasGlow>
-	@Override public boolean isFoil(ItemStack itemstack) {
+	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 		return true;
 	}
 	</#if>
@@ -90,7 +89,7 @@ public class ${name}Item extends RecordItem {
 		int z = pos.getZ();
 		ItemStack itemstack = context.getItemInHand();
 		<#if hasReturnValue(data.onRightClickedOnBlock)>
-		return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
+		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
 		<#else>
 		<@procedureOBJToCode data.onRightClickedOnBlock/>
 		return retval;

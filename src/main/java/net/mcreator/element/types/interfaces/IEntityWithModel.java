@@ -60,4 +60,8 @@ import net.mcreator.workspace.resources.Model;
 		return getModelType() == Model.Type.BUILTIN;
 	}
 
+	default boolean isCustomModel() {
+		return !isBuiltInModel();
+	}
+
 }

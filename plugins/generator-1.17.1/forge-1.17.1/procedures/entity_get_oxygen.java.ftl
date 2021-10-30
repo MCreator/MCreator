@@ -1,1 +1,1 @@
-(${input$entity}.getAirSupply())
+/*@int*/(${input$entity}.getAirSupply())

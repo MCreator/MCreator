@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(world instanceof Level _lvl_cs ? _lvl_cs.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(${mappedMCItemToItemStackCode(input$item, 1)}), _lvl_cs).isPresent():false)
+(world instanceof Level _lvlCanSmelt ? _lvlCanSmelt.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(${mappedMCItemToItemStackCode(input$item, 1)}), _lvlCanSmelt).isPresent():false)
