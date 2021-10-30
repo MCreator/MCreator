@@ -171,7 +171,8 @@ public class DesktopUtils {
 				return false;
 			}
 
-			if (selectFile && !java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE_FILE_DIR)) {
+			if (selectFile && !java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE_FILE_DIR)
+					&& !SystemUtils.IS_OS_WINDOWS) {
 				LOG.debug("BROWSE_FILE_DIR is not supported.");
 				return openDESKTOP(file, false);
 			} else if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.OPEN)) {
@@ -181,7 +182,13 @@ public class DesktopUtils {
 
 			if (selectFile) {
 				LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with " + file.toString());
-				java.awt.Desktop.getDesktop().browseFileDirectory(file);
+				if (SystemUtils.IS_OS_WINDOWS) {
+					if (Runtime.getRuntime().exec("explorer /select," + file.getPath()) == null) {
+						return false;
+					}
+				} else {
+					java.awt.Desktop.getDesktop().browseFileDirectory(file);
+				}
 			} else {
 				LOG.info("Trying to use Desktop.getDesktop().open() with " + file.toString());
 				java.awt.Desktop.getDesktop().open(file);

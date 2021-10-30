@@ -38,7 +38,7 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.openFile,
 				KeyStroke.getKeyStroke(KeyEvent.VK_F6, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.openParentFolder, KeyStroke.getKeyStroke(KeyEvent.VK_F6,
+		actionKeyStrokeMap.put(actionRegistry.showFileInExplorer, KeyStroke.getKeyStroke(KeyEvent.VK_F6,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK));
 		actionKeyStrokeMap.put(actionRegistry.reformatCodeAndImports,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));

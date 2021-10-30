@@ -111,7 +111,7 @@ public class ActionRegistry {
 	// IDE actions
 	public final BasicAction openAsCode;
 	public final BasicAction openFile;
-	public final BasicAction openParentFolder;
+	public final BasicAction showFileInExplorer;
 	public final BasicAction deleteFile;
 	public final BasicAction newClass;
 	public final BasicAction newJson;
@@ -222,9 +222,9 @@ public class ActionRegistry {
 				e -> mcreator.getProjectBrowser().openSelectedFileAsCode(true)).setIcon(UIRES.get("16px.edit.gif"));
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open_file"),
 				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
-		this.openParentFolder = new BasicAction(this, L10N.t("workspace_file_browser.open_parent_folder"),
+		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.open_parent_folder"),
 				e -> DesktopUtils.openSafe(
-						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()).getParentFile(),
+						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()),
 						true)).setIcon(UIRES.get("16px.open.gif"));
 		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
 				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
