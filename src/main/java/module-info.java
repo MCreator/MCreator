@@ -3,7 +3,6 @@ module MCreator {
 	requires java.xml;
 	requires java.desktop;
 	requires org.apache.logging.log4j;
-	requires annotations;
 	requires freemarker;
 	requires com.google.gson;
 	requires gradle.tooling.api;
@@ -15,7 +14,6 @@ module MCreator {
 	requires yamlbeans;
 	requires java.discord.rpc;
 	requires univocity.parsers;
-	requires guava;
 	requires org.apache.commons.text;
 	requires org.apache.commons.lang3;
 	requires rsyntaxtextarea;
@@ -30,7 +28,6 @@ module MCreator {
 	requires javassist;
 	requires jnbt;
 	requires foxtrot.core;
-	requires reflections;
 	requires autocomplete;
 	requires paulscode.soundsystem;
 	requires paulscode.libraryjavasound;
@@ -38,6 +35,9 @@ module MCreator {
 	requires obj;
 	requires balloontip;
 	requires jdk.management;
+	requires jsr305;
+	requires com.google.common;
+	requires org.reflections;
 
 	opens net.mcreator.ui.res;
 	opens org.fife.rsta.ac.java.img;

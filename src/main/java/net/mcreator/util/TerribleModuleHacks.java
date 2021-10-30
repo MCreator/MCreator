@@ -40,9 +40,6 @@ package net.mcreator.util;
 
 import com.google.gson.Gson;
 import foxtrot.Worker;
-import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.laf.MCreatorTheme;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;

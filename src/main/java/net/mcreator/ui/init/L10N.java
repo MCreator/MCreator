@@ -24,8 +24,6 @@ import net.mcreator.util.locale.LocaleLoader;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.locale.LocaleRegistration;
-import org.apache.commons.io.FilenameUtils;
-import net.mcreator.util.locale.UTF8Control;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
