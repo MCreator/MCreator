@@ -41,6 +41,8 @@ import java.util.Map;
 	public int renderType;
 	public String texture;
 	public String customModelName;
+	public Map<String, Procedure> customProperties;
+	public Map<Map<String, Float>, String> modelsMap;
 
 	public String name;
 	public String rarity;

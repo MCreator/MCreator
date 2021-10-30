@@ -59,6 +59,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -88,9 +89,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model tool = new Model.BuiltInModel("Tool");
+	private static final Model normal = new Model.BuiltInModel("Normal");
+	private static final Model tool = new Model.BuiltInModel("Tool");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+
+	//TODO
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -387,6 +390,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_models"), null); //TODO
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
@@ -424,7 +428,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, tool),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(builtInItemModels(),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -432,6 +436,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
+	}
+
+	public static List<Model> builtInItemModels() {
+		return Arrays.asList(normal, tool);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
