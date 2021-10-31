@@ -22,11 +22,11 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -64,7 +64,7 @@ public class Particle extends GeneratableElement {
 
 	public int getTextureTileCount() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getOtherTextureFile(FilenameUtils.removeExtension(texture));
+				.getOtherTextureFile(FilenameUtilsPatched.removeExtension(texture));
 		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
 		if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
 			if (original.getIconWidth() >= original.getIconHeight()
@@ -78,7 +78,7 @@ public class Particle extends GeneratableElement {
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getOtherTextureFile(FilenameUtils.removeExtension(texture));
+				.getOtherTextureFile(FilenameUtilsPatched.removeExtension(texture));
 
 		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
 
@@ -107,7 +107,7 @@ public class Particle extends GeneratableElement {
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(
-				getModElement().getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(texture)),
+				getModElement().getFolderManager().getOtherTextureFile(FilenameUtilsPatched.removeExtension(texture)),
 				getTextureTileCount() > 1, getModElement().getName());
 	}
 

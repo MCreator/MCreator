@@ -79,7 +79,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				m.getGradleConsole().exec(m.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
 					m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
-					if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+					if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
 						p2.ok();
 						dial.refreshDisplay();
 

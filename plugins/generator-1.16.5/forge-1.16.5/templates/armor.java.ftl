@@ -101,7 +101,7 @@ package ${package}.item;
 		<#if data.enableHelmet>
         elements.items.add(() ->
 			new ArmorItem(armormaterial, EquipmentSlotType.HEAD, new Item.Properties().group(${data.creativeTab})<#if data.helmetImmuneToFire>.isImmuneToFire()</#if>) {
-				<#if data.helmetModelName != "Default">
+				<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel(1);
 					armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
@@ -144,7 +144,7 @@ package ${package}.item;
         <#if data.enableBody>
         elements.items.add(() ->
 			new ArmorItem(armormaterial, EquipmentSlotType.CHEST, new Item.Properties().group(${data.creativeTab})<#if data.bodyImmuneToFire>.isImmuneToFire()</#if>) {
-				<#if data.bodyModelName != "Default">
+				<#if data.bodyModelName != "Default" && data.getBodyModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel(1);
 					armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
@@ -194,7 +194,7 @@ package ${package}.item;
         <#if data.enableLeggings>
         elements.items.add(() ->
 			new ArmorItem(armormaterial, EquipmentSlotType.LEGS, new Item.Properties().group(${data.creativeTab})<#if data.leggingsImmuneToFire>.isImmuneToFire()</#if>) {
-				<#if data.leggingsModelName != "Default">
+				<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel(1);
 					armorModel.bipedLeftLeg = new ${data.leggingsModelName}().${data.leggingsModelPartL};
@@ -237,7 +237,7 @@ package ${package}.item;
         <#if data.enableBoots>
         elements.items.add(() ->
 			new ArmorItem(armormaterial, EquipmentSlotType.FEET, new Item.Properties().group(${data.creativeTab})<#if data.bootsImmuneToFire>.isImmuneToFire()</#if>) {
-				<#if data.bootsModelName != "Default">
+				<#if data.bootsModelName != "Default" && data.getBootsModel()??>
 				@Override @OnlyIn(Dist.CLIENT) public BipedModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
 					BipedModel armorModel = new BipedModel(1);
 					armorModel.bipedLeftLeg = new ${data.bootsModelName}().${data.bootsModelPartL};

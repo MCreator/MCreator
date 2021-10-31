@@ -283,6 +283,10 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return ModElementTypeLoader.getModElementType(type);
 	}
 
+	public String getTypeString() {
+		return type.toLowerCase(Locale.ENGLISH);
+	}
+
 	public void setType(ModElementType<?> type) {
 		this.type = type.getRegistryName();
 	}
@@ -306,6 +310,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			return RegistryNameFixer.fromCamelCase(this.name);
 		else
 			return registry_name;
+	}
+
+	public String getRegistryNameUpper() {
+		if (registry_name == null)
+			return RegistryNameFixer.fromCamelCase(this.name).toUpperCase(Locale.ENGLISH);
+		else
+			return registry_name.toUpperCase(Locale.ENGLISH);
 	}
 
 	public void setRegistryName(String registry_name) {

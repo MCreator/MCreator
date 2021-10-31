@@ -25,6 +25,7 @@ public enum BaseType {
 	ARMOR,
 	BIOME,
 	BLOCK,
+	BLOCKENTITY,
 	COMMAND,
 	DATAPACK,
 	DIMENSION,
@@ -33,18 +34,22 @@ public enum BaseType {
 	FUEL,
 	GUI,
 	ITEM,
-	KEYBIND,
 	OTHER,
-	OVERLAY,
 	PARTICLE,
-	PROCEDURE,
 	POTION,
 	POTIONEFFECT,
-	STRUCTURE,
-	TAB,
+	FEATURE,
+	TAB;
 
-	/* legacy base types */
-	ACHIEVEMENT
+	public String getPluralName() {
+		if (this == ENTITY)
+			return "entities";
+
+		if (this == BLOCKENTITY)
+			return "blockentities";
+
+		return name() + "s";
+	}
 
 }
 // @formatter:on

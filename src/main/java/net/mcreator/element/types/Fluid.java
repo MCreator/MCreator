@@ -18,19 +18,22 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements ITabContainedElement {
+@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
 
 	public String name;
 	public String bucketName;
@@ -135,4 +138,21 @@ import java.util.List;
 	public boolean extendsForgeFlowingFluid() {
 		return spawnParticles || flowStrength != 1 || flowCondition != null || beforeReplacingBlock != null;
 	}
+
+	public boolean doesGenerateInWorld() {
+		return spawnWorldTypes.size() > 0;
+	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
+
+		if (generateBucket)
+			baseTypes.add(BaseType.ITEM);
+
+		if (doesGenerateInWorld())
+			baseTypes.add(BaseType.FEATURE);
+
+		return baseTypes;
+	}
+
 }

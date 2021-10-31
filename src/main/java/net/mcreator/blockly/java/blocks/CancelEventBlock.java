@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -48,10 +49,10 @@ public class CancelEventBlock implements IBlockGenerator {
 
 				if (trigger == null) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Failed to load selected external trigger"));
+							L10N.t("blockly.errors.cancel_event.null")));
 				} else if (!trigger.cancelable) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"The selected global trigger is not cancellable"));
+							L10N.t("blockly.errors.cancel_event.not_cancellable")));
 				}
 
 				if (master.getTemplateGenerator() != null) {
@@ -60,11 +61,11 @@ public class CancelEventBlock implements IBlockGenerator {
 				}
 			} else {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"This procedure does not use global trigger so the cancel event block can not cancel any trigger"));
+						L10N.t("blockly.errors.cancel_event.no_selected_trigger")));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Cancel event procedure block is not supported in this editor!"));
+					L10N.t("blockly.errors.unsupported", "blockly.block.cancel_event")));
 		}
 	}
 

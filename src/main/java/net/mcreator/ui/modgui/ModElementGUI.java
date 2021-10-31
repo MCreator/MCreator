@@ -404,15 +404,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void finishModCreation(boolean closeTab) {
 		GE element = getElementFromGUI();
 
+		// if new element, and if we are not in the root folder, specify the folder of the mod element
+		if (!editingMode && !mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+			modElement.setParentFolder(mcreator.mv.currentFolder);
+
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
 		// we perform any custom defined before the generatable element is generated
 		beforeGeneratableElementGenerated();
-
-		// generate mod element code
-		mcreator.getGenerator().generateElement(element);
 
 		// save custom mod element (preview) picture if it has one
 		mcreator.getModElementManager().storeModElementPicture(element);
@@ -424,9 +425,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
+		// generate mod base as it may be needed
+		mcreator.getGenerator().generateBase();
+
+		// generate mod element code
+		mcreator.getGenerator().generateElement(element);
+
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
-				.usesGeneratableElementJava(element))
+				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 
 		if (this.tabIn != null && closeTab)

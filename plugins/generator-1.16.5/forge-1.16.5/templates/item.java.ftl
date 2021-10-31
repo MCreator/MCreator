@@ -33,6 +33,8 @@
 
 package ${package}.item;
 
+import net.minecraft.entity.ai.attributes.Attributes;
+
 @${JavaModName}Elements.ModElement.Tag public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")
@@ -76,7 +78,7 @@ package ${package}.item;
 
 					<#if hasProcedure(data.dispenseResultItemstack)>
 						boolean success = this.isSuccessful();
-						<#if hasReturnValue(data.dispenseResultItemstack)>
+						<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
 							return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 						<#else>
 							<@procedureOBJToCode data.dispenseResultItemstack/>
@@ -249,7 +251,7 @@ package ${package}.item;
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
-			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			<#if hasReturnValueOf(data.onRightClickedOnBlock, "actionresulttype")>
 			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>

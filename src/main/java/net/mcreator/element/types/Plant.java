@@ -18,9 +18,11 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -32,12 +34,13 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
 	public String texture;
@@ -183,5 +186,21 @@ import java.util.stream.Collectors;
 
 	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
+	}
+
+	public boolean doesGenerateInWorld() {
+		return spawnWorldTypes.size() > 0;
+	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
+
+		if (doesGenerateInWorld())
+			baseTypes.add(BaseType.FEATURE);
+
+		if (hasTileEntity)
+			baseTypes.add(BaseType.BLOCKENTITY);
+
+		return baseTypes;
 	}
 }

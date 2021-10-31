@@ -1,3 +1,0 @@
-templates:
-  - template: overlay.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/gui/overlay/@NAMEOverlay.java"

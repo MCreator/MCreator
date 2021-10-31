@@ -19,19 +19,30 @@
 package net.mcreator.generator;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-public class GeneratorTemplate {
+public final class GeneratorTemplate {
 
 	private final File file;
 	private final Object templateData;
 
 	private final String templateIdentificator;
 
-	GeneratorTemplate(File file, String templateIdentificator, Object templateData) {
+	private final boolean isGlobal;
+
+	private final Map<String, Object> dataModel = new HashMap<>();
+
+	GeneratorTemplate(File file, String templateIdentificator, boolean global, Object templateData) {
 		this.file = file;
 		this.templateData = templateData;
+		this.isGlobal = global;
 
 		this.templateIdentificator = templateIdentificator;
+	}
+
+	public boolean isGlobal() {
+		return isGlobal;
 	}
 
 	public File getFile() {
@@ -44,6 +55,26 @@ public class GeneratorTemplate {
 
 	public String getTemplateIdentificator() {
 		return templateIdentificator;
+	}
+
+	public Map<String, Object> getDataModel() {
+		return dataModel;
+	}
+
+	public void addDataModelEntry(String key, Object value) {
+		dataModel.put(key, value);
+	}
+
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		return file.equals(((GeneratorTemplate) o).file);
+	}
+
+	@Override public int hashCode() {
+		return file.hashCode();
 	}
 
 }
