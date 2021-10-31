@@ -20,14 +20,17 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.ui.init.L10N;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 
 public class ToolboxCategory {
+	private static final Logger LOG = LogManager.getLogger("Toolbox category");
 
 	String id, name, description;
 
-	int color;
+	String color;
 	boolean api;
 
 	public String getName() {
@@ -38,7 +41,22 @@ public class ToolboxCategory {
 		return name;
 	}
 
+	/**
+	 * Returns the color of this toolbox category. If the field is a valid hex color code, it's returned as-is.
+	 * If it's a valid integer, it's treated as a hue to get the color with the correct saturation and value.
+	 *
+	 * @return The color of this toolbox category, or black if it's badly formatted.
+	 */
 	public Color getColor() {
-		return BlocklyBlockUtil.getBlockColorFromHUE(color);
+		try {
+			if (!color.startsWith("#"))
+				return BlocklyBlockUtil.getBlockColorFromHUE(Integer.parseInt(color));
+			else
+				return Color.decode(color);
+		} catch (Exception e) {
+			LOG.warn("The color for toolbox category " + getName()
+					+ " isn't formatted correctly. Using color black for it");
+			return Color.BLACK;
+		}
 	}
 }

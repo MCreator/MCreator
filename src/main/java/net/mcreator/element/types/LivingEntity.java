@@ -20,10 +20,12 @@ package net.mcreator.element.types;
 
 import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -38,11 +40,12 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement {
+		implements IEntityWithModel, ITabContainedElement, ICommonType {
 
 	public String mobName;
 	public String mobLabel;
@@ -177,6 +180,13 @@ import java.util.Locale;
 		return Model.getModelByParams(getModElement().getWorkspace(), mobModelName, modelType);
 	}
 
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		if (hasSpawnEgg)
+			return List.of(BaseType.ITEM, BaseType.ENTITY);
+		else
+			return List.of(BaseType.ENTITY);
+	}
+
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
 	}
@@ -188,6 +198,10 @@ import java.util.Locale;
 
 	public boolean hasDrop() {
 		return !mobDrop.isEmpty();
+	}
+
+	public boolean hasCustomProjectile() {
+		return ranged && "Default item".equals(rangedItemType);
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

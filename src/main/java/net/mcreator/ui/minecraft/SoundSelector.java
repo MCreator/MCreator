@@ -23,6 +23,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VTextField;
@@ -35,7 +36,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 
 public class SoundSelector extends JPanel {
 
@@ -51,11 +51,10 @@ public class SoundSelector extends JPanel {
 
 		setOpaque(false);
 		bt.addActionListener(event -> {
-			String[] sounds = ElementUtil.getAllSounds(frame.getWorkspace());
-			Arrays.sort(sounds);
-			String s = (String) JOptionPane.showInputDialog(frame, L10N.t("dialog.selector.sound_message"),
-					L10N.t("dialog.selector.sound_title"), JOptionPane.PLAIN_MESSAGE, null, sounds, sounds[0]);
-			setSound(s);
+			String s = StringSelectorDialog.openSelectorDialog(mcreator, ElementUtil::getAllSounds,
+					L10N.t("dialog.selector.sound_title"), L10N.t("dialog.selector.sound_message"));
+			if (s != null)
+				setSound(s);
 		});
 		rm.addActionListener(e -> setSound((String) null));
 		tfe.setEditable(false);

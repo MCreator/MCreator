@@ -45,7 +45,7 @@ public class UITestUtil {
 			//noinspection BusyWait
 			Thread.sleep(5);
 
-			if (System.currentTimeMillis() - start > 3000)
+			if (System.currentTimeMillis() - start > 4000)
 				throw new TimeoutException();
 
 			if (throwableAtomic.get() != null)

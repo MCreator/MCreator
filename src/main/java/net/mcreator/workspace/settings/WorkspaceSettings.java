@@ -282,10 +282,13 @@ import java.util.stream.Stream;
 
 	public int[] get3DigitVersion() {
 		int[] ver3 = { 0, 0, 0 };
-		String[] parts = version.split("\\.");
-		for (int i = 0; i < parts.length; i++) {
-			String digit = parts[i].replaceAll("[^\\d]", "");
-			ver3[i] = Integer.parseInt(digit);
+		try {
+			String[] parts = version.split("\\.");
+			for (int i = 0; i < Math.min(parts.length, ver3.length); i++) {
+				String digit = parts[i].replaceAll("[^\\d]", "");
+				ver3[i] = Integer.parseInt(digit);
+			}
+		} catch (Exception ignored) {
 		}
 		return ver3;
 	}

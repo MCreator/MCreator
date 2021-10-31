@@ -172,9 +172,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
-				L10N.t("elementgui.plant.event_on_added"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
+				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
 		onNeighbourBlockChanges = new ProcedureSelector(this.withEntry("block/when_neighbour_changes"), mcreator,
 				L10N.t("elementgui.common.event_on_neighbour_block_changes"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));

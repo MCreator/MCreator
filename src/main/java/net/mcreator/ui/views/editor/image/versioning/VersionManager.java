@@ -38,6 +38,7 @@ public class VersionManager {
 	private int index = -1;
 	private final ImageMakerView imageMakerView;
 	private LayerPanel layerPanel;
+	private RevisionListener revisionListener;
 
 	public VersionManager(ImageMakerView imageMakerView) {
 		this.imageMakerView = imageMakerView;
@@ -45,6 +46,10 @@ public class VersionManager {
 
 	public void setLayerPanel(LayerPanel layerPanel) {
 		this.layerPanel = layerPanel;
+	}
+
+	public void setRevisionListener(RevisionListener listener) {
+		this.revisionListener = listener;
 	}
 
 	public void addRevision(Change change) {
@@ -64,6 +69,8 @@ public class VersionManager {
 		imageMakerView.refreshTab();
 		if (layerPanel != null)
 			layerPanel.repaintList();
+
+		revisionListener.revisionChanged();
 	}
 
 	private void linkChanges(Change change) {
@@ -85,6 +92,14 @@ public class VersionManager {
 		return false;
 	}
 
+	public boolean firstRevision() {
+		return index == 0;
+	}
+
+	public boolean lastRevision() {
+		return index == changes.size() - 1;
+	}
+
 	public void undo() {
 		if (index > 0) {
 			Change c = changes.get(index);
@@ -96,6 +111,7 @@ public class VersionManager {
 		imageMakerView.refreshTab();
 		if (layerPanel != null)
 			layerPanel.repaintList();
+		revisionListener.revisionChanged();
 	}
 
 	private void undo(UUID group) {
@@ -120,6 +136,7 @@ public class VersionManager {
 		imageMakerView.refreshTab();
 		if (layerPanel != null)
 			layerPanel.repaintList();
+		revisionListener.revisionChanged();
 	}
 
 	private void redo(UUID group) {
@@ -144,5 +161,9 @@ public class VersionManager {
 		int byteSize = sizeOf();
 		LOG.debug(message + ", current heap size: " + byteSize + "B/" + byteSize / 1000 + "KB/" + byteSize / 1000000
 				+ "MB");
+	}
+
+	public interface RevisionListener {
+		void revisionChanged();
 	}
 }

@@ -1,7 +1,7 @@
-defaultvalue: NORTH # unmapped, map in scopes code
+defaultvalue: Direction.NORTH
 scopes:
   local:
-    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${generator.map(var.getType().getDefaultValue(generator.getWorkspace()), "directions")};
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
     get: ${name}
     set: ${name} = (${javaType}) ${value};
   global_session:

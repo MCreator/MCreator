@@ -27,12 +27,12 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.minecraft.JavaModels;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.StringUtils;
 import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
@@ -41,14 +41,13 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 public class JavaModelAnimationEditorDialog {
 
 	public static String openAnimationEditorDialog(MCreator mcreator, String modelSource) {
 		JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(modelSource);
 
-		Vector<String> vc = getModelParts(classJavaSource);
+		List<String> vc = JavaModels.getModelParts(classJavaSource);
 
 		JPanel options = new JPanel(new GridLayout(vc.size(), 2, 10, 10));
 
@@ -77,54 +76,28 @@ public class JavaModelAnimationEditorDialog {
 				L10N.t("dialog.animation_editor.action_set"));
 
 		if (opt == 0) {
-			List<MethodSource<JavaClassSource>> methods = classJavaSource.getMethods();
-			for (MethodSource<JavaClassSource> method : methods) {
-				if (method.getName().equals("setRotationAngles"))
-					classJavaSource.removeMethod(method);
+			int model_version = JavaModels.getModelVersionAndPrepareCodeForAnimations(classJavaSource);
+			if (model_version == 1) {
+				classJavaSource.addMethod(JavaModels.getAnimationsModelType1(animations));
+			} else {
+				classJavaSource.addMethod(JavaModels.getAnimationsModelType0(animations));
 			}
-
-			StringBuilder anim = new StringBuilder();
-
-			for (Map.Entry<String, JComboBox<String>> animation : animations.entrySet()) {
-				String selected = (String) animation.getValue().getSelectedItem();
-				if (selected != null) {
-					String[] animationCodes = EntityAnimationsLoader.getAnimationCodesFromID(selected);
-					for (String animationCode : animationCodes) {
-						anim.append("this.").append(animation.getKey()).append(animationCode).append("\n");
-					}
-				}
-			}
-
-			classJavaSource.addMethod(
-					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);"
-							+ anim + "}");
-		} else if (classJavaSource.toString()
+		}
+		// Below: legacy model fixers for Techne models (only usable for legacy models (below 1.17))
+		else if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy") && classJavaSource.toString()
 				.contains("setRotationAngles(f, f1, f2, f3, f4, f5);")) { // outdated model format
 			List<MethodSource<JavaClassSource>> methods = classJavaSource.getMethods();
 			for (MethodSource<JavaClassSource> method : methods) {
 				if (method.getName().equals("setRotationAngles"))
 					classJavaSource.removeMethod(method);
 			}
-
-			classJavaSource.addMethod(
-					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);}");
-		} else if (!classJavaSource.toString().contains("setRotationAngles(")) {
-			// if not setRotationAngles is defined in model, we add it now
-			classJavaSource.addMethod(
-					"public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {super.setRotationAngles(f, f1, f2, f3, f4, f5, e);}");
-		} else {
+		}
+		// Handling for keeping existing animations for non-legacy models
+		else {
 			return null; // with null, we indicate no change in model code
 		}
 
 		return classJavaSource.toString();
 	}
 
-	public static Vector<String> getModelParts(JavaClassSource classJavaSource) {
-		Vector<String> parts = new Vector<>();
-		List<FieldSource<JavaClassSource>> fields = classJavaSource.getFields();
-		for (FieldSource<JavaClassSource> field : fields)
-			if (field.getType().getName().contains("ModelRenderer"))
-				parts.add(field.getName());
-		return parts;
-	}
 }

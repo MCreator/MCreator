@@ -36,7 +36,6 @@
 
 package net.mcreator.blockly.data;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -132,7 +131,7 @@ public class Dependency implements Comparable<Dependency> {
 	public static Color getColor(String type) {
 		// Check if the type is a loaded variable and then, get its HUE color
 		if (VariableTypeLoader.INSTANCE.fromName(type) != null) {
-			return BlocklyBlockUtil.getBlockColorFromHUE(VariableTypeLoader.INSTANCE.fromName(type).getColor());
+			return VariableTypeLoader.INSTANCE.fromName(type).getBlocklyColor();
 		}
 
 		// Return a color for other dependency types

@@ -1,1 +1,3 @@
-This parameter defines how many lakes of this fluid should be generated per chunk.
+This parameter determines how rare the lakes of this fluid should be. Higher values means the lake will be rarer.
+
+Water lakes use a value of 4.

@@ -1,1 +1,0 @@
-if(${input$entity} instanceof LivingEntity)((LivingEntity)${input$entity}).setHealth((float)${input$health});
