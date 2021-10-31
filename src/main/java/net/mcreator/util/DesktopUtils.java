@@ -181,12 +181,13 @@ public class DesktopUtils {
 			}
 
 			if (selectFile) {
-				LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with " + file.toString());
 				if (SystemUtils.IS_OS_WINDOWS) {
+					LOG.info("Trying to execute: explorer /select," + file.getPath());
 					if (Runtime.getRuntime().exec("explorer /select," + file.getPath()) == null) {
 						return false;
 					}
 				} else {
+					LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with " + file.toString());
 					java.awt.Desktop.getDesktop().browseFileDirectory(file);
 				}
 			} else {
