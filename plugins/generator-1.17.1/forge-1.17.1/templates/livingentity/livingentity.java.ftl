@@ -488,7 +488,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double z = this.getZ();
 			Entity entity = this;
 			Level world = this.level;
-			<#if hasReturnValue(data.onRightClickedOn)>
+			<#if hasReturnValueOf(data.onRightClickedOn, "actionresulttype")>
 				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/>;
 			<#else>
 				<@procedureOBJToCode data.onRightClickedOn/>

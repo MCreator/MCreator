@@ -136,7 +136,7 @@
 <#if hasProcedure(procedure)>
 @Override public InteractionResult useOn(UseOnContext context) {
 	InteractionResult retval = super.useOn(context);
-	<@procedureCodeWithOptResult procedure, "retval", {
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "retval", {
 		"world": "context.getLevel()",
 		"x": "context.getClickedPos().getX()",
 		"y": "context.getClickedPos().getY()",
@@ -153,7 +153,7 @@
 <#macro onItemUseFirst procedure="">
 <#if hasProcedure(procedure)>
 @Override public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
-	<@procedureCodeWithOptResult procedure, "InteractionResult.PASS", {
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "InteractionResult.PASS", {
 		"world": "context.getLevel()",
 		"x": "context.getClickedPos().getX()",
 		"y": "context.getClickedPos().getY()",
@@ -381,7 +381,7 @@
 <#if hasProcedure(procedure)>
 @Override public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 	super.use(blockstate, world, pos, entity, hand, hit);
-	<@procedureCodeWithOptResult procedure, "InteractionResult.SUCCESS", {
+	<@procedureCodeWithOptResult procedure, "actionresulttype",  "InteractionResult.SUCCESS", {
 		"x": "pos.getX()",
 		"y": "pos.getY()",
 		"z": "pos.getZ()",

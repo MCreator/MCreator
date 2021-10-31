@@ -228,7 +228,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 				<#if hasProcedure(data.dispenseResultItemstack)>
 					boolean success = this.isSuccess();
-					<#if hasReturnValue(data.dispenseResultItemstack)>
+					<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
 						return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 					<#else>
 						<@procedureOBJToCode data.dispenseResultItemstack/>
