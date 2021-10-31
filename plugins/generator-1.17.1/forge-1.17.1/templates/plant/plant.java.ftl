@@ -41,7 +41,7 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements EntityBlock</#if>{
 	public ${name}Block() {
-		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
+		super(<#if data.plantType == "normal">${data.suspiciousStewEffect?starts_with("CUSTOM:")?then("MobEffects.SATURATION", generator.map(data.suspiciousStewEffect, "effects"))}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
@@ -90,6 +90,20 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
 		</#if>
 	}
+	</#if>
+
+	<#if data.plantType == "normal">
+		<#if data.suspiciousStewEffect?starts_with("CUSTOM:")>
+		@Override public MobEffect getSuspiciousStewEffect() {
+			return ${generator.map(data.suspiciousStewEffect, "effects")};
+		}
+		</#if>
+
+		<#if (data.suspiciousStewDuration > 0)>
+		@Override public int getEffectDuration() {
+			return ${data.suspiciousStewDuration};
+		}
+		</#if>
 	</#if>
 
 	<#if data.isReplaceable>
@@ -219,8 +233,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 				return groundState.is(this) ||
 				<#if (data.canBePlacedOn?size > 0)>
-                	<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
-                </#if>
+					<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
+				</#if>
 				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 			<#else>
