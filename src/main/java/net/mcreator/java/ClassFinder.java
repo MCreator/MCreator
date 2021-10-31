@@ -31,6 +31,7 @@ import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -92,16 +93,18 @@ public class ClassFinder {
 				try (ZipFile zipFile = new ZipFile(new File(sourceLocation.getLocationAsString()))) {
 					String entryName = classfqdn.replaceAll("\\.", "/");
 					entryName = entryName + ".java";
-					ZipEntry entry = zipFile.getEntry(entryName);
-					if (entry == null)
-						entry = zipFile.getEntry("src/" + entryName);
-					if (entry != null) {
-						String code = ZipIO.entryToString(zipFile, entry);
-						DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
-						position.classFileNode = tmpFileFromCode(classfqdn, code);
-						position.openInReadOnly = true;
-						position.virtualFile = new File(classfqdn.replaceAll("\\.", "/") + ".java");
-						return position;
+
+					Enumeration<? extends ZipEntry> entries = zipFile.entries();
+					while (entries.hasMoreElements()) {
+						ZipEntry entry = entries.nextElement();
+						if (entry.getName().endsWith(entryName)) {
+							String code = ZipIO.entryToString(zipFile, entry);
+							DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
+							position.classFileNode = tmpFileFromCode(classfqdn, code);
+							position.openInReadOnly = true;
+							position.virtualFile = new File(classfqdn.replaceAll("\\.", "/") + ".java");
+							return position;
+						}
 					}
 				} catch (IOException e) {
 					LOG.error(e.getMessage(), e);

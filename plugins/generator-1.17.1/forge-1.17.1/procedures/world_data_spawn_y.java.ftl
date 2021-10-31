@@ -1,1 +1,1 @@
-(world.getLevelData().getYSpawn())
+/*@int*/(world.getLevelData().getYSpawn())

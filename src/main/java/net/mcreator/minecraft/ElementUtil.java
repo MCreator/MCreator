@@ -266,6 +266,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
+	public static String[] loadMobSpawnTypes() {
+		return DataListLoader.loadDataList("mobspawntypes").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
 	public static List<DataListEntry> loadBooleanBlockStateProperties() {
 		return DataListLoader.loadDataList("blockstateproperties").stream().filter(e -> e.getType().equals("boolean"))
 				.collect(Collectors.toList());

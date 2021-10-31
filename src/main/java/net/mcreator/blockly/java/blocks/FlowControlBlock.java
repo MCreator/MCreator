@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -34,7 +35,7 @@ public class FlowControlBlock implements IBlockGenerator {
 			master.append(element.getTextContent().toLowerCase(Locale.ENGLISH)).append(";");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Failed to find loop break type. Skipping this block."));
+					L10N.t("blockly.warnings.flow_control", L10N.t("blockly.warnings.skip"))));
 		}
 	}
 

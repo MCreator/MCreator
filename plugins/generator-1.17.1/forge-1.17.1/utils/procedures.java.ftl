@@ -1,4 +1,31 @@
 <#-- @formatter:off -->
+<#macro procedureCode object dependencies={}>
+    <#compress>
+    <#assign deps = [] />
+    <#list object.getDependencies(generator.getWorkspace()) as dependency>
+        <#assign deps += [dependency.getName()] />
+    </#list>
+    <#if deps?size == 0>
+        ${object.getName()}Procedure.execute(Collections.EMPTY_MAP);
+    <#else>
+        ${object.getName()}Procedure.execute(ImmutableMap.<String, Object>builder()
+        <#list dependencies as name, value>
+            <#if deps?seq_contains(name)>.put("${name}", ${value})</#if>
+        </#list>
+        .build());
+    </#if>
+    </#compress>
+</#macro>
+
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
+    <#if hasReturnValueOf(object, type)>
+        return <@procedureCode object dependencies/>
+    <#else>
+        <@procedureCode object dependencies/>
+        return ${defaultResult};
+    </#if>
+</#macro>
+
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 
@@ -49,7 +76,7 @@
     </#if>
 </#macro>
 
-<#macro procedureOBJToActionResultTypeCode object="">
+<#macro procedureOBJToInteractionResultCode object="">
     <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
@@ -61,8 +88,8 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
-    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
+<#function hasReturnValueOf object="" type="">
+    <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
 
 <#-- @formatter:on -->

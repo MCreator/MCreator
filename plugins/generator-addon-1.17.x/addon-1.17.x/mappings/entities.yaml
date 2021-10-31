@@ -11,7 +11,6 @@ EntityCaveSpider: cave_spider
 EntityChicken: chicken
 EntityCod: cod
 EntityCow: cow
-EntityCreature: CreatureEntity
 EntityCreeper: creeper
 EntityDonkey: donkey
 EntityDolphin: dolphin
@@ -28,7 +27,6 @@ EntityXPOrb: xp_orb
 EntityEnderEye: eye_of_ender_signal
 EntityFallingBlock: falling_block
 EntityFireworkRocket: fireworks_rocket
-EntityFlying: FlyingEntity
 EntityGhast: ghast
 EntityGuardian: guardian
 EntityGolem: iron_golem
@@ -45,7 +43,6 @@ EntityMinecartChest: chest_minecart
 EntityMinecartCommandBlock: command_block_minecart
 EntityMinecartHopper: hopper_minecart
 EntityMinecartTNT: tnt_minecart
-EntityMob: MobEntity
 EntityMule: mule
 EntityOcelot: ocelot
 EntityPainting: painting
@@ -85,7 +82,6 @@ EntityVex: vex
 EntityVillager: villager
 EntityIronGolem: iron_golem
 EntityVindicator: vindicator
-EntityWaterMob: WaterMobEntity
 EntityWanderingTrader: wandering_trader
 EntityWitch: witch
 EntityWither: wither
@@ -101,3 +97,16 @@ EntityLightningBolt: lightning_bolt
 EntityPlayer: player
 EntityPlayerMP: player
 EntityFishHook: fishing_hook
+EntityAreaEffectCloud: area_effect_cloud
+EntityArmorStand: armor_stand
+EntityBee: bee
+EntityFox: fox
+EntityHoglin: hoglin
+EntityMooshroom: mooshroom
+EntityGlowSquid: glow_squid
+EntityPiglin: piglin
+EntityPiglinBrute: piglin_brute
+EntityStrider: strider
+EntityZoglin: zoglin
+EntityAxolotl: axolotl
+EntityGoat: goat

@@ -18,15 +18,18 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Structure extends GeneratableElement {
+@SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
 
 	public String structure;
 
@@ -73,4 +76,7 @@ import java.util.List;
 		this.ignoreBlocks = "STRUCTURE_BLOCK";
 	}
 
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		return List.of(BaseType.FEATURE);
+	}
 }

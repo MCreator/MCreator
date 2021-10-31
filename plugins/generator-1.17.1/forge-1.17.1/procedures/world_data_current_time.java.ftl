@@ -1,1 +1,1 @@
-(world.dayTime())
+/*@float*/(world.dayTime())

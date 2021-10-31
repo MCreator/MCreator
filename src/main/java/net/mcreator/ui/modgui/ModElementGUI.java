@@ -415,9 +415,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined before the generatable element is generated
 		beforeGeneratableElementGenerated();
 
-		// generate mod element code
-		mcreator.getGenerator().generateElement(element);
-
 		// save custom mod element (preview) picture if it has one
 		mcreator.getModElementManager().storeModElementPicture(element);
 		modElement.reinit(); // re-init mod element to pick up the new mod element picture
@@ -427,6 +424,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
+
+		// generate mod base as it may be needed
+		mcreator.getGenerator().generateBase();
+
+		// generate mod element code
+		mcreator.getGenerator().generateElement(element);
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()

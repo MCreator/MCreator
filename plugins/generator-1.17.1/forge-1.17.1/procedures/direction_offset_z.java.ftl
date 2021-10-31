@@ -1,1 +1,1 @@
-(${input$direction}.getStepZ())
+/*@int*/(${input$direction}.getStepZ())

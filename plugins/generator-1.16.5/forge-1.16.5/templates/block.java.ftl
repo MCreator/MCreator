@@ -749,14 +749,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				double hitY = hit.getHitVec().y;
 				double hitZ = hit.getHitVec().z;
 				Direction direction = hit.getFace();
-				<#if hasReturnValue(data.onRightClicked)>
+				<#if hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
 				<#else>
 				<@procedureOBJToCode data.onRightClicked/>
 				</#if>
 			</#if>
 
-        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
+        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 			return ActionResultType.SUCCESS;
 			<#else>
 			return result;

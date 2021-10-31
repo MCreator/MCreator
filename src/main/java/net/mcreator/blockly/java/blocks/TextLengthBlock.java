@@ -31,7 +31,7 @@ public class TextLengthBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
 			master.append("(");
-			master.processOutputBlock(element);
+			master.processOutputBlockWithoutParentheses(element);
 			master.append(").length()");
 		} else {
 			master.append("0");

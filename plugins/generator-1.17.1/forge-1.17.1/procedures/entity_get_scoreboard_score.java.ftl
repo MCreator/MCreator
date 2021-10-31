@@ -1,4 +1,4 @@
-(new Object(){
+/*@int*/(new Object(){
 	public int getScore(String score, Entity _ent){
 		if(_ent instanceof Player _player) {
 			Scoreboard _sc = _player.getScoreboard();

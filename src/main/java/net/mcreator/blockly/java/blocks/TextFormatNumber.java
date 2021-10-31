@@ -41,9 +41,9 @@ public class TextFormatNumber implements IBlockGenerator {
 
 		if (number != null && format != null) {
 			master.append("(new java.text.DecimalFormat(");
-			master.processOutputBlock(format);
+			master.processOutputBlockWithoutParentheses(format);
 			master.append(").format(");
-			master.processOutputBlock(number);
+			master.processOutputBlockWithoutParentheses(number);
 			master.append("))");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

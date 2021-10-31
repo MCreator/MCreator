@@ -1,4 +1,3 @@
-(!world.getEntitiesOfClass(${generator.map(field$entity, "entities", 0)}.class, new AABB(
-            ${input$x} - (${input$range} / 2d), ${input$y} - (${input$range} / 2d), ${input$z} - (${input$range} / 2d),
-            ${input$x} + (${input$range} / 2d), ${input$y} + (${input$range} / 2d), ${input$z} + (${input$range} / 2d)), e -> true)
-    .isEmpty())
+(!world.getEntitiesOfClass(${generator.map(field$entity, "entities", 0)}.class,
+	AABB.ofSize(new Vec3(${input$x}, ${input$y}, ${input$z}), ${input$range}, ${input$range}, ${input$range}), e -> true)
+	.isEmpty())
