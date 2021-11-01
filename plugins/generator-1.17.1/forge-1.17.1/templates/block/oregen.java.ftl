@@ -36,7 +36,7 @@ package ${package}.world.features.ores;
 
 public class ${name}Feature extends OreFeature {
 
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
 				.configured(new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), ${data.frequencyOnChunk}))
 				.range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight}))))

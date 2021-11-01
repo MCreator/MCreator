@@ -35,7 +35,7 @@ package ${package}.world.features;
 
 public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.configured(FeatureConfiguration.NONE);
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =

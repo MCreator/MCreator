@@ -35,7 +35,7 @@
 package ${package}.world.features.lakes;
 
 public class ${name}Feature extends LakeFeature {
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
 				.configured(new BlockStateConfiguration(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState()))
 				.rangeUniform(VerticalAnchor.aboveBottom(0), VerticalAnchor.belowTop(0))
