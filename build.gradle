@@ -66,7 +66,7 @@ dependencies {
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.23.2.Final'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.23.2.Final'
     implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
-    implementation group: 'org.reflections', name: 'reflections', version: '0.10.1'
+    implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
