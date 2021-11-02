@@ -36,11 +36,7 @@
 package ${package}.world.biome;
 
 import net.minecraftforge.common.BiomeManager;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-
-import java.util.HashMap;import java.util.List;
-import java.util.function.BiConsumer;
 
 public class ${name}Biome {
 
