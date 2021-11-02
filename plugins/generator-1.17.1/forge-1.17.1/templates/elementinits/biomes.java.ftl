@@ -64,11 +64,13 @@ package ${package}.init;
 
 	<#if hasInits>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> {
 	    <#list biomes as biome>
             <#if biome.biomeDictionaryTypes?has_content || biome.spawnBiome>
                 ${biome.getModElement().getName()}Biome.init();
             </#if>
         </#list>
+		});
 	}
     </#if>
 

@@ -290,7 +290,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>
 
 	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutout());
 	}
 
 	<#if data.tintType != "No tint">
