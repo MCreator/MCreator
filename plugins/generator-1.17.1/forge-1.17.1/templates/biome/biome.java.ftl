@@ -39,10 +39,15 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 
-import java.util.List;
+import java.util.HashMap;import java.util.List;
 import java.util.function.BiConsumer;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Biome {
+public class ${name}Biome {
+
+	private static final ConfiguredSurfaceBuilder<?> SURFACE_BUILDER = SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderBaseConfiguration(
+            ${mappedBlockToBlockStateCode(data.groundBlock)},
+            ${mappedBlockToBlockStateCode(data.undergroundBlock)},
+            ${mappedBlockToBlockStateCode(data.undergroundBlock)}));
 
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -69,11 +74,7 @@ import java.util.function.BiConsumer;
                 </#if>
                 .build();
 
-        BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder()
-            .surfaceBuilder(register(SurfaceBuilder.DEFAULT.configured(
-                new SurfaceBuilderBaseConfiguration(${mappedBlockToBlockStateCode(data.groundBlock)},
-                	${mappedBlockToBlockStateCode(data.undergroundBlock)},
-                	${mappedBlockToBlockStateCode(data.undergroundBlock)}))));
+        BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder().surfaceBuilder(SURFACE_BUILDER);
 
         <#if data.spawnStronghold>
             biomeGenerationSettings.addStructureStart(StructureFeatures.STRONGHOLD);
@@ -351,8 +352,13 @@ import java.util.function.BiConsumer;
             .build();
     }
 
-    <#if data.biomeDictionaryTypes?has_content || data.spawnBiome>
     public static void init() {
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(${JavaModName}.MODID, "${registryname}"), SURFACE_BUILDER);
+
+        <#if hasConfiguredFeatures>
+        CONFIGURED_FEATURES.forEach((resourceLocation, configuredFeature) -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, resourceLocation, configuredFeature));
+        </#if>
+
         <#if data.biomeDictionaryTypes?has_content>
             BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
             <#list data.biomeDictionaryTypes as biomeDictionaryType>
@@ -366,19 +372,15 @@ import java.util.function.BiConsumer;
                 new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
         </#if>
     }
-    </#if>
 
     <#if hasConfiguredFeatures>
+    private static final Map<ResourceLocation, ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = new HashMap<>();
+
     private static ConfiguredFeature<?, ?> register(String name, ConfiguredFeature<?, ?> configuredFeature) {
-		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(${JavaModName}.MODID, name + "_${registryname}"), configuredFeature);
+		CONFIGURED_FEATURES.put(new ResourceLocation(${JavaModName}.MODID, name + "_${registryname}"), configuredFeature);
     	return configuredFeature;
     }
     </#if>
-
-	private static ConfiguredSurfaceBuilder<?> register(ConfiguredSurfaceBuilder<?> surfaceBuilder) {
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(${JavaModName}.MODID, "${registryname}"), surfaceBuilder);
-		return surfaceBuilder;
-	}
 
 }
 
