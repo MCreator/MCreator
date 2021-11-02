@@ -125,7 +125,7 @@ import java.util.function.BiConsumer;
 
         	<#if data.vanillaTreeType == "Big trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
                     new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
@@ -143,7 +143,7 @@ import java.util.function.BiConsumer;
         	);
         	<#elseif data.vanillaTreeType == "Savanna trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
                     new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
@@ -163,7 +163,7 @@ import java.util.function.BiConsumer;
         	);
         	<#elseif data.vanillaTreeType == "Mega pine trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
@@ -179,7 +179,7 @@ import java.util.function.BiConsumer;
         	);
         	<#elseif data.vanillaTreeType == "Mega spruce trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
@@ -196,7 +196,7 @@ import java.util.function.BiConsumer;
         	);
         	<#elseif data.vanillaTreeType == "Birch trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
                     new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
@@ -214,7 +214,7 @@ import java.util.function.BiConsumer;
         	);
         	<#else>
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
                     new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
@@ -278,7 +278,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE)
                 .setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk}))));
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("brown_mushroom_huge", Feature.HUGE_RED_MUSHROOM.configured(new HugeMushroomFeatureConfiguration(
+			    register("red_mushroom_huge", Feature.HUGE_RED_MUSHROOM.configured(new HugeMushroomFeatureConfiguration(
                 new SimpleStateProvider(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)),
                 new SimpleStateProvider(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE)
                 .setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk}))));
