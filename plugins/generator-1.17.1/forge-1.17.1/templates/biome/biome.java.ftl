@@ -70,10 +70,10 @@ import java.util.function.BiConsumer;
                 .build();
 
         BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder()
-            .surfaceBuilder(SurfaceBuilder.DEFAULT.configured(
+            .surfaceBuilder(register(SurfaceBuilder.DEFAULT.configured(
                 new SurfaceBuilderBaseConfiguration(${mappedBlockToBlockStateCode(data.groundBlock)},
                 	${mappedBlockToBlockStateCode(data.undergroundBlock)},
-                	${mappedBlockToBlockStateCode(data.undergroundBlock)})));
+                	${mappedBlockToBlockStateCode(data.undergroundBlock)}))));
 
         <#if data.spawnStronghold>
             biomeGenerationSettings.addStructureStart(StructureFeatures.STRONGHOLD);
@@ -137,9 +137,9 @@ import java.util.function.BiConsumer;
                     <#else>
                     	.decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Savanna trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -157,9 +157,9 @@ import java.util.function.BiConsumer;
                     </#if>
                     <#if data.treeType == data.TREES_CUSTOM>
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Mega pine trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -173,9 +173,9 @@ import java.util.function.BiConsumer;
                     <#if data.hasVines() || data.hasFruits()>
                     	<@vinesAndFruits/>
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Mega spruce trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -190,9 +190,9 @@ import java.util.function.BiConsumer;
                     <#if data.hasVines() || data.hasFruits()>
                     	<@vinesAndFruits/>
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Birch trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -208,9 +208,9 @@ import java.util.function.BiConsumer;
                     <#else>
                     	.ignoreVines()
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#else>
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -226,9 +226,9 @@ import java.util.function.BiConsumer;
                     <#else>
                     	.ignoreVines()
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	</#if>
         </#if>
@@ -375,18 +375,23 @@ import java.util.function.BiConsumer;
     }
     </#if>
 
+	private static ConfiguredSurfaceBuilder<?> register(ConfiguredSurfaceBuilder<?> surfaceBuilder) {
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(${JavaModName}.MODID, "${registryname}"), surfaceBuilder);
+		return surfaceBuilder;
+	}
+
 }
 
 <#macro vinesAndFruits>
 .decorators(ImmutableList.of(
 	<#if data.hasVines()>
-		${name}LeaveDecorator.instance,
-		${name}TrunkDecorator.instance
+		${name}LeaveDecorator.INSTANCE,
+		${name}TrunkDecorator.INSTANCE
 	</#if>
 
 	<#if data.hasFruits()>
 	    <#if data.hasVines()>,</#if>
-        ${name}FruitDecorator.instance
+        ${name}FruitDecorator.INSTANCE
 	</#if>
 ))
 </#macro>
