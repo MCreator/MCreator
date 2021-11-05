@@ -37,7 +37,7 @@ package ${package}.world.features.plants;
 import com.mojang.serialization.Codec;
 
 public class ${name}Feature extends <#if data.plantType == "normal" && data.staticPlantGenerationType == "Flower">DefaultFlowerFeature<#else>RandomPatchFeature</#if> {
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
 				.configured(
 					new RandomPatchConfiguration.GrassConfigurationBuilder(
