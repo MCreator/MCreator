@@ -36,6 +36,7 @@ public class ToolboxBlock {
 
 	@Nullable public List<String> fields;
 	@Nullable public List<String> inputs;
+	@Nullable public List<AdvancedInput> advancedInputs;
 	@Nullable public List<StatementInput> statements;
 	@Nullable public List<Dependency> dependencies;
 	@Nullable public List<String> warnings;

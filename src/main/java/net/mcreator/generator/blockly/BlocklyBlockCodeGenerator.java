@@ -143,6 +143,44 @@ public class BlocklyBlockCodeGenerator {
 			}
 		}
 
+		// next we check for advanced inputs if they exist, we process them and add to data model
+		if (toolboxBlock.advancedInputs != null) {
+			for (var advancedInput : toolboxBlock.advancedInputs) {
+				boolean found = false;
+				for (Element element : elements) {
+					if (element.getNodeName().equals("value") && element.getAttribute("name")
+							.equals(advancedInput.name)) {
+						found = true;
+
+						// check if nesting statement block that already provides any dependency with
+						// a same name, to avoid compile errors due to variable redefinitions
+						if (advancedInput.provides != null) {
+							for (Dependency dependency : advancedInput.provides) {
+								if (master.checkIfDepProviderInputsProvide(dependency)) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											"Input " + advancedInput.name
+													+ " provides dependencies already provided by parent statement inputs."));
+									return; // no need to do further processing, this needs to be resolved first by the user
+								}
+							}
+						}
+
+						master.pushDepProviderInputStack(advancedInput);
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
+						master.popDepProviderInputStack();
+
+						dataModel.put("input$" + advancedInput.name, generatedCode);
+
+						break; // found, no need to look other elements
+					}
+				}
+				if (!found) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							"Input " + advancedInput.name + " on block " + type + " is empty."));
+				}
+			}
+		}
+
 		// next we check for statement inputs if they exist, we process them and add to data model
 		if (toolboxBlock.statements != null) {
 			for (StatementInput statementInput : toolboxBlock.statements) {
@@ -156,7 +194,7 @@ public class BlocklyBlockCodeGenerator {
 						// a same name, to avoid compile errors due to variable redefinitions
 						if (statementInput.provides != null) {
 							for (Dependency dependency : statementInput.provides) {
-								if (master.checkIfStatementInputsProvide(dependency)) {
+								if (master.checkIfDepProviderInputsProvide(dependency)) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 											"Statement input " + statementInput.name
 													+ " provides dependencies already provided by parent statement inputs."));
@@ -165,9 +203,9 @@ public class BlocklyBlockCodeGenerator {
 							}
 						}
 
-						master.pushStatementInputStack(statementInput);
+						master.pushDepProviderInputStack(statementInput);
 						String generatedCode = BlocklyToCode.directProcessStatementBlock(master, element);
-						master.popStatementInputStack();
+						master.popDepProviderInputStack();
 
 						dataModel.put("statement$" + statementInput.name, generatedCode);
 
