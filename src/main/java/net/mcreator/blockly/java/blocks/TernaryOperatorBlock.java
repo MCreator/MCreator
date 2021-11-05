@@ -24,6 +24,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -49,7 +50,7 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 			if ("logic_ternary_op".equals(BlocklyBlockUtil.getInputBlockType(thenBlock)) ||
 					"logic_ternary_op".equals(BlocklyBlockUtil.getInputBlockType(elseBlock))) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"Ternary operator blocks cannot be nested in output values."));
+						L10N.t("blockly.errors.ternary_operator.nesting")));
 			} else {
 				if (condition != null) {
 					master.append("(");
@@ -62,12 +63,12 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 				} else {
 					master.processOutputBlock(thenBlock);
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							"Found ternary operator block without condition. Condition will always be true."));
+							L10N.t("blockly.warnings.ternary_operator.no_condition")));
 				}
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Found ternary operator block without output value."));
+					L10N.t("blockly.errors.ternary_operator.no_output")));
 		}
 	}
 
