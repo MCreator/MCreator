@@ -54,11 +54,11 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 			} else {
 				if (condition != null) {
 					master.append("(");
-					master.processOutputBlock(condition);
+					master.processOutputBlockWithoutParentheses(condition, "?:");
 					master.append(useMarkers ? "/*@?*/" : "?");
-					master.processOutputBlock(thenBlock);
+					master.processOutputBlockWithoutParentheses(thenBlock, "?:");
 					master.append(useMarkers ? "/*@:*/" : ":");
-					master.processOutputBlock(elseBlock);
+					master.processOutputBlockWithoutParentheses(elseBlock, "?:");
 					master.append(")");
 				} else {
 					master.processOutputBlock(thenBlock);
