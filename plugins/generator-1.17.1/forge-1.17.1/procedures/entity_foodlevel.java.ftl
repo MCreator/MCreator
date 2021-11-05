@@ -1,0 +1,1 @@
+/*@int*/(${input$entity} instanceof Player _plr ? _plr.getFoodData().getFoodLevel():0)

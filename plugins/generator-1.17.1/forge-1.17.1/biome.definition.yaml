@@ -1,0 +1,24 @@
+templates:
+  - template: biome/biome.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
+  - template: biome/tree_fruits_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMEFruitDecorator.java"
+    condition: hasFruits()
+    deleteWhenConditionFalse: true
+  - template: biome/tree_leave_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMELeaveDecorator.java"
+    condition: hasVines()
+    deleteWhenConditionFalse: true
+  - template: biome/tree_trunk_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMETrunkDecorator.java"
+    condition: hasVines()
+    deleteWhenConditionFalse: true
+
+global_templates:
+  - template: elementinits/biomes.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
+
+localizationkeys:
+  - key: biome.@modid.@registryname
+    mapto: name

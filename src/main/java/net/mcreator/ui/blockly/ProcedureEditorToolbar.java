@@ -20,6 +20,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -201,7 +202,7 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 				try {
 					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
 
-					Set<VariableElement> localVariables = ProcedureTemplateIO.tryToExtractVariables(procedureXml);
+					Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 					List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
 					for (VariableElement localVariable : localVariables) {

@@ -150,6 +150,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	public static class CustomBlock extends
 			<#if data.hasGravity>
 				FallingBlock
+			<#elseif data.blockBase?has_content && data.blockBase == "Button">
+			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 			<#elseif data.blockBase?has_content>
 				${data.blockBase}Block
 			<#else>
@@ -743,15 +745,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 
 			<#if hasProcedure(data.onRightClicked)>
+				double hitX = hit.getHitVec().x;
+				double hitY = hit.getHitVec().y;
+				double hitZ = hit.getHitVec().z;
 				Direction direction = hit.getFace();
-				<#if hasReturnValue(data.onRightClicked)>
+				<#if hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
 				<#else>
 				<@procedureOBJToCode data.onRightClicked/>
 				</#if>
 			</#if>
 
-        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
+        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 			return ActionResultType.SUCCESS;
 			<#else>
 			return result;

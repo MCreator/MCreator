@@ -37,8 +37,8 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -188,7 +188,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void save() {
 		try {
 			if (image != null) {
-				ImageIO.write(canvasRenderer.render(), FilenameUtils.getExtension(image.toString()), image);
+				ImageIO.write(canvasRenderer.render(), FilenameUtilsPatched.getExtension(image.toString()), image);
 				this.name = image.getName();
 
 				//reload image in java cache

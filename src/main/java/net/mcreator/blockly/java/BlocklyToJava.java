@@ -61,11 +61,11 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 
 		// add Minecraft related blocks
 		blockGenerators.add(new CoordinateBlock());
-		blockGenerators.add(new EventOrTargetEntityDependenyBlock());
-		blockGenerators.add(new SourceEntityDependenyBlock());
+		blockGenerators.add(new EventOrTargetEntityDependencyBlock());
+		blockGenerators.add(new SourceEntityDependencyBlock());
 		blockGenerators.add(new EntityIteratorDependencyBlock());
 		blockGenerators.add(new ImediateSourceEntityDependencyBlock());
-		blockGenerators.add(new DirectionDependenyBlock());
+		blockGenerators.add(new DirectionDependencyBlock());
 		blockGenerators.add(new DirectionConstantBlock());
 		blockGenerators.add(new NullBlock());
 		blockGenerators.add(new MCItemBlock());

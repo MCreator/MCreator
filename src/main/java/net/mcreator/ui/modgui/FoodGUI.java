@@ -259,15 +259,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		events.add(onDroppedByPlayer);
 		events.setOpaque(false);
 
-		JPanel wrap = new JPanel();
-		wrap.setOpaque(false);
-		wrap.add(events);
-		wrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.food.events"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		pane1.add("Center", PanelUtils.totalCenterInPanel(wrap));
+		pane1.add("Center", PanelUtils.totalCenterInPanel(events));
 
 		texture.setValidator(new TileHolderValidator(texture));
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.food.error_needs_name")));
@@ -378,13 +370,13 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		food.resultItem = resultItem.getBlock();
 
-		Model.Type modelType = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getType();
+		Model.Type modelType = Objects.requireNonNull(renderType.getSelectedItem()).getType();
 		food.renderType = 0;
 		if (modelType == Model.Type.JSON)
 			food.renderType = 1;
 		else if (modelType == Model.Type.OBJ)
 			food.renderType = 2;
-		food.customModelName = ((Model) Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
+		food.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 		return food;
 	}
 

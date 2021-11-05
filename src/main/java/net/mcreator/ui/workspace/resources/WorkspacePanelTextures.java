@@ -33,9 +33,9 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -424,7 +424,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 
 			if (ma != null) {
-				String name = StringUtils.abbreviateString(FilenameUtils.removeExtension(ma.getName()), 10);
+				String name = StringUtils.abbreviateString(FilenameUtilsPatched.removeExtension(ma.getName()), 10);
 				if (name.trim().equals(""))
 					name = "(untitled)";
 

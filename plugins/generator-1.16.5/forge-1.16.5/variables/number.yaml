@@ -29,14 +29,14 @@ scopes:
     read: instance.${var.getName()} = nbt.getDouble("${var.getName()}");
     write: nbt.putDouble("${var.getName()}" , instance.${var.getName()});
     get: |
-      ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       {
         double _setval = (double)${value};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }
   player_persistent:
@@ -44,13 +44,13 @@ scopes:
     read: instance.${var.getName()} = nbt.getDouble("${var.getName()}");
     write: nbt.putDouble("${var.getName()}" , instance.${var.getName()});
     get: |
-      ((entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
     set: |
       {
         double _setval = (double)${value};
-        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
           capability.${name} = _setval;
-          capability.syncPlayerVariables(entity);
+          capability.syncPlayerVariables(${entity});
         });
       }

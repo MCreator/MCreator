@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -35,8 +36,8 @@ public class BooleanBlock implements IBlockGenerator {
 			master.append(element.getTextContent().toLowerCase(Locale.ENGLISH));
 		} else {
 			master.append("true");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Failed to find logic block value, using true as value."));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.boolean")));
 		}
 		master.append(")");
 	}

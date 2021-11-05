@@ -284,6 +284,8 @@ public class GradleConsole extends JPanel {
 		pan.clearConsole();
 		searchBar.reinstall(pan);
 
+		textAccent = null;
+
 		SimpleAttributeSet keyWord = new SimpleAttributeSet();
 		StyleConstants.setFontSize(keyWord, 4);
 		pan.insertString("\n", keyWord);
@@ -299,6 +301,7 @@ public class GradleConsole extends JPanel {
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)");
 			append(deviceInfo, new Color(127, 120, 120));
+			append(" ");
 			taskOut.append(deviceInfo);
 		}
 
@@ -344,6 +347,28 @@ public class GradleConsole extends JPanel {
 					return;
 				if (line.contains("unchecked or unsafe operations"))
 					return;
+				if (line.startsWith("Deprecated Gradle features were used"))
+					return;
+				if (line.startsWith("WARNING: (c) 2020 Microsoft Corporation."))
+					return;
+				if (line.contains("to show the individual deprecation warnings and determine"))
+					return;
+				if (line.contains("#sec:command_line_warnings"))
+					return;
+
+				if (line.startsWith("WARNING: This project is configured to use the official obfuscation")) {
+					append("The code of this workspace uses official obfuscation mappings provided by Mojang. These mappings fall under their associated license you should be fully aware of.",
+							new Color(232, 203, 108));
+					append("(c) 2020 Microsoft Corporation. These mappings are provided \"as-is\" and you bear the risk of using them. You may copy and use the mappings for development purposes,",
+							new Color(173, 173, 173));
+					append("but you may not redistribute the mappings complete and unmodified. Microsoft makes no warranties, express or implied, with respect to the mappings provided here.",
+							new Color(173, 173, 173));
+					append("Use and modification of this document or the source code (in any form) of Minecraft: Java Edition is governed by the Minecraft End User License Agreement available",
+							new Color(173, 173, 173));
+					append("at https://account.mojang.com/documents/minecraft_eula.", new Color(173, 173, 173));
+					append(" ");
+					return;
+				}
 
 				if (line.startsWith(":") || line.startsWith(">")) {
 					if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line.contains(" SKIPPED"))
@@ -351,6 +376,7 @@ public class GradleConsole extends JPanel {
 					else
 						append(line, new Color(0xDADADA), true);
 				} else if (line.startsWith("BUILD SUCCESSFUL")) {
+					append(" ");
 					append(line, new Color(187, 232, 108), false);
 				} else {
 					appendAutoColor(line);
@@ -383,6 +409,8 @@ public class GradleConsole extends JPanel {
 					if (line.startsWith("WARNING: Use --illegal-access=warn to enable"))
 						return;
 					if (line.startsWith("WARNING: All illegal access operations will"))
+						return;
+					if (line.startsWith("SLF4J: "))
 						return;
 
 					append(line, new Color(0, 255, 182));
@@ -442,8 +470,10 @@ public class GradleConsole extends JPanel {
 								.contains("compileJava FAILED")) {
 							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
 						}
+						append(" ");
 						append("BUILD FAILED", new Color(0xF98771));
 					} else if (failure instanceof BuildCancelledException) {
+						append(" ");
 						append("TASK CANCELED", new Color(0xF5F984));
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
@@ -451,6 +481,7 @@ public class GradleConsole extends JPanel {
 					} else if (failure.getCause().getClass().getSimpleName().equals("DaemonDisappearedException")
 							// workaround for MDK bug with gradle daemon
 							&& command.startsWith("run")) {
+						append(" ");
 						append("RUN COMPLETE", new Color(0, 255, 182));
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
@@ -465,6 +496,8 @@ public class GradleConsole extends JPanel {
 									append(line);
 							});
 						}
+
+						append(" ");
 						append("TASK EXECUTION FAILED", new Color(0xF98771));
 					}
 
@@ -506,6 +539,7 @@ public class GradleConsole extends JPanel {
 			private void taskComplete(int mcreatorGradleStatus) {
 				append("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
 						Color.gray, true);
+				append(" ");
 
 				if (taskSpecificListener != null)
 					taskSpecificListener.onTaskFinished(new GradleTaskResult("", mcreatorGradleStatus));

@@ -68,7 +68,7 @@ public class ModElementTypeLoader {
 		ModElementType.ITEM = register(
 				new ModElementType<>("item", 'i', BaseType.ITEM, RecipeType.ITEM, ItemGUI::new, Item.class));
 		ModElementType.KEYBIND = register(
-				new ModElementType<>("keybind", 'k', BaseType.KEYBIND, RecipeType.NONE, KeyBindGUI::new,
+				new ModElementType<>("keybind", 'k', BaseType.OTHER, RecipeType.NONE, KeyBindGUI::new,
 						KeyBinding.class));
 		ModElementType.LIVINGENTITY = register(
 				new ModElementType<>("livingentity", 'e', BaseType.ENTITY, RecipeType.NONE, LivingEntityGUI::new,
@@ -80,8 +80,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("musicdisc", 'x', BaseType.OTHER, RecipeType.ITEM, MusicDiscGUI::new,
 						MusicDisc.class));
 		ModElementType.OVERLAY = register(
-				new ModElementType<>("overlay", 'v', BaseType.OVERLAY, RecipeType.NONE, OverlayGUI::new,
-						Overlay.class));
+				new ModElementType<>("overlay", 'v', BaseType.OTHER, RecipeType.NONE, OverlayGUI::new, Overlay.class));
 		ModElementType.PAINTING = register(
 				new ModElementType<>("painting", null, BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
 						Painting.class));
@@ -96,7 +95,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("potioneffect", null, BaseType.POTIONEFFECT, RecipeType.NONE, PotionEffectGUI::new,
 						PotionEffect.class));
 		ModElementType.PROCEDURE = register(
-				new ModElementType<>("procedure", 'p', BaseType.PROCEDURE, RecipeType.NONE, ProcedureGUI::new,
+				new ModElementType<>("procedure", 'p', BaseType.OTHER, RecipeType.NONE, ProcedureGUI::new,
 						Procedure.class));
 		ModElementType.RANGEDITEM = register(
 				new ModElementType<>("rangeditem", 'q', BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new,
@@ -104,7 +103,7 @@ public class ModElementTypeLoader {
 		ModElementType.RECIPE = register(
 				new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeType.NONE, RecipeGUI::new, Recipe.class));
 		ModElementType.STRUCTURE = register(
-				new ModElementType<>("structure", 's', BaseType.STRUCTURE, RecipeType.NONE, StructureGenGUI::new,
+				new ModElementType<>("structure", 's', BaseType.FEATURE, RecipeType.NONE, StructureGenGUI::new,
 						Structure.class));
 		ModElementType.TAB = register(
 				new ModElementType<>("tab", 'w', BaseType.TAB, RecipeType.NONE, TabGUI::new, Tab.class));

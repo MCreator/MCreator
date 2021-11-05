@@ -34,6 +34,7 @@ import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
@@ -111,12 +112,70 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
-		VariableElement sampleVariable1 = new VariableElement();
-		sampleVariable1.setName("test");
-		sampleVariable1.setValue("true");
-		sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-		sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
-		workspace.addVariableElement(sampleVariable1);
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
+				== GeneratorStats.CoverageStatus.FULL) {
+			VariableElement sampleVariable1 = new VariableElement();
+			sampleVariable1.setName("test");
+			sampleVariable1.setValue("true");
+			sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+			sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
+			workspace.addVariableElement(sampleVariable1);
+
+			int idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("logic" + (idx++));
+				logicVariable.setValue("true");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("number" + (idx++));
+				logicVariable.setValue("12");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("string" + (idx++));
+				logicVariable.setValue("test");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.STRING);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("itemstack" + (idx++));
+				logicVariable.setValue("ItemStack.EMPTY");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("direction" + (idx++));
+				logicVariable.setValue("UP");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
+		}
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
@@ -245,7 +304,6 @@ public class TestWorkspaceDataProvider {
 			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.rainingPossibility = 3.5;
 			biome.baseHeight = -0.3;
-			biome.maxWaterDepth = 4;
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
@@ -280,7 +338,7 @@ public class TestWorkspaceDataProvider {
 				entry1.minGroup = 10;
 				entry1.minGroup = 134;
 				entry1.weight = 13;
-				entry1.spawnType = "creature";
+				entry1.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
@@ -289,7 +347,7 @@ public class TestWorkspaceDataProvider {
 				entry2.minGroup = 23;
 				entry2.minGroup = 145;
 				entry2.weight = 11;
-				entry2.spawnType = "monster";
+				entry2.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
 				entities.add(entry2);
 			}
 			biome.spawnEntries = entities;
@@ -469,8 +527,11 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition1")));
 				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition4")));
-				components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
-						new Procedure("condition1")));
+				if (modElement.getWorkspace().getGeneratorStats().getBaseCoverageInfo().get("variables")
+						== GeneratorStats.CoverageStatus.FULL) {
+					components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
+							new Procedure("condition1")));
+				}
 				components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			}
@@ -665,8 +726,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient",
-					"waterCreature" }[valueIndex];
+			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
 			livingEntity.restrictionBiomes = new ArrayList<>();
@@ -1411,6 +1471,8 @@ public class TestWorkspaceDataProvider {
 			enchantment.isTreasureEnchantment = _true;
 			enchantment.isAllowedOnBooks = !_true;
 			enchantment.isCurse = _true;
+			enchantment.canGenerateInLootTables = !_true;
+			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(),

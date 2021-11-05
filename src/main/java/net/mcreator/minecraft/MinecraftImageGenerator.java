@@ -25,11 +25,11 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1024,6 +1024,23 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
+		 * <p>This method generates the block icon for button.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateButtonIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.scale(1, 1.15);
+			g2d.translate(0, -8);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 6, 4, 4, 5, 0, 6), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
 		 * <p>This method generates the potion bottle icon for potions.</p>
 		 *
 		 * @param color <p>Color of the potion</p>
@@ -1173,7 +1190,8 @@ public class MinecraftImageGenerator {
 			Graphics2D graphics2D = icon.createGraphics();
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
-					workspace.getFolderManager().getOtherTextureFile(FilenameUtils.removeExtension(mobModelTexture))
+					workspace.getFolderManager()
+							.getOtherTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture))
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(

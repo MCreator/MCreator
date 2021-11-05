@@ -278,7 +278,9 @@ Blockly.defineBlocksWithJsonArray([
                     ["Bitwise OR", "BOR"],
                     ["Bitwise XOR", "BXOR"],
                     ["Min", "MIN"],
-                    ["Max", "MAX"]
+                    ["Max", "MAX"],
+                    ["hypot", "HYPOT"],
+                    ["atan2", "ATAN2"]
                 ]
             },
             {
@@ -303,7 +305,9 @@ Blockly.defineBlocksWithJsonArray([
                     ["%{BKY_MATH_ROUND_OPERATOR_ROUNDUP}", "ROUNDUP"],
                     ["%{BKY_MATH_ROUND_OPERATOR_ROUNDDOWN}", "ROUNDDOWN"],
                     ["%{BKY_MATH_SINGLE_OP_ROOT}", 'ROOT'],
+                    ['cube root', 'CUBEROOT'],
                     ["%{BKY_MATH_SINGLE_OP_ABSOLUTE}", 'ABS'],
+                    ['signum', 'SIGNUM'],
                     ['ln', 'LN'],
                     ['log10', 'LOG10'],
                     ["%{BKY_MATH_TRIG_SIN}", "SIN"],
@@ -322,7 +326,6 @@ Blockly.defineBlocksWithJsonArray([
                 "check": "Number"
             }
         ],
-        "inputsInline": true,
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
@@ -479,6 +482,44 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
     });
 
+// Mutator to add/remove entity input from get/set variable blocks for player variables
+Blockly.Extensions.registerMutator('variable_entity_input',
+    {
+        mutationToDom: function () {
+            var container = document.createElement('mutation');
+            var isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
+            container.setAttribute('is_player_var', isPlayerVar);
+            var hasEntity = (this.getInputTargetBlock('entity') != null);
+            container.setAttribute('has_entity', hasEntity);
+            return container;
+        },
+
+        domToMutation: function (xmlElement) {
+            var isPlayerVar = (xmlElement.getAttribute('is_player_var') == 'true');
+            var hasEntity = (xmlElement.getAttribute('has_entity') == 'true');
+            this.updateShape_(isPlayerVar, !hasEntity); // don't create another block if it already has one
+        },
+
+        // Helper function to add an 'entity' input to the block
+        updateShape_: function (isPlayerVar, addEntityBlock) {
+            var entityInput = this.getInput('entity');
+            if (isPlayerVar) {
+                if (!entityInput) {
+                    var connection = this.appendValueInput('entity').setCheck('Entity')
+                        .appendField(javabridge.t("blockly.block.var_for_entity")).connection;
+                    if (addEntityBlock) {
+                        var blockXML = Blockly.utils.xml.createElement('block');
+                        blockXML.setAttribute('type', 'entity_from_deps');
+                        var entityBlock = Blockly.Xml.domToBlock(blockXML, this.workspace);
+                        connection.connect(entityBlock.outputConnection)
+                    }
+                }
+            } else if (entityInput) {
+                this.removeInput('entity');
+            }
+        }
+    });
+
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
@@ -503,7 +544,7 @@ Blockly.Extensions.register('biome_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
-            javabridge.getReadableListOf("biome"))), 'biome');
+                javabridge.getReadableListOf("biome"))), 'biome');
     });
 
 Blockly.Extensions.register('biome_dictionary_list_provider',
@@ -516,7 +557,7 @@ Blockly.Extensions.register('entity_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
-            javabridge.getReadableListOf("entity"))), 'entity');
+                javabridge.getReadableListOf("entity"))), 'entity');
     });
 
 Blockly.Extensions.register('gui_list_provider',
@@ -587,14 +628,16 @@ Blockly.Extensions.register('enhancement_list_provider',
 
 Blockly.Extensions.register('sound_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
+            .appendField(new Blockly.FieldDropdown(
+                arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
     });
 
 Blockly.Extensions.register('sound_category_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategory"))), 'soundcategory');
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_category_list"))
+            .appendField(new Blockly.FieldDropdown(
+                arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategory"))), 'soundcategory');
     });
 
 Blockly.Extensions.register('particle_list_provider',

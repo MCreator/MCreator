@@ -1,0 +1,8 @@
+_default: PLAINS
+Plains: PLAINS
+Desert: DESERT
+Beach: BEACH
+Cave: CAVE
+Water: WATER
+Nether: NETHER
+Crop: CROP
