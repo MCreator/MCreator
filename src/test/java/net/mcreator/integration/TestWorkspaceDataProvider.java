@@ -338,7 +338,7 @@ public class TestWorkspaceDataProvider {
 				entry1.minGroup = 10;
 				entry1.minGroup = 134;
 				entry1.weight = 13;
-				entry1.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
+				entry1.spawnType = getRandomItem(random, ElementUtil.getDataList("mobspawntypes"));
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
@@ -347,7 +347,7 @@ public class TestWorkspaceDataProvider {
 				entry2.minGroup = 23;
 				entry2.minGroup = 145;
 				entry2.weight = 11;
-				entry2.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
+				entry2.spawnType = getRandomItem(random, ElementUtil.getDataList("mobspawntypes"));
 				entities.add(entry2);
 			}
 			biome.spawnEntries = entities;
@@ -726,7 +726,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
+			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataList("mobspawntypes"));
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
 			livingEntity.restrictionBiomes = new ArrayList<>();
