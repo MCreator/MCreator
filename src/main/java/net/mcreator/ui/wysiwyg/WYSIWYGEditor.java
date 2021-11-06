@@ -88,7 +88,7 @@ public class WYSIWYGEditor extends JPanel {
 	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
 	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
-	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.loadScreens());
+	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.getDataList("screens"));
 
 	public MCreator mcreator;
 
