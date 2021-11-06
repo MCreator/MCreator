@@ -43,9 +43,13 @@
         <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
-    ${(name)}Procedure.execute(Stream.of(
-    <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
-    ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
+    <#if depsBuilder?size == 0>
+        ${(name)}Procedure.execute(Collections.EMPTY_MAP)
+    <#else>
+        ${(name)}Procedure.execute(Stream.of(
+        <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
+        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
+    </#if>
 </#macro>
 
 <#macro procedureToCode name dependencies customVals={}>
