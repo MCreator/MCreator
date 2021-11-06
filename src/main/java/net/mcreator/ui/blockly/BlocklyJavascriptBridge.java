@@ -169,6 +169,12 @@ public class BlocklyJavascriptBridge {
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
+		case "gamemode":
+			return ElementUtil.getAllGameModes();
+		case "biomedictionary":
+			return ElementUtil.loadBiomeDictionaryTypes();
+		case "damagesource":
+			return ElementUtil.getAllDamageSources();
 		case "achievement":
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -187,6 +193,8 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "soundcategory":
+			return ElementUtil.getAllSoundCategories();
 		case "particle":
 			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":
@@ -213,14 +221,11 @@ public class BlocklyJavascriptBridge {
 					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
 							.map(ModElement::getName).collect(Collectors.toList()));
 			break;
+		case "planttype":
+			return ElementUtil.getAllPlantTypes();
 		default:
 			retval = new ArrayList<>();
 		}
-
-		// check if the data list exists and returns it if true
-		if (!DataListLoader.loadDataList(type).isEmpty())
-			return ElementUtil.getDataList(type);
-
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {
