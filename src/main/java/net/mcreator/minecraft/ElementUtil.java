@@ -229,6 +229,22 @@ public class ElementUtil {
 
 	public static String[] loadMobSpawnTypes() {
 		return DataListLoader.loadDataList("mobspawntypes").stream().map(DataListEntry::getName).toArray(String[]::new);
+
+	public static String[] loadDefaultFeatures() {
+		return DataListLoader.loadDataList("defaultfeatures").stream().map(DataListEntry::getName)
+				.toArray(String[]::new);
+	}
+
+	public static String[] loadPathNodeTypes() {
+		return DataListLoader.loadDataList("pathnodetypes").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] loadMapColors() {
+		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] loadScreens() {
+		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {
@@ -257,10 +273,6 @@ public class ElementUtil {
 		}
 
 		return blocks;
-	}
-
-	public static String[] getDataList(String dataList) {
-		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	private static List<DataListEntry> getCustomElements(@Nonnull Workspace workspace,
