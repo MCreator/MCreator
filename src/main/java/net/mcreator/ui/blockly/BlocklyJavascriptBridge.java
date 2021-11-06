@@ -24,7 +24,10 @@ import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
-import net.mcreator.minecraft.*;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -226,6 +229,7 @@ public class BlocklyJavascriptBridge {
 		default:
 			retval = new ArrayList<>();
 		}
+
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {
 			retval = workspace.getModElements().stream().filter(mod -> {

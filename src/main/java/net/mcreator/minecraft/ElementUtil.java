@@ -244,10 +244,6 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("stepsounds");
 	}
 
-	public static String[] loadMobSpawnTypes() {
-		return DataListLoader.loadDataList("mobspawntypes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
 	public static String[] loadBiomeDictionaryTypes() {
 		return DataListLoader.loadDataList("biomedictionarytypes").stream().map(DataListEntry::getName)
 				.toArray(String[]::new);
@@ -268,6 +264,10 @@ public class ElementUtil {
 
 	public static String[] loadScreens() {
 		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
+	}
+
+	public static String[] loadMobSpawnTypes() {
+		return DataListLoader.loadDataList("mobspawntypes").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {
