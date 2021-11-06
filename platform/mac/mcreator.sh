@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------
 #
 
-# WARNING: WHEN CHANGING THIS FILE, "mcreator" binary needs to be recompiled using "shc -r -f mcreator.sh"
+# WARNING: WHEN CHANGING THIS FILE, "mcreator" binary needs to be recompiled using "shc -r -f -v mcreator.sh"
 
 DIR=$(cd "$(dirname "$0")"; pwd)
 

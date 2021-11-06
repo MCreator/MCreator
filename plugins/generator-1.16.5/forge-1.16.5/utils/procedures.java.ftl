@@ -12,7 +12,9 @@
         <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
-    ${(name)}Procedure.executeProcedure(ImmutableMap.<String, Object>builder()<#list depsBuilder as dep>.put(${dep})</#list>.build())
+    ${(name)}Procedure.executeProcedure(Stream.of(
+    <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
+    ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
 </#macro>
 
 <#macro procedureToCode name dependencies customVals={}>

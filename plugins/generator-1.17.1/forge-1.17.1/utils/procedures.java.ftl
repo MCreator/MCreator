@@ -1,18 +1,22 @@
 <#-- @formatter:off -->
 <#macro procedureCode object dependencies={}>
     <#compress>
-    <#assign deps = [] />
+
+    <#assign deps_filtered = {} />
     <#list object.getDependencies(generator.getWorkspace()) as dependency>
-        <#assign deps += [dependency.getName()] />
+        <#list dependencies as name, value>
+            <#if dependency.getName() == name>
+                <#assign deps_filtered += {name: value} />
+            </#if>
+        </#list>
     </#list>
-    <#if deps?size == 0>
+
+    <#if deps_filtered?size == 0>
         ${object.getName()}Procedure.execute(Collections.EMPTY_MAP);
     <#else>
-        ${object.getName()}Procedure.execute(ImmutableMap.<String, Object>builder()
-        <#list dependencies as name, value>
-            <#if deps?seq_contains(name)>.put("${name}", ${value})</#if>
-        </#list>
-        .build());
+        ${object.getName()}Procedure.execute(Stream.of(
+        <#list deps_filtered as name, value>new AbstractMap.SimpleEntry<>("${name}", ${value})<#if name?has_next>,</#if></#list>
+        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
     </#if>
     </#compress>
 </#macro>
@@ -39,7 +43,9 @@
         <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
-    ${(name)}Procedure.execute(ImmutableMap.<String, Object>builder()<#list depsBuilder as dep>.put(${dep})</#list>.build())
+    ${(name)}Procedure.execute(Stream.of(
+    <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
+    ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
 </#macro>
 
 <#macro procedureToCode name dependencies customVals={}>
