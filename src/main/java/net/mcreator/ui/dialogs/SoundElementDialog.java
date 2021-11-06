@@ -27,8 +27,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
-import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.elements.SoundElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;

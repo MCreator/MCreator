@@ -45,28 +45,30 @@ package ${package}.init;
     <#list items as item>
         <#if item.getModElement().getTypeString() == "armor">
             <#if item.enableHelmet>
-            public static Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
             </#if>
             <#if item.enableBody>
-            public static Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
             </#if>
             <#if item.enableLeggings>
-            public static Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
             </#if>
             <#if item.enableBoots>
-            public static Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
             </#if>
         <#elseif item.getModElement().getTypeString() == "dimension">
-            public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(new ${item.getModElement().getName()}BucketItem());
         <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
             <#assign hasBlocks = true>
-            public static Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
         <#elseif item.getModElement().getTypeString() == "livingentity">
-            public static Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
                     ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
-                    .tab(CreativeModeTab.MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
+                    .tab(CreativeModeTab.TAB_MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
         <#else>
-            public static Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
         </#if>
     </#list>
 

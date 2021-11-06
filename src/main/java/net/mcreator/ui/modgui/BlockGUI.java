@@ -417,9 +417,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		texture = new TextureHolder(
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
 		textureTop = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
 
 		textureLeft = new TextureHolder(
 				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));

@@ -40,8 +40,8 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.views.ViewBase;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
@@ -720,7 +720,7 @@ public class CodeEditorView extends ViewBase {
 
 	public static boolean isFileSupported(String fileName) {
 		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md")
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg")
 				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 

@@ -79,9 +79,8 @@ public class TextureImportDialogs {
 			else
 				f1 = null;
 			if (f1 != null)
-				p1.setText(
-						FilenameUtilsPatched.removeExtension(f1.getName().toLowerCase(Locale.ENGLISH).replace("layer_1", ""))
-								+ " P1");
+				p1.setText(FilenameUtilsPatched.removeExtension(
+						f1.getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")) + " P1");
 		});
 		p2.addActionListener(event -> {
 			File[] f2a = FileDialogs.getFileChooserDialog(fra, null, FileDialogs.FileChooserType.OPEN, false,
@@ -100,9 +99,8 @@ public class TextureImportDialogs {
 			else
 				f2 = null;
 			if (f2 != null)
-				p2.setText(
-						FilenameUtilsPatched.removeExtension(f2.getName().toLowerCase(Locale.ENGLISH).replace("layer_2", ""))
-								+ " P2");
+				p2.setText(FilenameUtilsPatched.removeExtension(
+						f2.getName().toLowerCase(Locale.ENGLISH).replace("layer_2", "")) + " P2");
 		});
 		od.add("Center", neno);
 

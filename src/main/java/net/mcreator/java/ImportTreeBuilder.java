@@ -74,6 +74,10 @@ public class ImportTreeBuilder {
 						if (entryName.endsWith("package-info.class") || entryName.endsWith("module-info.class"))
 							continue;
 
+						// skip some libraries
+						if (entryName.startsWith("org/antlr"))
+							continue;
+
 						// skip all meta-info paths
 						if (entryName.startsWith("META-INF/"))
 							continue;

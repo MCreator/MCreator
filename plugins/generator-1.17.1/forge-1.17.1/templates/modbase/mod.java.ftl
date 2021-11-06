@@ -31,13 +31,7 @@ import org.apache.logging.log4j.Logger;
 	private static int messageID = 0;
 
 	public ${JavaModName}() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
-
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
-	}
-
-	private void init(FMLCommonSetupEvent event) {
-		<#if w.hasBrewingRecipes()>${JavaModName}BrewingRecipes.load();</#if>
 	}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

@@ -55,7 +55,7 @@ public class CodeCleanup {
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_before_member_type", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_before_new_chunk", "1");
-		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.join_wrapped_lines", "false");
+		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.join_wrapped_lines", "true");
 
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.tabulation.char", "tab");
 

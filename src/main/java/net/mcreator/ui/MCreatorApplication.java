@@ -111,11 +111,11 @@ public final class MCreatorApplication {
 
 		splashScreen.setProgress(25, "Loading interface components");
 
-		// load translations after plugins are loaded
-		L10N.initTranslations();
-
 		// preload help entries cache
 		HelpLoader.preloadCache();
+
+		// load translations after plugins are loaded
+		L10N.initTranslations();
 
 		splashScreen.setProgress(35, "Loading plugin data");
 

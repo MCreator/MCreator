@@ -29,6 +29,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.BlocklyJSFilesLoader;
@@ -87,6 +88,9 @@ public class TestSetup {
 		}
 
 		DataListLoader.preloadCache();
+
+		// preload help entries cache
+		HelpLoader.preloadCache();
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();

@@ -38,6 +38,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.Tag;
+import net.minecraft.sounds.SoundEvent;
 
 <#assign extendsClass = "PathfinderMob">
 
@@ -215,23 +216,23 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
    	<#if data.livingSound.getMappedValue()?has_content>
-	@Override public net.minecraft.sounds.SoundEvent getAmbientSound() {
-		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
+	@Override public SoundEvent getAmbientSound() {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
 	</#if>
 
    	<#if data.stepSound?has_content && data.stepSound.getMappedValue()?has_content>
 	@Override public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound((net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
+		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
 	}
 	</#if>
 
-	@Override public net.minecraft.sounds.SoundEvent getHurtSound(DamageSource ds) {
-		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
+	@Override public SoundEvent getHurtSound(DamageSource ds) {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
 	}
 
-	@Override public net.minecraft.sounds.SoundEvent getDeathSound() {
-		return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
+	@Override public SoundEvent getDeathSound() {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
 
 	<#if hasProcedure(data.onStruckByLightning)>
@@ -241,6 +242,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double y = this.getY();
 		double z = this.getZ();
 		Entity entity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.onStruckByLightning/>
 	}
     </#if>
@@ -252,6 +254,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
+			Level world = this.level;
 			<@procedureOBJToCode data.whenMobFalls/>
 		</#if>
 
@@ -273,6 +276,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
+			Level world = this.level;
 			Entity sourceentity = source.getEntity();
 			<@procedureOBJToCode data.whenMobIsHurt/>
 		</#if>
@@ -338,6 +342,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double z = this.getZ();
 		Entity sourceentity = source.getEntity();
 		Entity entity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.whenMobDies/>
 	}
     </#if>
@@ -389,8 +394,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public void readAdditionalSaveData(CompoundTag compound) {
     	super.readAdditionalSaveData(compound);
 		Tag inventoryCustom = compound.get("InventoryCustom");
-		if(inventoryCustom instanceof CompoundTag)
-			inventory.deserializeNBT((CompoundTag) inventoryCustom);
+		if(inventoryCustom instanceof CompoundTag inventoryTag)
+			inventory.deserializeNBT(inventoryTag);
     }
     </#if>
 
@@ -403,8 +408,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
-				if(sourceentity instanceof ServerPlayer) {
-					NetworkHooks.openGui((ServerPlayer) sourceentity, new MenuProvider() {
+				if(sourceentity instanceof ServerPlayer serverPlayer) {
+					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 
 						@Override public Component getDisplayName() {
 							return new TextComponent("${data.mobName}");
@@ -412,14 +417,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 						@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
 							FriendlyByteBuf packetBuffer = new FriendlyByteBuf(Unpooled.buffer());
-							packetBuffer.writeBlockPos(new BlockPos(sourceentity.getX(), sourceentity.getY(), sourceentity.getZ()));
+							packetBuffer.writeBlockPos(sourceentity.blockPosition());
 							packetBuffer.writeByte(0);
 							packetBuffer.writeVarInt(${name}Entity.this.getId());
 							return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 						}
 
 					}, buf -> {
-						buf.writeBlockPos(new BlockPos(sourceentity.getX(), sourceentity.getY(), sourceentity.getZ()));
+						buf.writeBlockPos(sourceentity.blockPosition());
 						buf.writeByte(0);
 						buf.writeVarInt(this.getId());
 					});
@@ -482,7 +487,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
-			<#if hasReturnValue(data.onRightClickedOn)>
+			Level world = this.level;
+			<#if hasReturnValueOf(data.onRightClickedOn, "actionresulttype")>
 				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/>;
 			<#else>
 				<@procedureOBJToCode data.onRightClickedOn/>
@@ -501,6 +507,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double y = this.getY();
 		double z = this.getZ();
 		Entity sourceentity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.whenThisMobKillsAnother/>
 	}
     </#if>
@@ -512,6 +519,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double y = this.getY();
 		double z = this.getZ();
 		Entity entity = this;
+		Level world = this.level;
 		<@procedureOBJToCode data.onMobTickUpdate/>
 	}
     </#if>
@@ -520,6 +528,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public void playerTouch(Player sourceentity) {
 		super.playerTouch(sourceentity);
 		Entity entity = this;
+		Level world = this.level;
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();
@@ -545,7 +554,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
 			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.create(serverWorld);
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(new BlockPos(retval.getX(), retval.getY(), retval.getZ())), MobSpawnType.BREEDING, null, null);
+			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
 			return retval;
 		}
 
@@ -615,17 +624,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.yHeadRot = entity.getYRot();
 				this.maxUpStep = 1.0F;
 
-				if (entity instanceof LivingEntity) {
+				if (entity instanceof LivingEntity passenger) {
 					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
 
 					<#if data.canControlForward>
-						float forward = ((LivingEntity) entity).zza;
+						float forward = passenger.zza;
 					<#else>
 						float forward = 0;
 					</#if>
 
 					<#if data.canControlStrafe>
-						float strafe = ((LivingEntity) entity).xxa;
+						float strafe = passenger.xxa;
 					<#else>
 						float strafe = 0;
 					</#if>
@@ -750,7 +759,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					    <#if data.mobBehaviourType == "Mob">
 					        Monster::checkMonsterSpawnRules
 					    <#else>
-					        (entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entityType, world, reason, pos, random))
+					        (entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
 					    </#if>
 					</#if>
 			);

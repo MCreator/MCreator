@@ -23,7 +23,6 @@ import net.mcreator.minecraft.api.ModAPI;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
