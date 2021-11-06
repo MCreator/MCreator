@@ -2,9 +2,7 @@ Blockly.Extensions.register('biome_dictionary_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("biomedictionarytypes"))), 'biomedict');
-    });
-
-Blockly.Extensions.register('gamemode_list_provider',
+    });Blockly.Extensions.register('gamemode_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("gamemodes"))), 'gamemode');
