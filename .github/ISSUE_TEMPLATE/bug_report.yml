@@ -12,8 +12,8 @@ body:
     label: Operating System
     description: Which operating system have you used and triggered the issue?
     options:
-      - label: macOS
       - label: Windows
+      - label: macOS
       - label: Linux
       - label: Other (Tell us at the Specifications part)
 
