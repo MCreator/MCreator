@@ -1393,25 +1393,20 @@ public class MinecraftImageGenerator {
 		 * @return Returns generated image of the appropriate colour.
 		 */
 		public static BufferedImage generateTagPreviewPicture(String type) {
-			switch (type) {
-			case "Items":
-				return ImageUtils.toBufferedImage(
+			return switch (type) {
+				case "Items" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
 								.getImage());
-			case "Blocks":
-				return ImageUtils.toBufferedImage(
+				case "Blocks" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), new Color(0x999960), false).getImage());
-			case "Entities":
-				return ImageUtils.toBufferedImage(
+				case "Entities" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
 								.getImage());
-			case "Functions":
-				return ImageUtils.toBufferedImage(
+				case "Functions" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
 								.getImage());
-			default:
-				return null;
-			}
+				default -> null;
+			};
 		}
 
 		/**
@@ -1424,19 +1419,11 @@ public class MinecraftImageGenerator {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
-			Color textureColor;
-
-			switch (type) {
-			case "Number":
-				textureColor = new Color(0x606999);
-				break;
-			case "Logic":
-				textureColor = new Color(0x607c99);
-				break;
-			default:
-				textureColor = Color.WHITE;
-				break;
-			}
+			Color textureColor = switch (type) {
+				case "Number" -> new Color(0x606999);
+				case "Logic" -> new Color(0x607c99);
+				default -> Color.WHITE;
+			};
 
 			graphics2D.drawImage(
 					ImageUtils.colorize(UIRES.get("mod_preview_bases.gamerule_base"), textureColor, false).getImage(),

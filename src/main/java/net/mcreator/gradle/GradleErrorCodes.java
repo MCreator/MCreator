@@ -40,36 +40,20 @@ public final class GradleErrorCodes {
 
 	public static String toString(int errorCode) {
 
-		switch (errorCode) {
-
-		case STATUS_OK:
-			return "STATUS_OK";
-		case STATUS_UNKNOWN:
-			return "STATUS_UNKNOWN";
-
-		case STATUS_UNKNOWN_ERROR:
-			return "STATUS_UNKNOWN_ERROR";
-		case JAVA_JVM_CRASH_ERROR:
-			return "JAVA_JVM_CRASH_ERROR";
-		case JAVA_XMX_INVALID_VALUE:
-			return "JAVA_XMX_INVALID_VALUE";
-		case JAVA_XMS_INVALID_VALUE:
-			return "JAVA_XMS_INVALID_VALUE";
-		case JAVA_JVM_HEAP_SPACE:
-			return "JAVA_JVM_HEAP_SPACE";
-		case GRADLE_NO_INTERNET:
-			return "GRADLE_NO_INTERNET";
-		case GRADLE_INTERNET_INTERRUPTED:
-			return "GRADLE_INTERNET_INTERRUPTED";
-		case GRADLE_BUILD_FAILED:
-			return "GRADLE_BUILD_FAILED";
-		case GRADLE_REOBF_FAILED:
-			return "GRADLE_REOBF_FAILED";
-
-		default:
-			return "";
-
-		}
+		return switch (errorCode) {
+			case STATUS_OK -> "STATUS_OK";
+			case STATUS_UNKNOWN -> "STATUS_UNKNOWN";
+			case STATUS_UNKNOWN_ERROR -> "STATUS_UNKNOWN_ERROR";
+			case JAVA_JVM_CRASH_ERROR -> "JAVA_JVM_CRASH_ERROR";
+			case JAVA_XMX_INVALID_VALUE -> "JAVA_XMX_INVALID_VALUE";
+			case JAVA_XMS_INVALID_VALUE -> "JAVA_XMS_INVALID_VALUE";
+			case JAVA_JVM_HEAP_SPACE -> "JAVA_JVM_HEAP_SPACE";
+			case GRADLE_NO_INTERNET -> "GRADLE_NO_INTERNET";
+			case GRADLE_INTERNET_INTERRUPTED -> "GRADLE_INTERNET_INTERRUPTED";
+			case GRADLE_BUILD_FAILED -> "GRADLE_BUILD_FAILED";
+			case GRADLE_REOBF_FAILED -> "GRADLE_REOBF_FAILED";
+			default -> "";
+		};
 
 	}
 
