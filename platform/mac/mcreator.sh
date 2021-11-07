@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------
 #
 
-# WARNING: WHEN CHANGING THIS FILE, "mcreator" binary needs to be recompiled using "shc -r -f -v mcreator.sh"
+# WARNING: WHEN CHANGING THIS FILE, "mcreator" binary needs to be recompiled using "shc -v -r -f mcreator.sh"
 
 DIR=$(cd "$(dirname "$0")"; pwd)
 
@@ -17,3 +17,4 @@ cd "$DIR"
   -Xdock:icon=../Resources/mcreatorapp.icns \
   -Dapple.awt.application.appearance=system \
   -cp .:./lib/mcreator.jar:./lib/* \
+  net.mcreator.Launcher
