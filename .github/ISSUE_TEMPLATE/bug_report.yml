@@ -13,7 +13,7 @@ body:
     description: Which operating system have you used and triggered the issue?
     options:
       - label: macOS
-      - label: Microsoft Windows
+      - label: Windows
       - label: Linux
       - label: Other (Tell us at the Specifications part)
 
