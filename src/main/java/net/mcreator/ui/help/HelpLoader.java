@@ -18,11 +18,13 @@
 
 package net.mcreator.ui.help;
 
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.HtmlUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -33,7 +35,6 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -96,12 +97,28 @@ public class HelpLoader {
 			if (helpContext.getEntry() != null) {
 				String helpText = getFromCache(helpContext.getEntry());
 				if (helpText != null) {
-					if (helpContext.getArguments() != null)
-						helpString.append(renderer.render(parser.parse(MessageFormat.format(helpText,
-								Arrays.stream(helpContext.getArguments()).map(e -> e == null ? "" : e.get().toString())
-										.map(HtmlUtils::unescapeHtml).toArray()))));
-					else
+					if (helpContext instanceof ModElementGUI<?> modElementGUI) {
+						try {
+							GeneratableElement generatableElement = modElementGUI.getElementFromGUI();
+							Map<String, Object> dataModel = new HashMap<>();
+							dataModel.put("data", generatableElement);
+							dataModel.put("registryname", generatableElement.getModElement().getRegistryName());
+							dataModel.put("name", generatableElement.getModElement().getName());
+							dataModel.put("gui", modElementGUI);
+							dataModel.put("l10n", new L10N());
+
+							if (generatableElement.getAdditionalTemplateData() != null)
+								generatableElement.getAdditionalTemplateData().provideAdditionalData(dataModel);
+
+							helpString.append(renderer.render(parser.parse(
+									generatableElement.getModElement().getWorkspace().getGenerator()
+											.getTemplateGenerator().generateFromString(helpText, dataModel))));
+						} catch (TemplateGeneratorException e) {
+							helpString.append(renderer.render(parser.parse(helpText)));
+						}
+					} else {
 						helpString.append(renderer.render(parser.parse(helpText)));
+					}
 				} else {
 					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
 				}

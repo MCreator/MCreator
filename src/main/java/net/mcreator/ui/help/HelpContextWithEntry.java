@@ -20,10 +20,9 @@ package net.mcreator.ui.help;
 
 import javax.annotation.Nullable;
 import java.net.URI;
-import java.util.function.Supplier;
 
-public record HelpContextWithEntry(@Nullable String name, @Nullable URI contextURL, @Nullable String entry,
-								   @Nullable Supplier<?>[] arguments) implements IHelpContext {
+public record HelpContextWithEntry(@Nullable String name, @Nullable URI contextURL, @Nullable String entry)
+		implements IHelpContext {
 
 	@Nullable @Override public String getContextName() {
 		return name;
@@ -35,9 +34,5 @@ public record HelpContextWithEntry(@Nullable String name, @Nullable URI contextU
 
 	@Nullable @Override public String getEntry() {
 		return entry;
-	}
-
-	@Nullable @Override public Supplier<?>[] getArguments() {
-		return arguments;
 	}
 }
