@@ -39,6 +39,8 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.models.item.JItemModelsList;
+import net.mcreator.ui.minecraft.models.item.JItemPropertiesList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -93,7 +95,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private static final Model tool = new Model.BuiltInModel("Tool");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
-	//TODO
+	private JItemPropertiesList customProperties;
+	private JItemModelsList modelsMap;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -110,6 +113,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector dispenseResultItemstack;
 
 	private final ValidationGroup page1group = new ValidationGroup();
+	private final ValidationGroup page2group = new ValidationGroup();
 
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
@@ -167,6 +171,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
 				L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline().makeReturnValueOptional();
 
+		customProperties = new JItemPropertiesList(this.mcreator);
+		modelsMap = new JItemModelsList(this.mcreator);
+
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
 				String selected = (String) guiBoundTo.getSelectedItem();
@@ -183,6 +190,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
+		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
@@ -194,9 +202,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal2.setOpaque(false);
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils.totalCenterInPanel(
+		destal2.add("North", PanelUtils.totalCenterInPanel(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
-		destal2.add("North", destal3);
 
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
@@ -217,7 +224,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
-		ComponentUtils.deriveFont(renderType, 16.0f);
+		ComponentUtils.deriveFont(renderType, 16);
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -230,12 +237,20 @@ public class ItemGUI extends ModElementGUI<Item> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		destal3.add("Center", rent);
+		cipp.setOpaque(false);
 
-		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		cipp.add("North", rent);
+
+		JPanel demova = new JPanel();
+		demova.setLayout(new GridLayout());
+		demova.setOpaque(false);
+		cipp.add("Center", demova);
+
+		customProperties.setPreferredSize(new Dimension(demova.getWidth() / 2, demova.getHeight()));
+		modelsMap.setPreferredSize(new Dimension(demova.getWidth() / 2, demova.getHeight()));
+
+		demova.add("North", customProperties);
+		demova.add("South", modelsMap);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -384,13 +399,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		texture.setValidator(new TileHolderValidator(texture));
 
-		page1group.addValidationElement(texture);
+		page2group.addValidationElement(texture);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_models"), null); //TODO
+		addPage(L10N.t("elementgui.item.page_models"), cipp);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
@@ -425,6 +440,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		dispenseSuccessCondition.refreshListKeepSelected();
 		dispenseResultItemstack.refreshListKeepSelected();
 
+		customProperties.reloadDataLists();
+		modelsMap.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
@@ -443,10 +461,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
+		if (page == 2)
 			return new AggregatedValidationResult(name);
+		else if (page == 1)
+			return customProperties.getValidationResult();
 		else if (page == 0)
-			return new AggregatedValidationResult(page1group);
+			return new AggregatedValidationResult(page2group);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -493,6 +513,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		Model model = item.getItemModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
+
+		customProperties.setProperties(item.customProperties);
+		modelsMap.setModelsList(item.modelsMap);
 	}
 
 	@Override public Item getElementFromGUI() {
@@ -533,13 +556,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		item.texture = texture.getID();
-		Model.Type modelType = Objects.requireNonNull(renderType.getSelectedItem()).getType();
-		item.renderType = 0;
-		if (modelType == Model.Type.JSON)
-			item.renderType = 1;
-		else if (modelType == Model.Type.OBJ)
-			item.renderType = 2;
+		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
+		item.customProperties = customProperties.getProperties();
+		item.modelsMap = modelsMap.getModelsList();
 
 		return item;
 	}

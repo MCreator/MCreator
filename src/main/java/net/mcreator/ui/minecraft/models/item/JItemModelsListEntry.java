@@ -19,44 +19,65 @@
 
 package net.mcreator.ui.minecraft.models.item;
 
+import net.mcreator.element.types.Item;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.modgui.ItemGUI;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedEntriesValidator;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.Tuple;
 import net.mcreator.workspace.resources.Model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JItemModelsListEntry extends JPanel {
 
-	private final VTextField state;
+	private final JLabel state;
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
 	private final MCreator mcreator;
 
 	public JItemModelsListEntry(MCreator mcreator, JPanel parent, List<JItemModelsListEntry> entryList) {
-		super(new FlowLayout(FlowLayout.LEFT));
+		super(new BorderLayout());
 
 		this.mcreator = mcreator;
 
-		state = new VTextField();
-		state.setValidator(new CommaSeparatedEntriesValidator(state));
+		state = new JLabel();
+		state.setToolTipText(L10N.t("elementgui.item.custom_models.entry.edit_states"));
+		state.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					state.setText(StateEditorDialog.open(mcreator, state.getText()));
+			}
+		});
+
+		ComponentUtils.deriveFont(model, 16);
+		model.setPreferredSize(new Dimension(350, 42));
+		model.setRenderer(new ModelComboBoxRenderer());
+		reloadDataLists();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
+		JPanel east = new JPanel();
+		JScrollPane stateScrollPane = new JScrollPane(state);
+		stateScrollPane.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		container.add(L10N.label("elementgui.item.custom_models.name"));
-		container.add(state);
+		add("Center", stateScrollPane);
+
+		east.add(L10N.label("elementgui.item.custom_models.entry"));
+		east.add(model);
 
 		parent.add(container);
 		entryList.add(this);
@@ -69,7 +90,9 @@ public class JItemModelsListEntry extends JPanel {
 			parent.revalidate();
 			parent.repaint();
 		});
-		add(remove);
+		east.add(remove);
+
+		add("East", east);
 
 		parent.revalidate();
 		parent.repaint();
@@ -82,20 +105,17 @@ public class JItemModelsListEntry extends JPanel {
 						.collect(Collectors.toList())));
 	}
 
-	public void addEntry(Map<Map<String, Float>, Model> map) {
-		map.put(decodeState(), this.model.getSelectedItem());
+	public void addEntry(Map<Map<String, Float>, Tuple<String, Integer>> map) {
+		Model selectedModel = Objects.requireNonNull(model.getSelectedItem());
+		Map<String, Float> stateMap = Stream.of(state.getText().split(","))
+				.collect(Collectors.toMap(k -> k.split("=")[0], v -> Float.parseFloat(v.split("=")[1])));
+		map.put(stateMap, new Tuple<>(selectedModel.getReadableName(), Item.encodeModelType(selectedModel.getType())));
 	}
 
-	public void setEntry(Map<String, Float> state, Model model) {
+	public void setEntry(Map<String, Float> state, Tuple<String, Integer> model) {
 		this.state.setText(state.entrySet().stream().map(e -> String.format("%s=%f", e.getKey(), e.getValue()))
 				.collect(Collectors.joining(",")));
-		this.model.setSelectedItem(model);
-	}
-
-	public Map<String, Float> decodeState() {
-		Map<String, Float> retVal = new HashMap<>();
-		Stream.of(this.state.getText().split(","))
-				.peek(e -> retVal.put(e.split("=")[0], Float.parseFloat(e.split("=")[1])));
-		return retVal;
+		this.model.setSelectedItem(
+				Model.getModelByParams(mcreator.getWorkspace(), model.x(), Item.decodeModelType(model.y())));
 	}
 }

@@ -24,6 +24,8 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.IValidable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +62,7 @@ public class JItemPropertiesList extends JPanel {
 
 		add.addActionListener(e -> new JItemPropertiesListEntry(mcreator, entries, entryList));
 
-		add("Center", PanelUtils.pullElementUp(entries));
+		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
@@ -86,5 +88,9 @@ public class JItemPropertiesList extends JPanel {
 
 	public void setProperties(Map<String, Procedure> properties) {
 		properties.forEach((k, v) -> new JItemPropertiesListEntry(mcreator, entries, entryList).setEntry(k, v));
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(entryList.toArray(IValidable[]::new));
 	}
 }

@@ -23,7 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.workspace.resources.Model;
+import net.mcreator.util.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,11 +60,11 @@ public class JItemModelsList extends JPanel {
 
 		add.addActionListener(e -> new JItemModelsListEntry(mcreator, entries, entryList));
 
-		add("Center", PanelUtils.pullElementUp(entries));
+		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.item.custom_properties.name"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.item.custom_models.name"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}
 
@@ -78,13 +78,13 @@ public class JItemModelsList extends JPanel {
 		entryList.forEach(JItemModelsListEntry::reloadDataLists);
 	}
 
-	public Map<Map<String, Float>, Model> getModelsList() {
-		Map<Map<String, Float>, Model> retVal = new HashMap<>();
+	public Map<Map<String, Float>, Tuple<String, Integer>> getModelsList() {
+		Map<Map<String, Float>, Tuple<String, Integer>> retVal = new HashMap<>();
 		entryList.forEach(e -> e.addEntry(retVal));
 		return retVal;
 	}
 
-	public void setModelsList(Map<Map<String, Float>, Model> properties) {
+	public void setModelsList(Map<Map<String, Float>, Tuple<String, Integer>> properties) {
 		properties.forEach((k, v) -> new JItemModelsListEntry(mcreator, entries, entryList).setEntry(k, v));
 	}
 }

@@ -27,6 +27,8 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -36,7 +38,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
-public class JItemPropertiesListEntry extends JPanel {
+public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	private final VTextField name;
 	private final ProcedureSelector value;
@@ -44,20 +46,26 @@ public class JItemPropertiesListEntry extends JPanel {
 	public JItemPropertiesListEntry(MCreator mcreator, JPanel parent, List<JItemPropertiesListEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
-		this.name = new VTextField();
-		this.value = new ProcedureSelector(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
-				L10N.t("elementgui.item.custom_property.value", this.name.getName()),
-				VariableTypeLoader.BuiltInTypes.NUMBER,
-				Dependency.fromString("world:world/entity:entity/itemstack:itemstack"));
+		name = new VTextField(20);
+		name.setValidator(new RegistryNameValidator(this.name, "Property name"));
+		name.enableRealtimeValidation();
 
-		this.name.setValidator(new RegistryNameValidator(this.name, "Property name"));
+		value = new ProcedureSelector(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
+				L10N.t("elementgui.item.custom_property.value"), //TODO: Append number when creating a procedure
+				VariableTypeLoader.BuiltInTypes.NUMBER,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		value.setDefaultName("(zero)");
+		reloadDataLists();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 
-		container.add(L10N.label("elementgui.item.custom_property.name"));
-		container.add(name);
+		add(L10N.label("elementgui.item.custom_property.name"));
+		add(name);
+		add(value);
 
 		parent.add(container);
+		revalidate();
+		repaint();
 		entryList.add(this);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
@@ -75,7 +83,7 @@ public class JItemPropertiesListEntry extends JPanel {
 	}
 
 	public void reloadDataLists() {
-		value.refreshList();
+		value.refreshListKeepSelected();
 	}
 
 	public void addEntry(Map<String, Procedure> map) {
@@ -86,5 +94,17 @@ public class JItemPropertiesListEntry extends JPanel {
 	public void setEntry(String name, Procedure value) {
 		this.name.setText(name);
 		this.value.setSelectedProcedure(value);
+	}
+
+	@Override public Validator.ValidationResult getValidationStatus() {
+		return name.getValidationStatus();
+	}
+
+	@Override public void setValidator(Validator validator) {
+		name.setValidator(validator);
+	}
+
+	@Override public Validator getValidator() {
+		return name.getValidator();
 	}
 }
