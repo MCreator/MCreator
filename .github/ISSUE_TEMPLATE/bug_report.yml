@@ -1,6 +1,6 @@
 name: Bug report
 description: Create a report to help us improve (search for duplicates first)
-title: '[BUG]: '
+title: ''
 labels: bug
 assignees: []
 body:
@@ -16,18 +16,16 @@ body:
       - label: macOS
       - label: Microsoft Windows
       - label: Linux
-      - label: Unix
-      - label: Other (Tell us at the Specifications part!)
+      - label: Other (Tell us at the Specifications part)
 
  - type: textarea
    id: specifications
    attributes:
     label: Details
-    description: To understand the issue, we need some details of your setup & system!
+    description: To understand the issue, we need some details of your setup & system
     placeholder: |
       MCreator version: [2021.1 / branch:master / ...];
       Generator type: [forge-1.15.2 / forge-1.16.5 / ...];
-      OS [Windows / Ubuntu / macOS / ...]; (if not already listed above)
    validations:
      required: true
       
@@ -79,13 +77,15 @@ body:
  - type: checkboxes
    attributes:
     label: Checks
-    description: Some things, that should be checked!
+    description: Some things, that should be checked
     options:
-      - label: I have checked, that my problem is not already reported!
+      - label: I have checked, that my problem is not already reported.
+        required: true
+      - label: I have checked, that my problem is not on a Wiki or a Knowledge Base page.
         required: true
       - label: I have checked, that no private data such as telephone numbers or credit card numbers are stored in this form.
         required: true
-      - label: I have checked, that my written content does not violate the community guidelines!
+      - label: I have checked, that my written content does not violate the community guidelines.
         required: true
     
     
