@@ -60,18 +60,24 @@ import net.minecraft.sounds.SoundEvent;
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
 
 	<#if data.spawnThisMob>
-	private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
-		</#list>
-	);
+		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
 
-	@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
-		if (SPAWN_BIOMES.contains(event.getName()))
-			event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")})
-					.add(new MobSpawnSettings.SpawnerData(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
-						${data.spawningProbability}, ${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
-	}
+		<#if spawnBiomes?has_content>
+		private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(
+			<#list spawnBiomes as restrictionBiome>
+				new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
+			</#list>
+		);
+		</#if>
+
+		@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
+			<#if spawnBiomes?has_content>
+			if (SPAWN_BIOMES.contains(event.getName()))
+			</#if>
+				event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")})
+						.add(new MobSpawnSettings.SpawnerData(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()},
+							${data.spawningProbability}, ${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
+		}
 	</#if>
 
 	<#if data.isBoss>
