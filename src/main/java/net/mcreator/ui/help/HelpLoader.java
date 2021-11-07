@@ -104,7 +104,6 @@ public class HelpLoader {
 							dataModel.put("data", generatableElement);
 							dataModel.put("registryname", generatableElement.getModElement().getRegistryName());
 							dataModel.put("name", generatableElement.getModElement().getName());
-							dataModel.put("gui", modElementGUI);
 							dataModel.put("l10n", new L10N());
 
 							if (generatableElement.getAdditionalTemplateData() != null)

@@ -46,7 +46,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.*;
 
-public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext {
+public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext, Cloneable {
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
@@ -58,6 +58,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
+
+	private String entry;
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
@@ -481,6 +483,21 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	@Override @Nullable public String getContextName() {
 		return modElement.getType().getReadableName();
+	}
+
+	@SuppressWarnings("unchecked") @Override @Nullable public IHelpContext withEntry(String entry) {
+		try {
+			ModElementGUI<GE> modGui = (ModElementGUI<GE>) this.clone();
+			modGui.entry = entry;
+			return modGui;
+		} catch (CloneNotSupportedException e) {
+			LOG.warn("(" + modElement.getName() + ") Failed to set help entry to " + entry);
+		}
+		return this;
+	}
+
+	@Override @Nullable public String getEntry() {
+		return this.entry;
 	}
 
 }
