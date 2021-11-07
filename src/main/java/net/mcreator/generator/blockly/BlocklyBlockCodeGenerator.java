@@ -144,8 +144,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// next we check for advanced inputs if they exist, we process them and add to data model
-		if (toolboxBlock.advancedInputs != null) {
-			for (var advancedInput : toolboxBlock.advancedInputs) {
+		if (toolboxBlock.advanced_inputs != null) {
+			for (var advancedInput : toolboxBlock.advanced_inputs) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name")
