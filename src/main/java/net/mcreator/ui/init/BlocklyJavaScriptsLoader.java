@@ -29,27 +29,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class BlocklyJSFilesLoader {
+public class BlocklyJavaScriptsLoader {
 
-	private static final Logger LOG = LogManager.getLogger("Blockly JS Files");
+	private static final Logger LOG = LogManager.getLogger("Blockly JS loader");
 
-	public static BlocklyJSFilesLoader INSTANCE;
+	public static BlocklyJavaScriptsLoader INSTANCE;
+
+	public static void init() {
+		INSTANCE = new BlocklyJavaScriptsLoader();
+	}
 
 	private final List<String> SCRIPTS = new ArrayList<>();
 
-	public BlocklyJSFilesLoader() {
-		LOG.debug("Loading JS files for Blockly");
+	public BlocklyJavaScriptsLoader() {
+		LOG.debug("Loading Blockly JavaScript files from plugins");
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.js"));
-
-		for (String fileName : fileNames) {
+		for (String fileName : fileNames)
 			SCRIPTS.add(FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
-			LOG.debug("Successfully added " + fileName + " to cache");
-		}
-	}
-
-	public static void init() {
-		INSTANCE = new BlocklyJSFilesLoader();
 	}
 
 	public List<String> getScripts() {
