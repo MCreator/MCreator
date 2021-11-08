@@ -29,6 +29,7 @@ import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -43,10 +44,11 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
 
-public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext, Cloneable {
+public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext {
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
@@ -58,8 +60,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
-
-	private String entry;
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
@@ -485,19 +485,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		return modElement.getType().getReadableName();
 	}
 
-	@SuppressWarnings("unchecked") @Override @Nullable public IHelpContext withEntry(String entry) {
+	@Override @Nullable public IHelpContext withEntry(String entry) {
 		try {
-			ModElementGUI<GE> modGui = (ModElementGUI<GE>) this.clone();
-			modGui.entry = entry;
-			return modGui;
-		} catch (CloneNotSupportedException e) {
-			LOG.warn("(" + modElement.getName() + ") Failed to set help entry to " + entry);
+			return new ModElementHelpContext(this.getContextName(), this.getContextURL(), entry,
+					this::getElementFromGUI);
+		} catch (URISyntaxException e) {
+			return new ModElementHelpContext(this.getContextName(), null, entry, this::getElementFromGUI);
 		}
-		return this;
-	}
-
-	@Override @Nullable public String getEntry() {
-		return this.entry;
 	}
 
 }

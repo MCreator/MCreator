@@ -23,7 +23,6 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
@@ -97,9 +96,9 @@ public class HelpLoader {
 			if (helpContext.getEntry() != null) {
 				String helpText = getFromCache(helpContext.getEntry());
 				if (helpText != null) {
-					if (helpContext instanceof ModElementGUI<?> modElementGUI) {
+					if (helpContext instanceof ModElementHelpContext meHelpContext) {
 						try {
-							GeneratableElement generatableElement = modElementGUI.getElementFromGUI();
+							GeneratableElement generatableElement = meHelpContext.getModElementFromGUI();
 							Map<String, Object> dataModel = new HashMap<>();
 							dataModel.put("data", generatableElement);
 							dataModel.put("registryname", generatableElement.getModElement().getRegistryName());
