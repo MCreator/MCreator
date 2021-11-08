@@ -4,13 +4,34 @@ labels: bug
 assignees: []
 body:
 
+ - type: textarea
+   id: description
+   attributes:
+    label: Issue description
+    description: Explain clearly and unambiguously what went wrong
+    placeholder: Tell us here about the bug/problem
+   validations:
+    required: true
+     
+ - type: textarea
+   id: reproduction
+   attributes:
+    label: How to reproduce this issue?
+    description: Try to explain what you did for the bug to occur. A good explanation of steps to reproduce helps us locate the bug faster. If applicable, add screenshots to help explain your problem.
+    placeholder: |
+      Step 1: ...
+      Step 2: ...
+      ...
+   validations:
+     required: true
+
  - type: checkboxes
    id: operating-system
    validations:
      required: true
    attributes:
-    label: Operating System
-    description: Which operating system have you used and triggered the issue?
+    label: Operating system
+    description: Which operating system do you use with MCreator?
     options:
       - label: Windows
       - label: macOS
@@ -29,34 +50,15 @@ body:
      required: true
       
  - type: textarea
-   id: description
-   attributes:
-    label: What happened?
-    description: Tell us clearly and unambiguously what went wrong
-    placeholder: Tell us here about the bug/problem
-   validations:
-    required: true
-     
- - type: textarea
-   id: reproduction
-   attributes:
-    label: Reproduction
-    description: Try to explain what you did for the bug to occur. A good explanation of steps to reproduce helps us locate the bug faster. If applicable, add screenshots to help explain your problem.
-    placeholder: |
-      Step 1: ...
-      Step 2: ...
-      ...
-   validations:
-     required: true
-      
- - type: textarea
    id: workspace
    attributes:
-    label: Example Workspace
+    label: Example workspace
     description: |
       If the bug is related to the workspace, always provide a minimal reproducible example workspace, export it to a shareable ZIP file, and attach it to the ticket.
       
       Keep in mind your workspace of the project is not minimal reproducible example. Make a workspace only with elements crucial for the bug.
+      
+      Drag the file into this area.
     placeholder: Insert here
    validations:
     required: false
@@ -75,16 +77,12 @@ body:
     
  - type: checkboxes
    attributes:
-    label: Checks
-    description: Some things, that should be checked
     options:
-      - label: I have checked, that my problem is not already reported.
+      - label: "I have checked that my problem [is not already reported](https://github.com/MCreator/MCreator/issues?q=is%3Aissue)"
         required: true
-      - label: I have checked, that my problem is not on a Wiki or a Knowledge Base page.
+      - label: "I have checked that my problem is not covered on [Knowledge Base](https://mcreator.net/support/knowledgebase) or on [MCreator's wiki](https://mcreator.net/wiki)"
         required: true
-      - label: I have checked, that no private data such as telephone numbers or credit card numbers are stored in this form.
-        required: true
-      - label: I have checked, that my written content does not violate the community guidelines.
+      - label: "I have checked that my written content does not violate the [publishing guidelines](https://mcreator.net/wiki/general-publishing-guidelines)"
         required: true
     
     
