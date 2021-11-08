@@ -16,7 +16,7 @@
     <#else>
         ${object.getName()}Procedure.execute(Stream.of(
         <#list deps_filtered as name, value>new AbstractMap.SimpleEntry<>("${name}", ${value})<#if name?has_next>,</#if></#list>
-        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
+        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll));
     </#if>
     </#compress>
 </#macro>
