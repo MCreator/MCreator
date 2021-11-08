@@ -33,10 +33,10 @@ body:
     label: Operating system
     description: Which operating system do you use with MCreator?
     options:
-      - label: Windows
-      - label: macOS
-      - label: Linux
-      - label: Other (Tell us at the Specifications part)
+      - Windows
+      - macOS
+      - Linux
+      - Other (Tell us at the Specifications part)
 
  - type: textarea
    id: specifications
@@ -78,11 +78,11 @@ body:
  - type: checkboxes
    attributes:
     options:
-      - label: "I have checked that my problem [is not already reported](https://github.com/MCreator/MCreator/issues?q=is%3Aissue)"
+      - label: "I have checked that my problem <a href='https://github.com/MCreator/MCreator/issues?q=is%3Aissue' target='_blank'>is not already reported]</a>"
         required: true
-      - label: "I have checked that my problem is not covered on [Knowledge Base](https://mcreator.net/support/knowledgebase) or on [MCreator's wiki](https://mcreator.net/wiki)"
+      - label: "I have checked that my problem is not covered on <a href='https://mcreator.net/support/knowledgebase' target='_blank'>Knowledge Base</a> or on <a href='https://mcreator.net/wiki' target='_blank'>MCreator's Wiki</a>"
         required: true
-      - label: "I have checked that my written content does not violate the [publishing guidelines](https://mcreator.net/wiki/general-publishing-guidelines)"
+      - label: "I have checked that my written content does not violate the <a href='https://mcreator.net/wiki/general-publishing-guidelines' target='_blank'>publishing guidelines</a>"
         required: true
     
     
