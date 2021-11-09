@@ -462,7 +462,7 @@ Blockly.defineBlocksWithJsonArray([
     },
     {
         "type": "time_as_string",
-        "message0": "Time as a String",
+        "message0": "Time as text",
         "output": "String",
         "colour": "%{BKY_TEXTS_HUE}"
     },
