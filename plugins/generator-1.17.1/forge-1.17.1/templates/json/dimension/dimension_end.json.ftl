@@ -22,6 +22,7 @@
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
+        "min_y": 0,
         "density_factor": 0,
         "density_offset": 0,
         "simplex_surface_noise": true,

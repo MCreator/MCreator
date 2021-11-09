@@ -93,21 +93,21 @@ import java.util.stream.Collectors;
 				.toString();
 	}
 
-	public <T extends MappableElement> List<T> filterBrokenReferences(List<T> input) {
+	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
 		if (input == null)
-			return Collections.emptyList();
+			return Collections.emptySet();
 
-		List<T> retval = new ArrayList<>();
+		Set<MappableElement.Unique> retval = new HashSet<>();
 		for (T t : input) {
 			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
 				if (workspace.getModElementByName(internalWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
-					retval.add(t);
+					retval.add(new MappableElement.Unique(t));
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
 							.replaceFirst("CUSTOM:", ""));
 				}
 			} else {
-				retval.add(t);
+				retval.add(new MappableElement.Unique(t));
 			}
 		}
 		return retval;

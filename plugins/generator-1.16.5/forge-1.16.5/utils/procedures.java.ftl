@@ -12,7 +12,13 @@
         <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
-    ${(name)}Procedure.executeProcedure(ImmutableMap.<String, Object>builder()<#list depsBuilder as dep>.put(${dep})</#list>.build())
+    <#if depsBuilder?size == 0>
+        ${(name)}Procedure.executeProcedure(Collections.EMPTY_MAP)
+    <#else>
+        ${(name)}Procedure.executeProcedure(Stream.of(
+        <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
+        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
+    </#if>
 </#macro>
 
 <#macro procedureToCode name dependencies customVals={}>
@@ -61,8 +67,8 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
-    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
+<#function hasReturnValueOf object="" type="">
+    <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
 
 <#-- @formatter:on -->

@@ -154,8 +154,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 		double z = entity.getZ();
 
 		<#if data.hasInventory()>
-		if(entity instanceof ServerPlayer) {
-			NetworkHooks.openGui((ServerPlayer) entity, new MenuProvider() {
+		if(entity instanceof ServerPlayer serverPlayer) {
+			NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 
 				@Override public Component getDisplayName() {
 					return new TextComponent("${data.name}");
@@ -163,13 +163,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 				@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
 					FriendlyByteBuf packetBuffer = new FriendlyByteBuf(Unpooled.buffer());
-					packetBuffer.writeBlockPos(new BlockPos(x, y, z));
+					packetBuffer.writeBlockPos(entity.blockPosition());
 					packetBuffer.writeByte(hand == InteractionHand.MAIN_HAND ? 0 : 1);
 					return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 				}
 
 			}, buf -> {
-				buf.writeBlockPos(new BlockPos(x, y, z));
+				buf.writeBlockPos(entity.blockPosition());
 				buf.writeByte(hand == InteractionHand.MAIN_HAND ? 0 : 1);
 			});
 		}
@@ -180,26 +180,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 	}
     </#if>
 
-    <#if hasProcedure(data.onRightClickedOnBlock)>
-    @Override public InteractionResult useOn(UseOnContext context) {
-		InteractionResult retval = super.useOn(context);
-		Level world = context.getLevel();
-		BlockPos pos = context.getClickedPos();
-		Player entity = context.getPlayer();
-		Direction direction = context.getClickedFace();
-		BlockState blockstate = world.getBlockState(pos);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		ItemStack itemstack = context.getItemInHand();
-    	<#if hasReturnValue(data.onRightClickedOnBlock)>
-    	return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-		<#else>
-			<@procedureOBJToCode data.onRightClickedOnBlock/>
-    	return retval;
-		</#if>
-	}
-	</#if>
+    <@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
 	<@onEntityHitWith data.onEntityHitWith/>
 
@@ -247,7 +228,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 				<#if hasProcedure(data.dispenseResultItemstack)>
 					boolean success = this.isSuccess();
-					<#if hasReturnValue(data.dispenseResultItemstack)>
+					<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
 						return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 					<#else>
 						<@procedureOBJToCode data.dispenseResultItemstack/>

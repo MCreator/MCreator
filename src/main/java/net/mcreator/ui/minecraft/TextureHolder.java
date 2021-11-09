@@ -39,6 +39,8 @@ public class TextureHolder extends VButton {
 
 	private boolean removeButtonHover;
 
+	private boolean xFlip;
+
 	public TextureHolder(BlockItemTextureSelector td) {
 		this(td, 70);
 	}
@@ -113,6 +115,11 @@ public class TextureHolder extends VButton {
 		return id;
 	}
 
+	public TextureHolder flipOnX() {
+		this.xFlip = true;
+		return this;
+	}
+
 	public void setTextureFromTextureName(String texture) {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
@@ -136,4 +143,27 @@ public class TextureHolder extends VButton {
 		this.actionListener = actionListener;
 	}
 
+	@Override public void setIcon(Icon icon) {
+		if (!xFlip) {
+			super.setIcon(icon);
+		} else {
+			super.setIcon(new Icon() {
+
+				@Override public int getIconHeight() {
+					return icon.getIconHeight();
+				}
+
+				@Override public int getIconWidth() {
+					return icon.getIconWidth();
+				}
+
+				@Override public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+					Graphics2D g2 = (Graphics2D) g.create();
+					g2.translate(0, icon.getIconHeight());
+					g2.scale(1, -1);
+					icon.paintIcon(c, g2, x, y);
+				}
+			});
+		}
+	}
 }

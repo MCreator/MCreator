@@ -132,6 +132,40 @@
 </#if>
 </#macro>
 
+<#macro onItemUsedOnBlock procedure="">
+<#if hasProcedure(procedure)>
+@Override public InteractionResult useOn(UseOnContext context) {
+	InteractionResult retval = super.useOn(context);
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "retval", {
+		"world": "context.getLevel()",
+		"x": "context.getClickedPos().getX()",
+		"y": "context.getClickedPos().getY()",
+		"z": "context.getClickedPos().getZ()",
+		"blockstate": "context.getLevel().getBlockState(context.getClickedPos())",
+		"entity": "context.getPlayer()",
+		"direction": "context.getClickedFace()",
+		"itemstack": "context.getItemInHand()"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onItemUseFirst procedure="">
+<#if hasProcedure(procedure)>
+@Override public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "InteractionResult.PASS", {
+		"world": "context.getLevel()",
+		"x": "context.getClickedPos().getX()",
+		"y": "context.getClickedPos().getY()",
+		"z": "context.getClickedPos().getZ()",
+		"blockstate": "context.getLevel().getBlockState(context.getClickedPos())",
+		"entity": "context.getPlayer()",
+		"direction": "context.getClickedFace()",
+		"itemstack": "itemstack"
+	}/>
+}
+</#if>
+</#macro>
 
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
@@ -305,6 +339,60 @@
 	   	"blockstate": "blockstate"
 	}/>
 	</#if>
+}
+</#if>
+</#macro>
+
+<#macro onAnimateTick procedure="">
+<#if hasProcedure(procedure)>
+@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
+	super.animateTick(blockstate, world, pos, random);
+	<@procedureCode procedure, {
+	   	"x": "pos.getX()",
+	   	"y": "pos.getY()",
+	   	"z": "pos.getZ()",
+	   	"world": "world",
+	   	"entity": "Minecraft.getInstance().player",
+	   	"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onBlockTick procedure="" scheduleTick=false tickRate=0>
+<#if hasProcedure(procedure)>
+@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
+	super.tick(blockstate, world, pos, random);
+	<@procedureCode procedure, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"blockstate": "blockstate"
+	}/>
+	<#if scheduleTick>
+	world.getBlockTicks().scheduleTick(pos, this, ${tickRate});
+	</#if>
+}
+</#if>
+</#macro>
+
+<#macro onBlockRightClicked procedure="">
+<#if hasProcedure(procedure)>
+@Override public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+	super.use(blockstate, world, pos, entity, hand, hit);
+	<@procedureCodeWithOptResult procedure, "actionresulttype",  "InteractionResult.SUCCESS", {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"blockstate": "blockstate",
+		"entity": "entity",
+		"direction": "hit.getDirection()",
+		"hitX": "hit.getLocation().x()",
+		"hitY": "hit.getLocation().y()",
+		"hitZ": "hit.getLocation().z()"
+	}/>
 }
 </#if>
 </#macro>

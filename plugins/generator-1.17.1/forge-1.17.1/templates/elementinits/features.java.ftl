@@ -48,6 +48,9 @@ package ${package}.init;
 		<#elseif feature.getModElement().getTypeString() == "plant">
 			REGISTRY.put(${feature.getModElement().getName()}Feature.FEATURE, new FeatureRegistration(GenerationStep.Decoration.VEGETAL_DECORATION,
         				${feature.getModElement().getName()}Feature.GENERATE_BIOMES, ${feature.getModElement().getName()}Feature.CONFIGURED_FEATURE));
+		<#elseif feature.getModElement().getTypeString() == "fluid">
+			REGISTRY.put(${feature.getModElement().getName()}Feature.FEATURE, new FeatureRegistration(GenerationStep.Decoration.LAKES,
+        				${feature.getModElement().getName()}Feature.GENERATE_BIOMES, ${feature.getModElement().getName()}Feature.CONFIGURED_FEATURE));
 		<#elseif feature.getModElement().getTypeString() == "structure">
 			REGISTRY.put(${feature.getModElement().getName()}Feature.FEATURE, new FeatureRegistration(GenerationStep.Decoration.
 						<#if feature.spawnLocation=="Air">RAW_GENERATION<#elseif feature.spawnLocation=="Underground">UNDERGROUND_STRUCTURES<#else>SURFACE_STRUCTURES</#if>,

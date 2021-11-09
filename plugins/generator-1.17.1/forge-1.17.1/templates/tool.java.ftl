@@ -389,26 +389,7 @@ public class ${name}Item extends FishingRodItem {
     	}
     </#if>
 
-    <#if hasProcedure(data.onRightClickedOnBlock)>
-    	@Override public InteractionResult useOn(UseOnContext context) {
-    		InteractionResult retval = super.useOn(context);
-    		Level world = context.getLevel();
-    		BlockPos pos = context.getClickedPos();
-    		Player entity = context.getPlayer();
-    		Direction direction = context.getClickedFace();
-    		BlockState blockstate = world.getBlockState(pos);
-    		int x = pos.getX();
-    		int y = pos.getY();
-    		int z = pos.getZ();
-    		ItemStack itemstack = context.getItemInHand();
-    		<#if hasReturnValue(data.onRightClickedOnBlock)>
-    		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-    		<#else>
-    		<@procedureOBJToCode data.onRightClickedOnBlock/>
-    		return retval;
-    		</#if>
-    	}
-    </#if>
+    <@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
 	<@onCrafted data.onCrafted/>
 

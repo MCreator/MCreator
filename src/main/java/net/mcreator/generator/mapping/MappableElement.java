@@ -69,4 +69,22 @@ public abstract class MappableElement {
 		return element instanceof MappableElement && value.equals(((MappableElement) element).value);
 	}
 
+	public static class Unique extends MappableElement {
+
+		public Unique(MappableElement original) {
+			super(original.mapper);
+			this.value = original.value;
+		}
+
+		@Override public int hashCode() {
+			return getMappedValue().hashCode();
+		}
+
+		@Override public boolean equals(Object element) {
+			return element instanceof MappableElement && getMappedValue().equals(
+					((MappableElement) element).getMappedValue());
+		}
+
+	}
+
 }

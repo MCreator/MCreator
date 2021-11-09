@@ -139,11 +139,20 @@ import java.util.List;
 		return spawnParticles || flowStrength != 1 || flowCondition != null || beforeReplacingBlock != null;
 	}
 
+	public boolean doesGenerateInWorld() {
+		return spawnWorldTypes.size() > 0;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
+
 		if (generateBucket)
-			return List.of(BaseType.BLOCK, BaseType.ITEM);
-		else
-			return List.of(BaseType.BLOCK);
+			baseTypes.add(BaseType.ITEM);
+
+		if (doesGenerateInWorld())
+			baseTypes.add(BaseType.FEATURE);
+
+		return baseTypes;
 	}
 
 }

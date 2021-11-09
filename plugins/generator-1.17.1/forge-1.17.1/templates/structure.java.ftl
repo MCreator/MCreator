@@ -35,7 +35,7 @@ package ${package}.world.features;
 
 public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.configured(FeatureConfiguration.NONE);
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
@@ -48,6 +48,16 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	<#else>
 	null;
 	</#if>
+
+	<#if data.restrictionBlocks?has_content>
+	private final List<Block> base_blocks = List.of(
+		<#list data.restrictionBlocks as restrictionBlock>
+			${mappedBlockToBlock(restrictionBlock)}<#if restrictionBlock?has_next>,</#if>
+		</#list>
+	);
+	</#if>
+
+	private StructureTemplate template = null;
 
 	public ${name}Feature() {
 		super(NoneFeatureConfiguration.CODEC);
@@ -76,19 +86,19 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 		if(!dimensionCriteria)
 			return false;
 
-		if ((context.random().nextInt(1000000) + 1) <= ${data.spawnProbability}) {
-			ChunkPos chunkpos = new ChunkPos(context.origin());
-			StructureTemplate template = context.level().getLevel().getStructureManager()
+		if(template == null)
+			template = context.level().getLevel().getStructureManager()
 					.getOrCreate(new ResourceLocation("${modid}" ,"${data.structure}"));
 
-			if(template == null)
-				return false;
+		if(template == null)
+			return false;
 
+		if ((context.random().nextInt(1000000) + 1) <= ${data.spawnProbability}) {
 			boolean anyPlaced = false;
 			int count = context.random().nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
 			for(int a = 0; a < count; a++) {
-				int i = chunkpos.getMinBlockX() + context.random().nextInt(16);
-				int k = chunkpos.getMinBlockZ() + context.random().nextInt(16);
+				int i = context.origin().getX() + context.random().nextInt(16);
+				int k = context.origin().getZ() + context.random().nextInt(16);
 
 				int j = context.level().getHeight(Heightmap.Types.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>, i, k);
 				<#if data.spawnLocation=="Ground">
@@ -100,11 +110,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				</#if>
 
 				<#if data.restrictionBlocks?has_content>
-				if (!List.of(
-							<#list data.restrictionBlocks as restrictionBlock>
-								${mappedBlockToBlock(restrictionBlock)}<#if restrictionBlock?has_next>,</#if>
-							</#list>
-						).contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
+				if (!base_blocks.contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
 					continue;
 				</#if>
 
@@ -127,7 +133,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 						.setRotation(Rotation.<#if data.randomlyRotateStructure>values()[context.random().nextInt(3)]<#else>NONE</#if>)
 						.setRandom(context.random())
 						.addProcessor(BlockIgnoreProcessor.${data.ignoreBlocks?replace("AIR_AND_STRUCTURE_BLOCK", "STRUCTURE_AND_AIR")})
-						.setIgnoreEntities(false), context.random(), 4)) {
+						.setIgnoreEntities(false), context.random(), 2)) {
 					<#if hasProcedure(data.onStructureGenerated)>
 						<@procedureOBJToCode data.onStructureGenerated/>
 					</#if>

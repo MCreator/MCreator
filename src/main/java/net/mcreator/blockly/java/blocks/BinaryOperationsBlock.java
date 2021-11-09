@@ -83,7 +83,7 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 		String lowerPriority; // Operations that require () because of lower priority or non-associativity
 		if ("logic_binary_ops".equals(blockType)) {
 			lowerPriority = switch (operator) {
-				case "!=", "==" -> "^&|?";
+				case "!=", "==" -> "=^&|?"; // = is needed to avoid bad operand types
 				case "^" -> "&|?";
 				case "&&" -> "|?";
 				case "||" -> "?";
