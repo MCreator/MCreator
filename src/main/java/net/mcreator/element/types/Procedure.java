@@ -65,6 +65,30 @@ public class Procedure extends GeneratableElement {
 					WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
 			dependencies.add(dependency);
 		}
+
+		int idx = dependencies.indexOf(new Dependency("z", "number"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		idx = dependencies.indexOf(new Dependency("y", "number"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		idx = dependencies.indexOf(new Dependency("x", "number"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		idx = dependencies.indexOf(new Dependency("world", "world"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -91,20 +115,18 @@ public class Procedure extends GeneratableElement {
 							null :
 							blocklyToJava.getReturnType().getName().toLowerCase());
 
-			reloadDependencies();
+			additionalData.put("dependencies", getDependencies());
+			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
+			additionalData.put("return_type", blocklyToJava.getReturnType());
+			additionalData.put("has_trigger", trigger != null);
+			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 
 			String triggerCode = "";
 			if (trigger != null) {
 				TemplateGenerator templateGenerator = getModElement().getGenerator().getTriggerGenerator();
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
 			}
-
-			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
-			additionalData.put("return_type", blocklyToJava.getReturnType());
-			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("trigger_code", triggerCode);
-			additionalData.put("dependencies", dependenciesArrayList);
-			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 		};
 	}
 
