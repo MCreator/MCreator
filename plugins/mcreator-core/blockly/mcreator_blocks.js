@@ -7,7 +7,7 @@ Blockly.Blocks['event_trigger'] = {
             .appendField(new Blockly.FieldDropdown(
                 jsonToBlocklyDropDownArray(javabridge.getGlobalTriggers())), 'trigger');
         this.setNextStatement(true);
-        this.setStyle('hat_blocks');
+        this.setStyle('hat_blocks');0
         this.setColour(90);
         this.setTooltip(javabridge.t("blockly.block.event_trigger.tooltip"));
     }
@@ -468,43 +468,43 @@ Blockly.defineBlocksWithJsonArray([
     },
     {
         "type": "time_day",
-        "message0": "Day of this week as a number",
+        "message0": "Day of this week",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_hours",
-        "message0": "Hours as a number",
+        "message0": "Current hour of the day",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_month",
-        "message0": "Month as a number",
+        "message0": "Current month",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_minutes",
-        "message0": "Minutes as a number",
+        "message0": "Minutes past current hour",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_year",
-        "message0": "Year as a number",
+        "message0": "Current year",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_seconds",
-        "message0": "Seconds as a number",
+        "message0": "Seconds past current minute",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
     {
         "type": "time_week_of_year",
-        "message0": "Get the week of the year",
+        "message0": "Week of the current year",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     }
