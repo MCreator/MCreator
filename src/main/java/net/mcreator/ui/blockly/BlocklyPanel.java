@@ -34,6 +34,7 @@ import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -143,16 +144,19 @@ public class BlocklyPanel extends JFXPanel {
 							+ " };");
 					// @formatter:on
 
+					// Blockly core
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/messages.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js",
 							StandardCharsets.UTF_8));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
-					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/block_mcitem.js"));
-					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/field_ai_condition.js"));
-					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blocks.js"));
+					// Blockly MCreator modifications
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
+
+					// Load JavaScript files from plugins
+					for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
+						webEngine.executeScript(script);
 
 					//JS code generation for custom variables
 					webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());

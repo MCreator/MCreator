@@ -56,15 +56,14 @@ public class ElementOrderEditor {
 		mcreator.getWorkspace().getModElements().stream().sorted(Comparator.comparingInt(ModElement::getSortID))
 				.forEach(modElement -> {
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
-					if (generatableElement instanceof ITabContainedElement) {
-						ITabContainedElement element = (ITabContainedElement) generatableElement;
+					if (generatableElement instanceof ITabContainedElement element) {
 						if (element.getCreativeTab() == null || element.getCreativeTab().getUnmappedValue()
 								.equals("No creative tab entry")) {
 							return;
 						}
 
 						if (tabEditors.get(element.getCreativeTab().getUnmappedValue()) == null) {
-							DefaultListModel<ModElement> model = new DefaultListModel<ModElement>() {
+							DefaultListModel<ModElement> model = new DefaultListModel<>() {
 								@Override public void add(int idx, ModElement element) {
 									super.add(idx, element);
 									element.setWorkspace(mcreator.getWorkspace());

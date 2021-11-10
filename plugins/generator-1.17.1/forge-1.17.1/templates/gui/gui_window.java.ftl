@@ -33,6 +33,9 @@
 
 package ${package}.client.gui;
 
+<#assign mx = data.W - data.width>
+<#assign my = data.H - data.height>
+
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	public final static HashMap<String, Object> guistate = new HashMap<>();
@@ -89,16 +92,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#if data.renderBgLayer>
 		RenderSystem.setShaderTexture(0, texture);
-		int k = (this.width - this.imageWidth) / 2;
-		int l = (this.height - this.imageHeight) / 2;
-		this.blit(ms, k, l, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+		this.blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "Image">
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${component.image}"));
-					this.blit(ms, ${component.x}, ${component.y}, 0, 0,
+					this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
@@ -140,7 +141,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
 		    	drawString(poseStack, this.font, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-					${component.x} - this.leftPos, ${component.y} - this.topPos, ${component.color.getRGB()});
+					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>
 	}
@@ -158,7 +159,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name} = new EditBox(this.font, ${component.x}, ${component.y},
+				${component.name} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, new TextComponent("${component.placeholder}"))
 				<#if component.placeholder?has_content>
 				{
@@ -189,8 +190,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				${component.name}.setMaxLength(32767);
 				this.addWidget(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
-				this.addRenderableWidget(new Button(${component.x}, ${component.y}, ${component.width}, ${component.height},
-						new TextComponent("${component.text}"), e -> {
+				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height}, new TextComponent("${component.text}"), e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
@@ -209,8 +210,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				</#if>);
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
-            	${component.name} = new Checkbox(${component.x}, ${component.y}, 150, 20,
-						new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+            	${component.name} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+						150, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 guistate.put("checkbox:${component.name}", ${component.name});
                 this.addRenderableWidget(${component.name});
