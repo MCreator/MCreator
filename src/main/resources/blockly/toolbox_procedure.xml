@@ -28,6 +28,7 @@
         <block type="controls_if">
             <mutation elseif="1"/>
         </block>
+        <block type="logic_ternary_op"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>
@@ -36,7 +37,6 @@
     <category name="${t:blockly.category.logic}" colour="%{BKY_LOGIC_HUE}">
         <block type="logic_negate"/>
         <block type="logic_boolean"/>
-        <block type="logic_ternary_op"/>
         <block type="logic_binary_ops"/>
         <block type="math_binary_ops"/>
         <block type="text_binary_ops"/>

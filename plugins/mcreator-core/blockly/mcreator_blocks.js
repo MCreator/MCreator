@@ -369,7 +369,7 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "inputsInline": true,
         "output": null,
-        "colour": 250,
+        "colour": "#888888",
         "extensions": [
             "logic_ternary"
         ],
