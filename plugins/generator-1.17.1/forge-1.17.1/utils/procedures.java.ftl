@@ -29,13 +29,11 @@
     <#assign depsBuilder = []>
 
     <#list dependencies as dependency>
-        <#if !customVals[dependency.getName()]?? >
+        <#if !customVals[dependency.getName()]?has_content>
             <#assign depsBuilder += [dependency.getName()]>
+        <#else>
+            <#assign depsBuilder += [customVals[dependency.getName()]]>
         </#if>
-    </#list>
-
-    <#list customVals as key, value>
-        <#assign depsBuilder += [value]>
     </#list>
 
     ${(name)}Procedure.execute(<#list depsBuilder as dep>${dep}<#if dep?has_next>,</#if></#list>)
