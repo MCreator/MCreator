@@ -108,9 +108,7 @@ public class Procedure extends GeneratableElement {
 			}
 
 			// we update the dependency list of the procedure
-			List<Dependency> dependenciesArrayList = blocklyToJava.getDependencies();
-
-			this.getModElement().clearMetadata().putMetadata("dependencies", dependenciesArrayList)
+			this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
 					.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
 							null :
 							blocklyToJava.getReturnType().getName().toLowerCase());
