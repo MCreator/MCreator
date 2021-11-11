@@ -41,7 +41,7 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements EntityBlock</#if>{
 	public ${name}Block() {
-		super(<#if data.plantType == "normal">${data.suspiciousStewEffect?starts_with("CUSTOM:")?then("MobEffects.SATURATION", generator.map(data.suspiciousStewEffect, "effects"))}, ${data.suspiciousStewDuration},</#if>
+		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
@@ -92,18 +92,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if data.plantType == "normal">
-		<#if data.suspiciousStewEffect?starts_with("CUSTOM:")>
-		@Override public MobEffect getSuspiciousStewEffect() {
-			return ${generator.map(data.suspiciousStewEffect, "effects")};
-		}
-		</#if>
-
-		<#if (data.suspiciousStewDuration > 0)>
-		@Override public int getEffectDuration() {
-			return ${data.suspiciousStewDuration};
-		}
-		</#if>
+	<#if (data.plantType == "normal") && (data.suspiciousStewDuration > 0)>
+	@Override public int getEffectDuration() {
+		return ${data.suspiciousStewDuration};
+	}
 	</#if>
 
 	<#if data.isReplaceable>
