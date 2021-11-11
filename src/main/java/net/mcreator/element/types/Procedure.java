@@ -57,7 +57,7 @@ public class Procedure extends GeneratableElement {
 		return dependencies;
 	}
 
-	public void reloadDependencies() {
+	public List<Dependency> reloadDependencies() {
 		dependencies = new ArrayList<>();
 		List<?> dependenciesList = (List<?>) getModElement().getMetadata("dependencies");
 		for (Object depobj : dependenciesList) {
@@ -89,6 +89,8 @@ public class Procedure extends GeneratableElement {
 			Dependency dependency = dependencies.remove(idx);
 			dependencies.add(0, dependency);
 		}
+
+		return dependencies;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -113,7 +115,7 @@ public class Procedure extends GeneratableElement {
 							null :
 							blocklyToJava.getReturnType().getName().toLowerCase());
 
-			additionalData.put("dependencies", getDependencies());
+			additionalData.put("dependencies", reloadDependencies());
 			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
 			additionalData.put("return_type", blocklyToJava.getReturnType());
 			additionalData.put("has_trigger", trigger != null);
