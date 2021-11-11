@@ -169,7 +169,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.VILLAGERTRADE);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.VILLAGER);
 		retval.addAll(DataListLoader.loadDataList("villagerprofessions"));
 		return retval;
 	}
