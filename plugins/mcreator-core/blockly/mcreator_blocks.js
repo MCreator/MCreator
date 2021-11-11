@@ -7,7 +7,7 @@ Blockly.Blocks['event_trigger'] = {
             .appendField(new Blockly.FieldDropdown(
                 jsonToBlocklyDropDownArray(javabridge.getGlobalTriggers())), 'trigger');
         this.setNextStatement(true);
-        this.setStyle('hat_blocks');0
+        this.setStyle('hat_blocks');
         this.setColour(90);
         this.setTooltip(javabridge.t("blockly.block.event_trigger.tooltip"));
     }
