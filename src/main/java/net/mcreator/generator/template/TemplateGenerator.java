@@ -45,7 +45,7 @@ public class TemplateGenerator {
 	public TemplateGenerator(TemplateGeneratorConfiguration templateGeneratorConfiguration, Generator generator) {
 		this.generator = generator;
 		this.templateGeneratorConfiguration = templateGeneratorConfiguration;
-		this.baseDataModelProvider = new BaseDataModelProvider(generator);
+		this.baseDataModelProvider = generator.getBaseDataModelProvider();
 	}
 
 	public String generateElementFromTemplate(GeneratableElement element, String templateName,

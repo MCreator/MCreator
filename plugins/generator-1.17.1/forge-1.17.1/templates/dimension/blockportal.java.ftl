@@ -89,7 +89,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		<#if data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
 			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-					(net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS
+					ForgeRegistries.SOUND_EVENTS
 							.getValue(new ResourceLocation(("${data.portalSound}"))), SoundSource.BLOCKS, 0.5f,
 					random.nextFloat() * 0.4f + 0.8f);
         </#if>

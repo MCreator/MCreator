@@ -29,11 +29,10 @@
 -->
 
 <#-- @formatter:off -->
-<#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 
 package ${package}.item;
 
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.network.chat.Component;
 
 public class ${name}Item extends RecordItem {
@@ -43,7 +42,7 @@ public class ${name}Item extends RecordItem {
 		super(0, ${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}")),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		<#else>
-		super(0, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
+		super(0, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		</#if>
 
@@ -65,96 +64,18 @@ public class ${name}Item extends RecordItem {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRightClickedInAir)>
-	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-		ItemStack itemstack = ar.getObject();
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onRightClickedInAir/>
-		return ar;
-	}
-	</#if>
+	<@onRightClickedInAir data.onRightClickedInAir/>
 
-	<#if hasProcedure(data.onRightClickedOnBlock)>
-	@Override public InteractionResult useOn(UseOnContext context) {
-		InteractionResult retval = super.useOn(context);
-		Level world = context.getLevel();
-		BlockPos pos = context.getClickedPos();
-		Player entity = context.getPlayer();
-		Direction direction = context.getClickedFace();
-		BlockState blockstate = world.getBlockState(pos);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		ItemStack itemstack = context.getItemInHand();
-		<#if hasReturnValue(data.onRightClickedOnBlock)>
-		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-		<#else>
-		<@procedureOBJToCode data.onRightClickedOnBlock/>
-		return retval;
-		</#if>
-	}
-	</#if>
+	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
-	<#if hasProcedure(data.onEntityHitWith)>
-	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntityHitWith/>
-		return retval;
-	}
-	</#if>
+	<@onEntityHitWith data.onEntityHitWith/>
 
-	<#if hasProcedure(data.onEntitySwing)>
-	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntitySwing/>
-		return retval;
-	}
-	</#if>
+	<@onEntitySwing data.onEntitySwing/>
 
-	<#if hasProcedure(data.onCrafted)>
-	@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
-		super.onCraftedBy(itemstack, world, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onCrafted/>
-	}
-	</#if>
+	<@onCrafted data.onCrafted/>
 
-	<#if hasProcedure(data.onStoppedUsing)>
-	@Override
-	public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onStoppedUsing/>
-	}
-	</#if>
+	<@onStoppedUsing data.onStoppedUsing/>
 
-	<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
-	@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-		super.inventoryTick(itemstack, world, entity, slot, selected);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<#if hasProcedure(data.onItemInUseTick)>
-		if (selected)
-			<@procedureOBJToCode data.onItemInUseTick/>
-		</#if>
-		<@procedureOBJToCode data.onItemInInventoryTick/>
-	}
-	</#if>
-
+	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 }
 <#-- @formatter:on -->

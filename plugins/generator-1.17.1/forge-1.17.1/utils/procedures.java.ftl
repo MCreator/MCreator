@@ -1,4 +1,35 @@
 <#-- @formatter:off -->
+<#macro procedureCode object dependencies={}>
+    <#compress>
+
+    <#assign deps_filtered = {} />
+    <#list object.getDependencies(generator.getWorkspace()) as dependency>
+        <#list dependencies as name, value>
+            <#if dependency.getName() == name>
+                <#assign deps_filtered += {name: value} />
+            </#if>
+        </#list>
+    </#list>
+
+    <#if deps_filtered?size == 0>
+        ${object.getName()}Procedure.execute(Collections.EMPTY_MAP);
+    <#else>
+        ${object.getName()}Procedure.execute(Stream.of(
+        <#list deps_filtered as name, value>new AbstractMap.SimpleEntry<>("${name}", ${value})<#if name?has_next>,</#if></#list>
+        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll));
+    </#if>
+    </#compress>
+</#macro>
+
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
+    <#if hasReturnValueOf(object, type)>
+        return <@procedureCode object dependencies/>
+    <#else>
+        <@procedureCode object dependencies/>
+        return ${defaultResult};
+    </#if>
+</#macro>
+
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 
@@ -12,7 +43,13 @@
         <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
-    ${(name)}Procedure.execute(ImmutableMap.<String, Object>builder()<#list depsBuilder as dep>.put(${dep})</#list>.build())
+    <#if depsBuilder?size == 0>
+        ${(name)}Procedure.execute(Collections.EMPTY_MAP)
+    <#else>
+        ${(name)}Procedure.execute(Stream.of(
+        <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
+        ).collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll))
+    </#if>
 </#macro>
 
 <#macro procedureToCode name dependencies customVals={}>
@@ -61,8 +98,8 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
-    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
+<#function hasReturnValueOf object="" type="">
+    <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
 
 <#-- @formatter:on -->

@@ -22,9 +22,9 @@ import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

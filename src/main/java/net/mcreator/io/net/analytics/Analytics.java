@@ -39,14 +39,14 @@ public class Analytics {
 	}
 
 	public Analytics trackMCreatorLaunch() {
-		trackPageViewImpl(AnalyticsConstants.PAGE_LAUNCH, new HashMap<String, Object>() {{
+		trackPageViewImpl(AnalyticsConstants.PAGE_LAUNCH, new HashMap<>() {{
 			put("sc", "start");
 		}});
 		return this;
 	}
 
 	public Analytics trackMCreatorClose() {
-		trackPageViewImpl(AnalyticsConstants.PAGE_CLOSE, new HashMap<String, Object>() {{
+		trackPageViewImpl(AnalyticsConstants.PAGE_CLOSE, new HashMap<>() {{
 			put("sc", "end");
 		}});
 		return this;

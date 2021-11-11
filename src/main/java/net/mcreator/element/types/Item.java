@@ -130,4 +130,8 @@ import java.util.Map;
 		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
 	}
 
+	public boolean hasInventory() {
+		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
+	}
+
 }

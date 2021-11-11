@@ -21,8 +21,8 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -39,8 +39,8 @@ public class Painting extends GeneratableElement {
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(
-				getModElement().getFolderManager().getOtherTextureFile(FilenameUtilsPatched.removeExtension(texture)), width,
-				height);
+				getModElement().getFolderManager().getOtherTextureFile(FilenameUtilsPatched.removeExtension(texture)),
+				width, height);
 	}
 
 	@Override public void finalizeModElementGeneration() {

@@ -80,8 +80,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("musicdisc", 'x', BaseType.OTHER, RecipeType.ITEM, MusicDiscGUI::new,
 						MusicDisc.class));
 		ModElementType.OVERLAY = register(
-				new ModElementType<>("overlay", 'v', BaseType.OTHER, RecipeType.NONE, OverlayGUI::new,
-						Overlay.class));
+				new ModElementType<>("overlay", 'v', BaseType.OTHER, RecipeType.NONE, OverlayGUI::new, Overlay.class));
 		ModElementType.PAINTING = register(
 				new ModElementType<>("painting", null, BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
 						Painting.class));

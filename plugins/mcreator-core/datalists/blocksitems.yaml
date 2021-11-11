@@ -4638,6 +4638,11 @@
   type: item
   texture: DYE#0
 
+- Items.GLOW_INK_SAC:
+  readable_name: "Glow Ink Sac"
+  type: item
+  texture: GLOW_INK_SAC
+
 - Items.DYE#1:
   readable_name: "Rose Red"
   type: item
@@ -4733,6 +4738,21 @@
   type: item
   texture: DYE#19
 
+- Items.RAW_IRON:
+  readable_name: "Raw Iron"
+  type: item
+  texture: RAW_IRON
+
+- Items.RAW_GOLD:
+  readable_name: "Raw Gold"
+  type: item
+  texture: RAW_GOLD
+
+- Items.RAW_COPPER:
+  readable_name: "Raw Copper"
+  type: item
+  texture: RAW_COPPER
+
 - Items.COAL:
   readable_name: "Any Coal"
   type: item
@@ -4757,6 +4777,7 @@
 - Items.COPPER_INGOT:
   readable_name: "Copper Ingot"
   type: item
+  texture: COPPER_INGOT
 
 - Items.IRON_NUGGET:
   readable_name: "Iron Nugget"
@@ -4838,6 +4859,11 @@
   type: item
   texture: PHANTOM_MEMBRANE
 
+- Items.AMETHYST_SHARD:
+  readable_name: "Amethyst Shard"
+  type: item
+  texture: AMETHYST_SHARD
+
 - Items.BOW:
   readable_name: "Bow"
   type: item
@@ -4887,6 +4913,16 @@
   readable_name: "Clock"
   type: item
   texture: CLOCK
+
+- Items.SPYGLASS:
+  readable_name: "Spyglass"
+  type: item
+  texture: SPYGLASS
+
+- Items.BUNDLE:
+  readable_name: "Bundle"
+  type: item
+  texture: BUNDLE
 
 - Items.MAP:
   readable_name: "Empty Map"
@@ -5378,6 +5414,7 @@
 - Items.GLOW_ITEM_FRAME:
   readable_name: "Glow Item Frame"
   type: item
+  texture: GLOW_ITEM_FRAME
 
 - Items.SIGN:
   readable_name: "Oak Sign"
@@ -5497,6 +5534,7 @@
 - Items.AXOLOTL_BUCKET:
   readable_name: "Axolotl Bucket"
   type: item
+  texture: AXOLOTL_BUCKET
 
 - Items.LAVA_BUCKET:
   readable_name: "Lava Bucket"
@@ -5511,6 +5549,7 @@
 - Items.POWDER_SNOW_BUCKET:
   readable_name: "Powder Snow Bucket"
   type: item
+  texture: POWDER_SNOW_BUCKET
 
 - Items.MINECART:
   readable_name: "Minecart"
@@ -5792,6 +5831,11 @@
   readable_name: "Sweet Berries"
   type: item
   texture: SWEET_BERRIES
+
+- Items.GLOW_BERRIES:
+  readable_name: "Glow Berries"
+  type: item
+  texture: GLOW_BERRIES
 
 - Items.FISH:
   readable_name: "Any Fish"
@@ -6354,14 +6398,17 @@
 - Items.AXOLOTL_SPAWN_EGG:
   readable_name: "Axolotl Spawn Egg"
   type: item
+  texture: AXOLOTL_SPAWN_EGG
 
 - Items.GOAT_SPAWN_EGG:
   readable_name: "Goat Spawn Egg"
   type: item
+  texture: GOAT_SPAWN_EGG
 
 - Items.GLOW_SQUID_SPAWN_EGG:
   readable_name: "Glow Squid Spawn Egg"
   type: item
+  texture: GLOW_SQUID_SPAWN_EGG
 
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
@@ -6536,35 +6583,3 @@
   readable_name: "Honey Bottle"
   type: item
   texture: HONEY_BOTTLE
-
-- Items.GLOW_BERRIES:
-  readable_name: "Glow Berries"
-  type: item
-
-- Items.GLOW_INK_SAC:
-  readable_name: "Glow Ink Sac"
-  type: item
-
-- Items.AMETHYST_SHARD:
-  readable_name: "Amethyst Shard"
-  type: item
-
-- Items.BUNDLE:
-  readable_name: "Bundle"
-  type: item
-
-- Items.RAW_IRON:
-  readable_name: "Raw Iron"
-  type: item
-
-- Items.RAW_GOLD:
-  readable_name: "Raw Gold"
-  type: item
-
-- Items.RAW_COPPER:
-  readable_name: "Raw Copper"
-  type: item
-
-- Items.SPYGLASS:
-  readable_name: "Spyglass"
-  type: item

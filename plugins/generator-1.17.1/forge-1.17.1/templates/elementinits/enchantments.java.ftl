@@ -41,16 +41,18 @@ package ${package}.init;
 	private static final List<Enchantment> REGISTRY = new ArrayList<>();
 
 	<#list enchantments as enchantment>
-	public static Enchantment ${enchantment.getModElement().getRegistryNameUpper()} = register(new ${enchantment.getModElement().getName()}Enchantment().setRegistryName("${modid}:${enchantment.getModElement().getRegistryName()}"));
+	public static final Enchantment ${enchantment.getModElement().getRegistryNameUpper()} =
+		register("${modid}:${enchantment.getModElement().getRegistryName()}", new ${enchantment.getModElement().getName()}Enchantment());
 	</#list>
 
-	private static Enchantment register(Enchantment enchantment) {
-		REGISTRY.add(enchantment);
+	private static Enchantment register(String registryname, Enchantment enchantment) {
+		REGISTRY.add(enchantment.setRegistryName(registryname));
 		return enchantment;
 	}
 
 	@SubscribeEvent public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Enchantment[0]));
 	}
+
 }
 <#-- @formatter:on -->
