@@ -139,7 +139,7 @@ public class BlocklyJavascriptBridge {
 		callback.call("callback", StringUtils.join(retval, ','));
 	}
 
-	private final Map<String, String> ext_triggers = new LinkedHashMap<String, String>() {{
+	private final Map<String, String> ext_triggers = new LinkedHashMap<>() {{
 		put("no_ext_trigger", L10N.t("trigger.no_ext_trigger"));
 	}};
 
@@ -265,25 +265,19 @@ public class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
 		List<String> retval;
-		switch (type) {
-		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
+		return switch (type) {
+			case "entity" -> ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
-		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
-		case "blockstatesboolean":
-			return ElementUtil.loadBooleanBlockStateProperties().stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
-		case "blockstatesinteger":
-			return ElementUtil.loadIntegerBlockStateProperties().stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
-		case "blockstatesenum":
-			return ElementUtil.loadEnumBlockStateProperties().stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
-		default:
-			return getListOfForWorkspace(workspace, type);
-		}
+			case "blockstatesboolean" -> ElementUtil.loadBooleanBlockStateProperties().stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "blockstatesinteger" -> ElementUtil.loadIntegerBlockStateProperties().stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "blockstatesenum" -> ElementUtil.loadEnumBlockStateProperties().stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			default -> getListOfForWorkspace(workspace, type);
+		};
 	}
 
 	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
