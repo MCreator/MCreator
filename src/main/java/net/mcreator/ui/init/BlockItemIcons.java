@@ -62,7 +62,7 @@ public class BlockItemIcons {
 	}
 
 	//@formatter:off
-	private static final HashMap<String, String> TEXTURE_MAPPINGS = new HashMap<String, String>() {{
+	private static final HashMap<String, String> TEXTURE_MAPPINGS = new HashMap<>() {{
 		//NewToolGUI
 		put("Pickaxe", 				"IRON_PICKAXE");
 		put("Axe", 					"IRON_AXE");
