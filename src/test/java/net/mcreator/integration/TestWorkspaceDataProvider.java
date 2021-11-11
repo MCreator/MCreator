@@ -354,13 +354,13 @@ public class TestWorkspaceDataProvider {
 			biome.minHeight = 2;
 			List<String> biomeDictTypes = new ArrayList<>();
 			if (!emptyLists) {
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionnarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
+				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataList("biomedictionarytypes")));
 			}
 			biome.biomeDictionaryTypes = biomeDictTypes;
 			List<String> biomeDefaultFeatures = new ArrayList<>();
