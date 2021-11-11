@@ -28,6 +28,7 @@
         <block type="controls_if">
             <mutation elseif="1"/>
         </block>
+        <block type="logic_ternary_op"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>

@@ -350,6 +350,32 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "%{BKY_MATH_HUE}"
     },
     {
+        "type": "logic_ternary_op",
+        "message0": "if %1 then %2 else %3",
+        "args0": [
+            {
+                "type": "input_value",
+                "name": "condition",
+                "check": "Boolean"
+            },
+            {
+                "type": "input_value",
+                "name": "THEN"
+            },
+            {
+                "type": "input_value",
+                "name": "ELSE"
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": "#888888",
+        "extensions": [
+            "logic_ternary"
+        ],
+        "mutator": "mark_attached_to_block_item"
+    },
+    {
         "type": "controls_while",
         "message0": "while %1",
         "args0": [
@@ -492,6 +518,26 @@ Blockly.Extensions.registerMutator('variable_entity_input',
                 this.removeInput('entity');
             }
         }
+    });
+
+// marks in the xml if the block is attached to a block/item input, for proper mapping
+Blockly.Extensions.registerMutator('mark_attached_to_block_item',
+    {
+        mutationToDom: function() {
+            var container = document.createElement('mutation');
+            var parentConnection = this.outputConnection.targetConnection;
+            if (parentConnection == null)
+                return null;
+            else {
+                var connectionChecks = parentConnection.getCheck();
+                var shouldMark = connectionChecks &&
+                    (connectionChecks.indexOf('MCItem') != -1 || connectionChecks.indexOf('MCItemBlock') != -1);
+                container.setAttribute('mark', shouldMark);
+                return container;
+            }
+        },
+
+        domToMutation: function(xmlElement) {}
     });
 
 Blockly.Extensions.register('biome_list_provider',
