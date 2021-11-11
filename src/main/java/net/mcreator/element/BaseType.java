@@ -40,7 +40,7 @@ public enum BaseType {
 	POTIONEFFECT,
 	FEATURE,
 	TAB,
-	VILLAGERTRADE;
+	VILLAGER;
 
 	public String getPluralName() {
 		if (this == ENTITY)
