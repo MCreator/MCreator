@@ -1,5 +1,5 @@
 {
-	int _value = (int) ${input$value};
+	int _value = ${opt.toInt(input$value)};
 	BlockPos _pos = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
 	BlockState _bs = world.getBlockState(_pos);
 	Property<?> _property = _bs.getBlock().getStateDefinition().getProperty(${input$property});
