@@ -92,6 +92,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
+	<#if (data.plantType == "normal") && (data.suspiciousStewDuration > 0)>
+	@Override public int getEffectDuration() {
+		return ${data.suspiciousStewDuration};
+	}
+	</#if>
+
 	<#if data.isReplaceable>
 	@Override public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
 		return useContext.getItemInHand().getItem() != this.asItem();
@@ -219,8 +225,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 				return groundState.is(this) ||
 				<#if (data.canBePlacedOn?size > 0)>
-                	<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
-                </#if>
+					<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
+				</#if>
 				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 			<#else>
