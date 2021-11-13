@@ -66,6 +66,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TimeMonthBlock());
 		blockGenerators.add(new TimeYearBlock());
 		blockGenerators.add(new TimeWeekOfYearBlock());
+		blockGenerators.add(new TernaryOperatorBlock());
 
 		// add Minecraft related blocks
 		blockGenerators.add(new CoordinateBlock());
