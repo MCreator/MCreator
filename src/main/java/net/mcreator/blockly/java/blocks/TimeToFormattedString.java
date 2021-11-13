@@ -22,7 +22,6 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -38,14 +37,14 @@ public class TimeToFormattedString implements IBlockGenerator {
 			if (element.getNodeName().equals("value"))
 				if (element.getAttribute("name").equals("format"))
 					format = element;
-		String elementCode = ProcedureCodeOptimizer.removeParentheses(
-				BlocklyToCode.directProcessOutputBlock(master, format));
-		if (format != null)
-			master.append(
-					"new java.text.SimpleDateFormat(" + elementCode + ").format(Calendar.getInstance().getTime())");
-		else
+		if (format != null) {
+			master.append("new java.text.SimpleDateFormat(");
+			master.processOutputBlockWithoutParentheses(format);
+			master.append(").format(Calendar.getInstance().getTime())");
+		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.time_to_formatted_string")));
+		}
 	}
 
 	@Override public String[] getSupportedBlocks() {
