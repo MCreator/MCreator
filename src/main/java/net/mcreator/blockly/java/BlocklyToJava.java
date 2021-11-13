@@ -63,7 +63,8 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TimeSecondsBlock());
 		blockGenerators.add(new TimeMinutesBlock());
 		blockGenerators.add(new TimeHoursBlock());
-		blockGenerators.add(new TimeDayBlock());
+		blockGenerators.add(new TimeDayOfWeekBlock());
+		blockGenerators.add(new TimeDayOfMonthBlock());
 		blockGenerators.add(new TimeMonthBlock());
 		blockGenerators.add(new TimeYearBlock());
 		blockGenerators.add(new TimeWeekOfYearBlock());

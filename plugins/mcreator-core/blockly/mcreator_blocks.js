@@ -493,8 +493,14 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "%{BKY_TEXTS_HUE}"
     },
     {
-        "type": "time_day",
+        "type": "time_day_of_week",
         "message0": "Day of this week",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_day_of_month",
+        "message0": "Day of this month",
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
     },
