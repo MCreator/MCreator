@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.util.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,61 +37,86 @@ import java.util.Map;
 
 public class JItemPropertiesList extends JPanel {
 
-	private final List<JItemPropertiesListEntry> entryList = new ArrayList<>();
+	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
+	private final List<JItemModelsListEntry> modelsList = new ArrayList<>();
 
 	private final MCreator mcreator;
 
-	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JPanel propertyEntries = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JPanel modelEntries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
+	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
+	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
 
 	public JItemPropertiesList(MCreator mcreator) {
 		super(new BorderLayout());
-		setOpaque(false);
+
+		propertyEntries.setOpaque(false);
+		modelEntries.setOpaque(false);
 
 		this.mcreator = mcreator;
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		add.setText(L10N.t("elementgui.item.custom_properties.add"));
-		topbar.add(add);
+		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
+		addProperty.addActionListener(e -> new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList));
+		topbar.add(addProperty);
 
-		add("North", topbar);
+		addState.setText(L10N.t("elementgui.item.custom_models.add"));
+		addState.addActionListener(e -> new JItemModelsListEntry(mcreator, modelEntries, modelsList));
+		topbar.add(addState);
 
-		entries.setOpaque(false);
-
-		add.addActionListener(e -> new JItemPropertiesListEntry(mcreator, entries, entryList));
-
-		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
-
-		setBorder(BorderFactory.createTitledBorder(
+		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
+		left.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
 				L10N.t("elementgui.item.custom_properties.name"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JScrollPane right = new JScrollPane(PanelUtils.pullElementUp(modelEntries));
+		right.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.item.custom_models.name"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		add("North", topbar);
+		add("Center", PanelUtils.gridElements(1, 0, left, right));
 	}
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 
-		add.setEnabled(enabled);
+		addProperty.setEnabled(enabled);
+		addState.setEnabled(enabled);
 	}
 
 	public void reloadDataLists() {
-		entryList.forEach(JItemPropertiesListEntry::reloadDataLists);
+		propertiesList.forEach(JItemPropertiesListEntry::reloadDataLists);
+		modelsList.forEach(JItemModelsListEntry::reloadDataLists);
 	}
 
 	public Map<String, Procedure> getProperties() {
 		Map<String, Procedure> retVal = new HashMap<>();
-		entryList.forEach(e -> e.addEntry(retVal));
+		propertiesList.forEach(e -> e.addEntry(retVal));
 		return retVal;
 	}
 
 	public void setProperties(Map<String, Procedure> properties) {
-		properties.forEach((k, v) -> new JItemPropertiesListEntry(mcreator, entries, entryList).setEntry(k, v));
+		properties.forEach(
+				(k, v) -> new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList).setEntry(k, v));
+	}
+
+	public Map<Map<String, Float>, Tuple<String, Integer>> getModelsList() {
+		Map<Map<String, Float>, Tuple<String, Integer>> retVal = new HashMap<>();
+		modelsList.forEach(e -> e.addEntry(retVal));
+		return retVal;
+	}
+
+	public void setModelsList(Map<Map<String, Float>, Tuple<String, Integer>> models) {
+		models.forEach((k, v) -> new JItemModelsListEntry(mcreator, modelEntries, modelsList).setEntry(k, v));
 	}
 
 	public AggregatedValidationResult getValidationResult() {
-		return new AggregatedValidationResult(entryList.toArray(IValidable[]::new));
+		return new AggregatedValidationResult(propertiesList.toArray(IValidable[]::new));
 	}
 }

@@ -26,85 +26,119 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.util.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class StateEditorDialog {
 
 	public static String open(MCreator mcreator, String initialState) {
 		AtomicReference<String> retVal = new AtomicReference<>(initialState);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.states.title"), true);
-		List<Tuple<VTextField, VTextField>> textFields = new ArrayList<>();
-		JPanel stateParts = new JPanel();
+		dialog.getContentPane().setLayout(new BorderLayout());
+
+		List<StateEntry> entryList = new ArrayList<>();
 		AtomicInteger id = new AtomicInteger(0);
-		BiConsumer<String, String> tfProvider = (key, value) -> {
-			//panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
+		entries.setOpaque(false);
 
-			VTextField entryKey = new VTextField(5);
-			entryKey.setValidator(new RegistryNameValidator(entryKey, "Property name"));
-			entryKey.setText(key);
-
-			VTextField entryValue = new VTextField(5);
-			entryValue.setText(value);
-
-			JButton remove = new JButton(UIRES.get("16px.clear"));
-
-			JComponent panel = PanelUtils.join(FlowLayout.LEFT, entryKey, new JLabel("="), entryValue, remove);
-			remove.addActionListener(e -> {
-				textFields.forEach(el -> {
-					if (el.x() == entryKey && el.y() == entryValue)
-						textFields.remove(el);
-				});
-				stateParts.remove(panel);
-				dialog.revalidate();
-				dialog.repaint();
-			});
-
-			textFields.add(new Tuple<>(entryKey, entryValue));
-			stateParts.add(panel);
-		};
-		if (initialState != null && !initialState.equals(""))
-			Stream.of(initialState.split(",")).peek(e -> tfProvider.accept(e.split("=")[0], e.split("=")[1]));
+		if (initialState != null && !initialState.equals("")) {
+			Arrays.asList(initialState.split(","))
+					.forEach(e -> new StateEntry(entries, entryList).setEntry(e.split("=")[0], e.split("=")[1]));
+		}
 
 		JButton add = new JButton(UIRES.get("16px.add.gif"));
 		add.setText(L10N.t("dialog.states.add"));
-		add.addActionListener(addAction -> {
-			id.set(Math.max(textFields.size(), id.get() + 1));
-			tfProvider.accept("property" + id.get(), "null");
+		add.addActionListener(e -> {
+			id.set(Math.max(entryList.size(), id.get()) + 1);
+			new StateEntry(entries, entryList).setEntry("property" + id.get(), "null");
 		});
+
+		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		topbar.add(add);
+
+		JPanel stateList = new JPanel(new BorderLayout());
+		stateList.setOpaque(false);
+		stateList.setPreferredSize(new Dimension(270, 340));
+		stateList.add("North", topbar);
+		stateList.add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.setVisible(false));
 		dialog.getRootPane().setDefaultButton(ok);
 
-		dialog.add("North", add);
-		dialog.add("Center", PanelUtils.totalCenterInPanel(stateParts));
-		dialog.add("South", PanelUtils.join(ok, cancel));
-
 		ok.addActionListener(e -> {
-			if (textFields.stream().noneMatch(el -> el.x().getValidationStatus().getValidationResultType()
+			if (entryList.size() == 0) {
+				retVal.set("");
+				dialog.setVisible(false);
+			} else if (entryList.stream().noneMatch(el -> el.entryKey.getValidationStatus().getValidationResultType()
 					== Validator.ValidationResultType.ERROR)) {
-				retVal.set(textFields.stream().map(el -> el.x().getText() + "=" + el.y().getText())
+				retVal.set(entryList.stream().map(el -> el.entryKey.getText() + "=" + el.entryValue.getText())
 						.collect(Collectors.joining(",")));
 				dialog.setVisible(false);
+			} else {
+				Toolkit.getDefaultToolkit().beep();
 			}
 		});
+		cancel.addActionListener(e -> dialog.setVisible(false));
 
-		dialog.setSize(300, 350);
+		dialog.getContentPane().add(PanelUtils.totalCenterInPanel(
+						PanelUtils.centerAndSouthElement(new JScrollPane(stateList), PanelUtils.join(ok, cancel))),
+				BorderLayout.CENTER);
+		dialog.setSize(300, 400);
+		dialog.setResizable(false);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 
 		return retVal.get();
 	}
 
+	private static class StateEntry extends JPanel {
+
+		private final VTextField entryKey = new VTextField(7);
+		private final JTextField entryValue = new JTextField(7);
+
+		private StateEntry(JPanel parent, List<StateEntry> entryList) {
+			super(new FlowLayout(FlowLayout.LEFT));
+
+			final JComponent container = PanelUtils.expandHorizontally(this);
+
+			parent.add(container);
+			entryList.add(this);
+
+			entryKey.setValidator(new RegistryNameValidator(entryKey, "Property name"));
+			entryKey.enableRealtimeValidation();
+
+			add(entryKey);
+			add(new JLabel("="));
+			add(entryValue);
+
+			JButton remove = new JButton(UIRES.get("16px.clear"));
+			remove.setToolTipText(L10N.t("elementgui.potion.remove_entry"));
+			remove.addActionListener(e -> {
+				entryList.remove(this);
+				parent.remove(container);
+				parent.revalidate();
+				parent.repaint();
+			});
+			add(remove);
+
+			parent.revalidate();
+			parent.repaint();
+		}
+
+		public void setEntry(String keyText, String valueText) {
+			entryKey.setText(keyText);
+			entryValue.setText(valueText);
+		}
+	}
+
 }
+

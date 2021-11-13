@@ -39,7 +39,6 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.minecraft.models.item.JItemModelsList;
 import net.mcreator.ui.minecraft.models.item.JItemPropertiesList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -94,9 +93,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
-
 	private JItemPropertiesList customProperties;
-	private JItemModelsList modelsMap;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -172,7 +169,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline().makeReturnValueOptional();
 
 		customProperties = new JItemPropertiesList(this.mcreator);
-		modelsMap = new JItemModelsList(this.mcreator);
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -240,17 +236,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 
 		cipp.add("North", rent);
-
-		JPanel demova = new JPanel();
-		demova.setLayout(new GridLayout());
-		demova.setOpaque(false);
-		cipp.add("Center", demova);
-
-		customProperties.setPreferredSize(new Dimension(demova.getWidth() / 2, demova.getHeight()));
-		modelsMap.setPreferredSize(new Dimension(demova.getWidth() / 2, demova.getHeight()));
-
-		demova.add("North", customProperties);
-		demova.add("South", modelsMap);
+		cipp.add("Center", customProperties);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -441,7 +427,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		dispenseResultItemstack.refreshListKeepSelected();
 
 		customProperties.reloadDataLists();
-		modelsMap.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -515,7 +500,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			renderType.setSelectedItem(model);
 
 		customProperties.setProperties(item.customProperties);
-		modelsMap.setModelsList(item.modelsMap);
+		customProperties.setModelsList(item.modelsMap);
 	}
 
 	@Override public Item getElementFromGUI() {
@@ -559,7 +544,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 		item.customProperties = customProperties.getProperties();
-		item.modelsMap = modelsMap.getModelsList();
+		item.modelsMap = customProperties.getModelsList();
 
 		return item;
 	}

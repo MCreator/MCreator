@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 
 public class JItemModelsListEntry extends JPanel {
 
-	private final JLabel state;
+	private final JTextField state;
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
 	private final MCreator mcreator;
 
@@ -55,7 +55,9 @@ public class JItemModelsListEntry extends JPanel {
 
 		this.mcreator = mcreator;
 
-		state = new JLabel();
+		state = new JTextField(30);
+		state.setEditable(false);
+		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		state.setToolTipText(L10N.t("elementgui.item.custom_models.entry.edit_states"));
 		state.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -71,10 +73,8 @@ public class JItemModelsListEntry extends JPanel {
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 		JPanel east = new JPanel();
-		JScrollPane stateScrollPane = new JScrollPane(state);
-		stateScrollPane.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		add("Center", stateScrollPane);
+		add("Center", new JScrollPane(state));
 
 		east.add(L10N.label("elementgui.item.custom_models.entry"));
 		east.add(model);
