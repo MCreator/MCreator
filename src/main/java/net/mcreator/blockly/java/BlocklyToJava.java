@@ -57,6 +57,7 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TextLengthBlock());
 		blockGenerators.add(new CustomDependencyBlock());
 		blockGenerators.add(new JavaCodeOutputBlock());
+		blockGenerators.add(new TernaryOperatorBlock());
 		blockGenerators.add(new TimeAsStringBlock());
 		blockGenerators.add(new TimeToFormattedString());
 		blockGenerators.add(new TimeSecondsBlock());
@@ -66,7 +67,6 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TimeMonthBlock());
 		blockGenerators.add(new TimeYearBlock());
 		blockGenerators.add(new TimeWeekOfYearBlock());
-		blockGenerators.add(new TernaryOperatorBlock());
 
 		// add Minecraft related blocks
 		blockGenerators.add(new CoordinateBlock());
