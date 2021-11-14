@@ -219,7 +219,7 @@ public class BlocklyJavascriptBridge {
 
 		// check if the data list exists and returns it if true
 		if (!DataListLoader.loadDataList(type).isEmpty())
-			return ElementUtil.getDataList(type);
+			return ElementUtil.getDataListAsStringArray(type);
 
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {

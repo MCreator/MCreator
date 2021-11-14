@@ -255,7 +255,7 @@ public class ElementUtil {
 		return blocks;
 	}
 
-	public static String[] getDataList(String dataList) {
+	public static String[] getDataListAsStringArray(String dataList) {
 		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 

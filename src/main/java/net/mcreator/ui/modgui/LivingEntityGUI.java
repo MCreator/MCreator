@@ -145,7 +145,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JCheckBox hasSpawnEgg = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> mobSpawningType = new JComboBox<>(ElementUtil.getDataList("mobspawntypes"));
+	private final JComboBox<String> mobSpawningType = new JComboBox<>(ElementUtil.getDataListAsStringArray("mobspawntypes"));
 
 	private MCItemHolder mobDrop;
 	private MCItemHolder equipmentMainHand;

@@ -755,8 +755,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
 				new DataListEntry.Dummy("PLANT"));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataList("mapcolors")), "DEFAULT");
-		ComboBoxUtil.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getDataList("planttypes")),
+		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getDataListAsStringArray("planttypes")),
 				"Plains");
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
@@ -764,7 +764,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.getDataList("pathnodetypes")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 
 		ComboBoxUtil.updateComboBoxContents(suspiciousStewEffect,
 				ElementUtil.loadAllPotionEffects(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
