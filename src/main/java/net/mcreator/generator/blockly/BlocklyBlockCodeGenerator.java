@@ -97,8 +97,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// add dependencies to the master
-		if (toolboxBlock.dependencies != null)
-			toolboxBlock.dependencies.forEach(master::addDependency);
+		if (toolboxBlock.getDependencies() != null)
+			toolboxBlock.getDependencies().forEach(master::addDependency);
 
 		Map<String, Object> dataModel = new HashMap<>();
 
@@ -106,8 +106,8 @@ public class BlocklyBlockCodeGenerator {
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
 		// check for all fields if they exist, if they do, add them to data model
-		if (toolboxBlock.fields != null) {
-			for (String fieldName : toolboxBlock.fields) {
+		if (toolboxBlock.getFields() != null) {
+			for (String fieldName : toolboxBlock.getFields()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
@@ -125,8 +125,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// next we check for inputs if they exist, we process them and add to data model
-		if (toolboxBlock.inputs != null) {
-			for (String inputName : toolboxBlock.inputs) {
+		if (!toolboxBlock.getInputs().isEmpty()) {
+			for (String inputName : toolboxBlock.getInputs()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name").equals(inputName)) {
@@ -144,8 +144,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// next we check for advanced inputs if they exist, we process them and add to data model
-		if (toolboxBlock.advanced_inputs != null) {
-			for (var advancedInput : toolboxBlock.advanced_inputs) {
+		if (!toolboxBlock.getAdvancedInputs().isEmpty()) {
+			for (var advancedInput : toolboxBlock.getAdvancedInputs()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name")
@@ -182,8 +182,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// next we check for statement inputs if they exist, we process them and add to data model
-		if (toolboxBlock.statements != null) {
-			for (StatementInput statementInput : toolboxBlock.statements) {
+		if (toolboxBlock.getStatements() != null) {
+			for (StatementInput statementInput : toolboxBlock.getStatements()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("statement") && element.getAttribute("name")
@@ -220,8 +220,8 @@ public class BlocklyBlockCodeGenerator {
 			}
 		}
 
-		if (toolboxBlock.required_apis != null) {
-			for (String required_api : toolboxBlock.required_apis) {
+		if (toolboxBlock.getRequiredAPIs() != null) {
+			for (String required_api : toolboxBlock.getRequiredAPIs()) {
 				if (!master.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							"Block " + type + " requires " + required_api
@@ -231,8 +231,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// add custom warnings if present
-		if (toolboxBlock.warnings != null) {
-			for (String warning : toolboxBlock.warnings) {
+		if (toolboxBlock.getWarnings() != null) {
+			for (String warning : toolboxBlock.getWarnings()) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warning." + warning, type)));
 			}

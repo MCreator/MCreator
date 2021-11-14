@@ -22,6 +22,6 @@ package net.mcreator.blockly.data;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class DependencyProviderInput {
+public abstract class DependencyProviderInput implements IInput {
 	@Nullable public List<Dependency> provides;
 }

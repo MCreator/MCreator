@@ -23,4 +23,9 @@ public class StatementInput extends DependencyProviderInput {
 	public String name;
 
 	public boolean disable_local_variables;
+
+	@Override public String getName() {
+		return this.name;
+	}
+
 }
