@@ -52,7 +52,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	private boolean inline = false;
 
-	private final JLabel nameLabel;
+	protected final JLabel nameLabel;
 	private final JLabel actionLabel;
 	private final JComponent componentA;
 	private final JComponent componentB;
@@ -276,5 +276,13 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
 		return super.updateDepsList(inline);
+	}
+
+	public static class Dynamic extends ProcedureSelector {
+		public Dynamic(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, String procedureName,
+				@Nullable VariableType returnType, Dependency... providedDependencies) {
+			super(helpContext, mcreator, procedureName, returnType, providedDependencies);
+			nameLabel.setText(eventName);
+		}
 	}
 }

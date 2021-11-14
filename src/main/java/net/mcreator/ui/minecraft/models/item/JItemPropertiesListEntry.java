@@ -41,20 +41,21 @@ import java.util.Map;
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	private final VTextField name;
-	private final ProcedureSelector value;
+	private final ProcedureSelector.Dynamic value;
 
-	public JItemPropertiesListEntry(MCreator mcreator, JPanel parent, List<JItemPropertiesListEntry> entryList) {
+	public JItemPropertiesListEntry(MCreator mcreator, JPanel parent, List<JItemPropertiesListEntry> entryList,
+			int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(this.name, "Property name"));
 		name.enableRealtimeValidation();
 
-		value = new ProcedureSelector(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
-				L10N.t("elementgui.item.custom_property.value"), //TODO: Append number when creating a procedure
-				VariableTypeLoader.BuiltInTypes.NUMBER,
+		value = new ProcedureSelector.Dynamic(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
+				L10N.t("elementgui.item.custom_property.value"),
+				L10N.t("elementgui.item.custom_property.value") + propertyId, VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		value.setDefaultName("(zero)");
+		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		reloadDataLists();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);

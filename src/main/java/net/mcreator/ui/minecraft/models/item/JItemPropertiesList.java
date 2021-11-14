@@ -34,19 +34,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class JItemPropertiesList extends JPanel {
 
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemModelsListEntry> modelsList = new ArrayList<>();
+	private final AtomicInteger propertyId = new AtomicInteger(0);
 
 	private final MCreator mcreator;
 
 	private final JPanel propertyEntries = new JPanel(new GridLayout(0, 1, 5, 5));
 	private final JPanel modelEntries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
 	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
+	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
 
 	public JItemPropertiesList(MCreator mcreator) {
 		super(new BorderLayout());
@@ -60,7 +62,10 @@ public class JItemPropertiesList extends JPanel {
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
-		addProperty.addActionListener(e -> new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList));
+		addProperty.addActionListener(e -> {
+			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
+			new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList, propertyId.get());
+		});
 		topbar.add(addProperty);
 
 		addState.setText(L10N.t("elementgui.item.custom_models.add"));
@@ -102,8 +107,10 @@ public class JItemPropertiesList extends JPanel {
 	}
 
 	public void setProperties(Map<String, Procedure> properties) {
-		properties.forEach(
-				(k, v) -> new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList).setEntry(k, v));
+		properties.forEach((k, v) -> {
+			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
+			new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList, propertyId.get()).setEntry(k, v);
+		});
 	}
 
 	public Map<Map<String, Float>, Tuple<String, Integer>> getModelsList() {

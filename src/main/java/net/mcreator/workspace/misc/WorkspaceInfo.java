@@ -22,10 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.element.types.Block;
-import net.mcreator.element.types.GameRule;
-import net.mcreator.element.types.Recipe;
-import net.mcreator.element.types.Tool;
+import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
@@ -170,6 +167,16 @@ import java.util.stream.Collectors;
 		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
 	}
 
+	public boolean hasBlocksMineableWith(String tool) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.BLOCK) {
+				if (element.getGeneratableElement() instanceof Block block)
+					if (block.destroyTool.equals(tool))
+						return true;
+			}
+		return false;
+	}
+
 	public boolean hasGameRulesOfType(String type) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.GAMERULE) {
@@ -180,11 +187,11 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
-	public boolean hasBlocksMineableWith(String tool) {
+	public boolean hasItemsWithCustomProperties() {
 		for (ModElement element : workspace.getModElements())
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals(tool))
+			if (element.getType() == ModElementType.ITEM) {
+				if (element.getGeneratableElement() instanceof Item item)
+					if (item.customProperties.size() > 0)
 						return true;
 			}
 		return false;

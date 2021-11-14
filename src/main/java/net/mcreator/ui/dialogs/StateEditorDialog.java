@@ -102,8 +102,8 @@ public class StateEditorDialog {
 
 	private static class StateEntry extends JPanel {
 
-		private final VTextField entryKey = new VTextField(7);
-		private final JTextField entryValue = new JTextField(7);
+		private final VTextField entryKey = new VTextField(7); //TODO: Replace with property selector combo box
+		private final JTextField entryValue = new JTextField(7); //TODO: Use logic from PreferencesDialog
 
 		private StateEntry(JPanel parent, List<StateEntry> entryList) {
 			super(new FlowLayout(FlowLayout.LEFT));
