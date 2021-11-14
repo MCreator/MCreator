@@ -929,7 +929,7 @@ public class TestWorkspaceDataProvider {
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
+							.collect(Collectors.toList()));
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.customBoundingBox = !_true;

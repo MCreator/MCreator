@@ -174,6 +174,18 @@ Blockly.Blocks['text_format_number'] = {
     }
 };
 
+Blockly.Blocks['time_to_formatted_string'] = {
+    init: function () {
+        this.appendValueInput('format').setCheck('String')
+            .appendField(javabridge.t("blockly.block.time_to_formatted_string"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour(Blockly.Constants.Text.HUE);
+    }
+};
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",
@@ -350,6 +362,32 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "%{BKY_MATH_HUE}"
     },
     {
+        "type": "logic_ternary_op",
+        "message0": "if %1 then %2 else %3",
+        "args0": [
+            {
+                "type": "input_value",
+                "name": "condition",
+                "check": "Boolean"
+            },
+            {
+                "type": "input_value",
+                "name": "THEN"
+            },
+            {
+                "type": "input_value",
+                "name": "ELSE"
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": "#888888",
+        "extensions": [
+            "logic_ternary"
+        ],
+        "mutator": "mark_attached_to_block_item"
+    },
+    {
         "type": "controls_while",
         "message0": "while %1",
         "args0": [
@@ -448,4 +486,58 @@ Blockly.defineBlocksWithJsonArray([
         "output": "Direction",
         "colour": "20"
     },
+    {
+        "type": "time_as_string",
+        "message0": "Time as text",
+        "output": "String",
+        "colour": "%{BKY_TEXTS_HUE}"
+    },
+    {
+        "type": "time_day_of_week",
+        "message0": "Day of this week",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_day_of_month",
+        "message0": "Day of this month",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_hours",
+        "message0": "Current hour of the day",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_month",
+        "message0": "Current month",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_minutes",
+        "message0": "Minutes past current hour",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_year",
+        "message0": "Current year",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_seconds",
+        "message0": "Seconds past current minute",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    },
+    {
+        "type": "time_week_of_year",
+        "message0": "Week of the current year",
+        "output": "Number",
+        "colour": "%{BKY_MATH_HUE}"
+    }
 ]);
