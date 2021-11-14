@@ -41,6 +41,26 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
     });
 
+// marks in the xml if the block is attached to a block/item input, for proper mapping
+Blockly.Extensions.registerMutator('mark_attached_to_block_item',
+    {
+        mutationToDom: function() {
+            var container = document.createElement('mutation');
+            var parentConnection = this.outputConnection.targetConnection;
+            if (parentConnection == null)
+                return null;
+            else {
+                var connectionChecks = parentConnection.getCheck();
+                var shouldMark = connectionChecks &&
+                    (connectionChecks.indexOf('MCItem') != -1 || connectionChecks.indexOf('MCItemBlock') != -1);
+                container.setAttribute('mark', shouldMark);
+                return container;
+            }
+        },
+
+        domToMutation: function(xmlElement) {}
+    });
+
 // Mutator to add/remove entity input from get/set variable blocks for player variables
 Blockly.Extensions.registerMutator('variable_entity_input',
     {
