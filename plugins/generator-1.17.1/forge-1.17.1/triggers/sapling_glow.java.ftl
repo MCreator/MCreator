@@ -1,11 +1,15 @@
+<#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onSaplingGrow(SaplingGrowTreeEvent event) {
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",event.getPos().getX());
-		dependencies.put("y",event.getPos().getY());
-		dependencies.put("z",event.getPos().getZ());
-		dependencies.put("world",event.getWorld());
-		dependencies.put("blockstate",event.getWorld().getBlockState(event.getPos()));
-		dependencies.put("event",event);
-		execute(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getPos().getX()",
+			"y": "event.getPos().getY()",
+			"z": "event.getPos().getZ()",
+			"world": "event.getWorld()",
+			"blockstate": "event.getWorld().getBlockState(event.getPos())",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
