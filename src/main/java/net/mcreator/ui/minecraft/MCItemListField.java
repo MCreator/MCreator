@@ -23,23 +23,54 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.util.image.ImageUtils;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MCItemListField extends JItemListField<MItemBlock> {
 
 	private final MCItem.ListProvider supplier;
-	private final MCreator mcreator;
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier) {
+		super(mcreator);
 		this.supplier = supplier;
-		this.mcreator = mcreator;
+
+		elementsList.setCellRenderer(new CustomListCellRenderer());
 	}
 
 	@Override public List<MItemBlock> getElementsToAdd() {
 		return MCItemSelectorDialog.openMultiSelectorDialog(mcreator, supplier).stream()
 				.map(e -> new MItemBlock(mcreator.getWorkspace(), e.getName())).collect(Collectors.toList());
+	}
+
+	class CustomListCellRenderer extends JLabel implements ListCellRenderer<MItemBlock> {
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends MItemBlock> list, MItemBlock value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			setOpaque(isSelected);
+
+			setBackground(isSelected ?
+					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+
+			setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 2, 0, 2, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+			setHorizontalAlignment(SwingConstants.CENTER);
+			setVerticalAlignment(SwingConstants.CENTER);
+
+			setToolTipText(
+					value.getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", ""));
+
+			setIcon(new ImageIcon(ImageUtils.resize(
+					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 22)));
+
+			return this;
+		}
 	}
 
 }

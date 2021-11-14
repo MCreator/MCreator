@@ -165,8 +165,8 @@ public class ModElementUITest {
 		LOG.info("Random number generator seed: " + rgenseed);
 
 		PreferencesManager.PREFERENCES.ui.language = L10N.getSupportedLocales().stream()
-				.filter(locale -> locale != L10N.DEFAULT_LOCALE).max(Comparator.comparingInt(L10N::getUITextsLocaleSupport))
-				.orElse(null);
+				.filter(locale -> locale != L10N.DEFAULT_LOCALE)
+				.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null);
 		L10N.initTranslations();
 
 		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);

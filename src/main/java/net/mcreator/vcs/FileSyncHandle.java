@@ -86,36 +86,27 @@ public class FileSyncHandle {
 	}
 
 	public String getPath(ResultSide resultSide) {
-		switch (resultSide) {
-		case LOCAL:
-			return localPath;
-		case REMOTE:
-			return remotePath;
-		default:
-			return basePath;
-		}
+		return switch (resultSide) {
+			case LOCAL -> localPath;
+			case REMOTE -> remotePath;
+			default -> basePath;
+		};
 	}
 
 	public byte[] getBytes(ResultSide resultSide) {
-		switch (resultSide) {
-		case LOCAL:
-			return localBytes;
-		case REMOTE:
-			return remoteBytes;
-		default:
-			return baseBytes;
-		}
+		return switch (resultSide) {
+			case LOCAL -> localBytes;
+			case REMOTE -> remoteBytes;
+			default -> baseBytes;
+		};
 	}
 
 	public DiffEntry.ChangeType getChangeTypeRelativeTo(ResultSide resultSide) {
-		switch (resultSide) {
-		case LOCAL:
-			return getChangeTypeRelativeToLocal();
-		case REMOTE:
-			return getChangeTypeRelativeToRemote();
-		default:
-			return null;
-		}
+		return switch (resultSide) {
+			case LOCAL -> getChangeTypeRelativeToLocal();
+			case REMOTE -> getChangeTypeRelativeToRemote();
+			default -> null;
+		};
 	}
 
 	public DiffEntry.ChangeType getChangeTypeRelativeToLocal() {
@@ -161,7 +152,7 @@ public class FileSyncHandle {
 	}
 
 	@Override public boolean equals(Object o) {
-		return o instanceof FileSyncHandle && ((FileSyncHandle) o).basePath.equals(basePath);
+		return o instanceof FileSyncHandle other && other.basePath.equals(basePath);
 	}
 
 	@Override public int hashCode() {

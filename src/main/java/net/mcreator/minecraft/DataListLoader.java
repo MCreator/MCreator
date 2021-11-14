@@ -24,9 +24,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.reflections.scanners.Scanners;
 
 import java.io.IOException;
 import java.net.URL;

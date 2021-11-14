@@ -23,7 +23,6 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
-import net.mcreator.ui.action.impl.gradle.BuildWorkspaceAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
 import net.mcreator.ui.component.UnsupportedComponent;
@@ -416,10 +415,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined before the generatable element is generated
 		beforeGeneratableElementGenerated();
 
-		// save custom mod element (preview) picture if it has one
-		mcreator.getModElementManager().storeModElementPicture(element);
-		modElement.reinit(); // re-init mod element to pick up the new mod element picture
-
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
 
@@ -431,6 +426,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// generate mod element code
 		mcreator.getGenerator().generateElement(element);
+
+		// save custom mod element (preview) picture if it has one
+		mcreator.getModElementManager().storeModElementPicture(element);
+		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()

@@ -22,8 +22,8 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;

@@ -7,15 +7,15 @@
 </#function>
 
 <#function toArmorSlot slot>
-    <#if slot == "0">
+    <#if slot == "/*@int*/0">
         <#return "EquipmentSlot.FEET">
-    <#elseif slot == "1">
+    <#elseif slot == "/*@int*/1">
         <#return "EquipmentSlot.LEGS">
-    <#elseif slot == "2">
+    <#elseif slot == "/*@int*/2">
         <#return "EquipmentSlot.CHEST">
-    <#elseif slot == "3">
+    <#elseif slot == "/*@int*/3">
         <#return "EquipmentSlot.HEAD">
     <#else>
-        <#return "EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, (int) " + slot + ")">
+        <#return "EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, ${opt.toInt(slot)})">
     </#if>
 </#function>

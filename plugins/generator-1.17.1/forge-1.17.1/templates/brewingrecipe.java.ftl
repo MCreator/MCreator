@@ -36,7 +36,7 @@ package ${package}.recipes.brewing;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}BrewingRecipe implements IBrewingRecipe {
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		BrewingRecipeRegistry.addRecipe(new ${name}BrewingRecipe());
+		event.enqueueWork(() -> BrewingRecipeRegistry.addRecipe(new ${name}BrewingRecipe()));
 	}
 
 	@Override

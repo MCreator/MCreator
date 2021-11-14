@@ -44,6 +44,7 @@ public class ToolboxCategory {
 	/**
 	 * Returns the color of this toolbox category. If the field is a valid hex color code, it's returned as-is.
 	 * If it's a valid integer, it's treated as a hue to get the color with the correct saturation and value.
+	 *
 	 * @return The color of this toolbox category, or black if it's badly formatted.
 	 */
 	public Color getColor() {
@@ -53,7 +54,8 @@ public class ToolboxCategory {
 			else
 				return Color.decode(color);
 		} catch (Exception e) {
-			LOG.warn("The color for toolbox category " + getName() + " isn't formatted correctly. Using color black for it");
+			LOG.warn("The color for toolbox category " + getName()
+					+ " isn't formatted correctly. Using color black for it");
 			return Color.BLACK;
 		}
 	}
