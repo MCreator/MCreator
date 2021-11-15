@@ -126,7 +126,7 @@ public class GeneratorStats {
 
 			generatorCmdArgs = PluginLoader.INSTANCE
 					.getResources(generatorConfiguration.getGeneratorName() + ".cmdargs", ftlFile).stream()
-					.map(FilenameUtils::getBaseName).map(FilenameUtils::getBaseName).collect(Collectors.toSet());
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet());
 			coverageInfo.put("cmdargs", Math.min(
 					(((double) generatorCmdArgs.size()) / BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
