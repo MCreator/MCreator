@@ -23,6 +23,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,14 +54,14 @@ import java.util.stream.Collectors;
 	public List<String> getInputs() {
 		return inputs != null ?
 				inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::getName).collect(Collectors.toList()) :
-				null;
+				Collections.emptyList();
 	}
 
 	public List<AdvancedInput> getAdvancedInputs() {
 		return inputs != null ?
 				inputs.stream().filter(e -> e instanceof AdvancedInput).map(e -> (AdvancedInput) e)
 						.collect(Collectors.toList()) :
-				null;
+				Collections.emptyList();
 	}
 
 	@Nullable public List<StatementInput> getStatements() {
