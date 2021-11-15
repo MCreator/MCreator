@@ -83,9 +83,9 @@ import java.util.Map;
 	public Procedure dispenseResultItemstack;
 
 	// Food
+	public boolean isFood;
 	public int nutritionalValue;
 	public double saturation;
-	public int eatingSpeed;
 	public MItemBlock resultItem;
 	public boolean forDogs;
 	public boolean isAlwaysEdible;
@@ -102,8 +102,6 @@ import java.util.Map;
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
-
-		this.eatingSpeed = 32;
 		this.saturation = 0.3f;
 		this.animation = "eat";
 	}

@@ -119,7 +119,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
 	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
-	private final JSpinner eatingSpeed = new JSpinner(new SpinnerNumberModel(32, 0, 9999, 1));
 	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector onEaten;
@@ -357,7 +356,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
-		JPanel foodSubpane = new JPanel(new GridLayout(8, 2, 2, 2));
+		JPanel foodSubpane = new JPanel(new GridLayout(7, 2, 2, 2));
 		foodSubpane.setOpaque(false);
 
 		isFood.setOpaque(false);
@@ -392,10 +391,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.food.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
-
-		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/eating_speed"),
-				L10N.label("elementgui.food.eating_speed")));
-		foodSubpane.add(eatingSpeed);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
 				L10N.label("elementgui.food.item_animation")));
@@ -471,7 +466,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if(isFood.isSelected()) {
 			nutritionalValue.setEnabled(true);
 			saturation.setEnabled(true);
-			eatingSpeed.setEnabled(true);
 			forDogs.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
 			onEaten.setEnabled(true);
@@ -480,7 +474,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);
-			eatingSpeed.setEnabled(false);
 			forDogs.setEnabled(false);
 			isAlwaysEdible.setEnabled(false);
 			onEaten.setEnabled(false);
@@ -571,12 +564,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		hasDispenseBehavior.setSelected(item.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
+		isFood.setSelected(item.isFood);
 		forDogs.setSelected(item.forDogs);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
 		onEaten.setSelectedProcedure(item.onEaten);
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
-		eatingSpeed.setValue(item.eatingSpeed);
 		animation.setSelectedItem(item.animation);
 		resultItem.setBlock(item.resultItem);
 
@@ -623,8 +616,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		item.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
 		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
+		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
-		item.eatingSpeed = (int) eatingSpeed.getValue();
 		item.saturation = (double) saturation.getValue();
 		item.forDogs = forDogs.isSelected();
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();

@@ -110,9 +110,27 @@ import net.minecraft.entity.ai.attributes.Attributes;
 					.isImmuneToFire()
 					</#if>
 					.rarity(Rarity.${data.rarity})
+					<#if data.isFood>
+					    .food((new Food.Builder()).hunger(${data.nutritionalValue})
+					    .saturation(${data.saturation}f)
+                        <#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
+                        <#if data.forDogs>.meat()</#if>.build())
+                    </#if>
 			);
 			setRegistryName("${registryname}");
 		}
+
+        <#if data.isFood>
+            @Override public UseAction getUseAction(ItemStack itemstack) {
+        	    return UseAction.${data.animation?upper_case};
+        	}
+
+        	<#if data.animation == "drink">
+        		@Override public net.minecraft.util.SoundEvent getEatSound() {
+        			return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
+        		}
+        	</#if>
+        </#if>
 
 		<#if data.stayInGridWhenCrafting>
 			@Override public boolean hasContainerItem() {
@@ -327,6 +345,38 @@ import net.minecraft.entity.ai.attributes.Attributes;
             <@procedureOBJToCode data.onDroppedByPlayer/>
             return true;
         }
+        </#if>
+
+        <#if data.isFood && (hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty()))>
+            @Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
+        	    ItemStack retval =
+        		    <#if data.resultItem?? && !data.resultItem.isEmpty()>
+        			    ${mappedMCItemToItemStackCode(data.resultItem, 1)};
+        			</#if>
+        		super.onItemUseFinish(itemstack, world, entity);
+
+        		<#if hasProcedure(data.onEaten)>
+        			double x = entity.getPosX();
+        			double y = entity.getPosY();
+        			double z = entity.getPosZ();
+        			<@procedureOBJToCode data.onEaten/>
+        		</#if>
+
+        		<#if data.resultItem?? && !data.resultItem.isEmpty()>
+        			if (itemstack.isEmpty()) {
+        				return retval;
+        			} else {
+        				if (entity instanceof PlayerEntity) {
+        					PlayerEntity player = (PlayerEntity) entity;
+        					if (!player.isCreative() && !player.inventory.addItemStackToInventory(retval))
+        						player.dropItem(retval, false);
+        				}
+        				return itemstack;
+        			}
+        		<#else>
+        			return retval;
+        		</#if>
+        	}
         </#if>
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
