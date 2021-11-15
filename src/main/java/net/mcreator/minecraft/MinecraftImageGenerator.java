@@ -553,12 +553,12 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates command images.</p>
+		 * <p>This method generates the basic command image preview.</p>
 		 *
 		 * @param command <p>The command.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateCommandPreviewPicture(String command) {
+		public static BufferedImage generateBasicCommandPreviewPicture(String command) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setColor(new Color(255, 255, 255, 180));
@@ -575,12 +575,12 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * This method generates procedure images.
+		 * <p>This method generates the command image preview when arguments are present.</p>
 		 *
 		 * @param procedurexml XML code used to get blocks.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generateCommandWithArgsPreviewPicture(String procedurexml) {
+		public static BufferedImage generateAdvancedCommandPreviewPicture(String command, String procedurexml) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
@@ -590,27 +590,27 @@ public class MinecraftImageGenerator {
 
 			Color blockColor = null;
 
-			if (procedurexml.contains("<block type=\"basic_literal") || procedurexml.contains("<block type=\"advanced_literal")) {
+			if (procedurexml.contains("<block type=\"literal")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(280);
-			} else if (procedurexml.contains("<block type=\"basic_item") || procedurexml.contains("<block type=\"advanced_item")) {
+			} else if (procedurexml.contains("<block type=\"item")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
-			} else if (procedurexml.contains("<block type=\"blockstate") || procedurexml.contains("<block type=\"advanced_blockstate")) {
+			} else if (procedurexml.contains("<block type=\"blockstate")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
-			} else if (procedurexml.contains("<block type=\"basic_blockpos") || procedurexml.contains("<block type=\"advanced_blockpos")) {
+			} else if (procedurexml.contains("<block type=\"blockpos")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
-			} else if (procedurexml.contains("<block type=\"basic_entity") || procedurexml.contains("<block type=\"advanced_entity")) {
+			} else if (procedurexml.contains("<block type=\"entity")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(195);
-			} else if (procedurexml.contains("<block type=\"basic_string") || procedurexml.contains("<block type=\"advanced_string")) {
+			} else if (procedurexml.contains("<block type=\"string")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(170);
-			} else if (procedurexml.contains("<block type=\"basic_logic") || procedurexml.contains("<block type=\"advanced_logic")) {
+			} else if (procedurexml.contains("<block type=\"logic")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(210);
-			} else if (procedurexml.contains("<block type=\"basic_double") || procedurexml.contains("<block type=\"advanced_double")) {
+			} else if (procedurexml.contains("<block type=\"double")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(230);
 			}
 
 			graphics2D.drawImage(
-					ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)
-							.getImage(), 0, 0, null);
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false).getImage(),
+					0, 0, null);
 
 			if (blockColor != null) {
 				graphics2D.drawImage(
@@ -618,6 +618,8 @@ public class MinecraftImageGenerator {
 								.getImage(), 0, 0, null);
 			} else
 				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_block_base").getImage(), 0, 0, null);
+
+			graphics2D.drawString(StringUtils.abbreviateString(command, 4, false).toUpperCase(Locale.ENGLISH), 7, 17);
 
 			graphics2D.dispose();
 			return icon;
