@@ -122,6 +122,8 @@ public class ModElementTypeLoader {
 			typeName = "rangeditem";
 		} else if (typeName.equals("mob")) {
 			typeName = "livingentity";
+		} else if (typeName.equals("food")) {
+			return ModElementType.FOOD;
 		}
 
 		for (ModElementType<?> me : REGISTRY) {
