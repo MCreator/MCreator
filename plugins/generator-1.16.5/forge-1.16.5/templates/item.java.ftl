@@ -111,10 +111,11 @@ import net.minecraft.entity.ai.attributes.Attributes;
 					</#if>
 					.rarity(Rarity.${data.rarity})
 					<#if data.isFood>
-					    .food((new Food.Builder()).hunger(${data.nutritionalValue})
-					    .saturation(${data.saturation}f)
-                        <#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
-                        <#if data.forDogs>.meat()</#if>.build())
+					    .food((new Food.Builder())
+					            .hunger(${data.nutritionalValue})
+					            .saturation(${data.saturation}f)
+                                <#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
+                                <#if data.forDogs>.meat()</#if>.build())
                     </#if>
 			);
 			setRegistryName("${registryname}");
