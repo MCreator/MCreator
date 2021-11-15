@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-((${mappedMCItemToItemStackCode(input$item, 1)}).getMaxDamage())
+/*@int*/((${mappedMCItemToItemStackCode(input$item, 1)}).getMaxDamage())

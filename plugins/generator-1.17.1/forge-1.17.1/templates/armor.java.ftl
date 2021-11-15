@@ -30,8 +30,11 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 
 package ${package}.item;
+
+import net.minecraft.sounds.SoundEvent;
 
 public abstract class ${name}Item extends ArmorItem {
 
@@ -49,9 +52,9 @@ public abstract class ${name}Item extends ArmorItem {
 				return ${data.enchantability};
 			}
 
-			@Override public net.minecraft.sounds.SoundEvent getEquipSound() {
+			@Override public SoundEvent getEquipSound() {
 				<#if data.equipSound??>
-				return (net.minecraft.sounds.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
+				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
 				return null;
 				</#if>
@@ -131,16 +134,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if hasProcedure(data.onHelmetTick)>
-		@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
-			super.onArmorTick(itemstack, world, entity);
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			<@procedureOBJToCode data.onHelmetTick/>
-		}
-		</#if>
-
+		<@onArmorTick data.onHelmetTick/>
 	}
 	</#if>
 
@@ -192,15 +186,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if hasProcedure(data.onBodyTick)>
-		@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			<@procedureOBJToCode data.onBodyTick/>
-		}
-		</#if>
-
+		<@onArmorTick data.onBodyTick/>
 	}
 	</#if>
 
@@ -252,15 +238,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if hasProcedure(data.onLeggingsTick)>
-		@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			<@procedureOBJToCode data.onLeggingsTick/>
-		}
-		</#if>
-
+		<@onArmorTick data.onLeggingsTick/>
 	}
 	</#if>
 
@@ -312,15 +290,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if hasProcedure(data.onBootsTick)>
-		@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			<@procedureOBJToCode data.onBootsTick/>
-		}
-		</#if>
-
+		<@onArmorTick data.onBootsTick/>
 	}
 	</#if>
 

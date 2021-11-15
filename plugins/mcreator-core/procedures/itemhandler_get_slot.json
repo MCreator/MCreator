@@ -18,7 +18,7 @@
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"slotid\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
-      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>",
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
     ],
     "inputs": [
       "slotid",

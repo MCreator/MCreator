@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 <#include "mcitems.ftl">
 
 package ${package}.item;
@@ -53,7 +54,7 @@ public class ${name}Item extends Item {
 	</#if>
 
 	<#if data.hasGlow>
-	@Override public boolean isFoil(ItemStack itemstack) {
+	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 		<#if hasProcedure(data.glowCondition)>
 		Player entity = Minecraft.getInstance().player;
 		Level world = entity.level;
@@ -82,36 +83,9 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRightClicked)>
-	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-		ItemStack itemstack = ar.getObject();
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onRightClicked/>
-		return ar;
-	}
-	</#if>
+	<@onRightClickedInAir data.onRightClicked/>
 
-	<#if hasProcedure(data.onRightClickedOnBlock)>
-	@Override public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
-		Level world = context.getLevel();
-  		BlockPos pos = context.getClickedPos();
-  		Player entity = context.getPlayer();
-  		Direction direction = context.getClickedFace();
-  		BlockState blockstate = world.getBlockState(pos);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<#if hasReturnValue(data.onRightClickedOnBlock)>
-		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-		<#else>
-		<@procedureOBJToCode data.onRightClickedOnBlock/>
-		return InteractionResult.PASS;
-		</#if>
-	}
-	</#if>
+	<@onItemUseFirst data.onRightClickedOnBlock/>
 
 	<#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
 	@Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
@@ -144,63 +118,15 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onEntityHitWith)>
-	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntityHitWith/>
-		return retval;
-	}
-	</#if>
+	<@onEntityHitWith data.onEntityHitWith/>
 
-	<#if hasProcedure(data.onEntitySwing)>
-	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntitySwing/>
-		return retval;
-	}
-	</#if>
+	<@onEntitySwing data.onEntitySwing/>
 
-	<#if hasProcedure(data.onCrafted)>
-	@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
-		super.onCraftedBy(itemstack, world, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onCrafted/>
-	}
-	</#if>
+	<@onCrafted data.onCrafted/>
 
-	<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
-	@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-		super.inventoryTick(itemstack, world, entity, slot, selected);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<#if hasProcedure(data.onItemInUseTick)>
-		if (selected)
-			<@procedureOBJToCode data.onItemInUseTick/>
-		</#if>
-		<@procedureOBJToCode data.onItemInInventoryTick/>
-	}
-	</#if>
+	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
-	<#if hasProcedure(data.onDroppedByPlayer)>
-	@Override public boolean onDroppedByPlayer(ItemStack itemstack, Player entity) {
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onDroppedByPlayer/>
-		return true;
-	}
-	</#if>
+	<@onDroppedByPlayer data.onDroppedByPlayer/>
+
 }
 <#-- @formatter:on -->

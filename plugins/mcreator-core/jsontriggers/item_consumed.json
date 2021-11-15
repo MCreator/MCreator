@@ -12,7 +12,7 @@
   "mcreator": {
     "toolbox_id": "items",
     "toolbox_init": [
-      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
     ],
     "inputs": [
       "item"

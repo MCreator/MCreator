@@ -54,13 +54,13 @@ public class ${name}Item extends Item {
 			boolean success = false;
 
 			if (world.isEmptyBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
-				((${name}PortalBlock) ${JavaModName}Blocks.${registryname?upper_case}_PORTAL).portalSpawn(world, pos);
+				${name}PortalBlock.portalSpawn(world, pos);
 				itemstack.hurtAndBreak(1, entity, c -> c.broadcastBreakEvent(context.getHand()));
 				success = true;
 			}
 
 			<#if hasProcedure(data.whenPortaTriggerlUsed)>
-				<#if hasReturnValue(data.whenPortaTriggerlUsed)>
+				<#if hasReturnValueOf(data.whenPortaTriggerlUsed, "actionresulttype")>
 					InteractionResult result = <@procedureOBJToInteractionResultCode data.whenPortaTriggerlUsed/>;
 					return success ? InteractionResult.SUCCESS : result;
 				<#else>

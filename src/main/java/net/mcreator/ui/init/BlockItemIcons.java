@@ -19,9 +19,7 @@
 package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
-import org.apache.commons.io.FilenameUtils;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -39,9 +37,9 @@ public class BlockItemIcons {
 
 	public static void init() {
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		Map<String, ImageIcon> tmp = new Reflections("datalists.icons", new ResourcesScanner(),
-				PluginLoader.INSTANCE).getResources(Pattern.compile(".*\\.png")).parallelStream().collect(
-				Collectors.toMap(resource -> FilenameUtils.removeExtension(FilenameUtils.getName(resource)),
+		Map<String, ImageIcon> tmp = PluginLoader.INSTANCE.getResources("datalists.icons", Pattern.compile(".*\\.png"))
+				.parallelStream().collect(Collectors.toMap(
+						resource -> FilenameUtilsPatched.removeExtension(FilenameUtilsPatched.getName(resource)),
 						resource -> new ImageIcon(
 								Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(resource)))));
 		ImageIO.setUseCache(true);
@@ -64,7 +62,7 @@ public class BlockItemIcons {
 	}
 
 	//@formatter:off
-	private static final HashMap<String, String> TEXTURE_MAPPINGS = new HashMap<String, String>() {{
+	private static final HashMap<String, String> TEXTURE_MAPPINGS = new HashMap<>() {{
 		//NewToolGUI
 		put("Pickaxe", 				"IRON_PICKAXE");
 		put("Axe", 					"IRON_AXE");

@@ -25,5 +25,5 @@ new Object() {
         MinecraftForge.EVENT_BUS.unregister(this);
     }
 
-}.start(world, (int) ${input$ticks});
+}.start(world, ${opt.toInt(input$ticks)});
 <#-- @formatter:on -->

@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-(new Object(){
+/*@int*/(new Object(){
 	public int fillTankSimulate(LevelAccessor level, BlockPos pos, int amount) {
 		AtomicInteger _retval = new AtomicInteger(0);
 		BlockEntity _ent = level.getBlockEntity(pos);
@@ -14,5 +14,5 @@
 		);
 		return _retval.get();
 	}
-}.fillTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.fillTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$amount)}))
 <#-- @formatter:on -->

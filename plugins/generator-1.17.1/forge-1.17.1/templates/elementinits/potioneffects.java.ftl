@@ -38,10 +38,10 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}MobEffects {
 
-	private static final List<MobEffect> REGISTRY = new ArrayList();
+	private static final List<MobEffect> REGISTRY = new ArrayList<>();
 
 	<#list potioneffects as effect>
-	public static MobEffect ${effect.getModElement().getRegistryNameUpper()} = register(new ${effect.getModElement().getName()}MobEffect());
+	public static final MobEffect ${effect.getModElement().getRegistryNameUpper()} = register(new ${effect.getModElement().getName()}MobEffect());
 	</#list>
 
 	private static MobEffect register(MobEffect effect) {

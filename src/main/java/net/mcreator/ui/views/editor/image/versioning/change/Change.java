@@ -49,7 +49,8 @@ public abstract class Change {
 		return group;
 	}
 
-	public void setUUID(UUID group) {
+	public Change setUUID(UUID group) {
 		this.group = group;
+		return this;
 	}
 }

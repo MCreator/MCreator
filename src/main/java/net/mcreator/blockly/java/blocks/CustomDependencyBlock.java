@@ -54,7 +54,8 @@ public class CustomDependencyBlock implements IBlockGenerator {
 
 			master.append("(").append(element.getTextContent()).append(")");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.custom_dependency")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.custom_dependency")));
 		}
 	}
 

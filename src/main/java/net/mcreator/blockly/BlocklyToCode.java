@@ -207,12 +207,36 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	/**
 	 * Helper method to process an output block and remove surrounding parentheses if possible
+	 *
 	 * @param element The element to process
-	 * @throws TemplateGeneratorException When the
+	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
 	public final void processOutputBlockWithoutParentheses(Element element) throws TemplateGeneratorException {
 		String code = directProcessOutputBlock(this, element);
 		this.append(ProcedureCodeOptimizer.removeParentheses(code));
+	}
+
+	/**
+	 * Helper method to process an output block and remove surrounding parentheses if possible
+	 *
+	 * @param element The element to process
+	 * @param blacklist The characters that can't be contained at the top nesting level when optimizing the element
+	 * @throws TemplateGeneratorException If the template can't be generated
+	 */
+	public final void processOutputBlockWithoutParentheses(Element element, String blacklist) throws TemplateGeneratorException {
+		String code = directProcessOutputBlock(this, element);
+		this.append(ProcedureCodeOptimizer.removeParentheses(code, blacklist));
+	}
+
+	/**
+	 * Helper method to get the code of an output block and remove surrounding parentheses if possible
+	 *
+	 * @param element The element to process
+	 * @return The generated code of the element with parentheses optimization
+	 * @throws TemplateGeneratorException If the template can't be generated
+	 */
+	public String directProcessOutputBlockWithoutParentheses(Element element) throws TemplateGeneratorException {
+		return ProcedureCodeOptimizer.removeParentheses(directProcessOutputBlock(this, element));
 	}
 
 }

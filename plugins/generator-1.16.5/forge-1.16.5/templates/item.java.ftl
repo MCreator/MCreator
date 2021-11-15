@@ -78,7 +78,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 
 					<#if hasProcedure(data.dispenseResultItemstack)>
 						boolean success = this.isSuccessful();
-						<#if hasReturnValue(data.dispenseResultItemstack)>
+						<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
 							return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 						<#else>
 							<@procedureOBJToCode data.dispenseResultItemstack/>
@@ -251,7 +251,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
-			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			<#if hasReturnValueOf(data.onRightClickedOnBlock, "actionresulttype")>
 			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>

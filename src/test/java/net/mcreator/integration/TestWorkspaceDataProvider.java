@@ -304,7 +304,6 @@ public class TestWorkspaceDataProvider {
 			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.rainingPossibility = 3.5;
 			biome.baseHeight = -0.3;
-			biome.maxWaterDepth = 4;
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
@@ -339,7 +338,7 @@ public class TestWorkspaceDataProvider {
 				entry1.minGroup = 10;
 				entry1.minGroup = 134;
 				entry1.weight = 13;
-				entry1.spawnType = "creature";
+				entry1.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
@@ -348,7 +347,7 @@ public class TestWorkspaceDataProvider {
 				entry2.minGroup = 23;
 				entry2.minGroup = 145;
 				entry2.weight = 11;
-				entry2.spawnType = "monster";
+				entry2.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
 				entities.add(entry2);
 			}
 			biome.spawnEntries = entities;
@@ -727,8 +726,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = new String[] { "monster", "creature", "ambient",
-					"waterCreature" }[valueIndex];
+			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
 			livingEntity.restrictionBiomes = new ArrayList<>();
@@ -918,7 +916,7 @@ public class TestWorkspaceDataProvider {
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
+							.collect(Collectors.toList()));
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.customBoundingBox = !_true;

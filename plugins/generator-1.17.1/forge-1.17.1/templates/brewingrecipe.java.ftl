@@ -33,7 +33,11 @@
 
 package ${package}.recipes.brewing;
 
-public class ${name}BrewingRecipe implements IBrewingRecipe {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}BrewingRecipe implements IBrewingRecipe {
+
+	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> BrewingRecipeRegistry.addRecipe(new ${name}BrewingRecipe()));
+	}
 
 	@Override
 	public boolean isInput(ItemStack input) {

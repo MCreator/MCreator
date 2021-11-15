@@ -37,7 +37,8 @@ public class ImageEditorRedoAction extends BasicAction {
 		});
 		setIcon(UIRES.get("img_editor.redo"));
 		setTooltip(L10N.t("action.image_editor.redo.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
+				tab.getContent() instanceof ImageMakerView imageMakerView && !imageMakerView.getVersionManager()
+						.lastRevision()));
 	}
 }

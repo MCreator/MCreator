@@ -1,15 +1,19 @@
+<#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
 		Player sourceentity=event.getPlayer();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x", sourceentity.getX());
-		dependencies.put("y", sourceentity.getY());
-		dependencies.put("z", sourceentity.getZ());
-		dependencies.put("world", sourceentity.level);
-		dependencies.put("entity", event.getTarget());
-		dependencies.put("sourceentity", sourceentity);
-		dependencies.put("damagemodifier", event.getDamageModifier());
-		dependencies.put("isvanillacritical", event.isVanillaCritical());
-		dependencies.put("event", event);
-		execute(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": " sourceentity.getX()",
+			"y": " sourceentity.getY()",
+			"z": " sourceentity.getZ()",
+			"world": " sourceentity.level",
+			"entity": "event.getTarget()",
+			"sourceentity": " sourceentity",
+			"damagemodifier": "event.getDamageModifier()",
+			"isvanillacritical": "event.isVanillaCritical()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

@@ -22,9 +22,9 @@ import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,7 +49,7 @@ public class ModAPIManager {
 			try {
 				Map<?, ?> apiconfiguration = (Map<?, ?>) reader.read();
 
-				ModAPI modAPI = new ModAPI(FilenameUtils.getBaseName(apidefinition),
+				ModAPI modAPI = new ModAPI(FilenameUtilsPatched.getBaseName(apidefinition),
 						(String) apiconfiguration.get("name"));
 
 				Map<String, ModAPI.Implementation> implementations = new HashMap<>();
@@ -76,9 +76,9 @@ public class ModAPIManager {
 
 				modAPI.setImplementations(implementations);
 
-				modApiList.put(FilenameUtils.getBaseName(apidefinition), modAPI);
+				modApiList.put(FilenameUtilsPatched.getBaseName(apidefinition), modAPI);
 
-				LOG.debug("Loaded mod API definition: " + FilenameUtils.getBaseName(apidefinition));
+				LOG.debug("Loaded mod API definition: " + FilenameUtilsPatched.getBaseName(apidefinition));
 			} catch (YamlException e) {
 				LOG.error("Failed to load mod API definition: " + e.getMessage());
 			}
