@@ -1,1 +1,1 @@
-Animation est l'animation utilisée quand le joueur fait une action avec cet item.
+L'animation de nourriture est l'animation utilisée lorsque le joueur mange la nourriture.

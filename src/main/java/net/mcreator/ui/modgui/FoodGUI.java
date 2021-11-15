@@ -350,15 +350,8 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.texture = texture.getID();
 		food.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		food.stackSize = (int) stackSize.getValue();
-		food.nutritionalValue = (int) nutritionalValue.getValue();
-		food.eatingSpeed = (int) eatingSpeed.getValue();
-		food.saturation = (double) saturation.getValue();
-		food.forDogs = forDogs.isSelected();
-		food.isAlwaysEdible = isAlwaysEdible.isSelected();
-		food.animation = (String) animation.getSelectedItem();
 		food.onRightClicked = onRightClicked.getSelectedProcedure();
 		food.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
-		food.onEaten = onEaten.getSelectedProcedure();
 		food.onEntityHitWith = onEntityHitWith.getSelectedProcedure();
 		food.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		food.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
@@ -368,7 +361,6 @@ public class FoodGUI extends ModElementGUI<Food> {
 		food.hasGlow = hasGlow.isSelected();
 		food.glowCondition = glowCondition.getSelectedProcedure();
 		food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
-		food.resultItem = resultItem.getBlock();
 
 		Model.Type modelType = Objects.requireNonNull(renderType.getSelectedItem()).getType();
 		food.renderType = 0;

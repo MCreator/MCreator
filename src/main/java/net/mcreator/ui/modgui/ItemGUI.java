@@ -115,6 +115,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 
+	// Food parameters
+	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
+	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JSpinner eatingSpeed = new JSpinner(new SpinnerNumberModel(32, 0, 9999, 1));
+	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector onEaten;
+	private final JComboBox<String> animation = new JComboBox<>(
+			new String[] { "eat", "drink", "block", "bow", "crossbow", "none", "spear" });
+	private final MCItemHolder resultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -150,6 +162,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onEaten = new ProcedureSelector(this.withEntry("item/when_eaten"), mcreator,
+				L10N.t("elementgui.food.event_on_eaten"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -181,6 +196,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
+		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
@@ -341,9 +357,61 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
+		JPanel foodSubpane = new JPanel(new GridLayout(8, 2, 2, 2));
+		foodSubpane.setOpaque(false);
+
+		isFood.setOpaque(false);
+		forDogs.setOpaque(false);
+		isAlwaysEdible.setOpaque(false);
+		nutritionalValue.setOpaque(false);
+		saturation.setOpaque(false);
+
+		isFood.addActionListener(e -> updateFoodPanel());
+		updateFoodPanel();
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"),
+				L10N.label("elementgui.item.is_food")));
+		foodSubpane.add(isFood);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
+				L10N.label("elementgui.food.nutritional_value")));
+		foodSubpane.add(nutritionalValue);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
+				L10N.label("elementgui.food.saturation")));
+		foodSubpane.add(saturation);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/result_item"),
+				L10N.label("elementgui.food.eating_result")));
+		foodSubpane.add(PanelUtils.centerInPanel(resultItem));
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_for_dogs"),
+				L10N.label("elementgui.food.is_meat")));
+		foodSubpane.add(forDogs);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
+				L10N.label("elementgui.food.is_edible")));
+		foodSubpane.add(isAlwaysEdible);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/eating_speed"),
+				L10N.label("elementgui.food.eating_speed")));
+		foodSubpane.add(eatingSpeed);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.food.item_animation")));
+		foodSubpane.add(animation);
+
+		foodSubpane.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.food_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		foodProperties.add("Center", PanelUtils.totalCenterInPanel(foodSubpane));
+		foodProperties.setOpaque(false);
+
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(4, 3, 10, 10));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -354,6 +422,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onStoppedUsing);
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
+		events.add(onEaten);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
@@ -388,12 +457,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+		}
+	}
+
+	private void updateFoodPanel() {
+		if(isFood.isSelected()) {
+			nutritionalValue.setEnabled(true);
+			saturation.setEnabled(true);
+			eatingSpeed.setEnabled(true);
+			forDogs.setEnabled(true);
+			isAlwaysEdible.setEnabled(true);
+			onEaten.setEnabled(true);
+			animation.setEnabled(true);
+			resultItem.setEnabled(true);
+		} else {
+			nutritionalValue.setEnabled(false);
+			saturation.setEnabled(false);
+			eatingSpeed.setEnabled(false);
+			forDogs.setEnabled(false);
+			isAlwaysEdible.setEnabled(false);
+			onEaten.setEnabled(false);
+			animation.setEnabled(false);
+			resultItem.setEnabled(false);
 		}
 	}
 
@@ -417,6 +509,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
+		onEaten.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		dispenseSuccessCondition.refreshListKeepSelected();
 		dispenseResultItemstack.refreshListKeepSelected();
@@ -478,9 +571,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 		hasDispenseBehavior.setSelected(item.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
+		forDogs.setSelected(item.forDogs);
+		isAlwaysEdible.setSelected(item.isAlwaysEdible);
+		onEaten.setSelectedProcedure(item.onEaten);
+		nutritionalValue.setValue(item.nutritionalValue);
+		saturation.setValue(item.saturation);
+		eatingSpeed.setValue(item.eatingSpeed);
+		animation.setSelectedItem(item.animation);
+		resultItem.setBlock(item.resultItem);
 
 		updateDispenseElements();
 		updateGlowElements();
+		updateFoodPanel();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -521,6 +623,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		item.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
 		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
+		item.nutritionalValue = (int) nutritionalValue.getValue();
+		item.eatingSpeed = (int) eatingSpeed.getValue();
+		item.saturation = (double) saturation.getValue();
+		item.forDogs = forDogs.isSelected();
+		item.isAlwaysEdible = isAlwaysEdible.isSelected();
+		item.animation = (String) animation.getSelectedItem();
+		item.onEaten = onEaten.getSelectedProcedure();
+		item.resultItem = resultItem.getBlock();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
