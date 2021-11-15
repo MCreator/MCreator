@@ -52,13 +52,11 @@ public class ModElementTypeLoader {
 				new ModElementType<>("enchantment", 'm', BaseType.ENCHANTMENT, RecipeType.NONE, EnchantmentGUI::new,
 						Enchantment.class));
 		ModElementType.FLUID = register(
-				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BLOCK, FluidGUI::new, Fluid.class));
-		ModElementType.FOOD = register(
-				new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM, FoodGUI::new, Food.class));
+				new ModElementType<>("fluid", 'f', BaseType.BLOCK, RecipeType.BLOCK, FluidGUI::new, Fluid.class));
 		ModElementType.FUEL = register(
 				new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
 		ModElementType.FUNCTION = register(
-				new ModElementType<>("function", null, BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
+				new ModElementType<>("function", 'u', BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
 						Function.class));
 		ModElementType.GAMERULE = register(
 				new ModElementType<>("gamerule", null, BaseType.OTHER, RecipeType.NONE, GameRuleGUI::new,

@@ -19,11 +19,13 @@
 
 package net.mcreator.element;
 
+import net.mcreator.element.types.Food;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.FoodGUI;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -141,7 +143,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;
 	public static ModElementType<?> FLUID;
-	public static ModElementType<?> FOOD;
 	public static ModElementType<?> FUEL;
 	public static ModElementType<?> FUNCTION;
 	public static ModElementType<?> GAMERULE;
@@ -164,5 +165,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
+
+	// legacy
+	public static ModElementType<?> FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null, Food.class); // we keep it with its values, so we can make a basic converter.
 
 }
