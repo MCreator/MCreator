@@ -166,7 +166,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TOOL;
 
 	// legacy
-	@Deprecated()
-	public static ModElementType<?> FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null, Food.class); // we keep it with its values, so we can make a basic converter.
+	public static final ModElementType<?> FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null, Food.class); // we keep it with its values, so we can make a basic converter.
 
 }
