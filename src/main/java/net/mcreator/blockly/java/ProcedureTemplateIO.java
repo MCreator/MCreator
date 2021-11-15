@@ -84,9 +84,8 @@ public class ProcedureTemplateIO {
 
 	public static void exportCmdArgsSetup(String procedure, File file)
 			throws ParseException, ParserConfigurationException, IOException, SAXException {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure)));
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+				.parse(new InputSource(new StringReader(procedure)));
 		doc.getDocumentElement().normalize();
 
 		Element start_block = BlocklyBlockUtil.getStartBlock(doc, "args_start");
@@ -95,8 +94,8 @@ public class ProcedureTemplateIO {
 		if (start_block == null)
 			throw new ParseException("Could not find start block!", -1);
 
-		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
-		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
+		Element block = XMLUtil.getFirstChildrenWithName(XMLUtil.getFirstChildrenWithName(start_block, "next"),
+				"block");
 
 		if (block == null)
 			throw new ParseException("Could not export block!", -1);

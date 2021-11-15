@@ -35,6 +35,6 @@ public class CommandArgumentBlockFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 23;
+		return 25;
 	}
 }

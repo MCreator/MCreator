@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.blockly.BlocklyToCmdArgs;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;

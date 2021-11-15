@@ -21,7 +21,6 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCmdArgs;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.types.Command;
@@ -30,7 +29,6 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.AITasksEditorToolbar;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CmdArgsEditorToolbar;
 import net.mcreator.ui.blockly.CompileNotesPanel;
@@ -38,8 +36,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.procedure.AbstractProcedureSelector;
-import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -73,13 +69,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	private void regenerateArgs() {
-		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getGeneratorCmdArgs());
-
 		BlocklyToCmdArgs blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToCmdArgs(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(new BlocklyBlockCodeGenerator(externalBlocks,
+							mcreator.getGeneratorStats().getGeneratorCmdArgs())));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -122,8 +116,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
 			if (!isEditingMode()) {
-				blocklyPanel
-						.setXML("<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
+				blocklyPanel.setXML(
+						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
 			}
 		});
 

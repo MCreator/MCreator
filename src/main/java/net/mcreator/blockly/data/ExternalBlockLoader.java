@@ -242,7 +242,7 @@ public class ExternalBlockLoader {
 	}
 
 	public enum ToolboxType {
-		PROCEDURE, EMPTY, COMMAND
+		PROCEDURE, COMMAND, EMPTY
 	}
 
 }

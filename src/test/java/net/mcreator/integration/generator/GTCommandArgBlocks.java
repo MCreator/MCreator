@@ -23,7 +23,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
@@ -73,15 +72,8 @@ public class GTCommandArgBlocks {
 
 				if (commandArg.toolbox_init != null) {
 					for (String input : commandArg.inputs) {
-						boolean match = false;
-						for (String toolboxtemplate : commandArg.toolbox_init) {
-							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
+						if (commandArg.toolbox_init.stream().noneMatch(
+								toolboxTemplate -> toolboxTemplate.contains("<value name=\"" + input + "\">"))) {
 							templatesDefined = false;
 							break;
 						}
@@ -146,8 +138,8 @@ public class GTCommandArgBlocks {
 						}
 
 						if (commandArg.fields.contains(suggestedFieldName)) {
-							String[] values = BlocklyJavascriptBridge
-									.getListOfForWorkspace(workspace, suggestedFieldName);
+							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
+									suggestedFieldName);
 							if (values.length > 0 && !values[0].equals("")) {
 								additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
 										.append(ListUtils.getRandomItem(random, values)).append("</field>");
@@ -166,11 +158,10 @@ public class GTCommandArgBlocks {
 			}
 
 			if (commandArg.statements != null) {
-				for (StatementInput statement : commandArg.statements) {
-					additionalXML.append("<statement name=\"").append(statement.name).append("\">")
-							.append("<block type=\"basic_literal\"><field name=\"name\">paramName</field>"
-									+ "<field name=\"command\">null</field></block>").append("</statement>\n");
-				}
+				commandArg.statements.forEach(
+						statement -> additionalXML.append("<statement name=\"").append(statement.name).append("\">")
+								.append("<block type=\"basic_literal\"><field name=\"name\">paramName</field>"
+										+ "<field name=\"command\">null</field></block>").append("</statement>\n"));
 			}
 
 			ModElement modElement = new ModElement(workspace, "TestBlock" + commandArg.machine_name,

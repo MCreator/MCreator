@@ -28,11 +28,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.text.ParseException;
-import java.util.List;
 
 public class BlocklyToCmdArgs extends BlocklyToJava {
 
@@ -44,9 +42,8 @@ public class BlocklyToCmdArgs extends BlocklyToJava {
 
 		if (sourceXML != null) {
 			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(new InputSource(new StringReader(sourceXML)));
+				Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
 				Element start_block = BlocklyBlockUtil.getStartBlock(doc, "args_start");
@@ -56,10 +53,7 @@ public class BlocklyToCmdArgs extends BlocklyToJava {
 					throw new ParseException("Could not find start block!", -1);
 
 				// find all blocks placed under start block
-				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-				processBlockProcedure(base_blocks);
-			} catch (TemplateGeneratorException e) {
-				throw e;
+				processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block));
 			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
