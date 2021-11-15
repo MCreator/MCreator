@@ -463,7 +463,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	private void updateFoodPanel() {
-		if(isFood.isSelected()) {
+		if (isFood.isSelected()) {
 			nutritionalValue.setEnabled(true);
 			saturation.setEnabled(true);
 			forDogs.setEnabled(true);
