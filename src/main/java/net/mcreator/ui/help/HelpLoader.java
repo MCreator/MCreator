@@ -101,8 +101,9 @@ public class HelpLoader {
 
 			if (helpContext.getEntry() != null) {
 				String helpText = getFromCache(helpContext.getEntry());
-				if (helpText != null && (helpText.contains("${") || helpText.contains("<#"))) {
-					if (helpContext instanceof ModElementHelpContext meHelpContext) {
+				if (helpText != null) {
+					if ((helpText.contains("${") || helpText.contains("<#"))
+							&& helpContext instanceof ModElementHelpContext meHelpContext) {
 						try {
 							Map<String, Object> dataModel = new HashMap<>();
 							dataModel.put("data", meHelpContext.getModElementFromGUI());
