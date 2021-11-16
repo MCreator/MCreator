@@ -349,49 +349,34 @@ public class TestWorkspaceDataProvider {
 				entry2.weight = 11;
 				entry2.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry2);
+
+				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
+				entry3.entity = new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+				entry3.minGroup = 23;
+				entry3.minGroup = 145;
+				entry3.weight = 11;
+				entry3.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entities.add(entry3);
+
+				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
+				entry4.entity = new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+				entry4.minGroup = 23;
+				entry4.minGroup = 145;
+				entry4.weight = 11;
+				entry4.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entities.add(entry4);
 			}
 			biome.spawnEntries = entities;
 			biome.minHeight = 2;
 			List<String> biomeDictTypes = new ArrayList<>();
-			if (!emptyLists) {
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-			}
+			if (!emptyLists)
+				biomeDictTypes.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
 			biome.biomeDictionaryTypes = biomeDictTypes;
 			List<String> biomeDefaultFeatures = new ArrayList<>();
-			if (!emptyLists) {
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-				biomeDefaultFeatures.add(
-						getRandomItem(random, ElementUtil.getDataListAsStringArray("defaultfeatures")));
-			}
+			if (!emptyLists)
+				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
 			biome.defaultFeatures = biomeDefaultFeatures;
 			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
