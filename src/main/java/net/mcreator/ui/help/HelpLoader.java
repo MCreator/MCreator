@@ -105,9 +105,6 @@ public class HelpLoader {
 							dataModel.put("name", generatableElement.getModElement().getName());
 							dataModel.put("l10n", new L10N());
 
-							if (generatableElement.getAdditionalTemplateData() != null)
-								generatableElement.getAdditionalTemplateData().provideAdditionalData(dataModel);
-
 							helpString.append(renderer.render(parser.parse(
 									generatableElement.getModElement().getWorkspace().getGenerator()
 											.getTemplateGenerator().generateFromString(helpText, dataModel))));
