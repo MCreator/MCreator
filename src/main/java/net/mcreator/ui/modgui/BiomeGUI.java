@@ -800,6 +800,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnOceanMonument = spawnOceanMonument.isSelected();
 		biome.spawnShipwreck = spawnShipwreck.isSelected();
 		biome.spawnShipwreckBeached = spawnShipwreckBeached.isSelected();
+		biome.spawnBuriedTreasure = spawnBuriedTreasure.isSelected();
 		biome.oceanRuinType = (String) oceanRuinType.getSelectedItem();
 		biome.spawnNetherBridge = spawnNetherBridge.isSelected();
 		biome.spawnNetherFossil = spawnNetherFossil.isSelected();
