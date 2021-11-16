@@ -88,7 +88,7 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT);
 				</#if>
 
-				<#if data.spawnMineshaft>
+				<#if data.spawnMineshaftMesa>
 				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT_BADLANDS);
 				</#if>
 
