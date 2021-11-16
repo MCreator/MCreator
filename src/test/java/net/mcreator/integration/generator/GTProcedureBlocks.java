@@ -70,11 +70,11 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (procedureBlock.inputs != null) {
+			if (!procedureBlock.getInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
-					for (String input : procedureBlock.inputs) {
+					for (String input : procedureBlock.getInputs()) {
 						boolean match = false;
 						for (String toolboxtemplate : procedureBlock.toolbox_init) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
@@ -99,10 +99,10 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.required_apis != null) {
+			if (procedureBlock.getRequiredAPIs() != null) {
 				boolean skip = false;
 
-				for (String required_api : procedureBlock.required_apis) {
+				for (String required_api : procedureBlock.getRequiredAPIs()) {
 					if (!workspace.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 						skip = true;
 						break;
@@ -115,10 +115,10 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.fields != null) {
+			if (procedureBlock.getFields() != null) {
 				int processed = 0;
 
-				for (String field : procedureBlock.fields) {
+				for (String field : procedureBlock.getFields()) {
 					try {
 						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
@@ -176,7 +176,7 @@ public class GTProcedureBlocks {
 							break;
 						}
 
-						if (procedureBlock.fields.contains(suggestedFieldName)) {
+						if (procedureBlock.getFields().contains(suggestedFieldName)) {
 							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedDataListName);
 							if (values.length > 0 && !values[0].equals("")) {
@@ -193,15 +193,15 @@ public class GTProcedureBlocks {
 				} catch (Exception ignored) {
 				}
 
-				if (processed != procedureBlock.fields.size()) {
+				if (processed != procedureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
 							+ procedureBlock.machine_name);
 					continue;
 				}
 			}
 
-			if (procedureBlock.statements != null) {
-				for (StatementInput statement : procedureBlock.statements) {
+			if (procedureBlock.getStatements() != null) {
+				for (StatementInput statement : procedureBlock.getStatements()) {
 					additionalXML.append("<statement name=\"").append(statement.name).append("\">")
 							.append("<block type=\"text_print\"><value name=\"TEXT\"><block type=\"math_number\">"
 									+ "<field name=\"NUM\">123.456</field></block></value></block>")
