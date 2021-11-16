@@ -1,0 +1,1 @@
+If the returned value is true, the entity will be invisible. An example of this feature is players in the spectator mode.

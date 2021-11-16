@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -28,6 +29,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer;
 
 <#assign humanoid = false>
@@ -93,5 +96,29 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 	}
+
+    <#if hasProcedure(data.bodyVisibleCondition)>
+        @Override
+	    protected boolean isBodyVisible(${name}Entity _ent) {
+	        Entity entity = _ent;
+	        Level world = entity.level;
+	        double x = entity.getX();
+	        double y = entity.getY();
+	        double z = entity.getZ();
+		    return <@procedureOBJToConditionCode data.bodyVisibleCondition/>;
+	    }
+	</#if>
+
+    <#if hasProcedure(data.isShakingCondition)>
+        @Override
+	    protected boolean isShaking(${name}Entity _ent) {
+	        Entity entity = _ent;
+	        Level world = entity.level;
+	        double x = entity.getX();
+	        double y = entity.getY();
+	        double z = entity.getZ();
+		    return <@procedureOBJToConditionCode data.isShakingCondition/>;
+	    }
+	</#if>
 
 }

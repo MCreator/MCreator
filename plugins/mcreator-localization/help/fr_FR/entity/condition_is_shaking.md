@@ -1,0 +1,1 @@
+If the returned value is true, the entity will shake. Zombie villagers use this feature during their conversion.

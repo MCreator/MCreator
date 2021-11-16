@@ -91,6 +91,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private ProcedureSelector particleCondition;
 	private ProcedureSelector spawningCondition;
+	private ProcedureSelector bodyVisibleCondition;
+	private ProcedureSelector isShakingCondition;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
@@ -311,6 +313,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
+		bodyVisibleCondition = new ProcedureSelector(this.withEntry("entity/condition_is_body_visible"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_body_visible"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
+		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -580,7 +590,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane2.setOpaque(false);
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(spo2, bodyVisibleCondition), isShakingCondition)));
 
 		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
 		aitop.setOpaque(false);
@@ -840,6 +850,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
+		bodyVisibleCondition.refreshListKeepSelected();
+		isShakingCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
@@ -892,6 +904,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
+		bodyVisibleCondition.setSelectedProcedure(livingEntity.bodyVisibleCondition);
+		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1019,6 +1033,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
 		livingEntity.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
+		livingEntity.bodyVisibleCondition = bodyVisibleCondition.getSelectedProcedure();
+		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();

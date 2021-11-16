@@ -1,0 +1,1 @@
+Si la valeur retournée est vraie, l'entité tremblera. Ceci est notamment utilisée avec les zombies villageois durant leur conversion.
