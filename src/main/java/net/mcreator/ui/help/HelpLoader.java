@@ -18,8 +18,9 @@
 
 package net.mcreator.ui.help;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.generator.template.TemplateGeneratorException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
@@ -31,6 +32,9 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -44,6 +48,8 @@ public class HelpLoader {
 
 	private static Parser parser;
 	private static HtmlRenderer renderer;
+
+	private static final DefaultFreemarkerConfiguration configuration = new DefaultFreemarkerConfiguration();
 
 	public static void preloadCache() {
 		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(
@@ -95,20 +101,29 @@ public class HelpLoader {
 
 			if (helpContext.getEntry() != null) {
 				String helpText = getFromCache(helpContext.getEntry());
-				if (helpText != null) {
+				if (helpText != null && (helpText.contains("${") || helpText.contains("<#"))) {
 					if (helpContext instanceof ModElementHelpContext meHelpContext) {
 						try {
-							GeneratableElement generatableElement = meHelpContext.getModElementFromGUI();
 							Map<String, Object> dataModel = new HashMap<>();
-							dataModel.put("data", generatableElement);
-							dataModel.put("registryname", generatableElement.getModElement().getRegistryName());
-							dataModel.put("name", generatableElement.getModElement().getName());
+							dataModel.put("data", meHelpContext.getModElementFromGUI());
+							dataModel.put("registryname",
+									meHelpContext.getModElementFromGUI().getModElement().getRegistryName());
+							dataModel.put("name", meHelpContext.getModElementFromGUI().getModElement().getName());
+							dataModel.put("elementtype",
+									meHelpContext.getModElementFromGUI().getModElement().getType().getReadableName());
 							dataModel.put("l10n", new L10N());
 
-							helpString.append(renderer.render(parser.parse(
-									generatableElement.getModElement().getWorkspace().getGenerator()
-											.getTemplateGenerator().generateFromString(helpText, dataModel))));
-						} catch (TemplateGeneratorException e) {
+							if (meHelpContext.getModElementFromGUI().getModElement().getGenerator() != null)
+								dataModel.putAll(meHelpContext.getModElementFromGUI().getModElement().getGenerator()
+										.getBaseDataModelProvider().provide());
+
+							Template freemarkerTemplate = new Template(helpContext.getEntry(),
+									new StringReader(helpText), configuration);
+							StringWriter stringWriter = new StringWriter();
+							freemarkerTemplate.process(dataModel, stringWriter, configuration.getBeansWrapper());
+
+							helpString.append(renderer.render(parser.parse(stringWriter.getBuffer().toString())));
+						} catch (TemplateException | IOException e) {
 							helpString.append(renderer.render(parser.parse(helpText)));
 						}
 					} else {

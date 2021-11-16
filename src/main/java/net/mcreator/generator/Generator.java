@@ -123,10 +123,6 @@ public class Generator implements IGenerator, Closeable {
 		return generatorConfiguration;
 	}
 
-	public TemplateGenerator getTemplateGenerator() {
-		return templateGenerator;
-	}
-
 	public TemplateGenerator getProcedureGenerator() {
 		return procedureGenerator;
 	}
