@@ -271,8 +271,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		oceanRuinType.setPreferredSize(new Dimension(200, 36));
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_bridge"),
-				L10N.label("elementgui.biome.generate_nether_bridge")));
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_bridges"),
+				L10N.label("elementgui.biome.generate_nether_bridges")));
 		sbbp2.add(spawnNetherBridge);
 		spawnNetherBridge.setSelected(false);
 		spawnNetherBridge.setOpaque(false);
@@ -283,14 +283,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnNetherFossil.setSelected(false);
 		spawnNetherFossil.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_bastion_remnant"),
-				L10N.label("elementgui.biome.generate_bastion_remnant")));
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_bastion_remnants"),
+				L10N.label("elementgui.biome.generate_bastion_remnants")));
 		sbbp2.add(spawnBastionRemnant);
 		spawnBastionRemnant.setSelected(false);
 		spawnBastionRemnant.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portal"),
-				L10N.label("elementgui.biome.generate_ruined_portal")));
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portals"),
+				L10N.label("elementgui.biome.generate_ruined_portals")));
 		sbbp2.add(spawnRuinedPortal);
 		spawnRuinedPortal.setPreferredSize(new Dimension(200, 36));
 		spawnRuinedPortal.setOpaque(false);

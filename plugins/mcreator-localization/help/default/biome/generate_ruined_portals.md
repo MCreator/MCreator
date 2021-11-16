@@ -1,0 +1,1 @@
+This setting allows you to generate Ruined portals inside your biome.

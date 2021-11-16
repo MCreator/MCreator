@@ -1,0 +1,1 @@
+Select this setting to have Mineshafts used in the Mesa biomes in your biome.
