@@ -88,8 +88,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnIgloo = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnOceanMonument = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnShipwreck = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox spawnBuriedTreasure= L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnShipwreckBeached = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnBuriedTreasure= L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnNetherBridge = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnNetherFossil = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBastionRemnant = L10N.checkbox("elementgui.common.enable");
@@ -700,15 +700,24 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnBiome.setSelected(biome.spawnBiome);
 		spawnStronghold.setSelected(biome.spawnStronghold);
 		spawnMineshaft.setSelected(biome.spawnMineshaft);
+		spawnMineshaftMesa.setSelected(biome.spawnMineshaftMesa);
 		spawnPillagerOutpost.setSelected(biome.spawnPillagerOutpost);
 		villageType.setSelectedItem(biome.villageType);
 		spawnWoodlandMansion.setSelected(biome.spawnWoodlandMansion);
 		spawnJungleTemple.setSelected(biome.spawnJungleTemple);
 		spawnDesertPyramid.setSelected(biome.spawnDesertPyramid);
+		spawnSwampHut.setSelected(biome.spawnSwampHut);
 		spawnIgloo.setSelected(biome.spawnIgloo);
 		spawnOceanMonument.setSelected(biome.spawnOceanMonument);
 		spawnShipwreck.setSelected(biome.spawnShipwreck);
+		spawnShipwreckBeached.setSelected(biome.spawnShipwreckBeached);
+		spawnBuriedTreasure.setSelected(biome.spawnBuriedTreasure);
 		oceanRuinType.setSelectedItem(biome.oceanRuinType);
+		spawnNetherBridge.setSelected(biome.spawnNetherBridge);
+		spawnNetherFossil.setSelected(biome.spawnNetherFossil);
+		spawnBastionRemnant.setSelected(biome.spawnBastionRemnant);
+		spawnEndCity.setSelected(biome.spawnEndCity);
+		spawnRuinedPortal.setSelectedItem(biome.spawnRuinedPortal);
 
 		temperature.setValue(biome.temperature);
 		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
@@ -779,16 +788,24 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeFruits = treeFruits.getBlock();
 		biome.spawnBiome = spawnBiome.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
+		biome.spawnMineshaftMesa = spawnMineshaftMesa.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();
 		biome.spawnPillagerOutpost = spawnPillagerOutpost.isSelected();
 		biome.villageType = (String) villageType.getSelectedItem();
 		biome.spawnWoodlandMansion = spawnWoodlandMansion.isSelected();
 		biome.spawnJungleTemple = spawnJungleTemple.isSelected();
 		biome.spawnDesertPyramid = spawnDesertPyramid.isSelected();
+		biome.spawnSwampHut = spawnSwampHut.isSelected();
 		biome.spawnIgloo = spawnIgloo.isSelected();
 		biome.spawnOceanMonument = spawnOceanMonument.isSelected();
 		biome.spawnShipwreck = spawnShipwreck.isSelected();
+		biome.spawnShipwreckBeached = spawnShipwreckBeached.isSelected();
 		biome.oceanRuinType = (String) oceanRuinType.getSelectedItem();
+		biome.spawnNetherBridge = spawnNetherBridge.isSelected();
+		biome.spawnNetherFossil = spawnNetherFossil.isSelected();
+		biome.spawnBastionRemnant = spawnBastionRemnant.isSelected();
+		biome.spawnEndCity = spawnEndCity.isSelected();
+		biome.spawnRuinedPortal = (String) spawnRuinedPortal.getSelectedItem();
 		return biome;
 	}
 
