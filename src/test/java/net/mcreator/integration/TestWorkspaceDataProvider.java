@@ -338,7 +338,7 @@ public class TestWorkspaceDataProvider {
 				entry1.minGroup = 10;
 				entry1.minGroup = 134;
 				entry1.weight = 13;
-				entry1.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
+				entry1.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
@@ -347,38 +347,36 @@ public class TestWorkspaceDataProvider {
 				entry2.minGroup = 23;
 				entry2.minGroup = 145;
 				entry2.weight = 11;
-				entry2.spawnType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
+				entry2.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry2);
+
+				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
+				entry3.entity = new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+				entry3.minGroup = 23;
+				entry3.minGroup = 145;
+				entry3.weight = 11;
+				entry3.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entities.add(entry3);
+
+				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
+				entry4.entity = new EntityEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+				entry4.minGroup = 23;
+				entry4.minGroup = 145;
+				entry4.weight = 11;
+				entry4.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entities.add(entry4);
 			}
 			biome.spawnEntries = entities;
 			biome.minHeight = 2;
 			List<String> biomeDictTypes = new ArrayList<>();
-			if (!emptyLists) {
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-				biomeDictTypes.add(getRandomItem(random, ElementUtil.loadBiomeDictionaryTypes()));
-			}
+			if (!emptyLists)
+				biomeDictTypes.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
 			biome.biomeDictionaryTypes = biomeDictTypes;
 			List<String> biomeDefaultFeatures = new ArrayList<>();
-			if (!emptyLists) {
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-				biomeDefaultFeatures.add(getRandomItem(random, ElementUtil.loadDefaultFeatures()));
-			}
+			if (!emptyLists)
+				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
 			biome.defaultFeatures = biomeDefaultFeatures;
 			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
@@ -434,7 +432,7 @@ public class TestWorkspaceDataProvider {
 			fluid.lightOpacity = 2;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
-			fluid.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
+			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			fluid.onBlockAdded = new Procedure("procedure1");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
@@ -541,7 +539,7 @@ public class TestWorkspaceDataProvider {
 			if (_true) {
 				overlay.overlayTarget = "Ingame";
 			} else {
-				overlay.overlayTarget = getRandomItem(random, ElementUtil.loadScreens());
+				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataListAsStringArray("screens"));
 			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
@@ -726,7 +724,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.loadMobSpawnTypes());
+			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 			livingEntity.minNumberOfMobsPerGroup = 4;
 			livingEntity.maxNumberOfMobsPerGroup = 40;
 			livingEntity.restrictionBiomes = new ArrayList<>();
@@ -921,12 +919,12 @@ public class TestWorkspaceDataProvider {
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getAllPlantTypes());
+			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
 			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()));
+							.collect(Collectors.toList()));
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.customBoundingBox = !_true;
@@ -963,9 +961,9 @@ public class TestWorkspaceDataProvider {
 			}
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			plant.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
+			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
-			plant.aiPathNodeType = getRandomItem(random, ElementUtil.loadPathNodeTypes());
+			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -1239,9 +1237,9 @@ public class TestWorkspaceDataProvider {
 			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			block.colorOnMap = getRandomItem(random, ElementUtil.loadMapColors());
+			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
-			block.aiPathNodeType = getRandomItem(random, ElementUtil.loadPathNodeTypes());
+			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			if (!emptyLists)
 				block.beaconColorModifier = Color.cyan;
 			else
