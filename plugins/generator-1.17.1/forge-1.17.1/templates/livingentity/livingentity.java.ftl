@@ -38,6 +38,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 
 <#assign extendsClass = "PathfinderMob">
@@ -58,6 +59,12 @@ import net.minecraft.sounds.SoundEvent;
 
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
+
+    <#if data.entityDataEntries?has_content>
+        <#list data.entityDataEntries as entry>
+            private static final EntityDataAccessor<Integer> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+        </#list>
+    </#if>
 
 	<#if data.spawnThisMob>
 		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
@@ -169,6 +176,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
+
+	<#if data.entityDataEntries?has_content>
+	    @Override
+        	protected void defineSynchedData() {
+        		super.defineSynchedData();
+        		<#list data.entityDataEntries as entry>
+        		    this.entityData.define(${entry.name}, ${entry.defaultValue});
+                </#list>
+        	}
+    </#if>
 
 	<#if data.flyingMob>
 	@Override protected PathNavigation createNavigation(Level world) {

@@ -25,6 +25,9 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,8 +35,8 @@ import java.util.List;
 
 public class JEntityDataEntry extends JPanel {
 
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Number" });
-	private final JSpinner defaultNumberValue = new JSpinner(
+	private final VTextField name = new VTextField(20);
+	private final JSpinner defaultValue = new JSpinner(
 			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 
 	public JEntityDataEntry(JPanel parent, List<JEntityDataEntry> entryList) {
@@ -44,13 +47,15 @@ public class JEntityDataEntry extends JPanel {
 		parent.add(container);
 		entryList.add(this);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/entitydata/type"),
-				L10N.label("dialog.entity_data.type")));
-		add(type);
+		name.setValidator(new TextFieldValidator(name, L10N.t("dialog.entity_data.name.needs_name")));
+		name.enableRealtimeValidation();
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/data_name"),
+				L10N.label("dialog.entity_data.name")));
+		add(name);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/entitydata/defaultValue"),
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/data_default_alue"),
 				L10N.label("dialog.entity_data.default_value")));
-		add(defaultNumberValue);
+		add(defaultValue);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.common.remove_entry"));
@@ -68,13 +73,13 @@ public class JEntityDataEntry extends JPanel {
 
 	public LivingEntity.EntityDataEntry getEntry() {
 		LivingEntity.EntityDataEntry entry = new LivingEntity.EntityDataEntry();
-		entry.type = (String) type.getSelectedItem();
-		entry.defaultNumberValue = (int) defaultNumberValue.getValue();
+		entry.name = name.getText().replace(" ", "_");
+		entry.defaultValue = (int) defaultValue.getValue();
 		return entry;
 	}
 
 	public void setEntry(LivingEntity.EntityDataEntry entry) {
-		type.setSelectedItem(entry.type);
-		defaultNumberValue.setValue(entry.defaultNumberValue);
+		name.setText(entry.name);
+		defaultValue.setValue(entry.defaultValue);
 	}
 }

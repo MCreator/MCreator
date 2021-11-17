@@ -175,8 +175,8 @@ import java.util.List;
 	}
 
 	public static class EntityDataEntry {
-		public String type;
-		public int defaultNumberValue;
+		public String name;
+		public int defaultValue;
 	}
 
 	@Override public Model getEntityModel() {

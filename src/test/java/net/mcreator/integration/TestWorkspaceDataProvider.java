@@ -747,10 +747,12 @@ public class TestWorkspaceDataProvider {
 			livingEntity.modelShadowSize = 1.8;
 
 			if (!emptyLists) {
-				LivingEntity.EntityDataEntry numberEntry = new LivingEntity.EntityDataEntry();
-				numberEntry.type = "Number";
-				numberEntry.defaultNumberValue = random.nextInt();
-				livingEntity.entityDataEntries.add(numberEntry);
+				for (int i = 0; i < 3; i++) {
+					LivingEntity.EntityDataEntry numberEntry = new LivingEntity.EntityDataEntry();
+					numberEntry.name = "test" + i;
+					numberEntry.defaultValue = i;
+					livingEntity.entityDataEntries.add(numberEntry);
+				}
 			}
 
 			return livingEntity;

@@ -207,6 +207,12 @@ import net.minecraft.block.material.Material;
 
 	public static class CustomEntity extends ${extendsClass}Entity<#if data.ranged> implements IRangedAttackMob</#if> {
 
+        <#if data.entityDataEntries?has_content>
+            <#list data.entityDataEntries as entry>
+                private static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.VARINT);
+            </#list>
+        </#if>
+
 		public CustomEntity(FMLPlayMessages.SpawnEntity packet, World world) {
         	this(entity, world);
     	}
@@ -294,6 +300,16 @@ import net.minecraft.block.material.Material;
 		@Override public IPacket<?> createSpawnPacket() {
 			return NetworkHooks.getEntitySpawningPacket(this);
 		}
+
+	    <#if data.entityDataEntries?has_content>
+	        @Override
+        	    protected void registerData() {
+        		    super.registerData();
+        		    <#list data.entityDataEntries as entry>
+        		        this.dataManager.register(${entry.name}, ${entry.defaultValue});
+                    </#list>
+        	    }
+        </#if>
 		
 		<#if data.hasAI>
 		@Override protected void registerGoals() {
