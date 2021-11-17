@@ -113,6 +113,18 @@ Blockly.Extensions.register('entity_list_provider',
                 javabridge.getReadableListOf("entity"))), 'entity');
     });
 
+Blockly.Extensions.register('custom_entity_with_entity_data_list_provider',
+    function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("customentity"),
+                javabridge.getReadableListOf("entity"))), 'customentity');
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown(
+                    arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getCustomEntityDataList(this.getFieldValue('customentity')),
+                        javabridge.getReadableListOfWithValue('entitydata', this.getFieldValue('customentity')))), 'dataName');
+    });
+
 Blockly.Extensions.register('gui_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(

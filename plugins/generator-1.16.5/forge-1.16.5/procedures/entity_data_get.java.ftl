@@ -1,0 +1,1 @@
+(((${generator.map(field$customentity, "entities", 0)}) ${input$entity}).getDataManager().get(${generator.map(field$customentity, "entities", 0)}.${field$dataName}))

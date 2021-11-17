@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "extensions": [
+    "custom_entity_with_entity_data_list_provider"
+  ],
+  "inputsInline": true,
+  "colour": "%{BKY_MATH_HUE}",
+  "output": "Number",
+  "mcreator": {
+    "toolbox_id": "entitydata",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "fields": [
+      "customentity",
+      "dataName"
+    ],
+    "inputs": [
+      "entity"
+    ]
+  }
+}

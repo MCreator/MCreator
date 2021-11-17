@@ -20,6 +20,7 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -148,6 +149,23 @@ public class ElementUtil {
 		retval.addAll(DataListLoader.loadDataList("entities"));
 		Collections.sort(retval);
 		return retval;
+	}
+
+	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
+		retval.addAll(
+				DataListLoader.loadDataList("entities").stream().filter(e -> e.getReadableName().startsWith("CUSTOM:"))
+						.collect(Collectors.toList()));
+		Collections.sort(retval);
+		return retval;
+	}
+
+	public static String[] loadEntityDataListFromCustomEntity(Workspace workspace, String entityName) {
+		LivingEntity entity = ((LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", "")).getGeneratableElement());
+		if (entity != null)
+			return entity.entityDataEntries.stream().map(e -> e.name).toArray(String[]::new);
+		else
+			return new String[]{};
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {

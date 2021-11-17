@@ -152,6 +152,10 @@ public class BlocklyJavascriptBridge {
 		return new Gson().toJson(ext_triggers, Map.class);
 	}
 
+	@SuppressWarnings("unused") public String[] getCustomEntityDataList(String entityName) {
+		return ElementUtil.loadEntityDataListFromCustomEntity(mcreator.getWorkspace(), entityName);
+	}
+
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
 		return getListOfForWorkspace(mcreator.getWorkspace(), type);
 	}
@@ -166,6 +170,8 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "customentity":
+			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
@@ -242,14 +248,19 @@ public class BlocklyJavascriptBridge {
 	}
 
 	@SuppressWarnings("unused") public String[] getReadableListOf(String type) {
-		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type);
+		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type, null);
 	}
 
-	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
+	@SuppressWarnings("unused") public String[] getReadableListOfWithValue(String type, String value) {
+		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type, value);
+	}
+
+	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type, String value) {
 		List<String> retval;
 		return switch (type) {
 			case "entity" -> ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
+			case "entitydata" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, value);
 			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
