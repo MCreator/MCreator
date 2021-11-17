@@ -1,1 +1,2 @@
-Si la valeur retournée est vraie, l'entité tremblera. Ceci est notamment utilisée avec les zombies villageois durant leur conversion.
+If the returned value is true, the entity will be shaking.
+Zombie villagers use this feature during their curing.

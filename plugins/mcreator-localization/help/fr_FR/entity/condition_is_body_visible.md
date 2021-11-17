@@ -1,1 +1,2 @@
-Si la valeur retournée est vraie, l'entité sera invisible. Cette fonctionnalité est notamment utilisée lorsque les joueurs sont en mode spectateurs.
+Si la valeur retournée est vraie, l'entité sera visible.
+Lorsque le joueur est en mode spectateur, cette valeur est fausse.
