@@ -29,35 +29,10 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
 
 package ${package}.village;
 
-import net.minecraft.world.entity.npc.VillagerTrades;
-
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
-
-	@SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-		Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-
-    	<#list data.tradeEntries as tradeEntry>
-		if (event.getType() == ${tradeEntry.tradeEntry}) {
-        	<#list tradeEntry.entries as entry>
-			trades.get(${entry.level}).add(new RandomTradeBuilder(${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}F)
-					.setPrice(${mappedMCItemToItem(entry.price1)}, ${entry.countPrice1}, ${entry.countPrice1})
-					<#if entry.price2 != "">
-					.setPrice2(${mappedMCItemToItem(entry.price2)}, ${entry.countPrice2}, ${entry.countPrice2})
-					</#if>
-					.setForSale(${mappedMCItemToItem(entry.sale1)}, ${entry.countSale1}, ${entry.countSale1})
-					.build()
-			);
-        	</#list>
-		}
-    	</#list>
-	}
-
-
-	public static class RandomTradeBuilder {
+public class ${JavaModName}RandomTradeBuilder {
 
 		private Function<Random, ItemStack> price;
 		private Function<Random, ItemStack> price2;
@@ -66,7 +41,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 		private final int xp;
 		private final float priceMult;
 
-		public RandomTradeBuilder(int maxTrades, int xp, float priceMult) {
+		public ${JavaModName}RandomTradeBuilder(int maxTrades, int xp, float priceMult) {
 			this.price = null;
 			this.price2 = (random) -> ItemStack.EMPTY;
 			this.forSale = null;
@@ -75,31 +50,31 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 			this.priceMult = priceMult;
 		}
 
-		public RandomTradeBuilder setPrice(Function<Random, ItemStack> price) {
+		public ${JavaModName}RandomTradeBuilder setPrice(Function<Random, ItemStack> price) {
 			this.price = price;
 			return this;
 		}
 
-		public RandomTradeBuilder setPrice(Item item, int min, int max) {
-			return this.setPrice(RandomTradeBuilder.createFunction(item, min, max));
+		public ${JavaModName}RandomTradeBuilder setPrice(Item item, int min, int max) {
+			return this.setPrice(${JavaModName}RandomTradeBuilder.createFunction(item, min, max));
 		}
 
-		public RandomTradeBuilder setPrice2(Function<Random, ItemStack> price2) {
+		public ${JavaModName}RandomTradeBuilder setPrice2(Function<Random, ItemStack> price2) {
 			this.price2 = price2;
 			return this;
 		}
 
-		public RandomTradeBuilder setPrice2(Item item, int min, int max) {
-			return this.setPrice2(RandomTradeBuilder.createFunction(item, min, max));
+		public ${JavaModName}RandomTradeBuilder setPrice2(Item item, int min, int max) {
+			return this.setPrice2(${JavaModName}RandomTradeBuilder.createFunction(item, min, max));
 		}
 
-		public RandomTradeBuilder setForSale(Function<Random, ItemStack> forSale) {
+		public ${JavaModName}RandomTradeBuilder setForSale(Function<Random, ItemStack> forSale) {
 			this.forSale = forSale;
 			return this;
 		}
 
-		public RandomTradeBuilder setForSale(Item item, int min, int max) {
-			return this.setForSale(RandomTradeBuilder.createFunction(item, min, max));
+		public ${JavaModName}RandomTradeBuilder setForSale(Item item, int min, int max) {
+			return this.setForSale(${JavaModName}RandomTradeBuilder.createFunction(item, min, max));
 		}
 
 		public boolean canBuild() {
@@ -116,5 +91,4 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 		public static Function<Random, ItemStack> createFunction(Item item, int min, int max) {
 			return (random) -> new ItemStack(item, max);
 		}
-	}
 }
