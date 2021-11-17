@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft.spawntypes;
+package net.mcreator.ui.minecraft.entitydata;
 
-import net.mcreator.element.types.Biome;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.spawntypes.JSpawnListEntry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,21 +33,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JSpawnEntriesList extends JPanel {
+public class JEntityDataList extends JPanel {
 
-	private final List<JSpawnListEntry> entryList = new ArrayList<>();
-
-	private final MCreator mcreator;
+	private final List<JEntityDataEntry> entryList = new ArrayList<>();
 
 	private final JPanel entries = new JPanel();
 
 	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
-	public JSpawnEntriesList(MCreator mcreator) {
+	public JEntityDataList(MCreator mcreator) {
 		super(new BorderLayout());
 		setOpaque(false);
-
-		this.mcreator = mcreator;
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -58,13 +56,13 @@ public class JSpawnEntriesList extends JPanel {
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> new JSpawnListEntry(mcreator, entries, entryList));
+		add.addActionListener(e -> new JEntityDataEntry(entries, entryList));
 
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.spawnlist.spawn_entries"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.living_entity.entity_data_entries"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
@@ -75,12 +73,12 @@ public class JSpawnEntriesList extends JPanel {
 		add.setEnabled(false);
 	}
 
-	public List<Biome.SpawnEntry> getSpawns() {
-		return entryList.stream().map(JSpawnListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
+	public List<LivingEntity.EntityDataEntry> getEntries() {
+		return entryList.stream().map(JEntityDataEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void setSpawns(List<Biome.SpawnEntry> pool) {
-		pool.forEach(e -> new JSpawnListEntry(mcreator, entries, entryList).setEntry(e));
+	public void setEntries(List<LivingEntity.EntityDataEntry> pool) {
+		pool.forEach(e -> new JEntityDataEntry(entries, entryList).setEntry(e));
 	}
 
 }

@@ -76,7 +76,7 @@ public class JSpawnListEntry extends JPanel {
 		add(maxNumberOfMobsPerGroup);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("dialog.spawn_list_entry.remove_entry"));
+		remove.setText(L10N.t("elementgui.common.remove_entry"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);

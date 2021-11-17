@@ -53,6 +53,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.entitydata.JEntityDataList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -185,6 +186,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
+
+	private final JEntityDataList entityDataList = new JEntityDataList(mcreator);
 
 	//mob bases
 	private final JComboBox<String> aiBase = new JComboBox<>(
@@ -444,6 +447,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither));
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
+
+		JPanel entityDataListPanel = new JPanel(new GridLayout());
+
+		JComponent component = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/entity_data"),
+						L10N.label("elementgui.living_entity.entity_data")), entityDataList);
+
+		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		entityDataListPanel.add(component);
+
+		entityDataListPanel.setOpaque(false);
 
 		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
 
@@ -813,6 +828,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_particles"), pane6);
+		addPage(L10N.t("elementgui.living_entity.entity_data_accessors"),entityDataListPanel);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
@@ -979,6 +995,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 
+		entityDataList.setEntries(livingEntity.entityDataEntries);
+
 		if (livingEntity.creativeTab != null)
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
 
@@ -1106,6 +1124,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		livingEntity.entityDataEntries = entityDataList.getEntries();
 		return livingEntity;
 	}
 

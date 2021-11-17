@@ -39,10 +39,8 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType {
@@ -124,6 +122,8 @@ import java.util.Locale;
 	public int particleAmount;
 	public Procedure particleCondition;
 
+	public List<EntityDataEntry> entityDataEntries;
+
 	public Procedure onStruckByLightning;
 	public Procedure whenMobFalls;
 	public Procedure whenMobDies;
@@ -170,6 +170,13 @@ import java.util.Locale;
 
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+
+		this.entityDataEntries = new ArrayList<>();
+	}
+
+	public static class EntityDataEntry {
+		public String type;
+		public int defaultNumberValue;
 	}
 
 	@Override public Model getEntityModel() {
