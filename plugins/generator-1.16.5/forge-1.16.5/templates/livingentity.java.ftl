@@ -209,7 +209,7 @@ import net.minecraft.block.material.Material;
 
         <#if data.entityDataEntries?has_content>
             <#list data.entityDataEntries as entry>
-                private static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.VARINT);
+                public static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.VARINT);
             </#list>
         </#if>
 

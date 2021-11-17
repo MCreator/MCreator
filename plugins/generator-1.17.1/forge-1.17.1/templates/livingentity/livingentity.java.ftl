@@ -62,7 +62,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
     <#if data.entityDataEntries?has_content>
         <#list data.entityDataEntries as entry>
-            private static final EntityDataAccessor<Integer> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+            public static final EntityDataAccessor<Integer> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
         </#list>
     </#if>
 
