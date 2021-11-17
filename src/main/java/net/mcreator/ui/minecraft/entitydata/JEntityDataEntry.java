@@ -53,7 +53,7 @@ public class JEntityDataEntry extends JPanel {
 				L10N.label("dialog.entity_data.name")));
 		add(name);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/data_default_alue"),
+		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/data_default_value"),
 				L10N.label("dialog.entity_data.default_value")));
 		add(defaultValue);
 

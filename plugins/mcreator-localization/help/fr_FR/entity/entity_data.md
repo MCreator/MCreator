@@ -1,0 +1,2 @@
+Ajoutez des variables spécifiques à votre entité personnalisée.
+Ces variables sont synchronisées entre le client et le serveur, ce qui signifie que l'une d'entre elles peut être utilisée pour changer la texture de votre entité par exemple.
