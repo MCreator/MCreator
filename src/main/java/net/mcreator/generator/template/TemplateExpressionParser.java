@@ -69,7 +69,7 @@ public class TemplateExpressionParser {
 			@Nonnull Object conditionDataProvider) {
 		try {
 			if (condition.startsWith("${") && condition.endsWith("}")) {
-				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1), null,
+				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
 						conditionDataProvider);
 				return processed != null && (boolean) processed;
 			} else if (condition.contains("#?=")) { // check if value == one of the other values in list
@@ -124,26 +124,17 @@ public class TemplateExpressionParser {
 		return false;
 	}
 
-	public static Object processFTLExpression(Generator generator, String expression, TemplateGenerator tGen,
-			Object dataHolder) {
+	public static Object processFTLExpression(Generator generator, String expression, Object dataHolder) {
 		try {
-			LOG.info("Expression input is " + expression);
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			dataModel.put("retVal", new AtomicReference<>(null));
-			String expr = checkStartsWithAnyKey(expression, dataModel) ? expression : "data." + expression;
-			LOG.info("Converted '" + expression + "' into '" + expr + "'");
 			if (dataHolder != null)
 				dataModel.put("data", dataHolder);
-			String template = "${retVal.set(" + expr + ")}";
-			LOG.info(template);
-			if (tGen != null) {
-				tGen.generateFromString(template, dataModel);
-			} else {
-				Template t = new Template(template, new StringReader(expr),
-						generator.getGeneratorConfiguration().getTemplateGeneratorConfiguration().getConfiguration());
 
-				t.process(dataModel, new StringWriter());
-			}
+			String expr = checkStartsWithAnyKey(expression, dataModel) ? expression : "data." + expression;
+			Template t = new Template("DIRECT", new StringReader("${retVal.set(" + expr + ")}"),
+					generator.getGeneratorConfiguration().getTemplateGeneratorConfiguration().getConfiguration());
+			t.process(dataModel, new StringWriter());
 
 			return ((AtomicReference<?>) dataModel.get("retVal")).get();
 		} catch (Exception e) {

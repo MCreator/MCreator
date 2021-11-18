@@ -23,29 +23,21 @@ import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.File;
 
 public class ProjectFileOpener {
 
-	private static final Logger LOG = LogManager.getLogger("ProjectFileOpener");
 	public static CodeEditorView openCodeFile(MCreator mcreator, File file) {
 		if (file.isFile()) {
-			LOG.info("Your string is a file");
 			CodeEditorView cev = new CodeEditorView(mcreator, file);
 			ModElement owner = mcreator.getGenerator().getModElementThisFileBelongsTo(file);
 			if (owner != null) {
-				LOG.info("Your file has an owner");
 				cev.setFileOwnerModElement(owner);
 			}
 			return (CodeEditorView) cev.showView();
 		}
-		LOG.info("Your string is NOT a file");
-		LOG.info("Existing check: " + file.exists());
-		LOG.info("Type check: " + file.isFile());
 		return null;
 	}
 
