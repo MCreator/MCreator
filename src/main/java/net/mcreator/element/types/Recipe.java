@@ -26,6 +26,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
 
@@ -125,6 +126,11 @@ import java.util.Arrays;
 					brewingInputStack, brewingIngredientStack, brewingReturnStack);
 		}
 		return mod;
+	}
+
+	//TODO: Temporal, used for testing
+	public List<MItemBlock> getMatrixRaw() {
+		return Arrays.asList(recipeSlots);
 	}
 
 	private final transient OptimisedRecipe optimisedRecipe;

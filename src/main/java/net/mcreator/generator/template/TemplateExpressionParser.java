@@ -27,13 +27,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class TemplateConditionParser {
+public class TemplateExpressionParser {
 
-	private static final Logger LOG = LogManager.getLogger("Template condition");
+	private static final Logger LOG = LogManager.getLogger("Template expression parser");
 
 	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator,
 			@Nullable Object conditionRaw, @Nullable Object conditionDataProvider, Operator operator) {
@@ -69,8 +68,10 @@ public class TemplateConditionParser {
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
 		try {
-			if (condition.startsWith("${")) {
-				return processFTLExpression(generator, condition);
+			if (condition.startsWith("${") && condition.endsWith("}")) {
+				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1), null,
+						conditionDataProvider);
+				return processed != null && (boolean) processed;
 			} else if (condition.contains("#?=")) { // check if value == one of the other values in list
 				String[] condData = condition.split("#\\?=");
 				int field;
@@ -123,18 +124,38 @@ public class TemplateConditionParser {
 		return false;
 	}
 
-	private static boolean processFTLExpression(Generator generator, String expression) {
+	public static Object processFTLExpression(Generator generator, String expression, TemplateGenerator tGen,
+			Object dataHolder) {
 		try {
-			Template t = new Template("INLINE EXPRESSION", new StringReader(expression),
-					generator.getGeneratorConfiguration().getTemplateGeneratorConfiguration().getConfiguration());
+			LOG.info("Expression input is " + expression);
+			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
+			dataModel.put("retVal", new AtomicReference<>(null));
+			String expr = checkStartsWithAnyKey(expression, dataModel) ? expression : "data." + expression;
+			LOG.info("Converted '" + expression + "' into '" + expr + "'");
+			if (dataHolder != null)
+				dataModel.put("data", dataHolder);
+			String template = "${retVal.set(" + expr + ")}";
+			LOG.info(template);
+			if (tGen != null) {
+				tGen.generateFromString(template, dataModel);
+			} else {
+				Template t = new Template(template, new StringReader(expr),
+						generator.getGeneratorConfiguration().getTemplateGeneratorConfiguration().getConfiguration());
 
-			StringWriter stringWriter = new StringWriter();
-			t.process(generator.getBaseDataModelProvider().provide(), stringWriter);
+				t.process(dataModel, new StringWriter());
+			}
 
-			return Boolean.parseBoolean(stringWriter.getBuffer().toString());
+			return ((AtomicReference<?>) dataModel.get("retVal")).get();
 		} catch (Exception e) {
 			LOG.error("Failed to parse FTL expression: " + expression, e);
+			return null;
 		}
+	}
+
+	private static boolean checkStartsWithAnyKey(String expression, Map<String, Object> dataModel) {
+		for (String key : dataModel.keySet())
+			if (expression.startsWith(key + ".") || expression.startsWith(key + "?"))
+				return true;
 		return false;
 	}
 
