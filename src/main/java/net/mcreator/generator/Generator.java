@@ -670,8 +670,12 @@ public class Generator implements IGenerator, Closeable {
 						if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 								generatableElement, operator)) {
 							if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-								if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
-									new File(name).delete(); // if template is skipped, we delete its potential file
+								for (int i = 0; i < elementsData.size(); i++) {
+									String indexedName = name.replace("@elementindex", Integer.toString(i));
+									if (workspace.getFolderManager().isFileInWorkspace(new File(indexedName))) {
+										//if template is skipped, we delete its potential file
+										new File(indexedName).delete();
+									}
 								}
 							continue;
 						}
