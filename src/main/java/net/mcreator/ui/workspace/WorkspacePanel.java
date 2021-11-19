@@ -1244,6 +1244,8 @@ import java.util.stream.Collectors;
 						listItem.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
 						int listFilesFound = 0;
 						for (int i = 0; i < fileList.listData().size(); i++) {
+							if (i > 0)
+								listItem.addSeparator();
 							for (GeneratorTemplate modElementListFile : fileList.templates()) {
 								listFilesFound++;
 								String filePath = modElementListFile.getFile().getPath()

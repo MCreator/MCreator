@@ -371,6 +371,15 @@ public class Generator implements IGenerator, Closeable {
 
 		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null)).stream()
 				.map(GeneratorTemplate::getFile).forEach(File::delete);
+		Objects.requireNonNull(getModElementGeneratorListTemplates(element, true, element.getGeneratableElement()))
+				.forEach(el -> {
+					for (int i = 0; i < el.listData().size(); i++) {
+						for (GeneratorTemplate generatorTemplate : el.templates()) {
+							new File(generatorTemplate.getFile().getPath()
+									.replace("@elementindex", Integer.toString(i))).delete();
+						}
+					}
+				});
 
 		// delete all localization keys
 		List<?> localizationkeys = (List<?>) map.get("localizationkeys");
