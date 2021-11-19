@@ -57,7 +57,8 @@ public class ${name}Feature extends LakeFeature {
 	}
 
 	public boolean place(FeaturePlaceContext<BlockStateConfiguration> context) {
-		ResourceKey<Level> dimensionType = context.level().getLevel().dimension();
+		Level world = context.level().getLevel();
+		ResourceKey<Level> dimensionType = world.dimension();
 		boolean dimensionCriteria = false;
 
 		<#list data.spawnWorldTypes as worldType>
