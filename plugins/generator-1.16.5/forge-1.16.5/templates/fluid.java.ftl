@@ -183,7 +183,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 				int y = pos.getY();
 				int z = pos.getZ();
 				<@procedureOBJToCode data.onTickUpdate/>
-				<#if data.tickRate > 0>
+				<#if (data.tickRate > 0)>
 				world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 				</#if>
 			}

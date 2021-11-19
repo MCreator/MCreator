@@ -77,7 +77,7 @@ public class ${name}Block extends LiquidBlock {
 
 	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourChanges/>
 
-	<@onBlockTick data.onTickUpdate, data.tickRate > 0, data.tickRate/>
+	<@onBlockTick data.onTickUpdate, (data.tickRate > 0), data.tickRate/>
 
 	<@onEntityCollides data.onEntityCollides/>
 
