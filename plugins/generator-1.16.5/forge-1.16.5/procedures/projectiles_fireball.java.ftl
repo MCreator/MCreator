@@ -8,4 +8,4 @@ new Object() {
         if (entityToSpawn instanceof FireballEntity)
             ((FireballEntity) entityToSpawn).explosionPower = power;
         return entityToSpawn;
-}}.getFireball((World) world, ${input$shooter}, ${input$ax}, ${input$ay}, ${input$az}, (int) ${input$power})
+}}.getFireball(projectileLevel, ${input$shooter}, ${input$ax}, ${input$ay}, ${input$az}, ${opt.toInt(input$power)})

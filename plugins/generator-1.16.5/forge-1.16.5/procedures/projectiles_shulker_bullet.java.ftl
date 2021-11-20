@@ -1,1 +1,1 @@
-new ShulkerBulletEntity((World) world, ${input$shooter} instanceof LivingEntity ? (LivingEntity) ${input$shooter} : null, ${input$target}, ${input$direction}.getAxis())
+new ShulkerBulletEntity(projectileLevel, ${input$shooter} instanceof LivingEntity ? (LivingEntity) ${input$shooter} : null, ${input$target}, ${input$direction}.getAxis())

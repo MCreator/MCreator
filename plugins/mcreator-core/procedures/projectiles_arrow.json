@@ -61,7 +61,7 @@
     ],
     "dependencies": [
       {
-        "name": "world",
+        "name": "projectileLevel",
         "type": "world"
       }
     ]

@@ -8,4 +8,4 @@ new Object() {
             entityToSpawn = new FireworkRocketEntity(world, 0, 0, 0, stack);
         entityToSpawn.setShooter(shooter);
         return entityToSpawn;
-}}.getFireworkRocket((World) world, ${mappedMCItemToItemStackCode(input$item, 1)}, ${input$boosted_entity}, ${input$shooter})
+}}.getFireworkRocket(projectileLevel, ${mappedMCItemToItemStackCode(input$item, 1)}, ${input$boosted_entity}, ${input$shooter})

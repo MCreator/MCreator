@@ -63,7 +63,6 @@
       "<value name=\"inaccuracy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "inputs": [
-      "projectile",
       "x",
       "y",
       "z",
@@ -71,7 +70,16 @@
       "dy",
       "dz",
       "speed",
-      "inaccuracy"
+      "inaccuracy",
+      {
+        "name": "projectile",
+        "provides": [
+          {
+            "name": "projectileLevel",
+            "type": "world"
+          }
+        ]
+      }
     ],
     "dependencies": [
       {

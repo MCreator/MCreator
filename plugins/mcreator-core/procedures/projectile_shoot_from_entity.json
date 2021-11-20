@@ -33,15 +33,17 @@
       "<value name=\"inaccuracy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "inputs": [
-      "projectile",
       "entity",
       "speed",
-      "inaccuracy"
-    ],
-    "dependencies": [
+      "inaccuracy",
       {
-        "name": "world",
-        "type": "world"
+        "name": "projectile",
+        "provides": [
+          {
+            "name": "projectileLevel",
+            "type": "world"
+          }
+        ]
       }
     ]
   }

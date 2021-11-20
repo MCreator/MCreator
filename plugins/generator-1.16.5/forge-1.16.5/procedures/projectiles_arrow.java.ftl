@@ -9,4 +9,4 @@ new Object() {
         <#if field$fire?lower_case == "true">entityToSpawn.setFire(100);</#if>
         <#if field$particles?lower_case == "true">entityToSpawn.setIsCritical(true);</#if>
         return entityToSpawn;
-}}.getArrow((World) world, ${input$shooter}, (float) ${input$damage}, (int) ${input$knockback}, (byte) ${input$piercing})
+}}.getArrow(projectileLevel, ${input$shooter}, ${opt.toFloat(input$damage)}, ${opt.toInt(input$knockback)}, (byte) ${input$piercing})
