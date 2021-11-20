@@ -182,11 +182,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}, fs -> {
 			<#list data.fluidRestrictions as fluidRestriction>
                 <#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
-                    <#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>
-					if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", "").replace(":Flowing", ""))}Block.flowing) return true;
-                    <#else>
-					if(fs.getFluid() == ${(fluidRestriction.getUnmappedValue().replace("CUSTOM:", ""))}Block.still) return true;
-                    </#if>
+					if(fs.getFluid() ==
+					${JavaModName}Fluids.<#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>FLOWING_</#if>${generator.getRegistryNameForModElement(fluidRestriction.getUnmappedValue()?remove_beginning("CUSTOM:")?remove_ending(":Flowing"))?upper_case}) return true;
                 <#else>
 				if(fs.getFluid() == Fluids.${fluidRestriction}) return true;
                 </#if>

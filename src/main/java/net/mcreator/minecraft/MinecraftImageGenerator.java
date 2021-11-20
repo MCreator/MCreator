@@ -25,11 +25,11 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1190,7 +1190,8 @@ public class MinecraftImageGenerator {
 			Graphics2D graphics2D = icon.createGraphics();
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
-					workspace.getFolderManager().getOtherTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture))
+					workspace.getFolderManager()
+							.getOtherTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture))
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(
@@ -1392,25 +1393,20 @@ public class MinecraftImageGenerator {
 		 * @return Returns generated image of the appropriate colour.
 		 */
 		public static BufferedImage generateTagPreviewPicture(String type) {
-			switch (type) {
-			case "Items":
-				return ImageUtils.toBufferedImage(
+			return switch (type) {
+				case "Items" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
 								.getImage());
-			case "Blocks":
-				return ImageUtils.toBufferedImage(
+				case "Blocks" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), new Color(0x999960), false).getImage());
-			case "Entities":
-				return ImageUtils.toBufferedImage(
+				case "Entities" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
 								.getImage());
-			case "Functions":
-				return ImageUtils.toBufferedImage(
+				case "Functions" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
 								.getImage());
-			default:
-				return null;
-			}
+				default -> null;
+			};
 		}
 
 		/**
@@ -1423,19 +1419,11 @@ public class MinecraftImageGenerator {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
-			Color textureColor;
-
-			switch (type) {
-			case "Number":
-				textureColor = new Color(0x606999);
-				break;
-			case "Logic":
-				textureColor = new Color(0x607c99);
-				break;
-			default:
-				textureColor = Color.WHITE;
-				break;
-			}
+			Color textureColor = switch (type) {
+				case "Number" -> new Color(0x606999);
+				case "Logic" -> new Color(0x607c99);
+				default -> Color.WHITE;
+			};
 
 			graphics2D.drawImage(
 					ImageUtils.colorize(UIRES.get("mod_preview_bases.gamerule_base"), textureColor, false).getImage(),

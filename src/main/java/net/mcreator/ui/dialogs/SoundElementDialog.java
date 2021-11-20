@@ -27,8 +27,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
-import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.elements.SoundElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -60,7 +60,7 @@ public class SoundElementDialog {
 							.collect(Collectors.toList()));
 		}
 
-		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getAllSoundCategories());
+		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 
 		ui.add(L10N.label("dialog.sounds.registry_name"));
 		ui.add(soundName);

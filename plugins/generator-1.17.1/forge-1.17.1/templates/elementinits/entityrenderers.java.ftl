@@ -41,7 +41,7 @@ package ${package}.init;
 	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		<#list entities as entity>
 			<#if entity.getModElement().getTypeString() == "rangeditem">
-				<#if entity.bulletModel != "Default">
+				<#if entity.isCustomModel()>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ${entity.getModElement().getName()}Renderer::new);
 				<#else>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}, ThrownItemRenderer::new);

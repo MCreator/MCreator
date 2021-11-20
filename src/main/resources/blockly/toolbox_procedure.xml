@@ -28,6 +28,7 @@
         <block type="controls_if">
             <mutation elseif="1"/>
         </block>
+        <block type="logic_ternary_op"/>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>
@@ -65,6 +66,24 @@
         </block>
         <block type="text_print"/>
         <custom-text/>
+    </category>
+    <category name="${t:blockly.category.time}" colour="#628c94">
+        <block type="time_seconds"/>
+        <block type="time_minutes"/>
+        <block type="time_hours"/>
+        <block type="time_day_of_week"/>
+        <block type="time_day_of_month"/>
+        <block type="time_month"/>
+        <block type="time_year"/>
+        <block type="time_as_string"/>
+        <block type="time_to_formatted_string">
+            <value name="format">
+                <block type="text">
+                    <field name="TEXT">yyyy-MM-dd</field>
+                </block>
+            </value>
+        </block>
+        <custom-time/>
     </category>
     <sep/>
     <custom-apis/>

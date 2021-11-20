@@ -1,14 +1,18 @@
+<#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBonemeal(BonemealEvent event){
 		Player entity=event.getPlayer();
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("x",event.getPos().getX());
-		dependencies.put("y",event.getPos().getY());
-		dependencies.put("z",event.getPos().getZ());
-		dependencies.put("world",event.getWorld());
-		dependencies.put("itemstack",event.getStack());
-		dependencies.put("entity",entity);
-		dependencies.put("blockstate",event.getBlock());
-		dependencies.put("event",event);
-		execute(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getPos().getX()",
+			"y": "event.getPos().getY()",
+			"z": "event.getPos().getZ()",
+			"world": "event.getWorld()",
+			"itemstack": "event.getStack()",
+			"entity": "entity",
+			"blockstate": "event.getBlock()",
+			"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

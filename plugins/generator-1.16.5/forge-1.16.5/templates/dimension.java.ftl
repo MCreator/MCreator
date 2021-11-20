@@ -55,16 +55,25 @@ import net.minecraft.block.material.Material;
 	}
 
 	@Override public void init(FMLCommonSetupEvent event) {
-		<#-- register filler block to carvers -->
+		Set<Block> replaceableBlocks = new HashSet<>();
+		replaceableBlocks.add(${mappedBlockToBlock(data.mainFillerBlock)});
+
+		<#list w.filterBrokenReferences(data.biomesInDimension) as biome>
+		replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))
+				.getGenerationSettings().getSurfaceBuilder().get().getConfig().getTop().getBlock());
+		replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))
+				.getGenerationSettings().getSurfaceBuilder().get().getConfig().getUnder().getBlock());
+		</#list>
+
 		DeferredWorkQueue.runLater(() -> {
 			try {
 				ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CAVE, new ImmutableSet.Builder<Block>()
 						.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CAVE, "field_222718_j"))
-						.add(${mappedBlockToBlock(data.mainFillerBlock)}).build(), "field_222718_j");
+						.addAll(replaceableBlocks).build(), "field_222718_j");
 
 				ObfuscationReflectionHelper.setPrivateValue(WorldCarver.class, WorldCarver.CANYON, new ImmutableSet.Builder<Block>()
 						.addAll((Set<Block>) ObfuscationReflectionHelper.getPrivateValue(WorldCarver.class, WorldCarver.CANYON, "field_222718_j"))
-						.add(${mappedBlockToBlock(data.mainFillerBlock)}).build(), "field_222718_j");
+						.addAll(replaceableBlocks).build(), "field_222718_j");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

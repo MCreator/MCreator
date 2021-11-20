@@ -76,8 +76,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(300, 0, 100000, 1));
 
-	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
-
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
 	private final VTextField bucketName = new VTextField(18);
 	private TextureHolder textureBucket;
@@ -108,7 +106,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector beforeReplacingBlock;
 
 	private ProcedureSelector generateCondition;
-
+	private final JSpinner lakeRarity = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
 	private DimensionListField spawnWorldTypes;
 	private BiomeListField restrictionBiomes;
 
@@ -418,8 +416,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		spawning.add(spawnWorldTypes);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/gen_frequency"),
-				L10N.label("elementgui.plant.gen_chunk_count")));
-		spawning.add(frequencyOnChunks);
+				L10N.label("elementgui.fluid.lake_rarity")));
+		spawning.add(lakeRarity);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
@@ -476,7 +474,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -527,7 +525,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		flowCondition.setSelectedProcedure(fluid.flowCondition);
 		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
-		frequencyOnChunks.setValue(fluid.frequencyOnChunks);
+		lakeRarity.setValue(fluid.frequencyOnChunks);
 		generateCondition.setSelectedProcedure(fluid.generateCondition);
 		restrictionBiomes.setListElements(fluid.restrictionBiomes);
 		if (fluid.creativeTab != null)
@@ -585,7 +583,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
 		fluid.restrictionBiomes = restrictionBiomes.getListElements();
 		fluid.generateCondition = generateCondition.getSelectedProcedure();
-		fluid.frequencyOnChunks = (int) frequencyOnChunks.getValue();
+		fluid.frequencyOnChunks = (int) lakeRarity.getValue();
 		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		return fluid;
 	}

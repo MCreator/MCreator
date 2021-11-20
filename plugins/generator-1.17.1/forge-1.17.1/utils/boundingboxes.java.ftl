@@ -1,13 +1,8 @@
 <#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing>
     return <#if negativeBoxes?size != 0>Shapes.join(</#if>
-    Shapes.or(
-    <#list positiveBoxes as box>
-        <@makeCuboid box facing/> <#if box?has_next>,</#if>
-    </#list>)
-    <#if negativeBoxes?size != 0>, Shapes.or(
-        <#list negativeBoxes as box>
-            <@makeCuboid box facing/> <#if box?has_next>,</#if>
-        </#list>), BooleanOp.ONLY_FIRST)</#if>
+    <@mergeBoxes positiveBoxes, facing/>
+    <#if negativeBoxes?size != 0>
+    , <@mergeBoxes negativeBoxes, facing/>, BooleanOp.ONLY_FIRST)</#if>
     <#if !noOffset>.move(offset.x, offset.y, offset.z)</#if>;
 </#macro>
 
@@ -77,3 +72,12 @@
 <#function max(a, b)>
     <#return (a > b)?then(a, b)>
 </#function>
+
+<#macro mergeBoxes boxes facing>
+<#if boxes?size == 1>
+    <@makeCuboid boxes.get(0) facing/>
+<#else>
+    Shapes.or(<#list boxes as box>
+        <@makeCuboid box facing/><#sep>,</#list>)
+</#if>
+</#macro>
