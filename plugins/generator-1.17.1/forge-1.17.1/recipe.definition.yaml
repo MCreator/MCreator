@@ -39,4 +39,3 @@ list_templates:
       - template: json/crafting_ingredient.json.ftl
         writer: json
         name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()]_part@elementindex.json"
-        condition: "recipeType %= Crafting"

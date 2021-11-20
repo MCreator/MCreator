@@ -74,54 +74,36 @@ public class TemplateExpressionParser {
 				return processed != null && (boolean) processed;
 			} else if (condition.contains("#?=")) { // check if value == one of the other values in list
 				String[] condData = condition.split("#\\?=");
-				int field;
-				if (!condData[0].contains("()")) { // field
-					field = (int) conditionDataProvider.getClass().getField(condData[0].trim())
-							.get(conditionDataProvider);
-				} else { // method
-					field = (int) conditionDataProvider.getClass().getMethod(condData[0].replace("()", "").trim())
-							.invoke(conditionDataProvider);
-				}
-				int[] values = Arrays.stream(condData[1].trim().split(",")).mapToInt(Integer::parseInt).toArray();
-				for (int value : values)
-					if (value == field) {
-						return true;
-					}
+				int field = (int) getValueFrom(condData[0], conditionDataProvider);
+				return Arrays.stream(condData[1].trim().split(",")).mapToInt(Integer::parseInt)
+						.anyMatch(e -> e == field);
 			} else if (condition.contains("#=")) { // check if value == other value
 				var condData = condition.split("#=");
-				int field;
-				if (!condData[0].contains("()")) { // field
-					field = (int) conditionDataProvider.getClass().getField(condData[0].trim())
-							.get(conditionDataProvider);
-				} else { // method
-					field = (int) conditionDataProvider.getClass().getMethod(condData[0].replace("()", "").trim())
-							.invoke(conditionDataProvider);
-				}
+				int field = (int) getValueFrom(condData[0], conditionDataProvider);
 				int value = Integer.parseInt(condData[1].trim());
 				return value == field;
 			} else if (condition.contains("%=")) { // compare strings
 				var condData = condition.split("%=");
-				String field;
-				if (!condData[0].contains("()")) { // field
-					field = (String) conditionDataProvider.getClass().getField(condData[0].trim())
-							.get(conditionDataProvider);
-				} else { // method
-					field = (String) conditionDataProvider.getClass().getMethod(condData[0].replace("()", "").trim())
-							.invoke(conditionDataProvider);
-				}
+				String field = (String) getValueFrom(condData[0], conditionDataProvider);
 				String value = condData[1].trim();
 				return value.equals(field);
-			} else if (condition.contains("()")) { // check if method return value is true
-				return (boolean) conditionDataProvider.getClass().getMethod(condition.replace("()", "").trim())
-						.invoke(conditionDataProvider);
 			} else {
-				return (boolean) conditionDataProvider.getClass().getField(condition.trim()).get(conditionDataProvider);
+				return (boolean) getValueFrom(condition, conditionDataProvider);
 			}
 		} catch (Exception e) {
 			LOG.error("Failed to parse condition: " + condition, e);
 		}
 
 		return false;
+	}
+
+	private static Object getValueFrom(String field, Object conditionDataProvider) throws ReflectiveOperationException {
+		if (!field.contains("()")) { // field
+			return conditionDataProvider.getClass().getField(field.trim()).get(conditionDataProvider);
+		} else { // method
+			return conditionDataProvider.getClass().getMethod(field.replace("()", "").trim())
+					.invoke(conditionDataProvider);
+		}
 	}
 
 	public static Object processFTLExpression(Generator generator, String expression, Object dataHolder) {
