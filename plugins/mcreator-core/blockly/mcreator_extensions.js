@@ -119,22 +119,25 @@ Blockly.Extensions.register('gui_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("gui"))), 'guiname');
     });
 
-Blockly.Extensions.register('rangeditem_list_provider', // name is rangeditem for legacy reason, is actually arrow list
+Blockly.Extensions.register('rangeditem_list_provider', // name is rangeditem for legacy reasons, is actually arrow list
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("rangeditem"))), 'rangeditem');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("rangeditem"),
+                javabridge.getReadableListOf("rangeditem"))), 'rangeditem');
     });
 
 Blockly.Extensions.register('throwableprojectile_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("throwableprojectiles"))), 'throwableprojectile');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("throwableprojectile"),
+                javabridge.getReadableListOf("throwableprojectile"))), 'throwableprojectile');
     });
 
 Blockly.Extensions.register('fireballprojectile_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("fireballprojectiles"))), 'fireballprojectile');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("fireballprojectile"),
+                javabridge.getReadableListOf("fireballprojectile"))), 'fireballprojectile');
     });
 
 Blockly.Extensions.register('dimension_list_provider',

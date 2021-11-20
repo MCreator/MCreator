@@ -29,7 +29,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -210,9 +209,9 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "throwableprojectiles":
+		case "throwableprojectile":
 			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "fireballprojectiles":
+		case "fireballprojectile":
 			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
@@ -252,6 +251,12 @@ public class BlocklyJavascriptBridge {
 			case "entity" -> ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
 			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+			case "rangeditem" -> ElementUtil.loadArrowProjectiles(workspace).stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "fireballprojectile" -> ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+			case "throwableprojectile" -> ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
 		};
