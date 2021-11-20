@@ -37,8 +37,8 @@ class ImportFormat {
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			if (!skipModClassReloading) {
 				cache = new HashMap<>();
-				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), cache);
 				cache.putAll(workspace.getGenerator().getGradleCache().getImportTree());
+				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), cache);
 			}
 
 			CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
