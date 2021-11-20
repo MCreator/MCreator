@@ -135,20 +135,14 @@ public class Dependency implements Comparable<Dependency> {
 		}
 
 		// Return a color for other dependency types
-		switch (type) {
-		case "world":
-			return new Color(0x998160);
-		case "entity":
-			return new Color(0x608a99);
-		case "map":
-			return new Color(0x8FD980);
-		case "advancement":
-			return new Color(0x68712E);
-		case "dimensiontype":
-			return new Color(0x609963);
-		default:
-			return Color.white;
-		}
+		return switch (type) {
+			case "world" -> new Color(0x998160);
+			case "entity" -> new Color(0x608a99);
+			case "map" -> new Color(0x8FD980);
+			case "advancement" -> new Color(0x68712E);
+			case "dimensiontype" -> new Color(0x609963);
+			default -> Color.white;
+		};
 	}
 
 	public static Dependency[] fromString(String input) {

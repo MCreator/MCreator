@@ -36,6 +36,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -737,7 +738,9 @@ public class Generator implements IGenerator, Closeable {
 								String modelCode = FileIO.readFileToString(model.getFile());
 								try {
 									modelCode = templateGenerator.generateFromTemplate(template, new HashMap<>(
-											Map.of("modelname", model.getReadableName(), "model", modelCode)));
+											Map.of("modelname", model.getReadableName(), "model", modelCode,
+													"modelregistryname",
+													RegistryNameFixer.fromCamelCase(model.getReadableName()))));
 								} catch (TemplateGeneratorException e) {
 									e.printStackTrace();
 								}

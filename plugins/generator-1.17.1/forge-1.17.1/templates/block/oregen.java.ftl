@@ -36,7 +36,7 @@ package ${package}.world.features.ores;
 
 public class ${name}Feature extends OreFeature {
 
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
 				.configured(new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), ${data.frequencyOnChunk}))
 				.range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight}))))
@@ -58,7 +58,8 @@ public class ${name}Feature extends OreFeature {
 	}
 
 	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
-		ResourceKey<Level> dimensionType = context.level().getLevel().dimension();
+		Level world = context.level().getLevel();
+		ResourceKey<Level> dimensionType = world.dimension();
 		boolean dimensionCriteria = false;
 
         <#list data.spawnWorldTypes as worldType>

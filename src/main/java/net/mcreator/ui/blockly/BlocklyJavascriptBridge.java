@@ -24,10 +24,7 @@ import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.minecraft.MCItem;
-import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -171,12 +168,6 @@ public class BlocklyJavascriptBridge {
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
-		case "gamemode":
-			return ElementUtil.getAllGameModes();
-		case "biomedictionary":
-			return ElementUtil.loadBiomeDictionaryTypes();
-		case "damagesource":
-			return ElementUtil.getAllDamageSources();
 		case "achievement":
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -195,8 +186,6 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllFluids(workspace);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
-		case "soundcategory":
-			return ElementUtil.getAllSoundCategories();
 		case "particle":
 			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":
@@ -224,11 +213,13 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "fireballprojectiles":
 			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "planttype":
-			return ElementUtil.getAllPlantTypes();
 		default:
 			retval = new ArrayList<>();
 		}
+
+		// check if the data list exists and returns it if true
+		if (!DataListLoader.loadDataList(type).isEmpty())
+			return ElementUtil.getDataListAsStringArray(type);
 
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {
@@ -256,16 +247,13 @@ public class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
 		List<String> retval;
-		switch (type) {
-		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
+		return switch (type) {
+			case "entity" -> ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
-		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
-		default:
-			return getListOfForWorkspace(workspace, type);
-		}
+			default -> getListOfForWorkspace(workspace, type);
+		};
 	}
 
 	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {

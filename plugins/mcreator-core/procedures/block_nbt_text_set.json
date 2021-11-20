@@ -37,7 +37,7 @@
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>",
       "<value name=\"tagName\"><block type=\"text\"><field name=\"TEXT\">tagName</field></block></value>",
-      "<value name=\"tagValue\"><block type=\"text\"><field name=\"TEXT\">tagValue</field></block></value>",
+      "<value name=\"tagValue\"><block type=\"text\"><field name=\"TEXT\">tagValue</field></block></value>"
     ],
     "inputs": [
       "x",

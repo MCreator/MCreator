@@ -39,8 +39,7 @@ public class JSpawnListEntry extends JPanel {
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
-	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(ElementUtil.loadMobSpawnTypes());
-	;
+	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();
 
 	private final Workspace workspace;

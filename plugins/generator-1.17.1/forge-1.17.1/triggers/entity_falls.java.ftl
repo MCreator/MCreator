@@ -1,16 +1,20 @@
+<#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntityFall(LivingFallEvent event) {
 		if (event != null && event.getEntity() != null) {
 			Entity entity = event.getEntity();
-			Map<String, Object> dependencies = new HashMap<>();
-		    dependencies.put("x", entity.getX());
-		    dependencies.put("y", entity.getY());
-		    dependencies.put("z", entity.getZ());
-			dependencies.put("damagemultiplier", event.getDamageMultiplier());
-			dependencies.put("distance", event.getDistance());
-			dependencies.put("world", entity.level);
-			dependencies.put("entity", entity);
-			dependencies.put("event", event);
-			execute(dependencies);
+			<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+		    	"x": "entity.getX()",
+		    	"y": "entity.getY()",
+		    	"z": "entity.getZ()",
+				"damagemultiplier": "event.getDamageMultiplier()",
+				"distance": "event.getDistance()",
+				"world": "entity.level",
+				"entity": "entity",
+				"event": "event"
+				}/>
+			</#compress></#assign>
+			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
