@@ -757,12 +757,14 @@ public class TestWorkspaceDataProvider {
 			dimension.biomesInDimension = new ArrayList<>();
 			dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-			dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-			dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-			dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			if (!emptyLists) {
+				dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			}
 			dimension.airColor = Color.cyan;
 			dimension.canRespawnHere = _true;
 			dimension.hasFog = _true;
