@@ -10,7 +10,7 @@ templates:
   - template: fluid/fluidbucket.java.ftl
     deleteWhenConditionFalse: true
     condition: generateBucket
-    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEBucketItem.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
   - template: fluid/fluidgen.java.ftl
     deleteWhenConditionFalse: true
     condition: doesGenerateInWorld()
