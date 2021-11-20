@@ -4,7 +4,7 @@ templates:
   - template: livingentity/livingentity_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
   - template: livingentity/livingentity_projectile.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEProjectileEntity.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntityProjectile.java"
     condition: hasCustomProjectile()
     deleteWhenConditionFalse: true
   - template: json/spawn_egg.json.ftl
