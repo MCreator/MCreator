@@ -75,7 +75,7 @@ package ${package}.init;
 	<#if w.hasItemsWithCustomProperties()>
 		static {
 		<#list items as item>
-			<#lif item.customProperties?has_content>
+			<#if item.customProperties?has_content>
 				<#list item.customProperties as property, value>
 					ItemModelsProperties.registerProperty(${item.getModElement().getRegistryNameUpper()},
 							new ResourceLocation("${property}"), (itemStackToRender, clientWorld, livingEntity, itemEntityId) -> {

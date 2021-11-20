@@ -20,13 +20,13 @@
 package net.mcreator.ui.minecraft.models.item;
 
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.types.Item;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
-import net.mcreator.util.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,13 +113,13 @@ public class JItemPropertiesList extends JPanel {
 		});
 	}
 
-	public Map<Map<String, Float>, Tuple<String, Integer>> getModelsList() {
-		Map<Map<String, Float>, Tuple<String, Integer>> retVal = new HashMap<>();
+	public Map<Map<String, Float>, Item.ModelEntry> getModelsList() {
+		Map<Map<String, Float>, Item.ModelEntry> retVal = new HashMap<>();
 		modelsList.forEach(e -> e.addEntry(retVal));
 		return retVal;
 	}
 
-	public void setModelsList(Map<Map<String, Float>, Tuple<String, Integer>> models) {
+	public void setModelsList(Map<Map<String, Float>, Item.ModelEntry> models) {
 		models.forEach((k, v) -> new JItemModelsListEntry(mcreator, modelEntries, modelsList).setEntry(k, v));
 	}
 

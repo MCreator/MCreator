@@ -110,7 +110,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector dispenseResultItemstack;
 
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
 
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
@@ -169,6 +168,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline().makeReturnValueOptional();
 
 		customProperties = new JItemPropertiesList(this.mcreator);
+		customProperties.setPreferredSize(
+				new Dimension(customProperties.getWidth() - 50, customProperties.getHeight() - 50));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -198,8 +199,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal2.setOpaque(false);
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
-		destal2.add("North", PanelUtils.totalCenterInPanel(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
 
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
@@ -229,13 +228,17 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rent.add(PanelUtils.join(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
+		rent.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		destal2.add("North", PanelUtils.totalCenterInPanel(
+				PanelUtils.join(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		cipp.setOpaque(false);
-
-		cipp.add("North", rent);
 		cipp.add("Center", customProperties);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
@@ -385,7 +388,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		texture.setValidator(new TileHolderValidator(texture));
 
-		page2group.addValidationElement(texture);
+		page1group.addValidationElement(texture);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
 		name.enableRealtimeValidation();
@@ -451,7 +454,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		else if (page == 1)
 			return customProperties.getValidationResult();
 		else if (page == 0)
-			return new AggregatedValidationResult(page2group);
+			return new AggregatedValidationResult(page1group);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -543,6 +546,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.texture = texture.getID();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
+
 		item.customProperties = customProperties.getProperties();
 		item.modelsMap = customProperties.getModelsList();
 

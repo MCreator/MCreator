@@ -22,7 +22,7 @@
                 "${property}": ${value}<#sep>,
             </#list>
             },
-            "__model": "${modid}:item/${model.x()}_${model?index}"
+            "model": "${modid}:item/${model.modelName}_${model?index}"
         }<#sep>,
     </#list>
     ]

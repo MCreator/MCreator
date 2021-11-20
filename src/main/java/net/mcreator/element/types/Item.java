@@ -26,8 +26,8 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.util.Tuple;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -43,8 +43,9 @@ import java.util.Map;
 	public int renderType;
 	public String texture;
 	public String customModelName;
+
 	public Map<String, Procedure> customProperties;
-	public Map<Map<String, Float>, Tuple<String, Integer>> modelsMap;
+	public Map<Map<String, Float>, Item.ModelEntry> modelsMap;
 
 	public String name;
 	public String rarity;
@@ -129,15 +130,18 @@ import java.util.Map;
 
 	public Model getItemModel(Map<String, Float> modelKey) {
 		if (modelKey != null) {
-			return Model.getModelByParams(getModElement().getWorkspace(), modelsMap.get(modelKey).x(),
-					decodeModelType(modelsMap.get(modelKey).y()));
+			return modelsMap.get(modelKey).getItemModel();
 		} else {
 			return Model.getModelByParams(getModElement().getWorkspace(), customModelName, decodeModelType(renderType));
 		}
 	}
 
 	@Override public Map<String, String> getTextureMap() {
-		Model model = getItemModel();
+		return getTextureMap(null);
+	}
+
+	public Map<String, String> getTextureMap(Map<String, Float> modelKey) {
+		Model model = getItemModel(modelKey);
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
@@ -161,6 +165,26 @@ import java.util.Map;
 
 	public boolean hasInventory() {
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
+	}
+
+	public static class ModelEntry {
+
+		public Workspace workspace;
+		public int renderType;
+		public String modelTexture;
+		public String modelName;
+
+		public Model getItemModel() {
+			return Model.getModelByParams(workspace, modelName, decodeModelType(renderType));
+		}
+
+		public Map<String, String> getTextureMap() {
+			Model model = getItemModel();
+			if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
+				return ((TexturedModel) model).getTextureMapping().getTextureMap();
+			return null;
+		}
+
 	}
 
 }

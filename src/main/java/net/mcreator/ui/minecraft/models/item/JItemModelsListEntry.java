@@ -25,13 +25,14 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.util.ListUtils;
-import net.mcreator.util.Tuple;
 import net.mcreator.workspace.resources.Model;
 
 import javax.swing.*;
@@ -47,7 +48,9 @@ import java.util.stream.Stream;
 public class JItemModelsListEntry extends JPanel {
 
 	private final JTextField state;
+	private final TextureHolder texture;
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
+
 	private final MCreator mcreator;
 
 	public JItemModelsListEntry(MCreator mcreator, JPanel parent, List<JItemModelsListEntry> entryList) {
@@ -55,7 +58,7 @@ public class JItemModelsListEntry extends JPanel {
 
 		this.mcreator = mcreator;
 
-		state = new JTextField(30);
+		state = new JTextField(20);
 		state.setEditable(false);
 		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		state.setToolTipText(L10N.t("elementgui.item.custom_models.entry.edit_states"));
@@ -66,16 +69,22 @@ public class JItemModelsListEntry extends JPanel {
 			}
 		});
 
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture.setOpaque(false);
+
 		ComponentUtils.deriveFont(model, 16);
-		model.setPreferredSize(new Dimension(350, 42));
+		model.setPreferredSize(new Dimension(300, 42));
 		model.setRenderer(new ModelComboBoxRenderer());
 		reloadDataLists();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
+		JPanel west = new JPanel(new GridLayout(3, 1));
 		JPanel east = new JPanel();
 
-		add("Center", new JScrollPane(state));
+		west.add(new JLabel(" "));
+		west.add(new JScrollPane(state));
 
+		east.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
 		east.add(L10N.label("elementgui.item.custom_models.entry"));
 		east.add(model);
 
@@ -92,7 +101,7 @@ public class JItemModelsListEntry extends JPanel {
 		});
 		east.add(remove);
 
-		add("East", east);
+		add(PanelUtils.centerAndEastElement(west, east));
 
 		parent.revalidate();
 		parent.repaint();
@@ -105,17 +114,24 @@ public class JItemModelsListEntry extends JPanel {
 						.collect(Collectors.toList())));
 	}
 
-	public void addEntry(Map<Map<String, Float>, Tuple<String, Integer>> map) {
-		Model selectedModel = Objects.requireNonNull(model.getSelectedItem());
+	public void addEntry(Map<Map<String, Float>, Item.ModelEntry> map) {
 		Map<String, Float> stateMap = Stream.of(state.getText().split(","))
 				.collect(Collectors.toMap(k -> k.split("=")[0], v -> Float.parseFloat(v.split("=")[1])));
-		map.put(stateMap, new Tuple<>(selectedModel.getReadableName(), Item.encodeModelType(selectedModel.getType())));
+
+		Item.ModelEntry modelEntry = new Item.ModelEntry();
+		modelEntry.workspace = mcreator.getWorkspace();
+		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
+		modelEntry.modelTexture = texture.getID();
+		modelEntry.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());
+
+		map.put(stateMap, modelEntry);
 	}
 
-	public void setEntry(Map<String, Float> state, Tuple<String, Integer> model) {
+	public void setEntry(Map<String, Float> state, Item.ModelEntry model) {
 		this.state.setText(state.entrySet().stream().map(e -> String.format("%s=%f", e.getKey(), e.getValue()))
 				.collect(Collectors.joining(",")));
-		this.model.setSelectedItem(
-				Model.getModelByParams(mcreator.getWorkspace(), model.x(), Item.decodeModelType(model.y())));
+		this.texture.setTextureFromTextureName(model.modelTexture);
+		this.model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), model.modelName,
+				Item.decodeModelType(model.renderType)));
 	}
 }
