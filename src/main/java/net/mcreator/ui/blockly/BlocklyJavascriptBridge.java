@@ -209,10 +209,11 @@ public class BlocklyJavascriptBridge {
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
 		case "rangeditem":
-			retval = ListUtils.merge(Collections.singleton("Arrow"),
-					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
-							.map(ModElement::getName).collect(Collectors.toList()));
-			break;
+			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "throwableprojectiles":
+			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "fireballprojectiles":
+			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
 		}

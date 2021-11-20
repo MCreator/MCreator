@@ -1,0 +1,33 @@
+- Snowball:
+  readable_name: "Snowball"
+  type: throwable
+- Egg:
+  readable_name: "Egg"
+  type: throwable
+- ExperienceBottle:
+  readable_name: "Experience bottle"
+  type: throwable
+- EnderPearl:
+  readable_name: "Ender pearl"
+  type: throwable
+- LlamaSpit:
+  readable_name: "Llama spit"
+  type: throwable
+- Arrow:
+  readable_name: "Arrow"
+  type: arrow
+- SpectralArrow:
+  readable_name: "Spectral arrow"
+  type: arrow
+- SmallFireball:
+  readable_name: "Small fireball"
+  type: fireball
+- LargeFireball:
+  readable_name: "Large fireball"
+  type: fireball
+- DragonFireball:
+  readable_name: "Dragon fireball"
+  type: fireball
+- WitherSkull:
+  readable_name: "Wither skull"
+  type: fireball

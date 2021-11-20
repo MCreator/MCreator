@@ -119,10 +119,22 @@ Blockly.Extensions.register('gui_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("gui"))), 'guiname');
     });
 
-Blockly.Extensions.register('rangeditem_list_provider',
+Blockly.Extensions.register('rangeditem_list_provider', // name is rangeditem for legacy reason, is actually arrow list
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("rangeditem"))), 'rangeditem');
+    });
+
+Blockly.Extensions.register('throwableprojectile_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("throwableprojectiles"))), 'throwableprojectile');
+    });
+
+Blockly.Extensions.register('fireballprojectile_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf("fireballprojectiles"))), 'fireballprojectile');
     });
 
 Blockly.Extensions.register('dimension_list_provider',
