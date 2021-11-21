@@ -144,6 +144,126 @@
   type: block
   texture: SMOOTH_STONE
 
+- Blocks.DEEPSLATE:
+  readable_name: "Deepslate"
+  type: block
+  texture: DEEPSLATE
+
+- Blocks.COBBLED_DEEPSLATE:
+  readable_name: "Cobbled Deepslate"
+  type: block
+  texture: COBBLED_DEEPSLATE
+
+- Blocks.COBBLED_DEEPSLATE_STAIRS:
+  readable_name: "Cobbled Deepslate Stairs"
+  type: block
+  texture: COBBLED_DEEPSLATE_STAIRS
+
+- Blocks.COBBLED_DEEPSLATE_SLAB:
+  readable_name: "Cobbled Deepslate Slab"
+  type: block
+  texture: COBBLED_DEEPSLATE_SLAB
+
+- Blocks.COBBLED_DEEPSLATE_WALL:
+  readable_name: "Cobbled Deepslate Wall"
+  type: block
+  texture: COBBLED_DEEPSLATE_WALL
+
+- Blocks.POLISHED_DEEPSLATE:
+  readable_name: "Polished Deepslate"
+  type: block
+  texture: POLISHED_DEEPSLATE
+
+- Blocks.POLISHED_DEEPSLATE_STAIRS:
+  readable_name: "Polished Deepslate Stairs"
+  type: block
+  texture: POLISHED_DEEPSLATE_STAIRS
+
+- Blocks.POLISHED_DEEPSLATE_SLAB:
+  readable_name: "Polished Deepslate Slab"
+  type: block
+  texture: POLISHED_DEEPSLATE_SLAB
+
+- Blocks.POLISHED_DEEPSLATE_WALL:
+  readable_name: "Polished Deepslate Wall"
+  type: block
+  texture: POLISHED_DEEPSLATE_WALL
+
+- Blocks.DEEPSLATE_TILES:
+  readable_name: "Deepslate Tiles"
+  type: block
+  texture: DEEPSLATE_TILES
+
+- Blocks.DEEPSLATE_TILE_STAIRS:
+  readable_name: "Deepslate Tile Stairs"
+  type: block
+  texture: DEEPSLATE_TILE_STAIRS
+
+- Blocks.DEEPSLATE_TILE_SLAB:
+  readable_name: "Deepslate Tile Slab"
+  type: block
+  texture: DEEPSLATE_TILE_SLAB
+
+- Blocks.DEEPSLATE_TILE_WALL:
+  readable_name: "Deepslate Tile Wall"
+  type: block
+  texture: DEEPSLATE_TILE_WALL
+
+- Blocks.DEEPSLATE_BRICKS:
+  readable_name: "Deepslate Bricks"
+  type: block
+  texture: DEEPSLATE_BRICKS
+
+- Blocks.DEEPSLATE_BRICK_STAIRS:
+  readable_name: "Deepslate Brick Stairs"
+  type: block
+  texture: DEEPSLATE_BRICK_STAIRS
+
+- Blocks.DEEPSLATE_BRICK_SLAB:
+  readable_name: "Deepslate Brick Slab"
+  type: block
+  texture: DEEPSLATE_BRICK_SLAB
+
+- Blocks.DEEPSLATE_BRICK_WALL:
+  readable_name: "Deepslate Brick Wall"
+  type: block
+  texture: DEEPSLATE_BRICK_WALL
+
+- Blocks.CHISELED_DEEPSLATE:
+  readable_name: "Chiseled Deepslate"
+  type: block
+  texture: CHISELED_DEEPSLATE
+
+- Blocks.CRACKED_DEEPSLATE_BRICKS:
+  readable_name: "Cracked Deepslate Bricks"
+  type: block
+  texture: CRACKED_DEEPSLATE_BRICKS
+
+- Blocks.CRACKED_DEEPSLATE_TILES:
+  readable_name: "Cracked Deepslate Tiles"
+  type: block
+  texture: CRACKED_DEEPSLATE_TILES
+
+- Blocks.TUFF:
+  readable_name: "Tuff"
+  type: block
+  texture: TUFF
+
+- Blocks.CALCITE:
+  readable_name: "Calcite"
+  type: block
+  texture: CALCITE
+
+- Blocks.DRIPSTONE_BLOCK:
+  readable_name: "Dripstone Block"
+  type: block
+  texture: DRIPSTONE_BLOCK
+
+- Blocks.POINTED_DRIPSTONE:
+  readable_name: "Pointed Dripstone"
+  type: block
+  texture: POINTED_DRIPSTONE
+
 - Blocks.GRASS:
   readable_name: "Grass"
   type: block
@@ -180,6 +300,11 @@
   type: block
   texture: DIRT#2
 
+- Blocks.ROOTED_DIRT:
+  readable_name: "Rooted Dirt"
+  type: block
+  texture: ROOTED_DIRT
+
 - Blocks.COBBLESTONE:
   readable_name: "Cobblestone"
   type: block
@@ -199,6 +324,16 @@
   readable_name: "Mossy Cobblestone Slab"
   type: block
   texture: MOSSY_COBBLESTONE_SLAB
+
+- Blocks.MOSS_BLOCK:
+  readable_name: "Moss Block"
+  type: block
+  texture: MOSS_BLOCK
+
+- Blocks.MOSS_CARPET:
+  readable_name: "Moss Carpet"
+  type: block
+  texture: MOSS_CARPET
 
 - Blocks.PLANKS:
   readable_name: "Any Planks"
@@ -353,6 +488,76 @@
   type: block
   texture: CRYING_OBSIDIAN
 
+- Blocks.BLACKSTONE:
+  readable_name: "Blackstone"
+  type: block
+  texture: BLACKSTONE
+
+- Blocks.BLACKSTONE_STAIRS:
+  readable_name: "Blackstone Stairs"
+  type: block
+  texture: BLACKSTONE_STAIRS
+
+- Blocks.BLACKSTONE_WALL:
+  readable_name: "Blackstone Wall"
+  type: block
+  texture: BLACKSTONE_WALL
+
+- Blocks.BLACKSTONE_SLAB:
+  readable_name: "Blackstone Slab"
+  type: block
+  texture: BLACKSTONE_SLAB
+
+- Blocks.POLISHED_BLACKSTONE:
+  readable_name: "Polished Blackstone"
+  type: block
+  texture: POLISHED_BLACKSTONE
+
+- Blocks.POLISHED_BLACKSTONE_BRICKS:
+  readable_name: "Polished Blackstone Bricks"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICKS
+
+- Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS:
+  readable_name: "Cracked Polished Blackstone Bricks"
+  type: block
+  texture: CRACKED_POLISHED_BLACKSTONE_BRICKS
+
+- Blocks.CHISELED_POLISHED_BLACKSTONE:
+  readable_name: "Chiseled Polished Blackstone"
+  type: block
+  texture: CHISELED_POLISHED_BLACKSTONE
+
+- Blocks.POLISHED_BLACKSTONE_BRICK_SLAB:
+  readable_name: "Polished Blackstone Brick Slab"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICK_SLAB
+
+- Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS:
+  readable_name: "Polished Blackstone Brick Stairs"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICK_STAIRS
+
+- Blocks.POLISHED_BLACKSTONE_BRICK_WALL:
+  readable_name: "Polished Blackstone Brick Wall"
+  type: block
+  texture: POLISHED_BLACKSTONE_BRICK_WALL
+
+- Blocks.POLISHED_BLACKSTONE_STAIRS:
+  readable_name: "Polished Blackstone Stairs"
+  type: block
+  texture: POLISHED_BLACKSTONE_STAIRS
+
+- Blocks.POLISHED_BLACKSTONE_SLAB:
+  readable_name: "Polished Blackstone Slab"
+  type: block
+  texture: POLISHED_BLACKSTONE_SLAB
+
+- Blocks.POLISHED_BLACKSTONE_WALL:
+  readable_name: "Polished Blackstone Wall"
+  type: block
+  texture: POLISHED_BLACKSTONE_WALL
+
 - Blocks.COAL_ORE:
   readable_name: "Coal Ore"
   type: block
@@ -453,6 +658,21 @@
   type: block
   texture: GILDED_BLACKSTONE
 
+- Blocks.RAW_IRON_BLOCK:
+  readable_name: "Raw Iron Block"
+  type: block
+  texture: RAW_IRON_BLOCK
+
+- Blocks.RAW_GOLD_BLOCK:
+  readable_name: "Raw Gold Block"
+  type: block
+  texture: RAW_GOLD_BLOCK
+
+- Blocks.RAW_COPPER_BLOCK:
+  readable_name: "Raw Copper Block"
+  type: block
+  texture: RAW_COPPER_BLOCK
+
 - Blocks.COAL_BLOCK:
   readable_name: "Coal Block"
   type: block
@@ -462,6 +682,166 @@
   readable_name: "Iron Block"
   type: block
   texture: IRON_BLOCK
+
+- Blocks.OXIDIZED_COPPER:
+  readable_name: "Oxidized Copper"
+  type: block
+  texture: OXIDIZED_COPPER
+
+- Blocks.WEATHERED_COPPER:
+  readable_name: "Weathered Copper"
+  type: block
+  texture: WEATHERED_COPPER
+
+- Blocks.EXPOSED_COPPER:
+  readable_name: "Exposed Copper"
+  type: block
+  texture: EXPOSED_COPPER
+
+- Blocks.COPPER_BLOCK:
+  readable_name: "Copper Block"
+  type: block
+  texture: COPPER_BLOCK
+
+- Blocks.OXIDIZED_CUT_COPPER:
+  readable_name: "Oxidized Cut Copper"
+  type: block
+  texture: OXIDIZED_CUT_COPPER
+
+- Blocks.WEATHERED_CUT_COPPER:
+  readable_name: "Weathered Cut Copper"
+  type: block
+  texture: WEATHERED_CUT_COPPER
+
+- Blocks.EXPOSED_CUT_COPPER:
+  readable_name: "Exposed Cut Copper"
+  type: block
+  texture: EXPOSED_CUT_COPPER
+
+- Blocks.CUT_COPPER:
+  readable_name: "Cut Copper"
+  type: block
+  texture: CUT_COPPER
+
+- Blocks.OXIDIZED_CUT_COPPER_STAIRS:
+  readable_name: "Oxidized Cut Copper Stairs"
+  type: block
+  texture: OXIDIZED_CUT_COPPER_STAIRS
+
+- Blocks.WEATHERED_CUT_COPPER_STAIRS:
+  readable_name: "Weathered Cut Copper Stairs"
+  type: block
+  texture: WEATHERED_CUT_COPPER_STAIRS
+
+- Blocks.EXPOSED_CUT_COPPER_STAIRS:
+  readable_name: "Exposed Cut Copper Stairs"
+  type: block
+  texture: EXPOSED_CUT_COPPER_STAIRS
+
+- Blocks.CUT_COPPER_STAIRS:
+  readable_name: "Cut Copper Stairs"
+  type: block
+  texture: CUT_COPPER_STAIRS
+
+- Blocks.OXIDIZED_CUT_COPPER_SLAB:
+  readable_name: "Oxidized Cut Copper Slab"
+  type: block
+  texture: OXIDIZED_CUT_COPPER_SLAB
+
+- Blocks.WEATHERED_CUT_COPPER_SLAB:
+  readable_name: "Weathered Cut Copper Slab"
+  type: block
+  texture: WEATHERED_CUT_COPPER_SLAB
+
+- Blocks.EXPOSED_CUT_COPPER_SLAB:
+  readable_name: "Exposed Cut Copper Slab"
+  type: block
+  texture: EXPOSED_CUT_COPPER_SLAB
+
+- Blocks.CUT_COPPER_SLAB:
+  readable_name: "Cut Copper Slab"
+  type: block
+  texture: CUT_COPPER_SLAB
+
+- Blocks.WAXED_OXIDIZED_COPPER:
+  readable_name: "Waxed Oxidized Copper"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER
+
+- Blocks.WAXED_WEATHERED_COPPER:
+  readable_name: "Waxed Weathered Copper"
+  type: block
+  texture: WAXED_WEATHERED_COPPER
+
+- Blocks.WAXED_EXPOSED_COPPER:
+  readable_name: "Waxed Exposed Copper"
+  type: block
+  texture: WAXED_EXPOSED_COPPER
+
+- Blocks.WAXED_COPPER_BLOCK:
+  readable_name: "Waxed Copper Block"
+  type: block
+  texture: WAXED_COPPER_BLOCK
+
+- Blocks.WAXED_OXIDIZED_CUT_COPPER:
+  readable_name: "Waxed Oxidized Cut Copper"
+  type: block
+  texture: WAXED_OXIDIZED_CUT_COPPER
+
+- Blocks.WAXED_WEATHERED_CUT_COPPER:
+  readable_name: "Waxed Weathered Cut Copper"
+  type: block
+  texture: WAXED_WEATHERED_CUT_COPPER
+
+- Blocks.WAXED_EXPOSED_CUT_COPPER:
+  readable_name: "Waxed Exposed Cut Copper"
+  type: block
+  texture: WAXED_EXPOSED_CUT_COPPER
+
+- Blocks.WAXED_CUT_COPPER:
+  readable_name: "Waxed Cut Copper"
+  type: block
+  texture: WAXED_CUT_COPPER
+
+- Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Oxidized Cut Copper Stairs"
+  type: block
+  texture: WAXED_OXIDIZED_CUT_COPPER_STAIRS
+
+- Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Weathered Cut Copper Stairs"
+  type: block
+  texture: WAXED_WEATHERED_CUT_COPPER_STAIRS
+
+- Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Exposed Cut Copper Stairs"
+  type: block
+  texture: WAXED_EXPOSED_CUT_COPPER_STAIRS
+
+- Blocks.WAXED_CUT_COPPER_STAIRS:
+  readable_name: "Waxed Cut Copper Stairs"
+  type: block
+  texture: WAXED_CUT_COPPER_STAIRS
+
+- Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Oxidized Cut Copper Slab"
+  type: block
+  texture: WAXED_OXIDIZED_CUT_COPPER_SLAB
+
+- Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Weathered Cut Copper Slab"
+  type: block
+  texture: WAXED_WEATHERED_CUT_COPPER_SLAB
+
+- Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Exposed Cut Copper Slab"
+  type: block
+  texture: WAXED_EXPOSED_CUT_COPPER_SLAB
+
+- Blocks.WAXED_CUT_COPPER_SLAB:
+  readable_name: "Waxed Cut Copper Slab"
+  type: block
+  texture: WAXED_CUT_COPPER_SLAB
 
 - Blocks.REDSTONE_BLOCK:
   readable_name: "Redstone Block"
@@ -538,6 +918,41 @@
   readable_name: "Slime Block"
   type: block
   texture: SLIME_BLOCK
+
+- Blocks.ANCIENT_DEBRIS:
+  readable_name: "Ancient Debris"
+  type: block
+  texture: ANCIENT_DEBRIS
+
+- Blocks.AMETHYST_BLOCK:
+  readable_name: "Amethyst Block"
+  type: block
+  texture: AMETHYST_BLOCK
+
+- Blocks.BUDDING_AMETHYST:
+  readable_name: "Budding Amethyst"
+  type: block
+  texture: BUDDING_AMETHYST
+
+- Blocks.AMETHYST_CLUSTER:
+  readable_name: "Amethyst Cluster"
+  type: block
+  texture: AMETHYST_CLUSTER
+
+- Blocks.LARGE_AMETHYST_BUD:
+  readable_name: "Large Amethyst Bud"
+  type: block
+  texture: LARGE_AMETHYST_BUD
+
+- Blocks.MEDIUM_AMETHYST_BUD:
+  readable_name: "Medium Amethyst Bud"
+  type: block
+  texture: MEDIUM_AMETHYST_BUD
+
+- Blocks.SMALL_AMETHYST_BUD:
+  readable_name: "Small Amethyst Bud"
+  type: block
+  texture: SMALL_AMETHYST_BUD
 
 - Blocks.LOG:
   readable_name: "Oak/Spruce/Birch/Jungle Wood"
@@ -1229,6 +1644,127 @@
   type: block
   texture: SOUL_FIRE
 
+- Blocks.LANTERN:
+  readable_name: "Lantern"
+  type: block
+  texture: LANTERN
+
+- Blocks.SOUL_LANTERN:
+  readable_name: "Soul Lantern"
+  type: block
+  texture: SOUL_LANTERN
+
+- Blocks.CHAIN:
+  readable_name: "Chain"
+  type: block
+  texture: CHAIN
+
+- Blocks.CAMPFIRE:
+  readable_name: "Campfire"
+  type: block
+  texture: CAMPFIRE
+
+- Blocks.SOUL_CAMPFIRE:
+  readable_name: "Soul Campfire"
+  type: block
+  texture: SOUL_CAMPFIRE
+
+- Blocks.CANDLE:
+  readable_name: "Any Candle"
+  type: block
+  subtypes: true
+  texture: CANDLE
+
+- Blocks.CANDLE#0:
+  readable_name: "Candle"
+  type: block
+  texture: CANDLE#0
+
+- Blocks.CANDLE#1:
+  readable_name: "White Candle"
+  type: block
+  texture: CANDLE#1
+
+- Blocks.CANDLE#2:
+  readable_name: "Orange Candle"
+  type: block
+  texture: CANDLE#2
+
+- Blocks.CANDLE#3:
+  readable_name: "Magenta Candle"
+  type: block
+  texture: CANDLE#3
+
+- Blocks.CANDLE#4:
+  readable_name: "Light Blue Candle"
+  type: block
+  texture: CANDLE#4
+
+- Blocks.CANDLE#5:
+  readable_name: "Yellow Candle"
+  type: block
+  texture: CANDLE#5
+
+- Blocks.CANDLE#6:
+  readable_name: "Lime Candle"
+  type: block
+  texture: CANDLE#6
+
+- Blocks.CANDLE#7:
+  readable_name: "Pink Candle"
+  type: block
+  texture: CANDLE#7
+
+- Blocks.CANDLE#8:
+  readable_name: "Gray Candle"
+  type: block
+  texture: CANDLE#8
+
+- Blocks.CANDLE#9:
+  readable_name: "Light Gray Candle"
+  type: block
+  texture: CANDLE#9
+
+- Blocks.CANDLE#10:
+  readable_name: "Cyan Candle"
+  type: block
+  texture: CANDLE#10
+
+- Blocks.CANDLE#11:
+  readable_name: "Purple Candle"
+  type: block
+  texture: CANDLE#11
+
+- Blocks.CANDLE#12:
+  readable_name: "Blue Candle"
+  type: block
+  texture: CANDLE#12
+
+- Blocks.CANDLE#13:
+  readable_name: "Brown Candle"
+  type: block
+  texture: CANDLE#13
+
+- Blocks.CANDLE#14:
+  readable_name: "Green Candle"
+  type: block
+  texture: CANDLE#14
+
+- Blocks.CANDLE#15:
+  readable_name: "Red Candle"
+  type: block
+  texture: CANDLE#15
+
+- Blocks.CANDLE#16:
+  readable_name: "Black Candle"
+  type: block
+  texture: CANDLE#16
+
+- Blocks.LIGHT:
+  readable_name: "Light Block"
+  type: block
+  texture: LIGHT
+
 - Blocks.MOB_SPAWNER:
   readable_name: "Mob Spawner"
   type: block
@@ -1724,6 +2260,16 @@
   type: block
   texture: TARGET
 
+- Blocks.LIGHTNING_ROD:
+  readable_name: "Lightning Rod"
+  type: block
+  texture: LIGHTNING_ROD
+
+- Blocks.SCULK_SENSOR:
+  readable_name: "Sculk Sensor"
+  type: block
+  texture: SCULK_SENSOR
+
 - Blocks.COMMAND_BLOCK:
   readable_name: "Command Block"
   type: block
@@ -1748,6 +2294,11 @@
   readable_name: "Snow"
   type: block
   texture: SNOW
+
+- Blocks.POWDER_SNOW:
+  readable_name: "Powder Snow"
+  type: block
+  texture: POWDER_SNOW
 
 - Blocks.ICE:
   readable_name: "Ice"
@@ -3141,6 +3692,11 @@
   type: block
   texture: GLASS
 
+- Blocks.TINTED_GLASS:
+  readable_name: "Tinted Glass"
+  type: block
+  texture: TINTED_GLASS
+
 - Blocks.STAINED_GLASS:
   readable_name: "Any Stained Glass"
   type: block
@@ -3934,31 +4490,6 @@
   type: block
   texture: BELL
 
-- Blocks.LANTERN:
-  readable_name: "Lantern"
-  type: block
-  texture: LANTERN
-
-- Blocks.SOUL_LANTERN:
-  readable_name: "Soul Lantern"
-  type: block
-  texture: SOUL_LANTERN
-
-- Blocks.CHAIN:
-  readable_name: "Chain"
-  type: block
-  texture: CHAIN
-
-- Blocks.CAMPFIRE:
-  readable_name: "Campfire"
-  type: block
-  texture: CAMPFIRE
-
-- Blocks.SOUL_CAMPFIRE:
-  readable_name: "Soul Campfire"
-  type: block
-  texture: SOUL_CAMPFIRE
-
 - Blocks.LOOM:
   readable_name: "Loom"
   type: block
@@ -4084,11 +4615,6 @@
   type: block
   texture: CRIMSON_ROOTS
 
-- Blocks.ANCIENT_DEBRIS:
-  readable_name: "Ancient Debris"
-  type: block
-  texture: ANCIENT_DEBRIS
-
 - Blocks.RESPAWN_ANCHOR:
   readable_name: "Respawn Anchor"
   type: block
@@ -4098,488 +4624,6 @@
   readable_name: "Lodestone"
   type: block
   texture: LODESTONE
-
-- Blocks.BLACKSTONE:
-  readable_name: "Blackstone"
-  type: block
-  texture: BLACKSTONE
-
-- Blocks.BLACKSTONE_STAIRS:
-  readable_name: "Blackstone Stairs"
-  type: block
-  texture: BLACKSTONE_STAIRS
-
-- Blocks.BLACKSTONE_WALL:
-  readable_name: "Blackstone Wall"
-  type: block
-  texture: BLACKSTONE_WALL
-
-- Blocks.BLACKSTONE_SLAB:
-  readable_name: "Blackstone Slab"
-  type: block
-  texture: BLACKSTONE_SLAB
-
-- Blocks.POLISHED_BLACKSTONE:
-  readable_name: "Polished Blackstone"
-  type: block
-  texture: POLISHED_BLACKSTONE
-
-- Blocks.POLISHED_BLACKSTONE_BRICKS:
-  readable_name: "Polished Blackstone Bricks"
-  type: block
-  texture: POLISHED_BLACKSTONE_BRICKS
-
-- Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS:
-  readable_name: "Cracked Polished Blackstone Bricks"
-  type: block
-  texture: CRACKED_POLISHED_BLACKSTONE_BRICKS
-
-- Blocks.CHISELED_POLISHED_BLACKSTONE:
-  readable_name: "Chiseled Polished Blackstone"
-  type: block
-  texture: CHISELED_POLISHED_BLACKSTONE
-
-- Blocks.POLISHED_BLACKSTONE_BRICK_SLAB:
-  readable_name: "Polished Blackstone Brick Slab"
-  type: block
-  texture: POLISHED_BLACKSTONE_BRICK_SLAB
-
-- Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS:
-  readable_name: "Polished Blackstone Brick Stairs"
-  type: block
-  texture: POLISHED_BLACKSTONE_BRICK_STAIRS
-
-- Blocks.POLISHED_BLACKSTONE_BRICK_WALL:
-  readable_name: "Polished Blackstone Brick Wall"
-  type: block
-  texture: POLISHED_BLACKSTONE_BRICK_WALL
-
-- Blocks.POLISHED_BLACKSTONE_STAIRS:
-  readable_name: "Polished Blackstone Stairs"
-  type: block
-  texture: POLISHED_BLACKSTONE_STAIRS
-
-- Blocks.POLISHED_BLACKSTONE_SLAB:
-  readable_name: "Polished Blackstone Slab"
-  type: block
-  texture: POLISHED_BLACKSTONE_SLAB
-
-- Blocks.POLISHED_BLACKSTONE_WALL:
-  readable_name: "Polished Blackstone Wall"
-  type: block
-  texture: POLISHED_BLACKSTONE_WALL
-
-- Blocks.CANDLE:
-  readable_name: "Any Candle"
-  type: block
-  subtypes: true
-  texture: CANDLE
-
-- Blocks.CANDLE#0:
-  readable_name: "Candle"
-  type: block
-  texture: CANDLE#0
-
-- Blocks.CANDLE#1:
-  readable_name: "White Candle"
-  type: block
-  texture: CANDLE#1
-
-- Blocks.CANDLE#2:
-  readable_name: "Orange Candle"
-  type: block
-  texture: CANDLE#2
-
-- Blocks.CANDLE#3:
-  readable_name: "Magenta Candle"
-  type: block
-  texture: CANDLE#3
-
-- Blocks.CANDLE#4:
-  readable_name: "Light Blue Candle"
-  type: block
-  texture: CANDLE#4
-
-- Blocks.CANDLE#5:
-  readable_name: "Yellow Candle"
-  type: block
-  texture: CANDLE#5
-
-- Blocks.CANDLE#6:
-  readable_name: "Lime Candle"
-  type: block
-  texture: CANDLE#6
-
-- Blocks.CANDLE#7:
-  readable_name: "Pink Candle"
-  type: block
-  texture: CANDLE#7
-
-- Blocks.CANDLE#8:
-  readable_name: "Gray Candle"
-  type: block
-  texture: CANDLE#8
-
-- Blocks.CANDLE#9:
-  readable_name: "Light Gray Candle"
-  type: block
-  texture: CANDLE#9
-
-- Blocks.CANDLE#10:
-  readable_name: "Cyan Candle"
-  type: block
-  texture: CANDLE#10
-
-- Blocks.CANDLE#11:
-  readable_name: "Purple Candle"
-  type: block
-  texture: CANDLE#11
-
-- Blocks.CANDLE#12:
-  readable_name: "Blue Candle"
-  type: block
-  texture: CANDLE#12
-
-- Blocks.CANDLE#13:
-  readable_name: "Brown Candle"
-  type: block
-  texture: CANDLE#13
-
-- Blocks.CANDLE#14:
-  readable_name: "Green Candle"
-  type: block
-  texture: CANDLE#14
-
-- Blocks.CANDLE#15:
-  readable_name: "Red Candle"
-  type: block
-  texture: CANDLE#15
-
-- Blocks.CANDLE#16:
-  readable_name: "Black Candle"
-  type: block
-  texture: CANDLE#16
-
-- Blocks.CANDLE_CAKE:
-  readable_name: "Any Candle Cake"
-  type: block
-  subtypes: true
-  texture: CANDLE_CAKE
-
-- Blocks.CANDLE_CAKE#0:
-  readable_name: "Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#0
-
-- Blocks.CANDLE_CAKE#1:
-  readable_name: "White Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#1
-
-- Blocks.CANDLE_CAKE#2:
-  readable_name: "Orange Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#2
-
-- Blocks.CANDLE_CAKE#3:
-  readable_name: "Magenta Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#3
-
-- Blocks.CANDLE_CAKE#4:
-  readable_name: "Light Blue Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#4
-
-- Blocks.CANDLE_CAKE#5:
-  readable_name: "Yellow Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#5
-
-- Blocks.CANDLE_CAKE#6:
-  readable_name: "Lime Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#6
-
-- Blocks.CANDLE_CAKE#7:
-  readable_name: "Pink Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#7
-
-- Blocks.CANDLE_CAKE#8:
-  readable_name: "Gray Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#8
-
-- Blocks.CANDLE_CAKE#9:
-  readable_name: "Light Gray Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#9
-
-- Blocks.CANDLE_CAKE#10:
-  readable_name: "Cyan Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#10
-
-- Blocks.CANDLE_CAKE#11:
-  readable_name: "Purple Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#11
-
-- Blocks.CANDLE_CAKE#12:
-  readable_name: "Blue Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#12
-
-- Blocks.CANDLE_CAKE#13:
-  readable_name: "Brown Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#13
-
-- Blocks.CANDLE_CAKE#14:
-  readable_name: "Green Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#14
-
-- Blocks.CANDLE_CAKE#15:
-  readable_name: "Red Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#15
-
-- Blocks.CANDLE_CAKE#16:
-  readable_name: "Black Candle Cake"
-  type: block
-  texture: CANDLE_CAKE#16
-
-- Blocks.AMETHYST_BLOCK:
-  readable_name: "Amethyst Block"
-  type: block
-  texture: AMETHYST_BLOCK
-
-- Blocks.BUDDING_AMETHYST:
-  readable_name: "Budding Amethyst"
-  type: block
-  texture: BUDDING_AMETHYST
-
-- Blocks.AMETHYST_CLUSTER:
-  readable_name: "Amethyst Cluster"
-  type: block
-  texture: AMETHYST_CLUSTER
-
-- Blocks.LARGE_AMETHYST_BUD:
-  readable_name: "Large Amethyst Bud"
-  type: block
-  texture: LARGE_AMETHYST_BUD
-
-- Blocks.MEDIUM_AMETHYST_BUD:
-  readable_name: "Medium Amethyst Bud"
-  type: block
-  texture: MEDIUM_AMETHYST_BUD
-
-- Blocks.SMALL_AMETHYST_BUD:
-  readable_name: "Small Amethyst Bud"
-  type: block
-  texture: SMALL_AMETHYST_BUD
-
-- Blocks.TUFF:
-  readable_name: "Tuff"
-  type: block
-  texture: TUFF
-
-- Blocks.CALCITE:
-  readable_name: "Calcite"
-  type: block
-  texture: CALCITE
-
-- Blocks.TINTED_GLASS:
-  readable_name: "Tinted Glass"
-  type: block
-  texture: TINTED_GLASS
-
-- Blocks.POWDER_SNOW:
-  readable_name: "Powder Snow"
-  type: block
-  texture: POWDER_SNOW
-
-- Blocks.SCULK_SENSOR:
-  readable_name: "Sculk Sensor"
-  type: block
-  texture: SCULK_SENSOR
-
-- Blocks.OXIDIZED_COPPER:
-  readable_name: "Oxidized Copper"
-  type: block
-  texture: OXIDIZED_COPPER
-
-- Blocks.WEATHERED_COPPER:
-  readable_name: "Weathered Copper"
-  type: block
-  texture: WEATHERED_COPPER
-
-- Blocks.EXPOSED_COPPER:
-  readable_name: "Exposed Copper"
-  type: block
-  texture: EXPOSED_COPPER
-
-- Blocks.COPPER_BLOCK:
-  readable_name: "Copper Block"
-  type: block
-  texture: COPPER_BLOCK
-
-- Blocks.OXIDIZED_CUT_COPPER:
-  readable_name: "Oxidized Cut Copper"
-  type: block
-  texture: OXIDIZED_CUT_COPPER
-
-- Blocks.WEATHERED_CUT_COPPER:
-  readable_name: "Weathered Cut Copper"
-  type: block
-  texture: WEATHERED_CUT_COPPER
-
-- Blocks.EXPOSED_CUT_COPPER:
-  readable_name: "Exposed Cut Copper"
-  type: block
-  texture: EXPOSED_CUT_COPPER
-
-- Blocks.CUT_COPPER:
-  readable_name: "Cut Copper"
-  type: block
-  texture: CUT_COPPER
-
-- Blocks.OXIDIZED_CUT_COPPER_STAIRS:
-  readable_name: "Oxidized Cut Copper Stairs"
-  type: block
-  texture: OXIDIZED_CUT_COPPER_STAIRS
-
-- Blocks.WEATHERED_CUT_COPPER_STAIRS:
-  readable_name: "Weathered Cut Copper Stairs"
-  type: block
-  texture: WEATHERED_CUT_COPPER_STAIRS
-
-- Blocks.EXPOSED_CUT_COPPER_STAIRS:
-  readable_name: "Exposed Cut Copper Stairs"
-  type: block
-  texture: EXPOSED_CUT_COPPER_STAIRS
-
-- Blocks.CUT_COPPER_STAIRS:
-  readable_name: "Cut Copper Stairs"
-  type: block
-  texture: CUT_COPPER_STAIRS
-
-- Blocks.OXIDIZED_CUT_COPPER_SLAB:
-  readable_name: "Oxidized Cut Copper Slab"
-  type: block
-  texture: OXIDIZED_CUT_COPPER_SLAB
-
-- Blocks.WEATHERED_CUT_COPPER_SLAB:
-  readable_name: "Weathered Cut Copper Slab"
-  type: block
-  texture: WEATHERED_CUT_COPPER_SLAB
-
-- Blocks.EXPOSED_CUT_COPPER_SLAB:
-  readable_name: "Exposed Cut Copper Slab"
-  type: block
-  texture: EXPOSED_CUT_COPPER_SLAB
-
-- Blocks.CUT_COPPER_SLAB:
-  readable_name: "Cut Copper Slab"
-  type: block
-  texture: CUT_COPPER_SLAB
-
-- Blocks.WAXED_OXIDIZED_COPPER:
-  readable_name: "Waxed Oxidized Copper"
-  type: block
-  texture: WAXED_OXIDIZED_COPPER
-
-- Blocks.WAXED_WEATHERED_COPPER:
-  readable_name: "Waxed Weathered Copper"
-  type: block
-  texture: WAXED_WEATHERED_COPPER
-
-- Blocks.WAXED_EXPOSED_COPPER:
-  readable_name: "Waxed Exposed Copper"
-  type: block
-  texture: WAXED_EXPOSED_COPPER
-
-- Blocks.WAXED_COPPER_BLOCK:
-  readable_name: "Waxed Copper Block"
-  type: block
-  texture: WAXED_COPPER_BLOCK
-
-- Blocks.WAXED_OXIDIZED_CUT_COPPER:
-  readable_name: "Waxed Oxidized Cut Copper"
-  type: block
-  texture: WAXED_OXIDIZED_CUT_COPPER
-
-- Blocks.WAXED_WEATHERED_CUT_COPPER:
-  readable_name: "Waxed Weathered Cut Copper"
-  type: block
-  texture: WAXED_WEATHERED_CUT_COPPER
-
-- Blocks.WAXED_EXPOSED_CUT_COPPER:
-  readable_name: "Waxed Exposed Cut Copper"
-  type: block
-  texture: WAXED_EXPOSED_CUT_COPPER
-
-- Blocks.WAXED_CUT_COPPER:
-  readable_name: "Waxed Cut Copper"
-  type: block
-  texture: WAXED_CUT_COPPER
-
-- Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS:
-  readable_name: "Waxed Oxidized Cut Copper Stairs"
-  type: block
-  texture: WAXED_OXIDIZED_CUT_COPPER_STAIRS
-
-- Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS:
-  readable_name: "Waxed Weathered Cut Copper Stairs"
-  type: block
-  texture: WAXED_WEATHERED_CUT_COPPER_STAIRS
-
-- Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS:
-  readable_name: "Waxed Exposed Cut Copper Stairs"
-  type: block
-  texture: WAXED_EXPOSED_CUT_COPPER_STAIRS
-
-- Blocks.WAXED_CUT_COPPER_STAIRS:
-  readable_name: "Waxed Cut Copper Stairs"
-  type: block
-  texture: WAXED_CUT_COPPER_STAIRS
-
-- Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB:
-  readable_name: "Waxed Oxidized Cut Copper Slab"
-  type: block
-  texture: WAXED_OXIDIZED_CUT_COPPER_SLAB
-
-- Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB:
-  readable_name: "Waxed Weathered Cut Copper Slab"
-  type: block
-  texture: WAXED_WEATHERED_CUT_COPPER_SLAB
-
-- Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB:
-  readable_name: "Waxed Exposed Cut Copper Slab"
-  type: block
-  texture: WAXED_EXPOSED_CUT_COPPER_SLAB
-
-- Blocks.WAXED_CUT_COPPER_SLAB:
-  readable_name: "Waxed Cut Copper Slab"
-  type: block
-  texture: WAXED_CUT_COPPER_SLAB
-
-- Blocks.LIGHTNING_ROD:
-  readable_name: "Lightning Rod"
-  type: block
-  texture: LIGHTNING_ROD
-
-- Blocks.POINTED_DRIPSTONE:
-  readable_name: "Pointed Dripstone"
-  type: block
-  texture: POINTED_DRIPSTONE
-
-- Blocks.DRIPSTONE_BLOCK:
-  readable_name: "Dripstone Block"
-  type: block
-  texture: DRIPSTONE_BLOCK
 
 - Blocks.CAVE_VINES:
   readable_name: "Cave Vines"
@@ -4606,16 +4650,6 @@
   type: block
   texture: FLOWERING_AZALEA
 
-- Blocks.MOSS_CARPET:
-  readable_name: "Moss Carpet"
-  type: block
-  texture: MOSS_CARPET
-
-- Blocks.MOSS_BLOCK:
-  readable_name: "Moss Block"
-  type: block
-  texture: MOSS_BLOCK
-
 - Blocks.BIG_DRIPLEAF:
   readable_name: "Big Dripleaf"
   type: block
@@ -4635,131 +4669,6 @@
   readable_name: "Hanging Roots"
   type: block
   texture: HANGING_ROOTS
-
-- Blocks.ROOTED_DIRT:
-  readable_name: "Rooted Dirt"
-  type: block
-  texture: ROOTED_DIRT
-
-- Blocks.DEEPSLATE:
-  readable_name: "Deepslate"
-  type: block
-  texture: DEEPSLATE
-
-- Blocks.COBBLED_DEEPSLATE:
-  readable_name: "Cobbled Deepslate"
-  type: block
-  texture: COBBLED_DEEPSLATE
-
-- Blocks.COBBLED_DEEPSLATE_STAIRS:
-  readable_name: "Cobbled Deepslate Stairs"
-  type: block
-  texture: COBBLED_DEEPSLATE_STAIRS
-
-- Blocks.COBBLED_DEEPSLATE_SLAB:
-  readable_name: "Cobbled Deepslate Slab"
-  type: block
-  texture: COBBLED_DEEPSLATE_SLAB
-
-- Blocks.COBBLED_DEEPSLATE_WALL:
-  readable_name: "Cobbled Deepslate Wall"
-  type: block
-  texture: COBBLED_DEEPSLATE_WALL
-
-- Blocks.POLISHED_DEEPSLATE:
-  readable_name: "Polished Deepslate"
-  type: block
-  texture: POLISHED_DEEPSLATE
-
-- Blocks.POLISHED_DEEPSLATE_STAIRS:
-  readable_name: "Polished Deepslate Stairs"
-  type: block
-  texture: POLISHED_DEEPSLATE_STAIRS
-
-- Blocks.POLISHED_DEEPSLATE_SLAB:
-  readable_name: "Polished Deepslate Slab"
-  type: block
-  texture: POLISHED_DEEPSLATE_SLAB
-
-- Blocks.POLISHED_DEEPSLATE_WALL:
-  readable_name: "Polished Deepslate Wall"
-  type: block
-  texture: POLISHED_DEEPSLATE_WALL
-
-- Blocks.DEEPSLATE_TILES:
-  readable_name: "Deepslate Tiles"
-  type: block
-  texture: DEEPSLATE_TILES
-
-- Blocks.DEEPSLATE_TILE_STAIRS:
-  readable_name: "Deepslate Tile Stairs"
-  type: block
-  texture: DEEPSLATE_TILE_STAIRS
-
-- Blocks.DEEPSLATE_TILE_SLAB:
-  readable_name: "Deepslate Tile Slab"
-  type: block
-  texture: DEEPSLATE_TILE_SLAB
-
-- Blocks.DEEPSLATE_TILE_WALL:
-  readable_name: "Deepslate Tile Wall"
-  type: block
-  texture: DEEPSLATE_TILE_WALL
-
-- Blocks.DEEPSLATE_BRICKS:
-  readable_name: "Deepslate Bricks"
-  type: block
-  texture: DEEPSLATE_BRICKS
-
-- Blocks.DEEPSLATE_BRICK_STAIRS:
-  readable_name: "Deepslate Brick Stairs"
-  type: block
-  texture: DEEPSLATE_BRICK_STAIRS
-
-- Blocks.DEEPSLATE_BRICK_SLAB:
-  readable_name: "Deepslate Brick Slab"
-  type: block
-  texture: DEEPSLATE_BRICK_SLAB
-
-- Blocks.DEEPSLATE_BRICK_WALL:
-  readable_name: "Deepslate Brick Wall"
-  type: block
-  texture: DEEPSLATE_BRICK_WALL
-
-- Blocks.CHISELED_DEEPSLATE:
-  readable_name: "Chiseled Deepslate"
-  type: block
-  texture: CHISELED_DEEPSLATE
-
-- Blocks.CRACKED_DEEPSLATE_BRICKS:
-  readable_name: "Cracked Deepslate Bricks"
-  type: block
-  texture: CRACKED_DEEPSLATE_BRICKS
-
-- Blocks.CRACKED_DEEPSLATE_TILES:
-  readable_name: "Cracked Deepslate Tiles"
-  type: block
-  texture: CRACKED_DEEPSLATE_TILES
-
-- Blocks.RAW_IRON_BLOCK:
-  readable_name: "Raw Iron Block"
-  type: block
-  texture: RAW_IRON_BLOCK
-
-- Blocks.RAW_GOLD_BLOCK:
-  readable_name: "Raw Gold Block"
-  type: block
-  texture: RAW_GOLD_BLOCK
-
-- Blocks.RAW_COPPER_BLOCK:
-  readable_name: "Raw Copper Block"
-  type: block
-  texture: RAW_COPPER_BLOCK
-
-- Blocks.LIGHT:
-  readable_name: "Light Block"
-  type: block
-  texture: LIGHT
 
 - Items.DYE:
   readable_name: "Any Dye"
@@ -4872,21 +4781,6 @@
   type: item
   texture: DYE#19
 
-- Items.RAW_IRON:
-  readable_name: "Raw Iron"
-  type: item
-  texture: RAW_IRON
-
-- Items.RAW_GOLD:
-  readable_name: "Raw Gold"
-  type: item
-  texture: RAW_GOLD
-
-- Items.RAW_COPPER:
-  readable_name: "Raw Copper"
-  type: item
-  texture: RAW_COPPER
-
 - Items.COAL:
   readable_name: "Any Coal"
   type: item
@@ -4903,25 +4797,40 @@
   type: item
   texture: COAL#1
 
+- Items.RAW_IRON:
+  readable_name: "Raw Iron"
+  type: item
+  texture: RAW_IRON
+
 - Items.IRON_INGOT:
   readable_name: "Iron Ingot"
   type: item
   texture: IRON_INGOT
-
-- Items.COPPER_INGOT:
-  readable_name: "Copper Ingot"
-  type: item
-  texture: COPPER_INGOT
 
 - Items.IRON_NUGGET:
   readable_name: "Iron Nugget"
   type: item
   texture: IRON_NUGGET
 
+- Items.RAW_COPPER:
+  readable_name: "Raw Copper"
+  type: item
+  texture: RAW_COPPER
+
+- Items.COPPER_INGOT:
+  readable_name: "Copper Ingot"
+  type: item
+  texture: COPPER_INGOT
+
 - Items.REDSTONE:
   readable_name: "Redstone"
   type: item
   texture: REDSTONE
+
+- Items.RAW_GOLD:
+  readable_name: "Raw Gold"
+  type: item
+  texture: RAW_GOLD
 
 - Items.GOLD_INGOT:
   readable_name: "Gold Ingot"
@@ -5940,6 +5849,97 @@
   readable_name: "Cake"
   type: item
   texture: CAKE
+
+- Blocks.CANDLE_CAKE:
+  readable_name: "Any Candle Cake"
+  type: block
+  subtypes: true
+  texture: CANDLE_CAKE
+
+- Blocks.CANDLE_CAKE#0:
+  readable_name: "Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#0
+
+- Blocks.CANDLE_CAKE#1:
+  readable_name: "White Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#1
+
+- Blocks.CANDLE_CAKE#2:
+  readable_name: "Orange Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#2
+
+- Blocks.CANDLE_CAKE#3:
+  readable_name: "Magenta Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#3
+
+- Blocks.CANDLE_CAKE#4:
+  readable_name: "Light Blue Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#4
+
+- Blocks.CANDLE_CAKE#5:
+  readable_name: "Yellow Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#5
+
+- Blocks.CANDLE_CAKE#6:
+  readable_name: "Lime Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#6
+
+- Blocks.CANDLE_CAKE#7:
+  readable_name: "Pink Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#7
+
+- Blocks.CANDLE_CAKE#8:
+  readable_name: "Gray Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#8
+
+- Blocks.CANDLE_CAKE#9:
+  readable_name: "Light Gray Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#9
+
+- Blocks.CANDLE_CAKE#10:
+  readable_name: "Cyan Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#10
+
+- Blocks.CANDLE_CAKE#11:
+  readable_name: "Purple Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#11
+
+- Blocks.CANDLE_CAKE#12:
+  readable_name: "Blue Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#12
+
+- Blocks.CANDLE_CAKE#13:
+  readable_name: "Brown Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#13
+
+- Blocks.CANDLE_CAKE#14:
+  readable_name: "Green Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#14
+
+- Blocks.CANDLE_CAKE#15:
+  readable_name: "Red Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#15
+
+- Blocks.CANDLE_CAKE#16:
+  readable_name: "Black Candle Cake"
+  type: block
+  texture: CANDLE_CAKE#16
 
 - Items.BED:
   readable_name: "Bed"
