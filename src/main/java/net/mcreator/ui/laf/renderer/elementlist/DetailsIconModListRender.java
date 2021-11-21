@@ -83,8 +83,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 
 			label.setText(element.getName());
 
-			if (element instanceof ModElement) {
-				ModElement ma = (ModElement) element;
+			if (element instanceof ModElement ma) {
 				label2.setText(ma.getRegistryName());
 				label3.setText(ma.getType().getReadableName());
 				label4.setText(ma.isCodeLocked() ?

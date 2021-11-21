@@ -29,8 +29,7 @@ public class ImageEditorSaveAction extends BasicAction {
 	public ImageEditorSaveAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.save"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
-			if (pan instanceof ImageMakerView) {
-				ImageMakerView codeEditorView = (ImageMakerView) pan;
+			if (pan instanceof ImageMakerView codeEditorView) {
 				codeEditorView.save();
 			}
 		});

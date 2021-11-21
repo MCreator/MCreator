@@ -952,8 +952,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
 						GeneratableElement generatableElement = element.getGeneratableElement();
-						if (generatableElement instanceof GUI) {
-							GUI gui = (GUI) generatableElement;
+						if (generatableElement instanceof GUI gui) {
 							inventorySize.setValue(gui.getMaxSlotID() + 1);
 							StringBuilder inslots = new StringBuilder();
 							StringBuilder outslots = new StringBuilder();
