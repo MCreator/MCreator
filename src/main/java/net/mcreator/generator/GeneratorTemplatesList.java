@@ -21,5 +21,7 @@ package net.mcreator.generator;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public record GeneratorTemplatesList(String groupName, Collection<?> listData, List<GeneratorTemplate> templates) {}
+public record GeneratorTemplatesList(String groupName, Collection<?> listData,
+									 Map<GeneratorTemplate, List<Boolean>> templates) {}

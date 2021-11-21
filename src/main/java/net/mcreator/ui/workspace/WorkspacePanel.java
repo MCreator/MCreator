@@ -1246,11 +1246,13 @@ import java.util.stream.Collectors;
 						for (int i = 0; i < fileList.listData().size(); i++) {
 							if (i > 0)
 								listItem.addSeparator();
-							for (GeneratorTemplate modElementListFile : fileList.templates()) {
-								listFilesFound++;
-								String filePath = modElementListFile.getFile().getPath()
-										.replace("@elementindex", Integer.toString(i));
-								listItem.add(newModElementTemplateItem(new File(filePath)));
+							for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
+								if (fileList.templates().get(modElementListFile).get(i)) {
+									listFilesFound++;
+									String filePath = modElementListFile.getFile().getPath()
+											.replace("@elementindex", Integer.toString(i));
+									listItem.add(newModElementTemplateItem(new File(filePath)));
+								}
 							}
 						}
 						if (listFilesFound > 0) {
