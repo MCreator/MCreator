@@ -752,10 +752,12 @@
 - Blocks.AZALEA_LEAVES:
   readable_name: "Azalea Leaves"
   type: block
+  texture: AZALEA_LEAVES
 
 - Blocks.FLOWERING_AZALEA_LEAVES:
   readable_name: "Flowering Azalea Leaves"
   type: block
+  texture: FLOWERING_AZALEA_LEAVES
 
 - Blocks.SPONGE:
   readable_name: "Any Sponge"
@@ -2066,6 +2068,7 @@
 - Blocks.GLOW_LICHEN:
   readable_name: "Glow Lichen"
   type: block
+  texture: GLOW_LICHEN
 
 - Blocks.WATERLILY:
   readable_name: "Lily Pad"
@@ -2090,14 +2093,17 @@
 - Blocks.WATER_CAULDRON:
   readable_name: "Water Cauldron"
   type: block
+  texture: WATER_CAULDRON
 
 - Blocks.LAVA_CAULDRON:
   readable_name: "Lava Cauldron"
   type: block
+  texture: LAVA_CAULDRON
 
 - Blocks.POWDER_SNOW_CAULDRON:
   readable_name: "Powder Snow Cauldron"
   type: block
+  texture: POWDER_SNOW_CAULDRON
 
 - Blocks.END_PORTAL:
   readable_name: "End Portal Block"
@@ -2527,12 +2533,12 @@
 - Blocks.POTTED_AZALEA_BUSH:
   readable_name: "Potted Azalea Bush"
   type: block
-  texture: POTTED_WARPED_ROOTS
+  texture: POTTED_AZALEA_BUSH
 
 - Blocks.POTTED_FLOWERING_AZALEA_BUSH:
   readable_name: "Potted Flowering Azalea Bush"
   type: block
-  texture: POTTED_WARPED_ROOTS
+  texture: POTTED_FLOWERING_AZALEA_BUSH
 
 - Blocks.CARROTS:
   readable_name: "Carrots Plant Block"
@@ -4348,46 +4354,57 @@
 - Blocks.AMETHYST_BLOCK:
   readable_name: "Amethyst Block"
   type: block
+  texture: AMETHYST_BLOCK
 
 - Blocks.BUDDING_AMETHYST:
   readable_name: "Budding Amethyst"
   type: block
+  texture: BUDDING_AMETHYST
 
 - Blocks.AMETHYST_CLUSTER:
   readable_name: "Amethyst Cluster"
   type: block
+  texture: AMETHYST_CLUSTER
 
 - Blocks.LARGE_AMETHYST_BUD:
   readable_name: "Large Amethyst Bud"
   type: block
+  texture: LARGE_AMETHYST_BUD
 
 - Blocks.MEDIUM_AMETHYST_BUD:
   readable_name: "Medium Amethyst Bud"
   type: block
+  texture: MEDIUM_AMETHYST_BUD
 
 - Blocks.SMALL_AMETHYST_BUD:
   readable_name: "Small Amethyst Bud"
   type: block
+  texture: SMALL_AMETHYST_BUD
 
 - Blocks.TUFF:
   readable_name: "Tuff"
   type: block
+  texture: TUFF
 
 - Blocks.CALCITE:
   readable_name: "Calcite"
   type: block
+  texture: CALCITE
 
 - Blocks.TINTED_GLASS:
   readable_name: "Tinted Glass"
   type: block
+  texture: TINTED_GLASS
 
 - Blocks.POWDER_SNOW:
   readable_name: "Powder Snow"
   type: block
+  texture: POWDER_SNOW
 
 - Blocks.SCULK_SENSOR:
   readable_name: "Sculk Sensor"
   type: block
+  texture: SCULK_SENSOR
 
 - Blocks.OXIDIZED_COPPER:
   readable_name: "Oxidized Copper"
@@ -4552,62 +4569,77 @@
 - Blocks.LIGHTNING_ROD:
   readable_name: "Lightning Rod"
   type: block
+  texture: LIGHTNING_ROD
 
 - Blocks.POINTED_DRIPSTONE:
   readable_name: "Pointed Dripstone"
   type: block
+  texture: POINTED_DRIPSTONE
 
 - Blocks.DRIPSTONE_BLOCK:
   readable_name: "Dripstone Block"
   type: block
+  texture: DRIPSTONE_BLOCK
 
 - Blocks.CAVE_VINES:
   readable_name: "Cave Vines"
   type: block
+  texture: CAVE_VINES
 
 - Blocks.CAVE_VINES_PLANT:
   readable_name: "Cave Vines Plant"
   type: block
+  texture: CAVE_VINES_PLANT
 
 - Blocks.SPORE_BLOSSOM:
   readable_name: "Spore Blossom"
   type: block
+  texture: SPORE_BLOSSOM
 
 - Blocks.AZALEA:
   readable_name: "Azalea"
   type: block
+  texture: AZALEA
 
 - Blocks.FLOWERING_AZALEA:
   readable_name: "Flowering Azalea"
   type: block
+  texture: FLOWERING_AZALEA
 
 - Blocks.MOSS_CARPET:
   readable_name: "Moss Carpet"
   type: block
+  texture: MOSS_CARPET
 
 - Blocks.MOSS_BLOCK:
   readable_name: "Moss Block"
   type: block
+  texture: MOSS_BLOCK
 
 - Blocks.BIG_DRIPLEAF:
   readable_name: "Big Dripleaf"
   type: block
+  texture: BIG_DRIPLEAF
 
 - Blocks.BIG_DRIPLEAF_STEM:
   readable_name: "Big Dripleaf Stem"
   type: block
+  texture: BIG_DRIPLEAF_STEM
 
 - Blocks.SMALL_DRIPLEAF:
   readable_name: "Small Dripleaf"
   type: block
+  texture: SMALL_DRIPLEAF
 
 - Blocks.HANGING_ROOTS:
   readable_name: "Hanging Roots"
   type: block
+  texture: HANGING_ROOTS
 
 - Blocks.ROOTED_DIRT:
   readable_name: "Rooted Dirt"
   type: block
+  texture: ROOTED_DIRT
 
 - Blocks.DEEPSLATE:
   readable_name: "Deepslate"
@@ -4727,6 +4759,7 @@
 - Blocks.LIGHT:
   readable_name: "Light Block"
   type: block
+  texture: LIGHT
 
 - Items.DYE:
   readable_name: "Any Dye"
