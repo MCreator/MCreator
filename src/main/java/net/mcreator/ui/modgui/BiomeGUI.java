@@ -89,7 +89,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnOceanMonument = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnShipwreck = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnShipwreckBeached = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox spawnBuriedTreasure= L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnBuriedTreasure = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnNetherBridge = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnNetherFossil = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBastionRemnant = L10N.checkbox("elementgui.common.enable");
@@ -99,7 +99,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JComboBox<String> villageType = new JComboBox<>(
 			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 	private final JComboBox<String> oceanRuinType = new JComboBox<>(new String[] { "NONE", "COLD", "WARM" });
-
 
 	private final JSpawnEntriesList spawnEntries = new JSpawnEntriesList(mcreator);
 
@@ -181,58 +180,52 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterColor.setOpaque(false);
 		waterFogColor.setOpaque(false);
 
-		JPanel sbbp2 = new JPanel(new GridLayout(20, 2, 4, 2));
+		JPanel sbbp2 = new JPanel(new GridLayout(13, 2, 4, 2));
+		JPanel sbbp2b = new JPanel(new GridLayout(7, 2, 4, 2));
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
 				L10N.label("elementgui.biome.generate_strongholds")));
 		sbbp2.add(spawnStronghold);
-		spawnStronghold.setSelected(false);
 		spawnStronghold.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_mineshafts"),
 				L10N.label("elementgui.biome.generate_mineshafts")));
 		sbbp2.add(spawnMineshaft);
-		spawnMineshaft.setSelected(false);
 		spawnMineshaft.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_mineshafts"),
 				L10N.label("elementgui.biome.generate_mineshafts_mesa")));
 		sbbp2.add(spawnMineshaftMesa);
-		spawnMineshaftMesa.setSelected(false);
 		spawnMineshaftMesa.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_pillager_outposts"),
 				L10N.label("elementgui.biome.generate_pillager_outposts")));
 		sbbp2.add(spawnPillagerOutpost);
-		spawnPillagerOutpost.setSelected(false);
 		spawnPillagerOutpost.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village"),
 				L10N.label("elementgui.biome.generate_village")));
 		sbbp2.add(villageType);
+		villageType.setPreferredSize(new Dimension(200, 36));
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_woodland_mansions"),
 				L10N.label("elementgui.biome.generate_mansions")));
 		sbbp2.add(spawnWoodlandMansion);
-		spawnWoodlandMansion.setSelected(false);
 		spawnWoodlandMansion.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_jungle_temples"),
 				L10N.label("elementgui.biome.generate_jungle_temples")));
 		sbbp2.add(spawnJungleTemple);
-		spawnJungleTemple.setSelected(false);
 		spawnJungleTemple.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_desert_pyramids"),
 				L10N.label("elementgui.biome.generate_desert_pyramids")));
 		sbbp2.add(spawnDesertPyramid);
-		spawnDesertPyramid.setSelected(false);
 		spawnDesertPyramid.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_swamp_huts"),
 				L10N.label("elementgui.biome.generate_swamp_huts")));
 		sbbp2.add(spawnSwampHut);
-		spawnSwampHut.setSelected(false);
 		spawnSwampHut.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_igloo"),
@@ -244,63 +237,58 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_monuments"),
 				L10N.label("elementgui.biome.generate_monuments")));
 		sbbp2.add(spawnOceanMonument);
-		spawnOceanMonument.setSelected(false);
 		spawnOceanMonument.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_shipwrecks"),
 				L10N.label("elementgui.biome.generate_shipwrecks")));
 		sbbp2.add(spawnShipwreck);
-		spawnShipwreck.setSelected(false);
 		spawnShipwreck.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_shipwrecks_beached"),
 				L10N.label("elementgui.biome.generate_shipwrecks_beached")));
 		sbbp2.add(spawnShipwreckBeached);
-		spawnShipwreckBeached.setSelected(false);
 		spawnShipwreckBeached.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_buried_treasures"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_buried_treasures"),
 				L10N.label("elementgui.biome.generate_buried_treasures")));
-		sbbp2.add(spawnBuriedTreasure);
-		spawnBuriedTreasure.setSelected(false);
+		sbbp2b.add(spawnBuriedTreasure);
 		spawnBuriedTreasure.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_ruins"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_ruins"),
 				L10N.label("elementgui.biome.generate_ocean_ruins")));
-		sbbp2.add(oceanRuinType);
+		sbbp2b.add(oceanRuinType);
 
 		oceanRuinType.setPreferredSize(new Dimension(200, 36));
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_bridges"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_bridges"),
 				L10N.label("elementgui.biome.generate_nether_bridges")));
-		sbbp2.add(spawnNetherBridge);
-		spawnNetherBridge.setSelected(false);
+		sbbp2b.add(spawnNetherBridge);
 		spawnNetherBridge.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_fossils"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_fossils"),
 				L10N.label("elementgui.biome.generate_nether_fossils")));
-		sbbp2.add(spawnNetherFossil);
-		spawnNetherFossil.setSelected(false);
+		sbbp2b.add(spawnNetherFossil);
 		spawnNetherFossil.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_bastion_remnants"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_bastion_remnants"),
 				L10N.label("elementgui.biome.generate_bastion_remnants")));
-		sbbp2.add(spawnBastionRemnant);
-		spawnBastionRemnant.setSelected(false);
+		sbbp2b.add(spawnBastionRemnant);
 		spawnBastionRemnant.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portals"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portals"),
 				L10N.label("elementgui.biome.generate_ruined_portals")));
-		sbbp2.add(spawnRuinedPortal);
+		sbbp2b.add(spawnRuinedPortal);
 		spawnRuinedPortal.setPreferredSize(new Dimension(200, 36));
-		spawnRuinedPortal.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_end_cities"),
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_end_cities"),
 				L10N.label("elementgui.biome.generate_end_cities")));
-		sbbp2.add(spawnEndCity);
-		spawnEndCity.setSelected(false);
+		sbbp2b.add(spawnEndCity);
 		spawnEndCity.setOpaque(false);
 
+		pane2.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(sbbp2b), 20, 20)));
+
+		sbbp2b.setOpaque(false);
 		sbbp2.setOpaque(false);
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
@@ -351,7 +339,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(heightVariation);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
-		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
 		JPanel sbbp3 = new JPanel(new GridLayout(11, 2, 10, 2));
 
