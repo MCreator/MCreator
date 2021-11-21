@@ -1,1 +1,1 @@
-Direction.getRandom(new Random())
+Direction.getRandomDirection(new Random())
