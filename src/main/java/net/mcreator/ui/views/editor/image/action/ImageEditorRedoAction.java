@@ -30,8 +30,8 @@ public class ImageEditorRedoAction extends BasicAction {
 	public ImageEditorRedoAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.redo"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
-			if (pan instanceof ImageMakerView codeEditorView) {
-				codeEditorView.getVersionManager().redo();
+			if (pan instanceof ImageMakerView imageMakerView) {
+				imageMakerView.getVersionManager().redo();
 			}
 		});
 		setIcon(UIRES.get("img_editor.redo"));
