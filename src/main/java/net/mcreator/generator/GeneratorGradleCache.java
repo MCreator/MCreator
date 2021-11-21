@@ -31,8 +31,8 @@ public class GeneratorGradleCache {
 
 	@Nullable transient ProjectJarManager projectJarManager;
 
-	private List<ClasspathEntry> classpath;
-	private Map<String, List<String>> importTree;
+	private final List<ClasspathEntry> classpath;
+	private final Map<String, List<String>> importTree;
 
 	GeneratorGradleCache(Generator generator) {
 		projectJarManager = new ProjectJarManager(generator);
