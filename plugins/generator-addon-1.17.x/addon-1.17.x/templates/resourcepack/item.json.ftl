@@ -10,7 +10,8 @@
 
     "components": {
       "minecraft:icon": "${registryname}",
-      "minecraft:render_offsets": "apple"
+      "minecraft:render_offsets": "apple",
+      "minecraft:creative_category": "Items"
     }
   }
 }

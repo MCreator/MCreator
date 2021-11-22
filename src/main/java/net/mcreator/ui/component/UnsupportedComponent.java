@@ -30,7 +30,10 @@ public class UnsupportedComponent extends JPanel {
 
 	public UnsupportedComponent(Component origin) {
 		setLayout(new GridLayout());
-		add(origin);
+
+		if (!(origin instanceof JSpinner))
+			add(origin);
+
 		setOpaque(false);
 
 		origin.setEnabled(false);
