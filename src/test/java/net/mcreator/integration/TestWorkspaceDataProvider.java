@@ -307,15 +307,25 @@ public class TestWorkspaceDataProvider {
 			biome.heightVariation = 0.7;
 			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
+			biome.spawnShipwreckBeached = _true;
 			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
 			biome.spawnOceanMonument = !_true;
+			biome.spawnBuriedTreasure = !_true;
 			biome.spawnWoodlandMansion = _true;
 			biome.spawnJungleTemple = !_true;
 			biome.spawnDesertPyramid = !_true;
+			biome.spawnSwampHut = !_true;
 			biome.spawnIgloo = !_true;
 			biome.spawnPillagerOutpost = !_true;
 			biome.spawnStronghold = _true;
 			biome.spawnMineshaft = !_true;
+			biome.spawnMineshaftMesa = !_true;
+			biome.spawnNetherBridge = !_true;
+			biome.spawnNetherFossil = !_true;
+			biome.spawnBastionRemnant = !_true;
+			biome.spawnEndCity = !_true;
+			biome.spawnRuinedPortal = getRandomItem(random,
+					new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
