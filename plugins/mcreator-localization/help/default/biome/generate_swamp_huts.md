@@ -1,1 +1,1 @@
-Select this setting to have Swamp huts in your biome.
+Select this setting to have swamp huts in your biome.

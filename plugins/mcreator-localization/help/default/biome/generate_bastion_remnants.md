@@ -1,1 +1,1 @@
-Select this setting to have Bastion remnants in your biome.
+Select this setting to have bastion remnants in your biome.

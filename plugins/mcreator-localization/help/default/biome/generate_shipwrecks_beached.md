@@ -1,1 +1,1 @@
-Select this setting to have Shipwrecks beached in your biome.
+Select this setting to have beached shipwrecks in your biome.
