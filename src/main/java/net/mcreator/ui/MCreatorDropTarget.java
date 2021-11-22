@@ -65,8 +65,7 @@ public class MCreatorDropTarget implements DropTargetListener {
 				List<?> transferData = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				if (transferData.size() > 0) {
 					Object transfObj = transferData.get(0);
-					if (transfObj instanceof File) {
-						File file = (File) transfObj;
+					if (transfObj instanceof File file) {
 						if (file.getName().endsWith(".ogg")) {
 							SoundElementDialog.importSound(mcreator, new File[] { file });
 						} else if (file.getName().endsWith(".java")) {
