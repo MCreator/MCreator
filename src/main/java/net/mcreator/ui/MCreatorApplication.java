@@ -316,7 +316,7 @@ public final class MCreatorApplication {
 				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 	}
 
-	public final void closeApplication() {
+	public void closeApplication() {
 		LOG.debug("Closing any potentially open MCreator windows");
 		List<MCreator> mcreatorsTmp = new ArrayList<>(
 				openMCreators); // create list copy so we don't modify the list we iterate
@@ -357,7 +357,7 @@ public final class MCreatorApplication {
 		System.exit(0); // actually exit MCreator
 	}
 
-	final void showWorkspaceSelector() {
+	void showWorkspaceSelector() {
 		workspaceSelector.setVisible(true);
 	}
 
