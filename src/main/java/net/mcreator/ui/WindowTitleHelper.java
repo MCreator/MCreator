@@ -29,18 +29,16 @@ public class WindowTitleHelper {
 	public static String getWindowTitle(MCreator mcreator) {
 		String appendix = "";
 		if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
-				.getContent() instanceof ModElementGUI) {
-			appendix = "- " + ((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
-					.getName() + " (" + ((ModElementGUI) mcreator.mcreatorTabs.getCurrentTab()
-					.getContent()).getModElement().getType().getReadableName() + ")";
+				.getContent() instanceof ModElementGUI<?> modElementGUI) {
+			appendix = "- " + modElementGUI.getModElement().getName() +
+					" (" + modElementGUI.getModElement().getType().getReadableName() + ")";
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
-				.getContent() instanceof CodeEditorView) {
+				.getContent() instanceof CodeEditorView codeEditorView) {
 			try {
-				appendix = "- " + mcreator.getWorkspaceFolder().toPath().relativize(
-						((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab().getContent()).fileWorkingOn.toPath());
+				appendix = "- " + mcreator.getWorkspaceFolder().toPath()
+						.relativize(codeEditorView.fileWorkingOn.toPath());
 			} catch (Exception e) {
-				appendix = "- " + ((CodeEditorView) mcreator.mcreatorTabs.getCurrentTab()
-						.getContent()).fileWorkingOn.toPath();
+				appendix = "- " + codeEditorView.fileWorkingOn.toPath();
 			}
 		}
 		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
