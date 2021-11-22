@@ -302,9 +302,11 @@ public class WorkspaceFileBrowser extends JPanel {
 				if (selFile.isDirectory() && forceExpansion)
 					tree.expandPath(tree.getSelectionPath());
 				else
-					FileOpener.openFile(mcreator, selection);
+					FileOpener.openFile(mcreator, selFile);
 			} else if (!selection.isLeaf() && forceExpansion) {
 				tree.expandPath(tree.getSelectionPath());
+			} else {
+				FileOpener.openFile(mcreator, selection.getUserObject());
 			}
 		}
 	}
@@ -443,7 +445,8 @@ public class WorkspaceFileBrowser extends JPanel {
 			a.setOpaque(true);
 			ComponentUtils.deriveFont(a, 11);
 
-			if (node.getUserObject() instanceof String tsi) {
+			if (node.getUserObject() instanceof String) {
+				String tsi = (String) node.getUserObject();
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
 					a.setIcon(UIRES.get("16px.package.gif"));
@@ -463,7 +466,8 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.directory.gif"));
 				else if (tsi.equals("Structures"))
 					a.setIcon(UIRES.get("16px.structures.png"));
-			} else if (node.getUserObject() instanceof FileNode fileNode) {
+			} else if (node.getUserObject() instanceof FileNode) {
+				FileNode fileNode = (FileNode) node.getUserObject();
 				a.setText(fileNode.data);
 				if (fileNode.data.endsWith(".java"))
 					a.setIcon(UIRES.get("16px.classro.gif"));
@@ -473,7 +477,8 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.directory.gif"));
 				else
 					a.setIcon(FileIcons.getIconForFile(fileNode.data));
-			} else if (node.getUserObject() instanceof File fil) {
+			} else if (node.getUserObject() instanceof File) {
+				File fil = (File) node.getUserObject();
 				a.setText(fil.getName());
 				if (!fil.isDirectory())
 					a.setIcon(FileIcons.getIconForFile(fil));
