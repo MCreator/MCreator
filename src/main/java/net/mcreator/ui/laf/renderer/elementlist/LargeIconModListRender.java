@@ -63,8 +63,7 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 
 			ImageIcon dva = null;
 
-			if (element instanceof ModElement) {
-				ModElement ma = (ModElement) element;
+			if (element instanceof ModElement ma) {
 				if (!ma.doesCompile()) {
 					dva = TiledImageCache.modTabRed;
 				}

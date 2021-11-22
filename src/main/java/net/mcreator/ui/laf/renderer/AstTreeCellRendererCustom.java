@@ -62,8 +62,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		} else if (value instanceof JsonTree.JsonArrayNode) {
 			setIcon(UIRES.get("16px.jsonarray.gif"));
 			setText(value.toString());
-		} else if (value instanceof JsonTree.JsonNode) {
-			JsonTree.JsonNode node = (JsonTree.JsonNode) value;
+		} else if (value instanceof JsonTree.JsonNode node) {
 			JsonElement element = node.getElement();
 			String type = null;
 			if (element.isJsonNull())
@@ -76,7 +75,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 				if (element.getAsJsonPrimitive().isNumber())
 					type = "number";
 			}
-			setText("<html>" + value.toString() + (type == null ?
+			setText("<html>" + value + (type == null ?
 					"" :
 					("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
 			setIcon(UIRES.get("16px.jsonel.gif"));
