@@ -71,8 +71,6 @@ public class BranchSwitchAction {
 				// possible refactor after sync start
 				mcreator.getWorkspace().reloadFromFS();
 
-				localWorkspace = mcreator.getWorkspace();
-
 				// if version changed, switch the generator
 				if (!localWorkspace.getWorkspaceSettings().getCurrentGenerator()
 						.equals(preSwitchSettings.getCurrentGenerator())) {

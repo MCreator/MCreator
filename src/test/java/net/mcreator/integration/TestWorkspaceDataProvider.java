@@ -346,7 +346,7 @@ public class TestWorkspaceDataProvider {
 				entry1.entity = new EntityEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
 				entry1.minGroup = 10;
-				entry1.minGroup = 134;
+				entry1.maxGroup = 134;
 				entry1.weight = 13;
 				entry1.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry1);
@@ -355,7 +355,7 @@ public class TestWorkspaceDataProvider {
 				entry2.entity = new EntityEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
 				entry2.minGroup = 23;
-				entry2.minGroup = 145;
+				entry2.maxGroup = 145;
 				entry2.weight = 11;
 				entry2.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry2);
@@ -364,7 +364,7 @@ public class TestWorkspaceDataProvider {
 				entry3.entity = new EntityEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
 				entry3.minGroup = 23;
-				entry3.minGroup = 145;
+				entry3.maxGroup = 145;
 				entry3.weight = 11;
 				entry3.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry3);
@@ -373,7 +373,7 @@ public class TestWorkspaceDataProvider {
 				entry4.entity = new EntityEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
 				entry4.minGroup = 23;
-				entry4.minGroup = 145;
+				entry4.maxGroup = 145;
 				entry4.weight = 11;
 				entry4.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 				entities.add(entry4);
