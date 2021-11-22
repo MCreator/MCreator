@@ -45,6 +45,12 @@ public class ReturnBlock implements IBlockGenerator {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
 		VariableType returnType = VariableTypeLoader.INSTANCE.fromName(type);
 
+		if (!master.getStatementInputsMatching(si -> true).isEmpty()) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					"Return " + type + " block does not work inside statement blocks!"));
+			return;
+		}
+
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {
 			if (((BlocklyToProcedure) master).getReturnType() != null) {

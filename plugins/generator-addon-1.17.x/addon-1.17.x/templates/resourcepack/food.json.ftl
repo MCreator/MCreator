@@ -11,7 +11,8 @@
     "components": {
       "minecraft:icon": "${registryname}",
       "minecraft:render_offsets": "apple",
-      "minecraft:use_animation": "eat"
+      "minecraft:use_animation": "eat",
+      "minecraft:creative_category": "Items"
     }
   }
 }

@@ -49,8 +49,7 @@ public class NewFolderAction extends BasicAction {
 				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
 					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
 							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-					if (selection instanceof File) {
-						File filesel = ((File) selection);
+					if (selection instanceof File filesel) {
 						if (filesel.isFile())
 							filesel = filesel.getParentFile();
 

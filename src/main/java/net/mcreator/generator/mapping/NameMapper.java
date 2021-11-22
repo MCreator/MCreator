@@ -118,8 +118,7 @@ public class NameMapper {
 		if (mappedObject instanceof String) {
 			if (mappingTable == 0)
 				mappedName = (String) mappedObject;
-		} else if (mappedObject instanceof List) {
-			List<?> mappingValuesList = ((List<?>) mappedObject);
+		} else if (mappedObject instanceof List<?> mappingValuesList) {
 			if (mappingTable < mappingValuesList.size())
 				mappedName = (String) mappingValuesList.get(mappingTable);
 		}

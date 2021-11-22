@@ -176,8 +176,7 @@ public class JScrollablePopupMenu extends JPopupMenu {
 			Dimension dim = new Dimension();
 			for (Component comp : parent.getComponents()) {
 				if (comp.isVisible()) {
-					if (comp instanceof JScrollBar) {
-						JScrollBar scrollBar = (JScrollBar) comp;
+					if (comp instanceof JScrollBar scrollBar) {
 						visibleAmount = scrollBar.getVisibleAmount();
 					} else {
 						Dimension pref = comp.getPreferredSize();
@@ -198,8 +197,7 @@ public class JScrollablePopupMenu extends JPopupMenu {
 			Dimension dim = new Dimension();
 			for (Component comp : parent.getComponents()) {
 				if (comp.isVisible()) {
-					if (comp instanceof JScrollBar) {
-						JScrollBar scrollBar = (JScrollBar) comp;
+					if (comp instanceof JScrollBar scrollBar) {
 						visibleAmount = scrollBar.getVisibleAmount();
 					} else {
 						Dimension min = comp.getMinimumSize();
@@ -226,8 +224,7 @@ public class JScrollablePopupMenu extends JPopupMenu {
 			int position = 0;
 
 			for (Component comp : parent.getComponents()) {
-				if ((comp instanceof JScrollBar) && comp.isVisible()) {
-					JScrollBar scrollBar = (JScrollBar) comp;
+				if (comp instanceof JScrollBar scrollBar && comp.isVisible()) {
 					Dimension dim = scrollBar.getPreferredSize();
 					scrollBar.setBounds(x + width - dim.width, y, dim.width, height);
 					width -= dim.width;
