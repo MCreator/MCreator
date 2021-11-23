@@ -608,23 +608,23 @@ public class Generator implements IGenerator, Closeable {
 		// so the imports get properly organised in the next step
 		if (formatAndOrganiseImports) {
 			generatorFiles.forEach(generatorFile -> {
-				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
-					if (generatorFile.getWriter() == null || generatorFile.getWriter().equals("java"))
-						if (!generatorFile.getFile().isFile())
-							FileIO.writeStringToFile("", generatorFile.getFile());
+				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
+					if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
+						if (!generatorFile.file().isFile())
+							FileIO.writeStringToFile("", generatorFile.file());
 				}
 			});
 		}
 
 		generatorFiles.forEach(generatorFile -> {
-			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
-				if (generatorFile.getWriter() == null || generatorFile.getWriter().equals("java"))
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.getContents(),
-							generatorFile.getFile(), formatAndOrganiseImports);
-				else if (generatorFile.getWriter().equals("json"))
-					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.getContents(), generatorFile.getFile());
-				else if (generatorFile.getWriter().equals("file"))
-					FileIO.writeStringToFile(generatorFile.getContents(), generatorFile.getFile());
+			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
+				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
+					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(),
+							generatorFile.file(), formatAndOrganiseImports);
+				else if (generatorFile.writer().equals("json"))
+					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
+				else if (generatorFile.writer().equals("file"))
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.file());
 			}
 		});
 	}

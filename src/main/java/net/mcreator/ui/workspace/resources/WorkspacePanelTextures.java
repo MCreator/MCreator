@@ -276,6 +276,41 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 		});
 
+		@Override public void addElement(File o) {
+			items.add(o);
+			refilter();
+		}
+
+		@Override public void removeAllElements() {
+			super.removeAllElements();
+			items.clear();
+			filterItems.clear();
+		}
+
+		@Override public boolean removeElement(Object a) {
+			if (a instanceof File) {
+				items.remove(a);
+				filterItems.remove(a);
+			}
+			return super.removeElement(a);
+		}
+
+		void refilter() {
+			filterItems.clear();
+			String term = workspacePanel.search.getText();
+			filterItems.addAll(items.stream().filter(Objects::nonNull)
+					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
+							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
+
+			if (workspacePanel.sortName.isSelected()) {
+				filterItems.sort(Comparator.comparing(File::getName));
+			}
+
+			if (workspacePanel.desc.isSelected())
+				Collections.reverse(filterItems);
+
+			fireContentsChanged(this, 0, getSize());
+		}
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {
@@ -340,86 +375,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	}
 
-	private static class JComponentWithList<T> {
-		private final JComponent component;
-		private final JList<T> list;
+	private record JComponentWithList<T>(JComponent component, JList<T> list) {}
 
-		public JComponentWithList(JComponent component, JList<T> list) {
-			this.component = component;
-			this.list = list;
-		}
-
-		public JComponent getComponent() {
-			return component;
-		}
-
-		public JList<T> getList() {
-			return list;
-		}
-	}
-
-	private class FilterModel extends DefaultListModel<File> {
-		List<File> items;
-		List<File> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public File getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof File)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(File o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof File) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(File::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
-	}
 }
