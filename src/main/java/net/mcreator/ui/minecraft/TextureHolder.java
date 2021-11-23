@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
+import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 
@@ -126,11 +127,12 @@ public class TextureHolder extends VButton {
 			setToolTipText(texture);
 			if (td.getTextureType() == BlockItemTextureSelector.TextureType.BLOCK)
 				setIcon(new ImageIcon(
-						ImageUtils.resize(td.getMCreator().getFolderManager().getBlockImageIcon(texture).getImage(),
+						ImageUtils.resize(td.getMCreator().getFolderManager().getTextureImageIconTypeFromID(texture,
+										WorkspacePanelTextures.BLOCK).getImage(),
 								this.size)));
 			else
 				setIcon(new ImageIcon(
-						ImageUtils.resize(td.getMCreator().getFolderManager().getItemImageIcon(texture).getImage(),
+						ImageUtils.resize(td.getMCreator().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.ITEM).getImage(),
 								this.size)));
 		}
 	}

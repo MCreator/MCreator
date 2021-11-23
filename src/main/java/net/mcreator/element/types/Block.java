@@ -29,6 +29,7 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -295,13 +296,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
+		return getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.BLOCK).getImage();
 	}
 
 	private Image getTextureWithFallback(String textureName) {
 		if (textureName.equals(""))
 			return getMainTexture();
-		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
+		return getModElement().getFolderManager().getTextureImageIconTypeFromID(textureName, WorkspacePanelTextures.BLOCK).getImage();
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

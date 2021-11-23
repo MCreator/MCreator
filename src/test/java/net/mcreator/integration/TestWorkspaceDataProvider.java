@@ -41,6 +41,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -179,41 +180,41 @@ public class TestWorkspaceDataProvider {
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
-		if (workspace.getFolderManager().getBlocksTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.BLOCK) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test2"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test2", WorkspacePanelTextures.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test3"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test3", WorkspacePanelTextures.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test4"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test4", WorkspacePanelTextures.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test5"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test5", WorkspacePanelTextures.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test6"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test6", WorkspacePanelTextures.BLOCK));
 		}
 
-		if (workspace.getFolderManager().getItemsTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test2"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test2", WorkspacePanelTextures.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test3"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test3", WorkspacePanelTextures.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test4"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test4", WorkspacePanelTextures.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("itest"));
+					workspace.getFolderManager().getTextureFileTypeFromID("itest", WorkspacePanelTextures.ITEM));
 
 		}
 
-		if (workspace.getFolderManager().getOtherTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getOtherTextureFile("test"));
+					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.OTHER));
 		}
 
-		if (workspace.getFolderManager().getArmorTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);

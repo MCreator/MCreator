@@ -45,28 +45,37 @@ public class WorkspaceFolderManager {
 		this.workspace = workspace;
 	}
 
+	private static List<File> listPNGsInDir(@Nullable File dir) {
+		if (dir == null)
+			return Collections.emptyList();
+
+		List<File> retval = new ArrayList<>();
+		File[] block = dir.listFiles();
+		for (File element : block != null ? block : new File[0])
+			if (element.getName().endsWith(".png"))
+				retval.add(element);
+		return retval;
+	}
+
+	public static File getSuggestedWorkspaceFoldersRoot() {
+		File workspacesFolder = new File(System.getProperty("user.home"), "MCreatorWorkspaces");
+		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
+			if (OS.getOS() == OS.WINDOWS)
+				workspacesFolder = new File("C:/", "MCreatorWorkspaces");
+		}
+		return workspacesFolder;
+	}
+
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
 	}
 
-	public ImageIcon getBlockImageIcon(String textureIdentifier) {
-		return new ImageIcon(getBlockTextureFile(textureIdentifier).getAbsolutePath());
+	public ImageIcon getTextureImageIconTypeFromID(String textureIdentifier, String id) {
+		return new ImageIcon(getTextureFileTypeFromID(textureIdentifier, id).getAbsolutePath());
 	}
 
-	public ImageIcon getItemImageIcon(String textureIdentifier) {
-		return new ImageIcon(getItemTextureFile(textureIdentifier).getAbsolutePath());
-	}
-
-	public File getBlockTextureFile(String textureIdentifier) {
-		return new File(getBlocksTexturesDir(), textureIdentifier + ".png");
-	}
-
-	public File getItemTextureFile(String textureIdentifier) {
-		return new File(getItemsTexturesDir(), textureIdentifier + ".png");
-	}
-
-	public File getOtherTextureFile(String textureIdentifier) {
-		return new File(getOtherTexturesDir(), textureIdentifier + ".png");
+	public File getTextureFileTypeFromID(String textureIdentifier, String id) {
+		return new File(getTexturesDirTypeFromID(id), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -82,56 +91,20 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getArmorTexturesDir(), armorTextureName + "_layer_1.png"),
-				new File(getArmorTexturesDir(), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesDirTypeFromID("armor"), armorTextureName + "_layer_1.png"),
+				new File(getTexturesDirTypeFromID("armor"), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getBlockTexturesList() {
-		return listPNGsInDir(getBlocksTexturesDir());
-	}
-
-	public List<File> getItemTexturesList() {
-		return listPNGsInDir(getItemsTexturesDir());
-	}
-
-	public List<File> getArmorTexturesList() {
-		return listPNGsInDir(getArmorTexturesDir());
-	}
-
-	public List<File> getOtherTexturesList() {
-		return listPNGsInDir(getOtherTexturesDir());
+	public List<File> getTexturesListTypeFromID(String id) {
+		return listPNGsInDir(getTexturesDirTypeFromID(id));
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	private static List<File> listPNGsInDir(@Nullable File dir) {
-		if (dir == null)
-			return Collections.emptyList();
-
-		List<File> retval = new ArrayList<>();
-		File[] block = dir.listFiles();
-		for (File element : block != null ? block : new File[0])
-			if (element.getName().endsWith(".png"))
-				retval.add(element);
-		return retval;
-	}
-
-	@Nullable public File getBlocksTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "block_textures_dir");
-	}
-
-	@Nullable public File getItemsTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "item_textures_dir");
-	}
-
-	@Nullable public File getArmorTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "armor_textures_dir");
-	}
-
-	@Nullable public File getOtherTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "other_textures_dir");
+	@Nullable public File getTexturesDirTypeFromID(String id) {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), id + "_textures_dir");
 	}
 
 	@Nullable public File getStructuresDir() {
@@ -172,15 +145,6 @@ public class WorkspaceFolderManager {
 			LOG.error(e.getMessage(), e);
 			return false;
 		}
-	}
-
-	public static File getSuggestedWorkspaceFoldersRoot() {
-		File workspacesFolder = new File(System.getProperty("user.home"), "MCreatorWorkspaces");
-		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
-			if (OS.getOS() == OS.WINDOWS)
-				workspacesFolder = new File("C:/", "MCreatorWorkspaces");
-		}
-		return workspacesFolder;
 	}
 
 }

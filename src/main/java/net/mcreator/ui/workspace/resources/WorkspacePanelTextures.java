@@ -49,19 +49,17 @@ import java.util.stream.Collectors;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
-	private FilterModel dmlb = new FilterModel();
-	private FilterModel dmli = new FilterModel();
-	private FilterModel dmla = new FilterModel();
-	private FilterModel dmlo = new FilterModel();
+	public static final String BLOCK = "block";
+	public static final String ITEM = "item";
+	public static final String ARMOR = "armor";
+	public static final String OTHER = "other";
+
+	public static final String[] CATEGORIES = new String[] {  BLOCK, ITEM, ARMOR, OTHER };
+	private final Map<String, JComponentWithList<File>> mapLists = new HashMap<>();
 
 	private final ListGroup<File> listGroup = new ListGroup<>();
 
 	private final WorkspacePanel workspacePanel;
-
-	private final JComponentWithList<File> listb;
-	private final JComponentWithList<File> listi;
-	private final JComponentWithList<File> lista;
-	private final JComponentWithList<File> listo;
 
 	private final MouseAdapter mouseAdapter;
 
@@ -83,15 +81,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		listb = createListElement(dmlb, L10N.t("workspace.textures.category_blocks"));
-		listi = createListElement(dmli, L10N.t("workspace.textures.category_items"));
-		lista = createListElement(dmla, L10N.t("workspace.textures.category_armor"));
-		listo = createListElement(dmlo, L10N.t("workspace.textures.category_other"));
-
-		respan.add(listb.getComponent());
-		respan.add(listi.getComponent());
-		respan.add(lista.getComponent());
-		respan.add(listo.getComponent());
+		Arrays.stream(CATEGORIES).forEach(category -> {
+			JComponentWithList<File> compList = createListElement(new FilterModel(),
+					L10N.t("workspace.textures.category_" + category));
+			respan.add(compList.getComponent());
+			mapLists.put(category, compList);
+		});
 
 		respan.setOpaque(false);
 
@@ -256,76 +251,36 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void reloadElements() {
 		new Thread(() -> {
-			List<File> selectedb = listb.getList().getSelectedValuesList();
-			List<File> selectedi = listi.getList().getSelectedValuesList();
-			List<File> selecteda = lista.getList().getSelectedValuesList();
-			List<File> selectedo = listo.getList().getSelectedValuesList();
+			Arrays.stream(CATEGORIES).forEach(category -> {
+				List<File> selected = mapLists.get(category).getList().getSelectedValuesList();
+				FilterModel newfm = new FilterModel();
+				workspacePanel.getMcreator().getFolderManager().getTexturesListTypeFromID(category)
+						.forEach(newfm::addElement);
 
-			FilterModel newdmlb = new FilterModel();
-			FilterModel newdmli = new FilterModel();
-			FilterModel newdmla = new FilterModel();
-			FilterModel newdmlo = new FilterModel();
+				SwingUtilities.invokeLater(() -> {
+					JList<File> list = mapLists.get(category).getList();
+					list.setModel(newfm);
+					textureRender.invalidateIconCache();
+					ListUtil.setSelectedValues(list, selected);
 
-			workspacePanel.getMcreator().getFolderManager().getBlockTexturesList().forEach(newdmlb::addElement);
-			workspacePanel.getMcreator().getFolderManager().getItemTexturesList().forEach(newdmli::addElement);
-			workspacePanel.getMcreator().getFolderManager().getArmorTexturesList().forEach(newdmla::addElement);
-			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList().forEach(newdmlo::addElement);
-
-			SwingUtilities.invokeLater(() -> {
-				listb.getList().setModel(dmlb = newdmlb);
-				listi.getList().setModel(dmli = newdmli);
-				lista.getList().setModel(dmla = newdmla);
-				listo.getList().setModel(dmlo = newdmlo);
-
-				textureRender.invalidateIconCache();
-
-				ListUtil.setSelectedValues(listb.getList(), selectedb);
-				ListUtil.setSelectedValues(listi.getList(), selectedi);
-				ListUtil.setSelectedValues(lista.getList(), selecteda);
-				ListUtil.setSelectedValues(listo.getList(), selectedo);
-
-				refilterElements();
+					refilterElements();
+				});
 			});
 		}).start();
 	}
 
 	@Override public void refilterElements() {
-		dmli.refilter();
-		dmlb.refilter();
-		dmla.refilter();
-		dmlo.refilter();
-
-		if (dmli.getSize() > 0) {
-			listi.getComponent().setPreferredSize(null);
-			listi.getComponent().setVisible(true);
-		} else {
-			listi.getComponent().setPreferredSize(new Dimension(0, 0));
-			listi.getComponent().setVisible(false);
-		}
-
-		if (dmla.getSize() > 0) {
-			lista.getComponent().setPreferredSize(null);
-			lista.getComponent().setVisible(true);
-		} else {
-			lista.getComponent().setPreferredSize(new Dimension(0, 0));
-			lista.getComponent().setVisible(false);
-		}
-
-		if (dmlb.getSize() > 0) {
-			listb.getComponent().setPreferredSize(null);
-			listb.getComponent().setVisible(true);
-		} else {
-			listb.getComponent().setPreferredSize(new Dimension(0, 0));
-			listb.getComponent().setVisible(false);
-		}
-
-		if (dmlo.getSize() > 0) {
-			listo.getComponent().setPreferredSize(null);
-			listo.getComponent().setVisible(true);
-		} else {
-			listo.getComponent().setPreferredSize(new Dimension(0, 0));
-			listo.getComponent().setVisible(false);
-		}
+		Arrays.stream(CATEGORIES).map(mapLists::get).forEach(compList -> {
+			FilterModel model = (FilterModel) compList.getList().getModel();
+			model.refilter();
+			if (model.getSize() > 0) {
+				compList.getComponent().setPreferredSize(null);
+				compList.getComponent().setVisible(true);
+			} else {
+				compList.getComponent().setPreferredSize(new Dimension(0, 0));
+				compList.getComponent().setVisible(false);
+			}
+		});
 
 	}
 
