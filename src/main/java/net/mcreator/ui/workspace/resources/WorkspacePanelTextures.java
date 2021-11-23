@@ -78,7 +78,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		Arrays.stream(TextureSection.values()).forEach(section -> {
 			JComponentWithList<File> compList = createListElement(new FilterModel(),
 					L10N.t("workspace.textures.category_" + section.getID()));
-			respan.add(compList.getComponent());
+			respan.add(compList.component());
 			mapLists.put(section.getID(), compList);
 		});
 
@@ -246,13 +246,13 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	@Override public void reloadElements() {
 		new Thread(() -> {
 			Arrays.stream(TextureSection.values()).forEach(section -> {
-				List<File> selected = mapLists.get(section.getID()).getList().getSelectedValuesList();
+				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
 				workspacePanel.getMcreator().getFolderManager().getTexturesListFromSectionType(section)
 						.forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {
-					JList<File> list = mapLists.get(section.getID()).getList();
+					JList<File> list = mapLists.get(section.getID()).list();
 					list.setModel(newfm);
 					textureRender.invalidateIconCache();
 					ListUtil.setSelectedValues(list, selected);
@@ -265,16 +265,44 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void refilterElements() {
 		Arrays.stream(TextureSection.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
-			FilterModel model = (FilterModel) compList.getList().getModel();
+			FilterModel model = (FilterModel) compList.list().getModel();
 			model.refilter();
 			if (model.getSize() > 0) {
-				compList.getComponent().setPreferredSize(null);
-				compList.getComponent().setVisible(true);
+				compList.component().setPreferredSize(null);
+				compList.component().setVisible(true);
 			} else {
-				compList.getComponent().setPreferredSize(new Dimension(0, 0));
-				compList.getComponent().setVisible(false);
+				compList.component().setPreferredSize(new Dimension(0, 0));
+				compList.component().setVisible(false);
 			}
-		});
+		});}
+
+	private class FilterModel extends DefaultListModel<File> {
+		List<File> items;
+		List<File> filterItems;
+
+		FilterModel() {
+			super();
+			items = new ArrayList<>();
+			filterItems = new ArrayList<>();
+		}
+
+		@Override public File getElementAt(int index) {
+			if (index < filterItems.size())
+				return filterItems.get(index);
+			else
+				return null;
+		}
+
+		@Override public int indexOf(Object elem) {
+			if (elem instanceof File)
+				return filterItems.indexOf(elem);
+			else
+				return -1;
+		}
+
+		@Override public int getSize() {
+			return filterItems.size();
+		}
 
 		@Override public void addElement(File o) {
 			items.add(o);
