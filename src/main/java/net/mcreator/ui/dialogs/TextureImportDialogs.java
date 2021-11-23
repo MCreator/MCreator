@@ -23,7 +23,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
@@ -132,9 +132,9 @@ public class TextureImportDialogs {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
 			File file;
 			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-				file = fr.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.BLOCK);
+				file = fr.getFolderManager().getTextureFileTypeFromID(namec, TextureSection.BLOCK);
 			} else {
-				file = fr.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.ITEM);
+				file = fr.getFolderManager().getTextureFileTypeFromID(namec, TextureSection.ITEM);
 			}
 			if (file.isFile()) {
 				String name = JOptionPane.showInputDialog(fr,
@@ -143,9 +143,9 @@ public class TextureImportDialogs {
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
 					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-						file = fr.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.BLOCK);
+						file = fr.getFolderManager().getTextureFileTypeFromID(namec, TextureSection.BLOCK);
 					} else {
-						file = fr.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.ITEM);
+						file = fr.getFolderManager().getTextureFileTypeFromID(namec, TextureSection.ITEM);
 					}
 				} else {
 					return;
@@ -165,14 +165,14 @@ public class TextureImportDialogs {
 	public static void importOtherTextures(MCreator fr, File[] hohs) {
 		Arrays.stream(hohs).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
-			File file = fr.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.OTHER);
+			File file = fr.getFolderManager().getTextureFileTypeFromID(namec, TextureSection.OTHER);
 			if (file.isFile()) {
 				String name = JOptionPane.showInputDialog(fr,
 						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
 						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
-					file = fr.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.OTHER);
+					file = fr.getFolderManager().getTextureFileTypeFromID(namec, TextureSection.OTHER);
 				} else {
 					return;
 				}

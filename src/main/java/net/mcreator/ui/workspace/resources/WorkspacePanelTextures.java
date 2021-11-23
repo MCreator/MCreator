@@ -75,7 +75,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		Arrays.stream(Section.values()).forEach(section -> {
+		Arrays.stream(TextureSection.values()).forEach(section -> {
 			JComponentWithList<File> compList = createListElement(new FilterModel(),
 					L10N.t("workspace.textures.category_" + section.getID()));
 			respan.add(compList.getComponent());
@@ -245,7 +245,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void reloadElements() {
 		new Thread(() -> {
-			Arrays.stream(Section.values()).forEach(section -> {
+			Arrays.stream(TextureSection.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).getList().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
 				workspacePanel.getMcreator().getFolderManager().getTexturesListFromSectionType(section)
@@ -264,7 +264,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	@Override public void refilterElements() {
-		Arrays.stream(Section.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
+		Arrays.stream(TextureSection.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
 			FilterModel model = (FilterModel) compList.getList().getModel();
 			model.refilter();
 			if (model.getSize() > 0) {
@@ -276,20 +276,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 		});
 
-	}
-
-	public enum Section {
-		BLOCK("block"), ITEM("item"), ARMOR("armor"), OTHER("other");
-
-		private final String id;
-
-		Section(String id) {
-			this.id = id;
-		}
-
-		public String getID() {
-			return id;
-		}
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {

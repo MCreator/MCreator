@@ -27,7 +27,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
@@ -125,16 +125,16 @@ import java.util.Set;
 		ArrayList<File> armorPieces = new ArrayList<>();
 		if (enableHelmet)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureHelmet, WorkspacePanelTextures.Section.ITEM));
+					.getTextureFileTypeFromID(textureHelmet, TextureSection.ITEM));
 		if (enableBody)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureBody, WorkspacePanelTextures.Section.ITEM));
+					.getTextureFileTypeFromID(textureBody, TextureSection.ITEM));
 		if (enableLeggings)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureLeggings, WorkspacePanelTextures.Section.ITEM));
+					.getTextureFileTypeFromID(textureLeggings, TextureSection.ITEM));
 		if (enableBoots)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureBoots, WorkspacePanelTextures.Section.ITEM));
+					.getTextureFileTypeFromID(textureBoots, TextureSection.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}

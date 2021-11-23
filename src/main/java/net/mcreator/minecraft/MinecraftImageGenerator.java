@@ -25,7 +25,7 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
@@ -1192,7 +1192,7 @@ public class MinecraftImageGenerator {
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
 					workspace.getFolderManager()
-							.getTextureFileTypeFromID(FilenameUtilsPatched.removeExtension(mobModelTexture), WorkspacePanelTextures.Section.OTHER)
+							.getTextureFileTypeFromID(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureSection.OTHER)
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(

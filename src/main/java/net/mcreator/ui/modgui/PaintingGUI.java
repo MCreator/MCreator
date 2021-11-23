@@ -33,7 +33,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -78,7 +78,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).forEach(el -> texture.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
@@ -110,7 +110,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

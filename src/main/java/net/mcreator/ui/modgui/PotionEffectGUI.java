@@ -40,7 +40,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -125,7 +125,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			icon.removeAllItems();
 			icon.addItem("");
-			mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).forEach(el -> icon.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).forEach(el -> icon.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
@@ -202,7 +202,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

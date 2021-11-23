@@ -38,7 +38,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
@@ -305,7 +305,7 @@ public class WorkspaceDialogs {
 			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
 				List<File> other = workspace.getFolderManager().getTexturesListFromSectionType(
-						WorkspacePanelTextures.Section.OTHER);
+						TextureSection.OTHER);
 				for (File element : other) {
 					if (element.getName().endsWith(".png"))
 						modPicture.addItem(FilenameUtilsPatched.removeExtension(element.getName()));

@@ -37,7 +37,7 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
@@ -223,11 +223,11 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			File exportFile;
 			if (n == 0)
 				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(namec),
-						WorkspacePanelTextures.Section.BLOCK);
+						TextureSection.BLOCK);
 			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(namec), WorkspacePanelTextures.Section.ITEM);
+				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(namec), TextureSection.ITEM);
 			else if (n == 2)
-				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(namec), WorkspacePanelTextures.Section.OTHER);
+				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(namec), TextureSection.OTHER);
 			else
 				return;
 

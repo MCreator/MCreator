@@ -26,7 +26,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -96,7 +96,7 @@ import java.util.Map;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.Section.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, TextureSection.ITEM).getImage(), 32);
 	}
 
 	@Override public Model getItemModel() {

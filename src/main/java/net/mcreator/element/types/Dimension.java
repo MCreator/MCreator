@@ -26,7 +26,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.*;
@@ -86,8 +86,8 @@ import java.util.List;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-				getModElement().getFolderManager().getTextureFileTypeFromID(portalTexture, WorkspacePanelTextures.Section.BLOCK),
-				getModElement().getFolderManager().getTextureFileTypeFromID(texture, WorkspacePanelTextures.Section.ITEM), portalFrame);
+				getModElement().getFolderManager().getTextureFileTypeFromID(portalTexture, TextureSection.BLOCK),
+				getModElement().getFolderManager().getTextureFileTypeFromID(texture, TextureSection.ITEM), portalFrame);
 	}
 
 	@Override public TabEntry getCreativeTab() {

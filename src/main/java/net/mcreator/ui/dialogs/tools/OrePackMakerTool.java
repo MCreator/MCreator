@@ -42,7 +42,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -129,7 +129,7 @@ public class OrePackMakerTool {
 		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(oreTextureName),
-						WorkspacePanelTextures.Section.BLOCK));
+						TextureSection.BLOCK));
 
 		// next, ore block texture
 		ImageIcon oreBlockIc = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -139,7 +139,7 @@ public class OrePackMakerTool {
 		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(oreBlockTextureName),
-						WorkspacePanelTextures.Section.BLOCK));
+						TextureSection.BLOCK));
 
 		// next, gem texture
 		ImageIcon gem;
@@ -163,7 +163,7 @@ public class OrePackMakerTool {
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(gemTextureName),
-						WorkspacePanelTextures.Section.BLOCK));
+						TextureSection.BLOCK));
 
 		String oreItemName;
 		if (type.equals("Dust based")) {

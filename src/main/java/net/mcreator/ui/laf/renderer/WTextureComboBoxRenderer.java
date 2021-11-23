@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.laf.renderer;
 
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
@@ -74,7 +74,7 @@ public class WTextureComboBoxRenderer extends JLabel implements ListCellRenderer
 			super(element -> {
 				File file = workspace.getFolderManager()
 						.getTextureFileTypeFromID(FilenameUtilsPatched.removeExtension(element),
-								WorkspacePanelTextures.Section.OTHER);
+								TextureSection.OTHER);
 				if (file.isFile())
 					return new ImageIcon(file.getAbsolutePath());
 				return null;

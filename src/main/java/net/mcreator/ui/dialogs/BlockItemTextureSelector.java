@@ -24,7 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 
@@ -139,9 +139,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
 			List<File> block1;
 			if (type == TextureType.BLOCK) {
-				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.BLOCK);
+				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.BLOCK);
 			} else {
-				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.ITEM);
+				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.ITEM);
 			}
 			model.removeAllElements();
 			for (File element : block1) {
@@ -167,9 +167,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	@Override public void setVisible(boolean b) {
 		List<File> block;
 		if (type == TextureType.BLOCK) {
-			block = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.BLOCK);
+			block = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.BLOCK);
 		} else {
-			block = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.ITEM);
+			block = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.ITEM);
 		}
 		model.removeAllElements();
 		for (File element : block) {

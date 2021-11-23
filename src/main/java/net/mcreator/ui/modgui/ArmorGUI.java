@@ -59,7 +59,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -723,22 +723,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bodyModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bootsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
-		List<File> armors = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.ARMOR);
+		List<File> armors = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.ARMOR);
 		List<String> armorPart1s = new ArrayList<>();
 		for (File texture : armors)
 			if (texture.getName().endsWith("_layer_1.png"))

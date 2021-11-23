@@ -42,7 +42,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
-import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
+import net.mcreator.ui.workspace.resources.TextureSection;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -140,7 +140,7 @@ public class ToolPackMakerTool {
 		String pickaxeTextureName = (name + "_pickaxe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(pickaxeTextureName),
-						WorkspacePanelTextures.Section.ITEM));
+						TextureSection.ITEM));
 
 		// then we generate axe texture
 		ImageIcon axe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
@@ -150,7 +150,7 @@ public class ToolPackMakerTool {
 		String axeTextureName = (name + "_axe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(axeTextureName),
-						WorkspacePanelTextures.Section.ITEM));
+						TextureSection.ITEM));
 
 		// then we generate sword texture
 		ImageIcon sword = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
@@ -160,7 +160,7 @@ public class ToolPackMakerTool {
 		String swordTextureName = (name + "_sword").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(swordTextureName),
-						WorkspacePanelTextures.Section.ITEM));
+						TextureSection.ITEM));
 
 		// then we generate sword texture
 		ImageIcon shovel = ImageUtils.drawOver(ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
@@ -172,7 +172,7 @@ public class ToolPackMakerTool {
 		String shovelTextureName = (name + "_shovel").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(shovelTextureName),
-						WorkspacePanelTextures.Section.ITEM));
+						TextureSection.ITEM));
 
 		// then we generate hoe texture
 		ImageIcon hoe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
@@ -182,7 +182,7 @@ public class ToolPackMakerTool {
 		String hoeTextureName = (name + "_hoe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
 				mcreator.getFolderManager().getTextureFileTypeFromID(RegistryNameFixer.fix(hoeTextureName),
-						WorkspacePanelTextures.Section.ITEM));
+						TextureSection.ITEM));
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
