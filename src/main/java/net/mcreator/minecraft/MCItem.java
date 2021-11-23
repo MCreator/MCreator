@@ -89,19 +89,19 @@ public class MCItem extends DataListEntry {
 				} else if (name.endsWith(".helmet")) {
 					retval = workspace.getFolderManager().getTextureImageIconTypeFromID(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
-									.getGeneratableElement())).textureHelmet, WorkspacePanelTextures.ITEM);
+									.getGeneratableElement())).textureHelmet, WorkspacePanelTextures.Section.ITEM);
 				} else if (name.endsWith(".body")) {
 					retval = workspace.getFolderManager().getTextureImageIconTypeFromID(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
-									.getGeneratableElement())).textureBody, WorkspacePanelTextures.ITEM);
+									.getGeneratableElement())).textureBody, WorkspacePanelTextures.Section.ITEM);
 				} else if (name.endsWith(".legs")) {
 					retval = workspace.getFolderManager().getTextureImageIconTypeFromID(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
-									.getGeneratableElement())).textureLeggings, WorkspacePanelTextures.ITEM);
+									.getGeneratableElement())).textureLeggings, WorkspacePanelTextures.Section.ITEM);
 				} else if (name.endsWith(".boots")) {
 					retval = workspace.getFolderManager().getTextureImageIconTypeFromID(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
-									.getGeneratableElement())).textureBoots, WorkspacePanelTextures.ITEM);
+									.getGeneratableElement())).textureBoots, WorkspacePanelTextures.Section.ITEM);
 				} else if (name.endsWith(".bucket")) {
 					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 							name.replace("CUSTOM:", "").replace(".bucket", "") + ".png").isFile()) {

@@ -246,7 +246,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().equals("")) {
 				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getTextureFileTypeFromID(
 								FilenameUtilsPatched.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()),
-								WorkspacePanelTextures.OTHER)
+								WorkspacePanelTextures.Section.OTHER)
 						.getAbsolutePath()).getImage(), 0, 0, W, H, this);
 			}
 		}

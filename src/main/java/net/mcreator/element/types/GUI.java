@@ -104,7 +104,7 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File guiTextureFile = getModElement().getFolderManager().getTextureFileTypeFromID(getModElement().getRegistryName(), WorkspacePanelTextures.OTHER);
+		File guiTextureFile = getModElement().getFolderManager().getTextureFileTypeFromID(getModElement().getRegistryName(), WorkspacePanelTextures.Section.OTHER);
 
 		if (renderBgLayer) {
 			int mx = WYSIWYG.W - width;

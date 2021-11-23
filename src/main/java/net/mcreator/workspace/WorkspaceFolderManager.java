@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.OS;
+import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,12 +71,12 @@ public class WorkspaceFolderManager {
 		return workspaceFolder;
 	}
 
-	public ImageIcon getTextureImageIconTypeFromID(String textureIdentifier, String id) {
+	public ImageIcon getTextureImageIconTypeFromID(String textureIdentifier, WorkspacePanelTextures.Section id) {
 		return new ImageIcon(getTextureFileTypeFromID(textureIdentifier, id).getAbsolutePath());
 	}
 
-	public File getTextureFileTypeFromID(String textureIdentifier, String id) {
-		return new File(getTexturesDirTypeFromID(id), textureIdentifier + ".png");
+	public File getTextureFileTypeFromID(String textureIdentifier, WorkspacePanelTextures.Section id) {
+		return new File(getTexturesDirTypeFromSectionType(id), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -91,20 +92,20 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getTexturesDirTypeFromID("armor"), armorTextureName + "_layer_1.png"),
-				new File(getTexturesDirTypeFromID("armor"), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section.ARMOR), armorTextureName + "_layer_1.png"),
+				new File(getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getTexturesListTypeFromID(String id) {
-		return listPNGsInDir(getTexturesDirTypeFromID(id));
+	public List<File> getTexturesListFromSectionType(WorkspacePanelTextures.Section id) {
+		return listPNGsInDir(getTexturesDirTypeFromSectionType(id));
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	@Nullable public File getTexturesDirTypeFromID(String id) {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), id + "_textures_dir");
+	@Nullable public File getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section section) {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), section.getID() + "_textures_dir");
 	}
 
 	@Nullable public File getStructuresDir() {

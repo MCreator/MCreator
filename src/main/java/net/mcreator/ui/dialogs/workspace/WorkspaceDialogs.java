@@ -304,7 +304,8 @@ public class WorkspaceDialogs {
 
 			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
-				List<File> other = workspace.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.OTHER);
+				List<File> other = workspace.getFolderManager().getTexturesListFromSectionType(
+						WorkspacePanelTextures.Section.OTHER);
 				for (File element : other) {
 					if (element.getName().endsWith(".png"))
 						modPicture.addItem(FilenameUtilsPatched.removeExtension(element.getName()));

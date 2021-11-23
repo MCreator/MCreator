@@ -106,7 +106,7 @@ import java.util.Map;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.Section.ITEM).getImage(), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {

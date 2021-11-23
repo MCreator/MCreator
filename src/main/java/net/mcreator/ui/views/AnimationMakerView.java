@@ -348,11 +348,11 @@ public class AnimationMakerView extends ViewBase {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
 			if (n == 0)
-				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.BLOCK);
+				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.BLOCK);
 			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.ITEM);
+				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.ITEM);
 			else
-				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.OTHER);
+				exportFile = mcreator.getFolderManager().getTextureFileTypeFromID(namec, WorkspacePanelTextures.Section.OTHER);
 
 			if (exportFile.isFile()) {
 				JOptionPane.showMessageDialog(mcreator,

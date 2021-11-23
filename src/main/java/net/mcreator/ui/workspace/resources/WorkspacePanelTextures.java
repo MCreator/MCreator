@@ -49,12 +49,6 @@ import java.util.stream.Collectors;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
-	public static final String BLOCK = "block";
-	public static final String ITEM = "item";
-	public static final String ARMOR = "armor";
-	public static final String OTHER = "other";
-
-	public static final String[] CATEGORIES = new String[] {  BLOCK, ITEM, ARMOR, OTHER };
 	private final Map<String, JComponentWithList<File>> mapLists = new HashMap<>();
 
 	private final ListGroup<File> listGroup = new ListGroup<>();
@@ -81,11 +75,11 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		Arrays.stream(CATEGORIES).forEach(category -> {
+		Arrays.stream(Section.values()).forEach(section -> {
 			JComponentWithList<File> compList = createListElement(new FilterModel(),
-					L10N.t("workspace.textures.category_" + category));
+					L10N.t("workspace.textures.category_" + section.getID()));
 			respan.add(compList.getComponent());
-			mapLists.put(category, compList);
+			mapLists.put(section.getID(), compList);
 		});
 
 		respan.setOpaque(false);
@@ -251,14 +245,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void reloadElements() {
 		new Thread(() -> {
-			Arrays.stream(CATEGORIES).forEach(category -> {
-				List<File> selected = mapLists.get(category).getList().getSelectedValuesList();
+			Arrays.stream(Section.values()).forEach(section -> {
+				List<File> selected = mapLists.get(section.getID()).getList().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
-				workspacePanel.getMcreator().getFolderManager().getTexturesListTypeFromID(category)
+				workspacePanel.getMcreator().getFolderManager().getTexturesListFromSectionType(section)
 						.forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {
-					JList<File> list = mapLists.get(category).getList();
+					JList<File> list = mapLists.get(section.getID()).getList();
 					list.setModel(newfm);
 					textureRender.invalidateIconCache();
 					ListUtil.setSelectedValues(list, selected);
@@ -270,7 +264,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	@Override public void refilterElements() {
-		Arrays.stream(CATEGORIES).map(mapLists::get).forEach(compList -> {
+		Arrays.stream(Section.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
 			FilterModel model = (FilterModel) compList.getList().getModel();
 			model.refilter();
 			if (model.getSize() > 0) {
@@ -284,68 +278,17 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	}
 
-	private class FilterModel extends DefaultListModel<File> {
-		List<File> items;
-		List<File> filterItems;
+	public enum Section {
+		BLOCK("block"), ITEM("item"), ARMOR("armor"), OTHER("other");
 
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
+		private final String id;
+
+		Section(String id) {
+			this.id = id;
 		}
 
-		@Override public File getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof File)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(File o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof File) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(File::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
+		public String getID() {
+			return id;
 		}
 	}
 
@@ -429,4 +372,68 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 	}
 
+	private class FilterModel extends DefaultListModel<File> {
+		List<File> items;
+		List<File> filterItems;
+
+		FilterModel() {
+			super();
+			items = new ArrayList<>();
+			filterItems = new ArrayList<>();
+		}
+
+		@Override public File getElementAt(int index) {
+			if (index < filterItems.size())
+				return filterItems.get(index);
+			else
+				return null;
+		}
+
+		@Override public int indexOf(Object elem) {
+			if (elem instanceof File)
+				return filterItems.indexOf(elem);
+			else
+				return -1;
+		}
+
+		@Override public int getSize() {
+			return filterItems.size();
+		}
+
+		@Override public void addElement(File o) {
+			items.add(o);
+			refilter();
+		}
+
+		@Override public void removeAllElements() {
+			super.removeAllElements();
+			items.clear();
+			filterItems.clear();
+		}
+
+		@Override public boolean removeElement(Object a) {
+			if (a instanceof File) {
+				items.remove(a);
+				filterItems.remove(a);
+			}
+			return super.removeElement(a);
+		}
+
+		void refilter() {
+			filterItems.clear();
+			String term = workspacePanel.search.getText();
+			filterItems.addAll(items.stream().filter(Objects::nonNull)
+					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
+							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
+
+			if (workspacePanel.sortName.isSelected()) {
+				filterItems.sort(Comparator.comparing(File::getName));
+			}
+
+			if (workspacePanel.desc.isSelected())
+				Collections.reverse(filterItems);
+
+			fireContentsChanged(this, 0, getSize());
+		}
+	}
 }

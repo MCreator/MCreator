@@ -57,7 +57,7 @@ public class Image extends GUIComponent {
 
 	public java.awt.Image getImage(Workspace workspace) {
 		return new ImageIcon(
-				workspace.getFolderManager().getTextureFileTypeFromID(FilenameUtilsPatched.removeExtension(image), WorkspacePanelTextures.OTHER)
+				workspace.getFolderManager().getTextureFileTypeFromID(FilenameUtilsPatched.removeExtension(image), WorkspacePanelTextures.Section.OTHER)
 						.getAbsolutePath()).getImage();
 	}
 

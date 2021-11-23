@@ -296,13 +296,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.BLOCK).getImage();
+		return getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, WorkspacePanelTextures.Section.BLOCK).getImage();
 	}
 
 	private Image getTextureWithFallback(String textureName) {
 		if (textureName.equals(""))
 			return getMainTexture();
-		return getModElement().getFolderManager().getTextureImageIconTypeFromID(textureName, WorkspacePanelTextures.BLOCK).getImage();
+		return getModElement().getFolderManager().getTextureImageIconTypeFromID(textureName, WorkspacePanelTextures.Section.BLOCK).getImage();
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

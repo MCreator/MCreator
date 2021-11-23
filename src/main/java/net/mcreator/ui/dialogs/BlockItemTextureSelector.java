@@ -139,9 +139,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
 			List<File> block1;
 			if (type == TextureType.BLOCK) {
-				block1 = mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.BLOCK);
+				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.BLOCK);
 			} else {
-				block1 = mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.ITEM);
+				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.ITEM);
 			}
 			model.removeAllElements();
 			for (File element : block1) {
@@ -167,9 +167,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	@Override public void setVisible(boolean b) {
 		List<File> block;
 		if (type == TextureType.BLOCK) {
-			block = mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.BLOCK);
+			block = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.BLOCK);
 		} else {
-			block = mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.ITEM);
+			block = mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.ITEM);
 		}
 		model.removeAllElements();
 		for (File element : block) {

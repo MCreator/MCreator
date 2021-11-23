@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -82,10 +83,9 @@ public class WorkspaceGeneratorSetup {
 		moveFilesToAnotherDir(workspace.getFolderManager().getSoundsDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "sounds_dir"));
 
-		for (String category : WorkspacePanelTextures.CATEGORIES) {
-			moveFilesToAnotherDir(workspace.getFolderManager().getTexturesDirTypeFromID(category),
-					GeneratorUtils.getSpecificRoot(workspace, newGenerator, category + "_textures_dir"));
-		}
+		Arrays.stream(WorkspacePanelTextures.Section.values()).forEach(category -> moveFilesToAnotherDir(
+				workspace.getFolderManager().getTexturesDirTypeFromSectionType(category),
+				GeneratorUtils.getSpecificRoot(workspace, newGenerator, category + "_textures_dir")));
 
 		moveFilesToAnotherDir(workspace.getGenerator().getSourceRoot(),
 				GeneratorUtils.getSourceRoot(workspace, newGenerator));

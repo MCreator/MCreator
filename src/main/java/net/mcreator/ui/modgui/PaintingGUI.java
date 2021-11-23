@@ -78,7 +78,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.OTHER).forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).forEach(el -> texture.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
@@ -110,7 +110,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

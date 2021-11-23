@@ -180,41 +180,41 @@ public class TestWorkspaceDataProvider {
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.BLOCK) != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section.BLOCK) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.BLOCK));
+					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.Section.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test2", WorkspacePanelTextures.BLOCK));
+					workspace.getFolderManager().getTextureFileTypeFromID("test2", WorkspacePanelTextures.Section.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test3", WorkspacePanelTextures.BLOCK));
+					workspace.getFolderManager().getTextureFileTypeFromID("test3", WorkspacePanelTextures.Section.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test4", WorkspacePanelTextures.BLOCK));
+					workspace.getFolderManager().getTextureFileTypeFromID("test4", WorkspacePanelTextures.Section.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test5", WorkspacePanelTextures.BLOCK));
+					workspace.getFolderManager().getTextureFileTypeFromID("test5", WorkspacePanelTextures.Section.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test6", WorkspacePanelTextures.BLOCK));
+					workspace.getFolderManager().getTextureFileTypeFromID("test6", WorkspacePanelTextures.Section.BLOCK));
 		}
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.ITEM) != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.ITEM));
+					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.Section.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test2", WorkspacePanelTextures.ITEM));
+					workspace.getFolderManager().getTextureFileTypeFromID("test2", WorkspacePanelTextures.Section.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test3", WorkspacePanelTextures.ITEM));
+					workspace.getFolderManager().getTextureFileTypeFromID("test3", WorkspacePanelTextures.Section.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test4", WorkspacePanelTextures.ITEM));
+					workspace.getFolderManager().getTextureFileTypeFromID("test4", WorkspacePanelTextures.Section.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("itest", WorkspacePanelTextures.ITEM));
+					workspace.getFolderManager().getTextureFileTypeFromID("itest", WorkspacePanelTextures.Section.ITEM));
 
 		}
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.OTHER) != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.OTHER));
+					workspace.getFolderManager().getTextureFileTypeFromID("test", WorkspacePanelTextures.Section.OTHER));
 		}
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromID(WorkspacePanelTextures.ARMOR) != null) {
+		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(WorkspacePanelTextures.Section.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);

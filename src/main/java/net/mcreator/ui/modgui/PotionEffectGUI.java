@@ -125,7 +125,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			icon.removeAllItems();
 			icon.addItem("");
-			mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.OTHER).forEach(el -> icon.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).forEach(el -> icon.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
@@ -202,7 +202,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesListTypeFromID(WorkspacePanelTextures.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesListFromSectionType(WorkspacePanelTextures.Section.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 
