@@ -314,11 +314,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
 		bodyVisibleCondition = new ProcedureSelector(this.withEntry("entity/condition_is_body_visible"), mcreator,
-				L10N.t("elementgui.living_entity.condition_is_body_visible"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				L10N.t("elementgui.living_entity.condition_is_body_visible"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
 				L10N.t("condition.common.false")).makeInline();
 		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
-				L10N.t("elementgui.living_entity.condition_is_shaking"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
 				L10N.t("condition.common.false")).makeInline();
 
