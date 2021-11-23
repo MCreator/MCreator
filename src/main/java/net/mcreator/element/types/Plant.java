@@ -174,7 +174,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconTypeFromID(texture, TextureSection.BLOCK).getImage(), 32);
+		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconFromSectionType(texture, TextureSection.BLOCK).getImage(), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {

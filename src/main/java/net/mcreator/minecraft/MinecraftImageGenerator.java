@@ -1192,7 +1192,7 @@ public class MinecraftImageGenerator {
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
 					workspace.getFolderManager()
-							.getTextureFileTypeFromID(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureSection.OTHER)
+							.getTextureFileFromSectionType(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureSection.OTHER)
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(

@@ -125,16 +125,16 @@ import java.util.Set;
 		ArrayList<File> armorPieces = new ArrayList<>();
 		if (enableHelmet)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureHelmet, TextureSection.ITEM));
+					.getTextureFileFromSectionType(textureHelmet, TextureSection.ITEM));
 		if (enableBody)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureBody, TextureSection.ITEM));
+					.getTextureFileFromSectionType(textureBody, TextureSection.ITEM));
 		if (enableLeggings)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureLeggings, TextureSection.ITEM));
+					.getTextureFileFromSectionType(textureLeggings, TextureSection.ITEM));
 		if (enableBoots)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFileTypeFromID(textureBoots, TextureSection.ITEM));
+					.getTextureFileFromSectionType(textureBoots, TextureSection.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}

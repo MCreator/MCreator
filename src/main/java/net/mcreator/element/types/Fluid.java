@@ -120,7 +120,7 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconTypeFromID(textureStill, TextureSection.BLOCK).getImage(),
+		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIconFromSectionType(textureStill, TextureSection.BLOCK).getImage(),
 				32);
 	}
 

@@ -191,7 +191,7 @@ public class ArmorImageMakerView extends ViewBase {
 
 	public static void use(Workspace workspace, Image image, String nam) {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image),
-				workspace.getFolderManager().getTextureFileTypeFromID(nam.toLowerCase(Locale.ENGLISH), TextureSection.ITEM));
+				workspace.getFolderManager().getTextureFileFromSectionType(nam.toLowerCase(Locale.ENGLISH), TextureSection.ITEM));
 	}
 
 	@Override public String getViewName() {

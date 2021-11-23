@@ -71,12 +71,12 @@ public class WorkspaceFolderManager {
 		return workspaceFolder;
 	}
 
-	public ImageIcon getTextureImageIconTypeFromID(String textureIdentifier, TextureSection id) {
-		return new ImageIcon(getTextureFileTypeFromID(textureIdentifier, id).getAbsolutePath());
+	public ImageIcon getTextureImageIconFromSectionType(String textureIdentifier, TextureSection section) {
+		return new ImageIcon(getTextureFileFromSectionType(textureIdentifier, section).getAbsolutePath());
 	}
 
-	public File getTextureFileTypeFromID(String textureIdentifier, TextureSection id) {
-		return new File(getTexturesDirTypeFromSectionType(id), textureIdentifier + ".png");
+	public File getTextureFileFromSectionType(String textureIdentifier, TextureSection section) {
+		return new File(getTexturesDirTypeFromSectionType(section), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -96,8 +96,8 @@ public class WorkspaceFolderManager {
 				new File(getTexturesDirTypeFromSectionType(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getTexturesListFromSectionType(TextureSection id) {
-		return listPNGsInDir(getTexturesDirTypeFromSectionType(id));
+	public List<File> getTexturesListFromSectionType(TextureSection section) {
+		return listPNGsInDir(getTexturesDirTypeFromSectionType(section));
 	}
 
 	public void removeStructure(String name) {
