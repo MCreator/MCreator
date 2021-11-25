@@ -80,19 +80,21 @@ class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 		} catch (Exception ignored) {
 		}
 
+		boolean fileInWorkspace = selected.getUserObject() instanceof File file && browser.mcreator.getFolderManager()
+				.isFileInWorkspace(file);
 		browser.mcreator.actionRegistry.openAsCode.setEnabled(selected != null);
-		browser.mcreator.actionRegistry.openFile.setEnabled(contextActionsAvailable);
+		browser.mcreator.actionRegistry.openFile.setEnabled(fileInWorkspace);
 		browser.mcreator.actionRegistry.showFileInExplorer.setEnabled(
-				contextActionsAvailable && selected != browser.sourceCode && selected != browser.currRes);
+				fileInWorkspace && selected != browser.sourceCode && selected != browser.currRes);
 		createMenu.setEnabled(contextActionsAvailable);
 		browser.mcreator.actionRegistry.deleteFile.setEnabled(
 				contextActionsAvailable && selected != browser.sourceCode && selected != browser.currRes);
 
-		this.add(browser.mcreator.actionRegistry.openAsCode);
-		this.add(browser.mcreator.actionRegistry.openFile);
-		this.add(browser.mcreator.actionRegistry.showFileInExplorer);
-		this.addSeparator();
-		this.add(createMenu);
-		this.add(browser.mcreator.actionRegistry.deleteFile);
+		add(browser.mcreator.actionRegistry.openAsCode);
+		add(browser.mcreator.actionRegistry.openFile);
+		add(browser.mcreator.actionRegistry.showFileInExplorer);
+		addSeparator();
+		add(createMenu);
+		add(browser.mcreator.actionRegistry.deleteFile);
 	}
 }
