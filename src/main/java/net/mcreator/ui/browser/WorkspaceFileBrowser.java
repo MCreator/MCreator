@@ -197,17 +197,6 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 		});
-		tree.addKeyListener(new KeyAdapter() {
-
-			@Override public void keyPressed(KeyEvent keyEvent) {
-				if (keyEvent.isControlDown() && keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_F6) {
-					mcreator.actionRegistry.showFileInExplorer.doAction();
-				} else if (keyEvent.isControlDown() && keyEvent.getKeyCode() == KeyEvent.VK_F6) {
-					mcreator.actionRegistry.openFile.doAction();
-				}
-			}
-
-		});
 	}
 
 	private boolean initial = true;
