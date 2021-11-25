@@ -58,7 +58,8 @@ public class ${name}Feature extends OreFeature {
 	}
 
 	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
-		ResourceKey<Level> dimensionType = context.level().getLevel().dimension();
+		Level world = context.level().getLevel();
+		ResourceKey<Level> dimensionType = world.dimension();
 		boolean dimensionCriteria = false;
 
         <#list data.spawnWorldTypes as worldType>

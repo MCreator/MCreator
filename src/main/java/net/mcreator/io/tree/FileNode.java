@@ -60,8 +60,7 @@ public class FileNode {
 	}
 
 	@Override public boolean equals(Object obj) {
-		if (obj instanceof FileNode) {
-			FileNode cmpObj = (FileNode) obj;
+		if (obj instanceof FileNode cmpObj) {
 			return incrementalPath.equals(cmpObj.incrementalPath) && data.equals(cmpObj.data);
 		}
 		return false;

@@ -718,8 +718,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.drop_amount")));
 		selp3.add(dropAmount);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(
-				this.withEntry("block/use_loot_table_for_drops").withArguments(modElement::getRegistryName),
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
@@ -953,8 +952,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
 						GeneratableElement generatableElement = element.getGeneratableElement();
-						if (generatableElement instanceof GUI) {
-							GUI gui = (GUI) generatableElement;
+						if (generatableElement instanceof GUI gui) {
 							inventorySize.setValue(gui.getMaxSlotID() + 1);
 							StringBuilder inslots = new StringBuilder();
 							StringBuilder outslots = new StringBuilder();
@@ -1319,8 +1317,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
-		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.loadPathNodeTypes()), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}

@@ -145,7 +145,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 	}
 	</#if>
 
-    <#if hasProcedure(data.onRightClickedInAir)>
+    <#if hasProcedure(data.onRightClickedInAir) || data.hasInventory()>
     @Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		ItemStack itemstack = ar.getObject();

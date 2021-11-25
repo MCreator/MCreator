@@ -59,7 +59,7 @@ package ${package}.init;
         <#elseif item.getModElement().getTypeString() == "dimension">
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
         <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(new ${item.getModElement().getName()}BucketItem());
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(new ${item.getModElement().getName()}Item());
         <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
             <#assign hasBlocks = true>
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});

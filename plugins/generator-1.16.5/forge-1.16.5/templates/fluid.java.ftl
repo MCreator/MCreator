@@ -35,6 +35,8 @@ package ${package}.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.attributes.Attributes;
 
+import net.minecraftforge.common.property.Properties;
+
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement{
 
 	@ObjectHolder("${modid}:${registryname}")

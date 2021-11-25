@@ -118,7 +118,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JComboBox<String> staticPlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
-	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(5, 0, 100000, 1));
+	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
 	private final JRadioButton doubleType = new JRadioButton("<html><b>Use double plant type");
 	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
@@ -755,8 +755,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
 				new DataListEntry.Dummy("PLANT"));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
-		ComboBoxUtil.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getAllPlantTypes()),
+		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(growapableSpawnType, Arrays.asList(ElementUtil.getDataListAsStringArray("planttypes")),
 				"Plains");
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(cross, crop),
@@ -764,11 +764,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.loadPathNodeTypes()), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 
 		ComboBoxUtil.updateComboBoxContents(suspiciousStewEffect,
 				ElementUtil.loadAllPotionEffects(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
-						.filter(e -> !e.contains("CUSTOM:")).collect(Collectors.toList()), "SPEED");
+						.collect(Collectors.toList()), "SPEED");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

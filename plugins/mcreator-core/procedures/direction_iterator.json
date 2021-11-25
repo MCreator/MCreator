@@ -1,0 +1,13 @@
+{
+  "output": "Direction",
+  "colour": 20,
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "dependencies": [
+      {
+        "name": "directioniterator",
+        "type": "direction"
+      }
+    ]
+  }
+}

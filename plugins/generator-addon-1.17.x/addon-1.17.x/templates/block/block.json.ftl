@@ -1,12 +1,11 @@
 <#-- @formatter:off -->
 {
-  "format_version": "1.16.0",
+  "format_version": "1.17.3",
   "minecraft:block": {
     "description": {
       "identifier": "${modid}:${registryname}",
-      "is_experimental": false
-      <#--"register_to_creative_menu ": true-->
-      <#--MC bug: https://bugs.mojang.com/browse/MCPE-63121 -->
+      "is_experimental": false,
+      "register_to_creative_menu ": true
     },
     "components": {
       <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">

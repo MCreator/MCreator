@@ -30,9 +30,8 @@ public class ToolChangeAction extends BasicAction {
 			Class<? extends AbstractTool> tool) {
 		super(actionRegistry, name, actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
-			if (pan instanceof ImageMakerView) {
-				ImageMakerView codeEditorView = (ImageMakerView) pan;
-				codeEditorView.getToolPanel().setToolByClass(tool);
+			if (pan instanceof ImageMakerView imageMakerView) {
+				imageMakerView.getToolPanel().setToolByClass(tool);
 			}
 		});
 		setTooltip(tooltip);

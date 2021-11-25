@@ -83,14 +83,12 @@ public class NBTEditorView extends ViewBase {
 	}
 
 	private void addTagToNode(Tag tag, DefaultMutableTreeNode root) {
-		if (tag instanceof CompoundTag) {
-			CompoundTag compoundTag = (CompoundTag) tag;
+		if (tag instanceof CompoundTag compoundTag) {
 			NBTTagNode subroot = new NBTTagNode(compoundTag, compoundTag.getName());
 			for (String key : compoundTag.getValue().keySet())
 				addTagToNode(compoundTag.getValue().get(key), subroot);
 			root.add(subroot);
-		} else if (tag instanceof ListTag) {
-			ListTag listTag = (ListTag) tag;
+		} else if (tag instanceof ListTag listTag) {
 			NBTTagNode subroot = new NBTTagNode(listTag, listTag.getName());
 			for (Tag taginlist : listTag.getValue())
 				addTagToNode(taginlist, subroot);
@@ -130,10 +128,8 @@ public class NBTEditorView extends ViewBase {
 			a.setOpaque(true);
 			ComponentUtils.deriveFont(a, 11);
 
-			if (node instanceof NBTTagNode) {
-				NBTTagNode nbtTagNode = (NBTTagNode) node;
+			if (node instanceof NBTTagNode nbtTagNode)
 				setText(nbtTagNode.toString());
-			}
 
 			if (sel) {
 				a.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));

@@ -102,13 +102,9 @@ public abstract class GeneratableElement {
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			String newType = jsonElement.getAsJsonObject().get("_type").getAsString();
-			switch (newType) {
-			case "gun":
-				newType = "rangeditem";
-				break;
-			case "mob":
-				newType = "livingentity";
-				break;
+			switch(newType) {
+				case "gun" -> newType = "rangeditem";
+				case "mob" -> newType = "livingentity";
 			}
 
 			try {
