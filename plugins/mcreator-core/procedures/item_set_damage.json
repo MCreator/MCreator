@@ -16,6 +16,7 @@
   "nextStatement": null,
   "colour": 350,
   "mcreator": {
+    "group": "damage",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
