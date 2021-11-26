@@ -618,8 +618,8 @@ public class Generator implements IGenerator, Closeable {
 		generatorFiles.forEach(generatorFile -> {
 			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
 				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(),
-							generatorFile.file(), formatAndOrganiseImports);
+					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.file(),
+							formatAndOrganiseImports);
 				else if (generatorFile.writer().equals("json"))
 					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
 				else if (generatorFile.writer().equals("file"))

@@ -233,6 +233,10 @@ import java.util.stream.Collectors;
 		return spawnWorldTypes.size() > 0;
 	}
 
+	public boolean shouldScheduleTick() {
+		return tickRate > 0 && !tickRandomly;
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)

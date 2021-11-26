@@ -30,13 +30,13 @@ public class WindowTitleHelper {
 		String appendix = "";
 		if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof ModElementGUI<?> modElementGUI) {
-			appendix = "- " + modElementGUI.getModElement().getName() +
-					" (" + modElementGUI.getModElement().getType().getReadableName() + ")";
+			appendix = "- " + modElementGUI.getModElement().getName() + " (" + modElementGUI.getModElement().getType()
+					.getReadableName() + ")";
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof CodeEditorView codeEditorView) {
 			try {
-				appendix = "- " + mcreator.getWorkspaceFolder().toPath()
-						.relativize(codeEditorView.fileWorkingOn.toPath());
+				appendix =
+						"- " + mcreator.getWorkspaceFolder().toPath().relativize(codeEditorView.fileWorkingOn.toPath());
 			} catch (Exception e) {
 				appendix = "- " + codeEditorView.fileWorkingOn.toPath();
 			}

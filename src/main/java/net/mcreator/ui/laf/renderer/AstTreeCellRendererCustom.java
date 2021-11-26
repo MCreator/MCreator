@@ -75,9 +75,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 				if (element.getAsJsonPrimitive().isNumber())
 					type = "number";
 			}
-			setText("<html>" + value + (type == null ?
-					"" :
-					("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
+			setText("<html>" + value + (type == null ? "" : ("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
 			setIcon(UIRES.get("16px.jsonel.gif"));
 		} else {
 			try {
