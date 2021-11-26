@@ -6,3 +6,5 @@ est utilisé.
 
 Le taux de ticks par défaut de 10 signifie que le bloc cochera tous les 10 ticks mondiaux. Il y a 20 ticks mondiaux dans
 une seconde, cela signifie que le bloc tickera deux fois par seconde.
+
+Si ce paramètre est défini à 0, le block ne tickera pas automatiquement.

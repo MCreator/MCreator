@@ -510,7 +510,7 @@ public class ${name}Block extends
 		</#if>
 	</#if>
 
-	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && !data.tickRandomly, data.tickRate/>
+	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && data.shouldScheduleTick(), data.tickRate/>
 
 	<@onRedstoneOrNeighborChanged data.onRedstoneOn, data.onRedstoneOff, data.onNeighbourBlockChanges/>
 
@@ -524,7 +524,7 @@ public class ${name}Block extends
 
 		<@procedureOBJToCode data.onTickUpdate/>
 
-		<#if !data.tickRandomly>
+		<#if data.shouldScheduleTick()>
 		world.getBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 		</#if>
 	}
