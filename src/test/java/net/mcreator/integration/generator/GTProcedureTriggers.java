@@ -70,7 +70,8 @@ public class GTProcedureTriggers {
 
 			Procedure procedure = new Procedure(modElement);
 			if (externalTrigger.dependencies_provided != null)
-				procedure.getModElement().clearMetadata().putMetadata("dependencies", externalTrigger.dependencies_provided);
+				procedure.getModElement().clearMetadata()
+						.putMetadata("dependencies", externalTrigger.dependencies_provided);
 			procedure.procedurexml =
 					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\"><field name=\"trigger\">"
 							+ externalTrigger.getID() + "</field></block></xml>";

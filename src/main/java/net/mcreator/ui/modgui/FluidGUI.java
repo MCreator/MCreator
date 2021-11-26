@@ -474,7 +474,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(colorOnMap,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

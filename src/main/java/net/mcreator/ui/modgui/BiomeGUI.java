@@ -285,8 +285,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2b.add(spawnEndCity);
 		spawnEndCity.setOpaque(false);
 
-		pane2.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(sbbp2b), 20, 20)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(sbbp2b), 20, 20)));
 
 		sbbp2b.setOpaque(false);
 		sbbp2.setOpaque(false);

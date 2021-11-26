@@ -367,14 +367,14 @@ public class AnimationMakerView extends ViewBase {
 				int sizetwocubes = 16;
 				if (s != null) {
 					sizetwocubes = switch (s) {
-					case "4 x 4" -> 4;
-					case "8 x 8" -> 8;
-					case "32 x 32" -> 32;
-					case "64 x 64" -> 64;
-					case "128 x 128" -> 128;
-					case "256 x 256" -> 256;
-					case "512 x 512" -> 512;
-					default -> 16;
+						case "4 x 4" -> 4;
+						case "8 x 8" -> 8;
+						case "32 x 32" -> 32;
+						case "64 x 64" -> 64;
+						case "128 x 128" -> 128;
+						case "256 x 256" -> 256;
+						case "512 x 512" -> 512;
+						default -> 16;
 					};
 				}
 				Image image = makeAnimationIcon(timelinevector.getSize(), timelinevector, sizetwocubes).getImage();
