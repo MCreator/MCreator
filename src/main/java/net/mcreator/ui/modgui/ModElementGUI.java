@@ -24,6 +24,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JModElementProgressPanel;
+import net.mcreator.ui.component.ScrollWheelPassLayer;
 import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -289,7 +290,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
 				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				centerComponent = PanelUtils.centerAndSouthElement(splitScroll, pager);
+				centerComponent = PanelUtils.centerAndSouthElement(
+						new JLayer<>(splitScroll, new ScrollWheelPassLayer()), pager);
 			} else {
 				centerComponent = PanelUtils.centerAndSouthElement(split, pager);
 			}
@@ -361,7 +363,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
 				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				centerComponent = splitScroll;
+				centerComponent = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
 			} else {
 				centerComponent = new ArrayList<>(pages.values()).get(0);
 			}
