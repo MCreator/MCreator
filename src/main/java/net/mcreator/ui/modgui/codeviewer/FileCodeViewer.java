@@ -22,6 +22,7 @@ package net.mcreator.ui.modgui.codeviewer;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.java.ImportFormat;
 import net.mcreator.ui.ide.CodeEditorView;
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,14 +43,17 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 		cev.hideNotice();
 		add(cev);
 
-		String code = format(file);
-		cev.te.setText(code);
-		oldCode = code;
+		try {
+			String code = format(file);
+			cev.te.setText(code);
+			oldCode = code;
+		} catch (Exception e) {
+			oldCode = "";
+		}
 	}
 
-	public boolean update(GeneratorFile file) {
+	public boolean update(GeneratorFile file) throws Exception {
 		String code = format(file);
-
 		if (!code.equals(oldCode)) {
 			cev.te.setText(code);
 			try {
@@ -60,14 +64,15 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 			oldCode = code;
 			return true;
 		}
-
 		return false;
 	}
 
-	private String format(GeneratorFile input) {
+	private String format(GeneratorFile input) throws Exception {
 		if (input.writer() == null || input.writer().equals("java")) {
-			return cev.getCodeCleanup()
-					.reformatTheCodeAndOrganiseImports(cev.getMCreator().getWorkspace(), input.contents());
+			String codeformatted = cev.getCodeCleanup().reformatTheCodeOnly(input.contents());
+			if (!codeformatted.contains("\t"))
+				throw new Exception("Format failed");
+			return ImportFormat.removeImports(codeformatted, "\n\n/* imports omitted */\n\n");
 		} else if (input.writer().equals("json")) {
 			return JSONWriter.formatJSON(input.contents());
 		}
