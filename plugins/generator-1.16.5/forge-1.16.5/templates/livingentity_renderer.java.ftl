@@ -153,7 +153,7 @@ package ${package}.entity.renderer;
 	        double x = entity.getPosX();
 	        double y = entity.getPosY();
 	        double z = entity.getPosZ();
-		    return <@procedureOBJToConditionCode data.bodyVisibleCondition/>;
+		    return !<@procedureOBJToConditionCode data.bodyVisibleCondition/>;
 	    }
 	</#if>
 
