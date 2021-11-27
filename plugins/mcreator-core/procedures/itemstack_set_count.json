@@ -16,6 +16,7 @@
   "nextStatement": null,
   "colour": 350,
   "mcreator": {
+    "group": "count",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">64</field></block></value>",

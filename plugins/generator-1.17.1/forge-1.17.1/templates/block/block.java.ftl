@@ -39,6 +39,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}Block extends
 			<#if data.hasGravity>
@@ -69,7 +70,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro blockProperties>
-		Block.Properties.of(Material.${data.material})
+		BlockBehaviour.Properties.of(Material.${data.material})
 			<#if data.isCustomSoundType>
 				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
@@ -509,7 +510,7 @@ public class ${name}Block extends
 		</#if>
 	</#if>
 
-	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && !data.tickRandomly, data.tickRate/>
+	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && data.shouldScheduleTick(), data.tickRate/>
 
 	<@onRedstoneOrNeighborChanged data.onRedstoneOn, data.onRedstoneOff, data.onNeighbourBlockChanges/>
 
@@ -523,7 +524,7 @@ public class ${name}Block extends
 
 		<@procedureOBJToCode data.onTickUpdate/>
 
-		<#if !data.tickRandomly>
+		<#if data.shouldScheduleTick()>
 		world.getBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 		</#if>
 	}

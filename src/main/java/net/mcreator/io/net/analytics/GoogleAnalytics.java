@@ -22,10 +22,10 @@ import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 class GoogleAnalytics {
@@ -54,12 +54,9 @@ class GoogleAnalytics {
 		payload.put("t", hitType);
 
 		for (Map.Entry<String, Object> entry : payload.entrySet()) {
-			try {
-				if (entry.getValue() != null)
-					actionRequestURL.append("&").append(entry.getKey()).append("=")
-							.append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
-			} catch (UnsupportedEncodingException ignored) {
-			}
+			if (entry.getValue() != null)
+				actionRequestURL.append("&").append(entry.getKey()).append("=")
+						.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
 		}
 
 		return actionRequestURL.toString();

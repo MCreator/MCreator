@@ -39,16 +39,22 @@ package ${package}.world.dimension;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
 
 		@SubscribeEvent public static void registerFillerBlocks(FMLCommonSetupEvent event) {
+			Set<Block> replaceableBlocks = new HashSet<>();
+			replaceableBlocks.add(${mappedBlockToBlock(data.mainFillerBlock)});
+
+			<#list w.filterBrokenReferences(data.biomesInDimension) as biome>
+			replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))
+					.getGenerationSettings().getSurfaceBuilder().get().config().getTopMaterial().getBlock());
+			replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("${biome}"))
+					.getGenerationSettings().getSurfaceBuilder().get().config().getUnderMaterial().getBlock());
+			</#list>
+
 			event.enqueueWork(() -> {
 				WorldCarver.CAVE.replaceableBlocks = new ImmutableSet.Builder<Block>()
-						.addAll(WorldCarver.CAVE.replaceableBlocks)
-						.add(${mappedBlockToBlock(data.mainFillerBlock)})
-						.build();
+						.addAll(WorldCarver.CAVE.replaceableBlocks).addAll(replaceableBlocks).build();
 
 				WorldCarver.CANYON.replaceableBlocks = new ImmutableSet.Builder<Block>()
-						.addAll(WorldCarver.CANYON.replaceableBlocks)
-						.add(${mappedBlockToBlock(data.mainFillerBlock)})
-						.build();
+						.addAll(WorldCarver.CANYON.replaceableBlocks).addAll(replaceableBlocks).build();
 			});
 		}
 

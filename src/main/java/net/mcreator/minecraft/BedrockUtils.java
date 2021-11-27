@@ -108,7 +108,7 @@ public class BedrockUtils {
 						JOptionPane.WARNING_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(mcreator, "Bedrock Edition is only supported on Windows 10 at the moment",
+			JOptionPane.showMessageDialog(mcreator, "Bedrock Edition is only supported on Windows 10+ at the moment",
 					"Run client not supported", JOptionPane.WARNING_MESSAGE);
 		}
 	}
