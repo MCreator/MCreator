@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 	@Nullable private List<Dependency> dependencies;
 	@Nullable private List<String> warnings;
 	@Nullable private List<String> required_apis;
+	@Nullable private String group;
 	@Nullable public List<String> toolbox_init;
 
 	public boolean error_in_statement_blocks = false;
@@ -93,6 +94,8 @@ import java.util.stream.Collectors;
 	}
 
 	String getGroupEstimate() {
+		if (this.group != null)
+			return this.group;
 		int a = StringUtils.ordinalIndexOf(this.machine_name, "_", 2);
 		if (a > 0)
 			return this.machine_name.substring(0, a);

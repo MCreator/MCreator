@@ -16,6 +16,7 @@
   "nextStatement": null,
   "colour": 350,
   "mcreator": {
+    "group": "name",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"displayname\"><block type=\"text\"><field name=\"TEXT\">Display name</field></block></value>",
