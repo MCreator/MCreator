@@ -18,6 +18,7 @@
   "nextStatement": null,
   "colour": 20,
   "mcreator": {
+    "group": "iterator",
     "toolbox_id": "directionactions",
     "toolbox_init": [
       "<value name=\"_placeholder\"><block deletable=\"false\" movable=\"false\" enabled=\"false\" type=\"direction_iterator\"></block></value>"
