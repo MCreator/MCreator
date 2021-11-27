@@ -75,7 +75,7 @@ public class ArmorImageMakerView extends ViewBase {
 
 		JPanel wrap = PanelUtils.centerInPanelPadding(controls, 10, 10);
 		wrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.armor_image_maker.properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -96,7 +96,7 @@ public class ArmorImageMakerView extends ViewBase {
 		spom.setOpaque(true);
 		spom.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		spom.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.armor_image_maker.preview"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
