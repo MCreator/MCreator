@@ -105,7 +105,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	        double x = entity.getX();
 	        double y = entity.getY();
 	        double z = entity.getZ();
-		    return <@procedureOBJToConditionCode data.bodyVisibleCondition/>;
+		    return !<@procedureOBJToConditionCode data.bodyVisibleCondition/>;
 	    }
 	</#if>
 
