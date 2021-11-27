@@ -20,6 +20,9 @@
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "blockdata",
+    "toolbox_init": [
+      "<value name=\"a\"><block type=\"blockstate_from_deps\"></block></value>"
+    ],
     "fields": [
       "material"
     ],
