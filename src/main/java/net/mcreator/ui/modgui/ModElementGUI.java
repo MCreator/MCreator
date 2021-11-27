@@ -23,7 +23,6 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
 import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -32,6 +31,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
@@ -61,10 +61,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
 
+	private final ModElementCodeViewer<GE> modElementCodeViewer;
+	private JSplitPane splitPane;
+
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
 		this.modElement = modElement;
+
+		this.modElementCodeViewer = new ModElementCodeViewer<>(this);
 	}
 
 	public final void addPage(JComponent component) {
@@ -113,6 +118,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected final void finalizeGUI(boolean wrapInScrollpane) {
+		JComponent centerComponent;
+
 		if (pages.size() > 1) {
 			JModElementProgressPanel split = new JModElementProgressPanel(pages.values().toArray(new Component[0]));
 
@@ -166,7 +173,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				page.setBorder(null);
 				page.setContentAreaFilled(false);
 				page.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				ComponentUtils.deriveFont(page, 13f);
+				ComponentUtils.deriveFont(page, 13);
 
 				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
 						((Color) UIManager.get("MCreatorLAF.MAIN_TINT")) :
@@ -242,15 +249,37 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					showErrorsMessage(validationResult);
 			});
 
-			add("South", pager);
-
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 			toolBar.setOpaque(false);
 			toolBar.add(saveOnly);
 			toolBar.add(save);
-			add("North",
-					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
-							false, false));
+
+			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+			toolBarLeft.setOpaque(false);
+
+			JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
+			codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			codeViewer.setFocusPainted(false);
+			codeViewer.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+					BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+			codeViewer.addActionListener(e -> {
+				if (codeViewer.isSelected()) {
+					modElementCodeViewer.setVisible(true);
+					splitPane.setDividerSize(10);
+					splitPane.setDividerLocation(0.6);
+					splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
+				} else {
+					modElementCodeViewer.setVisible(false);
+					splitPane.setDividerSize(0);
+					splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				}
+			});
+			toolBarLeft.add(codeViewer);
+
+			add("North", PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, true, false,
+					false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(split);
@@ -260,9 +289,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
 				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				add("Center", splitScroll);
+				centerComponent = PanelUtils.centerAndSouthElement(splitScroll, pager);
 			} else {
-				add("Center", split);
+				centerComponent = PanelUtils.centerAndSouthElement(split, pager);
 			}
 		} else {
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
@@ -296,9 +325,33 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			toolBar.add(saveOnly);
 			toolBar.add(save);
 
+			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+			toolBarLeft.setOpaque(false);
+
+			JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
+			codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			codeViewer.setFocusPainted(false);
+			codeViewer.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+					BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+			codeViewer.addActionListener(e -> {
+				if (codeViewer.isSelected()) {
+					modElementCodeViewer.setVisible(true);
+					splitPane.setDividerSize(10);
+					splitPane.setDividerLocation(0.6);
+					splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
+				} else {
+					modElementCodeViewer.setVisible(false);
+					splitPane.setDividerSize(0);
+					splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				}
+			});
+			toolBarLeft.add(codeViewer);
+
 			add("North",
-					PanelUtils.maxMargin(PanelUtils.westAndEastElement(new JEmptyBox(0, 0), toolBar), 5, true, true,
-							false, false));
+					PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, false,
+							false));
 
 			if (wrapInScrollpane) {
 				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
@@ -308,11 +361,20 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
 				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				add("Center", splitScroll);
+				centerComponent = splitScroll;
 			} else {
-				add("Center", new ArrayList<>(pages.values()).get(0));
+				centerComponent = new ArrayList<>(pages.values()).get(0);
 			}
 		}
+
+		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
+		splitPane.setOpaque(false);
+		splitPane.setOneTouchExpandable(true);
+		modElementCodeViewer.setVisible(false);
+		splitPane.setDividerSize(0);
+		add(splitPane);
+
+		modElementCodeViewer.registerUI(centerComponent);
 
 		reloadDataLists();
 

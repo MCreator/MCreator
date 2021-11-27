@@ -72,7 +72,7 @@ public class ArmorPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
-		base.setBlockSelectedListener(e -> {
+		base.addBlockSelectedListener(e -> {
 			try {
 				if (base.getBlock() != null) {
 					color.setColor(ImageUtils.getAverageColor(
