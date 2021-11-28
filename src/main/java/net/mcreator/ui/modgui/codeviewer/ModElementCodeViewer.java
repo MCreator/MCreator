@@ -22,6 +22,7 @@ package net.mcreator.ui.modgui.codeviewer;
 import javafx.embed.swing.JFXPanel;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
+import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -73,11 +74,13 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		for (Component component : components) {
 			if (component instanceof MCItemHolder mcItemHolder) {
 				mcItemHolder.addBlockSelectedListener(this);
+			} else if (component instanceof JItemListField<?> listField) {
+				listField.addChangeListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner button) {
 				button.addChangeListener(this);
-			} else if (component instanceof JComboBox comboBox) {
+			} else if (component instanceof JComboBox<?> comboBox) {
 				comboBox.addActionListener(this);
 			} else if (component instanceof JTextComponent textComponent) {
 				textComponent.getDocument().addDocumentListener(this);
