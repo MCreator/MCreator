@@ -97,7 +97,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
 	}
 
-    <#if hasProcedure(data.bodyVisibleCondition)>
+    <#if hasProcedure(data.transparentModelCondition)>
         @Override
 	    protected boolean isBodyVisible(${name}Entity _ent) {
 	        Entity entity = _ent;
@@ -105,7 +105,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	        double x = entity.getX();
 	        double y = entity.getY();
 	        double z = entity.getZ();
-		    return !<@procedureOBJToConditionCode data.bodyVisibleCondition/>;
+		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
 	</#if>
 

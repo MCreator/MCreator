@@ -53,7 +53,7 @@ import java.util.Locale;
 	public String mobModelName;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
-	public Procedure bodyVisibleCondition;
+	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
 
 	public double modelWidth, modelHeight, modelShadowSize;

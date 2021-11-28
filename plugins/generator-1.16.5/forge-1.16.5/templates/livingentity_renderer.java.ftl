@@ -145,7 +145,7 @@ package ${package}.entity.renderer;
 }
 
 <#macro renderConditions>
-    <#if hasProcedure(data.bodyVisibleCondition)>
+    <#if hasProcedure(data.transparentModelCondition)>
         @Override
 	    protected boolean isVisible(LivingEntity _ent) {
 	        Entity entity = _ent;
@@ -153,7 +153,7 @@ package ${package}.entity.renderer;
 	        double x = entity.getPosX();
 	        double y = entity.getPosY();
 	        double z = entity.getPosZ();
-		    return !<@procedureOBJToConditionCode data.bodyVisibleCondition/>;
+		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
 	</#if>
 
