@@ -62,15 +62,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
 
-	private final ModElementCodeViewer<GE> modElementCodeViewer;
+	private ModElementCodeViewer<GE> modElementCodeViewer = null;
 	private JSplitPane splitPane;
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
 		this.modElement = modElement;
-
-		this.modElementCodeViewer = new ModElementCodeViewer<>(this);
 	}
 
 	public final void addPage(JComponent component) {
@@ -120,6 +118,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	protected final void finalizeGUI(boolean wrapInScrollpane) {
 		JComponent centerComponent;
+
+		if (allowCodePreview())
+			this.modElementCodeViewer = new ModElementCodeViewer<>(this);
 
 		if (pages.size() > 1) {
 			JModElementProgressPanel split = new JModElementProgressPanel(pages.values().toArray(new Component[0]));
@@ -258,26 +259,29 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			toolBarLeft.setOpaque(false);
 
-			JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-			codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-			codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-			codeViewer.setFocusPainted(false);
-			codeViewer.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
-					BorderFactory.createEmptyBorder(2, 40, 2, 40)));
-			codeViewer.addActionListener(e -> {
-				if (codeViewer.isSelected()) {
-					modElementCodeViewer.setVisible(true);
-					splitPane.setDividerSize(10);
-					splitPane.setDividerLocation(0.6);
-					splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
-				} else {
-					modElementCodeViewer.setVisible(false);
-					splitPane.setDividerSize(0);
-					splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-				}
-			});
-			toolBarLeft.add(codeViewer);
+			if (modElementCodeViewer != null) {
+				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
+				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setFocusPainted(false);
+				codeViewer.setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+				codeViewer.addActionListener(e -> {
+					if (codeViewer.isSelected()) {
+						modElementCodeViewer.setVisible(true);
+						splitPane.setDividerSize(10);
+						splitPane.setDividerLocation(0.6);
+						splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
+					} else {
+						modElementCodeViewer.setVisible(false);
+						splitPane.setDividerSize(0);
+						splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+					}
+				});
+
+				toolBarLeft.add(codeViewer);
+			}
 
 			add("North", PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, true, false,
 					false));
@@ -330,26 +334,29 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			toolBarLeft.setOpaque(false);
 
-			JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-			codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-			codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-			codeViewer.setFocusPainted(false);
-			codeViewer.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
-					BorderFactory.createEmptyBorder(2, 40, 2, 40)));
-			codeViewer.addActionListener(e -> {
-				if (codeViewer.isSelected()) {
-					modElementCodeViewer.setVisible(true);
-					splitPane.setDividerSize(10);
-					splitPane.setDividerLocation(0.6);
-					splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
-				} else {
-					modElementCodeViewer.setVisible(false);
-					splitPane.setDividerSize(0);
-					splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-				}
-			});
-			toolBarLeft.add(codeViewer);
+			if (modElementCodeViewer != null) {
+				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
+				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setFocusPainted(false);
+				codeViewer.setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+				codeViewer.addActionListener(e -> {
+					if (codeViewer.isSelected()) {
+						modElementCodeViewer.setVisible(true);
+						splitPane.setDividerSize(10);
+						splitPane.setDividerLocation(0.6);
+						splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
+					} else {
+						modElementCodeViewer.setVisible(false);
+						splitPane.setDividerSize(0);
+						splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+					}
+				});
+
+				toolBarLeft.add(codeViewer);
+			}
 
 			add("North",
 					PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, false,
@@ -369,14 +376,17 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 		}
 
-		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
-		splitPane.setOpaque(false);
-		splitPane.setOneTouchExpandable(true);
-		modElementCodeViewer.setVisible(false);
-		splitPane.setDividerSize(0);
-		add(splitPane);
-
-		modElementCodeViewer.registerUI(centerComponent);
+		if (modElementCodeViewer != null) {
+			splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
+			splitPane.setOpaque(false);
+			splitPane.setOneTouchExpandable(true);
+			modElementCodeViewer.setVisible(false);
+			splitPane.setDividerSize(0);
+			add("Center", splitPane);
+			modElementCodeViewer.registerUI(centerComponent);
+		} else {
+			add("Center", centerComponent);
+		}
 
 		reloadDataLists();
 
@@ -525,6 +535,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected void afterGeneratableElementStored() {
+	}
+
+	protected boolean allowCodePreview() {
+		return !modElement.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(modElement).isEmpty();
 	}
 
 	public void reloadDataLists() {
