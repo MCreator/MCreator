@@ -348,7 +348,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe1 = new JPanel(new BorderLayout());
 		ptipe1.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -371,7 +371,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe2 = new JPanel(new BorderLayout());
 		ptipe2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe2.add("West", dyn);
@@ -390,7 +390,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe3 = new JPanel(new BorderLayout());
 		ptipe3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe3.add("West", dbl);
