@@ -82,10 +82,16 @@ public class ${name}Block extends
 			</#if>
 			<#if data.unbreakable>
 				.strength(-1, 3600000)
+			<#elseif (data.hardness == 0) && (data.resistance == 0)>
+				.instabreak()
+			<#elseif data.hardness == data.resistance>
+				.strength(${data.hardness}f)
 			<#else>
 				.strength(${data.hardness}f, ${data.resistance}f)
 			</#if>
+			<#if data.luminance != 0>
 				.lightLevel(s -> ${data.luminance})
+			</#if>
 			<#if data.destroyTool != "Not specified">
 				.requiresCorrectToolForDrops()
 			</#if>
@@ -116,6 +122,9 @@ public class ${name}Block extends
 			<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
 					|| (data.blockBase?has_content && data.blockBase == "Stairs")>
 				.dynamicShape()
+			</#if>
+			<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
+				.noDrops()
 			</#if>
 	</#macro>
 
@@ -463,7 +472,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if !data.useLootTableForDrops>
+	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
