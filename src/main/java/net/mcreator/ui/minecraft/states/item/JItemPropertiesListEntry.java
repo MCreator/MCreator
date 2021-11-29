@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft.models.item;
+package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Procedure;
@@ -30,7 +30,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
@@ -40,16 +39,18 @@ import java.util.Map;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
-	private final VTextField name;
+	final VTextField name;
+	String nameString;
 	private final ProcedureSelector.Dynamic value;
+	private final JComponent container;
 
-	public JItemPropertiesListEntry(MCreator mcreator, JPanel parent, List<JItemPropertiesListEntry> entryList,
+	public JItemPropertiesListEntry(MCreator mcreator, JPanel parent, List<JItemPropertiesListEntry> entryMap,
 			int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
+		nameString = "property" + propertyId;
 
 		name = new VTextField(20);
-		name.setValidator(new RegistryNameValidator(this.name, "Property name"));
-		name.enableRealtimeValidation();
+		name.setText(nameString);
 
 		value = new ProcedureSelector.Dynamic(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
@@ -58,27 +59,29 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		reloadDataLists();
 
-		final JComponent container = PanelUtils.expandHorizontally(this);
+		container = PanelUtils.expandHorizontally(this);
 
 		add(L10N.label("elementgui.item.custom_property.name"));
 		add(name);
 		add(value);
 
 		parent.add(container);
-		entryList.add(this);
+		entryMap.add(this);
 		revalidate();
 		repaint();
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_properties.remove"));
-		remove.addActionListener(e -> {
-			entryList.remove(this);
-			parent.remove(container);
-			parent.revalidate();
-			parent.repaint();
-		});
+		remove.addActionListener(e -> removeProperty(parent, entryMap));
 		add(remove);
 
+		parent.revalidate();
+		parent.repaint();
+	}
+
+	public void removeProperty(JPanel parent, List<JItemPropertiesListEntry> entryList) {
+		entryList.remove(this);
+		parent.remove(container);
 		parent.revalidate();
 		parent.repaint();
 	}

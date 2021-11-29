@@ -20,7 +20,7 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
 list_templates:
-  - name: Custom models
+  - name: "Custom models"
     listData: modelsMap.values()
     forEach:
       - template: json/item_override.json.ftl

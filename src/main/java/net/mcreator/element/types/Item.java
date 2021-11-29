@@ -45,7 +45,7 @@ import java.util.Map;
 	public String customModelName;
 
 	public Map<String, Procedure> customProperties;
-	public Map<Map<String, Float>, Item.ModelEntry> modelsMap;
+	public Map<Map<String, Float>, ModelEntry> modelsMap;
 
 	public String name;
 	public String rarity;
@@ -183,6 +183,14 @@ import java.util.Map;
 			if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 				return ((TexturedModel) model).getTextureMapping().getTextureMap();
 			return null;
+		}
+
+		public boolean isNormalModel() {
+			return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Normal");
+		}
+
+		public boolean isToolModel() {
+			return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
 		}
 
 	}

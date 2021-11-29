@@ -39,7 +39,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.minecraft.models.item.JItemPropertiesList;
+import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -93,7 +93,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
-	private JItemPropertiesList customProperties;
+	private JItemPropertiesStatesList customProperties;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -167,9 +167,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
 				L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline().makeReturnValueOptional();
 
-		customProperties = new JItemPropertiesList(this.mcreator);
-		customProperties.setPreferredSize(
-				new Dimension(customProperties.getWidth() - 50, customProperties.getHeight() - 50));
+		customProperties = new JItemPropertiesStatesList(mcreator);
+		customProperties.setPreferredSize(getPreferredSize());
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -452,7 +451,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (page == 2)
 			return new AggregatedValidationResult(name);
 		else if (page == 1)
-			return customProperties.getValidationResult();
+			return customProperties.getValidationResult(true);
 		else if (page == 0)
 			return new AggregatedValidationResult(page1group);
 		return new AggregatedValidationResult.PASS();
@@ -503,7 +502,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			renderType.setSelectedItem(model);
 
 		customProperties.setProperties(item.customProperties);
-		customProperties.setModelsList(item.modelsMap);
+		customProperties.setStates(item.modelsMap);
 	}
 
 	@Override public Item getElementFromGUI() {
@@ -548,7 +547,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		item.customProperties = customProperties.getProperties();
-		item.modelsMap = customProperties.getModelsList();
+		item.modelsMap = customProperties.getStates();
 
 		return item;
 	}
