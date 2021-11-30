@@ -126,7 +126,7 @@ public class CodeEditorView extends ViewBase {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
 
-	CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
+	public CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
 		super(fa);
 
 		this.fileWorkingOn = fileWorkingOn;
@@ -500,7 +500,12 @@ public class CodeEditorView extends ViewBase {
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON));
+			SwingUtilities.invokeLater(() -> {
+				try {
+					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+				} catch (Exception ignored) {
+				}
+			});
 		} else if (fileName.endsWith(".xml")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang")) {
@@ -535,6 +540,10 @@ public class CodeEditorView extends ViewBase {
 		ro.setText(notice);
 		ro.setBackground(color);
 		ro.setVisible(true);
+	}
+
+	public void hideNotice() {
+		ro.setVisible(false);
 	}
 
 	public void disableJumpToMode() {
@@ -708,6 +717,10 @@ public class CodeEditorView extends ViewBase {
 			return this;
 		}
 		return (ViewBase) existing.getContent();
+	}
+
+	public CodeCleanup getCodeCleanup() {
+		return codeCleanup;
 	}
 
 	@Override public String getViewName() {

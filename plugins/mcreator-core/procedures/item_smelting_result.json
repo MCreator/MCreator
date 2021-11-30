@@ -10,6 +10,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
+    "group": "smelting",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"

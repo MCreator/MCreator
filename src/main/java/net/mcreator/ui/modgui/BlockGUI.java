@@ -119,7 +119,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 1, 9999999, 1));
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
 
@@ -952,8 +952,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
 						GeneratableElement generatableElement = element.getGeneratableElement();
-						if (generatableElement instanceof GUI) {
-							GUI gui = (GUI) generatableElement;
+						if (generatableElement instanceof GUI gui) {
 							inventorySize.setValue(gui.getMaxSlotID() + 1);
 							StringBuilder inslots = new StringBuilder();
 							StringBuilder outslots = new StringBuilder();
@@ -1318,8 +1317,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
-		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(colorOnMap,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}

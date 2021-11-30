@@ -19,3 +19,15 @@
         <#return "EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, ${opt.toInt(slot)})">
     </#if>
 </#function>
+
+<#function toAxis direction>
+    <#if (direction == "Direction.EAST") || (direction == "Direction.WEST")>
+        <#return "Direction.Axis.X">
+    <#elseif (direction == "Direction.UP") || (direction == "Direction.DOWN")>
+        <#return "Direction.Axis.Y">
+    <#elseif (direction == "Direction.NORTH") || (direction == "Direction.SOUTH")>
+        <#return "Direction.Axis.Z">
+    <#else>
+        <#return direction + ".getAxis()">
+    </#if>
+</#function>
