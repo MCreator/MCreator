@@ -37,7 +37,7 @@ package ${package}.world.features.plants;
 import com.mojang.serialization.Codec;
 
 public class ${name}Feature extends <#if data.plantType == "normal" && data.staticPlantGenerationType == "Flower">DefaultFlowerFeature<#else>RandomPatchFeature</#if> {
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${registryname}");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
 				.configured(
 					new RandomPatchConfiguration.GrassConfigurationBuilder(
@@ -73,7 +73,8 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 	}
 
 	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
-		ResourceKey<Level> dimensionType = context.level().getLevel().dimension();
+		Level world = context.level().getLevel();
+		ResourceKey<Level> dimensionType = world.dimension();
 		boolean dimensionCriteria = false;
 
 		<#list data.spawnWorldTypes as worldType>

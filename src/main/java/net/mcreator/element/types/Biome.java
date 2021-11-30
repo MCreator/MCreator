@@ -81,7 +81,6 @@ import java.util.List;
 	public String vanillaTreeType;
 	public int treeType;
 	public int minHeight;
-	public int maxWaterDepth;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
@@ -89,15 +88,24 @@ import java.util.List;
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;
+	public boolean spawnMineshaftMesa;
 	public boolean spawnPillagerOutpost;
 	public String villageType;
 	public boolean spawnWoodlandMansion;
 	public boolean spawnJungleTemple;
 	public boolean spawnDesertPyramid;
+	public boolean spawnSwampHut;
 	public boolean spawnIgloo;
 	public boolean spawnOceanMonument;
 	public boolean spawnShipwreck;
+	public boolean spawnShipwreckBeached;
+	public boolean spawnBuriedTreasure;
 	public String oceanRuinType;
+	public boolean spawnNetherBridge;
+	public boolean spawnNetherFossil;
+	public boolean spawnBastionRemnant;
+	public boolean spawnEndCity;
+	public String spawnRuinedPortal;
 
 	public List<String> defaultFeatures;
 
@@ -122,6 +130,7 @@ import java.util.List;
 		vanillaTreeType = "Default";
 		villageType = "none";
 		oceanRuinType = "NONE";
+		spawnRuinedPortal = "NONE";
 		biomeCategory = "NONE";
 		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
@@ -136,6 +145,14 @@ import java.util.List;
 		public int weight;
 		public String spawnType;
 
+	}
+
+	public boolean hasFruits() {
+		return !treeFruits.isEmpty();
+	}
+
+	public boolean hasVines() {
+		return !treeVines.isEmpty();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

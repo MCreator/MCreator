@@ -42,7 +42,7 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 		}
 		if (operationType != null && JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && num != null) {
 			String numCode = master.directProcessOutputBlockWithoutParentheses(num);
-			master.append(switch(operationType) { // We add the proper marker for these operations
+			master.append(switch (operationType) { // We add the proper marker for these operations
 				case "ABS" -> {
 					if (numCode.startsWith("/*@int*/"))
 						yield "/*@int*/";
@@ -50,7 +50,9 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 						yield "/*@float*/";
 					yield "";
 				}
-				case "ROUND" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ? "/*@int*/" : "/*@float*/";
+				case "ROUND" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ?
+						"/*@int*/" :
+						"/*@float*/";
 				case "SIGNUM" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ? "/*@float*/" : "";
 				default -> "";
 			});

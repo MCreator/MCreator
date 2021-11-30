@@ -23,13 +23,13 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
-import net.mcreator.ui.action.impl.gradle.BuildWorkspaceAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JModElementProgressPanel;
 import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -44,6 +44,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
 
@@ -416,10 +417,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined before the generatable element is generated
 		beforeGeneratableElementGenerated();
 
-		// save custom mod element (preview) picture if it has one
-		mcreator.getModElementManager().storeModElementPicture(element);
-		modElement.reinit(); // re-init mod element to pick up the new mod element picture
-
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
 
@@ -431,6 +428,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// generate mod element code
 		mcreator.getGenerator().generateElement(element);
+
+		// save custom mod element (preview) picture if it has one
+		mcreator.getModElementManager().storeModElementPicture(element);
+		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
@@ -482,6 +483,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	@Override @Nullable public String getContextName() {
 		return modElement.getType().getReadableName();
+	}
+
+	@Override @Nullable public IHelpContext withEntry(String entry) {
+		try {
+			return new ModElementHelpContext(this.getContextName(), this.getContextURL(), entry,
+					this::getElementFromGUI);
+		} catch (URISyntaxException e) {
+			return new ModElementHelpContext(this.getContextName(), null, entry, this::getElementFromGUI);
+		}
 	}
 
 }

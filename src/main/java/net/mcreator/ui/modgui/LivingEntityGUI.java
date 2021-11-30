@@ -145,7 +145,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JCheckBox hasSpawnEgg = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> mobSpawningType = new JComboBox<>(ElementUtil.loadMobSpawnTypes());
+	private final JComboBox<String> mobSpawningType = new JComboBox<>(ElementUtil.getDataListAsStringArray("mobspawntypes"));
 
 	private MCItemHolder mobDrop;
 	private MCItemHolder equipmentMainHand;
@@ -188,9 +188,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	//mob bases
 	private final JComboBox<String> aiBase = new JComboBox<>(
-			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie",
-					"MagmaCube", "Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse",
-					"Spider", "IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
+			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
+					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
+					"IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(

@@ -88,6 +88,10 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT);
 				</#if>
 
+				<#if data.spawnMineshaftMesa>
+				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT_BADLANDS);
+				</#if>
+
 				<#if data.spawnPillagerOutpost>
 				biomeGenerationSettings.withStructure(StructureFeatures.PILLAGER_OUTPOST);
 				</#if>
@@ -108,6 +112,10 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.DESERT_PYRAMID);
 				</#if>
 
+				<#if data.spawnSwampHut>
+				biomeGenerationSettings.withStructure(StructureFeatures.SWAMP_HUT);
+				</#if>
+
 				<#if data.spawnIgloo>
 				biomeGenerationSettings.withStructure(StructureFeatures.IGLOO);
 				</#if>
@@ -120,9 +128,41 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.SHIPWRECK);
 				</#if>
 
+				<#if data.spawnShipwreckBeached>
+				biomeGenerationSettings.withStructure(StructureFeatures.SHIPWRECK_BEACHED);
+				</#if>
+
+				<#if data.spawnBuriedTreasure>
+				biomeGenerationSettings.withStructure(StructureFeatures.BURIED_TREASURE);
+				</#if>
+
 				<#if data.oceanRuinType != "NONE">
 				biomeGenerationSettings.withStructure(StructureFeatures.OCEAN_RUIN_${data.oceanRuinType});
 				</#if>
+
+                <#if data.spawnNetherBridge>
+                biomeGenerationSettings.withStructure(StructureFeatures.FORTRESS);
+                </#if>
+
+                <#if data.spawnNetherFossil>
+                biomeGenerationSettings.withStructure(StructureFeatures.NETHER_FOSSIL);
+                </#if>
+
+                <#if data.spawnBastionRemnant>
+                biomeGenerationSettings.withStructure(StructureFeatures.BASTION_REMNANT);
+                </#if>
+
+                <#if data.spawnEndCity>
+                biomeGenerationSettings.withStructure(StructureFeatures.END_CITY);
+                </#if>
+
+                <#if data.spawnRuinedPortal != "NONE">
+                    <#if data.spawnRuinedPortal == "STANDARD">
+                    biomeGenerationSettings.withStructure(StructureFeatures.RUINED_PORTAL);
+                    <#else>
+                    biomeGenerationSettings.withStructure(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
+                    </#if>
+                </#if>
 
 				<#if (data.treesPerChunk > 0)>
 					<#assign ct = data.treeType == data.TREES_CUSTOM>
@@ -142,9 +182,6 @@ import java.util.HashMap;
 								<#else>
 									.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -162,9 +199,6 @@ import java.util.HashMap;
 								<#else>
 									.setIgnoreVines()
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -180,9 +214,6 @@ import java.util.HashMap;
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -197,9 +228,6 @@ import java.util.HashMap;
 								new TwoLayerFeature(1, 1, 2)))
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
-								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
 								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
@@ -218,9 +246,6 @@ import java.util.HashMap;
 								<#else>
 									.setIgnoreVines()
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -237,9 +262,6 @@ import java.util.HashMap;
 									<@vinesAndCocoa/>
 								<#else>
 									.setIgnoreVines()
-								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
 								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)

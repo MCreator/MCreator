@@ -31,12 +31,14 @@
 <#-- @formatter:off -->
 <#include "../boundingboxes.java.ftl">
 <#include "../procedures.java.ftl">
+<#include "../triggers.java.ftl">
 <#include "../mcitems.ftl">
 
 package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements EntityBlock</#if>{
 	public ${name}Block() {
@@ -88,6 +90,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
 			<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
 		</#if>
+	}
+	</#if>
+
+	<#if (data.plantType == "normal") && (data.suspiciousStewDuration > 0)>
+	@Override public int getEffectDuration() {
+		return ${data.suspiciousStewDuration};
 	}
 	</#if>
 
@@ -218,8 +226,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 				return groundState.is(this) ||
 				<#if (data.canBePlacedOn?size > 0)>
-                	<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
-                </#if>
+					<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
+				</#if>
 				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 			<#else>
@@ -237,25 +245,9 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if hasProcedure(data.onBlockAdded)>
-	@Override public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-		super.onPlace(blockstate, world, pos, oldState, moving);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode procedure/>
-	}
-	</#if>
+	<@onBlockAdded data.onBlockAdded, false, 0/>
 
-	<#if hasProcedure(data.onTickUpdate)>
-	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
-		super.tick(blockstate, world, pos, random);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onTickUpdate/>
-	}
-	</#if>
+	<@onBlockTick data.onTickUpdate, false, 0/>
 
 	<#if data.plantType == "growapable">
 	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos blockpos, Random random) {
@@ -276,96 +268,21 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRandomUpdateEvent)>
-	@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
-		super.animateTick(blockstate, world, pos, random);
-		Player entity = Minecraft.getInstance().player;
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onRandomUpdateEvent/>
-	}
-	</#if>
+	<@onAnimateTick data.onRandomUpdateEvent/>
 
-	<#if hasProcedure(data.onNeighbourBlockChanges)>
-	@Override public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean isMoving) {
-		super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, isMoving);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onNeighbourBlockChanges/>
-	}
-	</#if>
+	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourBlockChanges/>
 
-	<#if hasProcedure(data.onEntityCollides)>
-	@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-		super.entityInside(blockstate, world, pos, entity);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onEntityCollides/>
-	}
-	</#if>
+	<@onEntityCollides data.onEntityCollides/>
 
-	<#if hasProcedure(data.onDestroyedByPlayer)>
-	@Override public boolean removedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, boolean willHarvest, FluidState fluid) {
-		boolean retval = super.removedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode procedure/>
-		return retval;
-	}
-	</#if>
+	<@onDestroyedByPlayer data.onDestroyedByPlayer/>
 
-	<#if hasProcedure(data.onDestroyedByExplosion)>
-	@Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
-		super.wasExploded(world, pos, e);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onDestroyedByExplosion/>
-	}
-	</#if>
+	<@onDestroyedByExplosion data.onDestroyedByExplosion/>
 
-	<#if hasProcedure(data.onStartToDestroy)>
-	@Override public void attack(BlockState blockstate, Level world, BlockPos pos, Player entity) {
-		super.attack(blockstate, world, pos, entity);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onStartToDestroy/>
-	}
-	</#if>
+	<@onStartToDestroy data.onStartToDestroy/>
 
-	<#if hasProcedure(data.onBlockPlacedBy)>
-	@Override public void setPlacedBy(Level world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {
-		super.setPlacedBy(world, pos, blockstate, entity, itemstack);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onBlockPlacedBy/>
-	}
-	</#if>
+	<@onBlockPlacedBy data.onBlockPlacedBy/>
 
-	<#if hasProcedure(data.onRightClicked)>
-	@Override public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
-		super.use(blockstate, world, pos, entity, hand, hit);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		double hitX = hit.getLocation().x();
-		double hitY = hit.getLocation().y();
-		double hitZ = hit.getLocation().z();
-		Direction direction = hit.getDirection();
-		<#if hasReturnValue(data.onRightClicked)>
-			return <@procedureOBJToInteractionResultCode data.onRightClicked/>;
-		<#else>
-			<@procedureOBJToCode data.onRightClicked/>
-			return InteractionResult.SUCCESS;
-		</#if>
-	}
-	</#if>
+	<@onBlockRightClicked data.onRightClicked/>
 
 	<#if data.hasTileEntity>
 	@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
@@ -380,7 +297,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>
 
 	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutout());
 	}
 
 	<#if data.tintType != "No tint">

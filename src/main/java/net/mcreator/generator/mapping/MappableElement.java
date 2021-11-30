@@ -55,19 +55,6 @@ public abstract class MappableElement {
 		return value;
 	}
 
-	public String getMappedValueOrFallbackToUnmapped() {
-		try {
-			String retval = mapper.getMapping(value);
-			if (retval.contains("@") || retval.contains(
-					NameMapper.UNKNOWN_ELEMENT)) // we failed to map some of the values
-				return value;
-			else
-				return retval;
-		} catch (Exception e) {
-			return value;
-		}
-	}
-
 	public boolean canProperlyMap() {
 		String mapped = mapper.getMapping(value);
 		return !mapped.contains("@") && !mapped.contains(
@@ -80,6 +67,24 @@ public abstract class MappableElement {
 
 	@Override public boolean equals(Object element) {
 		return element instanceof MappableElement && value.equals(((MappableElement) element).value);
+	}
+
+	public static class Unique extends MappableElement {
+
+		public Unique(MappableElement original) {
+			super(original.mapper);
+			this.value = original.value;
+		}
+
+		@Override public int hashCode() {
+			return getMappedValue().hashCode();
+		}
+
+		@Override public boolean equals(Object element) {
+			return element instanceof MappableElement && getMappedValue().equals(
+					((MappableElement) element).getMappedValue());
+		}
+
 	}
 
 }

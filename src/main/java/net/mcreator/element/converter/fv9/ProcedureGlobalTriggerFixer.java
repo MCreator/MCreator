@@ -87,7 +87,7 @@ public class ProcedureGlobalTriggerFixer implements IConverter {
 		return 9;
 	}
 
-	private static final HashMap<String, String> EXTERNAL_TRIGGERS_LEGACY_NAMEMAP = new HashMap<String, String>() {{
+	private static final HashMap<String, String> EXTERNAL_TRIGGERS_LEGACY_NAMEMAP = new HashMap<>() {{
 		put("A block is broken", "block_break");
 		put("A block is placed", "block_place");
 		put("An explosion occurs", "explosion_occurs");

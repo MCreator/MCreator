@@ -95,7 +95,7 @@ public class ClassFinder {
 					entryName = entryName + ".java";
 
 					Enumeration<? extends ZipEntry> entries = zipFile.entries();
-					while(entries.hasMoreElements()) {
+					while (entries.hasMoreElements()) {
 						ZipEntry entry = entries.nextElement();
 						if (entry.getName().endsWith(entryName)) {
 							String code = ZipIO.entryToString(zipFile, entry);

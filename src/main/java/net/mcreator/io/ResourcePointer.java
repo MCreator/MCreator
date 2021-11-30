@@ -60,10 +60,8 @@ public class ResourcePointer {
 	}
 
 	@Override public boolean equals(Object obj) {
-		if (obj instanceof ResourcePointer) {
-			ResourcePointer cmpObj = (ResourcePointer) obj;
+		if (obj instanceof ResourcePointer cmpObj)
 			return cmpObj.identifier.equals(identifier);
-		}
 		return false;
 	}
 

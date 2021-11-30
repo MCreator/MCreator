@@ -25,8 +25,8 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.Tuple;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -153,6 +153,7 @@ public class ExternalBlockLoader {
 		toolbox.put("logicoperations", new ArrayList<>());
 		toolbox.put("math", new ArrayList<>());
 		toolbox.put("text", new ArrayList<>());
+		toolbox.put("time", new ArrayList<>());
 		toolbox.put("advanced", new ArrayList<>());
 
 		// Handle built-in categories

@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+<#include "triggers.java.ftl">
 
 package ${package}.item;
 
@@ -113,12 +114,21 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
 				return false;
 			} else {
-				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE);
+				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : (
+								blockstate.is(BlockTags.MINEABLE_WITH_AXE) ||
+								blockstate.is(BlockTags.MINEABLE_WITH_HOE) ||
+								blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
+								blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL)
+						);
 			}
 		}
 
 		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-			return ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction);
+			return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
 		}
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
@@ -186,17 +196,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		</#if>
     </#if>
 
-    <#if hasProcedure(data.onRightClickedInAir)>
-    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-			ItemStack itemstack = ar.getObject();
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-    		<@procedureOBJToCode data.onRightClickedInAir/>
-			return ar;
-		}
-	</#if>
+    <@onRightClickedInAir data.onRightClickedInAir/>
 
 	<@commonMethods/>
 
@@ -247,17 +247,7 @@ public class ${name}Item extends Item {
 		return true;
 	}
 	
-    <#if hasProcedure(data.onRightClickedInAir)>
-    	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-			ItemStack itemstack = ar.getObject();
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-    		<@procedureOBJToCode data.onRightClickedInAir/>
-			return ar;
-		}
-	</#if>
+	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
@@ -317,17 +307,7 @@ public class ${name}Item extends FishingRodItem {
 		}
 	</#if>
 
-	<#if hasProcedure(data.onEntityHitWith)>
-    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-			boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			Level world = entity.level;
-    		<@procedureOBJToCode data.onEntityHitWith/>
-			return retval;
-		}
-	</#if>
+	<@onEntityHitWith data.onEntityHitWith/>
     
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		ItemStack itemstack = entity.getItemInHand(hand);
@@ -418,72 +398,15 @@ public class ${name}Item extends FishingRodItem {
     	}
     </#if>
 
-    <#if hasProcedure(data.onRightClickedOnBlock)>
-    	@Override public InteractionResult useOn(UseOnContext context) {
-    		InteractionResult retval = super.useOn(context);
-    		Level world = context.getLevel();
-    		BlockPos pos = context.getClickedPos();
-    		Player entity = context.getPlayer();
-    		Direction direction = context.getClickedFace();
-    		BlockState blockstate = world.getBlockState(pos);
-    		int x = pos.getX();
-    		int y = pos.getY();
-    		int z = pos.getZ();
-    		ItemStack itemstack = context.getItemInHand();
-    		<#if hasReturnValue(data.onRightClickedOnBlock)>
-    		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-    		<#else>
-    		<@procedureOBJToCode data.onRightClickedOnBlock/>
-    		return retval;
-    		</#if>
-    	}
-    </#if>
+    <@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
-    <#if hasProcedure(data.onCrafted)>
-    	@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
-    		super.onCraftedBy(itemstack, world, entity);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<@procedureOBJToCode data.onCrafted/>
-    	}
-    </#if>
+	<@onCrafted data.onCrafted/>
 
-    <#if hasProcedure(data.onEntitySwing)>
-    	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-    		boolean retval = super.onEntitySwing(itemstack, entity);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		Level world = entity.level;
-    		<@procedureOBJToCode data.onEntitySwing/>
-    		return retval;
-    	}
-    </#if>
+	<@onEntitySwing data.onEntitySwing/>
 
-    <#if hasProcedure(data.onStoppedUsing)>
-    	@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-    		super.releaseUsing(itemstack, world, entity, time);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<@procedureOBJToCode data.onStoppedUsing/>
-    	}
-    </#if>
+	<@onStoppedUsing data.onStoppedUsing/>
 
-    <#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
-    	@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-    		super.inventoryTick(itemstack, world, entity, slot, selected);
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		<#if hasProcedure(data.onItemInUseTick)>
-    		if (selected)
-    			<@procedureOBJToCode data.onItemInUseTick/>
-    		</#if>
-    		<@procedureOBJToCode data.onItemInInventoryTick/>
-    	}
-    </#if>
+	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
     <#if data.hasGlow>
     	@Override public boolean isFoil(ItemStack itemstack) {

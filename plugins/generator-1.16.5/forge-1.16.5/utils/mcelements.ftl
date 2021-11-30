@@ -7,15 +7,27 @@
 </#function>
 
 <#function toArmorSlot slot>
-    <#if slot == "0">
+    <#if slot == "/*@int*/0">
         <#return "EquipmentSlotType.FEET">
-    <#elseif slot == "1">
+    <#elseif slot == "/*@int*/1">
         <#return "EquipmentSlotType.LEGS">
-    <#elseif slot == "2">
+    <#elseif slot == "/*@int*/2">
         <#return "EquipmentSlotType.CHEST">
-    <#elseif slot == "3">
+    <#elseif slot == "/*@int*/3">
         <#return "EquipmentSlotType.HEAD">
     <#else>
-        <#return "EquipmentSlotType.fromSlotTypeAndIndex(EquipmentSlotType.Group.ARMOR, (int) " + slot + ")">
+        <#return "EquipmentSlotType.fromSlotTypeAndIndex(EquipmentSlotType.Group.ARMOR, ${opt.toInt(slot)})">
+    </#if>
+</#function>
+
+<#function toAxis direction>
+    <#if (direction == "Direction.EAST") || (direction == "Direction.WEST")>
+        <#return "Direction.Axis.X">
+    <#elseif (direction == "Direction.UP") || (direction == "Direction.DOWN")>
+        <#return "Direction.Axis.Y">
+    <#elseif (direction == "Direction.NORTH") || (direction == "Direction.SOUTH")>
+        <#return "Direction.Axis.Z">
+    <#else>
+        <#return direction + ".getAxis()">
     </#if>
 </#function>

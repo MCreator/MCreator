@@ -61,20 +61,18 @@ public class GTProcedureTriggers {
 					}
 				}
 
-				if (skip) {
-					// We skip API specific triggers without any warnings logged as we do not intend to test them anyway
-					//LOG.warn("[" + generatorName + "] Skipping API specific procedure trigger: "
-					//		+ externalTrigger.getID());
+				if (skip)
 					continue;
-				}
 			}
 
 			ModElement modElement = new ModElement(workspace, "Test" + externalTrigger.getID(),
 					ModElementType.PROCEDURE);
 
 			Procedure procedure = new Procedure(modElement);
+			if (externalTrigger.dependencies_provided != null)
+				procedure.getModElement().clearMetadata().putMetadata("dependencies", externalTrigger.dependencies_provided);
 			procedure.procedurexml =
-					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">"
+					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\"><field name=\"trigger\">"
 							+ externalTrigger.getID() + "</field></block></xml>";
 
 			try {

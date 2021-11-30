@@ -30,6 +30,7 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
+<#include "../triggers.java.ftl">
 
 package ${package}.item;
 
@@ -144,7 +145,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 	}
 	</#if>
 
-    <#if hasProcedure(data.onRightClickedInAir)>
+    <#if hasProcedure(data.onRightClickedInAir) || data.hasInventory()>
     @Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		ItemStack itemstack = ar.getObject();
@@ -153,8 +154,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 		double z = entity.getZ();
 
 		<#if data.hasInventory()>
-		if(entity instanceof ServerPlayer) {
-			NetworkHooks.openGui((ServerPlayer) entity, new MenuProvider() {
+		if(entity instanceof ServerPlayer serverPlayer) {
+			NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 
 				@Override public Component getDisplayName() {
 					return new TextComponent("${data.name}");
@@ -162,13 +163,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 				@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
 					FriendlyByteBuf packetBuffer = new FriendlyByteBuf(Unpooled.buffer());
-					packetBuffer.writeBlockPos(new BlockPos(x, y, z));
+					packetBuffer.writeBlockPos(entity.blockPosition());
 					packetBuffer.writeByte(hand == InteractionHand.MAIN_HAND ? 0 : 1);
 					return new ${data.guiBoundTo}Menu(id, inventory, packetBuffer);
 				}
 
 			}, buf -> {
-				buf.writeBlockPos(new BlockPos(x, y, z));
+				buf.writeBlockPos(entity.blockPosition());
 				buf.writeByte(hand == InteractionHand.MAIN_HAND ? 0 : 1);
 			});
 		}
@@ -179,95 +180,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 	}
     </#if>
 
-    <#if hasProcedure(data.onRightClickedOnBlock)>
-    @Override public InteractionResult useOn(UseOnContext context) {
-		InteractionResult retval = super.useOn(context);
-		Level world = context.getLevel();
-		BlockPos pos = context.getClickedPos();
-		Player entity = context.getPlayer();
-		Direction direction = context.getClickedFace();
-		BlockState blockstate = world.getBlockState(pos);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		ItemStack itemstack = context.getItemInHand();
-    	<#if hasReturnValue(data.onRightClickedOnBlock)>
-    	return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
-		<#else>
-			<@procedureOBJToCode data.onRightClickedOnBlock/>
-    	return retval;
-		</#if>
-	}
-	</#if>
+    <@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
-	<#if hasProcedure(data.onEntityHitWith)>
-	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntityHitWith/>
-		return retval;
-	}
-	</#if>
+	<@onEntityHitWith data.onEntityHitWith/>
 
-	<#if hasProcedure(data.onEntitySwing)>
-	@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-		boolean retval = super.onEntitySwing(itemstack, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
-		<@procedureOBJToCode data.onEntitySwing/>
-		return retval;
-	}
-	</#if>
+	<@onEntitySwing data.onEntitySwing/>
 
-    <#if hasProcedure(data.onCrafted)>
-    @Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
-		super.onCraftedBy(itemstack, world, entity);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-    	<@procedureOBJToCode data.onCrafted/>
-	}
-	</#if>
+    <@onCrafted data.onCrafted/>
 
-	<#if hasProcedure(data.onStoppedUsing)>
-	@Override
-	public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onStoppedUsing/>
-	}
-    </#if>
+	<@onStoppedUsing data.onStoppedUsing/>
 
-	<#if hasProcedure(data.onItemInUseTick) || hasProcedure(data.onItemInInventoryTick)>
-	@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-		super.inventoryTick(itemstack, world, entity, slot, selected);
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<#if hasProcedure(data.onItemInUseTick)>
-		if (selected)
-	    <@procedureOBJToCode data.onItemInUseTick/>
-		</#if>
-		<@procedureOBJToCode data.onItemInInventoryTick/>
-	}
-	</#if>
+	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
-	<#if hasProcedure(data.onDroppedByPlayer)>
-    @Override public boolean onDroppedByPlayer(ItemStack itemstack, Player entity) {
-        double x = entity.getX();
-        double y = entity.getY();
-        double z = entity.getZ();
-        Level world = entity.level;
-        <@procedureOBJToCode data.onDroppedByPlayer/>
-        return true;
-    }
-    </#if>
+	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
 	<#if data.hasInventory()>
 	@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag compound) {
@@ -303,7 +228,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 				<#if hasProcedure(data.dispenseResultItemstack)>
 					boolean success = this.isSuccess();
-					<#if hasReturnValue(data.dispenseResultItemstack)>
+					<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
 						return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 					<#else>
 						<@procedureOBJToCode data.dispenseResultItemstack/>

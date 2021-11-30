@@ -33,29 +33,49 @@ package ${package}.procedures;
 
 import net.minecraftforge.eventbus.api.Event;
 
+<#assign nullableDependencies = []/>
+<#list dependencies as dependency>
+	<#if dependency.getType(generator.getWorkspace()) != "double"
+		&& dependency.getType(generator.getWorkspace()) != "LevelAccessor"
+		&& dependency.getType(generator.getWorkspace()) != "ItemStack"
+		&& dependency.getType(generator.getWorkspace()) != "BlockState"
+		&& dependency.getType(generator.getWorkspace()) != "InteractionResult"
+		&& dependency.getType(generator.getWorkspace()) != "boolean">
+		<#assign nullableDependencies += [dependency.getName()]/>
+	</#if>
+</#list>
+
+<#compress>
+
 <#if trigger_code?has_content>
 ${trigger_code}
 <#else>
 public class ${name}Procedure {
 </#if>
 
-	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(Map<String, Object> dependencies) {
+	<#if trigger_code?has_content>
+	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(
 		<#list dependencies as dependency>
-			if(dependencies.get("${dependency.getName()}") == null) {
-				if(!dependencies.containsKey("${dependency.getName()}"))
-					${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
-				<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
-			}
-        </#list>
-
-		<#list dependencies as dependency>
-			<#if dependency.getType(generator.getWorkspace()) == "double">
-				double ${dependency.getName()} = dependencies.get("${dependency.getName()}") instanceof Integer
-					? (int) dependencies.get("${dependency.getName()}") : (double) dependencies.get("${dependency.getName()}");
-			<#else>
-				${dependency.getType(generator.getWorkspace())} ${dependency.getName()} = (${dependency.getType(generator.getWorkspace())}) dependencies.get("${dependency.getName()}");
-			</#if>
+			${dependency.getType(generator.getWorkspace())} ${dependency.getName()}<#if dependency?has_next>,</#if>
 		</#list>
+	) {
+		<#if return_type??>return </#if>execute(null<#if dependencies?has_content>,</#if><#list dependencies as dependency>${dependency.getName()}<#if dependency?has_next>,</#if></#list>);
+	}
+	</#if>
+
+	<#if trigger_code?has_content>private <#else>public </#if>static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(
+		<#if trigger_code?has_content>@Nullable Event event<#if dependencies?has_content>,</#if></#if>
+		<#list dependencies as dependency>
+				${dependency.getType(generator.getWorkspace())} ${dependency.getName()}<#if dependency?has_next>,</#if>
+		</#list>
+	) {
+		<#if nullableDependencies?has_content>
+			if(
+			<#list nullableDependencies as dependency>
+			${dependency} == null <#if dependency?has_next>||</#if>
+			</#list>
+			) return <#if return_type??>${return_type.getDefaultValue(generator.getWorkspace())}</#if>;
+		</#if>
 
 		<#list localvariables as var>
 			<@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/>
@@ -65,4 +85,7 @@ public class ${name}Procedure {
 	}
 
 }
+
+</#compress>
+
 <#-- @formatter:on -->
