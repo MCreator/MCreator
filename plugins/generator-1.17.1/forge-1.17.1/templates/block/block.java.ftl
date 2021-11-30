@@ -161,48 +161,6 @@ public class ${name}Block extends
 		setRegistryName("${registryname}");
 	}
 
-	<#if data.blockBase?has_content && data.blockBase == "Fence">
-	@Override public boolean connectsTo(BlockState state, boolean checkattach, Direction face) {
-	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
-	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, face);
-	  return !isExceptionForConnection(state) && checkattach || flag || flag1;
-	}
-	<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-   private static final int WALL_WIDTH = 3;
-   private static final int WALL_HEIGHT = 14;
-   private static final int POST_WIDTH = 4;
-   private static final int POST_COVER_WIDTH = 1;
-   private static final int WALL_COVER_START = 7;
-   private static final int WALL_COVER_END = 9;
-   private static final VoxelShape POST_TEST = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-   private static final VoxelShape NORTH_TEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 9.0D);
-   private static final VoxelShape SOUTH_TEST = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 16.0D);
-   private static final VoxelShape WEST_TEST = Block.box(0.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-   private static final VoxelShape EAST_TEST = Block.box(7.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
-
-	@Override ${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "getStateForPlacement", "BlockPlaceContext")}
-	@Override ${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "topUpdate", "LevelReader", "BlockState", "BlockPos", "BlockState")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "sideUpdate", "LevelReader", "BlockPos", "BlockState", "BlockPos", "BlockState", "Direction")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateShape", "LevelReader", "BlockState", "BlockPos", "BlockState", "boolean", "boolean", "boolean", "boolean")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateSides", "BlockState", "boolean", "boolean", "boolean", "boolean", "VoxelShape")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "makeWallState", "boolean", "VoxelShape", "VoxelShape")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "shouldRaisePost", "BlockState", "BlockState", "VoxelShape")}
-
-	private boolean connectsTo(BlockState state, boolean checkattach, Direction face) {
-		boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, face);
-		return !isExceptionForConnection(state) && checkattach || flag;
-	}
-
-	private static boolean isConnected(BlockState state, Property<WallSide> heightProperty) {
-		return state.getValue(heightProperty) != WallSide.NONE;
-	}
-
-	private static boolean isCovered(VoxelShape shape1, VoxelShape shape2) {
-		return !Shapes.joinIsNotEmpty(shape2, shape1, BooleanOp.ONLY_FIRST);
-	}
-	</#if>
-
 	<#if data.specialInfo?has_content>
 	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, world, list, flag);
