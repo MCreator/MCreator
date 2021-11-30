@@ -1,2 +1,2 @@
-Tant que la valeur renvoyée est vraie, l'entité sera visible.
-Tant que le joueur est en mode spectateur, il ne remplit pas cette condition.
+Tant que la valeur renvoyée est vraie, l'entité sera transparente.
+Tant que le joueur est en mode spectateur, il remplit cette condition.
