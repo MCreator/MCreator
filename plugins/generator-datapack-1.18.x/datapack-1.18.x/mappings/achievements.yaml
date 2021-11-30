@@ -41,6 +41,7 @@ nether/create_beacon: minecraft:nether/create_beacon
 nether/all_potions: minecraft:nether/all_potions
 nether/create_full_beacon: minecraft:nether/create_full_beacon
 nether/all_effects: minecraft:nether/all_effects
+nether/ride_strider_in_overworld_lava: minecraft:nether/ride_strider_in_overworld_lava
 end/root: minecraft:end/root
 end/kill_dragon: minecraft:end/kill_dragon
 end/dragon_egg: minecraft:end/dragon_egg
@@ -75,6 +76,9 @@ adventure/spyglass_at_dragon: minecraft:adventure/spyglass_at_dragon
 adventure/spyglass_at_ghast: minecraft:adventure/spyglass_at_ghast
 adventure/spyglass_at_parrot: minecraft:adventure/spyglass_at_parrot
 adventure/walk_on_powder_snow_with_leather_boots: minecraft:adventure/walk_on_powder_snow_with_leather_boots
+adventure/fall_from_world_height: minecraft:adventure/fall_from_world_height
+adventure/play_jukebox_in_meadows: minecraft:adventure/play_jukebox_in_meadows
+adventure/trade_at_world_height: minecraft:adventure/trade_at_world_height
 husbandry/root: minecraft:husbandry/root
 husbandry/safely_harvest_honey: minecraft:husbandry/safely_harvest_honey
 husbandry/breed_an_animal: minecraft:husbandry/breed_an_animal
