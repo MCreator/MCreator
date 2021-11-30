@@ -554,11 +554,20 @@
 - music.end
 - music.game
 - music.menu
+- music.under_water
 - music.nether
 - music.nether.basalt_deltas
 - music.nether.soul_sand_valley
 - music.nether.crimson_forest
 - music.nether.warped_forest
+- music.overworld.dripstone_caves
+- music.overworld.grove
+- music.overworld.jagged_peaks
+- music.overworld.lush_caves
+- music.overworld.meadow
+- music.overworld.frozen_peaks
+- music.overworld.snow_slopes
+- music.overworld.stony_peaks
 - record.11
 - record.13
 - record.blocks
@@ -572,6 +581,7 @@
 - record.wait
 - record.ward
 - record.pigstep
+- record.otherside
 - ui.button.click
 - ui.toast.in
 - ui.toast.out
@@ -700,7 +710,6 @@
 - entity.mooshroom.eat
 - entity.mooshroom.milk
 - entity.mooshroom.suspicious_milk
-- music.under_water
 - block.nether_wart.break
 - item.nether_wart.plant
 - entity.ocelot.hurt
@@ -1194,3 +1203,6 @@
 - block.tuff.step
 - item.bone_meal.use
 - item.dye.use
+- item.bundle.drop_contents
+- item.bundle.insert
+- item.bundle.remove_one

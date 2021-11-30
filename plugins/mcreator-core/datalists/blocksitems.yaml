@@ -6662,6 +6662,12 @@
   type: item
   texture: MUSIC_DISC_PIGSTEP
 
+- Items.MUSIC_DISC_OTHERSIDE:
+  readable_name: "Music Disc"
+  description: "Otherside"
+  type: item
+  texture: MUSIC_DISC_OTHERSIDE
+
 - Items.SKULL:
   readable_name: "Any Skull"
   type: item
