@@ -548,8 +548,10 @@ public class ${name}Block extends
 		int y = pos.getY();
 		int z = pos.getZ();
 		<#if data.spawnParticles>
-	        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious
-	        data.particleAmount data.particleCondition/>
+			<#if hasProcedure(data.particleCondition)>
+			if(<@procedureOBJToConditionCode data.particleCondition/>)
+			</#if>
+	        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
 	    </#if>
 		<@procedureOBJToCode data.onRandomUpdateEvent/>
 	}
