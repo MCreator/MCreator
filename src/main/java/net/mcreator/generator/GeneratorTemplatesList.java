@@ -19,9 +19,28 @@
 
 package net.mcreator.generator;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public record GeneratorTemplatesList(String groupName, Collection<?> listData,
-									 Map<GeneratorTemplate, List<Boolean>> templates) {}
+									 Map<GeneratorTemplate, List<Boolean>> templates) {
+
+	public GeneratorTemplate getCorrespondingListDataElement(File generatorFile) {
+		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
+			String filePath = generatorFile.getPath();
+			String[] templatePathParts = generatorTemplate.getFile().getPath().split("@elementindex");
+			boolean validToCheck = true;
+			try {
+				Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
+			} catch (NumberFormatException e) {
+				validToCheck = false;
+			}
+			if (validToCheck /*&& mcreator.getFolderManager().isFileInWorkspace(generatorFile.file())*/
+					&& filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1]))
+				return generatorTemplate;
+		}
+		return null;
+	}
+}

@@ -22,7 +22,9 @@ package net.mcreator.ui.modgui.codeviewer;
 import javafx.embed.swing.JFXPanel;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
+import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -37,10 +39,8 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
@@ -49,16 +49,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
+	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
 	private boolean updateRunning = false;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
-		super(JTabbedPane.BOTTOM);
+		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		this.modElementGUI = modElementGUI;
 
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		setOpaque(true);
 
 		addComponentListener(new ComponentAdapter() {
@@ -105,6 +105,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
+					Optional.of(modElementGUI.getModElement().getGenerator()
+									.getModElementGeneratorListTemplates(modElementGUI.getModElement(),
+											modElementGUI.getModElement().getGeneratableElement()))
+							.ifPresent(e -> e.forEach(el -> {
+								JTabbedPane subTab = getTabbedPaneForListTemplates();
+								if (listPager.containsValue(subTab)) {
+									listPager.put(el, subTab);
+									addTab(el.groupName(), UIRES.get("16px.list.gif"), subTab);
+								}
+							}));
 
 					files.sort(
 							Comparator.comparing(e -> FilenameUtils.getExtension(((GeneratorFile) e).file().getName()))
@@ -113,14 +123,37 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					for (GeneratorFile file : files) {
 						if (cache.containsKey(file.file())) { // existing file
 							if (cache.get(file.file()).update(file)) {
-								int tabid = indexOfComponent(cache.get(file.file()));
-								if (tabid != -1)
-									setSelectedIndex(tabid);
+								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+										.filter(e -> e.getCorrespondingListDataElement(file.file()) != null)
+										.findFirst();
+								if (ownerListOptional.isPresent()) {
+									JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+									int tabid = indexOfComponent(ownerList);
+									if (tabid != -1)
+										setSelectedIndex(tabid);
+									int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
+									if (subtabid != -1)
+										ownerList.setSelectedIndex(subtabid);
+								} else {
+									int tabid = indexOfComponent(cache.get(file.file()));
+									if (tabid != -1)
+										setSelectedIndex(tabid);
+								}
 							}
 						} else { // new file
 							try {
 								FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-								addTab(file.file().getName(), FileIcons.getIconForFile(file.file()), fileCodeViewer);
+								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+										.filter(e -> e.getCorrespondingListDataElement(file.file()) != null)
+										.findFirst();
+								if (ownerListOptional.isPresent()) {
+									listPager.get(ownerListOptional.get())
+											.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+													fileCodeViewer);
+								} else {
+									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+											fileCodeViewer);
+								}
 								cache.put(file.file(), fileCodeViewer);
 							} catch (Exception ignored) {
 							}
@@ -130,7 +163,18 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					for (File file : cache.keySet()) {
 						if (!files.stream().map(GeneratorFile::file).collect(Collectors.toList())
 								.contains(file)) { // deleted file
-							remove(cache.get(file));
+							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+									.filter(e -> e.getCorrespondingListDataElement(file) != null).findFirst();
+							if (ownerListOptional.isPresent()) {
+								GeneratorTemplatesList ownerList = ownerListOptional.get();
+								listPager.get(ownerList).remove(cache.get(file));
+								if (listPager.get(ownerList).getTabCount() == 0) {
+									remove(listPager.get(ownerList));
+									listPager.remove(ownerList);
+								}
+							} else {
+								remove(cache.get(file));
+							}
 							cache.remove(file);
 						}
 					}
@@ -141,6 +185,21 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				updateRunning = false;
 			}).start();
 		}
+	}
+
+	private JTabbedPane getTabbedPaneForListTemplates() {
+		JTabbedPane retVal = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+		retVal.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		retVal.setOpaque(true);
+
+		retVal.addComponentListener(new ComponentAdapter() {
+			@Override public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
+				reload();
+			}
+		});
+
+		return retVal;
 	}
 
 	public ModElementGUI<T> getModElementGUI() {
