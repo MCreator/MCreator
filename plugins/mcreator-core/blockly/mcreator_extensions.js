@@ -32,7 +32,7 @@ Blockly.Extensions.register('material_list_provider',
 Blockly.Extensions.register('plant_type_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("planttype"))), 'planttype');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("planttypes"))), 'planttype');
     });
 
 // Extension to mark a procedure block as a custom loop

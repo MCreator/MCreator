@@ -88,6 +88,10 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT);
 				</#if>
 
+				<#if data.spawnMineshaftMesa>
+				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT_BADLANDS);
+				</#if>
+
 				<#if data.spawnPillagerOutpost>
 				biomeGenerationSettings.withStructure(StructureFeatures.PILLAGER_OUTPOST);
 				</#if>
@@ -108,6 +112,10 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.DESERT_PYRAMID);
 				</#if>
 
+				<#if data.spawnSwampHut>
+				biomeGenerationSettings.withStructure(StructureFeatures.SWAMP_HUT);
+				</#if>
+
 				<#if data.spawnIgloo>
 				biomeGenerationSettings.withStructure(StructureFeatures.IGLOO);
 				</#if>
@@ -120,9 +128,41 @@ import java.util.HashMap;
 				biomeGenerationSettings.withStructure(StructureFeatures.SHIPWRECK);
 				</#if>
 
+				<#if data.spawnShipwreckBeached>
+				biomeGenerationSettings.withStructure(StructureFeatures.SHIPWRECK_BEACHED);
+				</#if>
+
+				<#if data.spawnBuriedTreasure>
+				biomeGenerationSettings.withStructure(StructureFeatures.BURIED_TREASURE);
+				</#if>
+
 				<#if data.oceanRuinType != "NONE">
 				biomeGenerationSettings.withStructure(StructureFeatures.OCEAN_RUIN_${data.oceanRuinType});
 				</#if>
+
+                <#if data.spawnNetherBridge>
+                biomeGenerationSettings.withStructure(StructureFeatures.FORTRESS);
+                </#if>
+
+                <#if data.spawnNetherFossil>
+                biomeGenerationSettings.withStructure(StructureFeatures.NETHER_FOSSIL);
+                </#if>
+
+                <#if data.spawnBastionRemnant>
+                biomeGenerationSettings.withStructure(StructureFeatures.BASTION_REMNANT);
+                </#if>
+
+                <#if data.spawnEndCity>
+                biomeGenerationSettings.withStructure(StructureFeatures.END_CITY);
+                </#if>
+
+                <#if data.spawnRuinedPortal != "NONE">
+                    <#if data.spawnRuinedPortal == "STANDARD">
+                    biomeGenerationSettings.withStructure(StructureFeatures.RUINED_PORTAL);
+                    <#else>
+                    biomeGenerationSettings.withStructure(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
+                    </#if>
+                </#if>
 
 				<#if (data.treesPerChunk > 0)>
 					<#assign ct = data.treeType == data.TREES_CUSTOM>

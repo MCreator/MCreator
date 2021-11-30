@@ -8,6 +8,7 @@
 			"y": "entity.getY()",
 			"z": "entity.getZ()",
 			"entity": "entity",
+			"world": "entity.level",
 			"event": "event",
 			"itemstack": "event.getEntityItem().getItem()"
 			}/>

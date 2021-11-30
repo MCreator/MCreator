@@ -62,10 +62,8 @@ public final class RecentWorkspaceEntry {
 	}
 
 	@Override public boolean equals(Object obj) {
-		if (obj instanceof RecentWorkspaceEntry) {
-			RecentWorkspaceEntry cmpObj = (RecentWorkspaceEntry) obj;
+		if (obj instanceof RecentWorkspaceEntry cmpObj)
 			return cmpObj.path.equals(path);
-		}
 		return false;
 	}
 }

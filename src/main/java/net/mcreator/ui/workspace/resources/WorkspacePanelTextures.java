@@ -88,10 +88,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		lista = createListElement(dmla, L10N.t("workspace.textures.category_armor"));
 		listo = createListElement(dmlo, L10N.t("workspace.textures.category_other"));
 
-		respan.add(listb.getComponent());
-		respan.add(listi.getComponent());
-		respan.add(lista.getComponent());
-		respan.add(listo.getComponent());
+		respan.add(listb.component());
+		respan.add(listi.component());
+		respan.add(lista.component());
+		respan.add(listo.component());
 
 		respan.setOpaque(false);
 
@@ -256,10 +256,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void reloadElements() {
 		new Thread(() -> {
-			List<File> selectedb = listb.getList().getSelectedValuesList();
-			List<File> selectedi = listi.getList().getSelectedValuesList();
-			List<File> selecteda = lista.getList().getSelectedValuesList();
-			List<File> selectedo = listo.getList().getSelectedValuesList();
+			List<File> selectedb = listb.list().getSelectedValuesList();
+			List<File> selectedi = listi.list().getSelectedValuesList();
+			List<File> selecteda = lista.list().getSelectedValuesList();
+			List<File> selectedo = listo.list().getSelectedValuesList();
 
 			FilterModel newdmlb = new FilterModel();
 			FilterModel newdmli = new FilterModel();
@@ -272,17 +272,17 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			workspacePanel.getMcreator().getFolderManager().getOtherTexturesList().forEach(newdmlo::addElement);
 
 			SwingUtilities.invokeLater(() -> {
-				listb.getList().setModel(dmlb = newdmlb);
-				listi.getList().setModel(dmli = newdmli);
-				lista.getList().setModel(dmla = newdmla);
-				listo.getList().setModel(dmlo = newdmlo);
+				listb.list().setModel(dmlb = newdmlb);
+				listi.list().setModel(dmli = newdmli);
+				lista.list().setModel(dmla = newdmla);
+				listo.list().setModel(dmlo = newdmlo);
 
 				textureRender.invalidateIconCache();
 
-				ListUtil.setSelectedValues(listb.getList(), selectedb);
-				ListUtil.setSelectedValues(listi.getList(), selectedi);
-				ListUtil.setSelectedValues(lista.getList(), selecteda);
-				ListUtil.setSelectedValues(listo.getList(), selectedo);
+				ListUtil.setSelectedValues(listb.list(), selectedb);
+				ListUtil.setSelectedValues(listi.list(), selectedi);
+				ListUtil.setSelectedValues(lista.list(), selecteda);
+				ListUtil.setSelectedValues(listo.list(), selectedo);
 
 				refilterElements();
 			});
@@ -296,35 +296,35 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		dmlo.refilter();
 
 		if (dmli.getSize() > 0) {
-			listi.getComponent().setPreferredSize(null);
-			listi.getComponent().setVisible(true);
+			listi.component().setPreferredSize(null);
+			listi.component().setVisible(true);
 		} else {
-			listi.getComponent().setPreferredSize(new Dimension(0, 0));
-			listi.getComponent().setVisible(false);
+			listi.component().setPreferredSize(new Dimension(0, 0));
+			listi.component().setVisible(false);
 		}
 
 		if (dmla.getSize() > 0) {
-			lista.getComponent().setPreferredSize(null);
-			lista.getComponent().setVisible(true);
+			lista.component().setPreferredSize(null);
+			lista.component().setVisible(true);
 		} else {
-			lista.getComponent().setPreferredSize(new Dimension(0, 0));
-			lista.getComponent().setVisible(false);
+			lista.component().setPreferredSize(new Dimension(0, 0));
+			lista.component().setVisible(false);
 		}
 
 		if (dmlb.getSize() > 0) {
-			listb.getComponent().setPreferredSize(null);
-			listb.getComponent().setVisible(true);
+			listb.component().setPreferredSize(null);
+			listb.component().setVisible(true);
 		} else {
-			listb.getComponent().setPreferredSize(new Dimension(0, 0));
-			listb.getComponent().setVisible(false);
+			listb.component().setPreferredSize(new Dimension(0, 0));
+			listb.component().setVisible(false);
 		}
 
 		if (dmlo.getSize() > 0) {
-			listo.getComponent().setPreferredSize(null);
-			listo.getComponent().setVisible(true);
+			listo.component().setPreferredSize(null);
+			listo.component().setVisible(true);
 		} else {
-			listo.getComponent().setPreferredSize(new Dimension(0, 0));
-			listo.getComponent().setVisible(false);
+			listo.component().setPreferredSize(new Dimension(0, 0));
+			listo.component().setVisible(false);
 		}
 
 	}
@@ -442,8 +442,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 					}
 
 					if (!ma.getName().matches("[a-z0-9/._-]+")) {
-						if (getIcon() instanceof ImageIcon) {
-							ImageIcon icon = (ImageIcon) getIcon();
+						if (getIcon() instanceof ImageIcon icon) {
 							icon = ImageUtils.changeSaturation(icon, 0.5f);
 							setIcon(ImageUtils.drawOver(icon, UIRES.get("18px.warning"), 0, 0, 18, 18));
 							setForeground(new Color(255, 245, 15));
@@ -457,22 +456,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	}
 
-	private static class JComponentWithList<T> {
-		private final JComponent component;
-		private final JList<T> list;
-
-		public JComponentWithList(JComponent component, JList<T> list) {
-			this.component = component;
-			this.list = list;
-		}
-
-		public JComponent getComponent() {
-			return component;
-		}
-
-		public JList<T> getList() {
-			return list;
-		}
-	}
+	private record JComponentWithList<T>(JComponent component, JList<T> list) {}
 
 }

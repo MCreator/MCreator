@@ -33,8 +33,7 @@ public class ReloadCodeAction extends BasicAction {
 	public ReloadCodeAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.ide.reload_code"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
-			if (pan instanceof CodeEditorView) {
-				CodeEditorView codeEditorView = (CodeEditorView) pan;
+			if (pan instanceof CodeEditorView codeEditorView) {
 				File curr = codeEditorView.fileWorkingOn;
 				if (curr.isFile()) {
 					int sel = JOptionPane.OK_OPTION;

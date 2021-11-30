@@ -35,8 +35,7 @@ public class SocialButtons extends JLabel {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				int offset = 0;
-				if (getBorder() instanceof EmptyBorder) {
-					EmptyBorder border = (EmptyBorder) getBorder();
+				if (getBorder() instanceof EmptyBorder border) {
 					offset = border.getBorderInsets().left;
 				}
 				int x = mouseEvent.getX() - offset;

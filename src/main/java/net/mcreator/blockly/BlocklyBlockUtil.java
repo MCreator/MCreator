@@ -50,8 +50,7 @@ public class BlocklyBlockUtil {
 		}
 		Element start_block = null;
 		for (int i = 0; i < blocks.getLength() && start_block == null; i++) {
-			if (blocks.item(i) instanceof Element) {
-				Element block = (Element) blocks.item(i);
+			if (blocks.item(i) instanceof Element block) {
 				if (block.getAttribute("type").equals(typeBlockName)) {
 					start_block = block;
 				}

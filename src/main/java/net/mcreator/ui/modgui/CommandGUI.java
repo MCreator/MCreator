@@ -83,7 +83,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		JPanel evente = new JPanel();
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.command.on_command_executed"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onCommandExecuted);
