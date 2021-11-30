@@ -109,8 +109,8 @@ public class ActionRegistry {
 	public final BasicAction injectDefaultTags;
 
 	// IDE actions
-	public final BasicAction openAsCode;
 	public final BasicAction openFile;
+	public final BasicAction openFileInDesktop;
 	public final BasicAction showFileInExplorer;
 	public final BasicAction deleteFile;
 	public final BasicAction newClass;
@@ -218,11 +218,11 @@ public class ActionRegistry {
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
-		this.openAsCode = new BasicAction(this, L10N.t("workspace_file_browser.open"),
+		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
 				e -> mcreator.getProjectBrowser().openSelectedFileAsCode(true)).setIcon(UIRES.get("16px.edit.gif"));
-		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open_file"),
+		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
 				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
-		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.open_parent_folder"),
+		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.show_in_explorer"),
 				e -> DesktopUtils.openSafe(
 						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()),
 						true)).setIcon(UIRES.get("16px.open.gif"));

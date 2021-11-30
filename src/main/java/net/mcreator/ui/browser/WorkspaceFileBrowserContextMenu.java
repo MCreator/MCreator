@@ -30,68 +30,67 @@ import java.io.File;
 class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 
 	WorkspaceFileBrowserContextMenu(WorkspaceFileBrowser browser) {
-		boolean contextActionsAvailable = false;
+		boolean fileActionsAllowed = false;
 		JMenu createMenu = L10N.menu("workspace_file_browser.add");
 		createMenu.setIcon(UIRES.get("16px.add.gif"));
 
 		FilterTreeNode selected = (FilterTreeNode) browser.tree.getLastSelectedPathComponent();
 		try {
-			if (selected != null) {
-				if (selected.getUserObject() instanceof File file) {
-					if (file.isFile())
-						file = file.getParentFile();
+			if (selected.getUserObject() instanceof File file) {
+				if (file.isFile())
+					file = file.getParentFile();
 
-					if (browser.mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-							== GeneratorFlavor.BaseLanguage.JAVA) {
-						if (file.isDirectory() && file.getCanonicalPath()
-								.startsWith(browser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
-							contextActionsAvailable = true;
-							createMenu.add(browser.mcreator.actionRegistry.newClass);
-							createMenu.add(browser.mcreator.actionRegistry.newPackage);
-						} else if (file.isDirectory() && (file.getCanonicalPath()
-								.startsWith(browser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
-							contextActionsAvailable = true;
-							createMenu.add(browser.mcreator.actionRegistry.newJson);
-							createMenu.add(browser.mcreator.actionRegistry.newImage);
-							createMenu.add(browser.mcreator.actionRegistry.newFolder);
-						}
-					} else {
-						if (file.isDirectory() && file.getCanonicalPath()
-								.startsWith(browser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())
-								|| file.isDirectory() && (file.getCanonicalPath()
-								.startsWith(browser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
-							contextActionsAvailable = true;
-							createMenu.add(browser.mcreator.actionRegistry.newJson);
-							createMenu.add(browser.mcreator.actionRegistry.newImage);
-							createMenu.add(browser.mcreator.actionRegistry.newFolder);
-						}
+				if (browser.mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+						== GeneratorFlavor.BaseLanguage.JAVA) {
+					if (file.isDirectory() && file.getCanonicalPath()
+							.startsWith(browser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())) {
+						fileActionsAllowed = true;
+						createMenu.add(browser.mcreator.actionRegistry.newClass);
+						createMenu.add(browser.mcreator.actionRegistry.newPackage);
+					} else if (file.isDirectory() && (file.getCanonicalPath()
+							.startsWith(browser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+						fileActionsAllowed = true;
+						createMenu.add(browser.mcreator.actionRegistry.newJson);
+						createMenu.add(browser.mcreator.actionRegistry.newImage);
+						createMenu.add(browser.mcreator.actionRegistry.newFolder);
 					}
-				} else if (selected == browser.sourceCode) {
-					contextActionsAvailable = true;
-					createMenu.add(browser.mcreator.actionRegistry.newClass);
-					createMenu.add(browser.mcreator.actionRegistry.newPackage);
-				} else if (selected == browser.currRes) {
-					contextActionsAvailable = true;
-					createMenu.add(browser.mcreator.actionRegistry.newJson);
-					createMenu.add(browser.mcreator.actionRegistry.newImage);
-					createMenu.add(browser.mcreator.actionRegistry.newFolder);
+				} else {
+					if (file.isDirectory() && file.getCanonicalPath()
+							.startsWith(browser.mcreator.getGenerator().getSourceRoot().getCanonicalPath())
+							|| file.isDirectory() && (file.getCanonicalPath()
+							.startsWith(browser.mcreator.getGenerator().getResourceRoot().getCanonicalPath()))) {
+						fileActionsAllowed = true;
+						createMenu.add(browser.mcreator.actionRegistry.newJson);
+						createMenu.add(browser.mcreator.actionRegistry.newImage);
+						createMenu.add(browser.mcreator.actionRegistry.newFolder);
+					}
 				}
+			} else if (selected == browser.sourceCode) {
+				fileActionsAllowed = true;
+				createMenu.add(browser.mcreator.actionRegistry.newClass);
+				createMenu.add(browser.mcreator.actionRegistry.newPackage);
+			} else if (selected == browser.currRes) {
+				fileActionsAllowed = true;
+				createMenu.add(browser.mcreator.actionRegistry.newJson);
+				createMenu.add(browser.mcreator.actionRegistry.newImage);
+				createMenu.add(browser.mcreator.actionRegistry.newFolder);
 			}
 		} catch (Exception ignored) {
 		}
 
 		boolean fileInWorkspace = selected.getUserObject() instanceof File file && browser.mcreator.getFolderManager()
 				.isFileInWorkspace(file);
-		browser.mcreator.actionRegistry.openAsCode.setEnabled(selected != null);
-		browser.mcreator.actionRegistry.openFile.setEnabled(fileInWorkspace);
+		browser.mcreator.actionRegistry.openFile.setEnabled(true);
+		browser.mcreator.actionRegistry.openFileInDesktop.setEnabled(
+				fileInWorkspace || selected == browser.sourceCode || selected == browser.currRes);
 		browser.mcreator.actionRegistry.showFileInExplorer.setEnabled(
 				fileInWorkspace && selected != browser.sourceCode && selected != browser.currRes);
-		createMenu.setEnabled(contextActionsAvailable);
+		createMenu.setEnabled(fileActionsAllowed);
 		browser.mcreator.actionRegistry.deleteFile.setEnabled(
-				contextActionsAvailable && selected != browser.sourceCode && selected != browser.currRes);
+				fileActionsAllowed && selected != browser.sourceCode && selected != browser.currRes);
 
-		add(browser.mcreator.actionRegistry.openAsCode);
 		add(browser.mcreator.actionRegistry.openFile);
+		add(browser.mcreator.actionRegistry.openFileInDesktop);
 		add(browser.mcreator.actionRegistry.showFileInExplorer);
 		addSeparator();
 		add(createMenu);

@@ -191,7 +191,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 2)
 					openSelectedFileAsCode(false);
-				else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
+				else if (mouseEvent.getButton() == MouseEvent.BUTTON3 && tree.getLastSelectedPathComponent() != null)
 					new WorkspaceFileBrowserContextMenu(WorkspaceFileBrowser.this).show(tree, mouseEvent.getX(),
 							mouseEvent.getY());
 			}
