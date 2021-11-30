@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +19,28 @@
 
 package net.mcreator.ui.help;
 
+import net.mcreator.element.GeneratableElement;
+
 import javax.annotation.Nullable;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.function.Supplier;
 
-public interface IHelpContext {
+public record ModElementHelpContext(@Nullable String name, @Nullable URI contextURL, @Nullable String entry,
+									Supplier<GeneratableElement> generatableElement) implements IHelpContext {
 
-	IHelpContext NONE = new IHelpContext() {
-		@Override public @Nullable String getContextName() {
-			return null;
-		}
-
-		@Override public @Nullable URI getContextURL() {
-			return null;
-		}
-	};
-
-	default IHelpContext withEntry(String entry) {
-		try {
-			return new HelpContextWithEntry(this.getContextName(), this.getContextURL(), entry);
-		} catch (URISyntaxException e) {
-			return new HelpContextWithEntry(this.getContextName(), null, entry);
-		}
+	@Nullable @Override public String getContextName() {
+		return name;
 	}
 
-	default String getEntry() {
-		return null;
+	@Nullable @Override public URI getContextURL() {
+		return contextURL;
 	}
 
-	@Nullable String getContextName();
-
-	@Nullable default URI getContextURL() throws URISyntaxException {
-		return null;
+	@Nullable @Override public String getEntry() {
+		return entry;
 	}
 
+	public GeneratableElement getModElementFromGUI() {
+		return generatableElement.get();
+	}
 }

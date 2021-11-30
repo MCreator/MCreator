@@ -33,7 +33,7 @@ public class BiomeDictionaryTypeListField extends JItemListField<String> {
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> ElementUtil.loadBiomeDictionaryTypes(),
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> ElementUtil.getDataListAsStringArray("biomedictionnarytypes"),
 				L10N.t("dialog.list_field.biome_dictionary_title"),
 				L10N.t("dialog.list_field.biome_dictionary_message"));
 	}
