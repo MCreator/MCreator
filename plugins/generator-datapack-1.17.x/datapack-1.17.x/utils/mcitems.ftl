@@ -1,22 +1,17 @@
 <#function mappedMCItemToIngameItemName mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
+            + mappedBlock
             + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\"">
+        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case + "\"">
     <#else>
-        <#assign mapped = mappedBlock.toString() />
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 0) />
         <#if mapped.startsWith("#")>
             <#return "\"tag\": \"" + mapped.replace("#", "") + "\"">
         <#elseif mapped.contains(":")>
@@ -28,23 +23,10 @@
 </#function>
 
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
-    <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
-        <#if customelement?has_content>
-            <#return "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
-        <#else>
-            <#return "minecraft:air">
-        </#if>
-    <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "minecraft:air">
     <#else>
-        <#assign mapped = mappedBlock.toString() />
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 0) />
         <#if mapped.startsWith("#")>
             <#return "minecraft:air">
         <#elseif mapped.contains(":")>
@@ -58,8 +40,7 @@
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign mcitemresourcepath = mappedMCItemToIngameNameNoTags(mappedBlock)/>
-        <#assign ge = w.getWorkspace().getModElementByName(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))/>
+        <#assign ge = w.getWorkspace().getModElementByName(mappedBlock.getUnmappedValue())/>
         <#if ge??>
             <#assign ge = ge.getGeneratableElement() />
 
@@ -146,7 +127,7 @@
                     <#if ge.rotationMode != 0 && ge.rotationMode != 5>
                         <#assign properties += [{"name": "facing", "value": "north"}] />
                     <#elseif ge.rotationMode == 5>
-                        <#assign properties += [{"name": "facing", "value": "south"}] />
+                        <#assign properties += [{"name": "axis", "value": "y"}] />
                     </#if>
                 </#if>
             </#if>
@@ -165,7 +146,7 @@
             </#if>
         </#if>
     <#elseif !mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems") />
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 0) />
         <#if !mapped.startsWith("#")>
             <#if !mapped.contains(":")>
                 <#assign mapped = "minecraft:" + mapped />
