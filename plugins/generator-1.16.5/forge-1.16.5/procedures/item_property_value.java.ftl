@@ -1,0 +1,1 @@
+((IItemPropertyGetter _iipg = ItemModelsProperties.func_239417_a_(${input$itemstack}.getItem(), "${modid}:${input$property}")) != null ? _iipg.call(${input$itemstack}, ${input$entity}.world, ${input$entity}) : 0)

@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
-	final VTextField name;
+	final VTextField name = new VTextField(20);
 	String nameString;
 	private final ProcedureSelector.Dynamic value;
 	private final JComponent container;
@@ -48,8 +48,6 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 			int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
 		nameString = "property" + propertyId;
-
-		name = new VTextField(20);
 		name.setText(nameString);
 
 		value = new ProcedureSelector.Dynamic(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
@@ -57,7 +55,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				L10N.t("elementgui.item.custom_property.value") + propertyId, VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
-		reloadDataLists();
+		reloadDataLists(); // we make sure that selector can be properly shown
 
 		container = PanelUtils.expandHorizontally(this);
 

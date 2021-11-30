@@ -52,12 +52,12 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	private final MCreator mcreator;
 
-	final JTextField state;
+	final JLabel state = new JLabel();
 	final JButton edit = new JButton(UIRES.get("16px.edit.gif"));
 	final JButton copy = new JButton(UIRES.get("16px.copyclipboard"));
 
 	private final TextureHolder texture;
-	private final SearchableComboBox<Model> model;
+	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
 	private final JComponent container;
 
 	public JItemStatesListEntry(MCreator mcreator, JPanel parent, List<JItemStatesListEntry> entryList,
@@ -65,11 +65,9 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
-		state = new JTextField(20);
-		state.setEditable(false);
+		state.setOpaque(true);
 		state.setText(initialState);
 		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		state.setToolTipText(L10N.t("elementgui.item.custom_states.edit_states"));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setOpaque(false);
@@ -79,35 +77,44 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());
 		edit.setContentAreaFilled(false);
+		edit.setToolTipText(L10N.t("elementgui.item.custom_states.edit_state"));
 
 		copy.setOpaque(false);
 		copy.setMargin(new Insets(0, 0, 0, 0));
 		copy.setBorder(BorderFactory.createEmptyBorder());
 		copy.setContentAreaFilled(false);
+		copy.setToolTipText(L10N.t("elementgui.item.custom_states.copy_state"));
 		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
 				.setContents(new StringSelection(state.getText()), null));
 
-		model = new SearchableComboBox<>();
 		ComponentUtils.deriveFont(model, 16);
-		model.setPreferredSize(new Dimension(300, 42));
+		model.setPreferredSize(new Dimension(300, 44));
 		model.setRenderer(new ModelComboBoxRenderer());
-		reloadDataLists();
+		reloadDataLists(); // we make sure that combo box can be properly shown
 
 		container = PanelUtils.expandHorizontally(this);
 		JPanel west = new JPanel(new GridLayout(3, 1));
 		JPanel east = new JPanel();
 
+		JScrollPane stateLabel = new JScrollPane(state);
+		stateLabel.setOpaque(true);
+		stateLabel.setPreferredSize(new Dimension(300, 30));
+
 		JPanel statePane = PanelUtils.join(edit, copy);
-		statePane.setOpaque(false);
+		statePane.setOpaque(true);
 		statePane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		west.add(new JLabel(" "));
-		west.add(new JScrollPane(PanelUtils.join(state, statePane)));
+		west.add(PanelUtils.join(stateLabel, statePane));
+
+		JComponent modelLabel = PanelUtils.westAndCenterElement(
+				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("item/model"),
+						L10N.label("elementgui.item.custom_states.model"), SwingConstants.LEFT), new JLabel());
+		modelLabel.setOpaque(false);
+		modelLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
 
 		east.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
-		east.add(PanelUtils.northAndCenterElement(
-				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("item/model"),
-						L10N.label("elementgui.item.custom_states.model"), SwingConstants.LEFT), model));
+		east.add(PanelUtils.northAndCenterElement(modelLabel, model));
 
 		parent.add(container);
 		entryList.add(this);

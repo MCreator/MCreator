@@ -1,0 +1,1 @@
+((ItemPropertyFunction _ipf = ItemProperties.getProperty(${input$itemstack}.getItem(), "${modid}:${input$property}")) != null && ${input$entity}.level instanceof ClientLevel cLevel ? _ipf.call(${input$itemstack}, cLevel, ${input$entity}, 0) : 0)
