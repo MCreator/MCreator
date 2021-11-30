@@ -160,3 +160,15 @@
   readable_name: "Driptstone caves"
 - lush_caves:
   readable_name: "Lush caves"
+- meadow:
+  readable_name: "Meadow"
+- grove:
+  readable_name: "Grove"
+- snowy_slopes:
+  readable_name: "Snow slopes"
+- frozen_peaks:
+  readable_name: "Frozen peaks"
+- jagged_peaks:
+  readable_name: "Jagged peaks"
+- stony_peaks:
+  readable_name: "Stony peaks"
