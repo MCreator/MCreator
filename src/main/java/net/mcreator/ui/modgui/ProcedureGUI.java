@@ -590,8 +590,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	}
 
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
+	@Override protected void afterGeneratableElementGenerated() {
+		super.afterGeneratableElementGenerated();
 
 		// check if dependency list has changed
 		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
@@ -622,6 +622,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				}
 			}
 		}
+
+		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
