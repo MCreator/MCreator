@@ -32,7 +32,7 @@
         <#elseif mapped.contains(":")>
             <#return "\"" + mapped + "\"">
         <#else>
-            <#return "minecraft:\"" + mapped + "\"">
+            <#return "minecraft:" + mapped>
         </#if>
     </#if>
 </#function>

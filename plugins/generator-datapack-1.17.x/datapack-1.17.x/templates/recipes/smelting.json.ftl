@@ -8,6 +8,6 @@
     "ingredient": {
       ${mappedMCItemToIngameItemName(data.smeltingInputStack)}
     },
-    "result": ${mappedMCItemToIngameNameNoTags(data.smeltingReturnStack)}
+    "result": "${mappedMCItemToIngameNameNoTags(data.smeltingReturnStack)}"
 }
 <#-- @formatter:on -->
