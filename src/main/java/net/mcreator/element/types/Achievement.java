@@ -63,8 +63,8 @@ import java.util.List;
 	}
 
 	public boolean hasRewards() {
-		return rewardXP > 0 || !rewardLoot.isEmpty() || !rewardRecipes.isEmpty() ||
-				(rewardFunction != null && !rewardFunction.equals("No function"));
+		return rewardXP > 0 || (rewardLoot != null && !rewardLoot.isEmpty()) || (rewardRecipes != null
+				&& !rewardRecipes.isEmpty()) || (rewardFunction != null && !rewardFunction.equals("No function"));
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
