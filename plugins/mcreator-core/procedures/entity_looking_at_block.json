@@ -51,6 +51,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
+    "group": "raytracing",
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"maxdistance\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",

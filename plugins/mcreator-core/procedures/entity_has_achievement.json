@@ -13,6 +13,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
+    "group": "advancements",
     "toolbox_id": "playermanagement",
     "fields": [
       "achievement"
