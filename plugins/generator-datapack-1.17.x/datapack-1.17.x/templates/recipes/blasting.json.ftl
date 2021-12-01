@@ -8,6 +8,6 @@
     "ingredient": {
       ${mappedMCItemToIngameItemName(data.blastingInputStack)}
     },
-    "result": "${mappedMCItemToIngameNameNoTags(data.blastingReturnStack)}"
+    "result": ${mappedMCItemToIngameNameNoTags(data.blastingReturnStack)}
 }
 <#-- @formatter:on -->

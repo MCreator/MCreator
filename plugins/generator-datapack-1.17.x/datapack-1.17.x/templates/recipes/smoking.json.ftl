@@ -8,6 +8,6 @@
     "ingredient": {
       ${mappedMCItemToIngameItemName(data.smokingInputStack)}
     },
-    "result": "${mappedMCItemToIngameNameNoTags(data.smokingReturnStack)}"
+    "result": ${mappedMCItemToIngameNameNoTags(data.smokingReturnStack)}
 }
 <#-- @formatter:on -->

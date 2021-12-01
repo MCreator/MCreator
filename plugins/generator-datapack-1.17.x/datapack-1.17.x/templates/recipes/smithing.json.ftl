@@ -8,6 +8,6 @@
   "addition": {
     ${mappedMCItemToIngameItemName(data.smithingInputAdditionStack)}
   },
-  "result": "${mappedMCItemToIngameNameNoTags(data.smithingReturnStack)}"
+  "result": ${mappedMCItemToIngameNameNoTags(data.smithingReturnStack)}
 }
 <#-- @formatter:on -->

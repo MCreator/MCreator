@@ -30,9 +30,9 @@
         <#if mapped.startsWith("#")>
             <#return "minecraft:air">
         <#elseif mapped.contains(":")>
-            <#return mapped>
+            <#return "\"" + mapped + "\"">
         <#else>
-            <#return "minecraft:" + mapped>
+            <#return "minecraft:\"" + mapped + "\"">
         </#if>
     </#if>
 </#function>
