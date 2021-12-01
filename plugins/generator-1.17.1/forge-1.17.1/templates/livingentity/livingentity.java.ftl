@@ -688,7 +688,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double z = this.getZ();
 		Entity entity = this;
 		Level world = this.level;
-        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount data.particleCondition/>
+		<#if hasProcedure(data.particleCondition)>
+			if(<@procedureOBJToConditionCode data.particleCondition/>)
+		</#if>
+        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
 		</#if>
 	}
     </#if>

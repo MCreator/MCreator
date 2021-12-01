@@ -24,8 +24,8 @@ javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
-sourceCompatibility = 16
-targetCompatibility = 16
+sourceCompatibility = 17
+targetCompatibility = 17
 
 // workaround for IDEA-265203
 System.setProperty("user.dir", projectDir.toString())
