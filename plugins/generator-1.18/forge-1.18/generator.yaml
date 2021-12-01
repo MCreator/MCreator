@@ -1,9 +1,10 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: stable
-buildfileversion: 37.1.0
+status: dev
+buildfileversion: 38.0.4
 
 java_models:
-  key: mojmap-1.17.x
+  key: mojmap-1.18.x
+  compatible: [mojmap-1.17.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions

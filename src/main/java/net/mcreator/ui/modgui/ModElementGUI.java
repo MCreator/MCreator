@@ -507,6 +507,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		mcreator.getModElementManager().storeModElementPicture(element);
 		modElement.reinit(); // re-init mod element to pick up the new mod element picture
 
+		afterGeneratableElementGenerated();
+
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
 				.requiresElementGradleBuild(element))
@@ -535,6 +537,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected void afterGeneratableElementStored() {
+	}
+
+	protected void afterGeneratableElementGenerated() {
 	}
 
 	protected boolean allowCodePreview() {
