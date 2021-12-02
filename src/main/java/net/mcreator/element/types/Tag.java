@@ -48,6 +48,10 @@ import java.util.Locale;
 		return type.toLowerCase(Locale.ENGLISH);
 	}
 
+	public List<MItemBlock> getItems() {
+		return items.stream().toList();
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}

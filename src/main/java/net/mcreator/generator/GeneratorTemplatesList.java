@@ -27,7 +27,7 @@ import java.util.Map;
 public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
-	public GeneratorTemplate getCorrespondingListDataElement(File generatorFile) {
+	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile) {
 		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
 			String filePath = generatorFile.getPath();
 			String[] templatePathParts = generatorTemplate.getFile().getPath().split("@elementindex");

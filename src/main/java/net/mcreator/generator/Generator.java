@@ -726,9 +726,9 @@ public class Generator implements IGenerator, Closeable {
 						// we check for potential excludes to be deleted,
 						// this is only called if condition above is passed
 						String exclude = (String) ((Map<?, ?>) template).get("exclude");
-						boolean doExclude = ((Map<?, ?>) template).get("excludeIfAnyPresent") == null ?
-								conditionChecks.contains(true) :
-								!conditionChecks.contains(false);
+						boolean doExclude = ((Map<?, ?>) template).get("excludeIfAllPresent") != null ?
+								!conditionChecks.contains(false) :
+								conditionChecks.contains(true);
 						if (exclude != null && doExclude && performFSTasks) {
 							String excludename = GeneratorTokens.replaceTokens(workspace,
 									exclude.replace("@NAME", element.getName())
