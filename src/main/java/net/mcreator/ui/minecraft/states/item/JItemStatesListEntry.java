@@ -88,7 +88,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 				.setContents(new StringSelection(state.getText()), null));
 
 		ComponentUtils.deriveFont(model, 16);
-		model.setPreferredSize(new Dimension(300, 44));
+		model.setPreferredSize(new Dimension(300, 50));
 		model.setRenderer(new ModelComboBoxRenderer());
 		reloadDataLists(); // we make sure that combo box can be properly shown
 
@@ -107,14 +107,9 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		west.add(new JLabel(" "));
 		west.add(PanelUtils.join(stateLabel, statePane));
 
-		JComponent modelLabel = PanelUtils.westAndCenterElement(
-				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("item/model"),
-						L10N.label("elementgui.item.custom_states.model"), SwingConstants.LEFT), new JLabel());
-		modelLabel.setOpaque(false);
-		modelLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
-
 		east.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
-		east.add(PanelUtils.northAndCenterElement(modelLabel, model));
+		east.add(HelpUtils.combineHelpTextAndComponent(IHelpContext.NONE.withEntry("item/model"),
+				L10N.label("elementgui.item.custom_states.model"), model, 3));
 
 		parent.add(container);
 		entryList.add(this);

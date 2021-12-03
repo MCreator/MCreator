@@ -26,28 +26,29 @@ import net.mcreator.ui.validation.component.VTextField;
 import javax.swing.*;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class PropertyNameValidator implements Validator {
 
 	private final String name;
 	private final JTextField holder;
-	private final Supplier<List<String>> properties;
+
+	private final Supplier<Stream<String>> properties;
+	private final Supplier<List<String>> forbiddenNames;
 	private final Validator extraValidator;
 
-	public PropertyNameValidator(VTextField holder, String name, Supplier<List<String>> properties) {
-		this(holder, name, properties, null);
-	}
-
-	public PropertyNameValidator(VTextField holder, String name, Supplier<List<String>> properties,
-			Validator extraValidator) {
+	public PropertyNameValidator(VTextField holder, String name, Supplier<Stream<String>> properties,
+			Supplier<List<String>> forbiddenNames, Validator extraValidator) {
 		this.name = name;
 		this.holder = holder;
 		this.properties = properties;
+		this.forbiddenNames = forbiddenNames;
 		this.extraValidator = extraValidator;
 	}
 
 	@Override public ValidationResult validate() {
-		if (properties.get().stream().filter(holder.getText()::equals).count() > 1)
+		if (properties.get().filter(holder.getText()::equals).count() > 1 || forbiddenNames.get()
+				.contains(holder.getText()))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.property_name.duplicate", name));
 		return extraValidator.validate();
 	}

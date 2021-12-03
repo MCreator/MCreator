@@ -19,4 +19,43 @@
 
 package net.mcreator.ui.minecraft.states;
 
-public record PropertyData(Class<?> type, Number min, Number max, String[] arrayData) {}
+import javax.swing.*;
+
+public class PropertyData {
+	private final Class<?> type;
+	private final Number min;
+	private final Number max;
+	private final String[] arrayData;
+
+	public PropertyData(Class<?> type, Number min, Number max, String[] arrayData) {
+		this.type = type;
+		this.min = min;
+		this.max = max;
+		this.arrayData = arrayData;
+	}
+
+	public Class<?> type() {
+		return type;
+	}
+
+	public Number min() {
+		return min;
+	}
+
+	public Number max() {
+		return max;
+	}
+
+	public String[] arrayData() {
+		return arrayData;
+	}
+
+	public Object getValueFromComponent(JComponent component) {
+		return null;
+	}
+
+	public boolean setValueOfComponent(JComponent component, Object value) {
+		return false;
+	}
+
+}

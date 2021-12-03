@@ -280,8 +280,9 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	public static class Dynamic extends ProcedureSelector {
 		public Dynamic(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, String procedureName,
-				@Nullable VariableType returnType, Dependency... providedDependencies) {
-			super(helpContext, mcreator, procedureName, returnType, providedDependencies);
+				Side side, boolean allowInlineEditor, @Nullable VariableType returnType,
+				Dependency... providedDependencies) {
+			super(helpContext, mcreator, procedureName, side, allowInlineEditor, returnType, providedDependencies);
 			nameLabel.setText(eventName);
 		}
 	}

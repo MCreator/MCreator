@@ -8,18 +8,18 @@
     </#if>
     "particle": "${modid}:items/${data.texture}"
   }
-  <#if data.modelsMap?has_content>,
-  "overrides": [
-  <#list data.modelsMap as state, model>
-      {
-          "predicate": {
-          <#list state as property, value>
-              "${property}": ${value}<#sep>,
-          </#list>
-          },
-          "model": "${modid}:item/${model.modelName}_${model?index}"
-      }<#sep>,
-  </#list>
-  ]
-  </#if>
+    <#if data.modelsMap?has_content>,
+    "overrides": [
+    <#list data.modelsMap as model>
+        {
+            "predicate": {
+            <#list model.getKey().entrySet() as state>
+                "${state.getKey()}": ${state.getValue()}<#sep>,
+            </#list>
+            },
+            "model": "${modid}:item/${model.getValue().modelName}_${model?index}"
+        }<#sep>,
+    </#list>
+    ]
+    </#if>
 }

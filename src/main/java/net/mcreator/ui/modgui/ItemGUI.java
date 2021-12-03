@@ -167,7 +167,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 						"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
 				L10N.t("elementgui.item.dispense_result_itemstack.default")).makeInline().makeReturnValueOptional();
 
-		customProperties = new JItemPropertiesStatesList(mcreator);
+		customProperties = new JItemPropertiesStatesList(mcreator, this);
 		customProperties.setPreferredSize(getPreferredSize());
 
 		guiBoundTo.addActionListener(e -> {

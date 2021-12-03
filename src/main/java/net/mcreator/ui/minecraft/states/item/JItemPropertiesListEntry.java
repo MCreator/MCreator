@@ -23,9 +23,11 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -52,15 +54,16 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 		value = new ProcedureSelector.Dynamic(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
-				L10N.t("elementgui.item.custom_property.value") + propertyId, VariableTypeLoader.BuiltInTypes.NUMBER,
+				L10N.t("elementgui.item.custom_property.value") + propertyId, AbstractProcedureSelector.Side.CLIENT,
+				true, VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		reloadDataLists(); // we make sure that selector can be properly shown
 
 		container = PanelUtils.expandHorizontally(this);
 
-		add(L10N.label("elementgui.item.custom_property.name"));
-		add(name);
+		add(HelpUtils.combineHelpTextAndComponent(IHelpContext.NONE.withEntry("item/custom_property_name"),
+				L10N.label("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
 		parent.add(container);

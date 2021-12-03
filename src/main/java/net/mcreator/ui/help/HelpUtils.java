@@ -130,4 +130,21 @@ public class HelpUtils {
 			return PanelUtils.join(FlowLayout.LEFT, 0, 0, lab, ca);
 		}
 	}
+
+	public static Component combineHelpTextAndComponent(IHelpContext context, JLabel text, Component ca, int gap) {
+		return combineHelpTextAndComponent(context, text, ca, gap, SwingConstants.NORTH);
+	}
+
+	public static Component combineHelpTextAndComponent(IHelpContext context, JLabel text, Component ca, int gap,
+			int direction) {
+		JComponent helpLabel = PanelUtils.westAndCenterElement(
+				HelpUtils.wrapWithHelpButton(context, text, SwingConstants.LEFT), new JLabel());
+		helpLabel.setOpaque(false);
+		helpLabel.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
+		return switch (direction) {
+			case SwingConstants.NORTH -> PanelUtils.northAndCenterElement(helpLabel, ca);
+			case SwingConstants.SOUTH -> PanelUtils.centerAndSouthElement(ca, helpLabel);
+			default -> PanelUtils.westAndCenterElement(helpLabel, ca);
+		};
+	}
 }

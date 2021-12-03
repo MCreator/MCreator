@@ -25,14 +25,15 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.PropertyNameValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.Tuple;
 
 import javax.swing.*;
@@ -41,21 +42,41 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JItemPropertiesStatesList extends JPanel {
 
+	private final MCreator mcreator;
+
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 	private final AtomicInteger propertyId = new AtomicInteger(0);
 
-	private final MCreator mcreator;
+	private final PropertyData builtinNumber = new PropertyData(Float.class, 0F, 1F, null);
+	private final PropertyData builtinLogic = new PropertyData(Boolean.class, null, null, null) {
+		@Override public Object getValueFromComponent(JComponent component) {
+			return component instanceof JCheckBox check && check.isSelected() ? 1F : 0F;
+		}
+
+		@Override public boolean setValueOfComponent(JComponent component, Object value) {
+			if (component instanceof JCheckBox check) {
+				check.setSelected(Float.parseFloat(value.toString()) == 1F);
+				check.setText(check.isSelected() ? "True" : "False");
+				return true;
+			}
+			return super.setValueOfComponent(component, value);
+		}
+	};
+
+	private final List<String> builtinPropertyNames = List.of("damaged", "damage", "lefthanded", "cooldown",
+			"custom_model_data");
+	private final List<Tuple<String, PropertyData>> builtinProperties = List.of(new Tuple<>("damaged", builtinLogic),
+			new Tuple<>("damage", builtinNumber), new Tuple<>("lefthanded", builtinLogic),
+			new Tuple<>("cooldown", builtinNumber));
 
 	private final JPanel propertyEntries = new JPanel(new GridLayout(0, 1, 5, 5));
 	private final JPanel stateEntries = new JPanel(new GridLayout(0, 1, 5, 5));
@@ -63,7 +84,7 @@ public class JItemPropertiesStatesList extends JPanel {
 	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
 	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
 
-	public JItemPropertiesStatesList(MCreator mcreator) {
+	public JItemPropertiesStatesList(MCreator mcreator, ModElementGUI<?> gui) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
@@ -72,23 +93,16 @@ public class JItemPropertiesStatesList extends JPanel {
 
 		propertyEntries.addContainerListener(new ContainerAdapter() {
 			@Override public void componentRemoved(ContainerEvent e) {
-				enableAddStateButton(propertiesList.size() > 0);
 				if (propertiesList.size() > 0) {
 					statesList.forEach(s -> s.state.setText(Stream.of(s.state.getText().split(","))
 							.filter(el -> getPropertiesMap().stream().anyMatch(p -> p.x().equals(el.split("=")[0])))
 							.collect(Collectors.joining(","))));
-					AtomicInteger stateId = new AtomicInteger(0);
-					List<String> stateTexts = statesList.stream().map(el -> el.state.getText())
-							.collect(Collectors.toList());
-					List<JItemStatesListEntry> duplicates = new ArrayList<>();
+					Set<String> duplicates = new HashSet<>(); // when states are trimmed, we remove possible duplicates
 					statesList.forEach(entry -> {
-						if (entry.state.getText() == null || entry.state.getText().equals("")
-								|| stateTexts.indexOf(entry.state.getText()) != stateId.getAndIncrement())
-							duplicates.add(entry);
+						if (entry.state.getText() == null || entry.state.getText().equals("") || !duplicates.add(
+								entry.state.getText()))
+							entry.removeState(stateEntries, statesList);
 					});
-					duplicates.forEach(el -> el.removeState(stateEntries, statesList));
-				} else {
-					statesList.stream().toList().forEach(el -> el.removeState(stateEntries, statesList));
 				}
 			}
 		});
@@ -100,14 +114,13 @@ public class JItemPropertiesStatesList extends JPanel {
 		addProperty.addActionListener(e -> {
 			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
 			addPropertiesEntry(propertyId.get());
-			enableAddStateButton(true);
 		});
 		topbar.add(addProperty);
 
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 		addState.addActionListener(e -> {
 			if (getValidationResult(false).validateIsErrorFree()) {
-				String state = StateEditorDialog.open(mcreator, "", getPropertiesMap(), true);
+				String state = StateEditorDialog.open(mcreator, "", getPropertiesMap(), "item", true);
 				if (statesList.stream().anyMatch(el -> el.state.getText().equals(state)))
 					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error"),
 							L10N.t("elementgui.item.custom_states.add.error.title"), JOptionPane.ERROR_MESSAGE);
@@ -115,7 +128,6 @@ public class JItemPropertiesStatesList extends JPanel {
 					addStatesEntry(state);
 			}
 		});
-		enableAddStateButton(false);
 		topbar.add(addState);
 
 		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
@@ -131,8 +143,7 @@ public class JItemPropertiesStatesList extends JPanel {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		add("North", PanelUtils.centerInPanel(
-				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/custom_states"), topbar,
-						SwingConstants.LEFT)));
+				HelpUtils.wrapWithHelpButton(gui.withEntry("common/custom_states"), topbar, SwingConstants.LEFT)));
 		add("Center", PanelUtils.gridElements(1, 0, left, right));
 	}
 
@@ -156,7 +167,7 @@ public class JItemPropertiesStatesList extends JPanel {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList,
 				propertyId);
 		pe.name.setValidator(new PropertyNameValidator(pe.name, "Property name",
-				() -> propertiesList.stream().map(e -> e.name.getText()).toList(),
+				() -> propertiesList.stream().map(e -> e.name.getText()), () -> builtinPropertyNames,
 				new RegistryNameValidator(pe.name, "Property name")));
 		pe.name.enableRealtimeValidation();
 		pe.name.getDocument().addDocumentListener(new DocumentListener() {
@@ -179,14 +190,10 @@ public class JItemPropertiesStatesList extends JPanel {
 		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, stateEntries, statesList, state);
 		se.edit.addActionListener(e -> {
 			if (getValidationResult(false).validateIsErrorFree())
-				se.state.setText(StateEditorDialog.open(mcreator, se.state.getText(), getPropertiesMap(), false));
+				se.state.setText(
+						StateEditorDialog.open(mcreator, se.state.getText(), getPropertiesMap(), "item", false));
 		});
 		return se;
-	}
-
-	private void enableAddStateButton(boolean enabled) {
-		addState.setEnabled(enabled);
-		addState.setToolTipText(enabled ? null : L10N.t("elementgui.item.custom_states.empty"));
 	}
 
 	private void propertyRenamed(JItemPropertiesListEntry property) {
@@ -199,8 +206,8 @@ public class JItemPropertiesStatesList extends JPanel {
 	}
 
 	private List<Tuple<String, PropertyData>> getPropertiesMap() {
-		return propertiesList.stream()
-				.map(e -> new Tuple<>(e.name.getText(), new PropertyData(Float.class, 0F, 1000F, null))).toList();
+		return ListUtils.merge(builtinProperties, propertiesList.stream()
+				.map(e -> new Tuple<>(e.name.getText(), new PropertyData(Float.class, 0F, 1000000F, null))).toList());
 	}
 
 	public Map<String, Procedure> getProperties() {
