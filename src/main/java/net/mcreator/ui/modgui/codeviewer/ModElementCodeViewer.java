@@ -29,8 +29,6 @@ import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -52,7 +50,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 	private final Map<GeneratorTemplatesList, ListTemplatesChooser<T>> listPager = new HashMap<>();
-	private final Logger LOG = LogManager.getLogger("ListReporter");
 
 	private boolean updateRunning = false;
 
@@ -111,15 +108,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					modElementGUI.getModElement().getGenerator()
 							.getModElementGeneratorListTemplates(modElementGUI.getModElement(),
 									modElementGUI.getElementFromGUI()).forEach(e -> {
-								ListTemplatesChooser<T> subTab = new ListTemplatesChooser<>();
-								if (!listPager.containsKey(e)) {
-									LOG.info("Adding a sub-tab");
-									listPager.put(e, subTab);
-								}
 								if (indexOfTab(e.groupName()) == -1) {
-									LOG.info("Rendering a sub-tab");
+									ListTemplatesChooser<T> subTab = new ListTemplatesChooser<>();
+									listPager.put(e, subTab);
 									addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
-									//setEnabledAt(indexOfTab(e.groupName()), false);
 								}
 							});
 
@@ -134,41 +126,31 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 								if (ownerListOptional.isPresent()
 										&& listPager.get(ownerListOptional.get()) != null) { // file from list
-									LOG.info("Modifying list file");
 									ListTemplatesChooser<T> ownerList = listPager.get(ownerListOptional.get());
 									int tabid = indexOfComponent(ownerList);
 									if (tabid != -1)
 										setSelectedIndex(tabid);
 									ownerList.setSelectedFileTab(file);
 								} else { // simple file
-									LOG.info("Modifying normal file");
 									int tabid = indexOfComponent(cache.get(file.file()));
 									if (tabid != -1)
 										setSelectedIndex(tabid);
 								}
 							}
 						} else { // new file
-							try { //TODO: Max 2 files for recipes, max 0 files for the rest, WHY???
+							try {
 								FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-								LOG.info("New code viewer is: " + fileCodeViewer);
 								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 								if (ownerListOptional.isPresent()) { // file from list
 									GeneratorTemplatesList ownerList = ownerListOptional.get();
 									listPager.get(ownerList).addFileTab(file, fileCodeViewer);
-									/*setComponentAt(indexOfTab(ownerList.groupName()),
-											PanelUtils.totalCenterInPanel(L10N.label("")));
-									setEnabledAt(indexOfTab(ownerList.groupName()), true);*/
-									LOG.info("Adding list file, for total of " + listPager.get(ownerList)
-											.getFilesCount());
 								} else { // simple file
 									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
 											fileCodeViewer);
-									LOG.info("Adding normal file");
 								}
 								cache.put(file.file(), fileCodeViewer);
-							} catch (Exception ex) {
-								LOG.info("Sorry :/", ex);
+							} catch (Exception ignored) {
 							}
 						}
 					}
@@ -180,11 +162,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 									.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
 							if (ownerListOptional.isPresent()
 									&& listPager.get(ownerListOptional.get()) != null) { // file from list
-								GeneratorTemplatesList ownerList = ownerListOptional.get();
-								listPager.get(ownerList).removeFileTab(file);
-								/*if (listPager.get(ownerList).getFilesCount() == 0) { // list is empty
-									setEnabledAt(indexOfTab(ownerList.groupName()), false);
-								}*/
+								listPager.get(ownerListOptional.get()).removeFileTab(file);
 							} else { // simple file
 								remove(cache.get(file));
 							}
@@ -198,21 +176,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				updateRunning = false;
 			}).start();
 		}
-	}
-
-	private JTabbedPane getTabbedPaneForListTemplates() {
-		JTabbedPane retVal = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
-		retVal.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		retVal.setOpaque(true);
-
-		retVal.addComponentListener(new ComponentAdapter() {
-			@Override public void componentShown(ComponentEvent e) {
-				super.componentShown(e);
-				reload();
-			}
-		});
-
-		return retVal;
 	}
 
 	public ModElementGUI<T> getModElementGUI() {

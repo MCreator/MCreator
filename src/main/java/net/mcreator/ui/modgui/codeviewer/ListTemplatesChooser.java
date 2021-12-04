@@ -29,47 +29,48 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ListTemplatesChooser<T extends GeneratableElement> extends JPanel {
+public class ListTemplatesChooser<T extends GeneratableElement> extends JSplitPane {
 
 	private final Map<GeneratorFile, FileCodeViewer<T>> tabsMap = new HashMap<>();
 	private final CardLayout filesList;
+	private GeneratorFile lastSelected;
 
 	private final DefaultListModel<GeneratorFile> listModel = new DefaultListModel<>();
 	private final JList<GeneratorFile> files = new JList<>(listModel);
 	private final JPanel code;
 
 	public ListTemplatesChooser() {
-		super(new BorderLayout());
-
-		files.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		files.setVisibleRowCount(1);
-		files.setLayoutOrientation(JList.VERTICAL_WRAP);
-		files.setCellRenderer(new FileListCellRenderer());
+		super(JSplitPane.HORIZONTAL_SPLIT);
 
 		filesList = new CardLayout();
 		code = new JPanel(filesList);
-		files.addListSelectionListener(e -> filesList.show(code, files.getSelectedValue().file().getName()));
 
-		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, files, code);
-		split.setOneTouchExpandable(true);
-		split.setDividerSize(10);
-		split.setDividerLocation(0.2);
+		files.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		files.setCellRenderer(new FileListCellRenderer());
+		files.addListSelectionListener(e -> {
+			lastSelected = files.getSelectedValue();
+			filesList.show(code, lastSelected.file().getName());
+		});
+
+		setOneTouchExpandable(true);
+		setLeftComponent(new JScrollPane(files));
+		setRightComponent(code);
+		setDividerSize(10);
+		setDividerLocation(300);
 	}
 
 	public void addFileTab(GeneratorFile generatorFile, FileCodeViewer<T> fileCodeViewer) {
 		listModel.addElement(generatorFile);
 		tabsMap.put(generatorFile, fileCodeViewer);
 		code.add(fileCodeViewer, generatorFile.file().getName());
-	}
-
-	private void fileSelected(GeneratorFile generatorFile) {
-		files.setSelectedValue(generatorFile, true);
-		filesList.show(code, generatorFile.file().getName());
+		files.setSelectedValue(lastSelected, true);
 	}
 
 	public void setSelectedFileTab(GeneratorFile generatorFile) {
-		if (tabsMap.containsKey(generatorFile))
-			fileSelected(generatorFile);
+		if (tabsMap.containsKey(generatorFile)) {
+			lastSelected = generatorFile;
+			files.setSelectedValue(generatorFile, true);
+		}
 	}
 
 	public int getFilesCount() {
@@ -78,7 +79,7 @@ public class ListTemplatesChooser<T extends GeneratableElement> extends JPanel {
 
 	public void removeFileTab(GeneratorFile generatorFile) {
 		listModel.removeElement(generatorFile);
-		remove(tabsMap.remove(generatorFile));
+		code.remove(tabsMap.remove(generatorFile));
 	}
 
 	public void removeFileTab(File file) {

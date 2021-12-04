@@ -720,7 +720,7 @@ public class Generator implements IGenerator, Closeable {
 								conditionChecks.add(i, true);
 							}
 						}
-						if (!conditionChecks.contains(true))
+						if (!conditionChecks.contains(true) && performFSTasks)
 							continue;
 
 						// we check for potential excludes to be deleted,
