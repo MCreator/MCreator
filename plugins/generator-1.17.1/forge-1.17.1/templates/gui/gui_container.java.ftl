@@ -44,6 +44,8 @@ import ${package}.${JavaModName};
 </#if>
 public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
 
+	public final static HashMap<String, Object> guistate = new HashMap<>();
+
 	public final Level world;
 	public final Player entity;
 	public int x, y, z;
@@ -167,7 +169,6 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		</#if>
 
 		<#if hasProcedure(data.onOpen)>
-			HashMap<String, Object> guistate = ${name}Screen.guistate;
 			<@procedureOBJToCode data.onOpen/>
 		</#if>
 	}
@@ -227,7 +228,6 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			super.removed(playerIn);
 
 			<#if hasProcedure(data.onClosed)>
-				HashMap<String, Object> guistate = ${name}Screen.guistate;
 				<@procedureOBJToCode data.onClosed/>
 			</#if>
 
@@ -276,7 +276,6 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			double x = entity.getX();
 			double y = entity.getY();
 			double z = entity.getZ();
-			HashMap<String, Object> guistate = ${name}Screen.guistate;
 			<@procedureOBJToCode data.onTick/>
 		}
 	}
