@@ -32,15 +32,15 @@ base_templates:
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
     canLock: true
-  - template: modbase/variableslist.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
-    condition: hasVariables()
+#  - template: modbase/variableslist.java.ftl
+#    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+#    condition: hasVariables()
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-  - template: elementinits/javamodels.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-    condition: hasJavaModels()
+#  - template: elementinits/javamodels.java.ftl
+#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+#    condition: hasJavaModels()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
@@ -74,10 +74,10 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-  - task: copy_models
-    type: OBJ_inlinetextures
-    prefix: "@modid:blocks/"
-    to: "@MODASSETSROOT/models/item"
-  - task: copy_models
-    type: JSON_noinlinetextures
-    to: "@MODASSETSROOT/models/custom"
+#  - task: copy_models
+#    type: OBJ_inlinetextures
+#    prefix: "@modid:blocks/"
+#    to: "@MODASSETSROOT/models/item"
+#  - task: copy_models
+#    type: JSON_noinlinetextures
+#    to: "@MODASSETSROOT/models/custom"
