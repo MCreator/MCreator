@@ -279,15 +279,20 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
-						element.getAdditionalTemplateData());
+				try {
+					String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
+							element.getAdditionalTemplateData());
 
-				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+					GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
+							(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
 
-				// only preserve the last instance of template for a file
-				generatorFiles.remove(generatorFile);
-				generatorFiles.add(generatorFile);
+					// only preserve the last instance of template for a file
+					generatorFiles.remove(generatorFile);
+					generatorFiles.add(generatorFile);
+				} catch (TemplateGeneratorException exception) {
+					if (performFSTasks)
+						throw exception;
+				}
 			}
 		}
 
@@ -548,16 +553,23 @@ public class Generator implements IGenerator, Closeable {
 				if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
 					if (generatableElement == null) {
 						generatableElement = element.getGeneratableElement();
-						if (generatableElement == null) {
+						if (generatableElement == null && performFSTasks) {
 							LOG.warn("Failed to load mod generatable element: " + element.getName()
 									+ " -> all templates will be loaded, ignoring conditions and templates");
 						}
 					}
 				}
 
-				String name = GeneratorTokens.replaceVariableTokens(generatableElement,
-						GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
-								.replace("@registryname", element.getRegistryName())));
+				String name = "";
+				try {
+					name = GeneratorTokens.replaceVariableTokens(generatableElement,
+							GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
+									.replace("@registryname", element.getRegistryName())));
+				} catch (Exception exception) {
+					if (performFSTasks) {
+						throw exception;
+					}
+				}
 
 				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
 						operator)) {

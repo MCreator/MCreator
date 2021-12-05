@@ -21,8 +21,10 @@ package net.mcreator.ui.minecraft.spawntypes;
 import net.mcreator.element.types.Biome;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,21 +33,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JSpawnEntriesList extends JPanel {
+public class JSpawnEntriesList extends JEntriesList {
 
 	private final List<JSpawnListEntry> entryList = new ArrayList<>();
-
-	private final MCreator mcreator;
 
 	private final JPanel entries = new JPanel();
 
 	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
-	public JSpawnEntriesList(MCreator mcreator) {
-		super(new BorderLayout());
+	public JSpawnEntriesList(MCreator mcreator, IHelpContext gui) {
+		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
-
-		this.mcreator = mcreator;
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -58,7 +56,7 @@ public class JSpawnEntriesList extends JPanel {
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> new JSpawnListEntry(mcreator, entries, entryList));
+		add.addActionListener(e -> registerEntryUI(new JSpawnListEntry(mcreator, gui, entries, entryList)));
 
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
@@ -80,7 +78,11 @@ public class JSpawnEntriesList extends JPanel {
 	}
 
 	public void setSpawns(List<Biome.SpawnEntry> pool) {
-		pool.forEach(e -> new JSpawnListEntry(mcreator, entries, entryList).setEntry(e));
+		pool.forEach(e -> {
+			JSpawnListEntry entry = new JSpawnListEntry(mcreator, gui, entries, entryList);
+			registerEntryUI(entry);
+			entry.setEntry(e);
+		});
 	}
 
 }

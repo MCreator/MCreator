@@ -53,6 +53,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
@@ -100,7 +101,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 	private final JComboBox<String> oceanRuinType = new JComboBox<>(new String[] { "NONE", "COLD", "WARM" });
 
-	private final JSpawnEntriesList spawnEntries = new JSpawnEntriesList(mcreator);
+	private JSpawnEntriesList spawnEntries;
 
 	private MCItemHolder groundBlock;
 	private MCItemHolder undergroundBlock;
@@ -179,6 +180,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		foliageColor.setOpaque(false);
 		waterColor.setOpaque(false);
 		waterFogColor.setOpaque(false);
+
+		spawnEntries = new JSpawnEntriesList(mcreator, this);
 
 		JPanel sbbp2 = new JPanel(new GridLayout(13, 2, 4, 2));
 		JPanel sbbp2b = new JPanel(new GridLayout(7, 2, 4, 2));
@@ -599,6 +602,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores", "FrozenTopLayer"));
 		}
+	}
+
+	@Override protected List<JEntriesList> getEntryLists() {
+		return List.of(spawnEntries);
 	}
 
 	@Override public void reloadDataLists() {

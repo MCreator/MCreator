@@ -38,6 +38,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -60,6 +61,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -701,6 +703,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		updateSoundType();
+	}
+
+	@Override protected List<JEntriesList> getEntryLists() {
+		return List.of(boundingBoxList);
 	}
 
 	private void updateTextureOptions() {

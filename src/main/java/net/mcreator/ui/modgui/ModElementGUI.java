@@ -32,6 +32,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -62,7 +63,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
 
-	private ModElementCodeViewer<GE> modElementCodeViewer = null;
+	protected ModElementCodeViewer<GE> modElementCodeViewer = null;
 	private JSplitPane splitPane;
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
@@ -395,6 +396,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
+		if (modElementCodeViewer != null)
+			getEntryLists().forEach(e -> e.setEntryCreationListener(modElementCodeViewer::registerUI));
 		disableUnsupportedFields();
 	}
 
@@ -528,6 +531,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected abstract void initGUI();
+
+	protected List<JEntriesList> getEntryLists() {
+		return List.of();
+	}
 
 	protected abstract AggregatedValidationResult validatePage(int page);
 
