@@ -24,6 +24,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.laf.FileIcons;
+import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import org.apache.commons.io.FilenameUtils;
@@ -90,7 +91,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 			} else if (component instanceof JComponent jcomponent) {
 				registerUI(jcomponent);
 
-				if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
+				if (component instanceof JEntriesList entriesList) {
+					entriesList.setEntryCreationListener(this::registerUI);
+				} else if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
 				}

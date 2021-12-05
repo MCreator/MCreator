@@ -69,8 +69,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1200,10 +1202,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 
 		updateSoundType();
-	}
-
-	@Override protected List<JEntriesList> getEntryLists() {
-		return List.of(boundingBoxList);
 	}
 
 	private void refreshFiledsTileEntity() {

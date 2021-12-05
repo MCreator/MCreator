@@ -53,7 +53,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
@@ -602,10 +601,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores", "FrozenTopLayer"));
 		}
-	}
-
-	@Override protected List<JEntriesList> getEntryLists() {
-		return List.of(spawnEntries);
 	}
 
 	@Override public void reloadDataLists() {

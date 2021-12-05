@@ -560,16 +560,9 @@ public class Generator implements IGenerator, Closeable {
 					}
 				}
 
-				String name = "";
-				try {
-					name = GeneratorTokens.replaceVariableTokens(generatableElement,
-							GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
-									.replace("@registryname", element.getRegistryName())));
-				} catch (Exception exception) {
-					if (performFSTasks) {
-						throw exception;
-					}
-				}
+				String name = GeneratorTokens.replaceVariableTokens(generatableElement,
+						GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
+								.replace("@registryname", element.getRegistryName())), performFSTasks);
 
 				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
 						operator)) {

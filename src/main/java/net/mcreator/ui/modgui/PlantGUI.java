@@ -61,7 +61,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -703,10 +702,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		updateSoundType();
-	}
-
-	@Override protected List<JEntriesList> getEntryLists() {
-		return List.of(boundingBoxList);
 	}
 
 	private void updateTextureOptions() {

@@ -26,7 +26,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.potions.JPotionList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -41,7 +40,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 public class PotionGUI extends ModElementGUI<Potion> {
 
@@ -138,10 +136,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 			readableNameFromModElement = "Arrow of " + StringUtils.machineToReadableName(modElement.getName());
 			arrowName.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected List<JEntriesList> getEntryLists() {
-		return List.of(effectList);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
