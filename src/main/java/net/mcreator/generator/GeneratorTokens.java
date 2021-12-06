@@ -58,20 +58,24 @@ public class GeneratorTokens {
 
 	private static final Pattern brackets = Pattern.compile("@\\[(.*?)]");
 
-	static String replaceVariableTokens(GeneratableElement element, String rawname, boolean printErrors) {
+	static String replaceVariableTokens(GeneratableElement element, String rawname) {
 		if (containsVariableTokens(rawname)) {
 			Matcher m = brackets.matcher(rawname);
 			while (m.find()) {
 				String match = m.group(1);
 				Object value = null;
-				try {
-					if (match.contains("()"))
+				if (match.contains("()")) {
+					try {
 						value = element.getClass().getMethod(match.replace("()", "").trim()).invoke(element);
-					else
-						value = element.getClass().getField(match.replace("()", "").trim()).get(element);
-				} catch (Exception e) {
-					if (printErrors)
+					} catch (Exception e) {
 						LOG.warn("Failed to load token value " + match, e);
+					}
+				} else {
+					try {
+						value = element.getClass().getField(match.replace("()", "").trim()).get(element);
+					} catch (Exception e) {
+						LOG.warn("Failed to load token value " + match, e);
+					}
 				}
 				rawname = rawname.replace("@[" + match + "]", value != null ? value.toString() : "null");
 			}

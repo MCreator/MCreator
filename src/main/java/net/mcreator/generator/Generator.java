@@ -279,20 +279,15 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				try {
-					String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
-							element.getAdditionalTemplateData());
+				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
+						element.getAdditionalTemplateData());
 
-					GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
-							(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
+						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
 
-					// only preserve the last instance of template for a file
-					generatorFiles.remove(generatorFile);
-					generatorFiles.add(generatorFile);
-				} catch (TemplateGeneratorException exception) {
-					if (performFSTasks)
-						throw exception;
-				}
+				// only preserve the last instance of template for a file
+				generatorFiles.remove(generatorFile);
+				generatorFiles.add(generatorFile);
 			}
 		}
 
@@ -553,7 +548,7 @@ public class Generator implements IGenerator, Closeable {
 				if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
 					if (generatableElement == null) {
 						generatableElement = element.getGeneratableElement();
-						if (generatableElement == null && performFSTasks) {
+						if (generatableElement == null) {
 							LOG.warn("Failed to load mod generatable element: " + element.getName()
 									+ " -> all templates will be loaded, ignoring conditions and templates");
 						}
@@ -562,7 +557,7 @@ public class Generator implements IGenerator, Closeable {
 
 				String name = GeneratorTokens.replaceVariableTokens(generatableElement,
 						GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
-								.replace("@registryname", element.getRegistryName())), performFSTasks);
+								.replace("@registryname", element.getRegistryName())));
 
 				if (TemplateConditionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
 						operator)) {
