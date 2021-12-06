@@ -141,17 +141,28 @@ implements <a href="IGenerator.html" title="interface in net.mcreator.generator"
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateBase(boolean)">generateBase</a></span>&#8203;(boolean&nbsp;formatAndOrganiseImports)</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
-<div class="block">Generates the generator mod base files</div>
+<div class="block">Generates the generator mod base files.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateElement(net.mcreator.element.GeneratableElement)">generateElement</a></span>&#8203;(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateBase(boolean,boolean)">generateBase</a></span>&#8203;(boolean&nbsp;formatAndOrganiseImports,
+ boolean&nbsp;performFSTasks)</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Generates the generator mod base files and optionally writes them to disk.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateElement(net.mcreator.element.GeneratableElement)">generateElement</a></span>&#8203;(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">GeneratableElement should be saved AFTER this method is called, not before
  as it can be altered in this process</div>
 </div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFile.html" title="class in net.mcreator.generator">GeneratorFile</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateElement(net.mcreator.element.GeneratableElement,boolean)">generateElement</a></span>&#8203;(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFile.html" title="class in net.mcreator.generator">GeneratorFile</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateElement(net.mcreator.element.GeneratableElement,boolean)">generateElement</a></span>&#8203;(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
  boolean&nbsp;formatAndOrganiseImports)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFile.html" title="class in net.mcreator.generator">GeneratorFile</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#generateElement(net.mcreator.element.GeneratableElement,boolean,boolean)">generateElement</a></span>&#8203;(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
+ boolean&nbsp;formatAndOrganiseImports,
+ boolean&nbsp;performFSTasks)</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getAITaskGenerator()">getAITaskGenerator</a></span>()</code></div>
@@ -396,10 +407,25 @@ implements <a href="IGenerator.html" title="interface in net.mcreator.generator"
 <section class="detail" id="generateBase(boolean)">
 <h3>generateBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">generateBase</span>&#8203;<span class="parameters">(boolean&nbsp;formatAndOrganiseImports)</span></div>
-<div class="block">Generates the generator mod base files</div>
+<div class="block">Generates the generator mod base files. Writes files to disk.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>formatAndOrganiseImports</code> - true if imports should be formatted</dd>
+<dt>Returns:</dt>
+<dd>true if generator generated all files without any errors</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="generateBase(boolean,boolean)">
+<h3>generateBase</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">generateBase</span>&#8203;<span class="parameters">(boolean&nbsp;formatAndOrganiseImports,
+ boolean&nbsp;performFSTasks)</span></div>
+<div class="block">Generates the generator mod base files and optionally writes them to disk.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>formatAndOrganiseImports</code> - true if imports should be formatted</dd>
+<dd><code>performFSTasks</code> - true if FS should be affected</dd>
 <dt>Returns:</dt>
 <dd>true if generator generated all files without any errors</dd>
 </dl>
@@ -424,6 +450,19 @@ implements <a href="IGenerator.html" title="interface in net.mcreator.generator"
 <h3>generateElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFile.html" title="class in net.mcreator.generator">GeneratorFile</a>&gt;</span>&nbsp;<span class="element-name">generateElement</span>&#8203;<span class="parameters">(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
  boolean&nbsp;formatAndOrganiseImports)</span>
+                                    throws <span class="exceptions"><a href="template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="generateElement(net.mcreator.element.GeneratableElement,boolean,boolean)">
+<h3>generateElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFile.html" title="class in net.mcreator.generator">GeneratorFile</a>&gt;</span>&nbsp;<span class="element-name">generateElement</span>&#8203;<span class="parameters">(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
+ boolean&nbsp;formatAndOrganiseImports,
+ boolean&nbsp;performFSTasks)</span>
                                     throws <span class="exceptions"><a href="template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
 <dl class="notes">
 <dt>Throws:</dt>

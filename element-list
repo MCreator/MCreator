@@ -90,6 +90,7 @@ net.mcreator.ui.minecraft
 net.mcreator.ui.minecraft.potions
 net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.modgui
+net.mcreator.ui.modgui.codeviewer
 net.mcreator.ui.procedure
 net.mcreator.ui.validation
 net.mcreator.ui.validation.component

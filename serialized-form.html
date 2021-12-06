@@ -1043,6 +1043,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/DefaultListModel.html" title="class or interface in javax.swing" class="external-link">DefaultListModel</a>&lt;<a href="net/mcreator/ui/component/JItemListField.html" title="type parameter in JItemListField">T</a>&gt; elementsListModel</pre>
 </li>
 <li class="block-list">
+<h5>listeners</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a>&gt; listeners</pre>
+</li>
+<li class="block-list">
 <h5>mcreator</h5>
 <pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
@@ -1212,6 +1216,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 </ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.component.ScrollWheelPassLayer">
+<h3>Class <a href="net/mcreator/ui/component/ScrollWheelPassLayer.html" title="class in net.mcreator.ui.component">net.mcreator.ui.component.ScrollWheelPassLayer</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/plaf/LayerUI.html" title="class or interface in javax.swing.plaf" class="external-link">LayerUI</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JScrollPane.html" title="class or interface in javax.swing" class="external-link">JScrollPane</a>&gt; implements Serializable</h3>
 </section>
 </li>
 <li>
@@ -3231,8 +3240,8 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/validation/Validator.ValidationResult.html" title="class in net.mcreator.ui.validation">Validator.ValidationResult</a> currentValidationResult</pre>
 </li>
 <li class="block-list">
-<h5>listener</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/java/awt/event/ActionListener.html" title="class or interface in java.awt.event" class="external-link">ActionListener</a> listener</pre>
+<h5>listeners</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/java/awt/event/ActionListener.html" title="class or interface in java.awt.event" class="external-link">ActionListener</a>&gt; listeners</pre>
 </li>
 <li class="block-list">
 <h5>mcreator</h5>
@@ -5994,12 +6003,20 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a> modElement</pre>
 </li>
 <li class="block-list">
+<h5>modElementCodeViewer</h5>
+<pre><a href="net/mcreator/ui/modgui/codeviewer/ModElementCodeViewer.html" title="class in net.mcreator.ui.modgui.codeviewer">ModElementCodeViewer</a>&lt;<a href="net/mcreator/ui/modgui/ModElementGUI.html" title="type parameter in ModElementGUI">GE</a> extends <a href="net/mcreator/element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt; modElementCodeViewer</pre>
+</li>
+<li class="block-list">
 <h5>modElementCreatedListener</h5>
 <pre><a href="net/mcreator/ui/modgui/ModElementGUI.ModElementCreatedListener.html" title="interface in net.mcreator.ui.modgui">ModElementGUI.ModElementCreatedListener</a>&lt;<a href="net/mcreator/ui/modgui/ModElementGUI.html" title="type parameter in ModElementGUI">GE</a> extends <a href="net/mcreator/element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt; modElementCreatedListener</pre>
 </li>
 <li class="block-list">
 <h5>pages</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,&#8203;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&gt; pages</pre>
+</li>
+<li class="block-list">
+<h5>splitPane</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSplitPane.html" title="class or interface in javax.swing" class="external-link">JSplitPane</a> splitPane</pre>
 </li>
 <li class="block-list">
 <h5>tabIn</h5>
@@ -7237,6 +7254,61 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>usageCount</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> usageCount</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;net.mcreator.ui.modgui.codeviewer</h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.modgui.codeviewer.FileCodeViewer">
+<h3>Class <a href="net/mcreator/ui/modgui/codeviewer/FileCodeViewer.html" title="class in net.mcreator.ui.modgui.codeviewer">net.mcreator.ui.modgui.codeviewer.FileCodeViewer</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>cev</h5>
+<pre><a href="net/mcreator/ui/ide/CodeEditorView.html" title="class in net.mcreator.ui.ide">CodeEditorView</a> cev</pre>
+</li>
+<li class="block-list">
+<h5>oldCode</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> oldCode</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer">
+<h3>Class <a href="net/mcreator/ui/modgui/codeviewer/ModElementCodeViewer.html" title="class in net.mcreator.ui.modgui.codeviewer">net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JTabbedPane.html" title="class or interface in javax.swing" class="external-link">JTabbedPane</a> implements Serializable</h3>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>cache</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>,&#8203;<a href="net/mcreator/ui/modgui/codeviewer/FileCodeViewer.html" title="class in net.mcreator.ui.modgui.codeviewer">FileCodeViewer</a>&lt;<a href="net/mcreator/ui/modgui/codeviewer/ModElementCodeViewer.html" title="type parameter in ModElementCodeViewer">T</a> extends <a href="net/mcreator/element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt; cache</pre>
+</li>
+<li class="block-list">
+<h5>modElementGUI</h5>
+<pre><a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/ui/modgui/codeviewer/ModElementCodeViewer.html" title="type parameter in ModElementCodeViewer">T</a> extends <a href="net/mcreator/element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt; modElementGUI</pre>
+</li>
+<li class="block-list">
+<h5>updateRunning</h5>
+<pre>boolean updateRunning</pre>
 </li>
 </ul>
 </section>
