@@ -124,67 +124,67 @@ public class TestWorkspaceDataProvider {
 			int idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
 					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
-				VariableElement logicVariable = new VariableElement();
-				logicVariable.setName("logic" + (idx++));
-				logicVariable.setValue("true");
-				logicVariable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-				logicVariable.setScope(scope);
-				workspace.addVariableElement(logicVariable);
+				VariableElement variable = new VariableElement();
+				variable.setName("logic" + (idx++));
+				variable.setValue("true");
+				variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+				variable.setScope(scope);
+				workspace.addVariableElement(variable);
 			}
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
 					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
-				VariableElement logicVariable = new VariableElement();
-				logicVariable.setName("number" + (idx++));
-				logicVariable.setValue("12");
-				logicVariable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
-				logicVariable.setScope(scope);
-				workspace.addVariableElement(logicVariable);
+				VariableElement variable = new VariableElement();
+				variable.setName("number" + (idx++));
+				variable.setValue("12");
+				variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
+				variable.setScope(scope);
+				workspace.addVariableElement(variable);
 			}
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
 					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
-				VariableElement logicVariable = new VariableElement();
-				logicVariable.setName("string" + (idx++));
-				logicVariable.setValue("test");
-				logicVariable.setType(VariableTypeLoader.BuiltInTypes.STRING);
-				logicVariable.setScope(scope);
-				workspace.addVariableElement(logicVariable);
+				VariableElement variable = new VariableElement();
+				variable.setName("string" + (idx++));
+				variable.setValue("test");
+				variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
+				variable.setScope(scope);
+				workspace.addVariableElement(variable);
 			}
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
 					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
-				VariableElement logicVariable = new VariableElement();
-				logicVariable.setName("itemstack" + (idx++));
-				logicVariable.setValue("ItemStack.EMPTY");
-				logicVariable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
-				logicVariable.setScope(scope);
-				workspace.addVariableElement(logicVariable);
+				VariableElement variable = new VariableElement();
+				variable.setName("itemstack" + (idx++));
+				variable.setValue("ItemStack.EMPTY");
+				variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
+				variable.setScope(scope);
+				workspace.addVariableElement(variable);
 			}
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
 					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
-				VariableElement logicVariable = new VariableElement();
-				logicVariable.setName("direction" + (idx++));
-				logicVariable.setValue("UP");
-				logicVariable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
-				logicVariable.setScope(scope);
-				workspace.addVariableElement(logicVariable);
+				VariableElement variable = new VariableElement();
+				variable.setName("direction" + (idx++));
+				variable.setValue("UP");
+				variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
+				variable.setScope(scope);
+				workspace.addVariableElement(variable);
 			}
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
 					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
-				VariableElement logicVariable = new VariableElement();
-				logicVariable.setName("blockstate" + (idx++));
-				logicVariable.setValue("UP");
-				logicVariable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
-				logicVariable.setScope(scope);
-				workspace.addVariableElement(logicVariable);
+				VariableElement variable = new VariableElement();
+				variable.setName("blockstate" + (idx++));
+				variable.setValue("UP");
+				variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
+				variable.setScope(scope);
+				workspace.addVariableElement(variable);
 			}
 		}
 
