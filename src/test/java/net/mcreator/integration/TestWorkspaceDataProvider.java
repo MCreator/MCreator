@@ -175,6 +175,17 @@ public class TestWorkspaceDataProvider {
 				logicVariable.setScope(scope);
 				workspace.addVariableElement(logicVariable);
 			}
+
+			idx = 0;
+			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
+					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				VariableElement logicVariable = new VariableElement();
+				logicVariable.setName("blockstate" + (idx++));
+				logicVariable.setValue("UP");
+				logicVariable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
+				logicVariable.setScope(scope);
+				workspace.addVariableElement(logicVariable);
+			}
 		}
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
@@ -532,20 +543,66 @@ public class TestWorkspaceDataProvider {
 			Overlay overlay = new Overlay(modElement);
 			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
-			if (!emptyLists) {
-				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition1")));
-				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition4")));
-				if (modElement.getWorkspace().getGeneratorStats().getBaseCoverageInfo().get("variables")
-						== GeneratorStats.CoverageStatus.FULL) {
-					components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
-							new Procedure("condition1")));
+
+			components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition1")));
+			components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition4")));
+
+			components.add(new Label("Some tokens: <x> <y> <z> and also <energy> and <fluidlevel>", 100, 150,
+					"Some tokens: <x> <y> <z> and also <energy> and <fluidlevel>", Color.white,
+					new Procedure("condition4")));
+
+			if (modElement.getWorkspace().getGeneratorStats().getBaseCoverageInfo().get("variables")
+					== GeneratorStats.CoverageStatus.FULL) {
+				components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
+						new Procedure("condition1")));
+
+				int idx = 0;
+				for (VariableType.Scope ignored : Arrays.stream(VariableType.Scope.values())
+						.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+							Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+							Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+							Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+					components.add(
+							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
+									Color.black, new Procedure("condition1")));
+					components.add(
+							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
+									Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
 				}
-				components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
-				components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
+
+				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<ENBT:integer:tagName>", 100, 150, "<ENBT:integer:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<ENBT:logic:tagName>", 100, 150, "<ENBT:logic:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<ENBT:text:tagName>", 100, 150, "<ENBT:text:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:number:tagName>", 100, 150, "<BNBT:number:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:integer:tagName>", 100, 150, "<BNBT:integer:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:logic:tagName>", 100, 150, "<BNBT:logic:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:text:tagName>", 100, 150, "<BNBT:text:tagName>", Color.black,
+						new Procedure("condition1")));
 			}
+
+			components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
+			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
-			overlay.baseTexture = "test.png";
+			if (!emptyLists)
+				overlay.baseTexture = "test.png";
+			else
+				overlay.baseTexture = "";
 			if (_true) {
 				overlay.overlayTarget = "Ingame";
 			} else {
@@ -570,8 +627,48 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition2")));
 				components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition1")));
+
 				components.add(new Label("text3 <VAR:test>", 100, 150, "text3 <VAR:test>", Color.black,
-						new Procedure("condition4")));
+						new Procedure("condition1")));
+
+				int idx = 0;
+				for (VariableType.Scope ignored : Arrays.stream(VariableType.Scope.values())
+						.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+							Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+							Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+							Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+					components.add(
+							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
+									Color.black, new Procedure("condition1")));
+					components.add(
+							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
+									Color.black, new Procedure("condition1")));
+					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+				}
+
+				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<ENBT:integer:tagName>", 100, 150, "<ENBT:integer:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<ENBT:logic:tagName>", 100, 150, "<ENBT:logic:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<ENBT:text:tagName>", 100, 150, "<ENBT:text:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:number:tagName>", 100, 150, "<BNBT:number:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:integer:tagName>", 100, 150, "<BNBT:integer:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:logic:tagName>", 100, 150, "<BNBT:logic:tagName>", Color.black,
+						new Procedure("condition1")));
+				components.add(new Label("<BNBT:text:tagName>", 100, 150, "<BNBT:text:tagName>", Color.black,
+						new Procedure("condition1")));
+
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
 				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
@@ -594,6 +691,11 @@ public class TestWorkspaceDataProvider {
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
 				components.add(new Checkbox("checkbox2", 125, 125, "Other text", new Procedure("condition2")));
+
+				components.add(new Label("Text field value: <TextFieldName:text1>", 100, 150,
+						"Text field value: <text1:text>", Color.black, new Procedure("condition1")));
+				components.add(new Label("Text field value: <TextFieldName:text2>", 100, 150,
+						"Text field value: <text2:text>", Color.black, new Procedure("condition1")));
 			}
 			gui.components = components;
 			return gui;
