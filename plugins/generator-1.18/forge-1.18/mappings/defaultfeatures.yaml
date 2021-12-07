@@ -14,11 +14,9 @@ Icebergs: Icebergs
 InfestedStone: InfestedStone
 JungleGrass: JungleGrass
 JungleTreeForest: JungleTrees
-Lakes: DefaultCarversAndLakes
 LushCavesDecoration: LushCavesVegetationFeatures
 MeadowVegetation: MeadowVegetation
 MonsterRooms: DefaultMonsterRoom
-OceanCaves: DefaultCarversAndLakes
 Ores: DefaultOres
 PlainsTallGrass: SavannaGrass
 ReedsAndPumpkins: DefaultExtraVegetation
@@ -32,3 +30,7 @@ TaigaLargeFerns: Ferns
 TaigaRocks: MossyStoneBlock
 TallSeagrassLush: DefaultSeagrass
 WarmFlowers: WarmFlowers
+
+#Legcay
+Lakes: DefaultCarversAndLakes
+OceanCaves: DefaultCarversAndLakes
