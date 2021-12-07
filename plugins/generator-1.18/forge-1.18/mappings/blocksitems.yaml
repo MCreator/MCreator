@@ -3891,7 +3891,8 @@ Items.THING_BANNER_PATTERN:
   - Items.MOJANG_BANNER_PATTERN
   - "mojang_banner_pattern"
 Items.GLOBE_BANNER_PATTERN:
-  - Items.GLOBE_BANNER_PATTER
+  - Items.GLOBE_BANNER_PATTERN
+
   - "globe_banner_pattern"
 Items.SWEET_BERRIES:
   - Items.SWEET_BERRIES
