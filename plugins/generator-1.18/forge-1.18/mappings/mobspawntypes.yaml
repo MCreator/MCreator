@@ -6,3 +6,4 @@ undergroundWaterCreature: MobCategory.UNDERGROUND_WATER_CREATURE
 waterCreature: MobCategory.WATER_CREATURE
 waterAmbient: MobCategory.WATER_AMBIENT
 misc: MobCategory.MISC
+axolotls: MobCategory.AXOLOTLS

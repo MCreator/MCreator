@@ -39,7 +39,6 @@ end_barrens: end_barrens
 warm_ocean: warm_ocean
 lukewarm_ocean: lukewarm_ocean
 cold_ocean: cold_ocean
-deep_warm_ocean: deep_warm_ocean
 deep_lukewarm_ocean: deep_lukewarm_ocean
 deep_cold_ocean: deep_cold_ocean
 deep_frozen_ocean: deep_frozen_ocean
@@ -47,13 +46,11 @@ mutated_plains: sunflower_plains
 mutated_extreme_hills: windswept_gravelly_hills
 mutated_forest: flower_forest
 mutated_ice_flats: ice_spikes
-mutated_jungle: modified_jungle
 mutated_birch_forest: old_growth_birch_forest
 mutated_redwood_taiga: old_growth_spruce_taiga
 mutated_savanna: windswept_savanna
 mutated_mesa: eroded_badlands
 bamboo_jungle: bamboo_jungle
-bamboo_jungle_hills: bamboo_jungle_hills
 soul_sand_valley: soul_sand_valley
 crimson_forest: crimson_forest
 warped_forest: warped_forest
@@ -79,11 +76,14 @@ redwood_taiga_hills: old_growth_pine_taiga
 taiga_cold_hills: snowy_taiga
 birch_forest_hills: birch_forest
 badlands_plateau: badlands
+deep_warm_ocean: warm_ocean
 mutated_desert: desert
 mutated_extreme_hills_with_trees: windswept_gravelly_hills
 mutated_taiga: taiga
 mutated_swampland: swamp
+mutated_jungle: jungle
 mutated_jungle_edge: sparse_jungle
+bamboo_jungle_hills: bamboo_jungle
 mutated_birch_forest_hills: old_growth_birch_forest
 mutated_roofed_forest: dark_forest
 mutated_taiga_cold: snowy_taiga
