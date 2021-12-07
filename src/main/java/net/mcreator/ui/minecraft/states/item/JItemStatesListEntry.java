@@ -151,8 +151,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		Map<String, Float> stateMap = Stream.of(state.getText().split(","))
 				.collect(Collectors.toMap(k -> k.split("=")[0], v -> Float.parseFloat(v.split("=")[1])));
 
-		Item.ModelEntry modelEntry = new Item.ModelEntry();
-		modelEntry.workspace = mcreator.getWorkspace();
+		Item.ModelEntry modelEntry = new Item.ModelEntry(mcreator.getWorkspace());
 		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
 		modelEntry.modelTexture = texture.getID();
 		modelEntry.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());

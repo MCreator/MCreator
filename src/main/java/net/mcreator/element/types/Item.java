@@ -169,10 +169,14 @@ import java.util.Map;
 
 	public static class ModelEntry {
 
-		public Workspace workspace;
+		public final Workspace workspace;
 		public int renderType;
 		public String modelTexture;
 		public String modelName;
+
+		public ModelEntry(Workspace workspace) {
+			this.workspace = workspace;
+		}
 
 		public Model getItemModel() {
 			return Model.getModelByParams(workspace, modelName, decodeModelType(renderType));

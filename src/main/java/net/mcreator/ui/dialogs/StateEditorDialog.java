@@ -58,9 +58,9 @@ public class StateEditorDialog {
 				stateEntry.useEntry.setSelected(true);
 				if (!values.isEmpty() && values.containsKey(stateEntry.property)) {
 					if (!e.y().setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
-						setValueOfComponent(stateEntry.entryComponent, e.y().type(), values.get(stateEntry.property));
+						setValueOfComponent(stateEntry.entryComponent, e.y(), values.get(stateEntry.property));
 				} else {
-					setValueOfComponent(stateEntry.entryComponent, e.y().type(), null);
+					setValueOfComponent(stateEntry.entryComponent, e.y(), null);
 					if (!justAdded)
 						stateEntry.useEntry.doClick();
 				}
@@ -155,17 +155,19 @@ public class StateEditorDialog {
 		return null;
 	}
 
-	private static void setValueOfComponent(JComponent component, Class<?> type, Object value) {
+	private static void setValueOfComponent(JComponent component, PropertyData property, Object value) {
 		if (value == null)
-			value = getDefaultValueForType(type);
+			value = getDefaultValueForType(property.type());
 		if (value != null && component != null) {
-			if (type.equals(boolean.class) || type.equals(Boolean.class))
+			if (property.type().equals(boolean.class) || property.type().equals(Boolean.class))
 				((JCheckBox) component).setSelected((boolean) value);
-			else if (type.equals(int.class) || type.equals(Integer.class))
-				((JSpinner) component).setValue(Integer.parseInt(value.toString()));
-			else if (type.equals(float.class) || type.equals(Float.class))
-				((JSpinner) component).setValue(Float.parseFloat(value.toString()));
-			else if (type.equals(String.class))
+			else if (property.type().equals(int.class) || property.type().equals(Integer.class))
+				((JSpinner) component).setValue(Math.max((Integer) property.min(),
+						Math.min((Integer) property.max(), Integer.parseInt(value.toString()))));
+			else if (property.type().equals(float.class) || property.type().equals(Float.class))
+				((JSpinner) component).setValue(Math.max((Float) property.min(),
+						Math.min((Float) property.max(), Float.parseFloat(value.toString()))));
+			else if (property.type().equals(String.class))
 				((JComboBox<?>) component).setSelectedItem(value);
 		}
 	}
