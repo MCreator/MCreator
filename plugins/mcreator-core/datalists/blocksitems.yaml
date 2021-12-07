@@ -6656,17 +6656,17 @@
   texture: RECORD_WAIT
   description: "C418 - wait"
 
-- Items.MUSIC_DISC_PIGSTEP:
-  readable_name: "Music Disc"
-  description: "Pigstep"
-  type: item
-  texture: MUSIC_DISC_PIGSTEP
-
 - Items.MUSIC_DISC_OTHERSIDE:
   readable_name: "Music Disc"
   description: "Otherside"
   type: item
   texture: MUSIC_DISC_OTHERSIDE
+
+- Items.MUSIC_DISC_PIGSTEP:
+  readable_name: "Music Disc"
+  description: "Pigstep"
+  type: item
+  texture: MUSIC_DISC_PIGSTEP
 
 - Items.SKULL:
   readable_name: "Any Skull"
