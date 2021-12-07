@@ -31,11 +31,3 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/recipes/brewing/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
     deleteWhenConditionFalse: true
-
-list_templates:
-  - name: "Recipe ingredients"
-    listData: getMatrixRaw()
-    forEach:
-      - template: json/crafting_ingredient.json.ftl
-        writer: json
-        name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()]_part@elementindex.json"

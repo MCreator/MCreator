@@ -49,7 +49,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
-	private final Map<GeneratorTemplatesList, ListTemplatesChooser<T>> listPager = new HashMap<>();
+	private final Map<GeneratorTemplatesList, ListTemplatesViewer<T>> listPager = new HashMap<>();
 
 	private boolean updateRunning = false;
 
@@ -109,7 +109,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							.getModElementGeneratorListTemplates(modElementGUI.getModElement(),
 									modElementGUI.getElementFromGUI()).forEach(e -> {
 								if (indexOfTab(e.groupName()) == -1) {
-									ListTemplatesChooser<T> subTab = new ListTemplatesChooser<>();
+									ListTemplatesViewer<T> subTab = new ListTemplatesViewer<>();
 									listPager.put(e, subTab);
 									addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
 								}
@@ -126,7 +126,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 								if (ownerListOptional.isPresent()
 										&& listPager.get(ownerListOptional.get()) != null) { // file from list
-									ListTemplatesChooser<T> ownerList = listPager.get(ownerListOptional.get());
+									ListTemplatesViewer<T> ownerList = listPager.get(ownerListOptional.get());
 									int tabid = indexOfComponent(ownerList);
 									if (tabid != -1)
 										setSelectedIndex(tabid);
@@ -170,7 +170,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				} catch (Exception ignored) {
+				} catch (Exception exception) {
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;

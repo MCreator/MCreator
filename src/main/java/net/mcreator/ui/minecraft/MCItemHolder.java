@@ -116,8 +116,8 @@ public class MCItemHolder extends JButton implements IValidable {
 						setBlock(null);
 					} else {
 						bs.setVisible(true); // show block selector
+						listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 					}
-					listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 					repaint();
 				}
 			}

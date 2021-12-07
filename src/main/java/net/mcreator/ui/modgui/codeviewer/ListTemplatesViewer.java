@@ -29,17 +29,16 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ListTemplatesChooser<T extends GeneratableElement> extends JSplitPane {
+public class ListTemplatesViewer<T extends GeneratableElement> extends JSplitPane {
 
 	private final Map<GeneratorFile, FileCodeViewer<T>> tabsMap = new HashMap<>();
 	private final CardLayout filesList;
-	private GeneratorFile lastSelected;
 
 	private final DefaultListModel<GeneratorFile> listModel = new DefaultListModel<>();
 	private final JList<GeneratorFile> files = new JList<>(listModel);
 	private final JPanel code;
 
-	public ListTemplatesChooser() {
+	public ListTemplatesViewer() {
 		super(JSplitPane.HORIZONTAL_SPLIT);
 
 		filesList = new CardLayout();
@@ -47,10 +46,7 @@ public class ListTemplatesChooser<T extends GeneratableElement> extends JSplitPa
 
 		files.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		files.setCellRenderer(new FileListCellRenderer());
-		files.addListSelectionListener(e -> {
-			lastSelected = files.getSelectedValue();
-			filesList.show(code, lastSelected.file().getName());
-		});
+		files.addListSelectionListener(e -> filesList.show(code, files.getSelectedValue().file().getName()));
 
 		setOneTouchExpandable(true);
 		setLeftComponent(new JScrollPane(files));
@@ -62,33 +58,28 @@ public class ListTemplatesChooser<T extends GeneratableElement> extends JSplitPa
 	public void addFileTab(GeneratorFile generatorFile, FileCodeViewer<T> fileCodeViewer) {
 		listModel.addElement(generatorFile);
 		tabsMap.put(generatorFile, fileCodeViewer);
+		code.setVisible(true);
 		code.add(fileCodeViewer, generatorFile.file().getName());
-		files.setSelectedValue(lastSelected, true);
+		if (tabsMap.keySet().size() == 1)
+			setSelectedFileTab(generatorFile);
 	}
 
 	public void setSelectedFileTab(GeneratorFile generatorFile) {
-		if (tabsMap.containsKey(generatorFile)) {
-			lastSelected = generatorFile;
+		if (tabsMap.containsKey(generatorFile))
 			files.setSelectedValue(generatorFile, true);
-		}
-	}
-
-	public int getFilesCount() {
-		return tabsMap.size();
 	}
 
 	public void removeFileTab(GeneratorFile generatorFile) {
 		listModel.removeElement(generatorFile);
-		code.remove(tabsMap.remove(generatorFile));
+		if (tabsMap.get(generatorFile) != null)
+			code.remove(tabsMap.remove(generatorFile));
+		if (tabsMap.keySet().size() == 0)
+			code.setVisible(false);
 	}
 
 	public void removeFileTab(File file) {
-		for (int i = 0; i < listModel.size(); i++) {
-			if (listModel.get(i).file() == file) {
-				removeFileTab(listModel.get(i));
-				break;
-			}
-		}
+		tabsMap.keySet().stream().filter(e -> e.file().getPath().equals(file.getPath())).findFirst()
+				.ifPresent(this::removeFileTab);
 	}
 
 	private static class FileListCellRenderer extends JLabel implements ListCellRenderer<GeneratorFile> {
@@ -97,7 +88,7 @@ public class ListTemplatesChooser<T extends GeneratableElement> extends JSplitPa
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(true);
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
 					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			setForeground(isSelected ?
 					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
