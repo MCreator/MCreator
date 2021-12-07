@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 38.0.4
+buildfileversion: 38.0.14
 
 java_models:
   key: mojmap-1.18.x
@@ -38,9 +38,9 @@ base_templates:
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-  - template: elementinits/javamodels.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-    condition: hasJavaModels()
+#  - template: elementinits/javamodels.java.ftl
+#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+#    condition: hasJavaModels()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
@@ -74,10 +74,10 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-  - task: copy_models
-    type: OBJ_inlinetextures
-    prefix: "@modid:blocks/"
-    to: "@MODASSETSROOT/models/item"
-  - task: copy_models
-    type: JSON_noinlinetextures
-    to: "@MODASSETSROOT/models/custom"
+#  - task: copy_models
+#    type: OBJ_inlinetextures
+#    prefix: "@modid:blocks/"
+#    to: "@MODASSETSROOT/models/item"
+#  - task: copy_models
+#    type: JSON_noinlinetextures
+#    to: "@MODASSETSROOT/models/custom"

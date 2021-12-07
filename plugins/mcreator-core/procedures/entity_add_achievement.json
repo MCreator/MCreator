@@ -14,6 +14,7 @@
   "nextStatement": null,
   "colour": 175,
   "mcreator": {
+    "group": "advancements",
     "toolbox_id": "playermanagement",
     "fields": [
       "achievement"

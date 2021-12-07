@@ -15,6 +15,7 @@
   "nextStatement": null,
   "colour": 175,
   "mcreator": {
+    "group": "abilities",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"condition\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>",
