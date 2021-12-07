@@ -85,7 +85,6 @@ WAX_OFF: ParticleTypes.WAX_OFF
 ELECTRIC_SPARK: ParticleTypes.ELECTRIC_SPARK
 SCRAPE: ParticleTypes.SCRAPE
 
-
 # Legacy
 BARRIER: ParticleTypes.CRIT
 LIGHT: ParticleTypes.CRIT
