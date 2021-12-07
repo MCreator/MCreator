@@ -643,6 +643,7 @@ block.conduit.ambient.short: block.conduit.ambient.short
 block.conduit.attack.target: block.conduit.attack.target
 block.conduit.deactivate: block.conduit.deactivate
 block.crop.break: block.crop.break
+block.growing_plant.crop: block.growing_plant.crop
 item.crop.plant: item.crop.plant
 item.crossbow.hit: item.crossbow.hit
 item.crossbow.loading_end: item.crossbow.loading_end
@@ -1206,3 +1207,6 @@ block.tuff.place: block.tuff.place
 block.tuff.step: block.tuff.step
 item.bone_meal.use: item.bone_meal.use
 item.dye.use: item.dye.use
+item.bundle.drop_contents: item.bundle.drop_contents
+item.bundle.insert: item.bundle.insert
+item.bundle.remove_one: item.bundle.remove_one

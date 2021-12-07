@@ -2,7 +2,7 @@ _default: null
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
 BerryBushes: BerryBushes
-Caves: DefaultCarvers
+Caves: DefaultCarversAndLakes
 DeadBushes: DesertVegetation
 DesertFeatures: DesertExtraDecoration
 Dripstone: Dripstone
@@ -14,11 +14,11 @@ Icebergs: Icebergs
 InfestedStone: InfestedStone
 JungleGrass: JungleGrass
 JungleTreeForest: JungleTrees
-Lakes: DefaultLakes
+Lakes: DefaultCarversAndLakes
 LushCavesDecoration: LushCavesVegetationFeatures
 MeadowVegetation: MeadowVegetation
 MonsterRooms: DefaultMonsterRoom
-OceanCaves: OceanCarvers
+OceanCaves: DefaultCarversAndLakes
 Ores: DefaultOres
 PlainsTallGrass: SavannaGrass
 ReedsAndPumpkins: DefaultExtraVegetation
