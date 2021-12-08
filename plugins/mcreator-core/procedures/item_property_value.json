@@ -30,6 +30,12 @@
       "property",
       "itemstack",
       "entity"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }
