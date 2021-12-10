@@ -5,7 +5,9 @@
     "description": {
       "identifier": "${modid}:${registryname}",
       "is_experimental": false,
-      "register_to_creative_menu ": true
+      "register_to_creative_menu ": true,
+        <#-- https://bugs.mojang.com/browse/MCPE-63121 -->
+        <#-- https://bugs.mojang.com/browse/MCPE-137721 -->
     },
     "components": {
       <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
