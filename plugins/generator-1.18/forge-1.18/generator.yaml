@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 38.0.14
+buildfileversion: 38.0.17
 
 java_models:
   key: mojmap-1.18.x
