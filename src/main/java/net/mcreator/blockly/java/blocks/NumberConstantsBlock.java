@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.JavaKeywordsMap;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -33,8 +34,7 @@ public class NumberConstantsBlock implements IBlockGenerator {
 			master.append(JavaKeywordsMap.MATH_CONSTANTS.get(element.getTextContent()));
 		} else {
 			master.append("0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Failed to find constant value, using 0 as value."));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.constant_number_block")));
 		}
 	}
 
