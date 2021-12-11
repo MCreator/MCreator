@@ -465,12 +465,13 @@ public class TestWorkspaceDataProvider {
 			fluid.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				fluid.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : biomes.size() / 2).limit(biomes.size() / 2)
-								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4).map(DataListEntry::getName)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 			}
 			fluid.frequencyOnChunks = 13;
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
+			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
 		} else if (ModElementType.FOOD.equals(modElement.getType())) {
 			Food food = new Food(modElement);
@@ -834,7 +835,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : biomes.size() / 2).limit(biomes.size() / 2)
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
 								.collect(Collectors.toList()));
 			}
@@ -890,6 +891,7 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
+			dimension.getModElement().putMetadata("ep", dimension.enablePortal);
 			return dimension;
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
@@ -910,7 +912,7 @@ public class TestWorkspaceDataProvider {
 			structure.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				structure.restrictionBlocks.addAll(
-						blocks.stream().skip(_true ? 0 : blocks.size() / 2).limit(blocks.size() / 2)
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
 								.collect(Collectors.toList()));
 			}
@@ -975,10 +977,15 @@ public class TestWorkspaceDataProvider {
 			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
-				armor.repairItems.addAll(blocksAndItems.stream().skip(_true ? 0 : blocksAndItems.size() / 2)
-						.limit(blocksAndItems.size() / 2).map(DataListEntry::getName)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+				armor.repairItems.addAll(
+						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
+								.limit(blocksAndItems.size() / 4).map(DataListEntry::getName)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 			}
+			armor.getModElement().putMetadata("eh", armor.enableHelmet);
+			armor.getModElement().putMetadata("ec", armor.enableBody);
+			armor.getModElement().putMetadata("el", armor.enableLeggings);
+			armor.getModElement().putMetadata("eb", armor.enableBoots);
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
@@ -1062,14 +1069,15 @@ public class TestWorkspaceDataProvider {
 			plant.jumpFactor = 17.732;
 			plant.canBePlacedOn = new ArrayList<>();
 			if (!emptyLists) {
-				plant.canBePlacedOn.addAll(blocks.stream().skip(_true ? 0 : blocks.size() / 2).limit(blocks.size() / 2)
-						.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
-						.collect(Collectors.toList()));
+				plant.canBePlacedOn.addAll(
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : biomes.size() / 2).limit(biomes.size() / 2)
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
 								.collect(Collectors.toList()));
 			}
@@ -1356,14 +1364,14 @@ public class TestWorkspaceDataProvider {
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : biomes.size() / 2).limit(biomes.size() / 2)
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
 								.collect(Collectors.toList()));
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				block.blocksToReplace.addAll(
-						blocks.stream().skip(_true ? 0 : blocks.size() / 2).limit(blocks.size() / 2)
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
 								.collect(Collectors.toList()));
 			}
@@ -1535,9 +1543,10 @@ public class TestWorkspaceDataProvider {
 			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleItems.addAll(blocksAndItems.stream().skip(_true ? 0 : blocksAndItems.size() / 2)
-						.limit(blocksAndItems.size() / 2).map(DataListEntry::getName)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+				enchantment.compatibleItems.addAll(
+						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
+								.limit(blocksAndItems.size() / 4).map(DataListEntry::getName)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
@@ -1581,6 +1590,9 @@ public class TestWorkspaceDataProvider {
 			gamerule.type = new String[] { "Number" , "Logic" , "Number" , "Logic" }[valueIndex];
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;
+			gamerule.getModElement().putMetadata("type", "Number".equals(gamerule.type) ?
+					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
+					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return gamerule;
 		}
 		return null;
