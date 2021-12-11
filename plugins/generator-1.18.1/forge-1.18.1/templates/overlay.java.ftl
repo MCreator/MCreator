@@ -40,6 +40,12 @@
 	</#if>
 </#list>
 
+<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+	<#assign stackMethodName = "getMatrixStack">
+<#else>
+	<#assign stackMethodName = "getPoseStack">
+</#if>
+
 package ${package}.client.gui;
 
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
@@ -51,10 +57,10 @@ package ${package}.client.gui;
 			int w = event.getWindow().getGuiScaledWidth();
 			int h = event.getWindow().getGuiScaledHeight();
 	<#else>
-	public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
-		if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
-			int w = event.getGui().width;
-			int h = event.getGui().height;
+	public static void eventHandler(ScreenEvent.DrawScreenEvent.Post event) {
+		if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
+			int w = event.getScreen().width;
+			int h = event.getScreen().height;
 	</#if>
 
 			int posX = w / 2;
@@ -91,7 +97,7 @@ package ${package}.client.gui;
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
 					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${data.baseTexture}"));
-					Minecraft.getInstance().gui.blit(event.getMatrixStack(), 0, 0, 0, 0, w, h, w, h);
+					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), 0, 0, 0, 0, w, h, w, h);
 				</#if>
 
 				<#list data.components as component>
@@ -101,14 +107,14 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().font.draw(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+						Minecraft.getInstance().font.draw(event.${stackMethodName}(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
 						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${component.image}"));
-						Minecraft.getInstance().gui.blit(event.getMatrixStack(), posX + ${x}, posY + ${y}, 0, 0,
+						Minecraft.getInstance().gui.blit(event.${stackMethodName}(), posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 
