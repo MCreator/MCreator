@@ -23,7 +23,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 public class JBoundingBoxList extends JEntriesList {
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
-	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
 	public JBoundingBoxList(MCreator mcreator) {
 		super(mcreator, new BorderLayout(), IHelpContext.NONE);
@@ -53,7 +51,8 @@ public class JBoundingBoxList extends JEntriesList {
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		add.addActionListener(e -> {
-			registerEntryUI(new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled()));
+			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled());
+			registerEntryUI(entry);
 			firePropertyChange("boundingBoxChanged", false, true);
 		});
 

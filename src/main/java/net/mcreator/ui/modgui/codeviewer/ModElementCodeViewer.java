@@ -92,7 +92,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				registerUI(jcomponent);
 
 				if (component instanceof JEntriesList entriesList) {
-					entriesList.setEntryCreationListener(this::registerUI);
+					entriesList.setEntryCreationListener(c -> {
+						reload();
+						this.registerUI(c);
+					});
 				} else if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
