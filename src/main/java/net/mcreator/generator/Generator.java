@@ -548,9 +548,9 @@ public class Generator implements IGenerator, Closeable {
 				if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
 					if (generatableElement == null) {
 						generatableElement = element.getGeneratableElement();
-						if (generatableElement == null) {
+						if (generatableElement == null && performFSTasks) {
 							LOG.warn("Failed to load mod generatable element: " + element.getName()
-									+ " -> all templates will be loaded, ignoring conditions and templates");
+									+ ". This means all templates will be generated (conditions ignored)");
 						}
 					}
 				}
@@ -824,7 +824,7 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void reloadGradleCaches() {
-		LOG.warn("Reloading generator Gradle cache");
+		LOG.info("Reloading generator Gradle cache");
 
 		this.generatorGradleCache = new GeneratorGradleCache(this);
 		String cache = new GsonBuilder().disableHtmlEscaping().create().toJson(generatorGradleCache);
