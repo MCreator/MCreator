@@ -37,11 +37,11 @@ public abstract class JEntriesList extends JPanel {
 		this.gui = gui;
 	}
 
-	public void setEntryCreationListener(Consumer<JComponent> entryListener) {
+	public final void setEntryCreationListener(Consumer<JComponent> entryListener) {
 		this.entryListener = entryListener;
 	}
 
-	public void registerEntryUI(JComponent entry) {
+	protected void registerEntryUI(JComponent entry) {
 		if (entryListener != null)
 			entryListener.accept(entry);
 	}

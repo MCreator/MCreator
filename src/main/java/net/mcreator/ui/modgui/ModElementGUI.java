@@ -62,7 +62,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final Map<String, JComponent> pages = new LinkedHashMap<>();
 
-	protected ModElementCodeViewer<GE> modElementCodeViewer = null;
+	private ModElementCodeViewer<GE> modElementCodeViewer = null;
 	private JSplitPane splitPane;
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
