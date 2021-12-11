@@ -82,8 +82,8 @@ public class JBoundingBoxList extends JEntriesList {
 		boundingBoxList.clear(); // Fixes failing tests
 		box.forEach(e -> {
 			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(isEnabled());
-			entry.setEntry(e);
 			registerEntryUI(entry);
+			entry.setEntry(e);
 		});
 	}
 
