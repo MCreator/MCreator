@@ -2627,102 +2627,102 @@ Blocks.POWDER_SNOW:
 Blocks.SCULK_SENSOR:
   - Blocks.SCULK_SENSOR
   - "sculk_sensor"
-Blocks.OXIDIZED_COPPER:
-  - Blocks.OXIDIZED_COPPER
-  - "oxidized_copper"
-Blocks.WEATHERED_COPPER:
-  - Blocks.WEATHERED_COPPER
-  - "weathered_copper"
-Blocks.EXPOSED_COPPER:
-  - Blocks.EXPOSED_COPPER
-  - "exposed_copper"
 Blocks.COPPER_BLOCK:
   - Blocks.COPPER_BLOCK
   - "copper_block"
-Blocks.OXIDIZED_CUT_COPPER:
-  - Blocks.OXIDIZED_CUT_COPPER
-  - "oxidized_cut_copper"
-Blocks.WEATHERED_CUT_COPPER:
-  - Blocks.WEATHERED_CUT_COPPER
-  - "weathered_cut_copper"
-Blocks.EXPOSED_CUT_COPPER:
-  - Blocks.EXPOSED_CUT_COPPER
-  - "exposed_cut_copper"
+Blocks.EXPOSED_COPPER:
+  - Blocks.EXPOSED_COPPER
+  - "exposed_copper"
+Blocks.WEATHERED_COPPER:
+  - Blocks.WEATHERED_COPPER
+  - "weathered_copper"
+Blocks.OXIDIZED_COPPER:
+  - Blocks.OXIDIZED_COPPER
+  - "oxidized_copper"
 Blocks.CUT_COPPER:
   - Blocks.CUT_COPPER
   - "cut_copper"
-Blocks.OXIDIZED_CUT_COPPER_STAIRS:
-  - Blocks.OXIDIZED_CUT_COPPER_STAIRS
-  - "oxidized_cut_copper_stairs"
-Blocks.WEATHERED_CUT_COPPER_STAIRS:
-  - Blocks.WEATHERED_CUT_COPPER_STAIRS
-  - "weathered_cut_copper_stairs"
-Blocks.EXPOSED_CUT_COPPER_STAIRS:
-  - Blocks.EXPOSED_CUT_COPPER_STAIRS
-  - "exposed_cut_copper_stairs"
+Blocks.EXPOSED_CUT_COPPER:
+  - Blocks.EXPOSED_CUT_COPPER
+  - "exposed_cut_copper"
+Blocks.WEATHERED_CUT_COPPER:
+  - Blocks.WEATHERED_CUT_COPPER
+  - "weathered_cut_copper"
+Blocks.OXIDIZED_CUT_COPPER:
+  - Blocks.OXIDIZED_CUT_COPPER
+  - "oxidized_cut_copper"
 Blocks.CUT_COPPER_STAIRS:
   - Blocks.CUT_COPPER_STAIRS
   - "cut_copper_stairs"
-Blocks.OXIDIZED_CUT_COPPER_SLAB:
-  - Blocks.OXIDIZED_CUT_COPPER_SLAB
-  - "oxidized_cut_copper_slab"
-Blocks.WEATHERED_CUT_COPPER_SLAB:
-  - Blocks.WEATHERED_CUT_COPPER_SLAB
-  - "weathered_cut_copper_slab"
-Blocks.EXPOSED_CUT_COPPER_SLAB:
-  - Blocks.EXPOSED_CUT_COPPER_SLAB
-  - "exposed_cut_copper_slab"
+Blocks.EXPOSED_CUT_COPPER_STAIRS:
+  - Blocks.EXPOSED_CUT_COPPER_STAIRS
+  - "exposed_cut_copper_stairs"
+Blocks.WEATHERED_CUT_COPPER_STAIRS:
+  - Blocks.WEATHERED_CUT_COPPER_STAIRS
+  - "weathered_cut_copper_stairs"
+Blocks.OXIDIZED_CUT_COPPER_STAIRS:
+  - Blocks.OXIDIZED_CUT_COPPER_STAIRS
+  - "oxidized_cut_copper_stairs"
 Blocks.CUT_COPPER_SLAB:
   - Blocks.CUT_COPPER_SLAB
   - "cut_copper_slab"
+Blocks.EXPOSED_CUT_COPPER_SLAB:
+  - Blocks.EXPOSED_CUT_COPPER_SLAB
+  - "exposed_cut_copper_slab"
+Blocks.WEATHERED_CUT_COPPER_SLAB:
+  - Blocks.WEATHERED_CUT_COPPER_SLAB
+  - "weathered_cut_copper_slab"
+Blocks.OXIDIZED_CUT_COPPER_SLAB:
+  - Blocks.OXIDIZED_CUT_COPPER_SLAB
+  - "oxidized_cut_copper_slab"
 Blocks.WAXED_COPPER_BLOCK:
   - Blocks.WAXED_COPPER_BLOCK
   - "waxed_copper_block"
-Blocks.WAXED_WEATHERED_COPPER:
-  - Blocks.WAXED_WEATHERED_COPPER
-  - "waxed_weathered_copper"
 Blocks.WAXED_EXPOSED_COPPER:
   - Blocks.WAXED_EXPOSED_COPPER
   - "waxed_exposed_copper"
+Blocks.WAXED_WEATHERED_COPPER:
+  - Blocks.WAXED_WEATHERED_COPPER
+  - "waxed_weathered_copper"
 Blocks.WAXED_OXIDIZED_COPPER:
   - Blocks.WAXED_OXIDIZED_COPPER
   - "waxed_oxidized_copper"
-Blocks.WAXED_OXIDIZED_CUT_COPPER:
-  - Blocks.WAXED_OXIDIZED_CUT_COPPER
-  - "waxed_oxidized_cut_copper"
-Blocks.WAXED_WEATHERED_CUT_COPPER:
-  - Blocks.WAXED_WEATHERED_CUT_COPPER
-  - "waxed_weathered_cut_copper"
-Blocks.WAXED_EXPOSED_CUT_COPPER:
-  - Blocks.WAXED_EXPOSED_CUT_COPPER
-  - "waxed_exposed_cut_copper"
 Blocks.WAXED_CUT_COPPER:
   - Blocks.WAXED_CUT_COPPER
   - "waxed_cut_copper"
-Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS:
-  - Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS
-  - "waxed_oxidized_cut_copper_stairs"
-Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS:
-  - Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS
-  - "waxed_weathered_cut_copper_stairs"
-Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS:
-  - Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS
-  - "waxed_exposed_cut_copper_stairs"
+Blocks.WAXED_EXPOSED_CUT_COPPER:
+  - Blocks.WAXED_EXPOSED_CUT_COPPER
+  - "waxed_exposed_cut_copper"
+Blocks.WAXED_WEATHERED_CUT_COPPER:
+  - Blocks.WAXED_WEATHERED_CUT_COPPER
+  - "waxed_weathered_cut_copper"
+Blocks.WAXED_OXIDIZED_CUT_COPPER:
+  - Blocks.WAXED_OXIDIZED_CUT_COPPER
+  - "waxed_oxidized_cut_copper"
 Blocks.WAXED_CUT_COPPER_STAIRS:
   - Blocks.WAXED_CUT_COPPER_STAIRS
   - "waxed_cut_copper_stairs"
-Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB:
-  - Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB
-  - "waxed_oxidized_cut_copper_slab"
-Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB:
-  - Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB
-  - "waxed_weathered_cut_copper_slab"
-Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB:
-  - Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB
-  - "waxed_exposed_cut_copper_slab"
+Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS:
+  - Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS
+  - "waxed_exposed_cut_copper_stairs"
+Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS:
+  - Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS
+  - "waxed_weathered_cut_copper_stairs"
+Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS:
+  - Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS
+  - "waxed_oxidized_cut_copper_stairs"
 Blocks.WAXED_CUT_COPPER_SLAB:
   - Blocks.WAXED_CUT_COPPER_SLAB
   - "waxed_cut_copper_slab"
+Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB:
+  - Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB
+  - "waxed_exposed_cut_copper_slab"
+Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB:
+  - Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB
+  - "waxed_weathered_cut_copper_slab"
+Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB:
+  - Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB
+  - "waxed_oxidized_cut_copper_slab"
 Blocks.LIGHTNING_ROD:
   - Blocks.LIGHTNING_ROD
   - "lightning_rod"
