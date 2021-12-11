@@ -237,12 +237,16 @@ public class TestWorkspaceDataProvider {
 
 	private static GeneratableElement getExampleFor(ModElement modElement, Random random, boolean _true,
 			boolean emptyLists, int valueIndex) {
+		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
+		List<MCItem> blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
+		List<DataListEntry> biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
+
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
 			Achievement achievement = new Achievement(modElement);
 			achievement.achievementName = "Test Achievement";
 			achievement.achievementDescription = "Description of it";
 			achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			achievement.achievementType = new String[] { "task" , "goal" , "challenge" , "challenge" }[valueIndex];
 			achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
@@ -269,16 +273,14 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.FUEL.equals(modElement.getType())) {
 			Fuel fuel = new Fuel(modElement);
 			fuel.power = new int[] { 0, 100, 1000, 4000 }[valueIndex];
-			fuel.block = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			fuel.block = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 			return fuel;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
-			biome.groundBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocks).getName());
 			biome.vanillaTreeType = getRandomItem(random,
 					new String[] { "Default" , "Big trees" , "Birch trees" , "Savanna trees" , "Mega pine trees" ,
 							"Mega spruce trees" });
@@ -346,8 +348,7 @@ public class TestWorkspaceDataProvider {
 					new String[] { "NONE" , "TAIGA" , "EXTREME_HILLS" , "JUNGLE" , "MESA" , "PLAINS" , "SAVANNA" });
 
 			if (!emptyLists) {
-				biome.parent = new BiomeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace())));
+				biome.parent = new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes));
 			} else {
 				biome.parent = new BiomeEntry(modElement.getWorkspace(), "No parent");
 			}
@@ -400,14 +401,10 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
 			biome.defaultFeatures = biomeDefaultFeatures;
-			biome.treeVines = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.treeStem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.treeBranch = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			biome.treeFruits = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+			biome.treeVines = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			biome.spawnBiome = !_true;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
@@ -468,11 +465,13 @@ public class TestWorkspaceDataProvider {
 			fluid.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				fluid.restrictionBiomes.addAll(
-						ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4).map(DataListEntry::getName)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 			}
 			fluid.frequencyOnChunks = 13;
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
+			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
 		} else if (ModElementType.FOOD.equals(modElement.getType())) {
 			Food food = new Food(modElement);
@@ -488,9 +487,8 @@ public class TestWorkspaceDataProvider {
 			food.texture = "test";
 			food.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			food.resultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
-					"" :
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			food.resultItem = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			food.stackSize = 32;
 			food.eatingSpeed = 123;
 			food.nutritionalValue = 5;
@@ -531,8 +529,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.TAB.equals(modElement.getType())) {
 			Tab tab = new Tab(modElement);
 			tab.name = modElement.getName();
-			tab.icon = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			tab.icon = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 			tab.showSearch = _true;
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
@@ -677,8 +674,8 @@ public class TestWorkspaceDataProvider {
 						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
 						new InputSlot(4, "slot2" , 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
-								null, null, new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName())));
+								null, null, new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, blocksAndItems).getName())));
 				components.add(
 						new OutputSlot(5, "slot out" , 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
 								new Procedure("procedure2"), new Procedure("procedure3")));
@@ -712,17 +709,17 @@ public class TestWorkspaceDataProvider {
 			livingEntity.bossBarType = getRandomItem(random,
 					new String[] { "PROGRESS" , "NOTCHED_6" , "NOTCHED_10" , "NOTCHED_12" , "NOTCHED_20" });
 			livingEntity.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.equipmentOffHand = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.equipmentHelmet = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.equipmentBody = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.equipmentLeggings = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
 			livingEntity.mobCreatureType = getRandomItem(random,
 					new String[] { "UNDEFINED" , "UNDEAD" , "ARTHROPOD" , "ILLAGER" , "WATER" });
@@ -758,7 +755,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.canControlForward = _true;
 			livingEntity.guiBoundTo = "<NONE>";
 			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.livingSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.hurtSound = new Sound(modElement.getWorkspace(),
@@ -815,20 +812,20 @@ public class TestWorkspaceDataProvider {
 			livingEntity.tameable = _true;
 			livingEntity.breedTriggerItems = new ArrayList<>();
 			if (!emptyLists) {
-				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
-				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+				livingEntity.breedTriggerItems.add(
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+				livingEntity.breedTriggerItems.add(
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+				livingEntity.breedTriggerItems.add(
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+				livingEntity.breedTriggerItems.add(
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+				livingEntity.breedTriggerItems.add(
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
 			}
 			livingEntity.ranged = _true;
 			livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
@@ -838,8 +835,9 @@ public class TestWorkspaceDataProvider {
 			livingEntity.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.restrictionBiomes.addAll(
-						ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			livingEntity.spawnInDungeons = _true;
 			livingEntity.modelWidth = 0.4;
@@ -858,15 +856,15 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
-			dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+			dimension.biomesInDimension.add(
+					new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			if (!emptyLists) {
-				dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-				dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
-				dimension.biomesInDimension.add(new BiomeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllBiomes(modElement.getWorkspace()))));
+				dimension.biomesInDimension.add(
+						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
+				dimension.biomesInDimension.add(
+						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
+				dimension.biomesInDimension.add(
+						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			}
 			dimension.airColor = Color.cyan;
 			dimension.canRespawnHere = _true;
@@ -878,14 +876,13 @@ public class TestWorkspaceDataProvider {
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 8;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
 			dimension.worldGenType = new String[] { "Nether like gen" , "Normal world gen" , "End like gen" ,
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
-			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocks).getName());
+			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			dimension.whenPortaTriggerlUsed = emptyLists ?
 					new Procedure("actionresulttype1") :
 					new Procedure("procedure1");
@@ -894,6 +891,7 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
+			dimension.getModElement().putMetadata("ep", dimension.enablePortal);
 			return dimension;
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
@@ -914,8 +912,9 @@ public class TestWorkspaceDataProvider {
 			structure.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				structure.restrictionBlocks.addAll(
-						ElementUtil.loadBlocks(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			if (_true) {
 				structure.generateCondition = new Procedure("condition1");
@@ -979,9 +978,14 @@ public class TestWorkspaceDataProvider {
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
 				armor.repairItems.addAll(
-						ElementUtil.loadBlocksAndItems(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
+								.limit(blocksAndItems.size() / 4).map(DataListEntry::getName)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 			}
+			armor.getModElement().putMetadata("eh", armor.enableHelmet);
+			armor.getModElement().putMetadata("ec", armor.enableBody);
+			armor.getModElement().putMetadata("el", armor.enableLeggings);
+			armor.getModElement().putMetadata("eb", armor.enableBoots);
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
@@ -1035,7 +1039,7 @@ public class TestWorkspaceDataProvider {
 				plant.specialInfo = new ArrayList<>();
 			}
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocks).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			plant.offsetType = getRandomString(random, Arrays.asList("NONE" , "XZ" , "XYZ"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
@@ -1054,7 +1058,7 @@ public class TestWorkspaceDataProvider {
 			plant.fallSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			plant.customDrop = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			plant.dropAmount = 4;
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
@@ -1066,14 +1070,16 @@ public class TestWorkspaceDataProvider {
 			plant.canBePlacedOn = new ArrayList<>();
 			if (!emptyLists) {
 				plant.canBePlacedOn.addAll(
-						ElementUtil.loadBlocks(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.addAll(
-						ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			plant.onNeighbourBlockChanges = new Procedure("procedure1");
 			plant.onTickUpdate = new Procedure("procedure2");
@@ -1110,9 +1116,8 @@ public class TestWorkspaceDataProvider {
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
 			item.guiBoundTo = "<NONE>";
-			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(), emptyLists ?
-					"" :
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
 			item.immuneToFire = _true;
@@ -1149,7 +1154,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			rangedItem.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -1170,7 +1175,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.bulletParticles = _true;
 			rangedItem.bulletIgnitesFire = _true;
 			rangedItem.bulletItemTexture = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			rangedItem.onBulletHitsBlock = new Procedure("procedure1");
 			rangedItem.onBulletHitsPlayer = new Procedure("procedure2");
 			rangedItem.onBulletFlyingTick = new Procedure("procedure3");
@@ -1265,7 +1270,7 @@ public class TestWorkspaceDataProvider {
 			block.destroyTool = getRandomItem(random,
 					new String[] { "Not specified" , "pickaxe" , "axe" , "shovel" , "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			block.flammability = 5;
 			block.fireSpreadSpeed = 12;
 			block.dropAmount = 3;
@@ -1303,7 +1308,7 @@ public class TestWorkspaceDataProvider {
 			block.canProvidePower = !_true;
 			block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1" , 8);
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocks).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE" , "XZ" , "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
@@ -1359,14 +1364,16 @@ public class TestWorkspaceDataProvider {
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(
-						ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				block.blocksToReplace.addAll(
-						ElementUtil.loadBlocks(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
+								.collect(Collectors.toList()));
 			}
 			block.frequencyPerChunks = 6;
 			block.frequencyOnChunk = 7;
@@ -1423,10 +1430,9 @@ public class TestWorkspaceDataProvider {
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
 			if (!emptyLists) {
-				tag.items.addAll(
-						ElementUtil.loadBlocksAndItems(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
-				tag.blocks.addAll(ElementUtil.loadBlocks(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+				tag.items.addAll(blocksAndItems.stream().map(DataListEntry::getName)
+						.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+				tag.blocks.addAll(blocks.stream().map(DataListEntry::getName)
 						.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 				tag.entities.addAll(
 						ElementUtil.loadAllEntities(modElement.getWorkspace()).stream().map(DataListEntry::getName)
@@ -1476,8 +1482,8 @@ public class TestWorkspaceDataProvider {
 						entry.minEnchantmentLevel = new int[] { 2, 5, 1, 6 }[valueIndex];
 						entry.maxEnchantmentLevel = new int[] { 3, 9, 5, 6 }[valueIndex];
 
-						entry.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.item = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, blocksAndItems).getName());
 
 						pool.entries.add(entry);
 					}
@@ -1538,7 +1544,8 @@ public class TestWorkspaceDataProvider {
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleItems.addAll(
-						ElementUtil.loadBlocksAndItems(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
+								.limit(blocksAndItems.size() / 4).map(DataListEntry::getName)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
@@ -1583,6 +1590,9 @@ public class TestWorkspaceDataProvider {
 			gamerule.type = new String[] { "Number" , "Logic" , "Number" , "Logic" }[valueIndex];
 			gamerule.defaultValueLogic = _true;
 			gamerule.defaultValueNumber = -45;
+			gamerule.getModElement().putMetadata("type", "Number".equals(gamerule.type) ?
+					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
+					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return gamerule;
 		}
 		return null;
@@ -1614,15 +1624,63 @@ public class TestWorkspaceDataProvider {
 			tool.specialInfo = new ArrayList<>();
 		}
 		if (!emptyLists) {
-			tool.blocksAffected.addAll(
-					ElementUtil.loadBlocks(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
 		}
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
-			tool.repairItems.addAll(
-					ElementUtil.loadBlocksAndItems(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
