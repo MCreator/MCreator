@@ -93,8 +93,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 				if (component instanceof JEntriesList entriesList) {
 					entriesList.setEntryCreationListener(c -> {
-						reload();
 						this.registerUI(c);
+						reload();
 					});
 				} else if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
 					component.addMouseListener(this);
