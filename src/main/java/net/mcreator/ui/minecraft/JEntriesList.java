@@ -21,15 +21,21 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 
 public abstract class JEntriesList extends JPanel {
+
 	protected final MCreator mcreator;
 	protected final IHelpContext gui;
+
 	private Consumer<JComponent> entryListener;
+
+	protected final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
 	public JEntriesList(MCreator mcreator, LayoutManager layout, IHelpContext gui) {
 		super(layout);
@@ -45,4 +51,5 @@ public abstract class JEntriesList extends JPanel {
 		if (entryListener != null)
 			entryListener.accept(entry);
 	}
+
 }

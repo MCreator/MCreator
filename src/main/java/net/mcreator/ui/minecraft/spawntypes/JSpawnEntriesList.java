@@ -23,7 +23,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
@@ -38,8 +37,6 @@ public class JSpawnEntriesList extends JEntriesList {
 	private final List<JSpawnListEntry> entryList = new ArrayList<>();
 
 	private final JPanel entries = new JPanel();
-
-	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
 	public JSpawnEntriesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
@@ -56,7 +53,10 @@ public class JSpawnEntriesList extends JEntriesList {
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> registerEntryUI(new JSpawnListEntry(mcreator, gui, entries, entryList)));
+		add.addActionListener(e -> {
+			JSpawnListEntry entry = new JSpawnListEntry(mcreator, gui, entries, entryList);
+			registerEntryUI(entry);
+		});
 
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 

@@ -24,7 +24,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
@@ -40,8 +39,6 @@ public class JPotionList extends JEntriesList {
 
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
-
 	public JPotionList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
@@ -56,7 +53,10 @@ public class JPotionList extends JEntriesList {
 
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> registerEntryUI(new JPotionListEntry(mcreator, gui, entries, entryList)));
+		add.addActionListener(e -> {
+			JPotionListEntry entry = new JPotionListEntry(mcreator, gui, entries, entryList);
+			registerEntryUI(entry);
+		});
 
 		add("Center", PanelUtils.pullElementUp(entries));
 
