@@ -18,6 +18,7 @@
 
 package net.mcreator.element.types;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
@@ -45,6 +46,9 @@ public class Procedure extends GeneratableElement {
 	public String procedurexml;
 
 	private transient List<Dependency> dependencies = null;
+
+	// this flag is only used by tests to force dependencies for trigger tests
+	@VisibleForTesting private transient boolean skipDependencyRegeneration = false;
 
 	public Procedure(ModElement element) {
 		super(element);
@@ -109,11 +113,13 @@ public class Procedure extends GeneratableElement {
 					trigger = externalTrigger;
 			}
 
-			// we update the dependency list of the procedure
-			this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
-					.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
-							null :
-							blocklyToJava.getReturnType().getName().toLowerCase());
+			if (!this.skipDependencyRegeneration) {
+				// we update the dependency list of the procedure
+				this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
+						.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
+								null :
+								blocklyToJava.getReturnType().getName().toLowerCase());
+			}
 
 			additionalData.put("dependencies", reloadDependencies());
 			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
@@ -141,6 +147,10 @@ public class Procedure extends GeneratableElement {
 				getModElement().getGenerator().getProcedureGenerator(),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
+	}
+
+	@VisibleForTesting public void skipDependencyRegeneration() {
+		this.skipDependencyRegeneration = true;
 	}
 
 }
