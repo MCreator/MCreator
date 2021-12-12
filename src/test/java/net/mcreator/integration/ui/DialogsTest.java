@@ -179,7 +179,7 @@ public class DialogsTest {
 				new Tuple<>("text", new PropertyData(Boolean.class, null, null, meTypes.toArray(String[]::new))),
 				rng.nextBoolean());
 		String state = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(), "float=" + rng.nextFloat(),
-						"text" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
+						"text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
 				.filter(e -> testProps.keySet().stream().anyMatch(el -> el.x().equals(e) && testProps.get(el)))
 				.collect(Collectors.joining(","));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,

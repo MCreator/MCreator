@@ -79,6 +79,7 @@ public class StateEditorDialog {
 
 		ok.addActionListener(e -> {
 			StringJoiner joiner = new StringJoiner(",");
+			Set<String> strings = new HashSet<>();
 			entryList.stream().filter(el -> el.useEntry.isSelected()).forEach(el -> {
 				Optional<Tuple<String, PropertyData>> prop = properties.stream()
 						.filter(element -> element.x().equals(el.property)).findFirst();
@@ -86,7 +87,8 @@ public class StateEditorDialog {
 					Object value = prop.get().y().getValueFromComponent(el.entryComponent);
 					if (value == null)
 						value = getValueFromComponent(el.entryComponent, prop.get().y().type());
-					joiner.add(el.property + "=" + value);
+					if (strings.add(el.property))
+						joiner.add(el.property + "=" + value);
 				}
 			});
 			retVal.set(joiner.toString());

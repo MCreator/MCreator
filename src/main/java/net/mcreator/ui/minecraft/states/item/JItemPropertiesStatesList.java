@@ -25,10 +25,10 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.states.PropertyData;
-import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.PropertyNameValidator;
@@ -71,6 +71,7 @@ public class JItemPropertiesStatesList extends JPanel {
 			return super.setValueOfComponent(component, value);
 		}
 	};
+	private final PropertyData customNumber = new PropertyData(Float.class, 0F, 1000000F, null);
 
 	private final List<String> builtinPropertyNames = List.of("damaged", "damage", "lefthanded", "cooldown",
 			"custom_model_data");
@@ -84,7 +85,7 @@ public class JItemPropertiesStatesList extends JPanel {
 	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
 	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
 
-	public JItemPropertiesStatesList(MCreator mcreator, ModElementGUI<?> gui) {
+	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
@@ -196,18 +197,18 @@ public class JItemPropertiesStatesList extends JPanel {
 		return se;
 	}
 
-	private void propertyRenamed(JItemPropertiesListEntry property) {
+	private void propertyRenamed(JItemPropertiesListEntry property) { //TODO: Migrate to scheduled renaming list
 		boolean noPropertyErrors = getValidationResult(false).validateIsErrorFree();
 		if (property.name.getValidator().validate().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 			if (noPropertyErrors)
-				statesList.forEach(e -> e.propertyRenamed(property.name.getText(), property.nameString));
+				statesList.forEach(e -> e.propertyRenamed(property.nameString, property.name.getText()));
 			property.nameString = property.name.getText();
 		}
 	}
 
 	private List<Tuple<String, PropertyData>> getPropertiesMap() {
-		return ListUtils.merge(builtinProperties, propertiesList.stream()
-				.map(e -> new Tuple<>(e.name.getText(), new PropertyData(Float.class, 0F, 1000000F, null))).toList());
+		return ListUtils.merge(builtinProperties,
+				propertiesList.stream().map(e -> new Tuple<>(e.name.getText(), customNumber)).toList());
 	}
 
 	public Map<String, Procedure> getProperties() {
