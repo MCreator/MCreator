@@ -25,6 +25,7 @@ import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.w3c.dom.Element;
@@ -153,7 +154,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 			if (!generated) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						"Unknown block type " + type + ". Skipping this block."));
+						L10N.t("blockly.warnings.unknown_block_type.skip", type)));
 			}
 		}
 	}
@@ -178,7 +179,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		if (!generated) {
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Unknown block type " + type + ". Remove this block!"));
+					L10N.t("blockly.warnings.unknown_block_type.remove", type)));
 		}
 	}
 

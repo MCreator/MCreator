@@ -36,7 +36,6 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -44,25 +43,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip procedures not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping procedure blocks test as the current generator does not support them.");
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorProcedures();
-
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
-
 			StringBuilder additionalXML = new StringBuilder();
-
-			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block that is not defined by generator: "
-						+ procedureBlock.machine_name);
-				continue;
-			}
 
 			if (procedureBlock.toolboxXML == null) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block without default XML defined: "
@@ -152,12 +141,12 @@ public class GTProcedureBlocks {
 					}
 				}
 
-				try {
+				if(procedureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
 					JsonArray extensions = procedureBlock.blocklyJSON.getAsJsonObject().get("extensions")
 							.getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
-						String suggestedFieldName = extension.replace("_list_provider", "");
+						String suggestedFieldName = extension.replace("_list_provider" , "");
 						String suggestedDataListName = suggestedFieldName;
 
 						// convert to proper field names in some extension cases
@@ -176,9 +165,30 @@ public class GTProcedureBlocks {
 							break;
 						}
 
+						if (procedureBlock.machine_name.contains("potion") && suggestedFieldName.equals("effect"))
+							suggestedFieldName = "potion";
+
+						if (suggestedDataListName.equals("biomedictionary"))
+							suggestedDataListName = "biomedictionarytypes";
+
+						if (suggestedDataListName.equals("sound_category")) {
+							suggestedDataListName = "soundcategories";
+							suggestedFieldName = "soundcategory";
+						}
+
+						if (suggestedDataListName.equals("plant_type")) {
+							suggestedDataListName = "planttype";
+							suggestedFieldName = "planttype";
+						}
+
 						if (procedureBlock.getFields().contains(suggestedFieldName)) {
 							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedDataListName);
+
+							if (values.length == 0 || values[0].equals(""))
+								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
+										suggestedDataListName + "s");
+
 							if (values.length > 0 && !values[0].equals("")) {
 								if (suggestedFieldName.equals("entity")) {
 									additionalXML.append("<field name=\"entity\">EntityZombie</field>");
@@ -187,10 +197,11 @@ public class GTProcedureBlocks {
 											.append(ListUtils.getRandomItem(random, values)).append("</field>");
 								}
 								processed++;
+							} else {
+								System.err.println("list: " + suggestedDataListName); // todo: remove me
 							}
 						}
 					}
-				} catch (Exception ignored) {
 				}
 
 				if (processed != procedureBlock.getFields().size()) {
@@ -215,40 +226,40 @@ public class GTProcedureBlocks {
 			String testXML = procedureBlock.toolboxXML;
 
 			// replace common math blocks with blocks that contain double variable to verify things like type casting
-			testXML = testXML.replace("<block type=\"coord_x\"></block>",
+			testXML = testXML.replace("<block type=\"coord_x\"></block>" ,
 					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-			testXML = testXML.replace("<block type=\"coord_y\"></block>",
+			testXML = testXML.replace("<block type=\"coord_y\"></block>" ,
 					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-			testXML = testXML.replace("<block type=\"coord_z\"></block>",
+			testXML = testXML.replace("<block type=\"coord_z\"></block>" ,
 					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
-			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>",
+			testXML = testXML.replaceAll("<block type=\"math_number\"><field name=\"NUM\">(.*?)</field></block>" ,
 					"<block type=\"variables_get_number\"><field name=\"VAR\">local:test</field></block>");
 
 			// replace common logic blocks with blocks that contain logic variable
-			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block>",
+			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block>" ,
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
-			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>",
+			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>" ,
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
 
 			// replace common itemstack blocks with blocks that contain logic variable
-			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
+			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>" ,
 					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
-			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>" ,
 					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
 
 			// set MCItem blocks to some value
-			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
+			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>" ,
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
 
-			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>" ,
 					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
 							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
 							+ "</field></block>");
 
 			// add additional xml to the block definition
-			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
+			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">" ,
 					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
 
 			Procedure procedure = new Procedure(modElement);

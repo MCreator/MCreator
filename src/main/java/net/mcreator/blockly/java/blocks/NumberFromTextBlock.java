@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -43,7 +44,7 @@ public class NumberFromTextBlock implements IBlockGenerator {
 			master.append(")");
 		} else {
 			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Text to number converter block is empty"));
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_text_to_number")));
 		}
 	}
 

@@ -9,6 +9,7 @@
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
+    "group": "food_saturation",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
