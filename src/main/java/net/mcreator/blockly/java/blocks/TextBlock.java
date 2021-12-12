@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.java.JavaConventions;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -33,8 +34,7 @@ public class TextBlock implements IBlockGenerator {
 			master.append("\"").append(JavaConventions.escapeStringForJava(element.getTextContent())).append("\"");
 		} else {
 			master.append("null");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Empty text block. Its value will be null."));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_text_block")));
 		}
 	}
 
