@@ -1,6 +1,10 @@
 {
   "trigger": "minecraft:placed_block",
   "conditions": {
-    "item": "${input$block}"
+    "item": {
+        "items": [
+            "${input$block}"
+  		]
+    }
   }
 }
