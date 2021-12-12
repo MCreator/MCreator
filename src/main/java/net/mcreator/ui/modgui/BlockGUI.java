@@ -91,7 +91,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder particleTexture;
 
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+	private JBoundingBoxList boundingBoxList;
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -263,6 +263,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		spawnWorldTypes = new DimensionListField(mcreator);
 
 		fluidRestrictions = new FluidListField(mcreator);
+
+		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
 		blocksToReplace.setListElements(
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));

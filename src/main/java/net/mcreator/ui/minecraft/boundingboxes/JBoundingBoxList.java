@@ -38,8 +38,8 @@ public class JBoundingBoxList extends JEntriesList {
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
-	public JBoundingBoxList(MCreator mcreator) {
-		super(mcreator, new BorderLayout(), IHelpContext.NONE);
+	public JBoundingBoxList(MCreator mcreator, IHelpContext gui) {
+		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));

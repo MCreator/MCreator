@@ -78,7 +78,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+	private JBoundingBoxList boundingBoxList;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
@@ -171,6 +171,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator);
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+
+		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
