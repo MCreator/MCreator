@@ -44,8 +44,8 @@ public class Launcher {
 	public static MCreatorVersionNumber version;
 
 	public static void main(String[] args) {
-
 		List<String> arguments = Arrays.asList(args);
+
 		System.setProperty("jna.nosys", "true");
 		System.setProperty("log_directory", UserFolderManager.getFileFromUserFolder("").getAbsolutePath());
 
