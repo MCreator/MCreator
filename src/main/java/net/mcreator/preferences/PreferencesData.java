@@ -51,7 +51,7 @@ public class PreferencesData {
 
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
 		public String textAntialiasingType = "on";
-        @PreferencesEntry public boolean usemacosMenu = true;
+		@PreferencesEntry public boolean usemacosMenu = true;
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;
 		@PreferencesEntry public boolean autoreloadTabs = true;
