@@ -28,12 +28,12 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.PropertyNameValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.Tuple;
 
 import javax.swing.*;
@@ -48,36 +48,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class JItemPropertiesStatesList extends JPanel {
-
-	private final MCreator mcreator;
+public class JItemPropertiesStatesList extends JEntriesList {
 
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 	private final AtomicInteger propertyId = new AtomicInteger(0);
-
-	private final PropertyData builtinNumber = new PropertyData(Float.class, 0F, 1F, null);
-	private final PropertyData builtinLogic = new PropertyData(Boolean.class, null, null, null) {
-		@Override public Object getValueFromComponent(JComponent component) {
-			return component instanceof JCheckBox check && check.isSelected() ? 1F : 0F;
-		}
-
-		@Override public boolean setValueOfComponent(JComponent component, Object value) {
-			if (component instanceof JCheckBox check) {
-				check.setSelected(Float.parseFloat(value.toString()) == 1F);
-				check.setText(check.isSelected() ? "True" : "False");
-				return true;
-			}
-			return super.setValueOfComponent(component, value);
-		}
-	};
-	private final PropertyData customNumber = new PropertyData(Float.class, 0F, 1000000F, null);
+	private final Map<JItemPropertiesListEntry, Tuple<String, Integer>> renamesQueue = new LinkedHashMap<>();
 
 	private final List<String> builtinPropertyNames = List.of("damaged", "damage", "lefthanded", "cooldown",
 			"custom_model_data");
-	private final List<Tuple<String, PropertyData>> builtinProperties = List.of(new Tuple<>("damaged", builtinLogic),
-			new Tuple<>("damage", builtinNumber), new Tuple<>("lefthanded", builtinLogic),
-			new Tuple<>("cooldown", builtinNumber));
+	private final Map<String, PropertyData> builtinProperties = new LinkedHashMap<>();
+	private final PropertyData customNumber = new PropertyData(Float.class, 0F, 1000000F, null);
 
 	private final JPanel propertyEntries = new JPanel(new GridLayout(0, 1, 5, 5));
 	private final JPanel stateEntries = new JPanel(new GridLayout(0, 1, 5, 5));
@@ -86,8 +67,28 @@ public class JItemPropertiesStatesList extends JPanel {
 	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
 
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
-		super(new BorderLayout());
-		this.mcreator = mcreator;
+		super(mcreator, new BorderLayout(), gui);
+
+		PropertyData builtinNumber = new PropertyData(Float.class, 0F, 1F, null);
+		PropertyData builtinLogic = new PropertyData(Boolean.class, null, null, null) {
+			@Override public Object getValueFromComponent(JComponent component) {
+				return component instanceof JCheckBox check && check.isSelected() ? 1F : 0F;
+			}
+
+			@Override public boolean setValueOfComponent(JComponent component, Object value) {
+				if (component instanceof JCheckBox check) {
+					check.setSelected(Float.parseFloat(value.toString()) == 1F);
+					check.setText(check.isSelected() ? "True" : "False");
+					return true;
+				}
+				return super.setValueOfComponent(component, value);
+			}
+		};
+
+		builtinProperties.put("damaged", builtinLogic);
+		builtinProperties.put("damage", builtinNumber);
+		builtinProperties.put("lefthanded", builtinLogic);
+		builtinProperties.put("cooldown", builtinNumber);
 
 		propertyEntries.setOpaque(false);
 		stateEntries.setOpaque(false);
@@ -96,10 +97,11 @@ public class JItemPropertiesStatesList extends JPanel {
 			@Override public void componentRemoved(ContainerEvent e) {
 				if (propertiesList.size() > 0) {
 					statesList.forEach(s -> s.state.setText(Stream.of(s.state.getText().split(","))
-							.filter(el -> getPropertiesMap().stream().anyMatch(p -> p.x().equals(el.split("=")[0])))
+							.filter(el -> getPropertiesMap().entrySet().stream()
+									.anyMatch(p -> p.getKey().equals(el.split("=")[0])))
 							.collect(Collectors.joining(","))));
 					Set<String> duplicates = new HashSet<>(); // when states are trimmed, we remove possible duplicates
-					statesList.forEach(entry -> {
+					statesList.stream().toList().forEach(entry -> {
 						if (entry.state.getText() == null || entry.state.getText().equals("") || !duplicates.add(
 								entry.state.getText()))
 							entry.removeState(stateEntries, statesList);
@@ -184,6 +186,7 @@ public class JItemPropertiesStatesList extends JPanel {
 				propertyRenamed(pe);
 			}
 		});
+		registerEntryUI(pe);
 		return pe;
 	}
 
@@ -194,25 +197,31 @@ public class JItemPropertiesStatesList extends JPanel {
 				se.state.setText(
 						StateEditorDialog.open(mcreator, se.state.getText(), getPropertiesMap(), "item", false));
 		});
+		registerEntryUI(se);
 		return se;
 	}
 
-	private void propertyRenamed(JItemPropertiesListEntry property) { //TODO: Migrate to scheduled renaming list
+	private void propertyRenamed(JItemPropertiesListEntry property) {
+		renamesQueue.put(property, new Tuple<>(property.name.getText(), propertiesList.indexOf(property)));
 		boolean noPropertyErrors = getValidationResult(false).validateIsErrorFree();
 		if (property.name.getValidator().validate().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			if (noPropertyErrors)
-				statesList.forEach(e -> e.propertyRenamed(property.nameString, property.name.getText()));
-			property.nameString = property.name.getText();
+			renamesQueue.forEach((k, v) -> {
+				if (noPropertyErrors)
+					statesList.forEach(e -> e.propertyRenamed(k.nameString, v.x(), v.y()));
+				propertiesList.get(v.y()).nameString = v.x();
+			});
+			renamesQueue.clear();
 		}
 	}
 
-	private List<Tuple<String, PropertyData>> getPropertiesMap() {
-		return ListUtils.merge(builtinProperties,
-				propertiesList.stream().map(e -> new Tuple<>(e.name.getText(), customNumber)).toList());
+	private Map<String, PropertyData> getPropertiesMap() {
+		Map<String, PropertyData> props = new LinkedHashMap<>(builtinProperties);
+		propertiesList.forEach(e -> props.put(e.name.getText(), customNumber));
+		return props;
 	}
 
 	public Map<String, Procedure> getProperties() {
-		Map<String, Procedure> retVal = new HashMap<>();
+		Map<String, Procedure> retVal = new LinkedHashMap<>();
 		propertiesList.forEach(e -> e.addEntry(retVal));
 		return retVal;
 	}
@@ -231,14 +240,17 @@ public class JItemPropertiesStatesList extends JPanel {
 	}
 
 	public Map<Map<String, Float>, Item.ModelEntry> getStates() {
-		Map<Map<String, Float>, Item.ModelEntry> retVal = new HashMap<>();
+		Map<Map<String, Float>, Item.ModelEntry> retVal = new LinkedHashMap<>();
 		statesList.forEach(e -> e.addEntry(retVal));
 		return retVal;
 	}
 
 	public void setStates(Map<Map<String, Float>, Item.ModelEntry> states) {
-		states.forEach((k, v) -> addStatesEntry(k.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
-				.collect(Collectors.joining(","))).setEntry(k, v));
+		states.forEach((k, v) -> {
+			String stateString = k.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
+					.collect(Collectors.joining(","));
+			addStatesEntry(stateString).setEntry(k, v);
+		});
 	}
 
 	public AggregatedValidationResult getValidationResult(boolean includeStates) {

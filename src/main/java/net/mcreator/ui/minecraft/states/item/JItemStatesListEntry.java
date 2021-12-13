@@ -42,6 +42,7 @@ import net.mcreator.workspace.resources.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -131,13 +132,12 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}
 
-	public void propertyRenamed(String property, String newName) {
-		String updated = state.getText();
-		if (updated.startsWith(property))
-			updated = updated.replace(property + "=", newName + "=");
-		else
-			updated = updated.replace("," + property + "=", "," + newName + "=");
-		state.setText(updated);
+	public void propertyRenamed(String property, String newName, int index) {
+		String[] stateParts = state.getText().split(",");
+		if (index > stateParts.length || !stateParts[index].startsWith(property))
+			index = Stream.of(stateParts).map(e -> e.split("=")[0]).toList().indexOf(property);
+		stateParts[index] = stateParts[index].replace(property + "=", newName + "=");
+		state.setText(String.join(",", stateParts));
 	}
 
 	public void removeState(JPanel parent, List<JItemStatesListEntry> entryList) {
@@ -148,8 +148,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	public void addEntry(Map<Map<String, Float>, Item.ModelEntry> map) {
-		Map<String, Float> stateMap = Stream.of(state.getText().split(","))
-				.collect(Collectors.toMap(k -> k.split("=")[0], v -> Float.parseFloat(v.split("=")[1])));
+		Map<String, Float> stateMap = new LinkedHashMap<>();
+		List.of(state.getText().split(",")).forEach(e -> {
+			float value = Math.round(Float.parseFloat(e.split("=")[1]) * 1000F) / 1000F;
+			stateMap.put(e.split("=")[0], value);
+		});
 
 		Item.ModelEntry modelEntry = new Item.ModelEntry(mcreator.getWorkspace());
 		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();

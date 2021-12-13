@@ -15,7 +15,7 @@
     }
     <#if data.modelsMap?has_content>,
     "overrides": [
-    <#list data.modelsMap as model>
+    <#list data.modelsMap.entrySet() as model>
         {
             "predicate": {
             <#list model.getKey().entrySet() as state>

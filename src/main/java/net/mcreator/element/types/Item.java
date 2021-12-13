@@ -33,7 +33,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,8 +112,8 @@ import java.util.Map;
 	public Item(ModElement element) {
 		super(element);
 
-		this.customProperties = new HashMap<>();
-		this.modelsMap = new HashMap<>();
+		this.customProperties = new LinkedHashMap<>();
+		this.modelsMap = new LinkedHashMap<>();
 
 		this.rarity = "COMMON";
 		this.inventorySize = 9;

@@ -25,7 +25,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
-import net.mcreator.util.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +36,7 @@ import java.util.stream.Stream;
 
 public class StateEditorDialog {
 
-	public static String open(MCreator mcreator, String initialState, List<Tuple<String, PropertyData>> properties,
+	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
 			String elementType, boolean justAdded) {
 		AtomicReference<String> retVal = new AtomicReference<>(initialState);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.states.title"), true);
@@ -47,20 +46,20 @@ public class StateEditorDialog {
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		entries.setOpaque(false);
 
-		Map<String, Object> values =
-				initialState != null && !initialState.equals("") ? Stream.of(initialState.split(","))
+		Map<String, Object> values = initialState != null && !initialState.equals("") ?
+				Stream.of(initialState.split(","))
 						.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1])) :
 				Collections.emptyMap();
-		properties.forEach(e -> {
-			JComponent component = generatePropertyComponent(e.y());
+		properties.forEach((k, v) -> {
+			JComponent component = generatePropertyComponent(v);
 			if (component != null) {
-				StateEntry stateEntry = new StateEntry(entries, entryList, e.x(), component);
+				StateEntry stateEntry = new StateEntry(entries, entryList, k, component);
 				stateEntry.useEntry.setSelected(true);
 				if (!values.isEmpty() && values.containsKey(stateEntry.property)) {
-					if (!e.y().setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
-						setValueOfComponent(stateEntry.entryComponent, e.y(), values.get(stateEntry.property));
+					if (!v.setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
+						setValueOfComponent(stateEntry.entryComponent, v, values.get(stateEntry.property));
 				} else {
-					setValueOfComponent(stateEntry.entryComponent, e.y(), null);
+					setValueOfComponent(stateEntry.entryComponent, v, null);
 					if (!justAdded)
 						stateEntry.useEntry.doClick();
 				}
@@ -81,12 +80,12 @@ public class StateEditorDialog {
 			StringJoiner joiner = new StringJoiner(",");
 			Set<String> strings = new HashSet<>();
 			entryList.stream().filter(el -> el.useEntry.isSelected()).forEach(el -> {
-				Optional<Tuple<String, PropertyData>> prop = properties.stream()
-						.filter(element -> element.x().equals(el.property)).findFirst();
+				Optional<PropertyData> prop = properties.entrySet().stream()
+						.filter(element -> element.getKey().equals(el.property)).map(Map.Entry::getValue).findFirst();
 				if (prop.isPresent()) {
-					Object value = prop.get().y().getValueFromComponent(el.entryComponent);
+					Object value = prop.get().getValueFromComponent(el.entryComponent);
 					if (value == null)
-						value = getValueFromComponent(el.entryComponent, prop.get().y().type());
+						value = getValueFromComponent(el.entryComponent, prop.get().type());
 					if (strings.add(el.property))
 						joiner.add(el.property + "=" + value);
 				}
