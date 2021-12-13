@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * <p>This class detects and then try to load all {@link Theme}s.</p>
+ * <p>This class detects and then tries to load all {@link Theme}s.</p>
  */
 public class ThemeLoader {
 
