@@ -19,7 +19,7 @@
 
 package net.mcreator.element;
 
-import net.mcreator.element.types.Procedure;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -61,7 +61,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
 		for (Field field : modElementStorageClass.getFields())
-			if (field.getType().isAssignableFrom(Procedure.class)) {
+			if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
 				hasProcedureTriggers = true;
 				break;
 			}

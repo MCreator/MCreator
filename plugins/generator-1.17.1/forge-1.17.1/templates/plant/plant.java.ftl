@@ -77,7 +77,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if data.jumpFactor != 1.0>
 		.jumpFactor(${data.jumpFactor}f)
 		</#if>
+		<#if data.luminance != 0>
 		.lightLevel(s -> ${data.luminance})
+		</#if>
+		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
+		.noDrops()
+		</#if>
 	);
 	setRegistryName("${registryname}");
 	}
@@ -144,7 +149,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if !data.useLootTableForDrops>
+	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.plantType == "double">
