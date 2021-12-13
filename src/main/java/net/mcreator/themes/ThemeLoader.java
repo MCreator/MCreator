@@ -21,6 +21,7 @@ package net.mcreator.themes;
 
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
+import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.UIRES;
@@ -37,7 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * <p>ThemeLoader defines to load and use available Themes.</p>
+ * <p>This class detects and then try to load all {@link Theme}s.</p>
  */
 public class ThemeLoader {
 
