@@ -1,8 +1,7 @@
 {
   "trigger": "minecraft:item_durability_changed",
   "conditions": {
-    "items": [
-      {
+    "item": {
         "items": [
             "${input$item}"
         ],
@@ -11,6 +10,5 @@
           "max": ${input$amount_h}
         }
       }
-    ]
   }
 }
