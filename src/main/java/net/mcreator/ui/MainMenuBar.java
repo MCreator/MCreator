@@ -18,7 +18,6 @@
 
 package net.mcreator.ui;
 
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
