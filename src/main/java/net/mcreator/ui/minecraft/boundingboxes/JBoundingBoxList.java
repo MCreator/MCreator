@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft;
+package net.mcreator.ui.minecraft.boundingboxes;
 
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,13 +32,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JBoundingBoxList extends JPanel {
+public class JBoundingBoxList extends JEntriesList {
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
-	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
-	public JBoundingBoxList(MCreator mcreator) {
-		super(new BorderLayout());
+	public JBoundingBoxList(MCreator mcreator, IHelpContext gui) {
+		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -51,7 +51,8 @@ public class JBoundingBoxList extends JPanel {
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		add.addActionListener(e -> {
-			new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled());
+			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled());
+			registerEntryUI(entry);
 			firePropertyChange("boundingBoxChanged", false, true);
 		});
 
@@ -78,7 +79,11 @@ public class JBoundingBoxList extends JPanel {
 
 	public void setBoundingBoxes(List<IBlockWithBoundingBox.BoxEntry> box) {
 		boundingBoxList.clear(); // Fixes failing tests
-		box.forEach(e -> new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled()).setEntry(e));
+		box.forEach(e -> {
+			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(isEnabled());
+			registerEntryUI(entry);
+			entry.setEntry(e);
+		});
 	}
 
 	public boolean isFullCube() {

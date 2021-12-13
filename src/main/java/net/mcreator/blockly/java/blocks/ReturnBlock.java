@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -46,8 +47,7 @@ public class ReturnBlock implements IBlockGenerator {
 		VariableType returnType = VariableTypeLoader.INSTANCE.fromName(type);
 
 		if (!master.getStatementInputsMatching(si -> true).isEmpty()) {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Return " + type + " block does not work inside statement blocks!"));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.retval.inside_statement", type)));
 			return;
 		}
 
@@ -56,7 +56,7 @@ public class ReturnBlock implements IBlockGenerator {
 			if (((BlocklyToProcedure) master).getReturnType() != null) {
 				if (((BlocklyToProcedure) master).getReturnType() != returnType) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Only one return type can be used in a single procedure."));
+							L10N.t("blockly.errors.retval.one_retval_block")));
 				}
 			} else {
 				((BlocklyToProcedure) master).setReturnType(returnType);
@@ -73,7 +73,7 @@ public class ReturnBlock implements IBlockGenerator {
 			}
 		} else {
 			master.getCompileNotes()
-					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipped empty return block."));
+					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.retval.empty")));
 		}
 	}
 
