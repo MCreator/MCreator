@@ -25,7 +25,6 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 
 public abstract class JEntriesList extends JPanel {

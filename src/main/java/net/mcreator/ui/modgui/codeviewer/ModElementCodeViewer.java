@@ -77,6 +77,12 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				mcItemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
+			} else if (component instanceof JEntriesList entriesList) {
+				entriesList.setEntryCreationListener(c -> {
+					this.registerUI(c);
+					reload();
+				});
+				component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner button) {
@@ -91,12 +97,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 			} else if (component instanceof JComponent jcomponent) {
 				registerUI(jcomponent);
 
-				if (component instanceof JEntriesList entriesList) {
-					entriesList.setEntryCreationListener(c -> {
-						this.registerUI(c);
-						reload();
-					});
-				} else if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
+				if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
 				}
