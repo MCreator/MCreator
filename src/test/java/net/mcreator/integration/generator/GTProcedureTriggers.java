@@ -35,10 +35,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureTriggers {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
+		// silently skip procedure triggers not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping procedure triggers test as the current generator does not support them.");
 			return;
 		}
 
@@ -69,9 +68,11 @@ public class GTProcedureTriggers {
 					ModElementType.PROCEDURE);
 
 			Procedure procedure = new Procedure(modElement);
-			if (externalTrigger.dependencies_provided != null)
+			if (externalTrigger.dependencies_provided != null) {
 				procedure.getModElement().clearMetadata()
 						.putMetadata("dependencies", externalTrigger.dependencies_provided);
+				procedure.skipDependencyRegeneration();
+			}
 			procedure.procedurexml =
 					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\"><field name=\"trigger\">"
 							+ externalTrigger.getID() + "</field></block></xml>";

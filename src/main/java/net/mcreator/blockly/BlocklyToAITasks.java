@@ -21,6 +21,7 @@ package net.mcreator.blockly;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +64,7 @@ public class BlocklyToAITasks extends BlocklyToJava {
 			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"Exception while compiling blocks: " + e.getMessage()));
+						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
 			}
 		}
 	}

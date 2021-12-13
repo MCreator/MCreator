@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -38,8 +39,7 @@ public class TextJoinBlock implements IBlockGenerator {
 			List<Element> elements = XMLUtil.getChildrenWithName(block, "value");
 
 			if (sumnum == 0) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"Join as text block needs at least one element"));
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.join.empty")));
 				return;
 			}
 
@@ -59,7 +59,7 @@ public class TextJoinBlock implements IBlockGenerator {
 				}
 				if (!match) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Join text block requires all inputs defined"));
+							L10N.t("blockly.errors.join.undefined_inputs")));
 					return;
 				}
 			}
@@ -88,7 +88,7 @@ public class TextJoinBlock implements IBlockGenerator {
 			master.append(")");
 		} else {
 			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipping invalid text join."));
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.errors.join.invalid")));
 		}
 	}
 
