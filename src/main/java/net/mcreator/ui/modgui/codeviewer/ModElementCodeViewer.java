@@ -49,7 +49,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
-	private final Map<GeneratorTemplatesList, ListTemplatesViewer<T>> listPager = new HashMap<>();
+	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
 	private boolean updateRunning = false;
 
@@ -109,7 +109,14 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							.getModElementGeneratorListTemplates(modElementGUI.getModElement(),
 									modElementGUI.getElementFromGUI()).forEach(e -> {
 								if (indexOfTab(e.groupName()) == -1) {
-									ListTemplatesViewer<T> subTab = new ListTemplatesViewer<>();
+									JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT,
+											JTabbedPane.SCROLL_TAB_LAYOUT);
+									subTab.addComponentListener(new ComponentAdapter() {
+										@Override public void componentShown(ComponentEvent e) {
+											super.componentShown(e);
+											reload();
+										}
+									});
 									listPager.put(e, subTab);
 									addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
 								}
@@ -126,11 +133,13 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 								if (ownerListOptional.isPresent()
 										&& listPager.get(ownerListOptional.get()) != null) { // file from list
-									ListTemplatesViewer<T> ownerList = listPager.get(ownerListOptional.get());
+									JTabbedPane ownerList = listPager.get(ownerListOptional.get());
 									int tabid = indexOfComponent(ownerList);
 									if (tabid != -1)
 										setSelectedIndex(tabid);
-									ownerList.setSelectedFileTab(file);
+									int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
+									if (subtabid != -1)
+										ownerList.setSelectedIndex(subtabid);
 								} else { // simple file
 									int tabid = indexOfComponent(cache.get(file.file()));
 									if (tabid != -1)
@@ -143,8 +152,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 								if (ownerListOptional.isPresent()) { // file from list
-									GeneratorTemplatesList ownerList = ownerListOptional.get();
-									listPager.get(ownerList).addFileTab(file, fileCodeViewer);
+									listPager.get(ownerListOptional.get())
+											.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+													fileCodeViewer);
 								} else { // simple file
 									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
 											fileCodeViewer);
@@ -155,6 +165,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
+					List<File> outdated = new ArrayList<>();
 					for (File file : cache.keySet()) {
 						if (!files.stream().map(GeneratorFile::file).collect(Collectors.toList())
 								.contains(file)) { // deleted file
@@ -162,15 +173,20 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 									.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
 							if (ownerListOptional.isPresent()
 									&& listPager.get(ownerListOptional.get()) != null) { // file from list
-								listPager.get(ownerListOptional.get()).removeFileTab(file);
+								JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+								for (int index = 0; index < ownerList.getTabCount(); index++) {
+									if (ownerList.getTitleAt(index).equals(file.getName()))
+										ownerList.removeTabAt(index);
+								}
 							} else { // simple file
 								remove(cache.get(file));
 							}
-							cache.remove(file);
+							outdated.add(file);
 						}
 					}
+					outdated.forEach(cache::remove);
 					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				} catch (Exception exception) {
+				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;
