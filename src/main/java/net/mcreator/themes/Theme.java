@@ -19,7 +19,6 @@
 
 package net.mcreator.themes;
 
-import net.mcreator.ui.dialogs.preferences.ThemesPanel;
 import net.mcreator.ui.init.L10N;
 
 import javax.annotation.Nullable;
@@ -74,7 +73,7 @@ import javax.swing.*;
 
 	/**
 	 *
-	 * @return <p>A description displayed in the {@link ThemesPanel} if provided.</p>
+	 * @return <p>A description displayed in the {@link net.mcreator.ui.dialogs.preferences.ThemesPanel} if provided.</p>
 	 */
 	public String getDescription() {
 		// Description inside the JSON file
@@ -157,7 +156,7 @@ import javax.swing.*;
 	/**
 	 * <p>To be detected, the name of the image file needs to be "icon.png" located into the main folder.</p>
 	 *
-	 * @param icon <p>An {@link ImageIcon} to display in {@link ThemesPanel}</p>
+	 * @param icon <p>An {@link ImageIcon} to display in {@link net.mcreator.ui.dialogs.preferences.ThemesPanel}</p>
 	 */
 	public void setIcon(ImageIcon icon) {
 		this.icon = icon;
