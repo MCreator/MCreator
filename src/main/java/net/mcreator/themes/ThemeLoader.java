@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * ThemeLoader defines to load and use available Themes.
+ * <p>ThemeLoader defines to load and use available Themes.</p>
  */
 public class ThemeLoader {
 
