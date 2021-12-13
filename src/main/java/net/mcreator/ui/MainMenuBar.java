@@ -18,6 +18,7 @@
 
 package net.mcreator.ui;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
@@ -44,7 +45,10 @@ public class MainMenuBar extends JMenuBar {
 
 	public MainMenuBar(MCreator mcreator) {
 		this.mcreator = mcreator;
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+		if(PreferencesManager.PREFERENCES.ui.usemacosMenu) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
 		JMenu logo = new JMenu("  MCreator");
