@@ -38,8 +38,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ProcedureRetvalBlock() {
-		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
+		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName).toList()
+				.stream().map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {

@@ -64,7 +64,7 @@ public class BranchSwitchAction {
 
 				git.reset().setMode(ResetCommand.ResetType.HARD).call();
 				git.checkout().setCreateBranch(
-								!git.branchList().call().stream().map(Ref::getName).collect(Collectors.toList())
+								!git.branchList().call().stream().map(Ref::getName).toList()
 										.contains("refs/heads/" + FilenameUtilsPatched.getName(branchToSwitchTo)))
 						.setName(FilenameUtilsPatched.getName(branchToSwitchTo)).call();
 

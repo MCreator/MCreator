@@ -78,7 +78,7 @@ public class PluginLoader extends URLClassLoader {
 
 		Collections.sort(pluginsLoadList);
 
-		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toList());
+		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).toList();
 
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
@@ -246,7 +246,7 @@ public class PluginLoader extends URLClassLoader {
 					}
 				}
 				return null;
-			}).filter(Objects::nonNull).collect(Collectors.toList()));
+			}).filter(Objects::nonNull).toList());
 		}
 	}
 
