@@ -92,8 +92,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	public void addEntry(Map<String, Procedure> map) {
-		if (this.name.getName() != null && !this.name.getName().equals("") && this.value.getSelectedProcedure() != null)
-			map.put(this.name.getName(), this.value.getSelectedProcedure());
+		if (this.name.getText() != null && !this.name.getText().equals("") && this.value.getSelectedProcedure() != null)
+			map.put(this.name.getText(), this.value.getSelectedProcedure());
 	}
 
 	public void setEntry(String name, Procedure value) {

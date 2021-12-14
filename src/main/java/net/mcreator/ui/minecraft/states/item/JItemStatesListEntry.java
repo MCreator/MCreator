@@ -149,10 +149,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	public void addEntry(Map<Map<String, Float>, Item.ModelEntry> map) {
 		Map<String, Float> stateMap = new LinkedHashMap<>();
-		List.of(state.getText().split(",")).forEach(e -> {
-			float value = Math.round(Float.parseFloat(e.split("=")[1]) * 1000F) / 1000F;
-			stateMap.put(e.split("=")[0], value);
-		});
+		List.of(state.getText().split(","))
+				.forEach(e -> stateMap.put(e.split("=")[0], Float.parseFloat(e.split("=")[1])));
 
 		Item.ModelEntry modelEntry = new Item.ModelEntry(mcreator.getWorkspace());
 		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();

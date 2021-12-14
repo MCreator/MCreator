@@ -9,10 +9,10 @@
         {
             "predicate": {
             <#list model.getKey().entrySet() as state>
-                "${state.getKey()}": ${state.getValue()}<#sep>,
+                "${state.getKey()}": ${(state.getValue() * 1000)?int / 1000}<#sep>,
             </#list>
             },
-            "model": "${modid}:item/${model.getValue().modelName}_${model?index}"
+            "model": "${modid}:item/${registryname}_${model?index}"
         }<#sep>,
     </#list>
     ]

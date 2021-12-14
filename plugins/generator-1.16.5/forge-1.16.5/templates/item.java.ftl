@@ -99,17 +99,17 @@ import net.minecraft.entity.ai.attributes.Attributes;
 		<#if data.customProperties?has_content>
 		static {
 			ItemCustom itemCustom = new ItemCustom();
-			<#list data.customProperties as property, value>
-			ItemModelsProperties.registerProperty(itemCustom, new ResourceLocation("${property}"),
+			<#list data.customProperties.entrySet() as property>
+			ItemModelsProperties.registerProperty(itemCustom, new ResourceLocation("${property.getKey()}"),
 					(itemStackToRender, clientWorld, livingEntity) -> {
-				<#if hasProcedure(value)>
+				<#if hasProcedure(property.getValue())>
 				ItemStack itemstack = itemStackToRender;
 				Entity entity = livingEntity;
 				double x = entity.getPosX();
 				double y = entity.getPosY();
 				double z = entity.getPosZ();
 				World world = entity.world;
-				return <@procedureOBJToNumberCode data.value/>;
+				return <@procedureOBJToNumberCode property.getValue()/>;
         		<#else>
 				return 0F;
         		</#if>

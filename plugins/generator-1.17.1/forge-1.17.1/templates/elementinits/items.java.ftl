@@ -75,24 +75,22 @@ package ${package}.init;
 	<#if w.hasItemsWithCustomProperties()>
 		static {
 		<#list items as item>
-			<#if item.customProperties?has_content>
-				<#list item.customProperties as property, value>
-					ItemModelsProperties.registerProperty(${item.getModElement().getRegistryNameUpper()},
-							new ResourceLocation("${property}"), (itemStackToRender, clientWorld, livingEntity, itemEntityId) -> {
-						<#if hasProcedure(value)>
-						ItemStack itemstack = itemStackToRender;
-						Entity entity = livingEntity;
-						double x = entity.getX();
-						double y = entity.getY();
-						double z = entity.getZ();
-						Level world = entity.level;
-						return <@procedureOBJToNumberCode data.value/>;
-						<#else>
-						return 0F;
-						</#if>
-					});
-				</#list>
-			</#if>
+			<#list item.customProperties.entrySet() as property>
+				ItemModelsProperties.registerProperty(${item.getModElement().getRegistryNameUpper()}, new ResourceLocation("${property.getKey()}"),
+						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> {
+					<#if hasProcedure(property.getValue())>
+					ItemStack itemstack = itemStackToRender;
+					Entity entity = livingEntity;
+					double x = entity.getX();
+					double y = entity.getY();
+					double z = entity.getZ();
+					Level world = entity.level;
+					return <@procedureOBJToNumberCode property.getValue()/>;
+					<#else>
+					return 0F;
+					</#if>
+				});
+			</#list>
 		</#list>
 		}
 	</#if>

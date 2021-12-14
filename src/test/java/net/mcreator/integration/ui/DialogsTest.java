@@ -53,7 +53,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -178,12 +178,15 @@ public class DialogsTest {
 				new Tuple<>("float", new PropertyData(Float.class, 0F, 10000F, null)), rng.nextBoolean(),
 				new Tuple<>("text", new PropertyData(Boolean.class, null, null, meTypes.toArray(String[]::new))),
 				rng.nextBoolean());
-		String state = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(), "float=" + rng.nextFloat(),
-						"text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
+		Map<String, PropertyData> propsMap = new LinkedHashMap<>();
+		testProps.entrySet().stream().filter(Map.Entry::getValue)
+				.forEach(e -> propsMap.put(e.getKey().x(), e.getKey().y()));
+		String testState = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(),
+						"float=" + rng.nextFloat(), "text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
 				.filter(e -> testProps.keySet().stream().anyMatch(el -> el.x().equals(e) && testProps.get(el)))
 				.collect(Collectors.joining(","));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, state, new ArrayList<>(testProps.keySet()), "block", false));
+				() -> StateEditorDialog.open(mcreator, testState, propsMap, "block", false));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
