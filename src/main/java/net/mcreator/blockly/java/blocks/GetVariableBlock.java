@@ -43,8 +43,8 @@ public class GetVariableBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public GetVariableBlock() {
-		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "variables_get_" + s).toArray(String[]::new);
+		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName).toList()
+				.stream().map(s -> s = "variables_get_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -60,14 +60,14 @@ public class GetVariableBlock implements IBlockGenerator {
 				String name = varfield[1];
 
 				if (scope.equals("global") && !master.getWorkspace().getVariableElements().stream()
-						.map(VariableElement::getName).collect(Collectors.toList()).contains(name)) {
+						.map(VariableElement::getName).toList().contains(name)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.variables.invalid_var", L10N.t("blockly.block.get_var"),
 									L10N.t("blockly.errors.remove_block"))));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
 						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
-						.collect(Collectors.toList()).contains(name)) { // check if local variable exists
+						.toList().contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.variables.invalid_local_var", L10N.t("blockly.block.get_var"),
 									L10N.t("blockly.errors.remove_block"))));

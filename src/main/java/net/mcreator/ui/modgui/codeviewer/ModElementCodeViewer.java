@@ -42,7 +42,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
 		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
@@ -135,7 +134,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					}
 
 					for (File file : cache.keySet()) {
-						if (!files.stream().map(GeneratorFile::file).collect(Collectors.toList())
+						if (!files.stream().map(GeneratorFile::file).toList()
 								.contains(file)) { // deleted file
 							remove(cache.get(file));
 							cache.remove(file);
