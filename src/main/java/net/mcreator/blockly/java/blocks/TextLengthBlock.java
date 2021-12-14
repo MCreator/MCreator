@@ -36,7 +36,8 @@ public class TextLengthBlock implements IBlockGenerator {
 			master.append(").length()");
 		} else {
 			master.append("0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_text_length")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.empty_text_length")));
 		}
 	}
 

@@ -32,14 +32,13 @@ import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ProcedureRetvalBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
+				.map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -68,8 +67,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 			}
 
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.procedure_retval.empty")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.procedure_retval.empty")));
 		}
 	}
 

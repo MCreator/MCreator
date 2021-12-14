@@ -33,7 +33,6 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class TextureSelectorDialog extends MCreatorDialog {
 
@@ -158,7 +157,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 			filterItems.clear();
 			String term = filterField.getText();
 			filterItems.addAll(items.stream().filter(item -> item.toString().toLowerCase(Locale.ENGLISH)
-					.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
+					.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
 	}

@@ -34,7 +34,8 @@ public class MCItemBlock implements IBlockGenerator {
 				&& !element.getTextContent().equals("null")) {
 			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(element.getTextContent()));
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));
 		}
 	}
 

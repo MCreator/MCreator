@@ -32,8 +32,8 @@ public class JavaCodeOutputBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append(element.getTextContent().replace("&#10;", "\n"));
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_output_code_block")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.empty_output_code_block")));
 		}
 	}
 
