@@ -34,7 +34,8 @@ public class NumberConstantsBlock implements IBlockGenerator {
 			master.append(JavaKeywordsMap.MATH_CONSTANTS.get(element.getTextContent()));
 		} else {
 			master.append("0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.constant_number_block")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.constant_number_block")));
 		}
 	}
 

@@ -19,7 +19,6 @@
 
 package net.mcreator.element;
 
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;

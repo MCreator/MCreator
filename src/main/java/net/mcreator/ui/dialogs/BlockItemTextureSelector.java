@@ -37,6 +37,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 public class BlockItemTextureSelector extends MCreatorDialog {
 
 	private final JButton naprej = L10N.button("dialog.textures_selector.select");

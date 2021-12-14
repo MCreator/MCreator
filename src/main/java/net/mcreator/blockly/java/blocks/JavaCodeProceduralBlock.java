@@ -32,8 +32,8 @@ public class JavaCodeProceduralBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append(element.getTextContent().replace("&#10;", "\n")).append("\n");
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_code_block")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.empty_code_block")));
 		}
 	}
 

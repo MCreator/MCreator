@@ -47,7 +47,8 @@ public class TextContains implements IBlockGenerator {
 			master.processOutputBlockWithoutParentheses(contains);
 			master.append("))");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_text_contains")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.empty_text_contains")));
 		}
 	}
 

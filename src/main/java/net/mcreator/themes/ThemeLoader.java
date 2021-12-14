@@ -21,7 +21,6 @@ package net.mcreator.themes;
 
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
-import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.UIRES;

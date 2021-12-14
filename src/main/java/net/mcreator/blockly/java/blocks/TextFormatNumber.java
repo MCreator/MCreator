@@ -47,7 +47,8 @@ public class TextFormatNumber implements IBlockGenerator {
 			master.processOutputBlockWithoutParentheses(number);
 			master.append("))");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.text_format_number_missing_inputs")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.text_format_number_missing_inputs")));
 		}
 	}
 

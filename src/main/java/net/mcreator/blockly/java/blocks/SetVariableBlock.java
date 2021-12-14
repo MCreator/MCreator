@@ -37,14 +37,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SetVariableBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public SetVariableBlock() {
-		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName).toList()
-				.stream().map(s -> s = "variables_set_" + s).toArray(String[]::new);
+		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
+				.map(s -> s = "variables_set_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {

@@ -134,8 +134,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					}
 
 					for (File file : cache.keySet()) {
-						if (!files.stream().map(GeneratorFile::file).toList()
-								.contains(file)) { // deleted file
+						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
 							remove(cache.get(file));
 							cache.remove(file);
 						}
