@@ -9,8 +9,8 @@
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
-      "bedrock_roof_position": -10,
-      "bedrock_floor_position": -10,
+      "bedrock_roof_position": -2147483648,
+      "bedrock_floor_position": -2147483648,
       "sea_level": 0,
       "disable_mob_generation": ${!data.imitateOverworldBehaviour},
       "noodle_caves_enabled": ${!data.imitateOverworldBehaviour},

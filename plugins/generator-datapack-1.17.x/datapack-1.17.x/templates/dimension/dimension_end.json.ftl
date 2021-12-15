@@ -9,8 +9,8 @@
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
-      "bedrock_roof_position": -10,
-      "bedrock_floor_position": -10,
+      "bedrock_roof_position": -2147483648,
+      "bedrock_floor_position": -2147483648,
       "sea_level": 0,
       "disable_mob_generation": ${!data.imitateOverworldBehaviour},
       "noodle_caves_enabled": ${!data.imitateOverworldBehaviour},
@@ -22,6 +22,7 @@
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
+        "min_y": 0,
         "density_factor": 0,
         "density_offset": 0,
         "simplex_surface_noise": true,
@@ -30,7 +31,6 @@
         "amplified": false,
         "size_horizontal": 2,
         "size_vertical": 1,
-        "min_y": 0,
         "height": 128,
         "sampling": {
           "xz_scale": 2,
