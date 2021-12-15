@@ -77,11 +77,10 @@ public class ReordarableListTransferHandler extends TransferHandler {
 
 	@SuppressWarnings("unchecked") @Override public boolean importData(TransferSupport info) {
 		TransferHandler.DropLocation tdl = info.getDropLocation();
-		if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
+		if (!canImport(info) || !(tdl instanceof JList.DropLocation dl)) {
 			return false;
 		}
 
-		JList.DropLocation dl = (JList.DropLocation) tdl;
 		JList target = (JList) info.getComponent();
 		DefaultListModel listModel = (DefaultListModel) target.getModel();
 		int max = listModel.getSize();
@@ -121,8 +120,8 @@ public class ReordarableListTransferHandler extends TransferHandler {
 					}
 				}
 			}
-			JList source = (JList) c;
-			DefaultListModel model = (DefaultListModel) source.getModel();
+			JList<?> source = (JList<?>) c;
+			DefaultListModel<?> model = (DefaultListModel<?>) source.getModel();
 			for (int i = indices.length - 1; i >= 0; i--) {
 				model.remove(indices[i]);
 			}

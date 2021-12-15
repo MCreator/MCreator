@@ -18,14 +18,14 @@
 
 package net.mcreator.blockly.data;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-public class StatementInput {
+public class StatementInput extends DependencyProviderInput {
 
 	public String name;
 
-	@Nullable public List<Dependency> provides;
 	public boolean disable_local_variables;
+
+	@Override public String getName() {
+		return this.name;
+	}
 
 }

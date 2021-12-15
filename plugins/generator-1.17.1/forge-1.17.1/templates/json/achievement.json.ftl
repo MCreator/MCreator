@@ -27,7 +27,8 @@
     </#if>
     "criteria": {
       "${registryname}": ${triggercode}
-    },
+    }
+    <#if data.hasRewards()>,
     "rewards": {
         "experience": ${data.rewardXP}
 
@@ -53,6 +54,7 @@
         ]
         </#if>
     }
+    </#if>
 <#if data.parent != "none" && !data.parent.toString().contains("@")>
     ,"parent": "${data.parent}"
 </#if>

@@ -9,9 +9,10 @@
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
+    "group": "offset",
     "toolbox_id": "directionactions",
     "toolbox_init": [
-      "<value name=\"direction\"><block type=\"direction_constant\">DOWN</block></value>"
+      "<value name=\"direction\"><block type=\"direction_from_deps\"></block></value>"
     ],
     "inputs": [
       "direction"

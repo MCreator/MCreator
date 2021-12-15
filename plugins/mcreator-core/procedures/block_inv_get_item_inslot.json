@@ -24,6 +24,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
+    "group": "inventory",
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",

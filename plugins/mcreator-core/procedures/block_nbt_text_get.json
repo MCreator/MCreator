@@ -25,6 +25,7 @@
   "output": "String",
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
+    "group": "nbt",
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",

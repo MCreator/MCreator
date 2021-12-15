@@ -83,9 +83,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 				L10N.label("elementgui.keybind.key_binding_name")));
 		enderpanel.add(keyBindingName);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category")
-						.withArguments(() -> L10N.t("tab.workspace"), () -> L10N.t("workspace.category.localization"),
-								() -> L10N.t("workspace.localization.add_entry"), keyBindingCategoryKey.getEditor()::getItem),
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category"),
 				L10N.label("elementgui.keybind.key_binding_category")));
 		enderpanel.add(PanelUtils.westAndCenterElement(new JLabel("key.categories."), keyBindingCategoryKey));
 
@@ -96,7 +94,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		JPanel evente = new JPanel();
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.keybind.key_procedure_triggers"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onKeyPressed);

@@ -35,6 +35,10 @@ public class JSONWriter {
 	public static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
 	public static void writeJSONToFileWithoutQueue(String srcjson, File file) {
+		FileIO.writeStringToFile(formatJSON(srcjson), file);
+	}
+
+	public static String formatJSON(String srcjson) {
 		String jsonout;
 		try {
 			JsonElement json = JsonParser.parseString(srcjson);
@@ -43,7 +47,7 @@ public class JSONWriter {
 			LOG.error("JSON Prettify failed, error: " + e.getMessage());
 			jsonout = srcjson;
 		}
-		FileIO.writeStringToFile(jsonout, file);
+		return jsonout;
 	}
 
 }

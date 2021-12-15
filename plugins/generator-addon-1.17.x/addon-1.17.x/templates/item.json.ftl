@@ -11,7 +11,8 @@
     "components": {
       <#if data.hasGlow>"minecraft:foil": true,</#if>
       "minecraft:max_stack_size": ${data.stackSize},
-      "minecraft:max_damage": ${data.damageCount}
+      "minecraft:max_damage": ${data.damageCount},
+      "minecraft:creative_category": "Items"
     }
   }
 }

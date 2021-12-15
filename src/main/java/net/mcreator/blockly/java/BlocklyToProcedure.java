@@ -24,6 +24,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.ReturnBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
@@ -85,7 +86,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 				if (getReturnType() != null) {
 					if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
 						addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								"Procedure that uses return value must always end with a valid return block"));
+								L10N.t("blockly.errors.invalid_return_block")));
 					}
 				}
 			} catch (TemplateGeneratorException e) {
@@ -93,7 +94,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"Exception while compiling blocks: " + e.getMessage()));
+						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
 			}
 		}
 	}

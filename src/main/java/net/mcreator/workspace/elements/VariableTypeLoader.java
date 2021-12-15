@@ -88,6 +88,9 @@ public class VariableTypeLoader {
 			case "itemstack":
 				BuiltInTypes.ITEMSTACK = variableType;
 				break;
+			case "blockstate":
+				BuiltInTypes.BLOCKSTATE = variableType;
+				break;
 			case "actionresulttype":
 				BuiltInTypes.ACTIONRESULTTYPE = variableType;
 				break;
@@ -133,6 +136,7 @@ public class VariableTypeLoader {
 		public static VariableType NUMBER;
 		public static VariableType STRING;
 		public static VariableType DIRECTION;
+		public static VariableType BLOCKSTATE;
 		public static VariableType ITEMSTACK;
 		public static VariableType ACTIONRESULTTYPE;
 	}
