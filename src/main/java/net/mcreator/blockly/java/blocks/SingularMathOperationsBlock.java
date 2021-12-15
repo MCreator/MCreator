@@ -61,7 +61,8 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 			master.append(numCode).append(")");
 		} else {
 			master.append("/*@int*/0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.singular_math")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.singular_math")));
 		}
 	}
 

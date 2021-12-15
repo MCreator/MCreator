@@ -51,7 +51,8 @@ public class TextSubstring implements IBlockGenerator {
 			master.processOutputBlock(to);
 			master.append("))");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_substring")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_substring")));
 		}
 	}
 

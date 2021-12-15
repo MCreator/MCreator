@@ -46,7 +46,7 @@ public class TemplatesLoader {
 			File[] customTemplates = UserFolderManager.getFileFromUserFolder(
 					"/templates/" + templatePackage.replace(".", "/")).listFiles();
 			if (customTemplates != null) {
-				templates.addAll(Arrays.stream(customTemplates).map(ResourcePointer::new).collect(Collectors.toList()));
+				templates.addAll(Arrays.stream(customTemplates).map(ResourcePointer::new).toList());
 			}
 
 			return templates;

@@ -48,8 +48,8 @@ public class PrintTextBlock implements IBlockGenerator {
 				}
 			}
 		} else {
-			master.getCompileNotes()
-					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_print_block")));
+			master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.empty_print_block")));
 		}
 	}
 
