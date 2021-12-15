@@ -110,6 +110,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 			new Thread(() -> {
 				updateRunning = true;
 				try {
+					Thread.sleep(50); // resolves freezing if previous updates are not complete yet
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
 					modElementGUI.getModElement().getGenerator()
