@@ -39,7 +39,7 @@ public class StateEditorDialog {
 	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
 			String elementType, boolean justAdded) {
 		AtomicReference<String> retVal = new AtomicReference<>(initialState);
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.states.title"), true);
+		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 		dialog.getContentPane().setLayout(new BorderLayout());
 
 		List<StateEntry> entryList = new ArrayList<>();
@@ -54,7 +54,6 @@ public class StateEditorDialog {
 			JComponent component = generatePropertyComponent(v);
 			if (component != null) {
 				StateEntry stateEntry = new StateEntry(entries, entryList, k, component);
-				stateEntry.useEntry.setSelected(true);
 				if (!values.isEmpty() && values.containsKey(stateEntry.property)) {
 					if (!v.setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
 						setValueOfComponent(stateEntry.entryComponent, v, values.get(stateEntry.property));
@@ -63,7 +62,6 @@ public class StateEditorDialog {
 					if (!justAdded)
 						stateEntry.useEntry.doClick();
 				}
-				entryList.add(stateEntry);
 			}
 		});
 
@@ -78,7 +76,6 @@ public class StateEditorDialog {
 
 		ok.addActionListener(e -> {
 			StringJoiner joiner = new StringJoiner(",");
-			Set<String> strings = new HashSet<>();
 			entryList.stream().filter(el -> el.useEntry.isSelected()).forEach(el -> {
 				Optional<PropertyData> prop = properties.entrySet().stream()
 						.filter(element -> element.getKey().equals(el.property)).map(Map.Entry::getValue).findFirst();
@@ -86,8 +83,7 @@ public class StateEditorDialog {
 					Object value = prop.get().getValueFromComponent(el.entryComponent);
 					if (value == null)
 						value = getValueFromComponent(el.entryComponent, prop.get().type());
-					if (strings.add(el.property))
-						joiner.add(el.property + "=" + value);
+					joiner.add(el.property + "=" + value);
 				}
 			});
 			retVal.set(joiner.toString());
@@ -98,7 +94,7 @@ public class StateEditorDialog {
 		JComponent editor = PanelUtils.centerAndSouthElement(stateList, PanelUtils.join(ok, cancel));
 		dialog.getContentPane().add("Center",
 				HelpUtils.combineHelpTextAndComponent(IHelpContext.NONE.withEntry(elementType + "/custom_state"),
-						L10N.label("dialog.states.description"), editor, 7));
+						L10N.label("dialog.state_editor.header"), editor, 7));
 
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);
@@ -195,6 +191,8 @@ public class StateEditorDialog {
 			super(new FlowLayout(FlowLayout.LEFT));
 			property = name;
 			entryComponent = component;
+
+			useEntry.setSelected(true);
 
 			final JComponent container = PanelUtils.expandHorizontally(this);
 

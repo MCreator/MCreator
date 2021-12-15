@@ -124,10 +124,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addState.addActionListener(e -> {
 			if (getValidationResult(false).validateIsErrorFree()) {
 				String state = StateEditorDialog.open(mcreator, "", getPropertiesMap(), "item", true);
-				if (statesList.stream().anyMatch(el -> el.state.getText().equals(state)))
-					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error"),
-							L10N.t("elementgui.item.custom_states.add.error.title"), JOptionPane.ERROR_MESSAGE);
-				else if (state != null && !state.equals(""))
+				if (state == null || state.equals(""))
+					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
+							L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
+				else if (statesList.stream().anyMatch(el -> el.state.getText().equals(state)))
+					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_duplicate"),
+							L10N.t("elementgui.item.custom_states.add.error_duplicate.title"),
+							JOptionPane.ERROR_MESSAGE);
+				else
 					addStatesEntry(state);
 			}
 		});
@@ -154,8 +158,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		super.setEnabled(enabled);
 
 		if (!enabled) {
-			propertiesList.stream().peek(e -> e.removeProperty(propertyEntries, propertiesList));
-			statesList.stream().peek(e -> e.removeState(stateEntries, statesList));
+			propertiesList.stream().toList().forEach(e -> e.removeProperty(propertyEntries, propertiesList));
+			statesList.stream().toList().forEach(e -> e.removeState(stateEntries, statesList));
 		}
 		addProperty.setEnabled(enabled);
 		addState.setEnabled(enabled);
