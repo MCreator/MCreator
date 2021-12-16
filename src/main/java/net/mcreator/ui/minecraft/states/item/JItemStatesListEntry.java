@@ -46,23 +46,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	private final MCreator mcreator;
+	private final JComponent container;
 
 	final JLabel state = new JLabel();
-	final JButton edit = new JButton(UIRES.get("16px.edit.gif"));
-	final JButton copy = new JButton(UIRES.get("16px.copyclipboard"));
 
 	private final TextureHolder texture;
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
-	private final JComponent container;
 
-	public JItemStatesListEntry(MCreator mcreator, JPanel parent, List<JItemStatesListEntry> entryList,
-			String initialState) {
+	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JItemStatesListEntry> entryList, String initialState,
+			Consumer<JItemStatesListEntry> editButtonListener) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
@@ -74,12 +74,15 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		texture.setOpaque(false);
 		texture.setValidator(new TileHolderValidator(texture));
 
+		JButton edit = new JButton(UIRES.get("16px.edit.gif"));
 		edit.setOpaque(false);
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());
 		edit.setContentAreaFilled(false);
 		edit.setToolTipText(L10N.t("elementgui.item.custom_states.edit_state"));
+		edit.addActionListener(e -> editButtonListener.accept(this));
 
+		JButton copy = new JButton(UIRES.get("16px.copyclipboard"));
 		copy.setOpaque(false);
 		copy.setMargin(new Insets(0, 0, 0, 0));
 		copy.setBorder(BorderFactory.createEmptyBorder());
@@ -109,7 +112,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		west.add(PanelUtils.join(stateLabel, statePane));
 
 		east.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
-		east.add(HelpUtils.combineHelpTextAndComponent(IHelpContext.NONE.withEntry("item/model"),
+		east.add(HelpUtils.combineHelpTextAndComponent(gui.withEntry("item/model"),
 				L10N.label("elementgui.item.custom_states.model"), model, 3));
 
 		parent.add(container);
@@ -134,7 +137,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	public void propertyRenamed(String property, String newName, int index) {
 		String[] stateParts = state.getText().split(",");
-		if (index > stateParts.length || !stateParts[index].startsWith(property))
+		if (index >= stateParts.length || !stateParts[index].startsWith(property))
 			index = Stream.of(stateParts).map(e -> e.split("=")[0]).toList().indexOf(property);
 		stateParts[index] = stateParts[index].replace(property + "=", newName + "=");
 		state.setText(String.join(",", stateParts));

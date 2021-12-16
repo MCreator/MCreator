@@ -186,7 +186,7 @@ public class DialogsTest {
 				.filter(e -> testProps.keySet().stream().anyMatch(el -> el.x().equals(e) && testProps.get(el)))
 				.collect(Collectors.joining(","));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testState, propsMap, "block", false));
+				() -> StateEditorDialog.open(mcreator, testState, propsMap, "block"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

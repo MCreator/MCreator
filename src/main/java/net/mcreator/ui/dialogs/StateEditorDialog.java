@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 public class StateEditorDialog {
 
 	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
-			String elementType, boolean justAdded) {
+			String elementType) {
 		AtomicReference<String> retVal = new AtomicReference<>(initialState);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 		dialog.getContentPane().setLayout(new BorderLayout());
@@ -50,16 +50,16 @@ public class StateEditorDialog {
 				Stream.of(initialState.split(","))
 						.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1])) :
 				Collections.emptyMap();
-		properties.forEach((k, v) -> {
-			JComponent component = generatePropertyComponent(v);
+		properties.forEach((name, data) -> {
+			JComponent component = generatePropertyComponent(data);
 			if (component != null) {
-				StateEntry stateEntry = new StateEntry(entries, entryList, k, component);
+				StateEntry stateEntry = new StateEntry(entries, entryList, name, component);
 				if (!values.isEmpty() && values.containsKey(stateEntry.property)) {
-					if (!v.setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
-						setValueOfComponent(stateEntry.entryComponent, v, values.get(stateEntry.property));
+					if (!data.setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
+						setValueOfComponent(stateEntry.entryComponent, data, values.get(stateEntry.property));
 				} else {
-					setValueOfComponent(stateEntry.entryComponent, v, null);
-					if (!justAdded)
+					setValueOfComponent(stateEntry.entryComponent, data, null);
+					if (initialState != null && !initialState.equals("")) // property is declared as not used
 						stateEntry.useEntry.doClick();
 				}
 			}

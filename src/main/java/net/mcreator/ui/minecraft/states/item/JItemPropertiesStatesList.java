@@ -31,10 +31,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.PropertyNameValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.util.Tuple;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -53,7 +51,6 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 	private final AtomicInteger propertyId = new AtomicInteger(0);
-	private final Map<JItemPropertiesListEntry, Tuple<String, Integer>> renamesQueue = new LinkedHashMap<>();
 
 	private final List<String> builtinPropertyNames = List.of("damaged", "damage", "lefthanded", "cooldown",
 			"custom_model_data");
@@ -123,7 +120,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 		addState.addActionListener(e -> {
 			if (getValidationResult(false).validateIsErrorFree()) {
-				String state = StateEditorDialog.open(mcreator, "", getPropertiesMap(), "item", true);
+				String state = StateEditorDialog.open(mcreator, "", getPropertiesMap(), "item");
 				if (state == null || state.equals(""))
 					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
 							L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
@@ -171,8 +168,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemPropertiesListEntry addPropertiesEntry(int propertyId) {
-		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, propertyEntries, propertiesList,
+		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
 				propertyId);
+
 		pe.name.setValidator(new PropertyNameValidator(pe.name, "Property name",
 				() -> propertiesList.stream().map(e -> e.name.getText()), () -> builtinPropertyNames,
 				new RegistryNameValidator(pe.name, "Property name")));
@@ -190,32 +188,30 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				propertyRenamed(pe);
 			}
 		});
+
 		registerEntryUI(pe);
 		return pe;
 	}
 
 	private JItemStatesListEntry addStatesEntry(String state) {
-		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, stateEntries, statesList, state);
-		se.edit.addActionListener(e -> {
+		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, state, e -> {
 			if (getValidationResult(false).validateIsErrorFree())
-				se.state.setText(
-						StateEditorDialog.open(mcreator, se.state.getText(), getPropertiesMap(), "item", false));
+				e.state.setText(StateEditorDialog.open(mcreator, e.state.getText(), getPropertiesMap(), "item"));
 		});
+
 		registerEntryUI(se);
 		return se;
 	}
 
 	private void propertyRenamed(JItemPropertiesListEntry property) {
-		renamesQueue.put(property, new Tuple<>(property.name.getText(), propertiesList.indexOf(property)));
-		boolean noPropertyErrors = getValidationResult(false).validateIsErrorFree();
-		if (property.name.getValidator().validate().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			renamesQueue.forEach((k, v) -> {
-				if (noPropertyErrors)
-					statesList.forEach(e -> e.propertyRenamed(k.nameString, v.x(), v.y()));
-				propertiesList.get(v.y()).nameString = v.x();
-			});
-			renamesQueue.clear();
-		}
+		getValidationResult(false).validateIsErrorFree(); // this highlights all the property names errors
+		statesList.forEach(e -> {
+			int builtinPropertiesFound = (int) Stream.of(e.state.getText().split(","))
+					.filter(el -> builtinProperties.containsKey(el.split("=")[0])).count();
+			e.propertyRenamed(property.nameString, property.name.getText(),
+					propertiesList.indexOf(property) + builtinPropertiesFound);
+		});
+		property.nameString = property.name.getText();
 	}
 
 	private Map<String, PropertyData> getPropertiesMap() {

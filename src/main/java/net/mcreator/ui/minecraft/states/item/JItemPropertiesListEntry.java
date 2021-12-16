@@ -41,18 +41,20 @@ import java.util.Map;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
-	final VTextField name = new VTextField(20);
-	String nameString;
-	private final ProcedureSelector.Dynamic value;
 	private final JComponent container;
 
-	public JItemPropertiesListEntry(MCreator mcreator, JPanel parent, List<JItemPropertiesListEntry> entryMap,
-			int propertyId) {
+	final VTextField name = new VTextField(20);
+	String nameString;
+
+	private final ProcedureSelector.Dynamic value;
+
+	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JItemPropertiesListEntry> entryMap, int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
 		nameString = "property" + propertyId;
 		name.setText(nameString);
 
-		value = new ProcedureSelector.Dynamic(IHelpContext.NONE.withEntry("item/custom_property_value"), mcreator,
+		value = new ProcedureSelector.Dynamic(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
 				L10N.t("elementgui.item.custom_property.value") + propertyId, AbstractProcedureSelector.Side.CLIENT,
 				true, VariableTypeLoader.BuiltInTypes.NUMBER,
@@ -62,7 +64,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 		container = PanelUtils.expandHorizontally(this);
 
-		add(HelpUtils.combineHelpTextAndComponent(IHelpContext.NONE.withEntry("item/custom_property_name"),
+		add(HelpUtils.combineHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
 				L10N.label("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
