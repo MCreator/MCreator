@@ -239,18 +239,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		});
 	}
 
-	public Map<Map<String, Float>, Item.ModelEntry> getStates() {
-		Map<Map<String, Float>, Item.ModelEntry> retVal = new LinkedHashMap<>();
+	public Map<String, Item.ModelEntry> getStates() {
+		Map<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
 		statesList.forEach(e -> e.addEntry(retVal));
 		return retVal;
 	}
 
-	public void setStates(Map<Map<String, Float>, Item.ModelEntry> states) {
-		states.forEach((k, v) -> {
-			String stateString = k.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
-					.collect(Collectors.joining(","));
-			addStatesEntry(stateString).setEntry(k, v);
-		});
+	public void setStates(Map<String, Item.ModelEntry> states) {
+		states.forEach((key, model) -> addStatesEntry(key).setEntry(key, model));
 	}
 
 	public AggregatedValidationResult getValidationResult(boolean includeStates) {

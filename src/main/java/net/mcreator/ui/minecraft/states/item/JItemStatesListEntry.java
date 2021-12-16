@@ -42,12 +42,10 @@ import net.mcreator.workspace.resources.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
@@ -150,22 +148,18 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		parent.repaint();
 	}
 
-	public void addEntry(Map<Map<String, Float>, Item.ModelEntry> map) {
-		Map<String, Float> stateMap = new LinkedHashMap<>();
-		List.of(state.getText().split(","))
-				.forEach(e -> stateMap.put(e.split("=")[0], Float.parseFloat(e.split("=")[1])));
-
+	public void addEntry(Map<String, Item.ModelEntry> map) {
 		Item.ModelEntry modelEntry = new Item.ModelEntry(mcreator.getWorkspace());
 		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
 		modelEntry.modelTexture = texture.getID();
 		modelEntry.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());
 
-		map.put(stateMap, modelEntry);
+		map.put(state.getText(), modelEntry);
 	}
 
-	public void setEntry(Map<String, Float> state, Item.ModelEntry value) {
-		this.state.setText(
-				state.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(",")));
+	public void setEntry(String state, Item.ModelEntry value) {
+		this.state.setText(state);
+
 		this.texture.setTextureFromTextureName(value.modelTexture);
 		this.model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), value.modelName,
 				Item.decodeModelType(value.renderType)));

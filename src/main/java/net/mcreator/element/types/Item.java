@@ -45,7 +45,7 @@ import java.util.Map;
 	public String customModelName;
 
 	public Map<String, Procedure> customProperties;
-	public Map<Map<String, Float>, ModelEntry> modelsMap;
+	public Map<String, ModelEntry> modelsMap;
 
 	public String name;
 	public String rarity;
@@ -128,7 +128,7 @@ import java.util.Map;
 		return getItemModel(null);
 	}
 
-	public Model getItemModel(Map<String, Float> modelKey) {
+	public Model getItemModel(String modelKey) {
 		if (modelKey != null) {
 			return modelsMap.get(modelKey).getItemModel();
 		} else {
@@ -140,7 +140,7 @@ import java.util.Map;
 		return getTextureMap(null);
 	}
 
-	public Map<String, String> getTextureMap(Map<String, Float> modelKey) {
+	public Map<String, String> getTextureMap(String modelKey) {
 		Model model = getItemModel(modelKey);
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();

@@ -13,8 +13,8 @@
     <#list data.modelsMap.entrySet() as model>
         {
             "predicate": {
-            <#list model.getKey().entrySet() as state>
-                "${state.getKey()}": ${(state.getValue() * 1000)?int / 1000}<#sep>,
+            <#list model.getKey().split(",") as state>
+                "${state.split("=")[0]}": ${(state.split("=")[1]?number?float * 1000)?int / 1000}<#sep>,
             </#list>
             },
             "model": "${modid}:item/${registryname}_${model?index}"
