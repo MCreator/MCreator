@@ -37,16 +37,18 @@ import java.util.stream.Stream;
 public class StateEditorDialog {
 
 	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
-			String elementType) {
+			IHelpContext help) {
+		if (initialState == null || initialState.equals(""))
+			initialState = "!esc";
+
 		AtomicReference<String> retVal = new AtomicReference<>(initialState);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
-		dialog.getContentPane().setLayout(new BorderLayout());
 
 		List<StateEntry> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		entries.setOpaque(false);
 
-		Map<String, Object> values = initialState != null && !initialState.equals("") ?
+		Map<String, Object> values = !initialState.equals("!esc") ?
 				Stream.of(initialState.split(","))
 						.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1])) :
 				Collections.emptyMap();
@@ -93,8 +95,7 @@ public class StateEditorDialog {
 
 		JComponent editor = PanelUtils.centerAndSouthElement(stateList, PanelUtils.join(ok, cancel));
 		dialog.getContentPane().add("Center",
-				HelpUtils.combineHelpTextAndComponent(IHelpContext.NONE.withEntry(elementType + "/custom_state"),
-						L10N.label("dialog.state_editor.header"), editor, 7));
+				HelpUtils.combineHelpTextAndComponent(help, L10N.label("dialog.state_editor.header"), editor, 7));
 
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);

@@ -36,6 +36,7 @@ import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -185,8 +186,8 @@ public class DialogsTest {
 						"float=" + rng.nextFloat(), "text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
 				.filter(e -> testProps.keySet().stream().anyMatch(el -> el.x().equals(e) && testProps.get(el)))
 				.collect(Collectors.joining(","));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testState, propsMap, "block"));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> StateEditorDialog.open(mcreator, testState, propsMap,
+				IHelpContext.NONE.withEntry("block/custom_state")));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
