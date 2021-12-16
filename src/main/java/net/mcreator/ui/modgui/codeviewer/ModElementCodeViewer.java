@@ -42,7 +42,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
 		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
