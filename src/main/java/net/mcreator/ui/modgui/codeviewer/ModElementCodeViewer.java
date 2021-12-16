@@ -42,6 +42,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
 		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
@@ -52,6 +54,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
 	private boolean updateRunning = false;
+	private final ScheduledThreadPoolExecutor updateQueue = new ScheduledThreadPoolExecutor(Integer.MAX_VALUE);
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -106,18 +109,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	private synchronized void reload() {
 		if (isVisible() && !updateRunning) {
-			new Thread(() -> {
+			updateQueue.schedule(() -> {
 				updateRunning = true;
 				try {
-					Thread.sleep(50); // resolves freezing if previous updates are not complete yet
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
 					modElementGUI.getModElement().getGenerator()
 							.getModElementGeneratorListTemplates(modElementGUI.getModElement(),
 									modElementGUI.getElementFromGUI()).forEach(e -> {
 								if (indexOfTab(e.groupName()) == -1) {
-									JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT,
-											JTabbedPane.SCROLL_TAB_LAYOUT);
+									JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
 									subTab.addComponentListener(new ComponentAdapter() {
 										@Override public void componentShown(ComponentEvent e) {
 											super.componentShown(e);
@@ -196,7 +197,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;
-			}).start();
+			}, 50, TimeUnit.MILLISECONDS);
 		}
 	}
 
