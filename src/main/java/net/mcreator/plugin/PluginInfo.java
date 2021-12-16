@@ -40,7 +40,6 @@ import java.util.List;
 	private int pluginPageID;
 
 	/**
-	 *
 	 * @return <p>The displayed name of the plugin</p>
 	 */
 	public String getName() {
@@ -48,7 +47,6 @@ import java.util.List;
 	}
 
 	/**
-	 *
 	 * @return <p>A description displayed in the plugins panel.</p>
 	 */
 	public String getDescription() {
@@ -56,7 +54,6 @@ import java.util.List;
 	}
 
 	/**
-	 *
 	 * @return <p>The author(s) of the plugin to be displayed in the plugins panel.</p>
 	 */
 	public String getAuthor() {
@@ -85,7 +82,6 @@ import java.util.List;
 	}
 
 	/**
-	 *
 	 * @return <p>A String with optional credits to give to someone.</p>
 	 */
 	public String getCredits() {

@@ -43,7 +43,8 @@ public class MCItemBlock implements IBlockGenerator {
 				master.append(code);
 			}
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));
 		}
 	}
 

@@ -175,8 +175,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					List<File> outdated = new ArrayList<>();
 					for (File file : cache.keySet()) {
-						if (!files.stream().map(GeneratorFile::file).collect(Collectors.toList())
-								.contains(file)) { // deleted file
+						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 									.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
 							if (ownerListOptional.isPresent()

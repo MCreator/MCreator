@@ -78,7 +78,7 @@ public class PluginLoader extends URLClassLoader {
 
 		Collections.sort(pluginsLoadList);
 
-		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toList());
+		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).toList();
 
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
@@ -113,7 +113,6 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 *
 	 * @param pattern <p>Returned file names will need to follow this {@link Pattern}.</p>
 	 * @return <p>The path into a {@link Plugin} of all files following the provided {@link Pattern}.</p>
 	 */
@@ -122,7 +121,6 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 *
 	 * @param pkg <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p>
 	 * @return <p>The path into a {@link Plugin} of all files inside the provided folder.</p>
 	 */
@@ -131,8 +129,7 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 *
-	 * @param pkg <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p>
+	 * @param pkg     <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p>
 	 * @param pattern <p>Returned file names will need to follow this {@link Pattern}.</p>
 	 * @return <p>The path into a {@link Plugin} of all files inside the provided folder following the provided {@link Pattern} .</p>
 	 */
@@ -145,7 +142,6 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 *
 	 * @return <p> A {@link List} of all loaded plugins.</p>
 	 */
 	public List<Plugin> getPlugins() {
@@ -153,7 +149,6 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 *
 	 * @return <p>A list of all plugin updates detected.</p>
 	 */
 	public List<PluginUpdateInfo> getPluginUpdates() {
@@ -246,7 +241,7 @@ public class PluginLoader extends URLClassLoader {
 					}
 				}
 				return null;
-			}).filter(Objects::nonNull).collect(Collectors.toList()));
+			}).filter(Objects::nonNull).toList());
 		}
 	}
 

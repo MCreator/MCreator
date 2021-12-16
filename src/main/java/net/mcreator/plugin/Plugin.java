@@ -114,7 +114,6 @@ public class Plugin implements Comparable<Plugin> {
 	}
 
 	/**
-	 *
 	 * @return <p>The minimal version of MCreator needed to use the plugin.</p>
 	 */
 	public long getMinVersion() {
@@ -122,7 +121,6 @@ public class Plugin implements Comparable<Plugin> {
 	}
 
 	/**
-	 *
 	 * @return <p>The MCreator's version when builtin and the plugin's version in the other case</p>
 	 */
 	public String getPluginVersion() {

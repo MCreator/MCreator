@@ -39,7 +39,8 @@ public class TextJoinBlock implements IBlockGenerator {
 			List<Element> elements = XMLUtil.getChildrenWithName(block, "value");
 
 			if (sumnum == 0) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.join.empty")));
+				master.addCompileNote(
+						new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.join.empty")));
 				return;
 			}
 
