@@ -198,7 +198,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 			try {
 				this.wait(50); // wait until the methods called during update are complete
-				this.notifyAll();
 			} catch (InterruptedException ignored) {
 			}
 		}
