@@ -54,12 +54,12 @@ public class StateEditorDialog {
 			JComponent component = generatePropertyComponent(data);
 			if (component != null) {
 				StateEntry stateEntry = new StateEntry(entries, entryList, name, component);
-				if (!values.isEmpty() && values.containsKey(stateEntry.property)) {
+				if (values.containsKey(stateEntry.property)) {
 					if (!data.setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
 						setValueOfComponent(stateEntry.entryComponent, data, values.get(stateEntry.property));
 				} else {
 					setValueOfComponent(stateEntry.entryComponent, data, null);
-					if (initialState != null && !initialState.equals("")) // property is declared as not used
+					if (!values.isEmpty()) // property is not used in this state
 						stateEntry.useEntry.doClick();
 				}
 			}
