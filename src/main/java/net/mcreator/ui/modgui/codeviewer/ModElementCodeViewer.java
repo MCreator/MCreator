@@ -42,8 +42,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
 		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
@@ -54,7 +52,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
 	private boolean updateRunning = false;
-	private final ScheduledThreadPoolExecutor updateQueue = new ScheduledThreadPoolExecutor(Integer.MAX_VALUE);
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -109,7 +106,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	private synchronized void reload() {
 		if (isVisible() && !updateRunning) {
-			updateQueue.schedule(() -> {
+			new Thread(() -> {
 				updateRunning = true;
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
@@ -197,7 +194,13 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;
-			}, 50, TimeUnit.MILLISECONDS);
+			}).start();
+
+			try {
+				this.wait(50); // wait until the methods called during update are complete
+				this.notifyAll();
+			} catch (InterruptedException ignored) {
+			}
 		}
 	}
 
