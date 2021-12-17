@@ -104,9 +104,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		}
 	}
 
-	private synchronized void reload() {
+	private void reload() {
 		if (isVisible() && !updateRunning) {
-			new Thread(() -> {
+			synchronized (this) {
 				updateRunning = true;
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
@@ -133,18 +133,18 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
-					for (File file : cache.keySet()) {
+					cache.keySet().stream().toList().forEach(file -> {
 						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
 							remove(cache.get(file));
 							cache.remove(file);
 						}
-					}
+					});
 					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;
-			}).start();
+			}
 		}
 	}
 
