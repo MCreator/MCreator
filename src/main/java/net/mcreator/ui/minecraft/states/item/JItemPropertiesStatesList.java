@@ -96,8 +96,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			@Override public void componentRemoved(ContainerEvent e) {
 				if (propertiesList.size() > 0) {
 					statesList.forEach(s -> s.state.setText(Stream.of(s.state.getText().split(","))
-							.filter(el -> getPropertiesMap().entrySet().stream()
-									.anyMatch(p -> p.getKey().equals(el.split("=")[0])))
+							.filter(el -> buildPropertiesMap().get(el.split("=")[0]) != null)
 							.collect(Collectors.joining(","))));
 					Set<String> duplicates = new HashSet<>(); // when states are trimmed, we remove possible duplicates
 					statesList.stream().toList().forEach(entry -> {
@@ -122,7 +121,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 		addState.addActionListener(e -> {
 			if (getValidationResult(false).validateIsErrorFree()) {
-				String state = StateEditorDialog.open(mcreator, "", getPropertiesMap(),
+				String state = StateEditorDialog.open(mcreator, "", buildPropertiesMap(),
 						gui.withEntry("item/custom_state"));
 				if (state == null || state.equals(""))
 					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
@@ -199,7 +198,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private JItemStatesListEntry addStatesEntry(String state) {
 		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, state, e -> {
 			if (getValidationResult(false).validateIsErrorFree())
-				e.state.setText(StateEditorDialog.open(mcreator, e.state.getText(), getPropertiesMap(),
+				e.state.setText(StateEditorDialog.open(mcreator, e.state.getText(), buildPropertiesMap(),
 						gui.withEntry("item/custom_state")));
 		});
 
@@ -218,7 +217,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		property.nameString = property.name.getText();
 	}
 
-	private Map<String, PropertyData> getPropertiesMap() {
+	private Map<String, PropertyData> buildPropertiesMap() {
 		Map<String, PropertyData> props = new LinkedHashMap<>(builtinProperties);
 		propertiesList.forEach(e -> props.put(e.name.getText(), customNumber));
 		return props;
