@@ -78,14 +78,13 @@ public class StateEditorDialog {
 
 		ok.addActionListener(e -> {
 			StringJoiner joiner = new StringJoiner(",");
-			entryList.stream().filter(el -> el.useEntry.isSelected() && properties.get(el.property) != null)
-					.forEach(el -> {
-						PropertyData prop = properties.get(el.property);
-						Object value = prop.getValueFromComponent(el.entryComponent);
-						if (value == null)
-							value = getValueFromComponent(el.entryComponent, prop.type());
-						joiner.add(el.property + "=" + value);
-					});
+			entryList.stream().filter(el -> el.useEntry.isSelected()).forEach(el -> {
+				PropertyData prop = properties.get(el.property);
+				Object value = prop.getValueFromComponent(el.entryComponent);
+				if (value == null)
+					value = getValueFromComponent(el.entryComponent, prop.type());
+				joiner.add(el.property + "=" + value);
+			});
 			retVal.set(joiner.toString());
 			dialog.setVisible(false);
 		});
