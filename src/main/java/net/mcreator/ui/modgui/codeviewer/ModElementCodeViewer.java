@@ -104,9 +104,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		}
 	}
 
-	private void reload() {
+	private synchronized void reload() {
 		if (isVisible() && !updateRunning) {
-			synchronized (this) {
+			new Thread(() -> {
 				updateRunning = true;
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
@@ -144,7 +144,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;
-			}
+			}).start();
 		}
 	}
 
