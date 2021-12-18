@@ -170,8 +170,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
-					List<File> outdated = new ArrayList<>();
-					for (File file : cache.keySet()) {
+					cache.keySet().stream().toList().forEach(file -> {
 						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 									.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
@@ -185,10 +184,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							} else { // simple file
 								remove(cache.get(file));
 							}
-							outdated.add(file);
+							cache.remove(file);
 						}
-					}
-					outdated.forEach(cache::remove);
+					});
 					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
