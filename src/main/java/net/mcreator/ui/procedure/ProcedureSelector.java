@@ -52,7 +52,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	private boolean inline = false;
 
-	protected final JLabel nameLabel;
+	private final JLabel nameLabel;
 	private final JLabel actionLabel;
 	private final JComponent componentA;
 	private final JComponent componentB;
@@ -79,6 +79,12 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			boolean allowInlineEditor, @Nullable VariableType returnType, Dependency... providedDependencies) {
+		this(helpContext, mcreator, eventName, eventName, side, allowInlineEditor, returnType, providedDependencies);
+	}
+
+	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
+			String procedureName, Side side, boolean allowInlineEditor, @Nullable VariableType returnType,
+			Dependency... providedDependencies) {
 		super(mcreator, returnType, providedDependencies);
 
 		setLayout(new BorderLayout(0, 0));
@@ -126,16 +132,14 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			if (helpContext == null)
 				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
-						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else if (side == Side.SERVER) {
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_server_side_only"));
 			eventNameLabel.setIcon(UIRES.get("16px.server"));
 			if (helpContext == null)
 				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, nameLabel));
 			else
-				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel,
-						HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
+				top.add("North", PanelUtils.westAndCenterElement(eventNameLabel, HelpUtils.wrapWithHelpButton(helpContext, nameLabel, SwingConstants.LEFT)));
 		} else {
 			if (helpContext == null)
 				top.add("North", nameLabel);
@@ -165,30 +169,26 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			add.addActionListener(e -> {
 				String procedureNameString = "";
 				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
-					StringBuilder procedureName = new StringBuilder(
+					StringBuilder procedureNameBuilder = new StringBuilder(
 							((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
 									.getName());
-					String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
+					String[] parts = procedureName.replaceAll("\\(.*\\)", "").split(" ");
 					for (String part : parts) {
-						procedureName.append(StringUtils.uppercaseFirstLetter(part));
+						procedureNameBuilder.append(StringUtils.uppercaseFirstLetter(part));
 					}
 					procedureNameString = JavaConventions.convertToValidClassName(
-							procedureName.toString().replace("When", ""));
+							procedureNameBuilder.toString().replace("When", ""));
 				}
 
-				procedureNameString = VOptionPane.showInputDialog(mcreator,
-						L10N.t("action.procedure.enter_procedure_name"),
+				procedureNameString = VOptionPane.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
 							@Override public ValidationResult validate(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(),
-										(VTextField) component).validate();
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component).validate();
 							}
-						}, L10N.t("action.procedure.create_procedure"),
-						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
+						}, L10N.t("action.procedure.create_procedure"), UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
 
 				if (procedureNameString != null) {
-					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
-							ModElementType.PROCEDURE);
+					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString, ModElementType.PROCEDURE);
 					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
 						newGUI.showView();
@@ -199,8 +199,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							setSelectedProcedure(modName);
 						});
 						mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
-								.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-										ModElementType.PROCEDURE.getReadableName(), null, null));
+								.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, ModElementType.PROCEDURE.getReadableName(), null, null));
 					}
 				}
 			});
@@ -210,10 +209,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			edit.setContentAreaFilled(false);
 			edit.addActionListener(e -> {
 				if (getSelectedProcedure() != null) {
-					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
-							.getModElementByName(getSelectedProcedure().getName());
-					ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType()
-							.getModElementGUI(mcreator, selectedProcedureAsModElement, true);
+					ModElement selectedProcedureAsModElement = mcreator.getWorkspace().getModElementByName(getSelectedProcedure().getName());
+					ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType().getModElementGUI(mcreator, selectedProcedureAsModElement, true);
 					if (modeditor != null)
 						modeditor.showView();
 				}
@@ -236,8 +233,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX", null));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
+		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE) == GeneratorStats.CoverageStatus.NONE)
 			setEnabled(false);
 	}
 
@@ -276,14 +272,5 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
 		return super.updateDepsList(inline);
-	}
-
-	public static class Dynamic extends ProcedureSelector {
-		public Dynamic(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, String procedureName,
-				Side side, boolean allowInlineEditor, @Nullable VariableType returnType,
-				Dependency... providedDependencies) {
-			super(helpContext, mcreator, procedureName, side, allowInlineEditor, returnType, providedDependencies);
-			nameLabel.setText(eventName);
-		}
 	}
 }

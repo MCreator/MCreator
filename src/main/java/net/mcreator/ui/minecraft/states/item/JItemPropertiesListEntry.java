@@ -46,7 +46,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	final VTextField name = new VTextField(20);
 	String nameString;
 
-	private final ProcedureSelector.Dynamic value;
+	private final ProcedureSelector value;
 
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryMap, int propertyId) {
@@ -54,7 +54,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		nameString = "property" + propertyId;
 		name.setText(nameString);
 
-		value = new ProcedureSelector.Dynamic(gui.withEntry("item/custom_property_value"), mcreator,
+		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
 				L10N.t("elementgui.item.custom_property.value") + propertyId, AbstractProcedureSelector.Side.CLIENT,
 				true, VariableTypeLoader.BuiltInTypes.NUMBER,
@@ -94,7 +94,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	public void addEntry(Map<String, Procedure> map) {
-		if (this.name.getText() != null && !this.name.getText().equals("") && this.value.getSelectedProcedure() != null)
+		if (this.name.getText() != null && !this.name.getText().equals(""))
 			map.put(this.name.getText(), this.value.getSelectedProcedure());
 	}
 
