@@ -28,6 +28,8 @@ createExe {
     fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
     productName = "MCreator"
     companyName = "Pylo"
+    version = (String) project.mcreatorconf.getProperty('mcreator')
+    textVersion = (String) project.mcreatorconf.getProperty('mcreator')
 
     icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
 }
