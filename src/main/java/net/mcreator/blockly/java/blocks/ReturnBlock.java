@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -31,14 +32,13 @@ import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ReturnBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ReturnBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "return_" + s).toArray(String[]::new);
+				.map(s -> s = "return_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -47,7 +47,7 @@ public class ReturnBlock implements IBlockGenerator {
 
 		if (!master.getStatementInputsMatching(si -> true).isEmpty()) {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Return " + type + " block does not work inside statement blocks!"));
+					L10N.t("blockly.errors.retval.inside_statement", type)));
 			return;
 		}
 
@@ -56,7 +56,7 @@ public class ReturnBlock implements IBlockGenerator {
 			if (((BlocklyToProcedure) master).getReturnType() != null) {
 				if (((BlocklyToProcedure) master).getReturnType() != returnType) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Only one return type can be used in a single procedure."));
+							L10N.t("blockly.errors.retval.one_retval_block")));
 				}
 			} else {
 				((BlocklyToProcedure) master).setReturnType(returnType);
@@ -72,8 +72,8 @@ public class ReturnBlock implements IBlockGenerator {
 				master.append(code);
 			}
 		} else {
-			master.getCompileNotes()
-					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipped empty return block."));
+			master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.retval.empty")));
 		}
 	}
 

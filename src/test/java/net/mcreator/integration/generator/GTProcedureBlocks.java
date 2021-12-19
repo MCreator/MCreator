@@ -44,10 +44,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip if procedures are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping procedure blocks test as the current generator does not support them.");
 			return;
 		}
 
@@ -55,12 +54,10 @@ public class GTProcedureBlocks {
 
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
-
 			StringBuilder additionalXML = new StringBuilder();
 
+			// silently skip procedure blocks not supported by this generator
 			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block that is not defined by generator: "
-						+ procedureBlock.machine_name);
 				continue;
 			}
 
@@ -152,7 +149,7 @@ public class GTProcedureBlocks {
 					}
 				}
 
-				try {
+				if (procedureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
 					JsonArray extensions = procedureBlock.blocklyJSON.getAsJsonObject().get("extensions")
 							.getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
@@ -176,9 +173,30 @@ public class GTProcedureBlocks {
 							break;
 						}
 
+						if (procedureBlock.machine_name.contains("potion") && suggestedFieldName.equals("effect"))
+							suggestedFieldName = "potion";
+
+						if (suggestedDataListName.equals("biomedictionary"))
+							suggestedDataListName = "biomedictionarytypes";
+
+						if (suggestedDataListName.equals("sound_category")) {
+							suggestedDataListName = "soundcategories";
+							suggestedFieldName = "soundcategory";
+						}
+
+						if (suggestedDataListName.equals("plant_type")) {
+							suggestedDataListName = "planttype";
+							suggestedFieldName = "planttype";
+						}
+
 						if (procedureBlock.getFields().contains(suggestedFieldName)) {
 							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedDataListName);
+
+							if (values.length == 0 || values[0].equals(""))
+								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
+										suggestedDataListName + "s");
+
 							if (values.length > 0 && !values[0].equals("")) {
 								if (suggestedFieldName.equals("entity")) {
 									additionalXML.append("<field name=\"entity\">EntityZombie</field>");
@@ -187,10 +205,11 @@ public class GTProcedureBlocks {
 											.append(ListUtils.getRandomItem(random, values)).append("</field>");
 								}
 								processed++;
+							} else {
+								System.err.println("list: " + suggestedDataListName); // todo: remove me
 							}
 						}
 					}
-				} catch (Exception ignored) {
 				}
 
 				if (processed != procedureBlock.getFields().size()) {

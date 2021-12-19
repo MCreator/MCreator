@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -34,8 +35,11 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class PotionGUI extends ModElementGUI<Potion> {
 
@@ -43,7 +47,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	private final VTextField splashName = new VTextField(24);
 	private final VTextField lingeringName = new VTextField(24);
 	private final VTextField arrowName = new VTextField(24);
-	private final JPotionList effectList = new JPotionList(mcreator);
+	private JPotionList effectList;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -54,6 +58,8 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	}
 
 	@Override protected void initGUI() {
+		effectList = new JPotionList(mcreator, this);
+
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
@@ -154,5 +160,9 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		potion.arrowName = arrowName.getText();
 		potion.effects = effectList.getEffects();
 		return potion;
+	}
+
+	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-potion");
 	}
 }
