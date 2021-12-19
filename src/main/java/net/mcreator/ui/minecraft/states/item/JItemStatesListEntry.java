@@ -127,10 +127,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		parent.repaint();
 	}
 
-	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(ItemGUI.builtInItemModels(),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
+	public void removeState(JPanel parent, List<JItemStatesListEntry> entryList) {
+		entryList.remove(this);
+		parent.remove(container);
+		parent.revalidate();
+		parent.repaint();
 	}
 
 	public void propertyRenamed(String property, String newName, int index) {
@@ -141,11 +142,10 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		state.setText(String.join(",", stateParts));
 	}
 
-	public void removeState(JPanel parent, List<JItemStatesListEntry> entryList) {
-		entryList.remove(this);
-		parent.remove(container);
-		parent.revalidate();
-		parent.repaint();
+	public void reloadDataLists() {
+		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(ItemGUI.builtInItemModels(),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}
 
 	public void addEntry(Map<String, Item.ModelEntry> map) {
