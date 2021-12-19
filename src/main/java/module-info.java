@@ -40,11 +40,62 @@ module MCreator {
 	requires org.reflections;
 
 	opens net.mcreator.ui.res;
-	opens org.fife.rsta.ac.java.img;
+	opens net.mcreator.ui.blockly to javafx.web;
+
+	opens blockly;
+	opens blockly.css;
+	opens blockly.js;
 
 	exports net.mcreator.ui.laf;
 
+	exports net.mcreator.generator to freemarker, MCreator.test;
+
+	exports net.mcreator to MCreator.test;
 	exports net.mcreator.generator.setup to MCreator.test;
 	exports net.mcreator.gradle to MCreator.test;
 	exports net.mcreator.workspace to MCreator.test;
+	exports net.mcreator.io.writer to MCreator.test;
+	exports net.mcreator.plugin to MCreator.test;
+	exports net.mcreator.preferences to MCreator.test;
+	exports net.mcreator.ui to MCreator.test;
+	exports net.mcreator.ui.component to MCreator.test;
+	exports net.mcreator.workspace.settings to MCreator.test;
+	exports net.mcreator.io to MCreator.test;
+	exports net.mcreator.blockly.data to MCreator.test;
+	exports net.mcreator.element to MCreator.test;
+	exports net.mcreator.element.types to MCreator.test;
+	exports net.mcreator.workspace.elements to MCreator.test;
+	exports net.mcreator.ui.blockly to MCreator.test;
+	exports net.mcreator.ui.init to MCreator.test;
+	exports net.mcreator.ui.modgui to MCreator.test;
+	exports net.mcreator.blockly to MCreator.test;
+	exports net.mcreator.minecraft to MCreator.test;
+	exports net.mcreator.util to MCreator.test;
+	exports net.mcreator.element.parts to MCreator.test;
+	exports net.mcreator.ui.dialogs to MCreator.test;
+	exports net.mcreator.ui.dialogs.preferences to MCreator.test;
+	exports net.mcreator.ui.dialogs.workspace to MCreator.test;
+	exports net.mcreator.ui.action to MCreator.test;
+	exports net.mcreator.ui.action.impl to MCreator.test;
+	exports net.mcreator.ui.dialogs.tools to MCreator.test;
+	exports net.mcreator.ui.dialogs.wysiwyg to MCreator.test;
+	exports net.mcreator.ui.workspace.selector to MCreator.test;
+	exports net.mcreator.ui.wysiwyg to MCreator.test;
+	exports net.mcreator.minecraft.api to MCreator.test;
+	exports net.mcreator.themes to MCreator.test;
+	exports net.mcreator.ui.help to MCreator.test;
+	exports net.mcreator.java to MCreator.test;
+	exports net.mcreator.element.parts.gui to MCreator.test;
+	exports net.mcreator.element.types.interfaces to MCreator.test;
+	exports net.mcreator.util.image to MCreator.test;
+	exports net.mcreator.ui.dialogs.imageeditor to MCreator.test;
+	exports net.mcreator.ui.views.editor.image to MCreator.test;
+	exports net.mcreator.ui.views.editor.image.layer to MCreator.test;
+	exports net.mcreator.ui.views.editor.image.tool.component to MCreator.test;
+	exports net.mcreator.vcs.diff to MCreator.test;
+	exports net.mcreator.ui.gradle to MCreator.test;
+	exports net.mcreator.io.net.api to MCreator.test;
+	exports net.mcreator.workspace.resources to MCreator.test;
+	exports net.mcreator.ui.views.editor.image.tool to MCreator.test;
+	exports net.mcreator.ui.views.editor.image.tool.tools to MCreator.test;
 }
