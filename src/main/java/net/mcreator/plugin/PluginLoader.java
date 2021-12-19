@@ -40,6 +40,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * <p>This class detects and then try to load all builtin or custom {@link Plugin}s. </p>
+ */
 import static net.mcreator.util.TerribleModuleHacks.addOpens;
 
 public class PluginLoader extends URLClassLoader {
@@ -48,6 +51,9 @@ public class PluginLoader extends URLClassLoader {
 
 	public static PluginLoader INSTANCE;
 
+	/**
+	 * <p>Set the value to the INSTANCE variable, so we can access values everywhere in the code.</p>
+	 */
 	public static void initInstance() {
 		INSTANCE = new PluginLoader();
 	}
@@ -57,6 +63,9 @@ public class PluginLoader extends URLClassLoader {
 
 	private final Reflections reflections;
 
+	/**
+	 * <p>The core of the detection and loading</p>
+	 */
 	public PluginLoader() {
 		super(new URL[] {});
 
@@ -71,7 +80,7 @@ public class PluginLoader extends URLClassLoader {
 
 		Collections.sort(pluginsLoadList);
 
-		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toList());
+		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).toList();
 
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
@@ -105,14 +114,27 @@ public class PluginLoader extends URLClassLoader {
 		checkForPluginUpdates();
 	}
 
+	/**
+	 * @param pattern <p>Returned file names will need to follow this {@link Pattern}.</p>
+	 * @return <p>The path into a {@link Plugin} of all files following the provided {@link Pattern}.</p>
+	 */
 	public Set<String> getResources(Pattern pattern) {
 		return this.getResources(null, pattern);
 	}
 
+	/**
+	 * @param pkg <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p>
+	 * @return <p>The path into a {@link Plugin} of all files inside the provided folder.</p>
+	 */
 	public Set<String> getResourcesInPackage(String pkg) {
 		return this.getResources(pkg, null);
 	}
 
+	/**
+	 * @param pkg     <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p>
+	 * @param pattern <p>Returned file names will need to follow this {@link Pattern}.</p>
+	 * @return <p>The path into a {@link Plugin} of all files inside the provided folder following the provided {@link Pattern} .</p>
+	 */
 	public Set<String> getResources(@Nullable String pkg, @Nullable Pattern pattern) {
 		Set<String> reflectionsRetval =
 				pattern != null ? this.reflections.getResources(pattern) : this.reflections.getResources(".*");
@@ -121,10 +143,16 @@ public class PluginLoader extends URLClassLoader {
 		return reflectionsRetval.stream().filter(e -> e.replace("/", ".").startsWith(pkg)).collect(Collectors.toSet());
 	}
 
+	/**
+	 * @return <p> A {@link List} of all loaded plugins.</p>
+	 */
 	public List<Plugin> getPlugins() {
 		return plugins;
 	}
 
+	/**
+	 * @return <p>A list of all plugin updates detected.</p>
+	 */
 	public List<PluginUpdateInfo> getPluginUpdates() {
 		return pluginUpdates;
 	}
@@ -215,7 +243,7 @@ public class PluginLoader extends URLClassLoader {
 					}
 				}
 				return null;
-			}).filter(Objects::nonNull).collect(Collectors.toList()));
+			}).filter(Objects::nonNull).toList());
 		}
 	}
 

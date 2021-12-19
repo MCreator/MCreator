@@ -32,21 +32,21 @@
 
 package ${package}.entity;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}ProjectileEntity extends AbstractArrow implements ItemSupplier {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}EntityProjectile extends AbstractArrow implements ItemSupplier {
 
-	public ${name}ProjectileEntity(FMLPlayMessages.SpawnEntity packet, Level world) {
+	public ${name}EntityProjectile(FMLPlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, world);
 	}
 
-	public ${name}ProjectileEntity(EntityType<? extends ${name}ProjectileEntity> type, Level world) {
+	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, Level world) {
 		super(type, world);
 	}
 
-	public ${name}ProjectileEntity(EntityType<? extends ${name}ProjectileEntity> type, double x, double y, double z, Level world) {
+	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, double x, double y, double z, Level world) {
 		super(type, x, y, z, world);
 	}
 
-	public ${name}ProjectileEntity(EntityType<? extends ${name}ProjectileEntity> type, LivingEntity entity, Level world) {
+	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, LivingEntity entity, Level world) {
 		super(type, entity, world);
 	}
 

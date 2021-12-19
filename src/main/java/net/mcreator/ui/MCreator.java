@@ -327,7 +327,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return statusBar;
 	}
 
-	public final boolean closeThisMCreator(boolean returnToProjectSelector) {
+	public boolean closeThisMCreator(boolean returnToProjectSelector) {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
 			if (gradleConsole.isGradleSetupTaskRunning()) {
@@ -391,8 +391,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	}
 
 	@Override public boolean equals(Object mcreator) {
-		if (mcreator instanceof MCreator) {
-			MCreator theothermcreator = (MCreator) mcreator;
+		if (mcreator instanceof MCreator theothermcreator) {
 			if (theothermcreator.workspace != null && workspace != null)
 				return theothermcreator.workspace.getFileManager().getWorkspaceFile()
 						.equals(workspace.getFileManager().getWorkspaceFile());

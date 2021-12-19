@@ -597,14 +597,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         	</#if>
 		</#if>
 
-        <#if (hasProcedure(data.onTickUpdate) && !data.tickRandomly) || hasProcedure(data.onBlockAdded) >
+        <#if (hasProcedure(data.onTickUpdate) && data.shouldScheduleTick()) || hasProcedure(data.onBlockAdded) >
 		@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
 			super.onBlockAdded(blockstate, world, pos, oldState, moving);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();
-			<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
-			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+			<#if hasProcedure(data.onTickUpdate) && data.shouldScheduleTick()>
+			world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
             </#if>
 			<@procedureOBJToCode data.onBlockAdded/>
 		}
@@ -636,8 +636,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			<@procedureOBJToCode data.onTickUpdate/>
 
-			<#if !data.tickRandomly>
-			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+			<#if data.shouldScheduleTick()>
+			world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 			</#if>
 		}
         </#if>
@@ -749,14 +749,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				double hitY = hit.getHitVec().y;
 				double hitZ = hit.getHitVec().z;
 				Direction direction = hit.getFace();
-				<#if hasReturnValue(data.onRightClicked)>
+				<#if hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 				ActionResultType result = <@procedureOBJToActionResultTypeCode data.onRightClicked/>;
 				<#else>
 				<@procedureOBJToCode data.onRightClicked/>
 				</#if>
 			</#if>
 
-        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValue(data.onRightClicked)>
+        	<#if data.shouldOpenGUIOnRightClick() || !hasReturnValueOf(data.onRightClicked, "actionresulttype")>
 			return ActionResultType.SUCCESS;
 			<#else>
 			return result;

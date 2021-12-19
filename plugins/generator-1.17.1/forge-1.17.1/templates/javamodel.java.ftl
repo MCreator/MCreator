@@ -33,7 +33,7 @@ package ${package}.client.model;
 
 ${model
     ?replace("private final ModelPart", "public final ModelPart")
-    ?replace("\"modid\"", "\"" + modid + "\"")
+    ?replace("new ResourceLocation\\(\"modid\", \"(.*?)\"\\)", "new ResourceLocation(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
 }
 
 <#-- @formatter:on -->

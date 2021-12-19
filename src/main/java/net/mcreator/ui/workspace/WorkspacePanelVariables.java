@@ -266,7 +266,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		elements.getModel().addTableModelListener(e -> new Thread(() -> {
 			if (e.getType() == TableModelEvent.UPDATE) {
 				Workspace workspace = workspacePanel.getMcreator().getWorkspace();
-				workspace.getVariableElements().clear();
+
+				for (VariableElement variableElement : workspace.getVariableElements())
+					workspace.removeVariableElement(variableElement);
+
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableElement element = new VariableElement();
 					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));

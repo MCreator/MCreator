@@ -106,7 +106,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public Collection<VariableElement> getVariableElements() {
-		return variable_elements;
+		// make sure that variable types are supported by generator
+		return variable_elements.stream().filter(e -> e.getType() != null).toList();
 	}
 
 	public Collection<SoundElement> getSoundElements() {

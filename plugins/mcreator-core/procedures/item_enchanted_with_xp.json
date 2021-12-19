@@ -20,6 +20,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
+    "group": "enchanting",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",

@@ -38,6 +38,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements EntityBlock</#if>{
 	public ${name}Block() {
@@ -76,7 +77,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if data.jumpFactor != 1.0>
 		.jumpFactor(${data.jumpFactor}f)
 		</#if>
+		<#if data.luminance != 0>
 		.lightLevel(s -> ${data.luminance})
+		</#if>
+		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
+		.noDrops()
+		</#if>
 	);
 	setRegistryName("${registryname}");
 	}
@@ -89,6 +95,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
 			<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
 		</#if>
+	}
+	</#if>
+
+	<#if (data.plantType == "normal") && (data.suspiciousStewDuration > 0)>
+	@Override public int getEffectDuration() {
+		return ${data.suspiciousStewDuration};
 	}
 	</#if>
 
@@ -137,7 +149,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if !data.useLootTableForDrops>
+	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.plantType == "double">
@@ -219,8 +231,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 				return groundState.is(this) ||
 				<#if (data.canBePlacedOn?size > 0)>
-                	<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
-                </#if>
+					<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
+				</#if>
 				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
 			<#else>
@@ -290,7 +302,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>
 
 	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutout());
 	}
 
 	<#if data.tintType != "No tint">

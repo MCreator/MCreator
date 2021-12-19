@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -31,14 +32,13 @@ import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ProcedureRetvalBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
+				.map(s -> s = "procedure_retval_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -52,7 +52,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"Procedure return value block is calling nonexistent procedure " + procedure));
+						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure)));
 				return;
 			}
 
@@ -67,8 +67,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 			}
 
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Empty procedure return value block"));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.procedure_retval.empty")));
 		}
 	}
 

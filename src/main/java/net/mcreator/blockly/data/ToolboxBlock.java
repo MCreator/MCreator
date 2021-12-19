@@ -23,29 +23,63 @@ import net.mcreator.blockly.IBlockGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ToolboxBlock {
+@SuppressWarnings({ "unused", "MismatchedQueryAndUpdateOfCollection" }) public class ToolboxBlock {
 	String toolbox_id;
 	public String machine_name;
 	public IBlockGenerator.BlockType type;
 
-	public boolean error_in_statement_blocks = false;
-
+	@Nullable private List<String> fields;
+	@Nullable private List<IInput> inputs;
+	@Nullable private List<StatementInput> statements;
+	@Nullable private List<Dependency> dependencies;
+	@Nullable private List<String> warnings;
+	@Nullable private List<String> required_apis;
+	@Nullable private String group;
 	@Nullable public List<String> toolbox_init;
 
-	@Nullable public List<String> fields;
-	@Nullable public List<String> inputs;
-	@Nullable public List<StatementInput> statements;
-	@Nullable public List<Dependency> dependencies;
-	@Nullable public List<String> warnings;
-
-	@Nullable public List<String> required_apis;
+	public boolean error_in_statement_blocks = false;
 
 	/* Fields below are not included in block JSON but loaded dynamically */
 	public JsonElement blocklyJSON;
 	@Nullable public String toolboxXML;
 	@Nullable public ToolboxCategory toolboxCategory;
+
+	@Nullable public List<String> getFields() {
+		return fields;
+	}
+
+	public List<String> getInputs() {
+		return inputs != null ?
+				inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::getName).collect(Collectors.toList()) :
+				Collections.emptyList();
+	}
+
+	public List<AdvancedInput> getAdvancedInputs() {
+		return inputs != null ?
+				inputs.stream().filter(e -> e instanceof AdvancedInput).map(e -> (AdvancedInput) e)
+						.collect(Collectors.toList()) :
+				Collections.emptyList();
+	}
+
+	@Nullable public List<StatementInput> getStatements() {
+		return statements;
+	}
+
+	@Nullable public List<Dependency> getDependencies() {
+		return dependencies;
+	}
+
+	@Nullable public List<String> getWarnings() {
+		return warnings;
+	}
+
+	@Nullable public List<String> getRequiredAPIs() {
+		return required_apis;
+	}
 
 	public String getName() {
 		return blocklyJSON.getAsJsonObject().get("message0").getAsString();
@@ -60,6 +94,8 @@ public class ToolboxBlock {
 	}
 
 	String getGroupEstimate() {
+		if (this.group != null)
+			return this.group;
 		int a = StringUtils.ordinalIndexOf(this.machine_name, "_", 2);
 		if (a > 0)
 			return this.machine_name.substring(0, a);
@@ -78,4 +114,5 @@ public class ToolboxBlock {
 	@Override public int hashCode() {
 		return machine_name.hashCode();
 	}
+
 }

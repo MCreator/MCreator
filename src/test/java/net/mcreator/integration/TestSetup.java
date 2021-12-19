@@ -30,6 +30,7 @@ import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.help.HelpLoader;
+import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
@@ -103,6 +104,9 @@ public class TestSetup {
 
 		// load variable elements
 		VariableTypeLoader.loadVariableTypes();
+
+		// load JS files for Blockly
+		BlocklyJavaScriptsLoader.init();
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();

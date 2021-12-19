@@ -137,7 +137,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JComponent stp = PanelUtils.centerInPanel(settings);
 		stp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.animation_maker.settings"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -215,7 +215,7 @@ public class AnimationMakerView extends ViewBase {
 		JPanel timelinee = new JPanel(new BorderLayout());
 		timelinee.setOpaque(false);
 		timelinee.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.animation_maker.animation_timeline"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -366,34 +366,16 @@ public class AnimationMakerView extends ViewBase {
 						"16 x 16");
 				int sizetwocubes = 16;
 				if (s != null) {
-					switch (s) {
-					case "4 x 4":
-						sizetwocubes = 4;
-						break;
-					case "8 x 8":
-						sizetwocubes = 8;
-						break;
-					case "16 x 16":
-						sizetwocubes = 16;
-						break;
-					case "32 x 32":
-						sizetwocubes = 32;
-						break;
-					case "64 x 64":
-						sizetwocubes = 64;
-						break;
-					case "128 x 128":
-						sizetwocubes = 128;
-						break;
-
-					case "256 x 256":
-						sizetwocubes = 256;
-						break;
-
-					case "512 x 512":
-						sizetwocubes = 512;
-						break;
-					}
+					sizetwocubes = switch (s) {
+						case "4 x 4" -> 4;
+						case "8 x 8" -> 8;
+						case "32 x 32" -> 32;
+						case "64 x 64" -> 64;
+						case "128 x 128" -> 128;
+						case "256 x 256" -> 256;
+						case "512 x 512" -> 512;
+						default -> 16;
+					};
 				}
 				Image image = makeAnimationIcon(timelinevector.getSize(), timelinevector, sizetwocubes).getImage();
 				String mcmetacode = generateAnimationMcmeta((Integer) bd1.getValue(), timelinevector.size(),

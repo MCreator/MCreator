@@ -50,7 +50,7 @@ public class ModElementIDsDialog {
 		VTextField registryName = new VTextField();
 		JComponent reghol = PanelUtils.join(L10N.label("dialog.modelement_id.registry_name"), registryName);
 		reghol.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.modelement_id.registry_name_info"), 0, 0, reghol.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -68,7 +68,7 @@ public class ModElementIDsDialog {
 
 		JPanel ids = new JPanel();
 		ids.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.modelement_id.numerical_id"), 0, 0, reghol.getFont().deriveFont(12.0f), Color.white));
 
 		ids.setLayout(new BorderLayout());

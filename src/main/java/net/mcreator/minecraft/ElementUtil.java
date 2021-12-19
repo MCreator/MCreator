@@ -45,7 +45,7 @@ public class ElementUtil {
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.map(e -> (MCItem) e).collect(Collectors.toList()));
+						.map(e -> (MCItem) e).toList());
 		return elements;
 	}
 
@@ -88,7 +88,7 @@ public class ElementUtil {
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
+						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).toList());
 		return elements;
 	}
 
@@ -106,7 +106,7 @@ public class ElementUtil {
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
-						.collect(Collectors.toList()));
+						.toList());
 		return elements;
 	}
 
@@ -176,8 +176,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-				.collect(Collectors.toList()));
+				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
 		return retval;
 	}
 
@@ -189,8 +188,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-				.collect(Collectors.toList()));
+				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
 		return retval;
 	}
 
@@ -204,8 +202,7 @@ public class ElementUtil {
 			}
 		}
 
-		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
 	}
@@ -217,57 +214,13 @@ public class ElementUtil {
 			retval.add("CUSTOM:" + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
 	}
 
-	public static String[] getAllSoundCategories() {
-		return DataListLoader.loadDataList("soundcategories").stream().map(DataListEntry::getName)
-				.toArray(String[]::new);
-	}
-
-	public static String[] getAllDamageSources() {
-		return DataListLoader.loadDataList("damagesources").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] getAllGameModes() {
-		return DataListLoader.loadDataList("gamemodes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] getAllPlantTypes() {
-		return DataListLoader.loadDataList("planttypes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
 	public static List<DataListEntry> loadStepSounds() {
 		return DataListLoader.loadDataList("stepsounds");
-	}
-
-	public static String[] loadBiomeDictionaryTypes() {
-		return DataListLoader.loadDataList("biomedictionarytypes").stream().map(DataListEntry::getName)
-				.toArray(String[]::new);
-	}
-
-	public static String[] loadDefaultFeatures() {
-		return DataListLoader.loadDataList("defaultfeatures").stream().map(DataListEntry::getName)
-				.toArray(String[]::new);
-	}
-
-	public static String[] loadPathNodeTypes() {
-		return DataListLoader.loadDataList("pathnodetypes").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] loadMapColors() {
-		return DataListLoader.loadDataList("mapcolors").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] loadScreens() {
-		return DataListLoader.loadDataList("screens").stream().map(DataListEntry::getName).toArray(String[]::new);
-	}
-
-	public static String[] loadMobSpawnTypes() {
-		return DataListLoader.loadDataList("mobspawntypes").stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {
@@ -296,6 +249,10 @@ public class ElementUtil {
 		}
 
 		return blocks;
+	}
+
+	public static String[] getDataListAsStringArray(String dataList) {
+		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
 
 	private static List<DataListEntry> getCustomElements(@Nonnull Workspace workspace,

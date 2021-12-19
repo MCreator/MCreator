@@ -1,24 +1,23 @@
 <#-- @formatter:off -->
-<#macro procedureCode object dependencies={}>
-    <#compress>
-    <#assign deps = [] />
-    <#list object.getDependencies(generator.getWorkspace()) as dependency>
-        <#assign deps += [dependency.getName()] />
-    </#list>
-    <#if deps?size == 0>
-        ${object.getName()}Procedure.execute(Collections.EMPTY_MAP);
-    <#else>
-        ${object.getName()}Procedure.execute(ImmutableMap.<String, Object>builder()
+<#macro procedureDependenciesCode requiredDependencies dependencies={}>
+    <#assign deps_filtered = [] />
+    <#list requiredDependencies as dependency>
         <#list dependencies as name, value>
-            <#if deps?seq_contains(name)>.put("${name}", ${value})</#if>
+            <#if dependency.getName() == name>
+                <#assign deps_filtered += [value] />
+            </#if>
         </#list>
-        .build());
-    </#if>
-    </#compress>
+    </#list>
+
+    <#list deps_filtered as value>${value}<#if value?has_next>,</#if></#list>
 </#macro>
 
-<#macro procedureCodeWithOptResult object defaultResult dependencies={}>
-    <#if hasReturnValue(object)>
+<#macro procedureCode object dependencies={}>
+    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>);
+</#macro>
+
+<#macro procedureCodeWithOptResult object type defaultResult dependencies={}>
+    <#if hasReturnValueOf(object, type)>
         return <@procedureCode object dependencies/>
     <#else>
         <@procedureCode object dependencies/>
@@ -30,16 +29,14 @@
     <#assign depsBuilder = []>
 
     <#list dependencies as dependency>
-        <#if !customVals[dependency.getName()]?? >
-            <#assign depsBuilder += ["\"" + dependency.getName() + "\", " + dependency.getName()]>
+        <#if !customVals[dependency.getName()]?has_content>
+            <#assign depsBuilder += [dependency.getName()]>
+        <#else>
+            <#assign depsBuilder += [customVals[dependency.getName()]]>
         </#if>
     </#list>
 
-    <#list customVals as key, value>
-        <#assign depsBuilder += ["\"" + key + "\", " + value]>
-    </#list>
-
-    ${(name)}Procedure.execute(ImmutableMap.<String, Object>builder()<#list depsBuilder as dep>.put(${dep})</#list>.build())
+    ${(name)}Procedure.execute(<#list depsBuilder as dep>${dep}<#if dep?has_next>,</#if></#list>)
 </#macro>
 
 <#macro procedureToCode name dependencies customVals={}>
@@ -88,8 +85,8 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
-    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
+<#function hasReturnValueOf object="" type="">
+    <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
 
 <#-- @formatter:on -->

@@ -57,8 +57,8 @@ package ${package}.init;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
 	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
 	    	<#list fluids as fluid>
-			ItemBlockRenderTypes.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}, RenderType.translucent());
-			ItemBlockRenderTypes.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}, RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.translucent());
             </#list>
 		}
 	}

@@ -34,14 +34,15 @@ package ${package}.world.features.treedecorators;
 
 public class ${name}FruitDecorator extends CocoaDecorator {
 
-    public static final ${name}FruitDecorator instance = new ${name}FruitDecorator();
+    public static final ${name}FruitDecorator INSTANCE = new ${name}FruitDecorator();
+
     public static com.mojang.serialization.Codec<${name}FruitDecorator> codec;
     public static TreeDecoratorType<?> tdt;
 
     static {
-        codec = com.mojang.serialization.Codec.unit(() -> instance);
+        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
         tdt = new TreeDecoratorType<>(codec);
-        tdt.setRegistryName("${registryname}_ctd");
+        tdt.setRegistryName("${registryname}_tree_fruit_decorator");
         ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
 

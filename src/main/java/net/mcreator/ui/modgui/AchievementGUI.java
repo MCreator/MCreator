@@ -89,7 +89,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	private ModElementListField rewardLoot;
 	private ModElementListField rewardRecipes;
 
-	private final JSpinner rewardXP = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
+	private final JSpinner rewardXP = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();

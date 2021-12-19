@@ -36,13 +36,14 @@
 package ${package}.world.biome;
 
 import net.minecraftforge.common.BiomeManager;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 
-import java.util.List;
-import java.util.function.BiConsumer;
+public class ${name}Biome {
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Biome {
+	private static final ConfiguredSurfaceBuilder<?> SURFACE_BUILDER = SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderBaseConfiguration(
+            ${mappedBlockToBlockStateCode(data.groundBlock)},
+            ${mappedBlockToBlockStateCode(data.undergroundBlock)},
+            ${mappedBlockToBlockStateCode(data.undergroundBlock)}));
 
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -69,11 +70,7 @@ import java.util.function.BiConsumer;
                 </#if>
                 .build();
 
-        BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder()
-            .surfaceBuilder(SurfaceBuilder.DEFAULT.configured(
-                new SurfaceBuilderBaseConfiguration(${mappedBlockToBlockStateCode(data.groundBlock)},
-                	${mappedBlockToBlockStateCode(data.undergroundBlock)},
-                	${mappedBlockToBlockStateCode(data.undergroundBlock)})));
+        BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder().surfaceBuilder(SURFACE_BUILDER);
 
         <#if data.spawnStronghold>
             biomeGenerationSettings.addStructureStart(StructureFeatures.STRONGHOLD);
@@ -81,6 +78,10 @@ import java.util.function.BiConsumer;
 
         <#if data.spawnMineshaft>
             biomeGenerationSettings.addStructureStart(StructureFeatures.MINESHAFT);
+        </#if>
+
+        <#if data.spawnMineshaftMesa>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.MINESHAFT_MESA);
         </#if>
 
         <#if data.spawnPillagerOutpost>
@@ -103,6 +104,10 @@ import java.util.function.BiConsumer;
             biomeGenerationSettings.addStructureStart(StructureFeatures.DESERT_PYRAMID);
         </#if>
 
+        <#if data.spawnSwampHut>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.SWAMP_HUT);
+        </#if>
+
         <#if data.spawnIgloo>
             biomeGenerationSettings.addStructureStart(StructureFeatures.IGLOO);
         </#if>
@@ -115,8 +120,36 @@ import java.util.function.BiConsumer;
             biomeGenerationSettings.addStructureStart(StructureFeatures.SHIPWRECK);
         </#if>
 
+        <#if data.spawnShipwreckBeached>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.SHIPWRECH_BEACHED);
+        </#if>
+
+        <#if data.spawnBuriedTreasure>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.BURIED_TREASURE);
+        </#if>
+
         <#if data.oceanRuinType != "NONE">
             biomeGenerationSettings.addStructureStart(StructureFeatures.OCEAN_RUIN_${data.oceanRuinType});
+        </#if>
+
+        <#if data.spawnNetherBridge>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.NETHER_BRIDGE);
+        </#if>
+
+        <#if data.spawnNetherFossil>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.NETHER_FOSSIL);
+        </#if>
+
+        <#if data.spawnBastionRemnant>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.BASTION_REMNANT);
+        </#if>
+
+        <#if data.spawnEndCity>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.END_CITY);
+        </#if>
+
+        <#if data.spawnRuinedPortal != "NONE">
+            biomeGenerationSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
         </#if>
 
         <#if (data.treesPerChunk > 0)>
@@ -125,7 +158,7 @@ import java.util.function.BiConsumer;
 
         	<#if data.vanillaTreeType == "Big trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
                     new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
@@ -137,13 +170,13 @@ import java.util.function.BiConsumer;
                     <#else>
                     	.decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Savanna trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
                     new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
@@ -157,13 +190,13 @@ import java.util.function.BiConsumer;
                     </#if>
                     <#if data.treeType == data.TREES_CUSTOM>
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Mega pine trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
@@ -173,13 +206,13 @@ import java.util.function.BiConsumer;
                     <#if data.hasVines() || data.hasFruits()>
                     	<@vinesAndFruits/>
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Mega spruce trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
@@ -190,13 +223,13 @@ import java.util.function.BiConsumer;
                     <#if data.hasVines() || data.hasFruits()>
                     	<@vinesAndFruits/>
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#elseif data.vanillaTreeType == "Birch trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
                     new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
@@ -208,13 +241,13 @@ import java.util.function.BiConsumer;
                     <#else>
                     	.ignoreVines()
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	<#else>
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("tree", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
                     new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
@@ -226,9 +259,9 @@ import java.util.function.BiConsumer;
                     <#else>
                     	.ignoreVines()
                     </#if>
-            	.build()))
+            	.build())
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1)))
+            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	</#if>
         </#if>
@@ -278,7 +311,7 @@ import java.util.function.BiConsumer;
                 new SimpleStateProvider(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE)
                 .setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk}))));
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("brown_mushroom_huge", Feature.HUGE_RED_MUSHROOM.configured(new HugeMushroomFeatureConfiguration(
+			    register("red_mushroom_huge", Feature.HUGE_RED_MUSHROOM.configured(new HugeMushroomFeatureConfiguration(
                 new SimpleStateProvider(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)),
                 new SimpleStateProvider(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE)
                 .setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk}))));
@@ -351,8 +384,13 @@ import java.util.function.BiConsumer;
             .build();
     }
 
-    <#if data.biomeDictionaryTypes?has_content || data.spawnBiome>
     public static void init() {
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(${JavaModName}.MODID, "${registryname}"), SURFACE_BUILDER);
+
+        <#if hasConfiguredFeatures>
+        CONFIGURED_FEATURES.forEach((resourceLocation, configuredFeature) -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, resourceLocation, configuredFeature));
+        </#if>
+
         <#if data.biomeDictionaryTypes?has_content>
             BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
             <#list data.biomeDictionaryTypes as biomeDictionaryType>
@@ -366,11 +404,12 @@ import java.util.function.BiConsumer;
                 new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
         </#if>
     }
-    </#if>
 
     <#if hasConfiguredFeatures>
+    private static final Map<ResourceLocation, ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = new HashMap<>();
+
     private static ConfiguredFeature<?, ?> register(String name, ConfiguredFeature<?, ?> configuredFeature) {
-		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(${JavaModName}.MODID, name + "_${registryname}"), configuredFeature);
+		CONFIGURED_FEATURES.put(new ResourceLocation(${JavaModName}.MODID, name + "_${registryname}"), configuredFeature);
     	return configuredFeature;
     }
     </#if>
@@ -380,13 +419,13 @@ import java.util.function.BiConsumer;
 <#macro vinesAndFruits>
 .decorators(ImmutableList.of(
 	<#if data.hasVines()>
-		${name}LeaveDecorator.instance,
-		${name}TrunkDecorator.instance
+		${name}LeaveDecorator.INSTANCE,
+		${name}TrunkDecorator.INSTANCE
 	</#if>
 
 	<#if data.hasFruits()>
 	    <#if data.hasVines()>,</#if>
-        ${name}FruitDecorator.instance
+        ${name}FruitDecorator.INSTANCE
 	</#if>
 ))
 </#macro>

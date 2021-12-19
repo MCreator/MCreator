@@ -73,9 +73,8 @@ public class DataListLoader {
 							if (list.get().containsKey(elementObj))
 								LOG.warn("Duplicate datalist key: " + elementObj);
 							list.get().put((String) elementObj, new DataListEntry((String) elementObj));
-						} else if (elementObj instanceof Map) {
+						} else if (elementObj instanceof Map<?, ?> element) {
 							String elementName = null;
-							Map<?, ?> element = (Map<?, ?>) elementObj;
 							for (Map.Entry<?, ?> entry : element.entrySet())
 								if (entry.getValue() == null)
 									elementName = (String) entry.getKey();

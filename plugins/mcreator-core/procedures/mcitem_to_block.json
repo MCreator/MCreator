@@ -22,6 +22,7 @@
   "output": "MCItemBlock",
   "colour": 60,
   "mcreator": {
+    "group": "conversion",
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"source\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"

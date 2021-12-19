@@ -1,6 +1,5 @@
 {
-  "format_version": [1, 1, 0]
-
+  "format_version": "1.16.100"
   <#list w.getElementsOfType("block") as mod>
     <#assign ge = mod.getGeneratableElement()>
     ,"${modid}:${mod.getRegistryName()}": {

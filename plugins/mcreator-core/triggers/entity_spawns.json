@@ -19,10 +19,6 @@
     {
       "name": "z",
       "type": "number"
-    },
-    {
-      "name": "reason",
-      "type": "number"
     }
   ],
   "cancelable": "true"

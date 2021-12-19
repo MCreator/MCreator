@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -47,7 +48,7 @@ public class TextContains implements IBlockGenerator {
 			master.append("))");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Replace text procedure block can't be empty!"));
+					L10N.t("blockly.errors.empty_text_contains")));
 		}
 	}
 
