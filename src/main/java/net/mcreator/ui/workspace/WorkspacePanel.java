@@ -1218,23 +1218,31 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		if (modElementFiles.size() + modElementGlobalFiles.size() + modElementListFiles.size() > 1) {
-			JPopupMenu codeDropdown = new JPopupMenu();
-			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		JPopupMenu codeDropdown = new JPopupMenu();
+		codeDropdown.setBorder(BorderFactory.createEmptyBorder());
+		codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		int[] filesAdded = new int[] { 0, 0 };
 
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0) {
 			for (GeneratorTemplate modElementFile : modElementFiles) {
+				filesAdded[0]++;
 				codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
 			}
+
 			if (modElementGlobalFiles.size() > 0) {
-				codeDropdown.addSeparator();
+				if (filesAdded[0] > 0)
+					codeDropdown.addSeparator();
+
 				for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles) {
+					filesAdded[1]++;
 					codeDropdown.add(newModElementTemplateItem(modElementGlobalFile.getFile()));
 				}
 			}
+
 			if (modElementListFiles.size() > 0) {
+				codeDropdown.addSeparator();
+
 				for (GeneratorTemplatesList fileList : modElementListFiles) {
-					codeDropdown.addSeparator();
 					if (fileList.templates().size() > 0) {
 						JMenu listItem = new JMenu(fileList.groupName());
 						listItem.setIcon(UIRES.get("16px.list.gif"));
@@ -1242,10 +1250,12 @@ import java.util.stream.Collectors;
 						listItem.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 						listItem.setIconTextGap(8);
 						listItem.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
+
 						int listFilesFound = 0;
 						for (int i = 0; i < fileList.listData().size(); i++) {
 							if (i > 0)
 								listItem.addSeparator();
+
 							for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
 								if (fileList.templates().get(modElementListFile).get(i)) {
 									listFilesFound++;
@@ -1255,7 +1265,11 @@ import java.util.stream.Collectors;
 								}
 							}
 						}
+
 						if (listFilesFound > 0) {
+							if (filesAdded[1] > 0 || modElementListFiles.indexOf(fileList) >= 1)
+								codeDropdown.addSeparator();
+
 							codeDropdown.add(listItem);
 						}
 					}
@@ -1263,8 +1277,11 @@ import java.util.stream.Collectors;
 			}
 
 			codeDropdown.show(component, x, y);
-		} else if (modElementFiles.size() + modElementGlobalFiles.size() + modElementListFiles.size() == 1) {
-			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
+		} else {
+			if (modElementFiles.size() == 1)
+				ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
+			else if (modElementGlobalFiles.size() == 1)
+				ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
 		}
 	}
 
@@ -1566,14 +1583,11 @@ import java.util.stream.Collectors;
 							return true;
 
 						for (String f : filters) {
-							switch (f) {
-							case "locked":
-								return item.isCodeLocked();
-							case "ok":
-								return item.doesCompile();
-							case "err":
-								return !item.doesCompile();
-							}
+							return switch (f) {
+								case "locked" -> item.isCodeLocked();
+								case "ok" -> item.doesCompile();
+								case "err" -> !item.doesCompile();
+							};
 						}
 						return false;
 					}).filter(item -> {

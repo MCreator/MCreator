@@ -42,6 +42,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
 		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
@@ -51,7 +52,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
-	private boolean updateRunning = false;
+	private final ReentrantLock updateRunning = new ReentrantLock(true);
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -104,10 +105,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		}
 	}
 
-	private void reload() {
-		if (isVisible() && !updateRunning) {
-			synchronized (this) {
-				updateRunning = true;
+	private synchronized void reload() {
+		if (isVisible()) {
+			new Thread(() -> {
+				updateRunning.lock();
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
@@ -190,9 +191,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
+				} finally {
+					updateRunning.unlock();
 				}
-				updateRunning = false;
-			}
+			}).start();
 		}
 	}
 

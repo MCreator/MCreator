@@ -43,6 +43,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.ModelUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
@@ -323,9 +324,8 @@ public class Generator implements IGenerator, Closeable {
 						}
 
 						// we delete all templates in given list because its size could have changed
-						File templateFile = new File(templateFileName);
-						String[] fileNameParts = templateFile.getPath().split("@elementindex");
-						File[] filesFound = templateFile.getParentFile().listFiles(
+						String[] fileNameParts = templateFileName.split("@elementindex");
+						File[] filesFound = new File(templateFileName).getParentFile().listFiles(
 								e -> e.getPath().startsWith(fileNameParts[0]) && e.getPath()
 										.endsWith(fileNameParts[1]));
 						if (filesFound != null)
@@ -402,8 +402,8 @@ public class Generator implements IGenerator, Closeable {
 			return;
 		}
 
-		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null)).stream()
-				.map(GeneratorTemplate::getFile).forEach(File::delete);
+		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null))
+				.forEach(template -> template.getFile().delete());
 		Objects.requireNonNull(getModElementGeneratorListTemplates(element, true, element.getGeneratableElement()))
 				.forEach(el -> {
 					for (int i = 0; i < el.listData().size(); i++) {
@@ -451,7 +451,7 @@ public class Generator implements IGenerator, Closeable {
 			}
 
 			files.add(new GeneratorTemplate(new File(name),
-					Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template));
+					Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template));
 
 			templateID.getAndIncrement();
 		}
@@ -553,7 +553,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
-						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template);
+						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template);
 
 				// only keep the last template for given file
 				files.remove(generatorTemplate);
@@ -633,7 +633,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
-						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template);
+						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
 				// only preserve the last template for given file
 				files.remove(generatorTemplate);
@@ -704,6 +704,11 @@ public class Generator implements IGenerator, Closeable {
 								GeneratorTokens.replaceTokens(workspace, rawname.replace("@NAME", element.getName())
 										.replace("@registryname", element.getRegistryName())));
 
+						if (!name.contains("@elementindex")) {
+							String path = FilenameUtils.removeExtension(name);
+							name = name.replace(path, path + "@elementindex");
+						}
+
 						List<Boolean> conditionChecks = new ArrayList<>();
 						for (int i = 0; i < elementsData.size(); i++) {
 							if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
@@ -711,10 +716,8 @@ public class Generator implements IGenerator, Closeable {
 								conditionChecks.add(i, false);
 								if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks) {
 									File indexedFile = new File(name.replace("@elementindex", Integer.toString(i)));
-									if (workspace.getFolderManager().isFileInWorkspace(indexedFile)) {
-										//if template is skipped, we delete its potential file
-										indexedFile.delete();
-									}
+									if (workspace.getFolderManager().isFileInWorkspace(indexedFile))
+										indexedFile.delete(); //if template is skipped, we delete its potential file
 								}
 							} else {
 								conditionChecks.add(i, true);
@@ -739,7 +742,7 @@ public class Generator implements IGenerator, Closeable {
 						}
 
 						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
-								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template);
+								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
 						// only preserve the last template for given file
 						files.remove(generatorTemplate);

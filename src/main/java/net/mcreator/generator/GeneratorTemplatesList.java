@@ -32,11 +32,13 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 			String filePath = generatorFile.getPath();
 			String[] templatePathParts = generatorTemplate.getFile().getPath().split("@elementindex");
 			boolean validToCheck = true;
+
 			try { // we check if given file name has list template's index in place of @elementindex
 				Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException ignored) {
 				validToCheck = false;
 			}
+
 			if (validToCheck && filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1]))
 				return generatorTemplate;
 		}
