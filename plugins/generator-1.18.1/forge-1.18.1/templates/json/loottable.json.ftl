@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 {
   "type": "minecraft:${data.type?lower_case?replace(" ", "_")}",
   "pools": [
