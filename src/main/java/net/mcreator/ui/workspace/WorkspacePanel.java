@@ -1587,6 +1587,7 @@ import java.util.stream.Collectors;
 								case "locked" -> item.isCodeLocked();
 								case "ok" -> item.doesCompile();
 								case "err" -> !item.doesCompile();
+								default -> true;
 							};
 						}
 						return false;
