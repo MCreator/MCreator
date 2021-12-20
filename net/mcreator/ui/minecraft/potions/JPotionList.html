@@ -78,7 +78,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/java/awt/Container.html" title="class or interface in java.awt" class="external-link">java.awt.Container</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">javax.swing.JComponent</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">javax.swing.JPanel</a>
+<div class="inheritance"><a href="../JEntriesList.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.JEntriesList</a>
 <div class="inheritance">net.mcreator.ui.minecraft.potions.JPotionList</div>
+</div>
 </div>
 </div>
 </div>
@@ -91,7 +93,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">JPotionList</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></span></div>
+<span class="extends-implements">extends <a href="../JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd><a href="../../../../../serialized-form.html#net.mcreator.ui.minecraft.potions.JPotionList">Serialized Form</a></dd>
@@ -122,6 +124,9 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field.summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
+<h3 id="fields.inherited.from.class.net.mcreator.ui.minecraft.JEntriesList">Fields inherited from class&nbsp;net.mcreator.ui.minecraft.<a href="../JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a></h3>
+<code><a href="../JEntriesList.html#add">add</a>, <a href="../JEntriesList.html#gui">gui</a>, <a href="../JEntriesList.html#mcreator">mcreator</a></code></div>
+<div class="inherited-list">
 <h3 id="fields.inherited.from.class.javax.swing.JComponent">Fields inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#listenerList" title="class or interface in javax.swing" class="external-link">listenerList</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#TOOL_TIP_TEXT_KEY" title="class or interface in javax.swing" class="external-link">TOOL_TIP_TEXT_KEY</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#ui" title="class or interface in javax.swing" class="external-link">ui</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#UNDEFINED_CONDITION" title="class or interface in javax.swing" class="external-link">UNDEFINED_CONDITION</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_ANCESTOR_OF_FOCUSED_COMPONENT" title="class or interface in javax.swing" class="external-link">WHEN_ANCESTOR_OF_FOCUSED_COMPONENT</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_FOCUSED" title="class or interface in javax.swing" class="external-link">WHEN_FOCUSED</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_IN_FOCUSED_WINDOW" title="class or interface in javax.swing" class="external-link">WHEN_IN_FOCUSED_WINDOW</a></code></div>
 <div class="inherited-list">
@@ -140,7 +145,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(net.mcreator.ui.MCreator)">JPotionList</a></span>&#8203;(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
+<div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.ui.help.IHelpContext)">JPotionList</a></span>&#8203;(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;gui)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -169,6 +175,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods.inherited.from.class.net.mcreator.ui.minecraft.JEntriesList">Methods inherited from class&nbsp;net.mcreator.ui.minecraft.<a href="../JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a></h3>
+<code><a href="../JEntriesList.html#registerEntryUI(javax.swing.JComponent)">registerEntryUI</a>, <a href="../JEntriesList.html#setEntryCreationListener(java.util.function.Consumer)">setEntryCreationListener</a></code></div>
+<div class="inherited-list">
 <h3 id="methods.inherited.from.class.javax.swing.JPanel">Methods inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html#getAccessibleContext()" title="class or interface in javax.swing" class="external-link">getAccessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html#getUI()" title="class or interface in javax.swing" class="external-link">getUI</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html#getUIClassID()" title="class or interface in javax.swing" class="external-link">getUIClassID</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html#paramString()" title="class or interface in javax.swing" class="external-link">paramString</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html#setUI(javax.swing.plaf.PanelUI)" title="class or interface in javax.swing" class="external-link">setUI</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html#updateUI()" title="class or interface in javax.swing" class="external-link">updateUI</a></code></div>
 <div class="inherited-list">
@@ -195,9 +204,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,net.mcreator.ui.help.IHelpContext)">
 <h3>JPotionList</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">JPotionList</span>&#8203;<span class="parameters">(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">JPotionList</span>&#8203;<span class="parameters">(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;gui)</span></div>
 </section>
 </li>
 </ul>

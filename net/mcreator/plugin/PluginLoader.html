@@ -90,6 +90,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">PluginLoader</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/net/URLClassLoader.html" title="class or interface in java.net" class="external-link">URLClassLoader</a></span></div>
+<div class="block"><p>This class detects and then try to load all builtin or custom <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a>s. </p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -117,7 +118,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E()">PluginLoader</a></span>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The core of the detection and loading</div>
+</div>
 </div>
 </section>
 </li>
@@ -150,7 +153,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#initInstance()">initInstance</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">
+<div class="block">Set the value to the INSTANCE variable, so we can access values everywhere in the code.</div>
+</div>
 </div>
 </div>
 </div>
@@ -195,6 +200,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>PluginLoader</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PluginLoader</span>()</div>
+<div class="block"><p>The core of the detection and loading</p></div>
 </section>
 </li>
 </ul>
@@ -209,18 +215,31 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="initInstance()">
 <h3>initInstance</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initInstance</span>()</div>
+<div class="block"><p>Set the value to the INSTANCE variable, so we can access values everywhere in the code.</p></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getResources(java.util.regex.Pattern)">
 <h3>getResources</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getResources</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link">Pattern</a>&nbsp;pattern)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pattern</code> - <p>Returned file names will need to follow this <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link"><code>Pattern</code></a>.</p></dd>
+<dt>Returns:</dt>
+<dd><p>The path into a <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a> of all files following the provided <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link"><code>Pattern</code></a>.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getResourcesInPackage(java.lang.String)">
 <h3>getResourcesInPackage</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getResourcesInPackage</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pkg)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pkg</code> - <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p></dd>
+<dt>Returns:</dt>
+<dd><p>The path into a <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a> of all files inside the provided folder.</p></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -230,18 +249,33 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pkg,
  @Nullable
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link">Pattern</a>&nbsp;pattern)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pkg</code> - <p>The path of directories the method will use to access wanted files. Sub folders need to be split with a dot.</p></dd>
+<dd><code>pattern</code> - <p>Returned file names will need to follow this <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link"><code>Pattern</code></a>.</p></dd>
+<dt>Returns:</dt>
+<dd><p>The path into a <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a> of all files inside the provided folder following the provided <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link"><code>Pattern</code></a> .</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getPlugins()">
 <h3>getPlugins</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Plugin.html" title="class in net.mcreator.plugin">Plugin</a>&gt;</span>&nbsp;<span class="element-name">getPlugins</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p> A <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link"><code>List</code></a> of all loaded plugins.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getPluginUpdates()">
 <h3>getPluginUpdates</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PluginUpdateInfo.html" title="class in net.mcreator.plugin">PluginUpdateInfo</a>&gt;</span>&nbsp;<span class="element-name">getPluginUpdates</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A list of all plugin updates detected.</p></dd>
+</dl>
 </section>
 </li>
 </ul>

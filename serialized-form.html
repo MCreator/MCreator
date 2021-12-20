@@ -3148,54 +3148,8 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="net.mcreator.ui.minecraft.JBoundingBoxEntry">
-<h3>Class <a href="net/mcreator/ui/minecraft/JBoundingBoxEntry.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.JBoundingBoxEntry</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>mx</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> mx</pre>
-</li>
-<li class="block-list">
-<h5>Mx</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> Mx</pre>
-</li>
-<li class="block-list">
-<h5>my</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> my</pre>
-</li>
-<li class="block-list">
-<h5>My</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> My</pre>
-</li>
-<li class="block-list">
-<h5>mz</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> mz</pre>
-</li>
-<li class="block-list">
-<h5>Mz</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> Mz</pre>
-</li>
-<li class="block-list">
-<h5>remove</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> remove</pre>
-</li>
-<li class="block-list">
-<h5>subtract</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> subtract</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="net.mcreator.ui.minecraft.JBoundingBoxList">
-<h3>Class <a href="net/mcreator/ui/minecraft/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.JBoundingBoxList</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.JEntriesList">
+<h3>Class <a href="net/mcreator/ui/minecraft/JEntriesList.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.JEntriesList</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -3206,12 +3160,16 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> add</pre>
 </li>
 <li class="block-list">
-<h5>boundingBoxList</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/JBoundingBoxEntry.html" title="class in net.mcreator.ui.minecraft">JBoundingBoxEntry</a>&gt; boundingBoxList</pre>
+<h5>entryListener</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&gt; entryListener</pre>
 </li>
 <li class="block-list">
-<h5>entries</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> entries</pre>
+<h5>gui</h5>
+<pre><a href="net/mcreator/ui/help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a> gui</pre>
+</li>
+<li class="block-list">
+<h5>mcreator</h5>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
 </ul>
 </section>
@@ -3378,20 +3336,91 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;net.mcreator.ui.minecraft.potions</h2>
+<h2 title="Package">Package&nbsp;net.mcreator.ui.minecraft.boundingboxes</h2>
 <ul class="block-list">
 <li>
-<section class="serialized-class-details" id="net.mcreator.ui.minecraft.potions.JPotionList">
-<h3>Class <a href="net/mcreator/ui/minecraft/potions/JPotionList.html" title="class in net.mcreator.ui.minecraft.potions">net.mcreator.ui.minecraft.potions.JPotionList</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxEntry">
+<h3>Class <a href="net/mcreator/ui/minecraft/boundingboxes/JBoundingBoxEntry.html" title="class in net.mcreator.ui.minecraft.boundingboxes">net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxEntry</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
 <ul class="block-list">
 <li>
 <section class="detail">
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>add</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> add</pre>
+<h5>mx</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> mx</pre>
 </li>
+<li class="block-list">
+<h5>Mx</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> Mx</pre>
+</li>
+<li class="block-list">
+<h5>my</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> my</pre>
+</li>
+<li class="block-list">
+<h5>My</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> My</pre>
+</li>
+<li class="block-list">
+<h5>mz</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> mz</pre>
+</li>
+<li class="block-list">
+<h5>Mz</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> Mz</pre>
+</li>
+<li class="block-list">
+<h5>remove</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> remove</pre>
+</li>
+<li class="block-list">
+<h5>subtract</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> subtract</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList">
+<h3>Class <a href="net/mcreator/ui/minecraft/boundingboxes/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft.boundingboxes">net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList</a> extends <a href="net/mcreator/ui/minecraft/JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a> implements Serializable</h3>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>boundingBoxList</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/boundingboxes/JBoundingBoxEntry.html" title="class in net.mcreator.ui.minecraft.boundingboxes">JBoundingBoxEntry</a>&gt; boundingBoxList</pre>
+</li>
+<li class="block-list">
+<h5>entries</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> entries</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;net.mcreator.ui.minecraft.potions</h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.potions.JPotionList">
+<h3>Class <a href="net/mcreator/ui/minecraft/potions/JPotionList.html" title="class in net.mcreator.ui.minecraft.potions">net.mcreator.ui.minecraft.potions.JPotionList</a> extends <a href="net/mcreator/ui/minecraft/JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a> implements Serializable</h3>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
 <li class="block-list">
 <h5>entries</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> entries</pre>
@@ -3399,10 +3428,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>entryList</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/potions/JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>&gt; entryList</pre>
-</li>
-<li class="block-list">
-<h5>mcreator</h5>
-<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
 </ul>
 </section>
@@ -3457,16 +3482,12 @@ loadScripts(document, 'script');</script>
 <ul class="block-list">
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList">
-<h3>Class <a href="net/mcreator/ui/minecraft/spawntypes/JSpawnEntriesList.html" title="class in net.mcreator.ui.minecraft.spawntypes">net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList</a> extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements Serializable</h3>
+<h3>Class <a href="net/mcreator/ui/minecraft/spawntypes/JSpawnEntriesList.html" title="class in net.mcreator.ui.minecraft.spawntypes">net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList</a> extends <a href="net/mcreator/ui/minecraft/JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a> implements Serializable</h3>
 <ul class="block-list">
 <li>
 <section class="detail">
 <h4>Serialized Fields</h4>
 <ul class="block-list">
-<li class="block-list">
-<h5>add</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> add</pre>
-</li>
 <li class="block-list">
 <h5>entries</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> entries</pre>
@@ -3474,10 +3495,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>entryList</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/spawntypes/JSpawnListEntry.html" title="class in net.mcreator.ui.minecraft.spawntypes">JSpawnListEntry</a>&gt; entryList</pre>
-</li>
-<li class="block-list">
-<h5>mcreator</h5>
-<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
 </ul>
 </section>
@@ -4206,7 +4223,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>boundingBoxList</h5>
-<pre><a href="net/mcreator/ui/minecraft/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft">JBoundingBoxList</a> boundingBoxList</pre>
+<pre><a href="net/mcreator/ui/minecraft/boundingboxes/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft.boundingboxes">JBoundingBoxList</a> boundingBoxList</pre>
 </li>
 <li class="block-list">
 <h5>breakHarvestLevel</h5>
@@ -6255,7 +6272,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>boundingBoxList</h5>
-<pre><a href="net/mcreator/ui/minecraft/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft">JBoundingBoxList</a> boundingBoxList</pre>
+<pre><a href="net/mcreator/ui/minecraft/boundingboxes/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft.boundingboxes">JBoundingBoxList</a> boundingBoxList</pre>
 </li>
 <li class="block-list">
 <h5>breakSound</h5>

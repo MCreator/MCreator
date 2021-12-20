@@ -130,10 +130,14 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getIcon()">getIcon</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">This icon is only with <a href="../ui/dialogs/preferences/ThemesPanel.html" title="class in net.mcreator.ui.dialogs.preferences"><code>ThemesPanel</code></a>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getID()">getID</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">The ID is the theme's registry name.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getName()">getName</a></span>()</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
@@ -142,10 +146,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#setIcon(javax.swing.ImageIcon)">setIcon</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a>&nbsp;icon)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">To be detected, the name of the image file needs to be "icon.png" located into the main folder.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#setID(java.lang.String)">setID</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">This method sets the id of this theme using the name of its main folder.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#toString()">toString</a></span>()</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
@@ -187,24 +195,43 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getID()">
 <h3>getID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getID</span>()</div>
+<div class="block">The ID is the theme's registry name. It is used to differentiate each theme in the code.
+ This ID is also the main folder's name of the theme.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The theme's ID</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setID(java.lang.String)">
 <h3>setID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setID</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</span></div>
+<div class="block">This method sets the id of this theme using the name of its main folder.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>id</code> - <p>The theme's ID</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getName()">
 <h3>getName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>Its displayed name</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A description displayed in the <a href="../ui/dialogs/preferences/ThemesPanel.html" title="class in net.mcreator.ui.dialogs.preferences"><code>ThemesPanel</code></a> if provided.</p></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -212,6 +239,10 @@ loadScripts(document, 'script');</script>
 <h3>getCredits</h3>
 <div class="member-signature"><span class="annotations">@Nullable
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getCredits</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A String with optional credits to give to someone.</p></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -219,6 +250,10 @@ loadScripts(document, 'script');</script>
 <h3>getVersion</h3>
 <div class="member-signature"><span class="annotations">@Nullable
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getVersion</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The theme's version if provided</p></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -267,12 +302,22 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getIcon()">
 <h3>getIcon</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></span>&nbsp;<span class="element-name">getIcon</span>()</div>
+<div class="block">This icon is only with <a href="../ui/dialogs/preferences/ThemesPanel.html" title="class in net.mcreator.ui.dialogs.preferences"><code>ThemesPanel</code></a>.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>An <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link"><code>ImageIcon</code></a> representing the plugin.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setIcon(javax.swing.ImageIcon)">
 <h3>setIcon</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIcon</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a>&nbsp;icon)</span></div>
+<div class="block"><p>To be detected, the name of the image file needs to be "icon.png" located into the main folder.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>icon</code> - <p>An <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link"><code>ImageIcon</code></a> to display in <a href="../ui/dialogs/preferences/ThemesPanel.html" title="class in net.mcreator.ui.dialogs.preferences"><code>ThemesPanel</code></a></p></dd>
+</dl>
 </section>
 </li>
 <li>

@@ -87,6 +87,7 @@ net.mcreator.ui.laf
 net.mcreator.ui.laf.renderer
 net.mcreator.ui.laf.renderer.elementlist
 net.mcreator.ui.minecraft
+net.mcreator.ui.minecraft.boundingboxes
 net.mcreator.ui.minecraft.potions
 net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.modgui

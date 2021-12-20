@@ -80,6 +80,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">PluginInfo</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block"><p>PluginInfo contains all info about the plugin such as its name, its author or a description of it. Most of them are optional.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,7 +131,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getDependencies()">getDependencies</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">See isLoaded in <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a> to get more info about its usage.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getDescription()">getDescription</a></span>()</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
@@ -139,13 +142,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getPluginPageID()">getPluginPageID</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">When a new update is detected, MCreator will use this number to provide a link to the plugin page of the MCreator website.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getUpdateJSONURL()">getUpdateJSONURL</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block"><a href="../ui/dialogs/UpdatePluginDialog.html" title="class in net.mcreator.ui.dialogs"><code>UpdatePluginDialog</code></a> uses this method to take an online JSON file containing info about new updates of the plugin.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getVersion()">getVersion</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">This method is used inside the <a href="../ui/dialogs/UpdatePluginDialog.html" title="class in net.mcreator.ui.dialogs"><code>UpdatePluginDialog</code></a> to check if the user has the latest update of the plugin.</div>
+</div>
 </div>
 </div>
 </div>
@@ -199,48 +208,87 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getName()">
 <h3>getName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The displayed name of the plugin</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A description displayed in the plugins panel.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getAuthor()">
 <h3>getAuthor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAuthor</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The author(s) of the plugin to be displayed in the plugins panel.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getVersion()">
 <h3>getVersion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getVersion</span>()</div>
+<div class="block">This method is used inside the <a href="../ui/dialogs/UpdatePluginDialog.html" title="class in net.mcreator.ui.dialogs"><code>UpdatePluginDialog</code></a> to check if the user has the latest update of the plugin.
+ See <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a> to read more about this.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The plugin's version if provided</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getDependencies()">
 <h3>getDependencies</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getDependencies</span>()</div>
+<div class="block">See isLoaded in <a href="Plugin.html" title="class in net.mcreator.plugin"><code>Plugin</code></a> to get more info about its usage.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A list of plugin's IDs needed to use the plugin</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getCredits()">
 <h3>getCredits</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getCredits</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A String with optional credits to give to someone.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getUpdateJSONURL()">
 <h3>getUpdateJSONURL</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUpdateJSONURL</span>()</div>
+<div class="block"><p><a href="../ui/dialogs/UpdatePluginDialog.html" title="class in net.mcreator.ui.dialogs"><code>UpdatePluginDialog</code></a> uses this method to take an online JSON file containing info about new updates of the plugin.
+ When it detects the version is not equal to the version inside the provided file, MCreator will notify the user.</p></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>A link to an online JSON file</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getPluginPageID()">
 <h3>getPluginPageID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getPluginPageID</span>()</div>
+<div class="block"><p>When a new update is detected, MCreator will use this number to provide a link to the plugin page of the MCreator website.
+ This number comes after https://mcreator.net/plugin/xxxxx/... The link used will follow this format: https://mcreator.net/node/xxxxx</p></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The URL number of the plugin page on the MCreator website.</p></dd>
+</dl>
 </section>
 </li>
 </ul>

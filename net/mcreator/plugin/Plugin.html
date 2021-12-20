@@ -85,6 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Plugin</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="Plugin.html" title="class in net.mcreator.plugin">Plugin</a>&gt;</span></div>
+<div class="block"><p>A Plugin is a mod for MCreator allowing to alter, improve or extend features. Most of elements inside MCreator are plugin driven.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -123,10 +124,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getID()">getID</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">The ID is the plugin's registry name.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="PluginInfo.html" title="class in net.mcreator.plugin">PluginInfo</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getInfo()">getInfo</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">It returns a <a href="PluginInfo.html" title="class in net.mcreator.plugin"><code>PluginInfo</code></a> object containing additional and optional info about the plugin.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>long</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getMinVersion()">getMinVersion</a></span>()</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
@@ -135,19 +140,28 @@ implements <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getWeight()">getWeight</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">The weight of a plugin is its priority to be loaded.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#hashCode()">hashCode</a></span>()</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#isBuiltin()">isBuiltin</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">MCreator detects if a plugin is included or not.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#isCompatible()">isCompatible</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">The plugin is compatible when the minimal version is lower or equal to the current MCreator's version and
+ the maximal version is higher or equal to the current version.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#isLoaded()">isLoaded</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">A plugin is loaded when all plugin dependencies are present.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#toString()">toString</a></span>()</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
@@ -192,48 +206,92 @@ implements <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base
 <section class="detail" id="isBuiltin()">
 <h3>isBuiltin</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isBuiltin</span>()</div>
+<div class="block">MCreator detects if a plugin is included or not. This method is mainly used with plugins in preferences.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The plugin is builtin, so included with MCreator.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="isLoaded()">
 <h3>isLoaded</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isLoaded</span>()</div>
+<div class="block">A plugin is loaded when all plugin dependencies are present.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The plugin is loaded.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getID()">
 <h3>getID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getID</span>()</div>
+<div class="block">The ID is the plugin's registry name. It is used to differentiate each plugin in the code.
+ A plugin defines its own ID.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The plugin's ID</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getInfo()">
 <h3>getInfo</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PluginInfo.html" title="class in net.mcreator.plugin">PluginInfo</a></span>&nbsp;<span class="element-name">getInfo</span>()</div>
+<div class="block">It returns a <a href="PluginInfo.html" title="class in net.mcreator.plugin"><code>PluginInfo</code></a> object containing additional and optional info about the plugin.
+ This object is only used inside the plugin panel.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p> Other info about the plugin</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getWeight()">
 <h3>getWeight</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getWeight</span>()</div>
+<div class="block"><p>The weight of a plugin is its priority to be loaded. Higher this value is, higher its priority is.
+ This also determines how MCreator loads plugins. After MCreator has detected all plugins, it will check
+ for their weight and then, load plugins with the highest value first. It can be used to override another plugin,
+ but the value should never be higher than 10 as this is the value or core plugins.</p></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The weight of the plugin</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="isCompatible()">
 <h3>isCompatible</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isCompatible</span>()</div>
+<div class="block"><p>The plugin is compatible when the minimal version is lower or equal to the current MCreator's version and
+ the maximal version is higher or equal to the current version. When a field is not defined, the field is considered as compatible.</p></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>If the plugin is compatible with the version used.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getMinVersion()">
 <h3>getMinVersion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMinVersion</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The minimal version of MCreator needed to use the plugin.</p></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getPluginVersion()">
 <h3>getPluginVersion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPluginVersion</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><p>The MCreator's version when builtin and the plugin's version in the other case</p></dd>
+</dl>
 </section>
 </li>
 <li>
