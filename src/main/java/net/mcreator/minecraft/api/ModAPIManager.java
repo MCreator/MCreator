@@ -107,7 +107,7 @@ public class ModAPIManager {
 	public static void deleteAPIs(Workspace workspace, WorkspaceSettings workspaceSettings) {
 		List<ModAPI.Implementation> apis = workspaceSettings.getMCreatorDependencies().stream()
 				.map(e -> ModAPIManager.getModAPIForNameAndGenerator(e, workspace.getGenerator().getGeneratorName()))
-				.collect(Collectors.toList());
+				.toList();
 		for (ModAPI.Implementation api : apis) {
 			if (api.update_files != null) {
 				for (String fileRelative : api.update_files) {
