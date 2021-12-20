@@ -71,7 +71,7 @@
             <#assign sourceNew += token>
         </#if>
     </#list>
-    <#return sourceNew?replace(":text>", ".getText()+\"")
+    <#return sourceNew?replace(":text>", ".getValue()+\"")
                 ?replace("(?<!\\\\)<", "\"+", "r")?replace("(?<!\\\\)>", "+\"", "r")
                 ?replace("\\\\<", "<")?replace("\\\\>", ">")
     >
