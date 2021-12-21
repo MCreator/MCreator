@@ -38,9 +38,9 @@ base_templates:
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
