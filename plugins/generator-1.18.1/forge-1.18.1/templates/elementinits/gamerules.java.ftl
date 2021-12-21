@@ -36,40 +36,19 @@
 
 package ${package}.init;
 
-<#assign hasBlocks = false>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}GameRules {
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
-
-    private static final List<Item> REGISTRY = new ArrayList<>();
-
-    <#list items as item>
-        <#if item.getModElement().getTypeString() == "armor">
-            <#if item.enableHelmet>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
-            </#if>
-            <#if item.enableBody>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
-            </#if>
-            <#if item.enableLeggings>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
-            </#if>
-            <#if item.enableBoots>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
-            </#if>
-        <#else>
-            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
-        </#if>
-    </#list>
-
-    private static Item register(Item item) {
-		REGISTRY.add(item);
-    	return item;
-    }
-
-	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Item[0]));
-	}
+	<#list gamerules as gamerule>
+		<#if gamerule.type == "Number">
+	public static final GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} =
+				GameRules.register("${gamerule.getModElement().getRegistryName()}",
+				GameRules.Category.${gamerule.category}, GameRules.IntegerValue.create(${gamerule.defaultValueNumber}));
+		<#else>
+	public static final GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} =
+				GameRules.register("${gamerule.getModElement().getRegistryName()}",
+				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
+		</#if>
+	</#list>
 
 }
-
 <#-- @formatter:on -->

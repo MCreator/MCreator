@@ -36,38 +36,12 @@
 
 package ${package}.init;
 
-<#assign hasBlocks = false>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT}) public class ${JavaModName}Models {
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
-
-    private static final List<Item> REGISTRY = new ArrayList<>();
-
-    <#list items as item>
-        <#if item.getModElement().getTypeString() == "armor">
-            <#if item.enableHelmet>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
-            </#if>
-            <#if item.enableBody>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
-            </#if>
-            <#if item.enableLeggings>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
-            </#if>
-            <#if item.enableBoots>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
-            </#if>
-        <#else>
-            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
-        </#if>
-    </#list>
-
-    private static Item register(Item item) {
-		REGISTRY.add(item);
-    	return item;
-    }
-
-	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Item[0]));
+	@SubscribeEvent public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		<#list javamodels as model>
+		event.registerLayerDefinition(${model.getReadableName()}.LAYER_LOCATION, ${model.getReadableName()}::createBodyLayer);
+		</#list>
 	}
 
 }
