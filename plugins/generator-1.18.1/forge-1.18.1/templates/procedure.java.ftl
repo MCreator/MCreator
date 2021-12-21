@@ -33,6 +33,8 @@ package ${package}.procedures;
 
 import net.minecraftforge.eventbus.api.Event;
 
+import javax.annotation.Nullable;
+
 <#assign nullableDependencies = []/>
 <#list dependencies as dependency>
 	<#if dependency.getType(generator.getWorkspace()) != "double"
