@@ -217,8 +217,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final Model grassBlock = new Model.BuiltInModel("Grass block");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
-			new Model[] { normal, singleTexture, cross, crop, grassBlock });
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });

@@ -98,10 +98,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VTextField bootsName = new VTextField();
 
 	private static final Model defaultModel = new Model.BuiltInModel("Default");
-	private final VComboBox<Model> helmetModel = new SearchableComboBox<>(new Model[] { defaultModel });
-	private final VComboBox<Model> bodyModel = new SearchableComboBox<>(new Model[] { defaultModel });
-	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>(new Model[] { defaultModel });
-	private final VComboBox<Model> bootsModel = new SearchableComboBox<>(new Model[] { defaultModel });
+	private final VComboBox<Model> helmetModel = new SearchableComboBox<>();
+	private final VComboBox<Model> bodyModel = new SearchableComboBox<>();
+	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>();
+	private final VComboBox<Model> bootsModel = new SearchableComboBox<>();
 
 	private final JTextField helmetSpecialInfo = new JTextField(20);
 	private final JTextField bodySpecialInfo = new JTextField(20);

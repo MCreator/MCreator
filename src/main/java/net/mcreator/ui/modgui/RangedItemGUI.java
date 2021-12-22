@@ -110,7 +110,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private final Model adefault = new Model.BuiltInModel("Default");
-	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>(new Model[] { adefault });
+	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>();
 	private final VComboBox<String> customBulletModelTexture = new SearchableComboBox<>();
 
 	private final ValidationGroup page1group = new ValidationGroup();

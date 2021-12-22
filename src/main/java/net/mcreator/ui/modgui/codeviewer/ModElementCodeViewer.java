@@ -180,16 +180,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
-					// this likely selects first file from cache if currently selected tab is disabled
-					if (!isEnabledAt(getSelectedIndex())) {
-						int first = 0;
-						for (int i = getTabCount() - 1; i >= 0; i--) {
-							if (isEnabledAt(i) || cache.isEmpty())
-								first = i;
-						}
-						setSelectedIndex(first);
-					}
-
 					cache.keySet().stream().toList().forEach(file -> {
 						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
@@ -206,6 +196,17 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							cache.remove(file);
 						}
 					});
+
+					// this likely selects first file from cache if currently selected tab is disabled
+					if (!isEnabledAt(getSelectedIndex())) {
+						int first = 0;
+						for (int i = getTabCount() - 1; i >= 0; i--) {
+							if (isEnabledAt(i) || cache.isEmpty())
+								first = i;
+						}
+						setSelectedIndex(first);
+					}
+
 					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
