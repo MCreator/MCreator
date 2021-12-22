@@ -29,6 +29,7 @@ import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.util.image.ImageUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
@@ -68,6 +69,27 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				reload();
 			}
 		});
+
+		// we group list templates inside separate tabs to improve UX
+		modElementGUI.getModElement().getGenerator()
+				.getModElementGeneratorListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
+				.forEach(e -> {
+					if (indexOfTab(e.groupName()) == -1) {
+						JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
+						subTab.addComponentListener(new ComponentAdapter() {
+							@Override public void componentShown(ComponentEvent e) {
+								super.componentShown(e);
+								reload();
+							}
+						});
+
+						listPager.put(e, subTab);
+						addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
+						setDisabledIconAt(indexOfTab(e.groupName()),
+								ImageUtils.changeSaturation(UIRES.get("16px.list.gif"), 0));
+						setEnabledAt(indexOfTab(e.groupName()), false);
+					}
+				});
 	}
 
 	public void registerUI(JComponent container) {
@@ -112,21 +134,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
-					modElementGUI.getModElement().getGenerator()
-							.getModElementGeneratorListTemplates(modElementGUI.getModElement(),
-									modElementGUI.getElementFromGUI()).forEach(e -> {
-								if (indexOfTab(e.groupName()) == -1) {
-									JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
-									subTab.addComponentListener(new ComponentAdapter() {
-										@Override public void componentShown(ComponentEvent e) {
-											super.componentShown(e);
-											reload();
-										}
-									});
-									listPager.put(e, subTab);
-									addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
-								}
-							});
 
 					files.sort(
 							Comparator.comparing(e -> FilenameUtils.getExtension(((GeneratorFile) e).file().getName()))
@@ -158,9 +165,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 								if (ownerListOptional.isPresent()) { // file from list
-									listPager.get(ownerListOptional.get())
-											.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
-													fileCodeViewer);
+									JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+									ownerList.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+											fileCodeViewer);
+									setEnabledAt(indexOfComponent(ownerList), true);
 								} else { // simple file
 									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
 											fileCodeViewer);
@@ -171,6 +179,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
+					// selects first file from cache if currently selected tab is disabled
+					if (cache.size() > 0 && !isEnabledAt(getSelectedIndex())) {
+						int first = 0;
+						for (int i = getTabCount() - 1; i >= 0; i--) {
+							if (isEnabledAt(i))
+								first = i;
+						}
+						setSelectedIndex(first);
+					}
+
 					cache.keySet().stream().toList().forEach(file -> {
 						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
@@ -178,10 +196,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							if (ownerListOptional.isPresent()
 									&& listPager.get(ownerListOptional.get()) != null) { // file from list
 								JTabbedPane ownerList = listPager.get(ownerListOptional.get());
-								for (int index = 0; index < ownerList.getTabCount(); index++) {
-									if (ownerList.getTitleAt(index).equals(file.getName()))
-										ownerList.removeTabAt(index);
-								}
+								ownerList.removeTabAt(ownerList.indexOfTab(file.getName()));
+								if (ownerList.getTabCount() == 0)
+									setEnabledAt(indexOfComponent(ownerList), false);
 							} else { // simple file
 								remove(cache.get(file));
 							}
