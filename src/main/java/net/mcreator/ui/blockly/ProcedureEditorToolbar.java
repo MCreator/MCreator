@@ -200,7 +200,12 @@ public class ProcedureEditorToolbar extends TransparentToolBar {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { ".ptpl" });
 			if (imp != null) {
 				try {
-					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
+					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp)
+							.replace("variables_get_text", "variables_get_string") // The same converter as fv21.ProcedureVariablesConverter, but it converts all Blockly templates
+							.replace("variables_set_text", "variables_set_string")
+							.replace("custom_dependency_text", "custom_dependency_string")
+							.replace("procedure_retval_text", "procedure_retval_string")
+							.replace("return_text", "return_string");
 
 					Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 					List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
