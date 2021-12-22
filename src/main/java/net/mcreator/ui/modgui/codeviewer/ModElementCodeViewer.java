@@ -71,6 +71,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		});
 
 		// we group list templates inside separate tabs to improve UX
+		Icon disabledListIcon = ImageUtils.changeSaturation(UIRES.get("16px.list.gif"), 0);
 		modElementGUI.getModElement().getGenerator()
 				.getModElementGeneratorListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
 				.forEach(e -> {
@@ -85,8 +86,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 						listPager.put(e, subTab);
 						addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
-						setDisabledIconAt(indexOfTab(e.groupName()),
-								ImageUtils.changeSaturation(UIRES.get("16px.list.gif"), 0));
+
+						setDisabledIconAt(indexOfTab(e.groupName()), disabledListIcon);
 						setEnabledAt(indexOfTab(e.groupName()), false);
 					}
 				});
@@ -179,11 +180,11 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
-					// selects first file from cache if currently selected tab is disabled
-					if (cache.size() > 0 && !isEnabledAt(getSelectedIndex())) {
+					// this likely selects first file from cache if currently selected tab is disabled
+					if (!isEnabledAt(getSelectedIndex())) {
 						int first = 0;
 						for (int i = getTabCount() - 1; i >= 0; i--) {
-							if (isEnabledAt(i))
+							if (isEnabledAt(i) || cache.isEmpty())
 								first = i;
 						}
 						setSelectedIndex(first);
