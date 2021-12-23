@@ -24,6 +24,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.minecraft.JEntriesList;
@@ -41,9 +42,10 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.IntStream;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
 		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
@@ -53,7 +55,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
-	private final ReentrantLock updateRunning = new ReentrantLock(true);
+	private volatile boolean updateRunning = false;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -129,91 +131,87 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	private synchronized void reload() {
-		if (isVisible()) {
-			new Thread(() -> {
-				updateRunning.lock();
-				try {
-					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
-							.generateElement(modElementGUI.getElementFromGUI(), false, false);
+		if (isVisible() && !updateRunning) {
+			updateRunning = true;
+			try { // (Reply to this line) Is it somehow good now? Or the same as synchronized block?
+				ThreadUtil.runOnSwingThreadAndWait(this::updateFiles);
+			} catch (InterruptedException | InvocationTargetException ignored) {
+			}
+			updateRunning = false;
+		}
+	}
 
-					files.sort(
-							Comparator.comparing(e -> FilenameUtils.getExtension(((GeneratorFile) e).file().getName()))
-									.thenComparing(e -> ((GeneratorFile) e).file().getName()));
+	private void updateFiles() {
+		try {
+			List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
+					.generateElement(modElementGUI.getElementFromGUI(), false, false);
 
-					for (GeneratorFile file : files) {
-						if (cache.containsKey(file.file())) { // existing file
-							if (cache.get(file.file()).update(file)) {
-								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
-										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
-								if (ownerListOptional.isPresent()
-										&& listPager.get(ownerListOptional.get()) != null) { // file from list
-									JTabbedPane ownerList = listPager.get(ownerListOptional.get());
-									int tabid = indexOfComponent(ownerList);
-									if (tabid != -1)
-										setSelectedIndex(tabid);
-									int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
-									if (subtabid != -1)
-										ownerList.setSelectedIndex(subtabid);
-								} else { // simple file
-									int tabid = indexOfComponent(cache.get(file.file()));
-									if (tabid != -1)
-										setSelectedIndex(tabid);
-								}
-							}
-						} else { // new file
-							try {
-								FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-								Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
-										.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
-								if (ownerListOptional.isPresent()) { // file from list
-									JTabbedPane ownerList = listPager.get(ownerListOptional.get());
-									ownerList.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
-											fileCodeViewer);
-									setEnabledAt(indexOfComponent(ownerList), true);
-								} else { // simple file
-									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
-											fileCodeViewer);
-								}
-								cache.put(file.file(), fileCodeViewer);
-							} catch (Exception ignored) {
-							}
+			files.sort(Comparator.comparing(e -> FilenameUtils.getExtension(((GeneratorFile) e).file().getName()))
+					.thenComparing(e -> ((GeneratorFile) e).file().getName()));
+
+			for (GeneratorFile file : files) {
+				if (cache.containsKey(file.file())) { // existing file
+					if (cache.get(file.file()).update(file)) {
+						Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+								.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
+						if (ownerListOptional.isPresent()
+								&& listPager.get(ownerListOptional.get()) != null) { // file from list
+							JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+							int tabid = indexOfComponent(ownerList);
+							if (tabid != -1)
+								setSelectedIndex(tabid);
+							int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
+							if (subtabid != -1)
+								ownerList.setSelectedIndex(subtabid);
+						} else { // simple file
+							int tabid = indexOfComponent(cache.get(file.file()));
+							if (tabid != -1)
+								setSelectedIndex(tabid);
 						}
 					}
-
-					cache.keySet().stream().toList().forEach(file -> {
-						if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
-							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
-									.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
-							if (ownerListOptional.isPresent()
-									&& listPager.get(ownerListOptional.get()) != null) { // file from list
-								JTabbedPane ownerList = listPager.get(ownerListOptional.get());
-								ownerList.removeTabAt(ownerList.indexOfTab(file.getName()));
-								if (ownerList.getTabCount() == 0)
-									setEnabledAt(indexOfComponent(ownerList), false);
-							} else { // simple file
-								remove(cache.get(file));
-							}
-							cache.remove(file);
+				} else { // new file
+					try {
+						FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
+						Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+								.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
+						if (ownerListOptional.isPresent()) { // file from list
+							JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+							ownerList.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+									fileCodeViewer);
+							setEnabledAt(indexOfComponent(ownerList), true);
+						} else { // simple file
+							addTab(file.file().getName(), FileIcons.getIconForFile(file.file()), fileCodeViewer);
 						}
-					});
-
-					// this likely selects first file from cache if currently selected tab is disabled
-					if (!isEnabledAt(getSelectedIndex())) {
-						int first = 0;
-						for (int i = getTabCount() - 1; i >= 0; i--) {
-							if (isEnabledAt(i) || cache.isEmpty())
-								first = i;
-						}
-						setSelectedIndex(first);
+						cache.put(file.file(), fileCodeViewer);
+					} catch (Exception ignored) {
 					}
-
-					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				} catch (Exception ignored) {
-					setBackground(new Color(0x8D5C5C));
-				} finally {
-					updateRunning.unlock();
 				}
-			}).start();
+			}
+
+			cache.keySet().stream().toList().forEach(file -> {
+				if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
+					Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+							.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
+					if (ownerListOptional.isPresent()
+							&& listPager.get(ownerListOptional.get()) != null) { // file from list
+						JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+						ownerList.removeTabAt(ownerList.indexOfTab(file.getName()));
+						if (ownerList.getTabCount() == 0)
+							setEnabledAt(indexOfComponent(ownerList), false);
+					} else { // simple file
+						remove(cache.get(file));
+					}
+					cache.remove(file);
+				}
+			});
+
+			// this likely selects first file from cache if currently selected tab is disabled
+			if (!isEnabledAt(getSelectedIndex()) && !cache.isEmpty())
+				setSelectedIndex(IntStream.range(0, getTabCount()).filter(this::isEnabledAt).min().orElse(0));
+
+			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		} catch (Exception ignored) {
+			setBackground(new Color(0x8D5C5C));
 		}
 	}
 
