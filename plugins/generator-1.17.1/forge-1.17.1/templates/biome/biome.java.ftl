@@ -217,7 +217,7 @@ public class ${name}Biome {
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
                     new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
-                    new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 4)),
+                    new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
                     new TwoLayersFeatureSize(1, 1, 2)))
                     .decorators(ImmutableList.of(new AlterGroundDecorator(new SimpleStateProvider(Blocks.PODZOL.defaultBlockState()))))
                     <#if data.hasVines() || data.hasFruits()>
