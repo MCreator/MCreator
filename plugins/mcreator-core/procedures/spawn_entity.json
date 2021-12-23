@@ -17,7 +17,7 @@
     }
   ],
   "extensions": [
-    "entity_list_provider"
+    "searchable_entity_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,

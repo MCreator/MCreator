@@ -12,7 +12,7 @@
     }
   ],
   "extensions": [
-    "entity_list_provider",
+    "searchable_entity_provider",
     "ai_condition_selector"
   ],
   "inputsInline": true,

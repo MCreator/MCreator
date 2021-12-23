@@ -1,7 +1,7 @@
 {
   "args0": [],
   "extensions": [
-    "biome_list_provider"
+    "searchable_biome_provider"
   ],
   "inputsInline": true,
   "nextStatement": null,
