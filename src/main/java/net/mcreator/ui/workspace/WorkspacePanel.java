@@ -1212,7 +1212,7 @@ import java.util.stream.Collectors;
 		if (ge instanceof ICommonType) {
 			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
 			for (BaseType baseType : baseTypes) {
-				modElementFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
 						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
 			}

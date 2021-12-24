@@ -647,7 +647,7 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public List<GeneratorTemplatesList> getModElementGeneratorListTemplates(ModElement element) {
-		return getModElementGeneratorListTemplates(element, false, element.getGeneratableElement());
+		return getModElementGeneratorListTemplates(element, false, null);
 	}
 
 	public List<GeneratorTemplatesList> getModElementGeneratorListTemplates(ModElement element,
@@ -662,6 +662,16 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null) {
 			LOG.info("Failed to load element definition for mod element type " + element.getType().getRegistryName());
 			return null;
+		}
+
+		// if generatable element is null, we can't construct list data because we have nothing to process
+		if (generatableElement == null) {
+			generatableElement = element.getGeneratableElement();
+			if (generatableElement == null) {
+				LOG.warn("Failed to load mod generatable element: " + element.getName()
+						+ ". This means no list templates will be generated");
+				return Collections.emptyList();
+			}
 		}
 
 		Set<GeneratorTemplatesList> fileLists = new HashSet<>();
@@ -688,16 +698,6 @@ public class Generator implements IGenerator, Closeable {
 						if (conditionRaw == null) {
 							conditionRaw = ((Map<?, ?>) template).get("condition_any");
 							operator = TemplateExpressionParser.Operator.OR;
-						}
-
-						if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
-							if (generatableElement == null) {
-								generatableElement = element.getGeneratableElement();
-								if (generatableElement == null && performFSTasks) {
-									LOG.warn("Failed to load mod generatable element: " + element.getName()
-											+ ". This means all templates will be generated (conditions ignored)");
-								}
-							}
 						}
 
 						String name = GeneratorTokens.replaceVariableTokens(generatableElement,
