@@ -1240,8 +1240,6 @@ import java.util.stream.Collectors;
 			}
 
 			if (modElementListFiles.size() > 0) {
-				codeDropdown.addSeparator();
-
 				for (GeneratorTemplatesList fileList : modElementListFiles) {
 					if (fileList.templates().size() > 0) {
 						JMenu listItem = new JMenu(fileList.groupName());

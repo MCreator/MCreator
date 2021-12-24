@@ -132,16 +132,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	private synchronized void reload() {
 		if (isVisible() && !updateRunning) {
-			updateRunning = true;
-			try { // (Reply to this line) Is it somehow good now? Or the same as synchronized block?
+			try {
 				ThreadUtil.runOnSwingThreadAndWait(this::updateFiles);
 			} catch (InterruptedException | InvocationTargetException ignored) {
+				updateRunning = false;
 			}
-			updateRunning = false;
 		}
 	}
 
 	private void updateFiles() {
+		updateRunning = true;
 		try {
 			List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 					.generateElement(modElementGUI.getElementFromGUI(), false, false);
@@ -150,10 +150,11 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					.thenComparing(e -> ((GeneratorFile) e).file().getName()));
 
 			for (GeneratorFile file : files) {
+				Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+						.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
+
 				if (cache.containsKey(file.file())) { // existing file
 					if (cache.get(file.file()).update(file)) {
-						Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
-								.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 						if (ownerListOptional.isPresent()
 								&& listPager.get(ownerListOptional.get()) != null) { // file from list
 							JTabbedPane ownerList = listPager.get(ownerListOptional.get());
@@ -172,13 +173,12 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				} else { // new file
 					try {
 						FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-						Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
-								.filter(e -> e.getCorrespondingListTemplate(file.file()) != null).findFirst();
 						if (ownerListOptional.isPresent()) { // file from list
 							JTabbedPane ownerList = listPager.get(ownerListOptional.get());
 							ownerList.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
 									fileCodeViewer);
-							setEnabledAt(indexOfComponent(ownerList), true);
+							if (ownerList.getTabCount() == 1)
+								setEnabledAt(indexOfComponent(ownerList), true);
 						} else { // simple file
 							addTab(file.file().getName(), FileIcons.getIconForFile(file.file()), fileCodeViewer);
 						}
@@ -188,14 +188,15 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				}
 			}
 
+			List<File> cacheFiles = files.stream().map(GeneratorFile::file).toList();
 			cache.keySet().stream().toList().forEach(file -> {
-				if (!files.stream().map(GeneratorFile::file).toList().contains(file)) { // deleted file
+				if (!cacheFiles.contains(file)) { // deleted file
 					Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 							.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
 					if (ownerListOptional.isPresent()
 							&& listPager.get(ownerListOptional.get()) != null) { // file from list
 						JTabbedPane ownerList = listPager.get(ownerListOptional.get());
-						ownerList.removeTabAt(ownerList.indexOfTab(file.getName()));
+						ownerList.remove(cache.get(file));
 						if (ownerList.getTabCount() == 0)
 							setEnabledAt(indexOfComponent(ownerList), false);
 					} else { // simple file
@@ -213,6 +214,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		} catch (Exception ignored) {
 			setBackground(new Color(0x8D5C5C));
 		}
+		updateRunning = false;
 	}
 
 	public ModElementGUI<T> getModElementGUI() {
