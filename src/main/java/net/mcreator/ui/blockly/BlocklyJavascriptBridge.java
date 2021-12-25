@@ -360,7 +360,6 @@ public class BlocklyJavascriptBridge {
 		switch (type) {
 			case "entity" -> datalist = "entities";
 			case "biome" -> datalist = "biomes";
-			case "sound" -> datalist = "sounds";
 			default -> {
 				return "";
 			}
