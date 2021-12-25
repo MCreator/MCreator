@@ -35,6 +35,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class GeneratableElement {
 
@@ -78,6 +80,25 @@ public abstract class GeneratableElement {
 	 */
 	public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return null;
+	}
+
+	@Override public boolean equals(Object obj) {
+		if (obj instanceof GeneratableElement other) {
+			AtomicBoolean retVal = new AtomicBoolean(true);
+			List.of(getClass().getDeclaredFields()).forEach(field -> {
+				field.setAccessible(true);
+				try {
+					retVal.compareAndSet(true, Objects.equals(field.get(this), field.get(other)));
+				} catch (IllegalAccessException ignored) {
+				}
+			});
+			return retVal.get();
+		}
+		return false;
+	}
+
+	@Override public int hashCode() {
+		return element.hashCode();
 	}
 
 	public static class GSONAdapter

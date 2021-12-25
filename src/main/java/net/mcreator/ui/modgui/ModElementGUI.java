@@ -55,6 +55,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
+	private boolean saved;
 
 	@Nonnull protected ModElement modElement;
 
@@ -67,6 +68,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
+		this.saved = false;
 		this.editingMode = editingMode;
 		this.modElement = modElement;
 	}
@@ -102,6 +104,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		this.tabIn.setTabShownListener(tab -> {
 			if (PreferencesManager.PREFERENCES.ui.autoreloadTabs)
 				reloadDataLists();
+		});
+		this.tabIn.setTabClosingListener(tab -> {
+			if (hasUnsavedChanges())
+				return 0 == JOptionPane.showConfirmDialog(mcreator, L10N.label("dialog.unsaved_changes.message"),
+						L10N.t("dialog.unsaved_changes.title"), JOptionPane.YES_NO_OPTION);
+			return true;
 		});
 
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tabIn);
@@ -478,6 +486,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
+		saved = true;
+
 		GE element = getElementFromGUI();
 
 		// if new element, and if we are not in the root folder, specify the folder of the mod element
@@ -527,6 +537,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public @Nonnull ModElement getModElement() {
 		return modElement;
+	}
+
+	public boolean hasUnsavedChanges() {
+		if (editingMode)
+			return !Objects.equals(getElementFromGUI(), modElement.getGeneratableElement());
+		return !saved;
 	}
 
 	protected abstract void initGUI();
