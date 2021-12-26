@@ -84,6 +84,9 @@ public abstract class GeneratableElement {
 
 	@Override public boolean equals(Object obj) {
 		if (obj instanceof GeneratableElement other) {
+			if (!getClass().equals(other.getClass()))
+				return false;
+
 			AtomicBoolean retVal = new AtomicBoolean(true);
 			List.of(getClass().getDeclaredFields()).forEach(field -> {
 				field.setAccessible(true);

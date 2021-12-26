@@ -542,6 +542,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	public final boolean hasUnsavedChanges() {
 		if (editingMode)
 			return !Objects.equals(getElementFromGUI(), modElement.getGeneratableElement());
+
 		return !saved;
 	}
 
