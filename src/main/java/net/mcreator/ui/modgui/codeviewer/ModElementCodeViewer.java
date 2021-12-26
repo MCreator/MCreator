@@ -45,6 +45,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
@@ -53,7 +54,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
-	private final Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
+	private final Map<GeneratorTemplatesList, JTabbedPane> listPager;
 
 	private volatile boolean updateRunning = false;
 
@@ -74,25 +75,24 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 		// we group list templates inside separate tabs to improve UX
 		Icon disabledListIcon = ImageUtils.changeSaturation(UIRES.get("16px.list.gif"), 0);
-		modElementGUI.getModElement().getGenerator()
+		this.listPager = modElementGUI.getModElement().getGenerator()
 				.getModElementGeneratorListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
-				.forEach(e -> {
-					if (indexOfTab(e.groupName()) == -1) {
-						JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
-						subTab.addComponentListener(new ComponentAdapter() {
-							@Override public void componentShown(ComponentEvent e) {
-								super.componentShown(e);
-								reload();
-							}
-						});
+				.stream().collect(Collectors.toUnmodifiableMap(key -> key, list -> {
+					JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
+					subTab.addComponentListener(new ComponentAdapter() {
+						@Override public void componentShown(ComponentEvent e) {
+							super.componentShown(e);
+							reload();
+						}
+					});
 
-						listPager.put(e, subTab);
-						addTab(e.groupName(), UIRES.get("16px.list.gif"), subTab);
+					addTab(list.groupName(), UIRES.get("16px.list.gif"), subTab);
 
-						setDisabledIconAt(indexOfTab(e.groupName()), disabledListIcon);
-						setEnabledAt(indexOfTab(e.groupName()), false);
-					}
-				});
+					setDisabledIconAt(indexOfTab(list.groupName()), disabledListIcon);
+					setEnabledAt(indexOfTab(list.groupName()), false);
+
+					return subTab;
+				}));
 	}
 
 	public void registerUI(JComponent container) {
@@ -155,15 +155,15 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 				if (cache.containsKey(file.file())) { // existing file
 					if (cache.get(file.file()).update(file)) {
-						if (ownerListOptional.isPresent()
-								&& listPager.get(ownerListOptional.get()) != null) { // file from list
+						if (ownerListOptional.isPresent()) { // file from list
 							JTabbedPane ownerList = listPager.get(ownerListOptional.get());
 							int tabid = indexOfComponent(ownerList);
-							if (tabid != -1)
+							if (tabid != -1) {
 								setSelectedIndex(tabid);
-							int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
-							if (subtabid != -1)
-								ownerList.setSelectedIndex(subtabid);
+								int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
+								if (subtabid != -1)
+									ownerList.setSelectedIndex(subtabid);
+							}
 						} else { // simple file
 							int tabid = indexOfComponent(cache.get(file.file()));
 							if (tabid != -1)
@@ -193,8 +193,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				if (!cacheFiles.contains(file)) { // deleted file
 					Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 							.filter(e -> e.getCorrespondingListTemplate(file) != null).findFirst();
-					if (ownerListOptional.isPresent()
-							&& listPager.get(ownerListOptional.get()) != null) { // file from list
+					if (ownerListOptional.isPresent()) { // file from list
 						JTabbedPane ownerList = listPager.get(ownerListOptional.get());
 						ownerList.remove(cache.get(file));
 						if (ownerList.getTabCount() == 0)

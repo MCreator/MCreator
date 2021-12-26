@@ -329,7 +329,7 @@ public class Generator implements IGenerator, Closeable {
 								e -> e.getPath().startsWith(fileNameParts[0]) && e.getPath()
 										.endsWith(fileNameParts[1]));
 						if (filesFound != null)
-							List.of(filesFound).forEach(File::delete);
+							Arrays.asList(filesFound).forEach(File::delete);
 					}
 				}
 			}
