@@ -74,7 +74,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		});
 
 		// we group list templates inside separate tabs to improve UX
-		Icon disabledListIcon = ImageUtils.changeSaturation(UIRES.get("16px.list.gif"), 0);
+		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
+		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
 		this.listPager = modElementGUI.getModElement().getGenerator()
 				.getModElementGeneratorListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
 				.stream().collect(Collectors.toUnmodifiableMap(key -> key, list -> {
@@ -86,7 +87,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					});
 
-					addTab(list.groupName(), UIRES.get("16px.list.gif"), subTab);
+					addTab(list.groupName(), enabledListIcon, subTab);
 
 					setDisabledIconAt(indexOfTab(list.groupName()), disabledListIcon);
 					setEnabledAt(indexOfTab(list.groupName()), false);
