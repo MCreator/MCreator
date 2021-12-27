@@ -52,7 +52,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private ConcurrentHashMap<BaseType, Integer> id_map = new ConcurrentHashMap<>();
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
@@ -116,10 +115,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
 		return language_map;
-	}
-
-	public ConcurrentHashMap<BaseType, Integer> getIDMap() {
-		return id_map;
 	}
 
 	public FolderElement getFoldersRoot() {
@@ -271,19 +266,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				.forEach(file -> new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg").delete());
 		sound_elements.remove(element);
 		markDirty();
-	}
-
-	public int getNextFreeIDAndIncrease(BaseType baseType) {
-		if (id_map.get(baseType) == null) {
-			id_map.put(baseType, 1);
-			markDirty();
-			return 1;
-		} else {
-			int free = id_map.get(baseType) + 1;
-			id_map.put(baseType, free);
-			markDirty();
-			return free;
-		}
 	}
 
 	public void setMCreatorVersion(long mcreatorVersion) {
@@ -500,7 +482,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void loadStoredDataFrom(Workspace other) {
-		this.id_map = other.id_map;
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
