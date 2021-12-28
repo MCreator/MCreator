@@ -66,6 +66,9 @@ package ${package}.item.inventory;
 				return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()};
 			}
 
+			@Override public void setSize(int size) {
+			}
+
 		};
 	}
 
