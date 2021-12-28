@@ -1206,8 +1206,7 @@ import java.util.stream.Collectors;
 		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger());
-		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
-				.getModElementGeneratorListTemplates(mu, ge);
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu, ge);
 
 		if (ge instanceof ICommonType) {
 			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();

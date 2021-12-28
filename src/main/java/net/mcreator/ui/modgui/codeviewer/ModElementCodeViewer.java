@@ -77,7 +77,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
 		this.listPager = modElementGUI.getModElement().getGenerator()
-				.getModElementGeneratorListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
+				.getModElementListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
 				.stream().collect(Collectors.toUnmodifiableMap(key -> key, list -> {
 					JTabbedPane subTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
 					subTab.addComponentListener(new ComponentAdapter() {

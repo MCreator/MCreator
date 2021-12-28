@@ -292,8 +292,8 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}
 
-		List<GeneratorTemplatesList> generatorListTemplates = getModElementGeneratorListTemplates(
-				element.getModElement(), performFSTasks, element);
+		List<GeneratorTemplatesList> generatorListTemplates = getModElementListTemplates(element.getModElement(),
+				performFSTasks, element);
 		if (generatorListTemplates != null) {
 			for (GeneratorTemplatesList generatorTemplatesList : generatorListTemplates) {
 				if (generatorTemplateList != null) {
@@ -404,7 +404,7 @@ public class Generator implements IGenerator, Closeable {
 
 		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null))
 				.forEach(template -> template.getFile().delete());
-		Objects.requireNonNull(getModElementGeneratorListTemplates(element, true, element.getGeneratableElement()))
+		Objects.requireNonNull(getModElementListTemplates(element, true, element.getGeneratableElement()))
 				.forEach(el -> {
 					for (int i = 0; i < el.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : el.templates().keySet()) {
@@ -646,32 +646,31 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>(files);
 	}
 
-	public List<GeneratorTemplatesList> getModElementGeneratorListTemplates(ModElement element) {
-		return getModElementGeneratorListTemplates(element, false, null);
+	public List<GeneratorTemplatesList> getModElementListTemplates(ModElement element) {
+		return getModElementListTemplates(element, false, null);
 	}
 
-	public List<GeneratorTemplatesList> getModElementGeneratorListTemplates(ModElement element,
+	public List<GeneratorTemplatesList> getModElementListTemplates(ModElement element,
 			GeneratableElement generatableElement) {
-		return getModElementGeneratorListTemplates(element, false, generatableElement);
+		return getModElementListTemplates(element, false, generatableElement);
 	}
 
-	private List<GeneratorTemplatesList> getModElementGeneratorListTemplates(ModElement element, boolean performFSTasks,
+	private List<GeneratorTemplatesList> getModElementListTemplates(ModElement element, boolean performFSTasks,
 			GeneratableElement generatableElement) {
-		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
 
-		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + element.getType().getRegistryName());
-			return null;
-		}
-
-		// if generatable element is null, we can't construct list data because we have nothing to process
 		if (generatableElement == null) {
 			generatableElement = element.getGeneratableElement();
-			if (generatableElement == null) {
+			if (generatableElement == null) { // we can't construct list data because we have nothing to process
 				LOG.warn("Failed to load mod generatable element: " + element.getName()
 						+ ". This means no list templates will be generated");
 				return Collections.emptyList();
 			}
+		}
+
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
+		if (map == null) {
+			LOG.info("Failed to load element definition for mod element type " + element.getType().getRegistryName());
+			return null;
 		}
 
 		Set<GeneratorTemplatesList> fileLists = new HashSet<>();
