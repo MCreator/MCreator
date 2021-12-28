@@ -86,11 +86,11 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		addPage(pane);
 
 		addTrade.addActionListener(
-				e -> new JVillagerTradeProfession(mcreator, professions, professionList).addInitialEntry());
+				e -> new JVillagerTradeProfession(mcreator, this, professions, professionList).addInitialEntry());
 
 		// Add first pool
 		if (!isEditingMode()) {
-			new JVillagerTradeProfession(mcreator, professions, professionList).addInitialEntry();
+			new JVillagerTradeProfession(mcreator, this, professions, professionList).addInitialEntry();
 		}
 	}
 
@@ -105,7 +105,7 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
 		villagerTrade.tradeEntries
-				.forEach(e -> new JVillagerTradeProfession(mcreator, professions, professionList).setTradeEntries(e));
+				.forEach(e -> new JVillagerTradeProfession(mcreator, this, professions, professionList).setTradeEntries(e));
 	}
 
 	@Override public VillagerTrade getElementFromGUI() {

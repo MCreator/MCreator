@@ -24,8 +24,10 @@ import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -35,22 +37,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JVillagerTradeProfession extends JPanel {
+public class JVillagerTradeProfession extends JEntriesList {
 
 	private final JComboBox<String> villager = new JComboBox<>();
 
 	private final List<JVillagerTradeEntry> entryList = new ArrayList<>();
 
-	private final MCreator mcreator;
 	private final Workspace workspace;
 
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	public JVillagerTradeProfession(MCreator mcreator, JPanel parent, List<JVillagerTradeProfession> professionList) {
-		super(new BorderLayout());
+	public JVillagerTradeProfession(MCreator mcreator, IHelpContext gui, JPanel parent, List<JVillagerTradeProfession> professionList) {
+		super(mcreator, new BorderLayout(), gui);
+
 		setOpaque(false);
 
-		this.mcreator = mcreator;
 		this.workspace = mcreator.getWorkspace();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
@@ -89,7 +90,10 @@ public class JVillagerTradeProfession extends JPanel {
 		add("North", component);
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> new JVillagerTradeEntry(mcreator, entries, entryList));
+		add.addActionListener(e -> {
+			JVillagerTradeEntry entry = new JVillagerTradeEntry(mcreator, gui, entries, entryList);
+			registerEntryUI(entry);
+		});
 		add("Center", entries);
 
 		setBorder(BorderFactory.createTitledBorder(
@@ -106,7 +110,7 @@ public class JVillagerTradeProfession extends JPanel {
 	}
 
 	public void addInitialEntry() {
-		new JVillagerTradeEntry(mcreator, entries, entryList);
+		new JVillagerTradeEntry(mcreator, gui, entries, entryList);
 	}
 
 	public VillagerTrade.CustomTradeEntry getTradeEntry() {
@@ -122,6 +126,10 @@ public class JVillagerTradeProfession extends JPanel {
 	public void setTradeEntries(VillagerTrade.CustomTradeEntry tradeEntry) {
 		villager.setSelectedItem(tradeEntry.tradeEntry.getUnmappedValue());
 		if (tradeEntry.entries != null)
-			tradeEntry.entries.forEach(e -> new JVillagerTradeEntry(mcreator, entries, entryList).setEntry(e));
+			tradeEntry.entries.forEach(e -> {
+				JVillagerTradeEntry entry = new JVillagerTradeEntry(mcreator, gui, entries, entryList);
+				registerEntryUI(entry);
+				entry.setEntry(e);
+			});
 	}
 }
