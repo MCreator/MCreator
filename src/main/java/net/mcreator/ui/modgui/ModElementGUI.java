@@ -68,8 +68,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
-		this.saved = false;
 		this.editingMode = editingMode;
+		this.saved = editingMode; // new mod elements should always warn about unsaved changes
 		this.modElement = modElement;
 	}
 
@@ -540,10 +540,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	public final boolean hasUnsavedChanges() {
-		if (editingMode || saved)
+		if (editingMode)
 			return !Objects.equals(getElementFromGUI(), modElement.getGeneratableElement());
 
-		return true;
+		return !saved;
 	}
 
 	protected abstract void initGUI();
