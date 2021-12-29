@@ -67,19 +67,13 @@ public class GTCommandArgBlocks {
 				continue;
 			}
 
-			if (commandArg.inputs != null) {
-				boolean templatesDefined = true;
+			if (commandArg.getInputs() != null) {
+				boolean templatesDefined = false;
 
 				if (commandArg.toolbox_init != null) {
-					for (String input : commandArg.inputs) {
-						if (commandArg.toolbox_init.stream().noneMatch(
-								toolboxTemplate -> toolboxTemplate.contains("<value name=\"" + input + "\">"))) {
-							templatesDefined = false;
-							break;
-						}
-					}
-				} else {
-					templatesDefined = false;
+					templatesDefined = commandArg.getInputs().stream().noneMatch(
+							input -> commandArg.toolbox_init.stream().noneMatch(
+									toolboxTemplate -> toolboxTemplate.contains("<value name=\"" + input + "\">")));
 				}
 
 				if (!templatesDefined) {
@@ -89,10 +83,10 @@ public class GTCommandArgBlocks {
 				}
 			}
 
-			if (commandArg.fields != null) {
+			if (commandArg.getFields() != null) {
 				int processed = 0;
 
-				for (String field : commandArg.fields) {
+				for (String field : commandArg.getFields()) {
 					try {
 						JsonArray args0 = commandArg.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
@@ -137,7 +131,7 @@ public class GTCommandArgBlocks {
 							suggestedFieldName = "procedure";
 						}
 
-						if (commandArg.fields.contains(suggestedFieldName)) {
+						if (commandArg.getFields().contains(suggestedFieldName)) {
 							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedFieldName);
 							if (values.length > 0 && !values[0].equals("")) {
@@ -150,15 +144,15 @@ public class GTCommandArgBlocks {
 				} catch (Exception ignored) {
 				}
 
-				if (processed != commandArg.fields.size()) {
+				if (processed != commandArg.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping command argument block with special fields: "
 							+ commandArg.machine_name);
 					continue;
 				}
 			}
 
-			if (commandArg.statements != null) {
-				commandArg.statements.forEach(
+			if (commandArg.getStatements() != null) {
+				commandArg.getStatements().forEach(
 						statement -> additionalXML.append("<statement name=\"").append(statement.name).append("\">")
 								.append("<block type=\"basic_literal\"><field name=\"name\">paramName</field>"
 										+ "<field name=\"command\">null</field></block>").append("</statement>\n"));
@@ -176,9 +170,9 @@ public class GTCommandArgBlocks {
 			command.commandName = modElement.getName();
 			command.permissionLevel = "1";
 
-			if (commandArg.type == IBlockGenerator.BlockType.PROCEDURAL) {
-				command.argsxml = wrapWithBaseTestXML(testXML);
-			}
+			if (commandArg.type == IBlockGenerator.BlockType.PROCEDURAL)
+				command.argsxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""
+						+ " deletable=\"false\" x=\"40\" y=\"40\"><next>" + testXML + "</next></block></xml>";
 
 			try {
 				workspace.addModElement(modElement);
@@ -190,11 +184,6 @@ public class GTCommandArgBlocks {
 			}
 		}
 
-	}
-
-	public static String wrapWithBaseTestXML(String customXML) {
-		return "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""
-				+ " deletable=\"false\" x=\"40\" y=\"40\"><next>" + customXML + "</next></block></xml>";
 	}
 
 }

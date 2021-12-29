@@ -135,6 +135,7 @@ public class GeneratorsTest {
 
 				LOG.info("[" + generator + "] ----- Testing procedure triggers");
 				GTProcedureTriggers.runTest(LOG, generator, workspace);
+
 				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
 				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 

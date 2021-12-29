@@ -82,13 +82,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
+			hasErrors = compileNotesArrayList.stream()
+					.anyMatch(note -> note.getType() == BlocklyCompileNote.Type.ERROR);
 		});
 	}
 
