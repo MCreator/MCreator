@@ -209,8 +209,7 @@ import java.util.stream.Collectors;
 				super.mouseMoved(e);
 				int idx = list.locationToIndex(e.getPoint());
 				IElement element = list.getModel().getElementAt(idx);
-				if (element instanceof ModElement) {
-					ModElement modElement = (ModElement) element;
+				if (element instanceof ModElement modElement) {
 					mcreator.getStatusBar()
 							.setMessage(modElement.getType().getReadableName() + ": " + modElement.getName());
 				}
@@ -1063,8 +1062,7 @@ import java.util.stream.Collectors;
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
 				list.getSelectedValuesList().forEach(el -> {
-					if (el instanceof ModElement) {
-						ModElement mu = (ModElement) el;
+					if (el instanceof ModElement mu) {
 						if (mu.isCodeLocked()) {
 							mu.setCodeLock(false);
 							mcreator.getWorkspace().updateModElement(mu);
@@ -1114,8 +1112,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void duplicateCurrentlySelectedModElement() {
-		if (list.getSelectedValue() instanceof ModElement) {
-			ModElement mu = (ModElement) list.getSelectedValue();
+		if (list.getSelectedValue() instanceof ModElement mu) {
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
@@ -1267,8 +1264,7 @@ import java.util.stream.Collectors;
 							}
 
 							mcreator.getWorkspace().removeModElement(((ModElement) re));
-						} else if (re instanceof FolderElement) {
-							FolderElement folder = (FolderElement) re;
+						} else if (re instanceof FolderElement folder) {
 
 							// re-assign mod-elements from deleted folder to parent folder
 							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {

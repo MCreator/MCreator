@@ -14,6 +14,7 @@
     "enhancement_list_provider"
   ],
   "mcreator": {
+    "group": "enchanting",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"

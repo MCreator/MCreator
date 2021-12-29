@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -47,8 +48,8 @@ public class PrintTextBlock implements IBlockGenerator {
 				}
 			}
 		} else {
-			master.getCompileNotes()
-					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipped empty print block."));
+			master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.empty_print_block")));
 		}
 	}
 

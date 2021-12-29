@@ -181,7 +181,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		if (generatorConfig.get("java_models") != null) {
 			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
 				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
-						.map(Object::toString).collect(Collectors.toList()));
+						.map(Object::toString).toList());
 			}
 		}
 
@@ -195,7 +195,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
 				retval.addAll(
 						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
-								.map(Object::toString).collect(Collectors.toList()));
+								.map(Object::toString).toList());
 			}
 		}
 

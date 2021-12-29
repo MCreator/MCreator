@@ -80,6 +80,10 @@ public class ${name}Biome {
             biomeGenerationSettings.addStructureStart(StructureFeatures.MINESHAFT);
         </#if>
 
+        <#if data.spawnMineshaftMesa>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.MINESHAFT_MESA);
+        </#if>
+
         <#if data.spawnPillagerOutpost>
             biomeGenerationSettings.addStructureStart(StructureFeatures.PILLAGER_OUTPOST);
         </#if>
@@ -100,6 +104,10 @@ public class ${name}Biome {
             biomeGenerationSettings.addStructureStart(StructureFeatures.DESERT_PYRAMID);
         </#if>
 
+        <#if data.spawnSwampHut>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.SWAMP_HUT);
+        </#if>
+
         <#if data.spawnIgloo>
             biomeGenerationSettings.addStructureStart(StructureFeatures.IGLOO);
         </#if>
@@ -112,8 +120,36 @@ public class ${name}Biome {
             biomeGenerationSettings.addStructureStart(StructureFeatures.SHIPWRECK);
         </#if>
 
+        <#if data.spawnShipwreckBeached>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.SHIPWRECH_BEACHED);
+        </#if>
+
+        <#if data.spawnBuriedTreasure>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.BURIED_TREASURE);
+        </#if>
+
         <#if data.oceanRuinType != "NONE">
             biomeGenerationSettings.addStructureStart(StructureFeatures.OCEAN_RUIN_${data.oceanRuinType});
+        </#if>
+
+        <#if data.spawnNetherBridge>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.NETHER_BRIDGE);
+        </#if>
+
+        <#if data.spawnNetherFossil>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.NETHER_FOSSIL);
+        </#if>
+
+        <#if data.spawnBastionRemnant>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.BASTION_REMNANT);
+        </#if>
+
+        <#if data.spawnEndCity>
+            biomeGenerationSettings.addStructureStart(StructureFeatures.END_CITY);
+        </#if>
+
+        <#if data.spawnRuinedPortal != "NONE">
+            biomeGenerationSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
         </#if>
 
         <#if (data.treesPerChunk > 0)>
@@ -181,7 +217,7 @@ public class ${name}Biome {
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
                     new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
-                    new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 4)),
+                    new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
                     new TwoLayersFeatureSize(1, 1, 2)))
                     .decorators(ImmutableList.of(new AlterGroundDecorator(new SimpleStateProvider(Blocks.PODZOL.defaultBlockState()))))
                     <#if data.hasVines() || data.hasFruits()>

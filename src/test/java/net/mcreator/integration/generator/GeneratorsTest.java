@@ -161,6 +161,12 @@ public class GeneratorsTest {
 
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
 				GTBuild.runTest(LOG, generator, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing procedure blocks");
+				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
+				GTBuild.runTest(LOG, generator, workspace);
 			});
 		});
 	}

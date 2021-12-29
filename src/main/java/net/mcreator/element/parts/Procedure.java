@@ -73,11 +73,11 @@ import java.util.List;
 			field.setAccessible(true);
 			try {
 				Object value = field.get(element);
-				if (value instanceof Procedure) {
-					if (((Procedure) value).name == null)
+				if (value instanceof net.mcreator.element.parts.Procedure) {
+					if (((net.mcreator.element.parts.Procedure) value).name == null)
 						continue;
 
-					if (((Procedure) value).name.equals(procedureName)) {
+					if (((net.mcreator.element.parts.Procedure) value).name.equals(procedureName)) {
 						isCallingThisProcedure = true;
 						break;
 					}

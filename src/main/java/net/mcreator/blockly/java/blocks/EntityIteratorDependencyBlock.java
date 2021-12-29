@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly.java.blocks;
 
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
@@ -26,8 +27,13 @@ import org.w3c.dom.Element;
 public class EntityIteratorDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("entityiterator");
-		master.addDependency(new Dependency("entityiterator", "entity"));
+		if (master.checkIfDepProviderInputsProvide(new Dependency("entityiterator", "entity"))) {
+			master.append("entityiterator");
+			master.addDependency(new Dependency("entityiterator", "entity"));
+		} else {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					"Entity iterator procedure block outside foreach statement"));
+		}
 	}
 
 	@Override public String[] getSupportedBlocks() {

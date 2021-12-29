@@ -62,8 +62,8 @@ package ${package}.client.particle;
 		super(world, x, y, z);
 		this.spriteSet = spriteSet;
 
-		this.setSize((float) ${data.width}, (float) ${data.height});
-		this.quadSize *= (float) ${data.scale};
+		this.setSize(${data.width}f, ${data.height}f);
+		<#if data.scale != 1>this.quadSize *= ${data.scale}f;</#if>
 
 		<#if (data.maxAgeDiff > 0)>
 		this.lifetime = (int) Math.max(1, ${data.maxAge} + (this.random.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
@@ -71,7 +71,7 @@ package ${package}.client.particle;
 		this.lifetime = ${data.maxAge};
 		</#if>
 
-		this.gravity = (float) ${data.gravity};
+		this.gravity = ${data.gravity}f;
 		this.hasPhysics = ${data.canCollide};
 
 		this.xd = vx * ${data.speedFactor};
@@ -79,8 +79,8 @@ package ${package}.client.particle;
 		this.zd = vz * ${data.speedFactor};
 
 		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
-		this.angularVelocity = (float) ${data.angularVelocity};
-		this.angularAcceleration = (float) ${data.angularAcceleration};
+		this.angularVelocity = ${data.angularVelocity}f;
+		this.angularAcceleration = ${data.angularAcceleration}f;
 		</#if>
 
 		<#if data.animate>

@@ -12,7 +12,8 @@
       "minecraft:max_stack_size": 1,
       "minecraft:max_damage": ${data.usageCount},
       "minecraft:stacked_by_data": true,
-      "minecraft:hand_equipped": true
+      "minecraft:hand_equipped": true,
+      "minecraft:creative_category": "Equipment"
     }
   }
 }
