@@ -208,11 +208,11 @@ import java.util.Locale;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getAITaskBlockLoader().getDefinedBlocks(),
-					this.getModElement().getGenerator().getAITaskGenerator(), additionalData).setTemplateExtension(
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"), additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), "aitasks_container", this.aixml,
-					this.getModElement().getGenerator().getAITaskGenerator(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("aicode", blocklyToJava.getGeneratedCode());

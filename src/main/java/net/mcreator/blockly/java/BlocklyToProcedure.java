@@ -36,7 +36,6 @@ import java.util.List;
 
 public class BlocklyToProcedure extends BlocklyToJava {
 
-	private final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 	private String externalTrigger = null;
 	private List<VariableElement> variables;
 	private VariableType returnType = null;

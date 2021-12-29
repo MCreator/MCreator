@@ -25,10 +25,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.generator.template.MinecraftCodeProvider;
-import net.mcreator.generator.template.TemplateConditionParser;
-import net.mcreator.generator.template.TemplateGenerator;
-import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.generator.template.*;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
@@ -69,11 +66,7 @@ public class Generator implements IGenerator, Closeable {
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 
-	private final TemplateGenerator templateGenerator;
-	private final TemplateGenerator procedureGenerator;
-	private final TemplateGenerator triggerGenerator;
-	private final TemplateGenerator aitaskGenerator;
-	private final TemplateGenerator jsonTriggerGenerator;
+	private final Map<String, TemplateGenerator> templateGeneratorMap = new HashMap<>();
 
 	private final MinecraftCodeProvider minecraftCodeProvider;
 
@@ -93,15 +86,6 @@ public class Generator implements IGenerator, Closeable {
 		this.generatorConfiguration = GENERATOR_CACHE.get(generatorName);
 
 		this.baseDataModelProvider = new BaseDataModelProvider(this);
-
-		this.templateGenerator = new TemplateGenerator(generatorConfiguration.getTemplateGeneratorConfiguration(),
-				this);
-		this.procedureGenerator = new TemplateGenerator(generatorConfiguration.getProcedureGeneratorConfiguration(),
-				this);
-		this.triggerGenerator = new TemplateGenerator(generatorConfiguration.getTriggerGeneratorConfiguration(), this);
-		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(),
-				this);
-		this.aitaskGenerator = new TemplateGenerator(generatorConfiguration.getAITaskGeneratorConfiguration(), this);
 
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 	}
@@ -123,20 +107,15 @@ public class Generator implements IGenerator, Closeable {
 		return generatorConfiguration;
 	}
 
-	public TemplateGenerator getProcedureGenerator() {
-		return procedureGenerator;
-	}
-
-	public TemplateGenerator getTriggerGenerator() {
-		return triggerGenerator;
-	}
-
-	public TemplateGenerator getAITaskGenerator() {
-		return aitaskGenerator;
-	}
-
-	public TemplateGenerator getJSONTriggerGenerator() {
-		return jsonTriggerGenerator;
+	public TemplateGenerator getTemplateGeneratorFromName(String name) {
+		if (templateGeneratorMap.containsKey(name))
+			return templateGeneratorMap.get(name);
+		else {
+			TemplateGenerator tpl = new TemplateGenerator(generatorConfiguration.getTemplateGenConfigFromName(name),
+					this);
+			templateGeneratorMap.put(name, tpl);
+			return tpl;
+		}
 	}
 
 	public String getGeneratorName() {
@@ -206,7 +185,7 @@ public class Generator implements IGenerator, Closeable {
 					extractVariables(generatorTemplate, dataModel);
 
 					try {
-						String code = templateGenerator.generateBaseFromTemplate(templateFileName, dataModel);
+						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(templateFileName, dataModel);
 						return new GeneratorFile(code, generatorTemplate.getFile(),
 								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
 					} catch (TemplateGeneratorException e) {
@@ -279,7 +258,7 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
+				String code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element, templateFileName, dataModel,
 						element.getAdditionalTemplateData());
 
 				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
@@ -758,7 +737,7 @@ public class Generator implements IGenerator, Closeable {
 							if (model.getType() == Model.Type.JAVA) {
 								String modelCode = FileIO.readFileToString(model.getFile());
 								try {
-									modelCode = templateGenerator.generateFromTemplate(template, new HashMap<>(
+									modelCode = getTemplateGeneratorFromName("templates").generateFromTemplate(template, new HashMap<>(
 											Map.of("modelname", model.getReadableName(), "model", modelCode,
 													"modelregistryname",
 													RegistryNameFixer.fromCamelCase(model.getReadableName()))));

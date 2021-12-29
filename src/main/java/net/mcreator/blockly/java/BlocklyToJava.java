@@ -42,6 +42,7 @@ import java.util.List;
 public class BlocklyToJava extends BlocklyToCode {
 
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
+	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 	protected Document doc;
 
 	/**
@@ -54,6 +55,8 @@ public class BlocklyToJava extends BlocklyToCode {
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, templateGenerator, externalGenerators);
+
+		addJavaBlocks();
 
 		if (sourceXML != null) {
 			try {
