@@ -19,11 +19,11 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -252,9 +252,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getGeneratorAITasks());
 
-		BlocklyToAITasks blocklyToJava;
+		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToAITasks(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "aitasks_container", blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;

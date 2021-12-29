@@ -18,8 +18,8 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
@@ -211,7 +211,7 @@ import java.util.Locale;
 					this.getModElement().getGenerator().getAITaskGenerator(), additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToAITasks blocklyToJava = new BlocklyToAITasks(this.getModElement().getWorkspace(), this.aixml,
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), "aitasks_container", this.aixml,
 					this.getModElement().getGenerator().getAITaskGenerator(),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
