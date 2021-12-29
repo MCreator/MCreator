@@ -135,16 +135,6 @@ public class GeneratorsTest {
 
 				LOG.info("[" + generator + "] ----- Testing procedure triggers");
 				GTProcedureTriggers.runTest(LOG, generator, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing procedure blocks");
-				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing command argument blocks");
-				GTCommandArgBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
-				GTBuild.runTest(LOG, generator, workspace);
-
 				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
 				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 
@@ -167,6 +157,13 @@ public class GeneratorsTest {
 
 				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
 				GTBuild.runTest(LOG, generator, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing command argument blocks");
+				GTCommandArgBlocks.runTest(LOG, generator, random, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing building after command argument tests");
+				GTBuild.runTest(LOG, generator, workspace);
+
 			});
 		});
 	}
