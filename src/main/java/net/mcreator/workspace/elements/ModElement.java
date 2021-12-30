@@ -43,7 +43,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	private boolean compiles = true;
 	private boolean locked_code = false;
 
-	private Map<Integer, Integer> ids = new HashMap<>();
 	@Nullable private String registry_name;
 
 	@Nullable private Map<String, Object> metadata = null;
@@ -100,7 +99,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.compiles = other.compiles;
 		this.locked_code = other.locked_code;
 		this.sortid = other.sortid;
-		this.ids = other.ids;
 		this.registry_name = other.registry_name;
 		this.metadata = other.metadata;
 		this.mcItems = other.mcItems;
@@ -211,56 +209,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	@Override public int hashCode() {
 		return name.hashCode();
-	}
-
-	public void setIDAt(int idindex, int id) {
-		this.ids.put(idindex, id);
-	}
-
-	public Map<Integer, Integer> getIDMap() {
-		return ids;
-	}
-
-	/**
-	 * Get id for given index or get one for base type of this mod element
-	 *
-	 * @param index The ID index
-	 * @return The ID of the element for the given index, could be newly created
-	 */
-	public int getID(int index) {
-		return getID(index, getType().getBaseType());
-	}
-
-	/**
-	 * Get id for given index or get one for base type provided
-	 *
-	 * @param index    The ID index
-	 * @param baseType The base type under which to look for the free IDs
-	 * @return The ID of the element for the given index, could be newly created
-	 */
-	public int getID(int index, BaseType baseType) {
-		if (ids.get(index) == null) { // id at this index is not set yet, create id
-			int free_id = workspace.getNextFreeIDAndIncrease(baseType);
-			ids.put(index, free_id);
-			return free_id;
-		}
-		return ids.get(index);
-	}
-
-	/**
-	 * Get id for given index or get one for base type string provided
-	 *
-	 * @param index    The ID index
-	 * @param baseType The base type under which to look for the free IDs
-	 * @return The ID of the element for the given index, could be newly created
-	 */
-	@SuppressWarnings("unused") public int getID(int index, String baseType) {
-		if (ids.get(index) == null) { // id at this index is not set yet, create id
-			int free_id = workspace.getNextFreeIDAndIncrease(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
-			ids.put(index, free_id);
-			return free_id;
-		}
-		return ids.get(index);
 	}
 
 	public boolean doesCompile() {
