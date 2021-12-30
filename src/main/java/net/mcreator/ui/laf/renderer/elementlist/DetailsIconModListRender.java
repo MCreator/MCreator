@@ -105,7 +105,10 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 					}
 				}
 			} else {
+				label2.setText("-");
 				label3.setText(L10N.t("workspace.elements.list.folder"));
+				label4.setText("-");
+				label5.setText("-");
 			}
 
 			ImageIcon modIcon = element instanceof ModElement ?

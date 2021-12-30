@@ -41,6 +41,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -119,6 +120,15 @@ import java.util.stream.Collectors;
 
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
+
+	private final JLabel detailsName = new JLabel(L10N.t("workspace.elements.details.name"));
+	private final JLabel detailsID = new JLabel(L10N.t("workspace.elements.details.id"));
+	private final JLabel detailsType = new JLabel(L10N.t("workspace.elements.details.type"));
+	private final JLabel detailsLock = new JLabel(L10N.t("workspace.elements.details.lock"));
+	private final JLabel detailsCompile = new JLabel(L10N.t("workspace.elements.details.compile"));
+	private final JPanel bcAndDetails = new JPanel(new GridLayout(1, 2));
+	private final JPanel detailsbar = new JPanel(new GridLayout(1,6));
+
 
 	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
@@ -630,7 +640,11 @@ import java.util.stream.Collectors;
 
 		mainp.setOpaque(false);
 
-		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
+		bcAndDetails.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar));
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, detailsName, detailsID, detailsType, detailsLock, detailsCompile));
+		detailsbar.setBorder(BorderFactory.createEmptyBorder(0, 45, 0, 0));
+
+		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(bcAndDetails, mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
@@ -992,6 +1006,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.tiles.gif"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender());
@@ -1000,6 +1015,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.large.gif"));
 			view.setText(L10N.t("workspace.elements.list.large"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.MEDIUM) {
 			list.setCellRenderer(new MediumIconModListRender());
@@ -1008,6 +1024,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.medium.gif"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.SMALL) {
 			list.setCellRenderer(new SmallIconModListRender(true));
@@ -1016,6 +1033,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.small.gif"));
 			view.setText(L10N.t("workspace.elements.list.small"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LIST) {
 			list.setCellRenderer(new ListIconModListRender());
@@ -1024,6 +1042,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.VERTICAL);
 			view.setIcon(UIRES.get("16px.list.gif"));
 			view.setText(L10N.t("workspace.elements.list.list"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.DETAILS) {
 			list.setCellRenderer(new DetailsIconModListRender());
@@ -1032,6 +1051,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.VERTICAL);
 			view.setIcon(UIRES.get("16px.details.gif"));
 			view.setText(L10N.t("workspace.elements.list.details"));
+			detailsbar.setVisible(true);
 		}
 	}
 
