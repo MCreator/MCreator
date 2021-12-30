@@ -26,25 +26,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ObjectUtils {
 
 	/**
-	 * This method takes two objects of the same type and checks whether
-	 * all fields declared in class of that type share the same values.
+	 * This method takes two objects and checks whether they are of the same type and all
+	 * fields declared in class of that type share the same values for both input objects.
 	 *
-	 * @param objA The first object to compare
-	 * @param objB The second object to compare
-	 * @param <T>  The class checked, specified by the type of compared objects
-	 * @return Whether all the fields of both objects declared in the given class have same values
+	 * @param objA The first object to compare.
+	 * @param objB The second object to compare.
+	 * @return Whether all the fields of both objects declared in their class have the same values.
 	 */
-	public static <T> boolean equalsByFields(T objA, T objB) {
+	public static boolean equalsByFields(Object objA, Object objB) {
 		if (objA == null || objB == null)
+			return false;
+
+		if (objA.getClass() != objB.getClass())
 			return false;
 
 		AtomicBoolean retVal = new AtomicBoolean(true);
 		List.of(objA.getClass().getDeclaredFields()).forEach(field -> {
 			field.setAccessible(true);
 			try {
-				retVal.compareAndSet(true,
-						Objects.equals(field.get(objA), field.get(objB)) || Objects.equals(field.get(objB),
-								field.get(objA)));
+				Object valA = field.get(objA), valB = field.get(objB);
+				retVal.compareAndSet(true, Objects.equals(valA, valB) || Objects.equals(valB, valA));
 			} catch (IllegalAccessException ignored) {
 			}
 		});

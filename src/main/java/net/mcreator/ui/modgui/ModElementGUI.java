@@ -70,7 +70,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
-		this.saved = editingMode; // new mod elements should always warn about unsaved changes
+		this.saved = editingMode; // new mod elements should always warn about unsaved changes unless they are saved
 		this.modElement = modElement;
 	}
 
