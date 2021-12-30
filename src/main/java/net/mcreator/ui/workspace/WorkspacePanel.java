@@ -120,11 +120,6 @@ import java.util.stream.Collectors;
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
-	private final JLabel detailsName = new JLabel(L10N.t("workspace.elements.details.name"));
-	private final JLabel detailsID = new JLabel(L10N.t("workspace.elements.details.id"));
-	private final JLabel detailsType = new JLabel(L10N.t("workspace.elements.details.type"));
-	private final JLabel detailsLock = new JLabel(L10N.t("workspace.elements.details.lock"));
-	private final JLabel detailsCompile = new JLabel(L10N.t("workspace.elements.details.compile"));
 	private final JPanel bcAndDetails = new JPanel(new GridLayout(1, 2));
 	private final JPanel detailsbar = new JPanel(new GridLayout(1,6));
 
@@ -639,7 +634,7 @@ import java.util.stream.Collectors;
 		mainp.setOpaque(false);
 
 		bcAndDetails.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar));
-		detailsbar.add("Center", PanelUtils.gridElements(1, 6, detailsName, detailsID, detailsType, detailsLock, detailsCompile));
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, new JLabel(L10N.t("workspace.elements.details.name")),  new JLabel(L10N.t("workspace.elements.details.id")),  new JLabel(L10N.t("workspace.elements.details.type")),  new JLabel(L10N.t("workspace.elements.details.lock")), new JLabel(L10N.t("workspace.elements.details.compile"))));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(0, 45, 0, 0));
 
 		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(bcAndDetails, mainp));
