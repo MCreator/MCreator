@@ -17,7 +17,7 @@
     }
   ],
   "extensions": [
-    "searchable_biome_provider"
+    "biome_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",

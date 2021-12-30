@@ -7,7 +7,7 @@
     }
   ],
   "extensions": [
-    "searchable_entity_provider",
+    "entity_list_provider",
     "ai_condition_selector"
   ],
   "inputsInline": true,
