@@ -365,7 +365,7 @@ public class BlocklyJavascriptBridge {
 			}
 		}
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
-				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :	"";
+				DataListLoader.loadDataMap(datalist).get(value).getReadableName() : "";
 	}
 
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {
