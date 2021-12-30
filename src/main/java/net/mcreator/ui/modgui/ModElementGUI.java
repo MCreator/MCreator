@@ -36,7 +36,7 @@ import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
-import net.mcreator.util.ObjectUtils;
+import net.mcreator.util.GSONCompare;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -542,7 +542,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public final boolean hasUnsavedChanges() {
 		if (editingMode)
-			return !ObjectUtils.equalsByFields(getElementFromGUI(), modElement.getGeneratableElement());
+			return !GSONCompare.deepEquals(getElementFromGUI(), modElement.getGeneratableElement());
 
 		return !saved;
 	}
