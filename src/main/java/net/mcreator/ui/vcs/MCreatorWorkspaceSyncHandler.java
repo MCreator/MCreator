@@ -271,27 +271,6 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 						baseWorkspace.addSoundElement(addedSoundElement);
 			}
 
-			// ID MAP (always silent, just increment to from common base)
-			if (!dryRun) {
-				Map<BaseType, Integer> base_id_map = baseWorkspace.getIDMap();
-				Map<BaseType, Integer> local_id_map = localWorkspace.getIDMap();
-				Map<BaseType, Integer> remote_id_map = remoteWorkspace.getIDMap();
-				for (Map.Entry<BaseType, Integer> base_mapping : base_id_map.entrySet()) {
-					int baseid = base_mapping.getValue();
-					int localid = local_id_map.get(base_mapping.getKey());
-					int remoteid = remote_id_map.get(base_mapping.getKey());
-					int newid = baseid + Math.max(0, remoteid - baseid) + Math.max(0, localid - baseid);
-					baseWorkspace.getIDMap().put(base_mapping.getKey(), newid);
-				}
-
-				// after we merge exising IDs, we add any possibly new IDs from remote
-				for (Map.Entry<BaseType, Integer> remote_mapping : remote_id_map.entrySet()) {
-					baseWorkspace.getIDMap().putIfAbsent(remote_mapping.getKey(),
-							remote_mapping.getValue()); // we only put directly from remote
-					// if there is no local mapping for this value yet
-				}
-			}
-
 			// LANGUAGE MAP
 			Map<String, ConcurrentHashMap<String, String>> base_language_map = baseWorkspace.getLanguageMap();
 			Map<String, ConcurrentHashMap<String, String>> local_language_map = localWorkspace.getLanguageMap();
