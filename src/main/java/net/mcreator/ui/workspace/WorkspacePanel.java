@@ -128,7 +128,6 @@ import java.util.stream.Collectors;
 	private final JPanel bcAndDetails = new JPanel(new GridLayout(1, 2));
 	private final JPanel detailsbar = new JPanel(new GridLayout(1,6));
 
-
 	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
 	private final TransparentToolBar modElementsBar = new TransparentToolBar();
