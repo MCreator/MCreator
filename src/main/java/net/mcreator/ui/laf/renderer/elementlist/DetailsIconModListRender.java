@@ -27,6 +27,7 @@ import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,9 +83,11 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			ImageIcon dva = null;
 
 			label.setText(element.getName());
+			label.setText(StringUtils.abbreviate(label.getText(), 32));
 
 			if (element instanceof ModElement ma) {
 				label2.setText(ma.getRegistryName());
+				label2.setText(StringUtils.abbreviate(label2.getText(), 32));
 				label3.setText(ma.getType().getReadableName());
 				label4.setText(ma.isCodeLocked() ?
 						L10N.t("workspace.elements.list.locked") :
@@ -136,7 +139,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			setToolTipText(element.getName());
 		}
 
-		icon.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
+		icon.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
 
 		add("Center", PanelUtils.gridElements(1, 6, label, label2, label3, label4, label5));
 		add("West", icon);
