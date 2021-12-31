@@ -634,7 +634,7 @@ import java.util.stream.Collectors;
 		mainp.setOpaque(false);
 
 		bcAndDetails.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar));
-		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"), L10N.label("workspace.elements.details.id"),  L10N.label("workspace.elements.details.type"),  L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"), L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"), L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(0, 45, 0, 0));
 
