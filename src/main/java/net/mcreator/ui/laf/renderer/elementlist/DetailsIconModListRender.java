@@ -83,11 +83,11 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			ImageIcon dva = null;
 
 			label.setText(element.getName());
-			label.setText(StringUtils.abbreviate(label.getText(), 32));
+			label.setText(StringUtils.abbreviate(label.getText(), 24));
 
 			if (element instanceof ModElement ma) {
 				label2.setText(ma.getRegistryName());
-				label2.setText(StringUtils.abbreviate(label2.getText(), 32));
+				label2.setText(StringUtils.abbreviate(label2.getText(), 24));
 				label3.setText(ma.getType().getReadableName());
 				label4.setText(ma.isCodeLocked() ?
 						L10N.t("workspace.elements.list.locked") :
