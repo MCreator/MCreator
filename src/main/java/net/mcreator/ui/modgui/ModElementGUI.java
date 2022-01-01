@@ -36,7 +36,6 @@ import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
-import net.mcreator.util.GSONCompare;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,7 +55,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
-	private boolean saved;
+
+	private boolean changed;
+	private final ModElementChangedListener elementUpdateListener;
 
 	@Nonnull protected ModElement modElement;
 
@@ -70,8 +71,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
-		this.saved = editingMode; // new mod elements should always warn about unsaved changes unless they are saved
 		this.modElement = modElement;
+
+		this.changed = !editingMode; // new mod elements should always warn about unsaved changes unless they are saved
+		this.elementUpdateListener = () -> changed = true;
 	}
 
 	public final void addPage(JComponent component) {
@@ -107,7 +110,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				reloadDataLists();
 		});
 		this.tabIn.setTabClosingListener(tab -> {
-			if (hasUnsavedChanges())
+			if (changed)
 				return 0 == JOptionPane.showConfirmDialog(mcreator, L10N.label("dialog.unsaved_changes.message"),
 						L10N.t("dialog.unsaved_changes.title"), JOptionPane.YES_NO_OPTION);
 			return true;
@@ -385,6 +388,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 		}
 
+		elementUpdateListener.registerUI(centerComponent);
+
 		if (modElementCodeViewer != null) {
 			splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
 			splitPane.setOpaque(false);
@@ -487,7 +492,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
-		saved = true;
+		changed = false;
 
 		GE element = getElementFromGUI();
 
@@ -538,13 +543,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public @Nonnull ModElement getModElement() {
 		return modElement;
-	}
-
-	public final boolean hasUnsavedChanges() {
-		if (editingMode)
-			return !GSONCompare.deepEquals(getElementFromGUI(), modElement.getGeneratableElement());
-
-		return !saved;
 	}
 
 	protected abstract void initGUI();
