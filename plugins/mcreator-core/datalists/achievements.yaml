@@ -38,6 +38,7 @@
 - nether/all_potions
 - nether/create_full_beacon
 - nether/all_effects
+- nether/ride_strider_in_overworld_lava
 - end/root
 - end/kill_dragon
 - end/dragon_egg
@@ -72,6 +73,9 @@
 - adventure/spyglass_at_ghast
 - adventure/spyglass_at_parrot
 - adventure/walk_on_powder_snow_with_leather_boots
+- adventure/fall_from_world_height
+- adventure/play_jukebox_in_meadows
+- adventure/trade_at_world_height
 - husbandry/root
 - husbandry/safely_harvest_honey
 - husbandry/breed_an_animal

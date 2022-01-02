@@ -1,1 +1,1 @@
-This parameter controls how many blocks far the entity can be seen.
+This parameter controls how many blocks far the entity is tracked by the players (meaning the entity AI is executing).
