@@ -92,7 +92,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal, tool });
 	private JItemPropertiesStatesList customProperties;
 
 	private ProcedureSelector onRightClickedInAir;
