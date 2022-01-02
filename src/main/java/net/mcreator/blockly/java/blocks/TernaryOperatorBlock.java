@@ -47,8 +47,8 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 				useMarkers = true;
 		}
 		if (thenBlock != null && elseBlock != null) {
-			if ("logic_ternary_op".equals(BlocklyBlockUtil.getInputBlockType(thenBlock)) ||
-					"logic_ternary_op".equals(BlocklyBlockUtil.getInputBlockType(elseBlock))) {
+			if ("logic_ternary_op".equals(BlocklyBlockUtil.getInputBlockType(thenBlock)) || "logic_ternary_op".equals(
+					BlocklyBlockUtil.getInputBlockType(elseBlock))) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.ternary_operator.nesting")));
 			} else {

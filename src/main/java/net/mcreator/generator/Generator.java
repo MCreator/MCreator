@@ -172,15 +172,26 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	/**
-	 * Generates the generator mod base files
+	 * Generates the generator mod base files. Writes files to disk.
 	 *
 	 * @param formatAndOrganiseImports true if imports should be formatted
 	 * @return true if generator generated all files without any errors
 	 */
 	public boolean generateBase(boolean formatAndOrganiseImports) {
+		return this.generateBase(formatAndOrganiseImports, true);
+	}
+
+	/**
+	 * Generates the generator mod base files and optionally writes them to disk.
+	 *
+	 * @param formatAndOrganiseImports true if imports should be formatted
+	 * @param performFSTasks           true if FS should be affected
+	 * @return true if generator generated all files without any errors
+	 */
+	public boolean generateBase(boolean formatAndOrganiseImports, boolean performFSTasks) {
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).parallelStream()
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(performFSTasks).parallelStream()
 				.map(generatorTemplate -> {
 					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
 							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
@@ -206,14 +217,16 @@ public class Generator implements IGenerator, Closeable {
 					return null;
 				}).filter(Objects::nonNull).collect(Collectors.toList());
 
-		generateFiles(generatorFiles, formatAndOrganiseImports);
+		if (performFSTasks) {
+			generateFiles(generatorFiles, formatAndOrganiseImports);
 
-		// run other source tasks
-		runSetupTasks(generatorConfiguration.getSourceSetupTasks());
+			// run other source tasks
+			runSetupTasks(generatorConfiguration.getSourceSetupTasks());
 
-		// generate lang files
-		LanguageFilesGenerator.generateLanguageFiles(this, workspace,
-				generatorConfiguration.getLanguageFileSpecification());
+			// generate lang files
+			LanguageFilesGenerator.generateLanguageFiles(this, workspace,
+					generatorConfiguration.getLanguageFileSpecification());
+		}
 
 		return success.get();
 	}
@@ -236,6 +249,11 @@ public class Generator implements IGenerator, Closeable {
 
 	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports)
 			throws TemplateGeneratorException {
+		return this.generateElement(element, formatAndOrganiseImports, true);
+	}
+
+	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
+			boolean performFSTasks) throws TemplateGeneratorException {
 		if (element.getModElement().isCodeLocked()) {
 			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
 					+ " - the code of this element is locked");
@@ -254,7 +272,7 @@ public class Generator implements IGenerator, Closeable {
 
 		// generate all source files
 		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element.getModElement(),
-				true, element);
+				performFSTasks, element);
 		if (generatorTemplateList != null) {
 			for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
@@ -274,38 +292,41 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}
 
-		generateFiles(generatorFiles, formatAndOrganiseImports);
+		if (performFSTasks) {
+			generateFiles(generatorFiles, formatAndOrganiseImports);
 
-		// extract all localization keys
-		List<?> localizationkeys = (List<?>) map.get("localizationkeys");
-		if (localizationkeys != null) {
-			for (Object template : localizationkeys) {
-				String key = (String) ((Map<?, ?>) template).get("key");
-				String mapto = (String) ((Map<?, ?>) template).get("mapto");
-				key = GeneratorTokens.replaceTokens(workspace, key.replace("@NAME", element.getModElement().getName())
-						.replace("@modid", workspace.getWorkspaceSettings().getModID())
-						.replace("@registryname", element.getModElement().getRegistryName()));
-				try {
-					String value = (String) element.getClass().getField(mapto.trim()).get(element);
+			// extract all localization keys
+			List<?> localizationkeys = (List<?>) map.get("localizationkeys");
+			if (localizationkeys != null) {
+				for (Object template : localizationkeys) {
+					String key = (String) ((Map<?, ?>) template).get("key");
+					String mapto = (String) ((Map<?, ?>) template).get("mapto");
+					key = GeneratorTokens.replaceTokens(workspace,
+							key.replace("@NAME", element.getModElement().getName())
+									.replace("@modid", workspace.getWorkspaceSettings().getModID())
+									.replace("@registryname", element.getModElement().getRegistryName()));
+					try {
+						String value = (String) element.getClass().getField(mapto.trim()).get(element);
 
-					String suffix = (String) ((Map<?, ?>) template).get("suffix");
-					if (suffix != null)
-						value += suffix;
+						String suffix = (String) ((Map<?, ?>) template).get("suffix");
+						if (suffix != null)
+							value += suffix;
 
-					String prefix = (String) ((Map<?, ?>) template).get("prefix");
-					if (prefix != null)
-						value = prefix + value;
+						String prefix = (String) ((Map<?, ?>) template).get("prefix");
+						if (prefix != null)
+							value = prefix + value;
 
-					workspace.setLocalization(key, value);
-				} catch (IllegalAccessException | NoSuchFieldException e) {
-					LOG.error(e.getMessage(), e);
-					LOG.error("[" + generatorName + "] " + e.getMessage());
+						workspace.setLocalization(key, value);
+					} catch (IllegalAccessException | NoSuchFieldException e) {
+						LOG.error(e.getMessage(), e);
+						LOG.error("[" + generatorName + "] " + e.getMessage());
+					}
 				}
 			}
-		}
 
-		// do additional tasks if mod element has them
-		element.finalizeModElementGeneration();
+			// do additional tasks if mod element has them
+			element.finalizeModElementGeneration();
+		}
 
 		return new ArrayList<>(generatorFiles);
 	}
@@ -528,9 +549,9 @@ public class Generator implements IGenerator, Closeable {
 				if (conditionRaw != null || GeneratorTokens.containsVariableTokens(rawname)) {
 					if (generatableElement == null) {
 						generatableElement = element.getGeneratableElement();
-						if (generatableElement == null) {
+						if (generatableElement == null && performFSTasks) {
 							LOG.warn("Failed to load mod generatable element: " + element.getName()
-									+ " -> all templates will be loaded, ignoring conditions and templates");
+									+ ". This means all templates will be generated (conditions ignored)");
 						}
 					}
 				}
@@ -619,8 +640,8 @@ public class Generator implements IGenerator, Closeable {
 		generatorFiles.forEach(generatorFile -> {
 			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
 				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(),
-							generatorFile.file(), formatAndOrganiseImports);
+					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.file(),
+							formatAndOrganiseImports);
 				else if (generatorFile.writer().equals("json"))
 					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
 				else if (generatorFile.writer().equals("file"))
@@ -804,7 +825,7 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void reloadGradleCaches() {
-		LOG.warn("Reloading generator Gradle cache");
+		LOG.info("Reloading generator Gradle cache");
 
 		this.generatorGradleCache = new GeneratorGradleCache(this);
 		String cache = new GsonBuilder().disableHtmlEscaping().create().toJson(generatorGradleCache);

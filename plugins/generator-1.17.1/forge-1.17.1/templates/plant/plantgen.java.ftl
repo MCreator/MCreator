@@ -73,8 +73,8 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 	}
 
 	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
-		Level world = context.level().getLevel();
-		ResourceKey<Level> dimensionType = world.dimension();
+		WorldGenLevel world = context.level();
+		ResourceKey<Level> dimensionType = world.getLevel().dimension();
 		boolean dimensionCriteria = false;
 
 		<#list data.spawnWorldTypes as worldType>

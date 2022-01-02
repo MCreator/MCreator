@@ -38,7 +38,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class BlockItemTextureSelector extends MCreatorDialog {
 
@@ -259,7 +258,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			filterItems.clear();
 			String term = filterField.getText();
 			filterItems.addAll(items.stream().filter(item -> item.getName().toLowerCase(Locale.ENGLISH)
-					.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
+					.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
 	}

@@ -22,6 +22,7 @@
   "nextStatement": null,
   "colour": 110,
   "mcreator": {
+    "group": "components",
     "toolbox_id": "guimanagement",
     "toolbox_init": [
       "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Text</field></block></value>"

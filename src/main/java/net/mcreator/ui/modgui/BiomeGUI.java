@@ -100,7 +100,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 	private final JComboBox<String> oceanRuinType = new JComboBox<>(new String[] { "NONE", "COLD", "WARM" });
 
-	private final JSpawnEntriesList spawnEntries = new JSpawnEntriesList(mcreator);
+	private JSpawnEntriesList spawnEntries;
 
 	private MCItemHolder groundBlock;
 	private MCItemHolder undergroundBlock;
@@ -179,6 +179,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		foliageColor.setOpaque(false);
 		waterColor.setOpaque(false);
 		waterFogColor.setOpaque(false);
+
+		spawnEntries = new JSpawnEntriesList(mcreator, this);
 
 		JPanel sbbp2 = new JPanel(new GridLayout(13, 2, 4, 2));
 		JPanel sbbp2b = new JPanel(new GridLayout(7, 2, 4, 2));
@@ -285,8 +287,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2b.add(spawnEndCity);
 		spawnEndCity.setOpaque(false);
 
-		pane2.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(sbbp2b), 20, 20)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(sbbp2b), 20, 20)));
 
 		sbbp2b.setOpaque(false);
 		sbbp2.setOpaque(false);

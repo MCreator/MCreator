@@ -15,6 +15,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
+    "group": "inventory",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",

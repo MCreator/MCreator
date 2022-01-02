@@ -42,7 +42,7 @@ public abstract class GeneratableElement {
 
 	private transient ModElement element;
 
-	public static final transient int formatVersion = 24;
+	public static final transient int formatVersion = 25;
 
 	public GeneratableElement(ModElement element) {
 		if (element != null)
@@ -102,9 +102,9 @@ public abstract class GeneratableElement {
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			String newType = jsonElement.getAsJsonObject().get("_type").getAsString();
-			switch(newType) {
-				case "gun" -> newType = "rangeditem";
-				case "mob" -> newType = "livingentity";
+			switch (newType) {
+			case "gun" -> newType = "rangeditem";
+			case "mob" -> newType = "livingentity";
 			}
 
 			try {
