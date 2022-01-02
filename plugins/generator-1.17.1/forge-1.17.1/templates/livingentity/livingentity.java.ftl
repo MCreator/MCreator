@@ -562,7 +562,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     <#if data.ranged>
 	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
-				${name}ProjectileEntity entityarrow = new ${name}ProjectileEntity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, this, this.level);
+				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, this, this.level);
 				double d0 = target.getY() + target.getEyeHeight() - 1.1;
 				double d1 = target.getX() - this.getX();
 				double d3 = target.getZ() - this.getZ();
@@ -705,7 +705,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double z = this.getZ();
 		Entity entity = this;
 		Level world = this.level;
-        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount data.particleCondition/>
+		<#if hasProcedure(data.particleCondition)>
+			if(<@procedureOBJToConditionCode data.particleCondition/>)
+		</#if>
+        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
 		</#if>
 	}
     </#if>

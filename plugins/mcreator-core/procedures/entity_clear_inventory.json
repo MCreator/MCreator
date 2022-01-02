@@ -10,6 +10,7 @@
   "nextStatement": null,
   "colour": 175,
   "mcreator": {
+    "group": "inventory",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"

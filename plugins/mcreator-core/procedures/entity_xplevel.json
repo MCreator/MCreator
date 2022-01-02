@@ -9,6 +9,7 @@
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
+    "group": "experience_levels",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"

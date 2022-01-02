@@ -9,6 +9,7 @@
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
+    "group": "base_velocity",
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"

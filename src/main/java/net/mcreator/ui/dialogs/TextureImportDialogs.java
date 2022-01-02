@@ -178,8 +178,8 @@ public class TextureImportDialogs {
 			}
 			FileIO.copyFile(hoh, file);
 			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
-			if (fr.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-				((ModElementGUI) fr.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+			if (fr.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
+				modElementGUI.reloadDataLists();
 		});
 	}
 

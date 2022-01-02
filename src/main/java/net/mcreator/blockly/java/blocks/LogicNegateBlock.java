@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -44,7 +45,7 @@ public class LogicNegateBlock implements IBlockGenerator {
 		} else {
 			master.append("(false)");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Found not block without input. Its value will always be false."));
+					L10N.t("blockly.warnings.empty_not_block")));
 		}
 	}
 

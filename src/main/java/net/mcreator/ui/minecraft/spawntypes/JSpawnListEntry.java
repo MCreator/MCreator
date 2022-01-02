@@ -39,12 +39,13 @@ public class JSpawnListEntry extends JPanel {
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
-	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("mobspawntypes"));
+	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(
+			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();
 
 	private final Workspace workspace;
 
-	public JSpawnListEntry(MCreator mcreator, JPanel parent, List<JSpawnListEntry> entryList) {
+	public JSpawnListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JSpawnListEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		this.workspace = mcreator.getWorkspace();
@@ -59,19 +60,19 @@ public class JSpawnListEntry extends JPanel {
 		add(L10N.label("dialog.spawn_list_entry.entity"));
 		add(entityType);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_type"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_type"),
 				L10N.label("dialog.spawn_list_entry.type")));
 		add(mobSpawningType);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_weight"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_weight"),
 				L10N.label("dialog.spawn_list_entry.weight")));
 		add(spawningProbability);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_group_size"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_group_size"),
 				L10N.label("dialog.spawn_list_entry.min_group_size")));
 		add(minNumberOfMobsPerGroup);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/spawn_group_size"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_group_size"),
 				L10N.label("dialog.spawn_list_entry.max_group_size")));
 		add(maxNumberOfMobsPerGroup);
 

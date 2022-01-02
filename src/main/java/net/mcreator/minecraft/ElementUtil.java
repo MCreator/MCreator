@@ -46,7 +46,7 @@ public class ElementUtil {
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.map(e -> (MCItem) e).collect(Collectors.toList()));
+						.map(e -> (MCItem) e).toList());
 		return elements;
 	}
 
@@ -89,7 +89,7 @@ public class ElementUtil {
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).collect(Collectors.toList()));
+						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).toList());
 		return elements;
 	}
 
@@ -107,7 +107,7 @@ public class ElementUtil {
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
-						.collect(Collectors.toList()));
+						.toList());
 		return elements;
 	}
 
@@ -194,8 +194,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-				.collect(Collectors.toList()));
+				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
 		return retval;
 	}
 
@@ -207,8 +206,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-				.collect(Collectors.toList()));
+				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
 		return retval;
 	}
 
@@ -222,8 +220,7 @@ public class ElementUtil {
 			}
 		}
 
-		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
 	}
@@ -235,8 +232,7 @@ public class ElementUtil {
 			retval.add("CUSTOM:" + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName)
-				.collect(Collectors.toList()));
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
 	}

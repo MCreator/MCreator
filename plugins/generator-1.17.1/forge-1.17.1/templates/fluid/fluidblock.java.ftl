@@ -34,6 +34,7 @@
 package ${package}.block;
 
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}Block extends LiquidBlock {
 	public ${name}Block() {
@@ -72,11 +73,11 @@ public class ${name}Block extends LiquidBlock {
 	}
 	</#if>
 
-	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate), data.tickRate/>
+	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && (data.tickRate > 0), data.tickRate/>
 
 	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourChanges/>
 
-	<@onBlockTick data.onTickUpdate, true, data.tickRate/>
+	<@onBlockTick data.onTickUpdate, (data.tickRate > 0), data.tickRate/>
 
 	<@onEntityCollides data.onEntityCollides/>
 

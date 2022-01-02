@@ -19,4 +19,7 @@
 
 package net.mcreator.plugin;
 
+/**
+ * <p>This record is used to save the plugin and the new version of the detected update.</p>
+ */
 public record PluginUpdateInfo(Plugin plugin, String newVersion) {}

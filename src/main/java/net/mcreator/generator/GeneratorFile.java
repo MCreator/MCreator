@@ -20,29 +20,7 @@ package net.mcreator.generator;
 
 import java.io.File;
 
-public class GeneratorFile {
-
-	private final String contents;
-	private final File file;
-	private final String writer;
-
-	public GeneratorFile(String contents, File file, String writer) {
-		this.contents = contents;
-		this.file = file;
-		this.writer = writer;
-	}
-
-	public String getContents() {
-		return contents;
-	}
-
-	public File getFile() {
-		return file;
-	}
-
-	public String getWriter() {
-		return writer;
-	}
+public record GeneratorFile(String contents, File file, String writer) {
 
 	@Override public boolean equals(Object o) {
 		if (this == o)
