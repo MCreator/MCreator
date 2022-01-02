@@ -21,6 +21,7 @@
   "nextStatement": null,
   "colour": 175,
   "mcreator": {
+    "group": "scoreboard",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",

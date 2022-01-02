@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-    "group": "<#if data.group?has_content>${data.group}<#else>${modid}</#if>",
+    <#if data.group?has_content>"group": "${data.group}",</#if>
     "type": "minecraft:smelting",
     "experience": ${data.xpReward},
 	"cookingtime": ${data.cookingTime},

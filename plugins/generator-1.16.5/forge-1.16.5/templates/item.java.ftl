@@ -378,6 +378,9 @@ import net.minecraft.entity.ai.attributes.Attributes;
 					return stack.getItem() != block;
 				}
 
+				@Override public void setSize(int size) {
+				}
+
 			};
 		}
 

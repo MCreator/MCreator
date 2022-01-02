@@ -142,4 +142,8 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-function");
 	}
 
+	@Override protected boolean allowCodePreview() {
+		return false;
+	}
+
 }

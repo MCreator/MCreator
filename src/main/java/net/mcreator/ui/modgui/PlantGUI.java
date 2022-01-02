@@ -38,6 +38,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -77,7 +78,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+	private JBoundingBoxList boundingBoxList;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
@@ -170,6 +171,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator);
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+
+		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
@@ -348,7 +351,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe1 = new JPanel(new BorderLayout());
 		ptipe1.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -371,7 +374,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe2 = new JPanel(new BorderLayout());
 		ptipe2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe2.add("West", dyn);
@@ -390,7 +393,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe3 = new JPanel(new BorderLayout());
 		ptipe3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		ptipe3.add("West", dbl);

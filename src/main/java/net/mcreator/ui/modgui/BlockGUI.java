@@ -47,6 +47,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -90,7 +91,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder particleTexture;
 
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+	private JBoundingBoxList boundingBoxList;
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -191,7 +192,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
 			new String[] { "Spread", "Top", "Tube", "Plane" });
 
-	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
+	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -262,6 +263,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		spawnWorldTypes = new DimensionListField(mcreator);
 
 		fluidRestrictions = new FluidListField(mcreator);
+
+		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
 		blocksToReplace.setListElements(
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));

@@ -44,18 +44,35 @@ import javax.swing.*;
 
 	private ImageIcon icon;
 
+	/**
+	 * The ID is the theme's registry name. It is used to differentiate each theme in the code.
+	 * This ID is also the main folder's name of the theme.
+	 *
+	 * @return <p>The theme's ID</p>
+	 */
 	public String getID() {
 		return id;
 	}
 
+	/**
+	 * This method sets the id of this theme using the name of its main folder.
+	 *
+	 * @param id <p>The theme's ID</p>
+	 */
 	public void setID(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return <p>Its displayed name</p>
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @return <p>A description displayed in the {@link net.mcreator.ui.dialogs.preferences.ThemesPanel} if provided.</p>
+	 */
 	public String getDescription() {
 		// Description inside the JSON file
 		if (description != null)
@@ -68,10 +85,16 @@ import javax.swing.*;
 			return "";
 	}
 
+	/**
+	 * @return <p>A String with optional credits to give to someone.</p>
+	 */
 	@Nullable public String getCredits() {
 		return credits;
 	}
 
+	/**
+	 * @return <p>The theme's version if provided</p>
+	 */
 	@Nullable public String getVersion() {
 		return version;
 	}
@@ -117,10 +140,20 @@ import javax.swing.*;
 			return ThemeLoader.getTheme("default_dark").getColorScheme();
 	}
 
+	/**
+	 * This icon is only with {@link net.mcreator.ui.dialogs.preferences.ThemesPanel}.
+	 *
+	 * @return <p>An {@link ImageIcon} representing the plugin.</p>
+	 */
 	public ImageIcon getIcon() {
 		return icon;
 	}
 
+	/**
+	 * <p>To be detected, the name of the image file needs to be "icon.png" located into the main folder.</p>
+	 *
+	 * @param icon <p>An {@link ImageIcon} to display in {@link net.mcreator.ui.dialogs.preferences.ThemesPanel}</p>
+	 */
 	public void setIcon(ImageIcon icon) {
 		this.icon = icon;
 	}

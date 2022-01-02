@@ -30,6 +30,8 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
@@ -51,6 +53,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	protected final JList<T> elementsList = new JList<>(elementsListModel);
 
 	protected final MCreator mcreator;
+
+	private final List<ChangeListener> listeners = new ArrayList<>();
 
 	protected JItemListField(MCreator mcreator) {
 		this.mcreator = mcreator;
@@ -82,16 +86,21 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			for (T el : list)
 				elementsListModel.addElement(el);
 
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
 		bt2.addActionListener(e -> {
 			T element = elementsList.getSelectedValue();
 			if (element != null) {
 				elementsListModel.removeElement(element);
+				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 			}
 		});
 
-		bt3.addActionListener(e -> elementsListModel.removeAllElements());
+		bt3.addActionListener(e -> {
+			elementsListModel.removeAllElements();
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+		});
 
 		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -135,6 +144,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		bt.setEnabled(enabled);
 		bt2.setEnabled(enabled);
 		bt3.setEnabled(enabled);
+	}
+
+	public void addChangeListener(ChangeListener changeListener) {
+		this.listeners.add(changeListener);
 	}
 
 	public List<T> getListElements() {

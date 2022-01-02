@@ -43,6 +43,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -75,10 +76,10 @@ public class SetEventResultBlock implements IBlockGenerator {
 
 				if (trigger == null) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Failed to load selected external trigger"));
+							L10N.t("blockly.error.event_result.failed_external_trigger")));
 				} else if (!trigger.has_result) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"The selected global trigger does not have a result"));
+							L10N.t("blockly.error.event_result.external_trigger_no_result")));
 				}
 
 				if (master.getTemplateGenerator() != null) {
@@ -90,11 +91,11 @@ public class SetEventResultBlock implements IBlockGenerator {
 				}
 			} else {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						"This procedure does not use global trigger so the set event result block can not set any result"));
+						L10N.t("blockly.errors.event_result.no_external_trigger_used")));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Set event result procedure block is not supported in this editor!"));
+					L10N.t("blockly.errors.event_result.unsupported")));
 		}
 	}
 
