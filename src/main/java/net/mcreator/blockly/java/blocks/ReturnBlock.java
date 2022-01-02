@@ -32,14 +32,13 @@ import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ReturnBlock implements IBlockGenerator {
 	private final String[] names;
 
 	public ReturnBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.collect(Collectors.toList()).stream().map(s -> s = "return_" + s).toArray(String[]::new);
+				.map(s -> s = "return_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -47,7 +46,8 @@ public class ReturnBlock implements IBlockGenerator {
 		VariableType returnType = VariableTypeLoader.INSTANCE.fromName(type);
 
 		if (!master.getStatementInputsMatching(si -> true).isEmpty()) {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.retval.inside_statement", type)));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.retval.inside_statement", type)));
 			return;
 		}
 
@@ -72,8 +72,8 @@ public class ReturnBlock implements IBlockGenerator {
 				master.append(code);
 			}
 		} else {
-			master.getCompileNotes()
-					.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.retval.empty")));
+			master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.retval.empty")));
 		}
 	}
 

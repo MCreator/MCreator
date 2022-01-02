@@ -75,7 +75,8 @@ public class SetEventResultBlock implements IBlockGenerator {
 				}
 
 				if (trigger == null) {
-					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.error.event_result.failed_external_trigger")));
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.error.event_result.failed_external_trigger")));
 				} else if (!trigger.has_result) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.error.event_result.external_trigger_no_result")));

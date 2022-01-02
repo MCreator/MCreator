@@ -9,7 +9,7 @@
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
-      "bedrock_roof_position": -10,
+      "bedrock_roof_position": -2147483648,
       "bedrock_floor_position": 0,
       "sea_level": 63,
       "disable_mob_generation": ${!data.imitateOverworldBehaviour},
@@ -33,14 +33,14 @@
         "island_noise_override": false,
         "amplified": false,
         "sampling": {
-          "xz_scale": 1,
-          "y_scale": 1,
+          "xz_scale": 0.9999999814507745,
+          "y_scale": 0.9999999814507745,
           "xz_factor": 80,
           "y_factor": 160
         },
         "bottom_slide": {
-          "target": -30,
-          "size": 0,
+          "target": 15,
+          "size": 3,
           "offset": 0
         },
         "top_slide": {

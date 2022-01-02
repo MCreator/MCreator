@@ -40,7 +40,8 @@ public class NumberBlock implements IBlockGenerator {
 			}
 		} else {
 			master.append("/*@int*/0");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.number_block")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.number_block")));
 		}
 	}
 
