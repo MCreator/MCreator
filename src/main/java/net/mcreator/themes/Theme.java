@@ -64,7 +64,6 @@ import javax.swing.*;
 	}
 
 	/**
-	 *
 	 * @return <p>Its displayed name</p>
 	 */
 	public String getName() {
@@ -72,7 +71,6 @@ import javax.swing.*;
 	}
 
 	/**
-	 *
 	 * @return <p>A description displayed in the {@link net.mcreator.ui.dialogs.preferences.ThemesPanel} if provided.</p>
 	 */
 	public String getDescription() {
@@ -88,7 +86,6 @@ import javax.swing.*;
 	}
 
 	/**
-	 *
 	 * @return <p>A String with optional credits to give to someone.</p>
 	 */
 	@Nullable public String getCredits() {
@@ -96,7 +93,6 @@ import javax.swing.*;
 	}
 
 	/**
-	 *
 	 * @return <p>The theme's version if provided</p>
 	 */
 	@Nullable public String getVersion() {

@@ -43,8 +43,8 @@ public class NumberFromTextBlock implements IBlockGenerator {
 			master.processOutputBlockWithoutParentheses(num);
 			master.append(")");
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_text_to_number")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.empty_text_to_number")));
 		}
 	}
 

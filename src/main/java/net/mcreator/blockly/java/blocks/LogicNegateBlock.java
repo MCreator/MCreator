@@ -44,7 +44,8 @@ public class LogicNegateBlock implements IBlockGenerator {
 			}
 		} else {
 			master.append("(false)");
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_not_block")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.empty_not_block")));
 		}
 	}
 

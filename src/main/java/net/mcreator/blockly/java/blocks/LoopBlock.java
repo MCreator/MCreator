@@ -55,7 +55,8 @@ public class LoopBlock implements IBlockGenerator {
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_loop")));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_loop")));
 		}
 	}
 

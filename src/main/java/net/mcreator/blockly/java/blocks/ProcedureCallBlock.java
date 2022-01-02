@@ -98,8 +98,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.call_procedure.empty")));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.call_procedure.empty")));
 		}
 	}
 
