@@ -9,6 +9,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
+    "group": "base_items",
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"

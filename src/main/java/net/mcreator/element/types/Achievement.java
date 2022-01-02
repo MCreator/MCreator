@@ -62,6 +62,11 @@ import java.util.List;
 		super(element);
 	}
 
+	public boolean hasRewards() {
+		return rewardXP > 0 || (rewardLoot != null && !rewardLoot.isEmpty()) || (rewardRecipes != null
+				&& !rewardRecipes.isEmpty()) || (rewardFunction != null && !rewardFunction.equals("No function"));
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateAchievementPreviewPicture(getModElement().getWorkspace(),
 				achievementIcon, achievementName);

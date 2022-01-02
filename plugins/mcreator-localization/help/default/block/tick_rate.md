@@ -6,3 +6,5 @@ is used.
 
 Default tick rate of 10 means the block will tick each 10 world ticks. There are 20 world ticks in
 a second so this means the block will tick twice a second.
+
+If this parameter is set to 0, the block won't tick automatically.

@@ -117,7 +117,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				BlockPos spawnTo = new BlockPos(i + ${data.spawnXOffset}, j + ${data.spawnHeightOffset}, k + ${data.spawnZOffset});
 
 				<#if hasProcedure(data.generateCondition) || hasProcedure(data.onStructureGenerated)>
-				ServerLevel world = context.level().getLevel();
+				WorldGenLevel world = context.level();
 				int x = spawnTo.getX();
 				int y = spawnTo.getY();
 				int z = spawnTo.getZ();
