@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -31,8 +32,8 @@ public class JavaCodeOutputBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append(element.getTextContent().replace("&#10;", "\n"));
 		} else {
-			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Output code block can't be empty!"));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.empty_output_code_block")));
 		}
 	}
 

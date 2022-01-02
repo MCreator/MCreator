@@ -31,7 +31,8 @@ public class EntityIteratorDependencyBlock implements IBlockGenerator {
 			master.append("entityiterator");
 			master.addDependency(new Dependency("entityiterator", "entity"));
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, "Entity iterator procedure block outside foreach statement"));
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					"Entity iterator procedure block outside foreach statement"));
 		}
 	}
 

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * This abstract class provides a filter field and a filter model for searchable selectors.
@@ -112,7 +111,7 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		void refilter() {
 			filterEntries.clear();
 			String term = filterField.getText();
-			filterEntries.addAll(entries.stream().filter(getFilter(term)).collect(Collectors.toList()));
+			filterEntries.addAll(entries.stream().filter(getFilter(term)).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
