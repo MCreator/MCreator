@@ -80,7 +80,7 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.4'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.1.5'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.1.3'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.3') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
