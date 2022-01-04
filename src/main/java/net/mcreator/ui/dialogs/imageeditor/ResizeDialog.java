@@ -26,9 +26,11 @@ import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.views.editor.image.versioning.change.Modification;
+import net.mcreator.ui.views.editor.image.versioning.change.Relocation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.UUID;
 
 public class ResizeDialog extends MCreatorDialog {
 
@@ -43,22 +45,45 @@ public class ResizeDialog extends MCreatorDialog {
 		JSpinner width = new JSpinner(new SpinnerNumberModel(layer.getWidth(), 0, 10000, 1));
 		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 0, 10000, 1));
 		JCheckBox type = new JCheckBox();
+		JCheckBox affectCanvas = new JCheckBox();
 
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.resize");
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 
-		cancel.addActionListener(e -> setVisible(false));
-
 		ok.addActionListener(e -> {
 			layer.resize((int) width.getValue(), (int) height.getValue(), type.isSelected());
-			versionManager.addRevision(new Modification(canvas, layer));
+			if (affectCanvas.isSelected() && (layer.getX() < 0 || layer.getY() < 0
+					|| (layer.getWidth() + layer.getX()) > canvas.getWidth()
+					|| (layer.getHeight() + layer.getY()) > canvas.getHeight())) {
+				UUID uuid = UUID.randomUUID();
+				versionManager.addRevision(new Modification(canvas, layer).setUUID(uuid));
+				int dx = layer.getX();
+				int dy = layer.getY();
+				if (dx < 0 || dy < 0) {
+					for (Layer lay : canvas) {
+						Relocation reloc = new Relocation(canvas, lay);
+						if (dx < 0)
+							lay.setX(lay.getX() - dx);
+						if (dy < 0)
+							lay.setY(lay.getY() - dy);
+						reloc.setAfter(lay);
+						versionManager.addRevision(reloc.setUUID(uuid));
+					}
+				}
+				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + dx) + Math.max(-dx, 0),
+						Math.max(canvas.getHeight(), layer.getHeight() + dy) + Math.max(-dy, 0), uuid);
+			} else {
+				versionManager.addRevision(new Modification(canvas, layer));
+			}
 			setVisible(false);
 		});
+
+		cancel.addActionListener(e -> setVisible(false));
 
 		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);
@@ -66,6 +91,8 @@ public class ResizeDialog extends MCreatorDialog {
 		constraints.add(height);
 		constraints.add(L10N.label("dialog.imageeditor.resize_enable_anti_aliasing"));
 		constraints.add(type);
+		constraints.add(L10N.label("dialog.imageeditor.resize_affect_canvas"));
+		constraints.add(affectCanvas);
 
 		layoutConstraints.gridx = 0;
 		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -80,7 +107,7 @@ public class ResizeDialog extends MCreatorDialog {
 		controls.add(ok, BorderLayout.EAST);
 		add(PanelUtils.maxMargin(settings, 5, true, true, true, true), BorderLayout.CENTER);
 		add(PanelUtils.maxMargin(controls, 5, true, true, true, true), BorderLayout.SOUTH);
-		setSize(300, 150);
+		setSize(400, 150);
 		setResizable(false);
 		setLocationRelativeTo(window);
 	}

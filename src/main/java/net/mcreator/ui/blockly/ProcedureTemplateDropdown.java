@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.blockly;
 
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
@@ -50,7 +51,7 @@ public class ProcedureTemplateDropdown extends JScrollablePopupMenu {
 				else
 					procedureXml = ProcedureTemplateIO.importBlocklyXML((File) template.identifier);
 
-				Set<VariableElement> localVariables = ProcedureTemplateIO.tryToExtractVariables(procedureXml);
+				Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 
 				modTypeButton.addActionListener(actionEvent -> {
 					List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();

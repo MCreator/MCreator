@@ -67,13 +67,11 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 			ImageIcon dva = null;
 
-			if (element instanceof ModElement) {
+			if (element instanceof ModElement ma) {
 				JPanel text = new JPanel();
 				text.setLayout(new BoxLayout(text, BoxLayout.PAGE_AXIS));
 				text.setOpaque(false);
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-
-				ModElement ma = (ModElement) element;
 
 				label_details.setText(
 						"<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?

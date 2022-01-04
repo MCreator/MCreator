@@ -16,60 +16,120 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * Additional permission under GNU GPL version 3 section 7
- *
- * If you modify this Program, or any covered work, by linking or combining
- * it with JBoss Forge (or a modified version of that library), containing
- * parts covered by the terms of Eclipse Public License, the licensors of
- * this Program grant you additional permission to convey the resulting work.
- */
-
 package net.mcreator.java;
 
 import net.mcreator.workspace.Workspace;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.Import;
-import org.jboss.forge.roaster.model.source.JavaSource;
+import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
+import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
+import org.fife.rsta.ac.java.rjc.lexer.Scanner;
+import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 
 import javax.annotation.Nullable;
+import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
-class ImportFormat {
+public class ImportFormat {
 
 	private Map<String, List<String>> cache = new HashMap<>();
 
-	String arrangeImports(@Nullable Workspace workspace, String code, boolean skipModClassReloading) {
+	public static String removeImports(String code, String replacement) {
+		CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
+
+		int spos = 0, epos = 0;
+		List<ImportDeclaration> currentImports = cu.getImports();
+		for (int i = 0; i < currentImports.size(); i++) {
+			ImportDeclaration imp = currentImports.get(i);
+			if (i == 0)
+				spos = imp.getNameStartOffset();
+
+			if (i == currentImports.size() - 1)
+				epos = imp.getNameEndOffset();
+		}
+
+		String before, after;
+		if (epos != 0) { // we found imports
+			before = code.substring(0, spos);
+			int last = before.lastIndexOf("import");
+			before = before.substring(0, last);
+
+			after = code.substring(epos);
+			int first = after.indexOf(";");
+			after = after.substring(first + 1);
+		} else if (cu.getPackage() != null) {
+			before = code.substring(0, cu.getPackage().getNameEndOffset()) + ";";
+
+			after = code.substring(cu.getPackage().getNameEndOffset());
+			int first = after.indexOf(";");
+			after = after.substring(first + 1);
+		} else {
+			before = "";
+			after = code;
+		}
+
+		return before.trim() + replacement + after.trim();
+	}
+
+	public String arrangeImports(@Nullable Workspace workspace, String code, boolean skipModClassReloading) {
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			if (!skipModClassReloading) {
 				cache = new HashMap<>();
-				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), cache);
 				cache.putAll(workspace.getGenerator().getGradleCache().getImportTree());
+				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), cache);
 			}
 
-			JavaSource<?> classJavaSource = (JavaSource<?>) Roaster.parse(code);
+			CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
 
 			Set<String> imports = new HashSet<>();
 
-			List<Import> currentImports = classJavaSource.getImports();
-			for (Import imp : currentImports) {
-				classJavaSource.removeImport(imp);
+			int spos = 0, epos = 0;
+			List<ImportDeclaration> currentImports = cu.getImports();
+			for (int i = 0; i < currentImports.size(); i++) {
+				ImportDeclaration imp = currentImports.get(i);
+
+				if (i == 0)
+					spos = imp.getNameStartOffset();
+
+				if (i == currentImports.size() - 1)
+					epos = imp.getNameEndOffset();
+
 				if (!imp.isWildcard())
-					imports.add(imp.getQualifiedName());
+					imports.add(imp.getName());
 			}
 
-			Set<String> memberList = JavaMemberExtractor.getMemberList(classJavaSource.toUnformattedString());
+			String before, after;
+			if (epos != 0) { // we found imports
+				before = code.substring(0, spos);
+				int last = before.lastIndexOf("import");
+				before = before.substring(0, last);
+
+				after = code.substring(epos);
+				int first = after.indexOf(";");
+				after = after.substring(first + 1);
+			} else if (cu.getPackage() != null) {
+				before = code.substring(0, cu.getPackage().getNameEndOffset()) + ";";
+
+				after = code.substring(cu.getPackage().getNameEndOffset());
+				int first = after.indexOf(";");
+				after = after.substring(first + 1);
+			} else {
+				before = "";
+				after = code;
+			}
+
+			Set<String> memberList = JavaMemberExtractor.getMemberList(before + after);
 
 			// sorting out imports
 			Set<String> importsToAdd = getUsedWildcardImports(memberList, cache);
 			importsToAdd.addAll(getUsedImports(memberList, imports));
 
-			resolveDuplicates(workspace, importsToAdd, imports, classJavaSource.getPackage());
+			resolveDuplicates(workspace, importsToAdd, imports, cu.getPackageName());
 
-			importsToAdd.stream().sorted(Collections.reverseOrder()).forEach(classJavaSource::addImport);
+			StringBuilder importscode = new StringBuilder();
+			importsToAdd.stream().sorted(Collections.reverseOrder())
+					.forEach(i -> importscode.append("import ").append(i).append(";\n"));
 
-			return formatImportGroups(classJavaSource.toString());
+			return formatImportGroups(before + "\n" + importscode + "\n" + after);
 		}
 
 		return code;
@@ -172,7 +232,8 @@ class ImportFormat {
 					// if class with multiple packages is not included in one of the default packages, we do not import it
 					if (!_import.startsWith("net.minecraft") && !_import.startsWith("java.util") && !_import.startsWith(
 							"java.io") && !_import.startsWith("org.lwjgl") && !_import.startsWith("java.lang")
-							&& !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc")) {
+							&& !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc") &&
+							!_import.startsWith("com.google.gson")) {
 						importsToRemove.add(_import);
 						continue outer;
 					}

@@ -15,6 +15,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
+    "group": "items",
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"slotid\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",

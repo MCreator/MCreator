@@ -44,7 +44,7 @@ public class CodeCleanup {
 
 	public CodeCleanup() {
 		formatPorperties = new Properties();
-		formatPorperties.setProperty("org.eclipse.jdt.core.compiler.source", "1.8");
+		formatPorperties.setProperty("org.eclipse.jdt.core.compiler.source", "16");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.lineSplit", "150");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_before_imports", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_after_imports", "1");
@@ -54,6 +54,9 @@ public class CodeCleanup {
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_after_method", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_before_member_type", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve", "1");
+		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_before_new_chunk", "1");
+		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.join_wrapped_lines", "true");
+
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.tabulation.char", "tab");
 
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.comment.format_block_comments", "false");

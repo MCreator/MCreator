@@ -29,11 +29,14 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.help.HelpLoader;
+import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.EntityAnimationsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,7 +57,8 @@ public class TestSetup {
 		if (already)
 			return;
 
-		Launcher.openModuleExports();
+		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openMCreatorRequirements();
 
 		WebConsoleListener.registerLogger(LOG);
 
@@ -85,6 +89,9 @@ public class TestSetup {
 
 		DataListLoader.preloadCache();
 
+		// preload help entries cache
+		HelpLoader.preloadCache();
+
 		// load translations after plugins are loaded
 		L10N.initTranslations();
 		L10N.enterTestingMode();
@@ -97,6 +104,9 @@ public class TestSetup {
 
 		// load variable elements
 		VariableTypeLoader.loadVariableTypes();
+
+		// load JS files for Blockly
+		BlocklyJavaScriptsLoader.init();
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();

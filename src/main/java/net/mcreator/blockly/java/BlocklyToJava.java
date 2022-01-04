@@ -57,14 +57,25 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TextLengthBlock());
 		blockGenerators.add(new CustomDependencyBlock());
 		blockGenerators.add(new JavaCodeOutputBlock());
+		blockGenerators.add(new TernaryOperatorBlock());
+		blockGenerators.add(new TimeAsStringBlock());
+		blockGenerators.add(new TimeToFormattedString());
+		blockGenerators.add(new TimeSecondsBlock());
+		blockGenerators.add(new TimeMinutesBlock());
+		blockGenerators.add(new TimeHoursBlock());
+		blockGenerators.add(new TimeDayOfWeekBlock());
+		blockGenerators.add(new TimeDayOfMonthBlock());
+		blockGenerators.add(new TimeMonthBlock());
+		blockGenerators.add(new TimeYearBlock());
+		blockGenerators.add(new TimeWeekOfYearBlock());
 
 		// add Minecraft related blocks
 		blockGenerators.add(new CoordinateBlock());
-		blockGenerators.add(new EventOrTargetEntityDependenyBlock());
-		blockGenerators.add(new SourceEntityDependenyBlock());
+		blockGenerators.add(new EventOrTargetEntityDependencyBlock());
+		blockGenerators.add(new SourceEntityDependencyBlock());
 		blockGenerators.add(new EntityIteratorDependencyBlock());
 		blockGenerators.add(new ImediateSourceEntityDependencyBlock());
-		blockGenerators.add(new DirectionDependenyBlock());
+		blockGenerators.add(new DirectionDependencyBlock());
 		blockGenerators.add(new DirectionConstantBlock());
 		blockGenerators.add(new NullBlock());
 		blockGenerators.add(new MCItemBlock());

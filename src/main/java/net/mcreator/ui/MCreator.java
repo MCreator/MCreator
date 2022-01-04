@@ -126,7 +126,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		setLayout(new BorderLayout(0, 0));
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
+		if (screenSize.getWidth() > 2140 && screenSize.getHeight() > 1250)
+			setSize(2140, 1250);
+		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
 			setSize(1574, 967);
 		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
 			setSize(1290, 791);
@@ -325,7 +327,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return statusBar;
 	}
 
-	public final boolean closeThisMCreator(boolean returnToProjectSelector) {
+	public boolean closeThisMCreator(boolean returnToProjectSelector) {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
 			if (gradleConsole.isGradleSetupTaskRunning()) {
@@ -389,8 +391,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	}
 
 	@Override public boolean equals(Object mcreator) {
-		if (mcreator instanceof MCreator) {
-			MCreator theothermcreator = (MCreator) mcreator;
+		if (mcreator instanceof MCreator theothermcreator) {
 			if (theothermcreator.workspace != null && workspace != null)
 				return theothermcreator.workspace.getFileManager().getWorkspaceFile()
 						.equals(workspace.getFileManager().getWorkspaceFile());

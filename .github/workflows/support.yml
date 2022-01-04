@@ -1,0 +1,24 @@
+name: 'Support Requests'
+
+on:
+  issues:
+    types: [labeled, unlabeled, reopened]
+
+permissions:
+  issues: write
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dessant/support-requests@v2
+        with:
+          github-token: ${{ github.token }}
+          support-label: 'invalid: support request'
+          issue-comment: >
+            :wave: @{issue-author}, we use GitHub issue tracker exclusively for bug reports.
+            However, this issue appears to be a support or a feature request. Please use our
+            [Forums on the website](https://mcreator.net/forum) for support and feature requests.
+          close-issue: true
+          lock-issue: true
+          issue-lock-reason: 'off-topic'

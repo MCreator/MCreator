@@ -32,7 +32,10 @@
 
 package ${package}.world.biome;
 
-import net.minecraft.block.material.Material;import java.util.ArrayList;import java.util.HashMap;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraft.block.material.Material;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Biome extends ${JavaModName}Elements.ModElement{
 
@@ -85,6 +88,10 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT);
 				</#if>
 
+				<#if data.spawnMineshaftMesa>
+				biomeGenerationSettings.withStructure(StructureFeatures.MINESHAFT_BADLANDS);
+				</#if>
+
 				<#if data.spawnPillagerOutpost>
 				biomeGenerationSettings.withStructure(StructureFeatures.PILLAGER_OUTPOST);
 				</#if>
@@ -105,6 +112,10 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 				biomeGenerationSettings.withStructure(StructureFeatures.DESERT_PYRAMID);
 				</#if>
 
+				<#if data.spawnSwampHut>
+				biomeGenerationSettings.withStructure(StructureFeatures.SWAMP_HUT);
+				</#if>
+
 				<#if data.spawnIgloo>
 				biomeGenerationSettings.withStructure(StructureFeatures.IGLOO);
 				</#if>
@@ -117,9 +128,41 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 				biomeGenerationSettings.withStructure(StructureFeatures.SHIPWRECK);
 				</#if>
 
+				<#if data.spawnShipwreckBeached>
+				biomeGenerationSettings.withStructure(StructureFeatures.SHIPWRECK_BEACHED);
+				</#if>
+
+				<#if data.spawnBuriedTreasure>
+				biomeGenerationSettings.withStructure(StructureFeatures.BURIED_TREASURE);
+				</#if>
+
 				<#if data.oceanRuinType != "NONE">
 				biomeGenerationSettings.withStructure(StructureFeatures.OCEAN_RUIN_${data.oceanRuinType});
 				</#if>
+
+                <#if data.spawnNetherBridge>
+                biomeGenerationSettings.withStructure(StructureFeatures.FORTRESS);
+                </#if>
+
+                <#if data.spawnNetherFossil>
+                biomeGenerationSettings.withStructure(StructureFeatures.NETHER_FOSSIL);
+                </#if>
+
+                <#if data.spawnBastionRemnant>
+                biomeGenerationSettings.withStructure(StructureFeatures.BASTION_REMNANT);
+                </#if>
+
+                <#if data.spawnEndCity>
+                biomeGenerationSettings.withStructure(StructureFeatures.END_CITY);
+                </#if>
+
+                <#if data.spawnRuinedPortal != "NONE">
+                    <#if data.spawnRuinedPortal == "STANDARD">
+                    biomeGenerationSettings.withStructure(StructureFeatures.RUINED_PORTAL);
+                    <#else>
+                    biomeGenerationSettings.withStructure(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
+                    </#if>
+                </#if>
 
 				<#if (data.treesPerChunk > 0)>
 					<#assign ct = data.treeType == data.TREES_CUSTOM>
@@ -139,9 +182,6 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setDecorators(ImmutableList.of(TrunkVineTreeDecorator.field_236879_b_, LeaveVineTreeDecorator.field_236871_b_))
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -159,9 +199,6 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -177,9 +214,6 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -189,14 +223,11 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
 								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.getDefaultState()")}),
 								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.getDefaultState()")}),
-								new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(13, 4)),
+								new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(13, 17)),
 								new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
 								new TwoLayerFeature(1, 1, 2)))
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>
 									<@vinesAndCocoa/>
-								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
 								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
@@ -215,9 +246,6 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 								<#else>
 									.setIgnoreVines()
 								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
-								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
 							.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(${data.treesPerChunk}, 0.1F, 1)))
@@ -234,9 +262,6 @@ import net.minecraft.block.material.Material;import java.util.ArrayList;import j
 									<@vinesAndCocoa/>
 								<#else>
 									.setIgnoreVines()
-								</#if>
-								<#if data.treeType == data.TREES_CUSTOM>
-								.setMaxWaterDepth(${data.maxWaterDepth})
 								</#if>
 							.build())
 							.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)

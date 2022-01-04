@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -41,13 +42,13 @@ public class TextFormatNumber implements IBlockGenerator {
 
 		if (number != null && format != null) {
 			master.append("(new java.text.DecimalFormat(");
-			master.processOutputBlock(format);
+			master.processOutputBlockWithoutParentheses(format);
 			master.append(").format(");
-			master.processOutputBlock(number);
+			master.processOutputBlockWithoutParentheses(number);
 			master.append("))");
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Format number as text procedure block needs all inputs defined!"));
+					L10N.t("blockly.errors.text_format_number_missing_inputs")));
 		}
 	}
 

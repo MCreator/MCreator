@@ -19,7 +19,7 @@
 package net.mcreator.io;
 
 import net.mcreator.plugin.PluginLoader;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,17 +53,15 @@ public class ResourcePointer {
 
 	@Override public String toString() {
 		if (inClasspath)
-			return FilenameUtils.removeExtension(
+			return FilenameUtilsPatched.removeExtension(
 					((String) identifier).substring(((String) identifier).lastIndexOf("/") + 1));
 		else
-			return FilenameUtils.removeExtension(((File) identifier).getName());
+			return FilenameUtilsPatched.removeExtension(((File) identifier).getName());
 	}
 
 	@Override public boolean equals(Object obj) {
-		if (obj instanceof ResourcePointer) {
-			ResourcePointer cmpObj = (ResourcePointer) obj;
+		if (obj instanceof ResourcePointer cmpObj)
 			return cmpObj.identifier.equals(identifier);
-		}
 		return false;
 	}
 

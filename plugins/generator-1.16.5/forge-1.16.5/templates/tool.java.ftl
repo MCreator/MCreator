@@ -33,6 +33,8 @@
 
 package ${package}.item;
 
+import net.minecraft.entity.ai.attributes.Attributes;
+
 @${JavaModName}Elements.ModElement.Tag
 public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
@@ -168,7 +170,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			int y = pos.getY();
 			int z = pos.getZ();
 			ItemStack itemstack = context.getItem();
-			<#if hasReturnValue(data.onRightClickedOnBlock)>
+			<#if hasReturnValueOf(data.onRightClickedOnBlock, "actionresulttype")>
 			return <@procedureOBJToActionResultTypeCode data.onRightClickedOnBlock/>;
 			<#else>
 			<@procedureOBJToCode data.onRightClickedOnBlock/>

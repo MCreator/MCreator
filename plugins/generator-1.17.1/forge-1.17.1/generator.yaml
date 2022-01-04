@@ -1,0 +1,82 @@
+name: Minecraft Forge for @minecraft (@buildfileversion)
+status: stable
+buildfileversion: 37.1.1
+
+java_models:
+  key: mojmap-1.17.x
+  requested_key_words: [ModelPart, ~ModelRenderer]
+
+# gradle task definitions
+gradle:
+  setup_task: eclipse
+  run_client: runClient
+  run_server: runServer
+  export_file: "build/libs/modid-1.0.jar"
+
+# base generator roots
+source_root: "@WORKSPACEROOT/src/main/java"
+res_root: "@WORKSPACEROOT/src/main/resources"
+mod_assets_root: "@RESROOT/assets/@modid"
+mod_data_root: "@RESROOT/data/@modid"
+
+# specific resource folders
+structures_dir: "@MODDATAROOT/structures"
+sounds_dir: "@MODASSETSROOT/sounds"
+other_textures_dir: "@MODASSETSROOT/textures"
+block_textures_dir: "@MODASSETSROOT/textures/blocks"
+item_textures_dir: "@MODASSETSROOT/textures/items"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+
+base_templates:
+  - template: modbase/mod.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
+    canLock: true
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
+  - template: elementinits/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: modbase/pack.mcmeta.ftl
+    writer: json
+    name: "@RESROOT/pack.mcmeta"
+  - template: modbase/mods.toml.ftl
+    writer: file
+    name: "@RESROOT/META-INF/mods.toml"
+  - template: modbase/accesstransformer.cfg.ftl
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
+      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
+      - ${w.hasElementsOfType('dimension')}
+      - ${w.hasToolsOfType('Fishing rod')}
+
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
+language_file:
+  format: json
+  root_folder: "@MODASSETSROOT/lang/"
+  langfile_name: "@langname.json"
+
+resources_setup_tasks:
+  - task: copy_file
+    from: "@MODASSETSROOT/textures/@modpicture.png"
+    to: "@RESROOT/logo.png"
+  - task: copy_models
+    type: OBJ_inlinetextures
+    prefix: "@modid:blocks/"
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

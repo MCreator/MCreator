@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -44,7 +45,7 @@ public class LoopBlock implements IBlockGenerator {
 			else if ("controls_repeat_ext".equals(blocktype))
 				master.append("for (int index").append(index).append(" = 0; index").append(index).append("<(int)(");
 
-			master.processOutputBlock(value);
+			master.processOutputBlockWithoutParentheses(value);
 
 			if ("controls_while".equals(blocktype))
 				master.append(") {");
@@ -54,8 +55,8 @@ public class LoopBlock implements IBlockGenerator {
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Loop block has either empty condition or body. Skipping this block."));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_loop")));
 		}
 	}
 

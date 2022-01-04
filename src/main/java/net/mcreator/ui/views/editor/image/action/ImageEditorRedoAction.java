@@ -30,14 +30,14 @@ public class ImageEditorRedoAction extends BasicAction {
 	public ImageEditorRedoAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.redo"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
-			if (pan instanceof ImageMakerView) {
-				ImageMakerView codeEditorView = (ImageMakerView) pan;
-				codeEditorView.getVersionManager().redo();
+			if (pan instanceof ImageMakerView imageMakerView) {
+				imageMakerView.getVersionManager().redo();
 			}
 		});
 		setIcon(UIRES.get("img_editor.redo"));
 		setTooltip(L10N.t("action.image_editor.redo.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
+				tab.getContent() instanceof ImageMakerView imageMakerView && !imageMakerView.getVersionManager()
+						.lastRevision()));
 	}
 }

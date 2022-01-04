@@ -111,11 +111,11 @@ public final class MCreatorApplication {
 
 		splashScreen.setProgress(25, "Loading interface components");
 
-		// load translations after plugins are loaded
-		L10N.initTranslations();
-
 		// preload help entries cache
 		HelpLoader.preloadCache();
+
+		// load translations after plugins are loaded
+		L10N.initTranslations();
 
 		splashScreen.setProgress(35, "Loading plugin data");
 
@@ -136,6 +136,9 @@ public final class MCreatorApplication {
 
 		// load variable elements
 		VariableTypeLoader.loadVariableTypes();
+
+		// load JS files for Blockly
+		BlocklyJavaScriptsLoader.init();
 
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();
@@ -313,7 +316,7 @@ public final class MCreatorApplication {
 				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 	}
 
-	public final void closeApplication() {
+	public void closeApplication() {
 		LOG.debug("Closing any potentially open MCreator windows");
 		List<MCreator> mcreatorsTmp = new ArrayList<>(
 				openMCreators); // create list copy so we don't modify the list we iterate
@@ -354,7 +357,7 @@ public final class MCreatorApplication {
 		System.exit(0); // actually exit MCreator
 	}
 
-	final void showWorkspaceSelector() {
+	void showWorkspaceSelector() {
 		workspaceSelector.setVisible(true);
 	}
 

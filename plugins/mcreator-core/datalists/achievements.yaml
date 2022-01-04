@@ -38,6 +38,7 @@
 - nether/all_potions
 - nether/create_full_beacon
 - nether/all_effects
+- nether/ride_strider_in_overworld_lava
 - end/root
 - end/kill_dragon
 - end/dragon_egg
@@ -67,6 +68,14 @@
 - adventure/very_very_frightening
 - adventure/sniper_duel
 - adventure/bullseye
+- adventure/lightning_rod_with_villager_no_fire
+- adventure/spyglass_at_dragon
+- adventure/spyglass_at_ghast
+- adventure/spyglass_at_parrot
+- adventure/walk_on_powder_snow_with_leather_boots
+- adventure/fall_from_world_height
+- adventure/play_jukebox_in_meadows
+- adventure/trade_at_world_height
 - husbandry/root
 - husbandry/safely_harvest_honey
 - husbandry/breed_an_animal
@@ -79,3 +88,9 @@
 - husbandry/tactical_fishing
 - husbandry/balanced_diet
 - husbandry/obtain_netherite_hoe
+- husbandry/axolotl_in_a_bucket
+- husbandry/kill_axolotl_target
+- husbandry/make_a_sign_glow
+- husbandry/ride_a_boat_with_a_goat
+- husbandry/wax_off
+- husbandry/wax_on

@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.procedure;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -94,7 +93,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		if (returnType != null) {
-			setBorder(BorderFactory.createLineBorder(BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor())));
+			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
 
 			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC)
 				defaultName = L10N.t("condition.common.true");
@@ -270,8 +269,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-					BorderFactory.createMatteBorder(0, 1, 0, 0,
-							BlocklyBlockUtil.getBlockColorFromHUE(returnType.getColor()))));
+					BorderFactory.createMatteBorder(0, 1, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;
 	}

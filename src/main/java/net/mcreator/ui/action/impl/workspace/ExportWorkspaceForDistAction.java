@@ -27,7 +27,7 @@ import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
 import java.io.File;
@@ -92,7 +92,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 				}
 
 				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(),
-						new String[] { "." + FilenameUtils.getExtension(exportFile) });
+						new String[] { "." + FilenameUtilsPatched.getExtension(exportFile) });
 				if (loc != null)
 					FileIO.copyFile(new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile), loc);
 			} else {

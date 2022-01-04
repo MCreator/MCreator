@@ -1,3 +1,0 @@
-templates:
-  - template: fuel.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/fuel/@NAMEFuel.java"

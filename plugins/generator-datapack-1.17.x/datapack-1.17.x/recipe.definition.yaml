@@ -1,0 +1,29 @@
+templates:
+  - template: recipes/smelting.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Smelting"
+  - template: recipes/blasting.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Blasting"
+  - template: recipes/campfire_cooking.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Campfire cooking"
+  - template: recipes/smoking.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Smoking"
+  - template: recipes/crafting.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Crafting"
+  - template: recipes/stonecutting.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Stone cutting"
+  - template: recipes/smithing.json.ftl
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
+    condition: "recipeType %= Smithing"

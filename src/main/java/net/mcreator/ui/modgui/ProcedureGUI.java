@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
@@ -150,8 +149,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			if (blocklyToJava.getReturnType() != null) {
 				returnType.setVisible(true);
 				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
-				returnTypeLabel.setForeground(
-						BlocklyBlockUtil.getBlockColorFromHUE(blocklyToJava.getReturnType().getColor()).brighter());
+				returnTypeLabel.setForeground(blocklyToJava.getReturnType().getBlocklyColor().brighter());
 			} else {
 				returnType.setVisible(false);
 			}
@@ -274,12 +272,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(isSelected ?
-					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()) :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					BlocklyBlockUtil.getBlockColorFromHUE(value.getType().getColor()));
+			setBackground(
+					isSelected ? value.getType().getBlocklyColor() : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setForeground(
+					isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : value.getType().getBlocklyColor());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -594,8 +590,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	}
 
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
+	@Override protected void afterGeneratableElementGenerated() {
+		super.afterGeneratableElementGenerated();
 
 		// check if dependency list has changed
 		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
@@ -626,6 +622,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				}
 			}
 		}
+
+		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {

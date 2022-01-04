@@ -19,14 +19,19 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import org.apache.commons.io.FilenameUtils;
+import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
@@ -45,8 +50,17 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	private final DefaultListModel<T> elementsListModel = new DefaultListModel<>();
 
-	protected JItemListField() {
-		JList<T> elementsList = new JList<>(elementsListModel);
+	protected final JList<T> elementsList = new JList<>(elementsListModel);
+
+	protected final MCreator mcreator;
+
+	private final List<ChangeListener> listeners = new ArrayList<>();
+
+	protected JItemListField(MCreator mcreator) {
+		this.mcreator = mcreator;
+
+		setLayout(new BorderLayout());
+
 		elementsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		elementsList.setVisibleRowCount(1);
 		elementsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -72,16 +86,21 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			for (T el : list)
 				elementsListModel.addElement(el);
 
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
 		bt2.addActionListener(e -> {
 			T element = elementsList.getSelectedValue();
 			if (element != null) {
 				elementsListModel.removeElement(element);
+				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 			}
 		});
 
-		bt3.addActionListener(e -> elementsListModel.removeAllElements());
+		bt3.addActionListener(e -> {
+			elementsListModel.removeAllElements();
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+		});
 
 		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -115,7 +134,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttons.setOpaque(true);
 		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		setLayout(new BorderLayout());
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
 	}
@@ -126,6 +144,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		bt.setEnabled(enabled);
 		bt2.setEnabled(enabled);
 		bt3.setEnabled(enabled);
+	}
+
+	public void addChangeListener(ChangeListener changeListener) {
+		this.listeners.add(changeListener);
 	}
 
 	public List<T> getListElements() {
@@ -211,14 +233,20 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setIcon(null);
 
 			if (value instanceof MappableElement) {
-				setText(((MappableElement) value).getMappedValueOrFallbackToUnmapped());
-				if (!((MappableElement) value).canProperlyMap()) {
+				setText(((MappableElement) value).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
+						.replace("Items.", ""));
+				if (((MappableElement) value).getUnmappedValue().contains("CUSTOM:"))
+					setIcon(new ImageIcon(ImageUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+							((MappableElement) value).getUnmappedValue()).getImage(), 18)));
+				if (!((MappableElement) value).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));
-				}
 			} else if (value instanceof File) {
-				setText(FilenameUtils.removeExtension(((File) value).getName()));
+				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
-				setText(value.toString());
+				setText(value.toString().replace("CUSTOM:", ""));
+				if (value.toString().contains("CUSTOM:"))
+					setIcon(new ImageIcon(ImageUtils.resize(
+							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			}
 
 			return this;

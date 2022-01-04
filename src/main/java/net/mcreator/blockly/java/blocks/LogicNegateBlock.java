@@ -21,7 +21,9 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -29,16 +31,22 @@ public class LogicNegateBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element negated_output_block = XMLUtil.getFirstChildrenWithName(block, "value");
-		master.append("(");
 		if (negated_output_block != null) {
-			master.append("!");
-			master.processOutputBlock(negated_output_block);
+			String inputCode = BlocklyToCode.directProcessOutputBlock(master, negated_output_block);
+			if (inputCode.equals("(true)"))
+				master.append("(false)");
+			else if (inputCode.equals("(false)"))
+				master.append("(true)");
+			else {
+				master.append("(!");
+				master.append(withoutParentheses(inputCode));
+				master.append(")");
+			}
 		} else {
-			master.append("false");
+			master.append("(false)");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					"Found not block without input. Its value will always be false."));
+					L10N.t("blockly.warnings.empty_not_block")));
 		}
-		master.append(")");
 	}
 
 	@Override public String[] getSupportedBlocks() {
@@ -47,5 +55,11 @@ public class LogicNegateBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	private static String withoutParentheses(String code) {
+		if (code.contains("instanceof"))
+			return code;
+		return ProcedureCodeOptimizer.removeParentheses(code, "=><&|^!?");
 	}
 }

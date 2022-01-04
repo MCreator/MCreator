@@ -40,8 +40,8 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.views.ViewBase;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
@@ -126,7 +126,7 @@ public class CodeEditorView extends ViewBase {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
 
-	CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
+	public CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
 		super(fa);
 
 		this.fileWorkingOn = fileWorkingOn;
@@ -166,7 +166,6 @@ public class CodeEditorView extends ViewBase {
 		te.setAutoIndentEnabled(true);
 
 		te.setTabSize(4);
-		te.setTabsEmulated(false);
 
 		ToolTipManager.sharedInstance().registerComponent(te);
 
@@ -501,7 +500,12 @@ public class CodeEditorView extends ViewBase {
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON));
+			SwingUtilities.invokeLater(() -> {
+				try {
+					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+				} catch (Exception ignored) {
+				}
+			});
 		} else if (fileName.endsWith(".xml")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang")) {
@@ -536,6 +540,10 @@ public class CodeEditorView extends ViewBase {
 		ro.setText(notice);
 		ro.setBackground(color);
 		ro.setVisible(true);
+	}
+
+	public void hideNotice() {
+		ro.setVisible(false);
 	}
 
 	public void disableJumpToMode() {
@@ -711,6 +719,10 @@ public class CodeEditorView extends ViewBase {
 		return (ViewBase) existing.getContent();
 	}
 
+	public CodeCleanup getCodeCleanup() {
+		return codeCleanup;
+	}
+
 	@Override public String getViewName() {
 		return fileWorkingOn.getName();
 	}
@@ -721,8 +733,8 @@ public class CodeEditorView extends ViewBase {
 
 	public static boolean isFileSupported(String fileName) {
 		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md")
-				.contains(FilenameUtils.getExtension(fileName));
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg")
+				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
 	public void jumpToLine(int linenum) {

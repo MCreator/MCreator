@@ -21,15 +21,7 @@ package net.mcreator.util.image;
 import javax.swing.*;
 import java.awt.*;
 
-public final class EmptyIcon implements Icon {
-
-	private final int width;
-	private final int height;
-
-	public EmptyIcon(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
+public final record EmptyIcon(int width, int height) implements Icon {
 
 	@Override public int getIconHeight() {
 		return height;

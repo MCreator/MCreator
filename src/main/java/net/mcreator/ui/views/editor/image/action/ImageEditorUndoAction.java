@@ -30,14 +30,14 @@ public class ImageEditorUndoAction extends BasicAction {
 	public ImageEditorUndoAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.undo"), actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
-			if (pan instanceof ImageMakerView) {
-				ImageMakerView codeEditorView = (ImageMakerView) pan;
-				codeEditorView.getVersionManager().undo();
+			if (pan instanceof ImageMakerView imageMakerView) {
+				imageMakerView.getVersionManager().undo();
 			}
 		});
 		setIcon(UIRES.get("img_editor.undo"));
 		setTooltip(L10N.t("action.image_editor.undo.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
+				tab.getContent() instanceof ImageMakerView imageMakerView && !imageMakerView.getVersionManager()
+						.firstRevision()));
 	}
 }

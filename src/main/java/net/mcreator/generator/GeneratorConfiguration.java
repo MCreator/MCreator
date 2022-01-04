@@ -162,6 +162,44 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return (List<?>) generatorConfig.get("resources_setup_tasks");
 	}
 
+	@Nullable public List<?> getSourceSetupTasks() {
+		return (List<?>) generatorConfig.get("sources_setup_tasks");
+	}
+
+	public String getJavaModelsKey() {
+		return generatorConfig.get("java_models") != null ?
+				((Map<?, ?>) generatorConfig.get("java_models")).get("key").toString() :
+				"legacy";
+	}
+
+	public List<String> getCompatibleJavaModelKeys() {
+		List<String> retval = new ArrayList<>();
+		retval.add(getJavaModelsKey());
+
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
+				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
+						.map(Object::toString).toList());
+			}
+		}
+
+		return retval;
+	}
+
+	public List<String> getJavaModelRequirementKeyWords() {
+		List<String> retval = new ArrayList<>();
+
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
+				retval.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
+								.map(Object::toString).toList());
+			}
+		}
+
+		return retval;
+	}
+
 	public String getGeneratorName() {
 		return generatorName;
 	}

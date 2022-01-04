@@ -28,8 +28,8 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -88,7 +88,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 			if (imageTxt != null) {
 				if (image == null) {
 					ImageIcon a = new ImageIcon(editor.mcreator.getFolderManager()
-							.getOtherTextureFile(FilenameUtils.removeExtension(imageTxt)).getAbsolutePath());
+							.getOtherTextureFile(FilenameUtilsPatched.removeExtension(imageTxt)).getAbsolutePath());
 
 					if (scale1x.isSelected())
 						editor.editor.setPositioningMode(a.getIconWidth() / 2, a.getIconHeight() / 2);

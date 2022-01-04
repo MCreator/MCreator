@@ -23,6 +23,7 @@ import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
+import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
@@ -43,6 +44,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -111,7 +113,7 @@ public class GeneratorsTest {
 
 					new MCreator(null, workspace).getGradleConsole()
 							.exec(workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
-								if (taskResult.getStatusByMCreator() == GradleErrorCodes.STATUS_OK) {
+								if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
 									workspace.getGenerator().reloadGradleCaches();
 								} else {
 									fail("Gradle MDK setup failed!");
@@ -133,19 +135,27 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing procedure triggers");
 				GTProcedureTriggers.runTest(LOG, generator, workspace);
 
-				LOG.info("[" + generator + "] ----- Testing procedure blocks");
-				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
-				GTBuild.runTest(LOG, generator, workspace);
-
 				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
 				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 
 				LOG.info("[" + generator + "] ----- Testing mod elements generation");
 				GTModElements.runTest(LOG, generator, random, workspace);
 
+				LOG.info("[" + generator + "] ----- Re-generating base after mod element generation");
+				assertTrue(workspace.getGenerator().generateBase());
+
+				LOG.info("[" + generator + "] ----- Reformatting the code and organising the imports");
+				ClassWriter.formatAndOrganiseImportsForFiles(workspace,
+						Files.walk(workspace.getWorkspaceFolder().toPath()).filter(Files::isRegularFile)
+								.map(Path::toFile).collect(Collectors.toList()), null);
+
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
+				GTBuild.runTest(LOG, generator, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing procedure blocks");
+				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
 				GTBuild.runTest(LOG, generator, workspace);
 			});
 		});

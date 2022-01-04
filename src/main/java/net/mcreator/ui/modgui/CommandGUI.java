@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -59,7 +60,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	@Override protected void initGUI() {
 		onCommandExecuted = new ProcedureSelector(this.withEntry("command/when_executed"), mcreator,
-				L10N.t("elementgui.command.when_command_executed"),
+				L10N.t("elementgui.command.when_command_executed"), AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdparams:map"));
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
@@ -82,7 +83,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		JPanel evente = new JPanel();
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.command.on_command_executed"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onCommandExecuted);

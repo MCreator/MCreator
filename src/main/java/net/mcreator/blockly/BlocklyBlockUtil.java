@@ -50,8 +50,7 @@ public class BlocklyBlockUtil {
 		}
 		Element start_block = null;
 		for (int i = 0; i < blocks.getLength() && start_block == null; i++) {
-			if (blocks.item(i) instanceof Element) {
-				Element block = (Element) blocks.item(i);
+			if (blocks.item(i) instanceof Element block) {
 				if (block.getAttribute("type").equals(typeBlockName)) {
 					start_block = block;
 				}
@@ -116,6 +115,17 @@ public class BlocklyBlockUtil {
 	 */
 	public static Color getBlockColorFromHUE(int hue) {
 		return Color.getHSBColor(hue / 360f, 0.37f, 0.6f);
+	}
+
+	/**
+	 * Returns the type of the block attached to an input element
+	 *
+	 * @param input The input node of the block
+	 * @return The type of the block attached to the input, or null if no block is attached
+	 */
+	public static String getInputBlockType(Element input) {
+		List<Element> outputBlocks = XMLUtil.getChildrenWithName(input, "block", "shadow");
+		return outputBlocks.size() < 1 ? null : outputBlocks.get(0).getAttribute("type");
 	}
 
 }

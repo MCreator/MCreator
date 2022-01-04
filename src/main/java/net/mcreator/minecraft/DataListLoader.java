@@ -24,8 +24,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,9 +39,7 @@ public class DataListLoader {
 	private static final Map<String, LinkedHashMap<String, DataListEntry>> cache = new HashMap<>();
 
 	public static void preloadCache() {
-		Reflections reflections = new Reflections("datalists", new ResourcesScanner(),
-				ClassLoader.getSystemClassLoader());
-		Set<String> fileNames = reflections.getResources(Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("datalists", Pattern.compile(".*\\.yaml"));
 		for (String res : fileNames) {
 			String datalistname = res.split("datalists/")[1].replace(".yaml", "");
 			loadDataList(datalistname);
@@ -77,9 +73,8 @@ public class DataListLoader {
 							if (list.get().containsKey(elementObj))
 								LOG.warn("Duplicate datalist key: " + elementObj);
 							list.get().put((String) elementObj, new DataListEntry((String) elementObj));
-						} else if (elementObj instanceof Map) {
+						} else if (elementObj instanceof Map<?, ?> element) {
 							String elementName = null;
-							Map<?, ?> element = (Map<?, ?>) elementObj;
 							for (Map.Entry<?, ?> entry : element.entrySet())
 								if (entry.getValue() == null)
 									elementName = (String) entry.getKey();

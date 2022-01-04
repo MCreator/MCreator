@@ -1,4 +1,4 @@
 [
-	".rotateAngleY = f3 / (180F / (float)Math.PI);",
-	".rotateAngleX = f4 / (180F / (float)Math.PI);"
+	".yRot = netHeadYaw / (180F / (float)Math.PI);",
+	".xRot = headPitch / (180F / (float)Math.PI);"
 ]

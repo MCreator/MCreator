@@ -24,8 +24,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -37,7 +37,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class BlockItemTextureSelector extends MCreatorDialog {
 
@@ -204,7 +203,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
 			if (ma != null) {
-				setToolTipText(FilenameUtils.removeExtension(ma.getName()));
+				setToolTipText(FilenameUtilsPatched.removeExtension(ma.getName()));
 				ImageIcon icon = new ImageIcon(ma.toString());
 				if (icon.getImage() != null)
 					setIcon(new ImageIcon(ImageUtils.resize(icon.getImage(), 32)));
@@ -258,7 +257,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			filterItems.clear();
 			String term = filterField.getText();
 			filterItems.addAll(items.stream().filter(item -> item.getName().toLowerCase(Locale.ENGLISH)
-					.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
+					.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
 	}

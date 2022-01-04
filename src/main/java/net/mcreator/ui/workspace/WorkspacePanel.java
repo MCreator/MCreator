@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -67,6 +68,7 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -207,8 +209,7 @@ import java.util.stream.Collectors;
 				super.mouseMoved(e);
 				int idx = list.locationToIndex(e.getPoint());
 				IElement element = list.getModel().getElementAt(idx);
-				if (element instanceof ModElement) {
-					ModElement modElement = (ModElement) element;
+				if (element instanceof ModElement modElement) {
 					mcreator.getStatusBar()
 							.setMessage(modElement.getType().getReadableName() + ": " + modElement.getName());
 				}
@@ -1061,8 +1062,7 @@ import java.util.stream.Collectors;
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
 				list.getSelectedValuesList().forEach(el -> {
-					if (el instanceof ModElement) {
-						ModElement mu = (ModElement) el;
+					if (el instanceof ModElement mu) {
 						if (mu.isCodeLocked()) {
 							mu.setCodeLock(false);
 							mcreator.getWorkspace().updateModElement(mu);
@@ -1112,8 +1112,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void duplicateCurrentlySelectedModElement() {
-		if (list.getSelectedValue() instanceof ModElement) {
-			ModElement mu = (ModElement) list.getSelectedValue();
+		if (list.getSelectedValue() instanceof ModElement mu) {
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
@@ -1201,29 +1200,49 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu).stream()
-				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+		GeneratableElement ge = mu.getGeneratableElement();
+
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
+
+		modElementFiles.addAll(
+				mcreator.getGenerator().getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger()));
+
+		if (ge instanceof ICommonType) {
+			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
+			for (BaseType baseType : baseTypes) {
+				modElementFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
+			}
+		}
 
 		if (modElementFiles.size() > 1) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
-			for (File modElementFile : modElementFiles) {
+			boolean global = false;
+			for (GeneratorTemplate modElementFile : modElementFiles) {
+				if (!global && modElementFile.isGlobal()) {
+					codeDropdown.addSeparator();
+					global = true;
+				}
+
 				JMenuItem item = new JMenuItem(
-						"<html>" + modElementFile.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-								.getWorkspaceFolder().toPath().relativize(modElementFile.toPath()));
-				item.setIcon(FileIcons.getIconForFile(modElementFile));
+						"<html>" + modElementFile.getFile().getName() + "<br><small color=#666666>"
+								+ mcreator.getWorkspace().getWorkspaceFolder().toPath()
+								.relativize(modElementFile.getFile().toPath()));
+				item.setIcon(FileIcons.getIconForFile(modElementFile.getFile()));
 				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				item.setIconTextGap(8);
 				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile));
+				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile.getFile()));
 				codeDropdown.add(item);
 			}
 			codeDropdown.show(component, x, y);
 		} else if (modElementFiles.size() == 1) {
-			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0));
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
 		}
 	}
 
@@ -1240,13 +1259,12 @@ import java.util.stream.Collectors;
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
 								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-								if (ge != null && mcreator.getModElementManager().usesGeneratableElementJava(ge))
+								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge))
 									buildNeeded.set(true);
 							}
 
 							mcreator.getWorkspace().removeModElement(((ModElement) re));
-						} else if (re instanceof FolderElement) {
-							FolderElement folder = (FolderElement) re;
+						} else if (re instanceof FolderElement folder) {
 
 							// re-assign mod-elements from deleted folder to parent folder
 							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {

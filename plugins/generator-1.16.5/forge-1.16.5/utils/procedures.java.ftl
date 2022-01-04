@@ -1,43 +1,28 @@
 <#-- @formatter:off -->
-
-<#macro procedureToCode name dependencies customVals={}>
-    {
-		Map<String, Object> $_dependencies = new HashMap<>();
-
-        <#list dependencies as dependency>
-            <#if !customVals[dependency.getName()]?? >
-	    	    $_dependencies.put("${dependency.getName()}",${dependency.getName()});
-            </#if>
-        </#list>
-
-        <#list customVals as key, value>
-        $_dependencies.put("${key}",${value});
-        </#list>
-
-        ${(name)}Procedure.executeProcedure($_dependencies);
-	}
-</#macro>
-
 <#macro procedureToRetvalCode name dependencies customVals={}>
     <#assign depsBuilder = []>
 
     <#list dependencies as dependency>
         <#if !customVals[dependency.getName()]?? >
-            <#assign depsBuilder += ["\"" + dependency.getName() + "\""]>
-            <#assign depsBuilder += [dependency.getName()]>
+            <#assign depsBuilder += ["\"" + dependency.getName() + "\", " + dependency.getName()]>
         </#if>
     </#list>
 
     <#list customVals as key, value>
-        <#assign depsBuilder += ["\"" + key + "\""]>
-        <#assign depsBuilder += [value]>
+        <#assign depsBuilder += ["\"" + key + "\", " + value]>
     </#list>
 
-    ${(name)}Procedure.executeProcedure(ImmutableMap.of(
-        <#list depsBuilder as dep>
-            ${dep}<#if dep?has_next>,</#if>
-        </#list>
-    ))
+    <#if depsBuilder?size == 0>
+        ${(name)}Procedure.executeProcedure(Collections.EMPTY_MAP)
+    <#else>
+        ${(name)}Procedure.executeProcedure(Stream.of(
+        <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>
+        ).collect(HashMap::new, (_m, _e) -> _m.put(_e.getKey(), _e.getValue()), Map::putAll))
+    </#if>
+</#macro>
+
+<#macro procedureToCode name dependencies customVals={}>
+    <@procedureToRetvalCode name dependencies customVals/>;
 </#macro>
 
 <#macro procedureOBJToCode object="">
@@ -82,8 +67,8 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
-    <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
+<#function hasReturnValueOf object="" type="">
+    <#return hasProcedure(object) && (object.getReturnValueType(generator.getWorkspace()) == type)>
 </#function>
 
 <#-- @formatter:on -->

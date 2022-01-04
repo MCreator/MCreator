@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -45,13 +46,13 @@ public class TextReplace implements IBlockGenerator {
 			master.append("(");
 			master.processOutputBlock(text);
 			master.append(".replace(");
-			master.processOutputBlock(what);
+			master.processOutputBlockWithoutParentheses(what);
 			master.append(",");
-			master.processOutputBlock(with);
+			master.processOutputBlockWithoutParentheses(with);
 			master.append("))");
 		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Replace text procedure block can't be empty!"));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_replace")));
 		}
 	}
 

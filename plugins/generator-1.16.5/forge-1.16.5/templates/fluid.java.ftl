@@ -33,6 +33,9 @@
 package ${package}.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.ai.attributes.Attributes;
+
+import net.minecraftforge.common.property.Properties;
 
 @${JavaModName}Elements.ModElement.Tag public class ${name}Block extends ${JavaModName}Elements.ModElement{
 
@@ -152,14 +155,14 @@ import net.minecraft.block.material.Material;
 			}
 			</#if>
 
-			<#if hasProcedure(data.onBlockAdded) || hasProcedure(data.onTickUpdate)>
+			<#if hasProcedure(data.onBlockAdded) || (hasProcedure(data.onTickUpdate) && (data.tickRate > 0))>
 			@Override public void onBlockAdded(BlockState blockstate, World world, BlockPos pos, BlockState oldState, boolean moving) {
 				super.onBlockAdded(blockstate, world, pos, oldState, moving);
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
-				<#if hasProcedure(data.onTickUpdate)>
-				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+				<#if hasProcedure(data.onTickUpdate) && (data.tickRate > 0)>
+				world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 				</#if>
 				<@procedureOBJToCode data.onBlockAdded/>
 			}
@@ -182,7 +185,9 @@ import net.minecraft.block.material.Material;
 				int y = pos.getY();
 				int z = pos.getZ();
 				<@procedureOBJToCode data.onTickUpdate/>
-				world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, ${data.tickRate});
+				<#if (data.tickRate > 0)>
+				world.getPendingBlockTicks().scheduleTick(pos, this, ${data.tickRate});
+				</#if>
 			}
 			</#if>
 

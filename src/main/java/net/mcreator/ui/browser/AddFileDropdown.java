@@ -34,8 +34,7 @@ class AddFileDropdown extends JPopupMenu {
 		try {
 			FilterTreeNode selected = (FilterTreeNode) workspaceFileBrowser.tree.getLastSelectedPathComponent();
 			if (selected != null) {
-				if (selected.getUserObject() instanceof File) {
-					File file = (File) selected.getUserObject();
+				if (selected.getUserObject() instanceof File file) {
 					if (file.isFile())
 						file = file.getParentFile();
 

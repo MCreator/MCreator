@@ -30,6 +30,8 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
+import net.minecraftforge.eventbus.api.Event;
+
 public class ${name}Procedure {
 
 	${trigger_code}

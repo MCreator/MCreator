@@ -1,0 +1,41 @@
+templates:
+  - template: fluid/fluid.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/fluid/@NAMEFluid.java"
+  - template: fluid/fluidblock.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: fluid/fluidattributes.java.ftl
+    deleteWhenConditionFalse: true
+    condition: extendsFluidAttributes()
+    name: "@SRCROOT/@BASEPACKAGEPATH/fluid/attributes/@NAMEFluidAttributes.java"
+  - template: fluid/fluidbucket.java.ftl
+    deleteWhenConditionFalse: true
+    condition: generateBucket
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: fluid/fluidgen.java.ftl
+    deleteWhenConditionFalse: true
+    condition: doesGenerateInWorld()
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/lakes/@NAMEFeature.java"
+
+  - template: json/bucket.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
+
+global_templates:
+  - template: elementinits/fluids.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFluids.java"
+  - template: json/fluidtag.json.ftl
+    writer: json
+    variables: "type=water"
+    name: "@RESROOT/data/minecraft/tags/fluids/water.json"
+  - template: json/fluidtag.json.ftl
+    writer: json
+    variables: "type=lava"
+    name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
+
+localizationkeys:
+  - key: fluid.@modid.@registryname
+    mapto: name
+  - key: block.@modid.@registryname
+    mapto: name
+  - key: item.@modid.@registryname_bucket
+    mapto: bucketName

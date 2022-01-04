@@ -25,8 +25,8 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.Tuple;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +66,7 @@ public class ExternalBlockLoader {
 
 				ToolboxBlock toolboxBlock = gson.fromJson(blockMCreatorDefinition, ToolboxBlock.class);
 				if (toolboxBlock != null) {
-					toolboxBlock.machine_name = FilenameUtils.getBaseName(procedureBlock);
+					toolboxBlock.machine_name = FilenameUtilsPatched.getBaseName(procedureBlock);
 
 					String localized_message = L10N.t("blockly.block." + toolboxBlock.machine_name);
 					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.machine_name);
@@ -112,7 +112,7 @@ public class ExternalBlockLoader {
 		for (String toolboxCategoryName : fileNames) {
 			ToolboxCategory toolboxCategory = gson.fromJson(
 					FileIO.readResourceToString(PluginLoader.INSTANCE, toolboxCategoryName), ToolboxCategory.class);
-			toolboxCategory.id = FilenameUtils.getBaseName(toolboxCategoryName).replace("$", "");
+			toolboxCategory.id = FilenameUtilsPatched.getBaseName(toolboxCategoryName).replace("$", "");
 			toolboxCategories.add(toolboxCategory);
 		}
 
@@ -153,6 +153,7 @@ public class ExternalBlockLoader {
 		toolbox.put("logicoperations", new ArrayList<>());
 		toolbox.put("math", new ArrayList<>());
 		toolbox.put("text", new ArrayList<>());
+		toolbox.put("time", new ArrayList<>());
 		toolbox.put("advanced", new ArrayList<>());
 
 		// Handle built-in categories
@@ -222,11 +223,11 @@ public class ExternalBlockLoader {
 		for (Map.Entry<String, List<Tuple<ToolboxBlock, String>>> entry : toolbox.entrySet()) {
 			StringBuilder categoryBuilderFinal = new StringBuilder();
 			for (Tuple<ToolboxBlock, String> tuple : entry.getValue()) {
-				if (tuple.x instanceof DynamicBlockLoader.DynamicToolboxBlock
-						&& !((DynamicBlockLoader.DynamicToolboxBlock) tuple.x).shouldLoad(
+				if (tuple.x() instanceof DynamicBlockLoader.DynamicToolboxBlock
+						&& !((DynamicBlockLoader.DynamicToolboxBlock) tuple.x()).shouldLoad(
 						pane.getMCreator().getGeneratorConfiguration()))
 					continue;
-				categoryBuilderFinal.append(tuple.y);
+				categoryBuilderFinal.append(tuple.y());
 			}
 			toolbox_xml = toolbox_xml.replace("<custom-" + entry.getKey() + "/>", categoryBuilderFinal.toString());
 		}

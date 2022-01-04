@@ -83,11 +83,7 @@ public final class FileIO {
 					result.write(buffer, 0, length);
 				}
 			}
-			if (charset == null) {
-				return result.toString();
-			} else {
-				return new String(result.toByteArray(), charset);
-			}
+			return charset == null ? result.toString() : result.toString(charset);
 		} catch (Exception e) {
 			LOG.error("Error resource reading: " + e.getMessage());
 			LOG.error(e.getMessage(), e);
