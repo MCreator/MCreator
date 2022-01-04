@@ -35,7 +35,7 @@ package ${package}.entity;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}EntityProjectile extends AbstractArrow implements ItemSupplier {
 
-	public ${name}EntityProjectile(FMLPlayMessages.SpawnEntity packet, Level world) {
+	public ${name}EntityProjectile(PlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, world);
 	}
 
