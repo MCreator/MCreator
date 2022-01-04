@@ -40,7 +40,8 @@ import net.minecraftforge.eventbus.api.Event;
 		&& dependency.getType(generator.getWorkspace()) != "ItemStack"
 		&& dependency.getType(generator.getWorkspace()) != "BlockState"
 		&& dependency.getType(generator.getWorkspace()) != "InteractionResult"
-		&& dependency.getType(generator.getWorkspace()) != "boolean">
+		&& dependency.getType(generator.getWorkspace()) != "boolean"
+		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>">
 		<#assign nullableDependencies += [dependency.getName()]/>
 	</#if>
 </#list>
