@@ -46,6 +46,20 @@ package ${package}.init;
 						register("entitybullet${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 							of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));
+		<#else>
+			public static final EntityType<${entity.getModElement().getName()}Entity> ${entity.getModElement().getRegistryNameUpper()} =
+						register("${entity.getModElement().getRegistryName()}",
+								EntityType.Builder.<${entity.getModElement().getName()}Entity>
+								of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
+								.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
+								.setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
+							<#if entity.immuneToFire>.fireImmune()</#if>.sized(${entity.modelWidth}f, ${entity.modelHeight}f));
+			<#if entity.hasCustomProjectile()>
+			public static final EntityType<${entity.getModElement().getName()}EntityProjectile> ${entity.getModElement().getRegistryNameUpper()}_PROJECTILE =
+					register("entitybullet${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}EntityProjectile>
+							of(${entity.getModElement().getName()}EntityProjectile::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
+							.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).sized(0.5f, 0.5f));
+			</#if>
 		</#if>
     </#list>
 
