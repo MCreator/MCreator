@@ -10,5 +10,5 @@ entity: Entity
 map: HashMap
 advancement: Advancement
 dimensiontype: RegistryKey<World>
-cmdcontext: CommandContext<CommandSource>
 actionresulttype: ActionResultType
+cmdcontext: CommandContext<CommandSource>
