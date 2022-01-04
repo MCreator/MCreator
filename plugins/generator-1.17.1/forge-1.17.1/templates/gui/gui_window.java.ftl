@@ -38,8 +38,6 @@ package ${package}.client.gui;
 
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
-	public final static HashMap<String, Object> guistate = new HashMap<>();
-
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
@@ -140,7 +138,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-		    	drawString(poseStack, this.font, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+		    	this.font.draw(poseStack, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>
@@ -186,7 +184,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					}
 				}
 				</#if>;
-                guistate.put("text:${component.name}", ${component.name});
+                ${name}Menu.guistate.put("text:${component.name}", ${component.name});
 				${component.name}.setMaxLength(32767);
 				this.addWidget(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
@@ -213,7 +211,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
             	${component.name} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 						150, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                guistate.put("checkbox:${component.name}", ${component.name});
+                ${name}Menu.guistate.put("checkbox:${component.name}", ${component.name});
                 this.addRenderableWidget(${component.name});
 			</#if>
 		</#list>

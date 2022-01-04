@@ -60,8 +60,7 @@ class AutocompleteStyle {
 				for (Component com : components) {
 					if (com instanceof JComponent)
 						((JComponent) com).setBorder(null);
-					if (com instanceof JScrollPane) {
-						JScrollPane pane = (JScrollPane) com;
+					if (com instanceof JScrollPane pane) {
 						pane.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 						pane.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0,
 								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));

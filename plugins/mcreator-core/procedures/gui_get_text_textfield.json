@@ -15,6 +15,7 @@
   "output": "String",
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
+    "group": "components",
     "toolbox_id": "guimanagement",
     "fields": [
       "textfield"

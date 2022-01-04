@@ -106,24 +106,28 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 		</#if>
 	</#if>
 
+	<#if data.enchantability != 0>
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
 	}
+	</#if>
 
 	@Override public int getUseDuration(ItemStack itemstack) {
 		return ${data.useDuration};
 	}
 
+	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
 		return ${data.toolType}F;
 	}
+	</#if>
 
 	<#if data.enableMeleeDamage>
 		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
 			if (equipmentSlot == EquipmentSlot.MAINHAND) {
 				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 				builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", (double) ${data.damageVsEntity - 2}, AttributeModifier.Operation.ADDITION));
+				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", ${data.damageVsEntity - 2}d, AttributeModifier.Operation.ADDITION));
 				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4, AttributeModifier.Operation.ADDITION));
 			}
 			return super.getDefaultAttributeModifiers(equipmentSlot);
@@ -160,7 +164,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 	}
 	</#if>
 
-    <#if hasProcedure(data.onRightClickedInAir)>
+    <#if hasProcedure(data.onRightClickedInAir) || data.hasInventory()>
     @Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		ItemStack itemstack = ar.getObject();

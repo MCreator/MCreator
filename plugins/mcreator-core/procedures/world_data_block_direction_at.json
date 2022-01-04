@@ -20,6 +20,7 @@
   "output": "Direction",
   "colour": 20,
   "mcreator": {
+    "group": "data_at",
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",

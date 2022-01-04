@@ -545,7 +545,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     <#if data.ranged>
 	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
-				${name}ProjectileEntity entityarrow = new ${name}ProjectileEntity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, this, this.level);
+				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, this, this.level);
 				double d0 = target.getY() + target.getEyeHeight() - 1.1;
 				double d1 = target.getX() - this.getX();
 				double d3 = target.getZ() - this.getZ();
@@ -688,7 +688,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double z = this.getZ();
 		Entity entity = this;
 		Level world = this.level;
-        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount data.particleCondition/>
+		<#if hasProcedure(data.particleCondition)>
+			if(<@procedureOBJToConditionCode data.particleCondition/>)
+		</#if>
+        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
 		</#if>
 	}
     </#if>
@@ -706,7 +709,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 				<#else>
-					(entityType, world, reason, pos, random) -> (world.getBlockState(pos.below()).getMaterial() == Material.GRASS && world.getRawBrightness(pos, 0) > 8)
+					(entityType, world, reason, pos, random) ->
+							(world.getBlockState(pos.below()).getMaterial() == Material.GRASS && world.getRawBrightness(pos, 0) > 8)
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
@@ -734,7 +738,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					(entityType, world, reason, pos, random) -> (world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER))
+					(entityType, world, reason, pos, random) ->
+							(world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER))
 					</#if>
 			);
 			<#elseif data.mobSpawningType == "undergroundWaterCreature">
@@ -762,11 +767,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					    <#if data.mobBehaviourType == "Mob">
-					        Monster::checkMonsterSpawnRules
-					    <#else>
-					        (entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
-					    </#if>
+						(entityType, world, reason, pos, random) ->
+								(world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random)
+										&& Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
 					</#if>
 			);
 			</#if>

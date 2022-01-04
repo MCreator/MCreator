@@ -90,7 +90,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final Model normal = new Model.BuiltInModel("Normal");
 	private final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal, tool });
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -245,7 +245,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destal3.add("Center", rent);
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -306,8 +306,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.container_item")));
 		subpane2.add(stayInGridWhenCrafting);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage")
-						.withArguments(() -> L10N.t("elementgui.item.container_item")),
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
 				L10N.label("elementgui.item.container_item_damage")));
 		subpane2.add(damageOnCrafting);
 

@@ -18,6 +18,7 @@
 
 package net.mcreator.element.types;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
@@ -46,6 +47,9 @@ public class Procedure extends GeneratableElement {
 
 	private transient List<Dependency> dependencies = null;
 
+	// this flag is only used by tests to force dependencies for trigger tests
+	@VisibleForTesting private transient boolean skipDependencyRegeneration = false;
+
 	public Procedure(ModElement element) {
 		super(element);
 	}
@@ -57,7 +61,7 @@ public class Procedure extends GeneratableElement {
 		return dependencies;
 	}
 
-	public void reloadDependencies() {
+	public List<Dependency> reloadDependencies() {
 		dependencies = new ArrayList<>();
 		List<?> dependenciesList = (List<?>) getModElement().getMetadata("dependencies");
 		for (Object depobj : dependenciesList) {
@@ -65,6 +69,32 @@ public class Procedure extends GeneratableElement {
 					WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
 			dependencies.add(dependency);
 		}
+
+		int idx = dependencies.indexOf(new Dependency("z", "number"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		idx = dependencies.indexOf(new Dependency("y", "number"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		idx = dependencies.indexOf(new Dependency("x", "number"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		idx = dependencies.indexOf(new Dependency("world", "world"));
+		if (idx != -1) {
+			Dependency dependency = dependencies.remove(idx);
+			dependencies.add(0, dependency);
+		}
+
+		return dependencies;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -83,28 +113,26 @@ public class Procedure extends GeneratableElement {
 					trigger = externalTrigger;
 			}
 
-			// we update the dependency list of the procedure
-			List<Dependency> dependenciesArrayList = blocklyToJava.getDependencies();
+			if (!this.skipDependencyRegeneration) {
+				// we update the dependency list of the procedure
+				this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
+						.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
+								null :
+								blocklyToJava.getReturnType().getName().toLowerCase());
+			}
 
-			this.getModElement().clearMetadata().putMetadata("dependencies", dependenciesArrayList)
-					.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
-							null :
-							blocklyToJava.getReturnType().getName().toLowerCase());
-
-			reloadDependencies();
+			additionalData.put("dependencies", reloadDependencies());
+			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
+			additionalData.put("return_type", blocklyToJava.getReturnType());
+			additionalData.put("has_trigger", trigger != null);
+			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 
 			String triggerCode = "";
 			if (trigger != null) {
 				TemplateGenerator templateGenerator = getModElement().getGenerator().getTriggerGenerator();
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
 			}
-
-			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
-			additionalData.put("return_type", blocklyToJava.getReturnType());
-			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("trigger_code", triggerCode);
-			additionalData.put("dependencies", dependenciesArrayList);
-			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 		};
 	}
 
@@ -119,6 +147,10 @@ public class Procedure extends GeneratableElement {
 				getModElement().getGenerator().getProcedureGenerator(),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
+	}
+
+	@VisibleForTesting public void skipDependencyRegeneration() {
+		this.skipDependencyRegeneration = true;
 	}
 
 }

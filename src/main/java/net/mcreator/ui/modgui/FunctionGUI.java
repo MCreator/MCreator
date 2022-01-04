@@ -80,8 +80,7 @@ public class FunctionGUI extends ModElementGUI<Function> {
 				L10N.label("elementgui.function.registry_name")));
 		northPanel.add(name);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace")
-						.withArguments(modElement.getWorkspace().getWorkspaceSettings()::getModID, modElement::getRegistryName),
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("function/namespace"),
 				L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
@@ -141,6 +140,10 @@ public class FunctionGUI extends ModElementGUI<Function> {
 
 	@Override public @Nullable URI getContextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-function");
+	}
+
+	@Override protected boolean allowCodePreview() {
+		return false;
 	}
 
 }

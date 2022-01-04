@@ -27,7 +27,7 @@ import java.awt.*;
 public class JSlidingSpinner extends JPanel {
 	boolean spinning = false, sliding = false;
 	private transient ChangeEvent changeEvent;
-	private double value = 0;
+	private double value;
 	private final JSpinner spinner;
 	private final JLabel propertyLabel;
 

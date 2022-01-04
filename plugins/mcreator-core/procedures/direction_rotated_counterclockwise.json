@@ -10,6 +10,7 @@
   "output": "Direction",
   "colour": 20,
   "mcreator": {
+    "group": "rotation",
     "toolbox_init": [
       "<value name=\"direction\"><block type=\"direction_from_deps\"></block></value>"
     ],

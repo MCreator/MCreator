@@ -44,10 +44,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip if procedures are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping procedure blocks test as the current generator does not support them.");
 			return;
 		}
 
@@ -55,12 +54,10 @@ public class GTProcedureBlocks {
 
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
-
 			StringBuilder additionalXML = new StringBuilder();
 
+			// silently skip procedure blocks not supported by this generator
 			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block that is not defined by generator: "
-						+ procedureBlock.machine_name);
 				continue;
 			}
 
@@ -70,11 +67,11 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (procedureBlock.inputs != null) {
+			if (!procedureBlock.getInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
-					for (String input : procedureBlock.inputs) {
+					for (String input : procedureBlock.getInputs()) {
 						boolean match = false;
 						for (String toolboxtemplate : procedureBlock.toolbox_init) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
@@ -99,10 +96,10 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.required_apis != null) {
+			if (procedureBlock.getRequiredAPIs() != null) {
 				boolean skip = false;
 
-				for (String required_api : procedureBlock.required_apis) {
+				for (String required_api : procedureBlock.getRequiredAPIs()) {
 					if (!workspace.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 						skip = true;
 						break;
@@ -115,10 +112,10 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.fields != null) {
+			if (procedureBlock.getFields() != null) {
 				int processed = 0;
 
-				for (String field : procedureBlock.fields) {
+				for (String field : procedureBlock.getFields()) {
 					try {
 						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
@@ -152,7 +149,7 @@ public class GTProcedureBlocks {
 					}
 				}
 
-				try {
+				if (procedureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
 					JsonArray extensions = procedureBlock.blocklyJSON.getAsJsonObject().get("extensions")
 							.getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
@@ -176,9 +173,30 @@ public class GTProcedureBlocks {
 							break;
 						}
 
-						if (procedureBlock.fields.contains(suggestedFieldName)) {
+						if (procedureBlock.machine_name.contains("potion") && suggestedFieldName.equals("effect"))
+							suggestedFieldName = "potion";
+
+						if (suggestedDataListName.equals("biomedictionary"))
+							suggestedDataListName = "biomedictionarytypes";
+
+						if (suggestedDataListName.equals("sound_category")) {
+							suggestedDataListName = "soundcategories";
+							suggestedFieldName = "soundcategory";
+						}
+
+						if (suggestedDataListName.equals("plant_type")) {
+							suggestedDataListName = "planttype";
+							suggestedFieldName = "planttype";
+						}
+
+						if (procedureBlock.getFields().contains(suggestedFieldName)) {
 							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedDataListName);
+
+							if (values.length == 0 || values[0].equals(""))
+								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
+										suggestedDataListName + "s");
+
 							if (values.length > 0 && !values[0].equals("")) {
 								if (suggestedFieldName.equals("entity")) {
 									additionalXML.append("<field name=\"entity\">EntityZombie</field>");
@@ -187,21 +205,22 @@ public class GTProcedureBlocks {
 											.append(ListUtils.getRandomItem(random, values)).append("</field>");
 								}
 								processed++;
+							} else {
+								System.err.println("list: " + suggestedDataListName); // todo: remove me
 							}
 						}
 					}
-				} catch (Exception ignored) {
 				}
 
-				if (processed != procedureBlock.fields.size()) {
+				if (processed != procedureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
 							+ procedureBlock.machine_name);
 					continue;
 				}
 			}
 
-			if (procedureBlock.statements != null) {
-				for (StatementInput statement : procedureBlock.statements) {
+			if (procedureBlock.getStatements() != null) {
+				for (StatementInput statement : procedureBlock.getStatements()) {
 					additionalXML.append("<statement name=\"").append(statement.name).append("\">")
 							.append("<block type=\"text_print\"><value name=\"TEXT\"><block type=\"math_number\">"
 									+ "<field name=\"NUM\">123.456</field></block></value></block>")

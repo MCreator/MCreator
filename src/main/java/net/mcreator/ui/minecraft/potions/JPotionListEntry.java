@@ -44,7 +44,7 @@ public class JPotionListEntry extends JPanel {
 
 	private final Workspace workspace;
 
-	public JPotionListEntry(MCreator mcreator, JPanel parent, List<JPotionListEntry> entryList) {
+	public JPotionListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JPotionListEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		this.workspace = mcreator.getWorkspace();
@@ -59,20 +59,17 @@ public class JPotionListEntry extends JPanel {
 		add(L10N.label("elementgui.potion.effect"));
 		add(effect);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/duration"),
-				L10N.label("elementgui.potion.duration")));
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/duration"), L10N.label("elementgui.potion.duration")));
 		add(duration);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/amplifier"),
-				L10N.label("elementgui.potion.amplifier")));
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/amplifier"), L10N.label("elementgui.potion.amplifier")));
 		add(amplifier);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/show_particles"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/show_particles"),
 				L10N.label("elementgui.potion.show_particles")));
 		add(showParticles);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("potion/ambient"),
-				L10N.label("elementgui.potion.ambient")));
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/ambient"), L10N.label("elementgui.potion.ambient")));
 		add(ambient);
 
 		showParticles.setSelected(true);

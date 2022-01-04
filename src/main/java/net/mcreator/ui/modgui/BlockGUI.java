@@ -47,6 +47,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -90,7 +91,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder particleTexture;
 
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
-	private final JBoundingBoxList boundingBoxList = new JBoundingBoxList(mcreator);
+	private JBoundingBoxList boundingBoxList;
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourBlockChanges;
@@ -119,7 +120,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 1, 9999999, 1));
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
 
@@ -191,7 +192,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
 			new String[] { "Spread", "Top", "Tube", "Plane" });
 
-	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
+	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -216,7 +217,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final Model grassBlock = new Model.BuiltInModel("Grass block");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
+			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
@@ -262,6 +264,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		spawnWorldTypes = new DimensionListField(mcreator);
 
 		fluidRestrictions = new FluidListField(mcreator);
+
+		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
 		blocksToReplace.setListElements(
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
@@ -718,8 +722,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.drop_amount")));
 		selp3.add(dropAmount);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(
-				this.withEntry("block/use_loot_table_for_drops").withArguments(modElement::getRegistryName),
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
 
@@ -953,8 +956,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
 						GeneratableElement generatableElement = element.getGeneratableElement();
-						if (generatableElement instanceof GUI) {
-							GUI gui = (GUI) generatableElement;
+						if (generatableElement instanceof GUI gui) {
 							inventorySize.setValue(gui.getMaxSlotID() + 1);
 							StringBuilder inslots = new StringBuilder();
 							StringBuilder outslots = new StringBuilder();
@@ -1319,8 +1321,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap, Arrays.asList(ElementUtil.loadMapColors()), "DEFAULT");
-		ComboBoxUtil.updateComboBoxContents(aiPathNodeType, Arrays.asList(ElementUtil.loadPathNodeTypes()), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(colorOnMap,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}

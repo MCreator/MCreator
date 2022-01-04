@@ -19,11 +19,13 @@
 package net.mcreator.blockly;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.w3c.dom.Element;
@@ -47,7 +49,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	protected String lastProceduralBlockType = null;
 
-	private final Stack<StatementInput> statementInputStack = new Stack<>();
+	private final Stack<DependencyProviderInput> dependencyProviderInputStack = new Stack<>();
 
 	public BlocklyToCode(Workspace workspace, @Nullable TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) {
@@ -97,7 +99,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final void addDependency(Dependency dependency) {
 		// check if used by statement input and skip in this case
-		if (checkIfStatementInputsProvide(dependency))
+		if (checkIfDepProviderInputsProvide(dependency))
 			return;
 
 		dependencies.add(dependency);
@@ -111,17 +113,17 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		return workspace;
 	}
 
-	public final void pushStatementInputStack(StatementInput statementInput) {
-		statementInputStack.push(statementInput);
+	public final void pushDepProviderInputStack(DependencyProviderInput statementInput) {
+		dependencyProviderInputStack.push(statementInput);
 	}
 
-	public final void popStatementInputStack() {
-		statementInputStack.pop();
+	public final void popDepProviderInputStack() {
+		dependencyProviderInputStack.pop();
 	}
 
-	public boolean checkIfStatementInputsProvide(Dependency dependency) {
-		for (StatementInput statementInput : statementInputStack) {
-			if (statementInput.provides != null && statementInput.provides.contains(dependency))
+	public boolean checkIfDepProviderInputsProvide(Dependency dependency) {
+		for (var dependencyProviderInput : dependencyProviderInputStack) {
+			if (dependencyProviderInput.provides != null && dependencyProviderInput.provides.contains(dependency))
 				return true;
 		}
 
@@ -129,7 +131,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public List<StatementInput> getStatementInputsMatching(Predicate<StatementInput> predicate) {
-		return this.statementInputStack.stream().filter(predicate).collect(Collectors.toList());
+		return this.dependencyProviderInputStack.stream().filter(i -> i instanceof StatementInput)
+				.map(i -> (StatementInput) i).filter(predicate).collect(Collectors.toList());
 	}
 
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
@@ -151,7 +154,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 			if (!generated) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						"Unknown block type " + type + ". Skipping this block."));
+						L10N.t("blockly.warnings.unknown_block_type.skip", type)));
 			}
 		}
 	}
@@ -176,7 +179,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		if (!generated) {
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Unknown block type " + type + ". Remove this block!"));
+					L10N.t("blockly.warnings.unknown_block_type.remove", type)));
 		}
 	}
 
@@ -219,11 +222,12 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	/**
 	 * Helper method to process an output block and remove surrounding parentheses if possible
 	 *
-	 * @param element The element to process
+	 * @param element   The element to process
 	 * @param blacklist The characters that can't be contained at the top nesting level when optimizing the element
 	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
-	public final void processOutputBlockWithoutParentheses(Element element, String blacklist) throws TemplateGeneratorException {
+	public final void processOutputBlockWithoutParentheses(Element element, String blacklist)
+			throws TemplateGeneratorException {
 		String code = directProcessOutputBlock(this, element);
 		this.append(ProcedureCodeOptimizer.removeParentheses(code, blacklist));
 	}

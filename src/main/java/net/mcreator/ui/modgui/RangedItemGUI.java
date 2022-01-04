@@ -110,7 +110,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private final Model adefault = new Model.BuiltInModel("Default");
-	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>(new Model[] { adefault });
 	private final VComboBox<String> customBulletModelTexture = new SearchableComboBox<>();
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -150,9 +150,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.swinged_by_entity"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		useCondition = new ProcedureSelector(
-				this.withEntry("rangeditem/use_condition").withArguments(() -> L10N.t("condition.common.true")),
-				mcreator, L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
+		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
+				L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.ranged_item.make_glow"), ProcedureSelector.Side.CLIENT, true,

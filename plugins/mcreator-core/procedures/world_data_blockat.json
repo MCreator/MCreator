@@ -26,6 +26,7 @@
   "output": "MCItemBlock",
   "colour": 60,
   "mcreator": {
+    "group": "base",
     "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",

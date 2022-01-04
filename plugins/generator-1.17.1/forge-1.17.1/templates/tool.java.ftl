@@ -114,12 +114,21 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
 				return false;
 			} else {
-				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE);
+				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : (
+								blockstate.is(BlockTags.MINEABLE_WITH_AXE) ||
+								blockstate.is(BlockTags.MINEABLE_WITH_HOE) ||
+								blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
+								blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL)
+						);
 			}
 		}
 
 		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-			return ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction);
+			return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
+					ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
 		}
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {

@@ -72,14 +72,12 @@ public class JsonTree extends AbstractSourceTree {
 	}
 
 	private void addJsonElementToTree(JsonElement element, String prevKey, DefaultMutableTreeNode root) {
-		if (element instanceof JsonObject) {
-			JsonObject object = (JsonObject) element;
+		if (element instanceof JsonObject object) {
 			JsonObjectNode subroot = new JsonObjectNode(object, "{" + (prevKey == null ? "object" : prevKey) + "}");
 			for (String key : object.keySet())
 				addJsonElementToTree(object.get(key), key, subroot);
 			root.add(subroot);
-		} else if (element instanceof JsonArray) {
-			JsonArray array = (JsonArray) element;
+		} else if (element instanceof JsonArray array) {
 			JsonArrayNode subroot = new JsonArrayNode(array, "[" + (prevKey == null ? "array" : prevKey) + "]");
 			for (JsonElement obj : array)
 				addJsonElementToTree(obj, null, subroot);
