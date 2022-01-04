@@ -1,9 +1,14 @@
 <#function mappedMCItemToIngameItemName mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue())!""/>
+        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
-            + mappedBlock
+            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
+            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
+            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
             + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
