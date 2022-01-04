@@ -38,39 +38,8 @@ package ${package}.command;
 	@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
 		event.getDispatcher().register(Commands.literal("${data.commandName}")
 			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
-			.then(Commands.argument("arguments", StringArgumentType.greedyString())
-				<#if hasProcedure(data.onCommandExecuted)>
-            	.executes(${name}Command::execute)
-				</#if>
-			)
-			<#if hasProcedure(data.onCommandExecuted)>
-            .executes(${name}Command::execute)
-			</#if>
+			${argscode}
 		);
-	}
-
-    private static int execute(CommandContext<CommandSourceStack> ctx) {
-		ServerLevel world = ctx.getSource().getLevel();
-
-		double x = ctx.getSource().getPosition().x();
-		double y = ctx.getSource().getPosition().y();
-		double z = ctx.getSource().getPosition().z();
-
-		Entity entity = ctx.getSource().getEntity();
-		if (entity == null)
-			entity = FakePlayerFactory.getMinecraft(world);
-
-		HashMap<String, String> cmdparams = new HashMap<>();
-		int[] index = { -1 };
-		Arrays.stream(ctx.getInput().split("\\s+")).forEach(param -> {
-			if(index[0] >= 0)
-				cmdparams.put(Integer.toString(index[0]), param);
-			index[0]++;
-		});
-
-		<@procedureOBJToCode data.onCommandExecuted/>
-
-		return 0;
 	}
 
 }
