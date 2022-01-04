@@ -23,20 +23,7 @@
 </#function>
 
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
-    <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
-        <#if customelement?has_content>
-            <#return "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
-        <#else>
-            <#return "minecraft:air">
-        </#if>
-    <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "minecraft:air">
     <#else>
         <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems") />
@@ -53,8 +40,7 @@
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign mcitemresourcepath = mappedMCItemToIngameNameNoTags(mappedBlock)/>
-        <#assign ge = w.getWorkspace().getModElementByName(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))/>
+        <#assign ge = w.getWorkspace().getModElementByName(mappedBlock.getUnmappedValue())/>
         <#if ge??>
             <#assign ge = ge.getGeneratableElement() />
 
