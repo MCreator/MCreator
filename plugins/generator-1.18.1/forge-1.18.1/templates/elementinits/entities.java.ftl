@@ -73,5 +73,23 @@ package ${package}.init;
 		event.getRegistry().registerAll(REGISTRY.toArray(new EntityType[0]));
 	}
 
+	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> {
+		<#list entities as entity>
+			<#if entity.getModElement().getTypeString() == "livingentity">
+				${entity.getModElement().getName()}Entity.init();
+			</#if>
+		</#list>
+		});
+	}
+
+	@SubscribeEvent public static void registerAttributes(EntityAttributeCreationEvent event) {
+		<#list entities as entity>
+			<#if entity.getModElement().getTypeString() == "livingentity">
+				event.put(${entity.getModElement().getRegistryNameUpper()}, ${entity.getModElement().getName()}Entity.createAttributes().build());
+			</#if>
+		</#list>
+	}
+
 }
 <#-- @formatter:on -->
