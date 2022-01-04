@@ -16,9 +16,9 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 90,
+  "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "complex_args",
+    "toolbox_id": "arg_types",
     "fields": [
       "name"
     ],

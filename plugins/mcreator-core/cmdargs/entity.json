@@ -22,6 +22,13 @@
           "entities"
         ]
       ]
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "args"
     }
   ],
   "inputsInline": true,
@@ -29,14 +36,15 @@
   "nextStatement": null,
   "colour": 195,
   "mcreator": {
-    "toolbox_id": "basic_args",
+    "toolbox_id": "arg_types",
     "fields": [
       "name",
-      "type",
-      "procedure"
+      "type"
+    ],
+    "statements": [
+      {
+        "name": "args"
+      }
     ]
-  },
-  "extensions": [
-    "arg_procedure"
-  ]
+  }
 }

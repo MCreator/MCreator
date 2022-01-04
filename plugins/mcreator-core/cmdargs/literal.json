@@ -4,6 +4,13 @@
       "type": "field_input",
       "name": "name",
       "text": "name"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "args"
     }
   ],
   "inputsInline": true,
@@ -11,13 +18,14 @@
   "nextStatement": null,
   "colour": 280,
   "mcreator": {
-    "toolbox_id": "basic_args",
+    "toolbox_id": "arg_types",
     "fields": [
-      "name",
-      "procedure"
+      "name"
+    ],
+    "statements": [
+      {
+        "name": "args"
+      }
     ]
-  },
-  "extensions": [
-    "arg_procedure"
-  ]
+  }
 }

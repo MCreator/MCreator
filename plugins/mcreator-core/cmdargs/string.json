@@ -18,6 +18,13 @@
           "string"
         ]
       ]
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "args"
     }
   ],
   "inputsInline": true,
@@ -25,14 +32,15 @@
   "nextStatement": null,
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
-    "toolbox_id": "basic_args",
+    "toolbox_id": "arg_types",
     "fields": [
       "name",
-      "type",
-      "procedure"
+      "type"
+    ],
+    "statements": [
+      {
+        "name": "args"
+      }
     ]
-  },
-  "extensions": [
-    "arg_procedure"
-  ]
+  }
 }

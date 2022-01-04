@@ -16,9 +16,9 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 280,
+  "colour": 60,
   "mcreator": {
-    "toolbox_id": "complex_args",
+    "toolbox_id": "arg_types",
     "fields": [
       "name"
     ],
