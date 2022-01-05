@@ -42,9 +42,9 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 	 * <p>This component will display in the form of a scrollable list, all templates found by {@link net.mcreator.io.TemplatesLoader}.
 	 * This component is a part of {@link BlocklyEditorToolbar}.</p>
 	 *
-	 * @param blocklyPanel <p>The {@link BlocklyPanel} to use for some features</p>
+	 * @param blocklyPanel    <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param templatesSorted <p>This list contains a {@link ResourcePointer} pointing to every template found in plugins or in the user's folder.</p>
-	 * @param procedureGUI <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param procedureGUI    <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
 	 */
 	public BlocklyTemplateDropdown(BlocklyPanel blocklyPanel, List<ResourcePointer> templatesSorted,
 			ProcedureGUI procedureGUI) {

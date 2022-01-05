@@ -71,14 +71,14 @@ public class BlocklyToJava extends BlocklyToCode {
 					throw new ParseException("Could not find start block!", -1);
 
 				// we execute extra actions needed before placing blocks
-				preBlockPlacement();
+				preBlocksPlacement();
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
 				processBlockProcedure(base_blocks);
 
 				// we execute extra actions needed after blocks are placed
-				postBlockPlacement();
+				postBlocksPlacement();
 
 			} catch (TemplateGeneratorException e) {
 				throw e;
@@ -93,15 +93,14 @@ public class BlocklyToJava extends BlocklyToCode {
 	/**
 	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
 	 */
-	public void preBlockPlacement() {}
+	public void preBlocksPlacement() {}
 
 	/**
 	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
 	 */
-	public void postBlockPlacement() {}
+	public void postBlocksPlacement() {}
 
 	private void addJavaBlocks() {
-
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());

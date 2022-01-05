@@ -45,7 +45,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		super(workspace, "event_trigger", sourceXML, templateGenerator, externalGenerators);
 	}
 
-	@Override public void preBlockPlacement() {
+	@Override public void preBlocksPlacement() {
 		if (doc != null) {
 			// first we load data from startblock
 			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, "event_trigger"),
@@ -60,7 +60,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		}
 	}
 
-	@Override public void postBlockPlacement() {
+	@Override public void postBlocksPlacement() {
 		if (getReturnType() != null) {
 			if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

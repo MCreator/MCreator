@@ -49,7 +49,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private JScrollablePopupMenu results = new JScrollablePopupMenu();
 
-	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel){
+	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel) {
 		this(mcreator, id, extension, blocklyPanel, null);
 	}
 
@@ -57,13 +57,14 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * <p>A {@link BlocklyEditorToolbar} is the top panel added on every Java {@link BlocklyPanel}.
 	 * It contains buttons like templates, an export and an import template buttons.</p>
 	 *
-	 * @param mcreator <p>The {@link MCreator} instance used</p>
-	 * @param id <p>This String is mainly used for externalized texts.</p>
-	 * @param extension <p>This is the file extension of exported and imported templates.</p>
+	 * @param mcreator     <p>The {@link MCreator} instance used</p>
+	 * @param id           <p>This String is mainly used for externalized texts.</p>
+	 * @param extension    <p>This is the file extension of exported and imported templates.</p>
 	 * @param blocklyPanel <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param procedureGUI <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
 	 */
-	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel, ProcedureGUI procedureGUI) {
+	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel,
+			ProcedureGUI procedureGUI) {
 		setBorder(null);
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
