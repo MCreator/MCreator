@@ -96,7 +96,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private final Model normal = new Model.BuiltInModel("Normal");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 
 	public FoodGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
