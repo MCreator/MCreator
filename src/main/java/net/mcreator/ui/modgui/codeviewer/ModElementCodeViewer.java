@@ -36,19 +36,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
-		implements ModElementChangedListener {
+public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane {
 
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 
 	private boolean updateRunning = false;
+	private final ModElementChangedListener codeChangedListener;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM);
 
 		this.modElementGUI = modElementGUI;
+		this.codeChangedListener = this::reload;
 
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -62,8 +63,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		});
 	}
 
-	@Override public void modElementChanged() {
-		reload();
+	public void registerUI(JComponent container) {
+		codeChangedListener.registerUI(container);
 	}
 
 	private synchronized void reload() {
