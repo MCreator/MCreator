@@ -157,8 +157,4 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
 	}
-
-	public enum Type {
-		JAVA, JSON
-	}
 }
