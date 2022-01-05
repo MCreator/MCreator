@@ -36,7 +36,7 @@ import java.awt.event.*;
 public interface ModElementChangedListener
 		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
 
-	default void registerUI(JComponent container) {
+	default void registerUI(JComponent container, boolean addIdleListeners) {
 		Component[] components = container.getComponents();
 		for (Component component : components) {
 			if (component instanceof MCItemHolder mcItemHolder) {
@@ -44,11 +44,12 @@ public interface ModElementChangedListener
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
-				entriesList.setEntryCreationListener(c -> {
-					this.registerUI(c);
+				entriesList.addEntryCreationListener(c -> {
+					this.registerUI(c, addIdleListeners);
 					modElementChanged();
 				});
-				component.addMouseListener(this);
+				if (addIdleListeners)
+					component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner button) {
@@ -57,13 +58,13 @@ public interface ModElementChangedListener
 				comboBox.addActionListener(this);
 			} else if (component instanceof JTextComponent textComponent) {
 				textComponent.getDocument().addDocumentListener(this);
-			} else if (component instanceof JFXPanel) {
+			} else if (component instanceof JFXPanel && addIdleListeners) {
 				component.addMouseListener(this);
 				component.addKeyListener(this);
 			} else if (component instanceof JComponent jcomponent) {
-				registerUI(jcomponent);
+				registerUI(jcomponent, addIdleListeners);
 
-				if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
+				if (!(component instanceof JLabel) && !(component instanceof JPanel) && addIdleListeners) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
 				}

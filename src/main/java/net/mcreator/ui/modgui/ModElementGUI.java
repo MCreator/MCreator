@@ -388,8 +388,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 		}
 
-		elementUpdateListener.registerUI(centerComponent);
-
 		if (modElementCodeViewer != null) {
 			splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
 			splitPane.setOpaque(false);
@@ -408,6 +406,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			@SuppressWarnings("unchecked") GE generatableElement = (GE) modElement.getGeneratableElement();
 			openInEditingMode(generatableElement);
 		}
+
+		SwingUtilities.invokeLater(() -> elementUpdateListener.registerUI(centerComponent, false));
 
 		disableUnsupportedFields();
 	}

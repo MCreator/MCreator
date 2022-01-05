@@ -64,7 +64,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	public void registerUI(JComponent container) {
-		codeChangedListener.registerUI(container);
+		codeChangedListener.registerUI(container, true);
 	}
 
 	private synchronized void reload() {
