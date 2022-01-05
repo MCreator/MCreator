@@ -297,13 +297,12 @@ public class GradleConsole extends JPanel {
 		String java_home = GradleUtils.getJavaHome();
 
 		if (ref.getApplication() != null) {
-			append("Started on " + new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime()),
-					new Color(127, 120, 120));
 			String deviceInfo = "Build info: MCreator " + Launcher.version.getFullString() + ", " + ref.getWorkspace()
 					.getGenerator().getGeneratorName() + ", " + ref.getApplication().getDeviceInfo().getSystemBits()
 					+ "-bit, " + ref.getApplication().getDeviceInfo().getRamAmountMB() + " MB, " + ref.getApplication()
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
-					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)");
+					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
+					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
 			append(deviceInfo, new Color(127, 120, 120));
 			append(" ");
 			taskOut.append(deviceInfo);
