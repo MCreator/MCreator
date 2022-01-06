@@ -36,9 +36,9 @@ import java.util.List;
 
 public class BlocklyToProcedure extends BlocklyToJava {
 
-	private String externalTrigger = null;
+	private String externalTrigger;
 	private List<VariableElement> variables;
-	private VariableType returnType = null;
+	private VariableType returnType;
 
 	public BlocklyToProcedure(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
