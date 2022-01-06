@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,9 +36,9 @@
 package ${package}.item;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import javax.annotation.Nullable;
 
-<#if data.hasDispenseBehavior>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if>
-public class ${name}Item extends Item {
+<#if data.hasDispenseBehavior>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if> public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
