@@ -36,7 +36,8 @@ package ${package}.item;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-<#if data.hasDispenseBehavior>@Mod.EventBusSubscriber</#if> public class ${name}Item extends Item {
+<#if data.hasDispenseBehavior>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if>
+public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
