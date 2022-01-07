@@ -68,6 +68,7 @@ function FieldDataListSelector(type) {
                             entry = getDefaultEntry();
                         }
 
+                        javabridge.triggerEvent();
                         entryField.updateDisplay();
                     }
                 });
