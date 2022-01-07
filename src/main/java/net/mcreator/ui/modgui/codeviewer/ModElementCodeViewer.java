@@ -77,10 +77,12 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
+				registerUI(entriesList);
 				entriesList.setEntryCreationListener(c -> {
-					this.registerUI(c);
+					registerUI(c);
 					reload();
 				});
+
 				component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
