@@ -34,11 +34,12 @@ public class PropertyNameValidator implements Validator {
 	private final JTextField holder;
 
 	private final Supplier<Stream<String>> properties;
-	private final Supplier<List<String>> forbiddenNames;
+	private final List<String> forbiddenNames;
+
 	private final Validator extraValidator;
 
 	public PropertyNameValidator(VTextField holder, String name, Supplier<Stream<String>> properties,
-			Supplier<List<String>> forbiddenNames, Validator extraValidator) {
+			List<String> forbiddenNames, Validator extraValidator) {
 		this.name = name;
 		this.holder = holder;
 		this.properties = properties;
@@ -47,8 +48,7 @@ public class PropertyNameValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if (properties.get().filter(holder.getText()::equals).count() > 1 || forbiddenNames.get()
-				.contains(holder.getText()))
+		if (properties.get().filter(holder.getText()::equals).count() > 1 || forbiddenNames.contains(holder.getText()))
 			return new ValidationResult(ValidationResultType.ERROR,
 					L10N.t("validators.property_name.duplicate", name.toLowerCase()));
 

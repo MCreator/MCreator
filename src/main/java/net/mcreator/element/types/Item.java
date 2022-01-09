@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.WorkspaceDependentParameter;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -167,15 +168,14 @@ import java.util.Map;
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
 
-	public static class ModelEntry {
+	public static class ModelEntry extends WorkspaceDependentParameter {
 
-		public final Workspace workspace;
 		public int renderType;
 		public String modelTexture;
 		public String modelName;
 
 		public ModelEntry(Workspace workspace) {
-			this.workspace = workspace;
+			super(workspace);
 		}
 
 		public Model getItemModel() {

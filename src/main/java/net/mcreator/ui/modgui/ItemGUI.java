@@ -60,7 +60,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -92,7 +91,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtInItemModels());
 	private JItemPropertiesStatesList customProperties;
 
 	private ProcedureSelector onRightClickedInAir;
@@ -432,7 +431,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(builtInItemModels(),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(builtInItemModels()),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -442,8 +441,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 	}
 
-	public static List<Model> builtInItemModels() {
-		return Arrays.asList(normal, tool);
+	public static Model[] builtInItemModels() {
+		return new Model[] { normal, tool };
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

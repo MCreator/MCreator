@@ -131,7 +131,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 							L10N.t("elementgui.item.custom_states.add.error_duplicate.title"),
 							JOptionPane.ERROR_MESSAGE);
 				else if (!state.equals("!esc"))
-					addStatesEntry(state);
+					addStatesEntry().state.setText(state);
 			}
 		});
 		topbar.add(addState);
@@ -174,7 +174,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				propertyId);
 
 		pe.name.setValidator(new PropertyNameValidator(pe.name, "Property name",
-				() -> propertiesList.stream().map(e -> e.name.getText()), () -> builtinPropertyNames,
+				() -> propertiesList.stream().map(e -> e.name.getText()), builtinPropertyNames,
 				new RegistryNameValidator(pe.name, "Property name")));
 		pe.name.enableRealtimeValidation();
 		pe.name.getDocument().addDocumentListener(new DocumentListener() {
@@ -195,8 +195,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		return pe;
 	}
 
-	private JItemStatesListEntry addStatesEntry(String state) {
-		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, state, e -> {
+	private JItemStatesListEntry addStatesEntry() {
+		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, e -> {
 			if (getValidationResult(false).validateIsErrorFree())
 				e.state.setText(StateEditorDialog.open(mcreator, e.state.getText(), buildPropertiesMap(),
 						gui.withEntry("item/custom_state")));
@@ -230,15 +230,15 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setProperties(Map<String, Procedure> properties) {
-		properties.forEach((k, v) -> {
+		properties.forEach((name, value) -> {
 			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
-			if (k.startsWith("property")) {
+			if (name.startsWith("property")) {
 				try {
-					propertyId.set(Math.max(propertyId.get(), Integer.parseInt(k.substring("property".length()))));
+					propertyId.set(Math.max(propertyId.get(), Integer.parseInt(name.substring("property".length()))));
 				} catch (NumberFormatException ignored) {
 				}
 			}
-			addPropertiesEntry(propertyId.get()).setEntry(k, v);
+			addPropertiesEntry(propertyId.get()).setEntry(name, value);
 		});
 	}
 
@@ -249,7 +249,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setStates(Map<String, Item.ModelEntry> states) {
-		states.forEach((key, model) -> addStatesEntry(key).setEntry(key, model));
+		states.forEach((state, model) -> addStatesEntry().setEntry(state, model));
 	}
 
 	public AggregatedValidationResult getValidationResult(boolean includeStates) {

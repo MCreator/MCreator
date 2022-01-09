@@ -42,6 +42,7 @@ import net.mcreator.workspace.resources.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -59,13 +60,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemStatesListEntry> entryList, String initialState,
-			Consumer<JItemStatesListEntry> editButtonListener) {
+			List<JItemStatesListEntry> entryList, Consumer<JItemStatesListEntry> editButtonListener) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
 		state.setOpaque(true);
-		state.setText(initialState);
 		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
@@ -143,7 +142,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(ItemGUI.builtInItemModels(),
+		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtInItemModels()),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}

@@ -24,6 +24,7 @@ import com.google.gson.JsonSyntaxException;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.NumberProcedure;
+import net.mcreator.element.parts.WorkspaceDependentParameter;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorTemplate;
@@ -61,7 +62,9 @@ public class ModElementManager {
 
 		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);
 		this.gson = new GsonBuilder().registerTypeAdapter(NumberProcedure.class, new NumberProcedure.GSONAdapter())
-				.registerTypeHierarchyAdapter(GeneratableElement.class, this.gsonAdapter).disableHtmlEscaping()
+				.registerTypeHierarchyAdapter(GeneratableElement.class, this.gsonAdapter)
+				.registerTypeHierarchyAdapter(WorkspaceDependentParameter.class,
+						new WorkspaceDependentParameter.GSONAdapter(this.workspace)).disableHtmlEscaping()
 				.setPrettyPrinting().setLenient().create();
 	}
 
