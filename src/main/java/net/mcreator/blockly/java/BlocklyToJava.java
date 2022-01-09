@@ -43,7 +43,6 @@ public class BlocklyToJava extends BlocklyToCode {
 
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
 	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
-	protected Document doc;
 
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
@@ -60,7 +59,7 @@ public class BlocklyToJava extends BlocklyToCode {
 
 		if (sourceXML != null) {
 			try {
-				doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+				final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
@@ -71,14 +70,14 @@ public class BlocklyToJava extends BlocklyToCode {
 					throw new ParseException("Could not find start block!", -1);
 
 				// we execute extra actions needed before placing blocks
-				preBlocksPlacement();
+				preBlocksPlacement(doc);
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
 				processBlockProcedure(base_blocks);
 
 				// we execute extra actions needed after blocks are placed
-				postBlocksPlacement();
+				postBlocksPlacement(doc);
 
 			} catch (TemplateGeneratorException e) {
 				throw e;
@@ -92,13 +91,15 @@ public class BlocklyToJava extends BlocklyToCode {
 
 	/**
 	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
+	 * @param doc Blockly XML document
 	 */
-	public void preBlocksPlacement() {}
+	public void preBlocksPlacement(Document doc) {}
 
 	/**
 	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
+	 * @param doc Blockly XML document
 	 */
-	public void postBlocksPlacement() {}
+	public void postBlocksPlacement(Document doc) {}
 
 	private void addJavaBlocks() {
 		// add standard procedural blocks

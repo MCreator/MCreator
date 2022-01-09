@@ -48,6 +48,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private static final Logger LOG = LogManager.getLogger(BlocklyEditorToolbar.class);
 
 	private JScrollablePopupMenu results = new JScrollablePopupMenu();
+	private final JButton templateLib;
 
 	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel) {
 		this(mcreator, id, extension, blocklyPanel, null);
@@ -70,7 +71,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
 				TemplatesLoader.loadTemplates(extension, extension), procedureGUI);
 
-		JButton templateLib = L10N.button("blockly.templates." + id);
+		templateLib = L10N.button("blockly.templates." + id);
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
 		templateLib.setOpaque(false);
@@ -227,6 +228,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		});
 		ComponentUtils.normalizeButton4(import_);
 		import_.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+	}
+
+	public void setTemplateLibButtonWidth(int w) {
+		templateLib.setPreferredSize(new Dimension(w, 16));
 	}
 
 }

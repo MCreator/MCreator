@@ -30,6 +30,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import org.apache.commons.lang3.ArrayUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		super(workspace, "event_trigger", sourceXML, templateGenerator, externalGenerators);
 	}
 
-	@Override public void preBlocksPlacement() {
+	@Override public void preBlocksPlacement(Document doc) {
 		if (doc != null) {
 			// first we load data from startblock
 			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, "event_trigger"),
@@ -60,7 +61,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		}
 	}
 
-	@Override public void postBlocksPlacement() {
+	@Override public void postBlocksPlacement(Document doc) {
 		if (getReturnType() != null) {
 			if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

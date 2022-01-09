@@ -642,7 +642,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
-		bpb.add(PanelUtils.northAndCenterElement(new BlocklyEditorToolbar(mcreator, "ai_setup", "aitpl", blocklyPanel), blocklyPanel));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, "ai_setup", "aitpl", blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
 

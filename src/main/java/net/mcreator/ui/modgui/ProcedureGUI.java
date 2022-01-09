@@ -572,7 +572,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new BlocklyEditorToolbar(mcreator, "procedures", "ptpl", blocklyPanel, this));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, "procedures", "ptpl", blocklyPanel, this);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
+		pane5.add("North", blocklyEditorToolbar);
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}
@@ -587,7 +589,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		else
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
-
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {
