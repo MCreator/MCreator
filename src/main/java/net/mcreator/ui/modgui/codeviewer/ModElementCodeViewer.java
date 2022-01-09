@@ -106,10 +106,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		}
 	}
 
-	private synchronized void reload() {
+	private void reload() {
 		if (isVisible() && !updateRunning) {
+			updateRunning = true;
 			new Thread(() -> {
-				updateRunning = true;
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
@@ -120,18 +120,26 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					for (GeneratorFile file : files) {
 						if (cache.containsKey(file.file())) { // existing file
-							if (cache.get(file.file()).update(file)) {
-								int tabid = indexOfComponent(cache.get(file.file()));
-								if (tabid != -1)
-									setSelectedIndex(tabid);
-							}
+							SwingUtilities.invokeAndWait(() -> {
+								try {
+									if (cache.get(file.file()).update(file)) {
+										int tabid = indexOfComponent(cache.get(file.file()));
+										if (tabid != -1)
+											setSelectedIndex(tabid);
+									}
+								} catch (Exception ignored) {
+								}
+							});
 						} else { // new file
-							try {
-								FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-								addTab(file.file().getName(), FileIcons.getIconForFile(file.file()), fileCodeViewer);
-								cache.put(file.file(), fileCodeViewer);
-							} catch (Exception ignored) {
-							}
+							SwingUtilities.invokeAndWait(() -> {
+								try {
+									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
+									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+											fileCodeViewer);
+									cache.put(file.file(), fileCodeViewer);
+								} catch (Exception ignored) {
+								}
+							});
 						}
 					}
 
