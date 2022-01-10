@@ -23,7 +23,8 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
-public record ProceduralBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBlockCodeGenerator) implements IBlockGenerator {
+public record ProceduralBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBlockCodeGenerator)
+		implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		blocklyBlockCodeGenerator.generateBlock(master, block);

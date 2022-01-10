@@ -25,7 +25,10 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.generator.template.*;
+import net.mcreator.generator.template.MinecraftCodeProvider;
+import net.mcreator.generator.template.TemplateConditionParser;
+import net.mcreator.generator.template.TemplateGenerator;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
@@ -185,7 +188,8 @@ public class Generator implements IGenerator, Closeable {
 					extractVariables(generatorTemplate, dataModel);
 
 					try {
-						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(templateFileName, dataModel);
+						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
+								templateFileName, dataModel);
 						return new GeneratorFile(code, generatorTemplate.getFile(),
 								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
 					} catch (TemplateGeneratorException e) {
@@ -258,8 +262,8 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				String code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element, templateFileName, dataModel,
-						element.getAdditionalTemplateData());
+				String code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
+						templateFileName, dataModel, element.getAdditionalTemplateData());
 
 				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
 						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
@@ -737,10 +741,11 @@ public class Generator implements IGenerator, Closeable {
 							if (model.getType() == Model.Type.JAVA) {
 								String modelCode = FileIO.readFileToString(model.getFile());
 								try {
-									modelCode = getTemplateGeneratorFromName("templates").generateFromTemplate(template, new HashMap<>(
-											Map.of("modelname", model.getReadableName(), "model", modelCode,
-													"modelregistryname",
-													RegistryNameFixer.fromCamelCase(model.getReadableName()))));
+									modelCode = getTemplateGeneratorFromName("templates").generateFromTemplate(template,
+											new HashMap<>(
+													Map.of("modelname", model.getReadableName(), "model", modelCode,
+															"modelregistryname",
+															RegistryNameFixer.fromCamelCase(model.getReadableName()))));
 								} catch (TemplateGeneratorException e) {
 									e.printStackTrace();
 								}

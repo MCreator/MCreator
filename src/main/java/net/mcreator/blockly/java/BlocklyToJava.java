@@ -91,12 +91,14 @@ public class BlocklyToJava extends BlocklyToCode {
 
 	/**
 	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
+	 *
 	 * @param doc Blockly XML document
 	 */
 	public void preBlocksPlacement(Document doc) {}
 
 	/**
 	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
+	 *
 	 * @param doc Blockly XML document
 	 */
 	public void postBlocksPlacement(Document doc) {}

@@ -572,7 +572,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, "procedures", "ptpl", blocklyPanel, this);
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, "procedures", "ptpl",
+				blocklyPanel, this);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
