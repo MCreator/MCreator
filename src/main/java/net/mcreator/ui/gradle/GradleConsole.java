@@ -54,8 +54,10 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -299,7 +301,8 @@ public class GradleConsole extends JPanel {
 					.getGenerator().getGeneratorName() + ", " + ref.getApplication().getDeviceInfo().getSystemBits()
 					+ "-bit, " + ref.getApplication().getDeviceInfo().getRamAmountMB() + " MB, " + ref.getApplication()
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
-					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)");
+					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
+					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
 			append(deviceInfo, new Color(127, 120, 120));
 			append(" ");
 			taskOut.append(deviceInfo);
