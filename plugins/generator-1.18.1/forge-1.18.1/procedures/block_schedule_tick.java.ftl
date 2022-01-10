@@ -1,2 +1,2 @@
-world.getBlockTicks().schedule(new ScheduledTick<>(world.getBlockState(new BlockPos((int)${input$x}, (int)${input$y},(int)${input$z}))
-        .getBlock(), new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$ticks)}, 0));
+world.scheduleTick(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),
+		world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getBlock(), ${opt.toInt(input$ticks)});
