@@ -1738,7 +1738,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.datapack.loottable.JLootTablePool">
 <h3>Class&nbsp;<a href="net/mcreator/ui/datapack/loottable/JLootTablePool.html" title="class in net.mcreator.ui.datapack.loottable">net.mcreator.ui.datapack.loottable.JLootTablePool</a></h3>
-<div class="type-signature">class JLootTablePool extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class JLootTablePool extends <a href="net/mcreator/ui/minecraft/JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -1765,16 +1765,35 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> maxrolls</pre>
 </li>
 <li class="block-list">
-<h5>mcreator</h5>
-<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
-</li>
-<li class="block-list">
 <h5>minbonusrolls</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> minbonusrolls</pre>
 </li>
 <li class="block-list">
 <h5>minrolls</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> minrolls</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.datapack.loottable.JLootTablePoolsList">
+<h3>Class&nbsp;<a href="net/mcreator/ui/datapack/loottable/JLootTablePoolsList.html" title="class in net.mcreator.ui.datapack.loottable">net.mcreator.ui.datapack.loottable.JLootTablePoolsList</a></h3>
+<div class="type-signature">class JLootTablePoolsList extends <a href="net/mcreator/ui/minecraft/JEntriesList.html" title="class in net.mcreator.ui.minecraft">JEntriesList</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>poolList</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/datapack/loottable/JLootTablePool.html" title="class in net.mcreator.ui.datapack.loottable">JLootTablePool</a>&gt; poolList</pre>
+</li>
+<li class="block-list">
+<h5>pools</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> pools</pre>
 </li>
 </ul>
 </section>
@@ -6182,20 +6201,16 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
+<h5>lootTablePools</h5>
+<pre><a href="net/mcreator/ui/datapack/loottable/JLootTablePoolsList.html" title="class in net.mcreator.ui.datapack.loottable">JLootTablePoolsList</a> lootTablePools</pre>
+</li>
+<li class="block-list">
 <h5>name</h5>
 <pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; name</pre>
 </li>
 <li class="block-list">
 <h5>namespace</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; namespace</pre>
-</li>
-<li class="block-list">
-<h5>poolList</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/datapack/loottable/JLootTablePool.html" title="class in net.mcreator.ui.datapack.loottable">JLootTablePool</a>&gt; poolList</pre>
-</li>
-<li class="block-list">
-<h5>pools</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> pools</pre>
 </li>
 <li class="block-list">
 <h5>type</h5>
