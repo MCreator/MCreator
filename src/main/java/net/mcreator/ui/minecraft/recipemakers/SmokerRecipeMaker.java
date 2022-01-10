@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.recipe;
+package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
@@ -32,13 +32,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class BlastFurnaceRecipeMaker extends JPanel {
+public class SmokerRecipeMaker extends JPanel {
 
 	public MCItemHolder cb1;
 	public MCItemHolder cb2;
 
-	public BlastFurnaceRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
-		ImagePanel ip = new ImagePanel(UIRES.get("recipe.blast_furnace").getImage());
+	public SmokerRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
+		ImagePanel ip = new ImagePanel(UIRES.get("recipe.smoker").getImage());
 
 		ip.fitToImage();
 		ip.setLayout(null);
