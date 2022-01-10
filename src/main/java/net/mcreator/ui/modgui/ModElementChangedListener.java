@@ -44,10 +44,12 @@ public interface ModElementChangedListener
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
+				registerUI(entriesList, addIdleListeners);
 				entriesList.addEntryCreationListener(c -> {
-					this.registerUI(c, addIdleListeners);
+					registerUI(c, addIdleListeners);
 					modElementChanged();
 				});
+
 				if (addIdleListeners)
 					component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
