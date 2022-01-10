@@ -182,7 +182,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private static final Model silverfish = new Model.BuiltInModel("Silverfish");
 	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cow, creeper, ghast, pig, slime,
 			spider, villager, silverfish };
-	private final JComboBox<Model> mobModel = new JComboBox<>();
+	private final JComboBox<Model> mobModel = new JComboBox<>(builtinmobmodels);
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
