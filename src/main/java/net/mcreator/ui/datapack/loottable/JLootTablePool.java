@@ -22,17 +22,18 @@ import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class JLootTablePool extends JPanel {
+public class JLootTablePool extends JEntriesList {
 
 	private final JSpinner minrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
 	private final JSpinner maxrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
@@ -42,15 +43,11 @@ public class JLootTablePool extends JPanel {
 
 	private final List<JLootTableEntry> entryList = new ArrayList<>();
 
-	private final MCreator mcreator;
-
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	public JLootTablePool(MCreator mcreator, JPanel parent, List<JLootTablePool> pollList) {
-		super(new BorderLayout());
+	public JLootTablePool(MCreator mcreator, IHelpContext gui, JPanel parent, List<JLootTablePool> pollList) {
+		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
-
-		this.mcreator = mcreator;
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 
@@ -100,7 +97,10 @@ public class JLootTablePool extends JPanel {
 
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> new JLootTableEntry(mcreator, entries, entryList));
+		add.addActionListener(e -> {
+			JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList); // initial add
+			registerEntryUI(entry);
+		});
 
 		add("Center", entries);
 
@@ -118,7 +118,8 @@ public class JLootTablePool extends JPanel {
 	}
 
 	public void addInitialEntry() {
-		new JLootTableEntry(mcreator, entries, entryList); // initial add
+		JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList); // initial add
+		registerEntryUI(entry);
 	}
 
 	public LootTable.Pool getPool() {
@@ -128,8 +129,7 @@ public class JLootTablePool extends JPanel {
 		entry.maxrolls = (int) maxrolls.getValue();
 		entry.minbonusrolls = (int) minbonusrolls.getValue();
 		entry.maxbonusrolls = (int) maxbonusrolls.getValue();
-		entry.entries = entryList.stream().map(JLootTableEntry::getEntry).filter(Objects::nonNull)
-				.collect(Collectors.toList());
+		entry.entries = entryList.stream().map(JLootTableEntry::getEntry).filter(Objects::nonNull).toList();
 
 		if (entry.entries.isEmpty())
 			return null;
@@ -145,7 +145,11 @@ public class JLootTablePool extends JPanel {
 		maxbonusrolls.setValue(pool.maxbonusrolls);
 
 		if (pool.entries != null)
-			pool.entries.forEach(e -> new JLootTableEntry(mcreator, entries, entryList).setEntry(e));
+			pool.entries.forEach(e -> {
+				JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
+				registerEntryUI(entry);
+				entry.setEntry(e);
+			});
 	}
 
 }
