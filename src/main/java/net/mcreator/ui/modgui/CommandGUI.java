@@ -71,7 +71,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 	private void regenerateArgs() {
 		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "BlocklyToJava", blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "args_start", blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(new BlocklyBlockCodeGenerator(externalBlocks,
 							mcreator.getGeneratorStats().getGeneratorCmdArgs())));
 		} catch (TemplateGeneratorException e) {
@@ -118,8 +118,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(
-				PanelUtils.northAndCenterElement(new BlocklyEditorToolbar(mcreator, "cmd_setup", ".cmdtpl", blocklyPanel), blocklyPanel),
+		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
+						new BlocklyEditorToolbar(mcreator, "cmd_setup", ".cmdtpl", blocklyPanel), blocklyPanel),
 				compileNotesPanel);
 		args.setOpaque(false);
 
