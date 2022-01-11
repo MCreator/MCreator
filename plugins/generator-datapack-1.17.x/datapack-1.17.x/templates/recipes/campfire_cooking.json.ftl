@@ -8,8 +8,6 @@
     "ingredient": {
       ${mappedMCItemToIngameItemName(data.campfireCookingInputStack)}
     },
-    "result": {
-      ${mappedMCItemToIngameItemName(data.campfireCookingReturnStack)}
-    }
+    "result": "${mappedMCItemToIngameNameNoTags(data.campfireCookingReturnStack)}"
 }
 <#-- @formatter:on -->

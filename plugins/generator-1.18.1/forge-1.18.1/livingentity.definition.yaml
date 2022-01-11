@@ -1,0 +1,21 @@
+templates:
+  - template: livingentity/livingentity.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
+  - template: livingentity/livingentity_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
+  - template: livingentity/livingentity_projectile.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntityProjectile.java"
+    condition: hasCustomProjectile()
+    deleteWhenConditionFalse: true
+  - template: json/spawn_egg.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname_spawn_egg.json"
+    condition: hasSpawnEgg
+    deleteWhenConditionFalse: true
+
+localizationkeys:
+  - key: item.@modid.@registryname_spawn_egg
+    mapto: mobName
+    suffix: " Spawn Egg"
+  - key: entity.@modid.@registryname
+    mapto: mobName
