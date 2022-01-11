@@ -18,8 +18,8 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.blockly.BlocklyToCmdArgs;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -60,11 +60,12 @@ import java.util.Locale;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks(),
-					this.getModElement().getGenerator().getCmdArgsGenerator(), additionalData).setTemplateExtension(
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
+					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToCmdArgs blocklyToJava = new BlocklyToCmdArgs(this.getModElement().getWorkspace(), this.argsxml,
-					this.getModElement().getGenerator().getCmdArgsGenerator(),
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), "args_start",
+					this.argsxml, this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());

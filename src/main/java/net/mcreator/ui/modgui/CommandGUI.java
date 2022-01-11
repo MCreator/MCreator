@@ -19,10 +19,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToCmdArgs;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.types.Command;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -69,9 +69,9 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	private void regenerateArgs() {
-		BlocklyToCmdArgs blocklyToJava;
+		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToCmdArgs(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "BlocklyToJava", blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(new BlocklyBlockCodeGenerator(externalBlocks,
 							mcreator.getGeneratorStats().getGeneratorCmdArgs())));
 		} catch (TemplateGeneratorException e) {
