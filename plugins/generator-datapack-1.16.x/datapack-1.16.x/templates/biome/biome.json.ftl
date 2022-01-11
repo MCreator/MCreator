@@ -83,7 +83,7 @@
 <#function listStructures>
 	<#assign retval = []>
 	<#if data.spawnWoodlandMansion><#assign retval = retval + ["minecraft:mansion"] /></#if>
-	<#if data.spawnMineshaft><#assign retval = retval + ["minecraft:mineshaft)mesa"] /></#if>
+	<#if data.spawnMineshaft><#assign retval = retval + ["mineshaft_mesa"] /></#if>
 	<#if data.spawnMineshaftMesa><#assign retval = retval + ["minecraft:mineshaft"] /></#if>
 	<#if data.spawnStronghold><#assign retval = retval + ["minecraft:stronghold"] /></#if>
 	<#if data.spawnPillagerOutpost><#assign retval = retval + ["minecraft:pillager_outpost"] /></#if>
