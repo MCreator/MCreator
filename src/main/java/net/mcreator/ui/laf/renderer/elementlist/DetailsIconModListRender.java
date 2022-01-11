@@ -139,7 +139,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			setToolTipText(element.getName());
 		}
 
-		icon.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+		icon.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
 
 		add("Center", PanelUtils.gridElements(1, 6, label, label2, label3, label4, label5));
 		add("West", icon);

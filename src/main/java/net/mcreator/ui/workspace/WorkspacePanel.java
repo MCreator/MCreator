@@ -120,8 +120,7 @@ import java.util.stream.Collectors;
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
-	private final JPanel bcAndDetails = new JPanel(new GridLayout(1, 2));
-	private final JPanel detailsbar = new JPanel(new GridLayout(1,6));
+	private final JPanel detailsbar = new JPanel(new GridLayout(1, 6));
 
 	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
@@ -633,11 +632,15 @@ import java.util.stream.Collectors;
 
 		mainp.setOpaque(false);
 
-		bcAndDetails.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar));
-		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"), L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"), L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
-		detailsbar.setBorder(BorderFactory.createEmptyBorder(0, 43, 0, 0));
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"),
+				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
+				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
+		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
+		detailsbar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(bcAndDetails, mainp));
+		modElementsPanel.add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0),
+						mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
