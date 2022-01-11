@@ -1,0 +1,28 @@
+templates:
+  - template: item/item.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: item/item_container.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/inventory/@NAMEInventoryCapability.java"
+    condition: hasInventory()
+    deleteWhenConditionFalse: true
+  - template: json/item.json.ftl
+    writer: json
+    condition: ["renderType #= 0", "hasNormalModel()"]
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/tool.json.ftl
+    writer: json
+    condition: ["renderType #= 0", "hasToolModel()"]
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel.json.ftl
+    writer: json
+    condition: "renderType #= 1"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel_obj.json.ftl
+    writer: json
+    condition: "renderType #= 2"
+    variables: "type=item"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name

@@ -796,7 +796,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
-						"panic_when_attacked") && aiTasks.contains("attack_action")) {
+						"panic_when_attacked") && aiTasks.contains("attack_action") && aiTasks.contains(
+						"swim_in_water")) {
 					livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
 							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
