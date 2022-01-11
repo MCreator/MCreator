@@ -29,8 +29,8 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CmdArgsEditorToolbar;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -119,7 +119,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
 		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(
-				PanelUtils.northAndCenterElement(new CmdArgsEditorToolbar(mcreator, blocklyPanel), blocklyPanel),
+				PanelUtils.northAndCenterElement(new BlocklyEditorToolbar(mcreator, "cmd_setup", ".cmdtpl", blocklyPanel), blocklyPanel),
 				compileNotesPanel);
 		args.setOpaque(false);
 
