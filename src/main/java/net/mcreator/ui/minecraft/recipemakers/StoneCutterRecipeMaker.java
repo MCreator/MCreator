@@ -16,12 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.recipe;
+package net.mcreator.ui.minecraft.recipemakers;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ImagePanel;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -31,21 +33,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class SmithingRecipeMaker extends JPanel {
+public class StoneCutterRecipeMaker extends JPanel {
+
+	public JSpinner sp;
 	public MCItemHolder cb1;
 	public MCItemHolder cb2;
-	public MCItemHolder cb3;
 
-	public SmithingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
-		ImagePanel ip = new ImagePanel(UIRES.get("recipe.smithing").getImage());
+	public StoneCutterRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
+		ImagePanel ip = new ImagePanel(UIRES.get("recipe.stonecutter").getImage());
 
 		ip.fitToImage();
 		ip.setLayout(null);
 
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb3 = new MCItemHolder(mcreator, items);
+		cb2 = new MCItemHolder(mcreator, items);
 
+		JLabel drop = new JLabel("1");
 		JButton export = new JButton(UIRES.get("18px.export"));
 
 		export.setContentAreaFilled(false);
@@ -58,7 +61,9 @@ public class SmithingRecipeMaker extends JPanel {
 			export.setVisible(false);
 			cb1.setValidationShownFlag(false);
 			cb2.setValidationShownFlag(false);
-			cb3.setValidationShownFlag(false);
+			sp.setVisible(false);
+			drop.setText(sp.getValue().toString());
+			drop.setVisible(true);
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			BufferedImage im = new BufferedImage(ip.getWidth(), ip.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			ip.paint(im.getGraphics());
@@ -69,19 +74,39 @@ public class SmithingRecipeMaker extends JPanel {
 			export.setVisible(true);
 			cb1.setValidationShownFlag(true);
 			cb2.setValidationShownFlag(true);
-			cb3.setValidationShownFlag(true);
+			sp.setVisible(true);
+			drop.setVisible(false);
 		});
 
-		cb1.setBounds(50, 60, 28, 28);
-		cb2.setBounds(117, 60, 28, 28);
-		cb3.setBounds(211, 60, 28, 28);
+		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+		sp.setBounds(203, 109, 38, 17);
+		ip.add(sp);
+
+		drop.setBounds(203, 109, 38, 17);
+		drop.setVisible(false);
+		drop.setForeground(Color.white);
+		ip.add(ComponentUtils.deriveFont(drop, 16));
+
+		cb1.setBounds(97, 61, 28, 28);
+		cb2.setBounds(200, 61, 28, 28);
 
 		ip.add(cb1);
 		ip.add(cb2);
-		ip.add(cb3);
 
 		add(ip);
 		setPreferredSize(new Dimension(306, 145));
-
 	}
+
+	public MItemBlock getBlock() {
+		return cb1.getBlock();
+	}
+
+	public MItemBlock getBlock2() {
+		return cb2.getBlock();
+	}
+
+	public boolean has() {
+		return cb1.containsItem() && cb2.containsItem();
+	}
+
 }

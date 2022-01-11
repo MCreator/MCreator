@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.loottable;
+package net.mcreator.ui.minecraft.loottable;
 
 import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;

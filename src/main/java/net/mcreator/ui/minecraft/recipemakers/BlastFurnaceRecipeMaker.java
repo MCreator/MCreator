@@ -16,14 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.recipe;
+package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -33,14 +32,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class StoneCutterRecipeMaker extends JPanel {
+public class BlastFurnaceRecipeMaker extends JPanel {
 
-	public JSpinner sp;
 	public MCItemHolder cb1;
 	public MCItemHolder cb2;
 
-	public StoneCutterRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
-		ImagePanel ip = new ImagePanel(UIRES.get("recipe.stonecutter").getImage());
+	public BlastFurnaceRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
+		ImagePanel ip = new ImagePanel(UIRES.get("recipe.blast_furnace").getImage());
 
 		ip.fitToImage();
 		ip.setLayout(null);
@@ -48,7 +46,6 @@ public class StoneCutterRecipeMaker extends JPanel {
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb2 = new MCItemHolder(mcreator, items);
 
-		JLabel drop = new JLabel("1");
 		JButton export = new JButton(UIRES.get("18px.export"));
 
 		export.setContentAreaFilled(false);
@@ -61,9 +58,6 @@ public class StoneCutterRecipeMaker extends JPanel {
 			export.setVisible(false);
 			cb1.setValidationShownFlag(false);
 			cb2.setValidationShownFlag(false);
-			sp.setVisible(false);
-			drop.setText(sp.getValue().toString());
-			drop.setVisible(true);
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			BufferedImage im = new BufferedImage(ip.getWidth(), ip.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			ip.paint(im.getGraphics());
@@ -74,20 +68,9 @@ public class StoneCutterRecipeMaker extends JPanel {
 			export.setVisible(true);
 			cb1.setValidationShownFlag(true);
 			cb2.setValidationShownFlag(true);
-			sp.setVisible(true);
-			drop.setVisible(false);
 		});
 
-		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-		sp.setBounds(203, 109, 38, 17);
-		ip.add(sp);
-
-		drop.setBounds(203, 109, 38, 17);
-		drop.setVisible(false);
-		drop.setForeground(Color.white);
-		ip.add(ComponentUtils.deriveFont(drop, 16));
-
-		cb1.setBounds(97, 61, 28, 28);
+		cb1.setBounds(97, 30, 28, 28);
 		cb2.setBounds(200, 61, 28, 28);
 
 		ip.add(cb1);

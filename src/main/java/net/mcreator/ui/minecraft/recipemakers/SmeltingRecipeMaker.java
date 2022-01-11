@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.recipe;
+package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;

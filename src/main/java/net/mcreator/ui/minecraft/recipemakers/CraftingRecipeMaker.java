@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.recipe;
+package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
@@ -32,7 +32,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class CraftingReciepeMaker extends JPanel {
+public class CraftingRecipeMaker extends JPanel {
 
 	public JSpinner sp;
 	public MCItemHolder cb1;
@@ -48,7 +48,7 @@ public class CraftingReciepeMaker extends JPanel {
 
 	private final JLabel shapeless = new JLabel(UIRES.get("recipe.shapeless"));
 
-	public CraftingReciepeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
+	public CraftingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		ImagePanel ip = new ImagePanel(UIRES.get("recipe.crafting").getImage());
 		ip.fitToImage();
 		ip.setLayout(null);
