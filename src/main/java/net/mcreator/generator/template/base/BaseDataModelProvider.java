@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseDataModelProvider {
+@SuppressWarnings("InstantiationOfUtilityClass") public class BaseDataModelProvider {
 
 	private final JavaConventions javaConventions;
 	private final GeneratorWrapper generatorWrapper;

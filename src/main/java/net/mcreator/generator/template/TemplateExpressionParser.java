@@ -115,7 +115,7 @@ public class TemplateExpressionParser {
 
 			String expr = checkStartsWithAnyKey(expression, dataModel) ? expression : "data." + expression;
 			Template t = new Template("INLINE EXPRESSION", new StringReader("${retVal.set(" + expr + ")}"),
-					generator.getGeneratorConfiguration().getTemplateGeneratorConfiguration().getConfiguration());
+					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
 			t.process(dataModel, new StringWriter());
 
 			return ((AtomicReference<?>) dataModel.get("retVal")).get();
