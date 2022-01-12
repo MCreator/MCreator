@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.datapack.recipe;
+package net.mcreator.ui.minecraft.recipemakers;
 
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -32,19 +31,20 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class SmokerRecipeMaker extends JPanel {
-
+public class SmithingRecipeMaker extends JPanel {
 	public MCItemHolder cb1;
 	public MCItemHolder cb2;
+	public MCItemHolder cb3;
 
-	public SmokerRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
-		ImagePanel ip = new ImagePanel(UIRES.get("recipe.smoker").getImage());
+	public SmithingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
+		ImagePanel ip = new ImagePanel(UIRES.get("recipe.smithing").getImage());
 
 		ip.fitToImage();
 		ip.setLayout(null);
 
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb2 = new MCItemHolder(mcreator, items);
+		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
+		cb3 = new MCItemHolder(mcreator, items);
 
 		JButton export = new JButton(UIRES.get("18px.export"));
 
@@ -58,6 +58,7 @@ public class SmokerRecipeMaker extends JPanel {
 			export.setVisible(false);
 			cb1.setValidationShownFlag(false);
 			cb2.setValidationShownFlag(false);
+			cb3.setValidationShownFlag(false);
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			BufferedImage im = new BufferedImage(ip.getWidth(), ip.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			ip.paint(im.getGraphics());
@@ -68,28 +69,19 @@ public class SmokerRecipeMaker extends JPanel {
 			export.setVisible(true);
 			cb1.setValidationShownFlag(true);
 			cb2.setValidationShownFlag(true);
+			cb3.setValidationShownFlag(true);
 		});
 
-		cb1.setBounds(97, 30, 28, 28);
-		cb2.setBounds(200, 61, 28, 28);
+		cb1.setBounds(50, 60, 28, 28);
+		cb2.setBounds(117, 60, 28, 28);
+		cb3.setBounds(211, 60, 28, 28);
 
 		ip.add(cb1);
 		ip.add(cb2);
+		ip.add(cb3);
 
 		add(ip);
 		setPreferredSize(new Dimension(306, 145));
-	}
 
-	public MItemBlock getBlock() {
-		return cb1.getBlock();
 	}
-
-	public MItemBlock getBlock2() {
-		return cb2.getBlock();
-	}
-
-	public boolean has() {
-		return cb1.containsItem() && cb2.containsItem();
-	}
-
 }
