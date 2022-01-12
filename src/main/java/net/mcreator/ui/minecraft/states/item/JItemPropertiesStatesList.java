@@ -121,17 +121,17 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 		addState.addActionListener(e -> {
 			if (getValidationResult(false).validateIsErrorFree()) {
-				String state = StateEditorDialog.open(mcreator, "", buildPropertiesMap(),
+				String stateString = StateEditorDialog.open(mcreator, "", buildPropertiesMap(),
 						gui.withEntry("item/custom_state"));
-				if (state == null || state.equals(""))
+				if (stateString == null || stateString.equals(""))
 					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
 							L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
-				else if (statesList.stream().anyMatch(el -> el.state.getText().equals(state)))
+				else if (statesList.stream().anyMatch(el -> el.state.getText().equals(stateString)))
 					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_duplicate"),
 							L10N.t("elementgui.item.custom_states.add.error_duplicate.title"),
 							JOptionPane.ERROR_MESSAGE);
-				else if (!state.equals("!esc"))
-					addStatesEntry().state.setText(state);
+				else if (!stateString.equals("!esc"))
+					addStatesEntry().state.setText(stateString);
 			}
 		});
 		topbar.add(addState);

@@ -148,7 +148,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	public void addEntry(Map<String, Item.ModelEntry> map) {
-		Item.ModelEntry modelEntry = new Item.ModelEntry(mcreator.getWorkspace());
+		Item.ModelEntry modelEntry = new Item.ModelEntry();
 		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
 		modelEntry.modelTexture = texture.getID();
 		modelEntry.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());

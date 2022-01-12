@@ -22,7 +22,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.WorkspaceDependentParameter;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -126,23 +125,11 @@ import java.util.Map;
 	}
 
 	@Override public Model getItemModel() {
-		return getItemModel(null);
-	}
-
-	public Model getItemModel(String modelKey) {
-		if (modelKey != null) {
-			return modelsMap.get(modelKey).getItemModel();
-		} else {
-			return Model.getModelByParams(getModElement().getWorkspace(), customModelName, decodeModelType(renderType));
-		}
+		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, decodeModelType(renderType));
 	}
 
 	@Override public Map<String, String> getTextureMap() {
-		return getTextureMap(null);
-	}
-
-	public Map<String, String> getTextureMap(String modelKey) {
-		Model model = getItemModel(modelKey);
+		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
@@ -168,33 +155,31 @@ import java.util.Map;
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
 
-	public static class ModelEntry extends WorkspaceDependentParameter {
+	public static class ModelEntry {
 
 		public int renderType;
 		public String modelTexture;
 		public String modelName;
 
-		public ModelEntry(Workspace workspace) {
-			super(workspace);
-		}
-
-		public Model getItemModel() {
+		public Model getItemModel(Workspace workspace) {
 			return Model.getModelByParams(workspace, modelName, decodeModelType(renderType));
 		}
 
-		public Map<String, String> getTextureMap() {
-			Model model = getItemModel();
+		public Map<String, String> getTextureMap(Workspace workspace) {
+			Model model = getItemModel(workspace);
 			if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 				return ((TexturedModel) model).getTextureMapping().getTextureMap();
 			return null;
 		}
 
-		public boolean isNormalModel() {
-			return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Normal");
+		public boolean isNormalModel(Workspace workspace) {
+			return getItemModel(workspace).getType() == Model.Type.BUILTIN && getItemModel(workspace).getReadableName()
+					.equals("Normal");
 		}
 
-		public boolean isToolModel() {
-			return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
+		public boolean isToolModel(Workspace workspace) {
+			return getItemModel(workspace).getType() == Model.Type.BUILTIN && getItemModel(workspace).getReadableName()
+					.equals("Tool");
 		}
 
 	}

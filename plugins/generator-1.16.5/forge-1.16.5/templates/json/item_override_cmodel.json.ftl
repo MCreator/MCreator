@@ -1,8 +1,8 @@
 {
   "parent": "${modid}:custom/${element.modelName.split(":")[0]}",
   "textures": {
-    <#if element.getTextureMap()??>
-        <#list element.getTextureMap() as texture>
+    <#if element.getTextureMap(w.getWorkspace())??>
+        <#list element.getTextureMap(w.getWorkspace()) as texture>
             "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
         </#list>
     </#if>

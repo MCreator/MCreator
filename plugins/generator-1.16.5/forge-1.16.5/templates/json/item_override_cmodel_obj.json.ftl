@@ -4,8 +4,8 @@
   "loader": "forge:obj",
   "model": "${modid}:models/item/${element.modelName.split(":")[0]}.obj",
   "textures": {
-    <#if element.getTextureMap()?has_content>
-        <#list element.getTextureMap() as texture>
+    <#if element.getTextureMap(w.getWorkspace())?has_content>
+        <#list element.getTextureMap(w.getWorkspace()) as texture>
             "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
         </#list>
     </#if>
