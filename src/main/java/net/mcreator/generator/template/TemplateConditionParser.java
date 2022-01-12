@@ -27,12 +27,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class TemplateExpressionParser {
+public class TemplateConditionParser {
 
-	private static final Logger LOG = LogManager.getLogger("Template expression parser");
+	private static final Logger LOG = LogManager.getLogger("Template condition");
 
 	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator,
 			@Nullable Object conditionRaw, @Nullable Object conditionDataProvider, Operator operator) {
@@ -68,27 +69,52 @@ public class TemplateExpressionParser {
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
 		try {
-			if (condition.startsWith("${") && condition.endsWith("}")) {
-				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
-						conditionDataProvider);
-				return processed != null && (boolean) processed;
+			if (condition.startsWith("${")) {
+				return processFTLExpression(generator, condition);
 			} else if (condition.contains("#?=")) { // check if value == one of the other values in list
 				String[] condData = condition.split("#\\?=");
-				int field = (int) getValueFrom(condData[0], conditionDataProvider);
-				return Arrays.stream(condData[1].trim().split(",")).mapToInt(Integer::parseInt)
-						.anyMatch(e -> e == field);
+				int field;
+				if (!condData[0].contains("()")) { // field
+					field = (int) conditionDataProvider.getClass().getField(condData[0].trim())
+							.get(conditionDataProvider);
+				} else { // method
+					field = (int) conditionDataProvider.getClass().getMethod(condData[0].replace("()", "").trim())
+							.invoke(conditionDataProvider);
+				}
+				int[] values = Arrays.stream(condData[1].trim().split(",")).mapToInt(Integer::parseInt).toArray();
+				for (int value : values)
+					if (value == field) {
+						return true;
+					}
 			} else if (condition.contains("#=")) { // check if value == other value
 				var condData = condition.split("#=");
-				int field = (int) getValueFrom(condData[0], conditionDataProvider);
+				int field;
+				if (!condData[0].contains("()")) { // field
+					field = (int) conditionDataProvider.getClass().getField(condData[0].trim())
+							.get(conditionDataProvider);
+				} else { // method
+					field = (int) conditionDataProvider.getClass().getMethod(condData[0].replace("()", "").trim())
+							.invoke(conditionDataProvider);
+				}
 				int value = Integer.parseInt(condData[1].trim());
 				return value == field;
 			} else if (condition.contains("%=")) { // compare strings
 				var condData = condition.split("%=");
-				String field = (String) getValueFrom(condData[0], conditionDataProvider);
+				String field;
+				if (!condData[0].contains("()")) { // field
+					field = (String) conditionDataProvider.getClass().getField(condData[0].trim())
+							.get(conditionDataProvider);
+				} else { // method
+					field = (String) conditionDataProvider.getClass().getMethod(condData[0].replace("()", "").trim())
+							.invoke(conditionDataProvider);
+				}
 				String value = condData[1].trim();
 				return value.equals(field);
+			} else if (condition.contains("()")) { // check if method return value is true
+				return (boolean) conditionDataProvider.getClass().getMethod(condition.replace("()", "").trim())
+						.invoke(conditionDataProvider);
 			} else {
-				return (boolean) getValueFrom(condition, conditionDataProvider);
+				return (boolean) conditionDataProvider.getClass().getField(condition.trim()).get(conditionDataProvider);
 			}
 		} catch (Exception e) {
 			LOG.error("Failed to parse condition: " + condition, e);
@@ -97,38 +123,18 @@ public class TemplateExpressionParser {
 		return false;
 	}
 
-	private static Object getValueFrom(String field, Object conditionDataProvider) throws ReflectiveOperationException {
-		if (!field.contains("()")) { // field
-			return conditionDataProvider.getClass().getField(field.trim()).get(conditionDataProvider);
-		} else { // method
-			return conditionDataProvider.getClass().getMethod(field.replace("()", "").trim())
-					.invoke(conditionDataProvider);
-		}
-	}
-
-	public static Object processFTLExpression(Generator generator, String expression, Object dataHolder) {
+	private static boolean processFTLExpression(Generator generator, String expression) {
 		try {
-			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
-			dataModel.put("retVal", new AtomicReference<>(null));
-			if (dataHolder != null)
-				dataModel.put("data", dataHolder);
-
-			String expr = checkStartsWithAnyKey(expression, dataModel) ? expression : "data." + expression;
-			Template t = new Template("INLINE EXPRESSION", new StringReader("${retVal.set(" + expr + ")}"),
+			Template t = new Template("INLINE EXPRESSION", new StringReader(expression),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
-			t.process(dataModel, new StringWriter());
 
-			return ((AtomicReference<?>) dataModel.get("retVal")).get();
+			StringWriter stringWriter = new StringWriter();
+			t.process(generator.getBaseDataModelProvider().provide(), stringWriter);
+
+			return Boolean.parseBoolean(stringWriter.getBuffer().toString());
 		} catch (Exception e) {
 			LOG.error("Failed to parse FTL expression: " + expression, e);
-			return null;
 		}
-	}
-
-	private static boolean checkStartsWithAnyKey(String expression, Map<String, Object> dataModel) {
-		for (String key : dataModel.keySet())
-			if (expression.startsWith(key + ".") || expression.startsWith(key + "?"))
-				return true;
 		return false;
 	}
 
