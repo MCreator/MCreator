@@ -71,7 +71,7 @@ public class TemplateExpressionParser {
 			if (condition.startsWith("${") && condition.endsWith("}")) {
 				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
 						conditionDataProvider);
-				return processed != null && (boolean) processed;
+				return processed instanceof Boolean check && check;
 			} else if (condition.contains("#?=")) { // check if value == one of the other values in list
 				String[] condData = condition.split("#\\?=");
 				int field = (int) getValueFrom(condData[0], conditionDataProvider);
@@ -113,7 +113,9 @@ public class TemplateExpressionParser {
 			if (dataHolder != null)
 				dataModel.put("data", dataHolder);
 
-			String expr = checkStartsWithAnyKey(expression, dataModel) ? expression : "data." + expression;
+			String expr = checkStartsWithAnyKey(expression, dataModel) ?
+					expression :
+					"data." + expression; // by default, dataHolder is used to process the expression
 			Template t = new Template("INLINE EXPRESSION", new StringReader("${retVal.set(" + expr + ")}"),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
 			t.process(dataModel, new StringWriter());
@@ -126,9 +128,10 @@ public class TemplateExpressionParser {
 	}
 
 	private static boolean checkStartsWithAnyKey(String expression, Map<String, Object> dataModel) {
-		for (String key : dataModel.keySet())
+		for (String key : dataModel.keySet()) {
 			if (expression.startsWith(key + ".") || expression.startsWith(key + "?"))
 				return true;
+		}
 		return false;
 	}
 
