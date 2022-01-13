@@ -92,7 +92,7 @@ public class StateEditorDialog {
 
 		JComponent editor = PanelUtils.centerAndSouthElement(stateList, PanelUtils.join(ok, cancel));
 		dialog.getContentPane().add("Center",
-				HelpUtils.combineHelpTextAndComponent(help, L10N.label("dialog.state_editor.header"), editor, 7));
+				HelpUtils.stackHelpTextAndComponent(help, L10N.label("dialog.state_editor.header"), editor, 7));
 
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);

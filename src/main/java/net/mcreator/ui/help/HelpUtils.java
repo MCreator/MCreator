@@ -131,11 +131,11 @@ public class HelpUtils {
 		}
 	}
 
-	public static Component combineHelpTextAndComponent(IHelpContext context, JLabel text, Component ca, int gap) {
-		return combineHelpTextAndComponent(context, text, ca, gap, SwingConstants.NORTH);
+	public static Component stackHelpTextAndComponent(IHelpContext context, JLabel text, Component ca, int gap) {
+		return stackHelpTextAndComponent(context, text, ca, gap, SwingConstants.NORTH);
 	}
 
-	public static Component combineHelpTextAndComponent(IHelpContext context, JLabel text, Component ca, int gap,
+	public static Component stackHelpTextAndComponent(IHelpContext context, JLabel text, Component ca, int gap,
 			int direction) {
 		JComponent helpLabel = PanelUtils.westAndCenterElement(
 				HelpUtils.wrapWithHelpButton(context, text, SwingConstants.LEFT), new JLabel());

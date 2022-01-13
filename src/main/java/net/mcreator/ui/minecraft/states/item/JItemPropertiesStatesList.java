@@ -95,8 +95,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		propertyEntries.addContainerListener(new ContainerAdapter() {
 			@Override public void componentRemoved(ContainerEvent e) {
 				if (propertiesList.size() > 0) {
+					Map<String, PropertyData> propertiesMap = buildPropertiesMap();
 					statesList.forEach(s -> s.state.setText(Stream.of(s.state.getText().split(","))
-							.filter(el -> buildPropertiesMap().get(el.split("=")[0]) != null)
+							.filter(el -> propertiesMap.containsKey(el.split("=")[0]))
 							.collect(Collectors.joining(","))));
 					Set<String> duplicates = new HashSet<>(); // when states are trimmed, we remove possible duplicates
 					statesList.stream().toList().forEach(entry -> {

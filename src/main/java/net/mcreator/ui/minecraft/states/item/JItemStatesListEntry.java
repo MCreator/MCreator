@@ -57,7 +57,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	final JLabel state = new JLabel();
 
 	private final TextureHolder texture;
-	private final SearchableComboBox<Model> model = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> model = new SearchableComboBox<>(ItemGUI.builtInItemModels());
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemStatesListEntry> entryList, Consumer<JItemStatesListEntry> editButtonListener) {
@@ -109,7 +109,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		west.add(PanelUtils.join(stateLabel, statePane));
 
 		east.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
-		east.add(HelpUtils.combineHelpTextAndComponent(gui.withEntry("item/model"),
+		east.add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
 				L10N.label("elementgui.item.custom_states.model"), model, 3));
 
 		parent.add(container);

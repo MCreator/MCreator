@@ -64,7 +64,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 		container = PanelUtils.expandHorizontally(this);
 
-		add(HelpUtils.combineHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
+		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
 				L10N.label("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
