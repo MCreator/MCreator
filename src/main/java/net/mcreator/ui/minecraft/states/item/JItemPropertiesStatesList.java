@@ -120,21 +120,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		topbar.add(addProperty);
 
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
-		addState.addActionListener(e -> {
-			if (getValidationResult(false).validateIsErrorFree()) {
-				String stateString = StateEditorDialog.open(mcreator, "", buildPropertiesMap(),
-						gui.withEntry("item/custom_state"));
-				if (stateString == null || stateString.equals(""))
-					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
-							L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
-				else if (statesList.stream().anyMatch(el -> el.state.getText().equals(stateString)))
-					JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_duplicate"),
-							L10N.t("elementgui.item.custom_states.add.error_duplicate.title"),
-							JOptionPane.ERROR_MESSAGE);
-				else if (!stateString.equals("!esc"))
-					addStatesEntry().state.setText(stateString);
-			}
-		});
+		addState.addActionListener(e -> editState(null));
 		topbar.add(addState);
 
 		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
@@ -157,12 +143,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 
+		addProperty.setEnabled(enabled);
+		addState.setEnabled(enabled);
+
 		if (!enabled) {
 			propertiesList.stream().toList().forEach(e -> e.removeProperty(propertyEntries, propertiesList));
 			statesList.stream().toList().forEach(e -> e.removeState(stateEntries, statesList));
 		}
-		addProperty.setEnabled(enabled);
-		addState.setEnabled(enabled);
 	}
 
 	public void reloadDataLists() {
@@ -197,12 +184,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemStatesListEntry addStatesEntry() {
-		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, e -> {
-			if (getValidationResult(false).validateIsErrorFree())
-				e.state.setText(StateEditorDialog.open(mcreator, e.state.getText(), buildPropertiesMap(),
-						gui.withEntry("item/custom_state")));
-		});
-
+		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, this::editState);
 		registerEntryUI(se);
 		return se;
 	}
@@ -216,6 +198,21 @@ public class JItemPropertiesStatesList extends JEntriesList {
 					propertiesList.indexOf(property) + builtinPropertiesFound);
 		});
 		property.nameString = property.name.getText();
+	}
+
+	private void editState(JItemStatesListEntry entry) {
+		if (getValidationResult(false).validateIsErrorFree()) {
+			String newState = StateEditorDialog.open(mcreator, entry != null ? entry.state.getText() : "!new",
+					buildPropertiesMap(), "item/custom_state");
+			if (newState == null || newState.equals("")) // all properties were unchecked
+				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
+						L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
+			else if (statesList.stream().anyMatch(el -> el != entry && el.state.getText().equals(newState)))
+				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_duplicate"),
+						L10N.t("elementgui.item.custom_states.add.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
+			else if (!newState.startsWith("!")) // valid state was returned
+				(entry != null ? entry : addStatesEntry()).state.setText(newState);
+		}
 	}
 
 	private Map<String, PropertyData> buildPropertiesMap() {

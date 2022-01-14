@@ -61,7 +61,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemStatesListEntry> entryList, Consumer<JItemStatesListEntry> editButtonListener) {
-		super(new BorderLayout());
+		super(new FlowLayout(FlowLayout.LEFT));
 		this.mcreator = mcreator;
 
 		state.setOpaque(true);
@@ -94,8 +94,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		reloadDataLists(); // we make sure that combo box can be properly shown
 
 		container = PanelUtils.expandHorizontally(this);
-		JPanel west = new JPanel(new GridLayout(3, 1));
-		JPanel east = new JPanel();
 
 		JScrollPane stateLabel = new JScrollPane(state);
 		stateLabel.setOpaque(true);
@@ -105,11 +103,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		statePane.setOpaque(true);
 		statePane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		west.add(new JLabel(" "));
-		west.add(PanelUtils.join(stateLabel, statePane));
+		add(stateLabel);
+		add(statePane);
 
-		east.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
-		east.add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
+		add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
+		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
 				L10N.label("elementgui.item.custom_states.model"), model, 3));
 
 		parent.add(container);
@@ -118,9 +116,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_states.remove"));
 		remove.addActionListener(e -> removeState(parent, entryList));
-		east.add(remove);
-
-		add(PanelUtils.westAndCenterElement(west, east));
+		add(remove);
 
 		parent.revalidate();
 		parent.repaint();

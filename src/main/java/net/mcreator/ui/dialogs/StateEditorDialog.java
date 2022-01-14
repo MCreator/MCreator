@@ -37,19 +37,18 @@ import java.util.stream.Stream;
 public class StateEditorDialog {
 
 	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
-			IHelpContext help) {
-		if (initialState == null || initialState.equals(""))
-			initialState = "!esc";
+			String help) {
+		String stateString = initialState.equals("") ? "!esc" : initialState;
 
-		AtomicReference<String> retVal = new AtomicReference<>(initialState);
+		AtomicReference<String> retVal = new AtomicReference<>(stateString);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
 		List<StateEntry> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		entries.setOpaque(false);
 
-		Map<String, Object> values = !initialState.equals("!esc") ?
-				Stream.of(initialState.split(","))
+		Map<String, Object> values = !stateString.startsWith("!") ?
+				Stream.of(stateString.split(","))
 						.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1])) :
 				Collections.emptyMap();
 		properties.forEach((name, data) -> {
@@ -61,7 +60,7 @@ public class StateEditorDialog {
 						setValueOfComponent(stateEntry.entryComponent, data, values.get(stateEntry.property));
 				} else {
 					setValueOfComponent(stateEntry.entryComponent, data, null);
-					if (!values.isEmpty()) // property is not used in this state
+					if (!values.isEmpty() && !stateString.equals("!new")) // property is not used in this state
 						stateEntry.useEntry.doClick();
 				}
 			}
@@ -90,9 +89,9 @@ public class StateEditorDialog {
 		});
 		cancel.addActionListener(e -> dialog.setVisible(false));
 
-		JComponent editor = PanelUtils.centerAndSouthElement(stateList, PanelUtils.join(ok, cancel));
-		dialog.getContentPane().add("Center",
-				HelpUtils.stackHelpTextAndComponent(help, L10N.label("dialog.state_editor.header"), editor, 7));
+		Component editor = HelpUtils.stackHelpTextAndComponent(IHelpContext.NONE.withEntry(help),
+				L10N.label("dialog.state_editor.header"), stateList, 7);
+		dialog.getContentPane().add("Center", PanelUtils.centerAndSouthElement(editor, PanelUtils.join(ok, cancel)));
 
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);
@@ -106,13 +105,8 @@ public class StateEditorDialog {
 		if (value != null) {
 			if (param.type().equals(boolean.class) || param.type().equals(Boolean.class)) {
 				JCheckBox box = new JCheckBox();
-				if ((boolean) value) {
-					box.setSelected(true);
-					box.setText("True");
-				} else {
-					box.setSelected(false);
-					box.setText("False");
-				}
+				box.setSelected((boolean) value);
+				box.setText((boolean) value ? "True" : "False");
 				box.addActionListener(e -> box.setText(box.isSelected() ? "True" : "False"));
 				return box;
 			} else if (param.type().equals(int.class) || param.type().equals(Integer.class)) {
@@ -192,9 +186,7 @@ public class StateEditorDialog {
 
 			useEntry.setSelected(true);
 
-			final JComponent container = PanelUtils.expandHorizontally(this);
-
-			parent.add(container);
+			parent.add(PanelUtils.expandHorizontally(this));
 			entryList.add(this);
 
 			JPanel settings = new JPanel(new FlowLayout(FlowLayout.RIGHT));
