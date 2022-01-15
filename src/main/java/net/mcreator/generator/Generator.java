@@ -750,15 +750,11 @@ public class Generator implements IGenerator, Closeable {
 			try {
 				List<File> modElementFiles = getModElementGeneratorTemplatesList(element).stream()
 						.map(GeneratorTemplate::getFile).toList();
-				getModElementListTemplates(element).forEach(list -> {
-					for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-						for (int i = 0; i < list.listData().size(); i++) {
-							if (list.templates().get(generatorTemplate).get(i))
-								modElementFiles.add(generatorTemplate.getFile());
-						}
-					}
-				});
 				if (FileIO.isFileOnFileList(modElementFiles, file))
+					return element;
+
+				if (getModElementListTemplates(element).stream()
+						.anyMatch(e -> e.getCorrespondingListTemplate(file, false) != null))
 					return element;
 
 				// if this is GUI, we check for generated UI texture file too

@@ -1580,12 +1580,14 @@ import java.util.stream.Collectors;
 							return true;
 
 						for (String f : filters) {
-							return switch (f) {
-								case "locked" -> item.isCodeLocked();
-								case "ok" -> item.doesCompile();
-								case "err" -> !item.doesCompile();
-								default -> true;
-							};
+							switch (f) {
+							case "locked":
+								return item.isCodeLocked();
+							case "ok":
+								return item.doesCompile();
+							case "err":
+								return !item.doesCompile();
+							}
 						}
 						return false;
 					}).filter(item -> {

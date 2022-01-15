@@ -27,19 +27,20 @@ import java.util.Map;
 public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
-	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile) {
+	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
 		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
 			String filePath = generatorFile.getPath();
 			String[] templatePathParts = generatorTemplate.getFile().getPath().split("@elementindex");
-			boolean validToCheck = true;
+			boolean validated;
 
 			try { // we check if given file name has list template's index in place of @elementindex
-				Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
+				int i = Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
+				validated = ignoreConditions || templates.get(generatorTemplate).get(i);
 			} catch (NumberFormatException ignored) {
-				validToCheck = false;
+				validated = false;
 			}
 
-			if (validToCheck && filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1]))
+			if (validated && filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1]))
 				return generatorTemplate;
 		}
 		return null;
