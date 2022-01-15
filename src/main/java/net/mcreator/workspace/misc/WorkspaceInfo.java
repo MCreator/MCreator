@@ -191,7 +191,7 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.ITEM) {
 				if (element.getGeneratableElement() instanceof Item item)
-					if (item.customProperties.size() > 0)
+					if (!item.customProperties.isEmpty())
 						return true;
 			}
 		return false;
