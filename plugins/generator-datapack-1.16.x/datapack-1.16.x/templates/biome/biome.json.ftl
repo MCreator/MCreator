@@ -9,9 +9,6 @@
 	"surface_builder": "${modid}:${registryname}",
 	"spawn_costs": {},
     "player_spawn_friendly": true,
-	<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
-	"parent": "${data.parent}",
-	</#if>
     "effects": {
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},

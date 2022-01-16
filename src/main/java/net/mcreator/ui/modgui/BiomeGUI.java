@@ -137,14 +137,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 					"Mega spruce trees" });
 
-	private final DataListComboBox parent = new DataListComboBox(mcreator);
-
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
-
-	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy("No parent");
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -295,7 +291,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(9, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
@@ -323,10 +319,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/category"),
 				L10N.label("elementgui.biome.category")));
 		spawnproperties.add(biomeCategory);
-
-		spawnproperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("biome/parent"), L10N.label("elementgui.biome.parent")));
-		spawnproperties.add(parent);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
 				L10N.label("elementgui.biome.dictionnary")));
@@ -605,9 +597,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		ComboBoxUtil.updateComboBoxContents(parent,
-				ListUtils.merge(Collections.singleton(noparent), ElementUtil.loadAllBiomes(mcreator.getWorkspace())),
-				noparent);
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
@@ -714,7 +703,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biomeWeight.setValue(biome.biomeWeight);
 		biomeType.setSelectedItem(biome.biomeType);
 		biomeCategory.setSelectedItem(biome.biomeCategory);
-		parent.setSelectedItem(biome.parent);
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
@@ -765,7 +753,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.biomeWeight = (int) biomeWeight.getValue();
 		biome.biomeType = (String) biomeType.getSelectedItem();
 		biome.biomeCategory = (String) biomeCategory.getSelectedItem();
-		biome.parent = new BiomeEntry(mcreator.getWorkspace(), parent.getSelectedItem());
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();

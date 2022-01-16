@@ -346,12 +346,6 @@ public class TestWorkspaceDataProvider {
 			biome.biomeCategory = getRandomItem(random,
 					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
-			if (!emptyLists) {
-				biome.parent = new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes));
-			} else {
-				biome.parent = new BiomeEntry(modElement.getWorkspace(), "No parent");
-			}
-
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
