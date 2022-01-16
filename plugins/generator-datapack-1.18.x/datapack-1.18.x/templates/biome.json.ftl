@@ -5,10 +5,6 @@
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
     "category": "${data.biomeCategory?replace("THEEND", "THE_END")?lower_case}",
-	"spawn_costs": {},
-	<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
-	"parent": "${data.parent}",
-	</#if>
     "effects": {
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
@@ -25,6 +21,7 @@
 		"water_ambient": [],
 		"misc": []
 	},
+	"spawn_costs": {},
     "carvers": {
 		<#if data.defaultFeatures?contains("Caves")>
     	"air": [
@@ -52,19 +49,33 @@
 		<#--UNDERGROUND_ORES-->[
 		<#if data.defaultFeatures?contains("Ores")>
 			"minecraft:ore_dirt",
-			"minecraft:ore_gravel",
-			"minecraft:ore_granite",
-			"minecraft:ore_diorite",
-			"minecraft:ore_andesite",
-			"minecraft:ore_coal",
-			"minecraft:ore_iron",
-			"minecraft:ore_gold",
-			"minecraft:ore_redstone",
-			"minecraft:ore_diamond",
-			"minecraft:ore_lapis"
+      		"minecraft:ore_gravel",
+      		"minecraft:ore_granite_upper",
+      		"minecraft:ore_granite_lower",
+      		"minecraft:ore_diorite_upper",
+      		"minecraft:ore_diorite_lower",
+      		"minecraft:ore_andesite_upper",
+      		"minecraft:ore_andesite_lower",
+      		"minecraft:ore_tuff",
+      		"minecraft:ore_coal_upper",
+      		"minecraft:ore_coal_lower",
+      		"minecraft:ore_iron_upper",
+      		"minecraft:ore_iron_middle",
+      		"minecraft:ore_iron_small",
+      		"minecraft:ore_gold",
+      		"minecraft:ore_gold_lower",
+      		"minecraft:ore_redstone",
+      		"minecraft:ore_redstone_lower",
+      		"minecraft:ore_diamond",
+      		"minecraft:ore_diamond_large",
+      		"minecraft:ore_diamond_buried",
+      		"minecraft:ore_lapis",
+      		"minecraft:ore_lapis_buried",
+      		"minecraft:ore_copper"
 		</#if>
     	],
 		<#--UNDERGROUND_DECORATION-->[],
+		<#--FLUID_SPRINGS-->[],
 		<#--VEGETAL_DECORATION-->[],
 		<#--TOP_LAYER_MODIFICATION-->[
 			"minecraft:freeze_top_layer"
