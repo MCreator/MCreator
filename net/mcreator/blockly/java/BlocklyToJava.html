@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -46,9 +50,9 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -78,10 +82,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../BlocklyToAITasks.html" title="class in net.mcreator.blockly">BlocklyToAITasks</a></code>, <code><a href="BlocklyToProcedure.html" title="class in net.mcreator.blockly.java">BlocklyToProcedure</a></code></dd>
+<dd><code><a href="BlocklyToProcedure.html" title="class in net.mcreator.blockly.java">BlocklyToProcedure</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">BlocklyToJava</span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">BlocklyToJava</span>
 <span class="extends-implements">extends <a href="../BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a></span></div>
 </section>
 <section class="summary">
@@ -90,6 +94,18 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected final org.apache.logging.log4j.Logger</code></div>
+<div class="col-second even-row-color"><code><a href="#LOG" class="member-name-link">LOG</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="BlocklyVariables.html" title="class in net.mcreator.blockly.java">BlocklyVariables</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#variableGenerator" class="member-name-link">variableGenerator</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.blockly.BlocklyToCode">Fields inherited from class&nbsp;net.mcreator.blockly.<a href="../BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a></h3>
 <code><a href="../BlocklyToCode.html#blockGenerators">blockGenerators</a>, <a href="../BlocklyToCode.html#lastProceduralBlockType">lastProceduralBlockType</a></code></div>
@@ -103,7 +119,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToJava</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToJava</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;firstBlockName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceXML,
  <a href="../../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
  <a href="../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -114,6 +132,26 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel">
+<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postBlocksPlacement(org.w3c.dom.Document)" class="member-name-link">postBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method contains the code needing to be executed after blocks are placed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preBlocksPlacement(org.w3c.dom.Document)" class="member-name-link">preBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method contains the code needing to be executed before blocks are placed.</div>
+</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.blockly.BlocklyToCode">Methods inherited from class&nbsp;net.mcreator.blockly.<a href="../BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a></h3>
 <code><a href="../BlocklyToCode.html#addCompileNote(net.mcreator.blockly.BlocklyCompileNote)">addCompileNote</a>, <a href="../BlocklyToCode.html#addDependency(net.mcreator.blockly.data.Dependency)">addDependency</a>, <a href="../BlocklyToCode.html#append(java.lang.Object)">append</a>, <a href="../BlocklyToCode.html#checkIfDepProviderInputsProvide(net.mcreator.blockly.data.Dependency)">checkIfDepProviderInputsProvide</a>, <a href="../BlocklyToCode.html#clearCodeGeneratorBuffer()">clearCodeGeneratorBuffer</a>, <a href="../BlocklyToCode.html#directProcessOutputBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)">directProcessOutputBlock</a>, <a href="../BlocklyToCode.html#directProcessOutputBlockWithoutParentheses(org.w3c.dom.Element)">directProcessOutputBlockWithoutParentheses</a>, <a href="../BlocklyToCode.html#directProcessStatementBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)">directProcessStatementBlock</a>, <a href="../BlocklyToCode.html#getCompileNotes()">getCompileNotes</a>, <a href="../BlocklyToCode.html#getDependencies()">getDependencies</a>, <a href="../BlocklyToCode.html#getGeneratedCode()">getGeneratedCode</a>, <a href="../BlocklyToCode.html#getStatementInputsMatching(java.util.function.Predicate)">getStatementInputsMatching</a>, <a href="../BlocklyToCode.html#getTemplateGenerator()">getTemplateGenerator</a>, <a href="../BlocklyToCode.html#getWorkspace()">getWorkspace</a>, <a href="../BlocklyToCode.html#popDepProviderInputStack()">popDepProviderInputStack</a>, <a href="../BlocklyToCode.html#processBlockProcedure(java.util.List)">processBlockProcedure</a>, <a href="../BlocklyToCode.html#processOutputBlock(org.w3c.dom.Element)">processOutputBlock</a>, <a href="../BlocklyToCode.html#processOutputBlockWithoutParentheses(org.w3c.dom.Element)">processOutputBlockWithoutParentheses</a>, <a href="../BlocklyToCode.html#processOutputBlockWithoutParentheses(org.w3c.dom.Element,java.lang.String)">processOutputBlockWithoutParentheses</a>, <a href="../BlocklyToCode.html#pushDepProviderInputStack(net.mcreator.blockly.data.DependencyProviderInput)">pushDepProviderInputStack</a></code></div>
@@ -132,17 +170,79 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="LOG">
+<h3>LOG</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">org.apache.logging.log4j.Logger</span>&nbsp;<span class="element-name">LOG</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="variableGenerator">
+<h3>variableGenerator</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="BlocklyVariables.html" title="class in net.mcreator.blockly.java">BlocklyVariables</a></span>&nbsp;<span class="element-name">variableGenerator</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.workspace.Workspace,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)">
 <h3>BlocklyToJava</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BlocklyToJava</span><wbr><span class="parameters">(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;firstBlockName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceXML,
  <a href="../../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
- <a href="../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</span></div>
+ <a href="../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</span>
+              throws <span class="exceptions"><a href="../../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>workspace</code> - <p>The <a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace"><code>Workspace</code></a> executing the code</p></dd>
+<dd><code>firstBlockName</code> - <p>The name of the start block</p></dd>
+<dd><code>sourceXML</code> - <p>The XML code used by Blockly</p></dd>
+<dd><code>templateGenerator</code> - <p>The folder location in each <a href="../../generator/Generator.html" title="class in net.mcreator.generator"><code>Generator</code></a> containing the code template files<p></dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="preBlocksPlacement(org.w3c.dom.Document)">
+<h3>preBlocksPlacement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preBlocksPlacement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</span></div>
+<div class="block"><p>This method contains the code needing to be executed before blocks are placed.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>doc</code> - Blockly XML document</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="postBlocksPlacement(org.w3c.dom.Document)">
+<h3>postBlocksPlacement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">postBlocksPlacement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</span></div>
+<div class="block"><p>This method contains the code needing to be executed after blocks are placed.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>doc</code> - Blockly XML document</dd>
+</dl>
 </section>
 </li>
 </ul>

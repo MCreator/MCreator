@@ -68,8 +68,6 @@ net.mcreator.ui.component
 net.mcreator.ui.component.tree
 net.mcreator.ui.component.util
 net.mcreator.ui.component.zoompane
-net.mcreator.ui.datapack.loottable
-net.mcreator.ui.datapack.recipe
 net.mcreator.ui.dialogs
 net.mcreator.ui.dialogs.imageeditor
 net.mcreator.ui.dialogs.preferences
@@ -89,7 +87,9 @@ net.mcreator.ui.laf.renderer
 net.mcreator.ui.laf.renderer.elementlist
 net.mcreator.ui.minecraft
 net.mcreator.ui.minecraft.boundingboxes
+net.mcreator.ui.minecraft.loottable
 net.mcreator.ui.minecraft.potions
+net.mcreator.ui.minecraft.recipemakers
 net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.modgui
 net.mcreator.ui.modgui.codeviewer
