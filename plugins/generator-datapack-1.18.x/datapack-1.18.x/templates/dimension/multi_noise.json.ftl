@@ -23,7 +23,7 @@
             "offset": 0
           }
         }
-          <#if biome?has_next>,</#if>
+        <#if biome?has_next>,</#if>
       </#list>
     ]
 }
