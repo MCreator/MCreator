@@ -1,6 +1,5 @@
 <#-- @formatter:off -->
 <#-- now in dimension: surface and underground block -->
-<#-- not used for now: scale, depth -->
 {
     "precipitation": <#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>"rain"<#else>"snow"</#if><#else>"none"</#if>,
     "temperature": ${data.temperature},

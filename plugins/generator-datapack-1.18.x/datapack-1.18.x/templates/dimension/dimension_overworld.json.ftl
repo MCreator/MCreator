@@ -68,9 +68,9 @@
            <#list data.biomesInDimension as biome>
              <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
-               <@sb.default biome mappedMCItemToBlockStateJSON(ge.groundBlock) mappedMCItemToBlockStateJSON(ge.undergroundBlock)/>
+               <@sb.default biome ge.groundBlock ge.undergroundBlock/>
              <#else>
-               <#-- TODO -->
+               <@sb.vanilla biome/>
              </#if>
              <#if biome?has_next>,</#if>
            </#list>
