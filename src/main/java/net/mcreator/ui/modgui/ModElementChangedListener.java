@@ -49,7 +49,6 @@ public interface ModElementChangedListener
 					registerUI(c, addIdleListeners);
 					modElementChanged();
 				});
-
 				if (addIdleListeners)
 					component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
@@ -60,7 +59,7 @@ public interface ModElementChangedListener
 				comboBox.addActionListener(this);
 			} else if (component instanceof JTextComponent textComponent) {
 				textComponent.getDocument().addDocumentListener(this);
-			} else if (component instanceof JFXPanel && addIdleListeners) {
+			} else if (component instanceof JFXPanel) {
 				component.addMouseListener(this);
 				component.addKeyListener(this);
 			} else if (component instanceof JComponent jcomponent) {
