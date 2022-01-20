@@ -201,12 +201,12 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
-	public Workspace getWorkspace() {
-		return workspace;
-	}
-
 	public MItemBlock itemBlock(String itemBlock) {
 		return new MItemBlock(workspace, itemBlock);
+	}
+
+	public Workspace getWorkspace() {
+		return workspace;
 	}
 
 }

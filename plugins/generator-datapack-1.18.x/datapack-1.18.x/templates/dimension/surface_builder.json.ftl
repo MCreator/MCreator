@@ -101,4 +101,67 @@
   }
 }
 </#macro>
+
+<#macro defaultAny biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties=undergroundBlockWithProperties>
+{
+  "type": "minecraft:condition",
+  "if_true": {
+    "type": "minecraft:biome",
+    "biome_is": [
+      "${biome}"
+    ]
+  },
+  "then_run": {
+    "type": "minecraft:sequence",
+    "sequence": [
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "surface_type": "floor",
+          "add_surface_depth": false,
+          "add_surface_secondary_depth": false,
+          "offset": 0
+        },
+        "then_run": {
+          "type": "minecraft:sequence",
+          "sequence": [
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:water",
+                "offset": -1,
+                "surface_depth_multiplier": 0,
+                "add_stone_depth": false
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": ${mappedMCItemToBlockStateJSON(groundBlockWithProperties)}
+              }
+            },
+            {
+              "type": "minecraft:block",
+              "result_state": ${mappedMCItemToBlockStateJSON(underwaterBlockWithProperties)}
+            }
+          ]
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "surface_type": "floor",
+          "add_surface_depth": true,
+          "add_surface_secondary_depth": false,
+          "offset": 0
+        },
+        "then_run": {
+          "type": "minecraft:block",
+          "result_state": ${mappedMCItemToBlockStateJSON(undergroundBlockWithProperties)}
+        }
+      }
+    ]
+  }
+}
+</#macro>
 <#-- @formatter:on -->

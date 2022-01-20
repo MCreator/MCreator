@@ -95,7 +95,7 @@
            <#list data.biomesInDimension as biome>
              <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
-               <@sb.default biome ge.groundBlock ge.undergroundBlock/>
+               <@sb.defaultAny biome ge.groundBlock ge.undergroundBlock/>
              <#else>
                <@sb.vanilla biome/>
              </#if>,
