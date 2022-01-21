@@ -25,8 +25,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -36,13 +36,11 @@ public class ZipIO {
 
 	private static final Logger LOG = LogManager.getLogger("ZipIO");
 
-	public static void iterateZip(File zipFilePointer, IZipFileAction action) {
+	public static void iterateZip(File zipFilePointer, Consumer<ZipEntry> action) {
 		try (ZipFile zipFile = new ZipFile(zipFilePointer)) {
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			while (entries.hasMoreElements()) {
-				ZipEntry zipEntry = entries.nextElement();
-				action.process(zipEntry);
-			}
+			List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
+			entries.sort(Comparator.comparing(e -> e.getName().toLowerCase()));
+			entries.forEach(action);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}
