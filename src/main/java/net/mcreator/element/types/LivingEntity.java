@@ -211,7 +211,7 @@ import java.util.Locale;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		if (isGeckoLibModel()) {
+		if (isGeckoLibModel() && getModElement().getWorkspace().ENABLE_GECKOLIB_FEATURES) {
 			Workspace workspace = getModElement().getWorkspace();
 			File originalModelFileLocation = new File(getModElement().getFolderManager().getModelsDir(),
 					mobModelName + ".geo.json");
