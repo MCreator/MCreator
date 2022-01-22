@@ -219,6 +219,10 @@ import java.util.Locale;
 					GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mod_assets_root"),
 					"geo/" + mobModelName + ".geo.json");
 			FileIO.copyFile(originalModelFileLocation, newLocation);
+		} else if (isGeckoLibModel() && !getModElement().getWorkspace().ENABLE_GECKOLIB_FEATURES) {
+			// To avoid a build error, we change the mod for a builtin model
+			mobModelType = "BUILTIN";
+			mobModelName = "Biped";
 		}
 	}
 
