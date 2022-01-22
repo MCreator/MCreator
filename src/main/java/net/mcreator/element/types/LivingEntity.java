@@ -219,14 +219,6 @@ import java.util.Locale;
 					GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mod_assets_root"),
 					"geo/" + mobModelName + ".geo.json");
 			FileIO.copyFile(originalModelFileLocation, newLocation);
-
-			// We check if the user has imported an animation file using the same name as the model, so we can automatically move it.
-			File mainAnimationFile = new File(getModElement().getFolderManager().getAnimationsDir(),
-					mobModelName + ".animation.json");
-			if (mainAnimationFile.exists()) {
-				FileIO.copyFile(originalModelFileLocation, new File(getModElement().getFolderManager().getAnimationsDir(),
-						mobModelName + ".animation.json"));
-			}
 		}
 	}
 
