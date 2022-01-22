@@ -36,10 +36,11 @@ public class ZipIO {
 
 	private static final Logger LOG = LogManager.getLogger("ZipIO");
 
-	public static void iterateZip(File zipFilePointer, Consumer<ZipEntry> action) {
+	public static void iterateZip(File zipFilePointer, Consumer<ZipEntry> action, boolean sortByName) {
 		try (ZipFile zipFile = new ZipFile(zipFilePointer)) {
 			List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
-			entries.sort(Comparator.comparing(e -> e.getName().toLowerCase()));
+			if (sortByName)
+				entries.sort(Comparator.comparing(e -> e.getName().toLowerCase()));
 			entries.forEach(action);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
