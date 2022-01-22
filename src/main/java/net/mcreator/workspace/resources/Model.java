@@ -49,6 +49,10 @@ public class Model {
 				this.file[1] = mtl;
 				this.type = Type.OBJ;
 			}
+		} else if (file.getName().endsWith(".geo.json")) {
+			this.file = new File[1];
+			this.file[0] = file;
+			this.type = Type.GECKOLIB;
 		} else if (file.getName().endsWith(".json")) {
 			File textures = new File(file.getAbsolutePath() + ".textures");
 			if (textures.isFile()) {
@@ -115,7 +119,9 @@ public class Model {
 			return new BuiltInModel(name);
 		else if (type == Type.JSON)
 			return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".json"), textureMap);
-		else if (type == Type.OBJ) {
+		else if (type == Type.GECKOLIB) {
+			return new Model(new File(workspace.getFolderManager().getModelsDir(), name + ".geo.json"));
+		} else if (type == Type.OBJ) {
 			Model objModel = new Model(new File(workspace.getFolderManager().getModelsDir(), name + ".obj"));
 			if (textureMap != null)
 				objModel = new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".obj"),
@@ -219,7 +225,7 @@ public class Model {
 	}
 
 	public enum Type {
-		JSON, OBJ, JAVA, MCREATOR, BUILTIN
+		JSON, OBJ, JAVA, MCREATOR, BUILTIN, GECKOLIB
 	}
 
 }

@@ -229,7 +229,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				t.start();
 				dial.setVisible(true);
 			}
-		} else {
+		} else if (model.getType() != Model.Type.GECKOLIB) {
 			JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
 					L10N.t("workspace.3dmodels.animation_unsupported_message"),
 					L10N.t("workspace.3dmodels.animation_unsupported_title"), JOptionPane.WARNING_MESSAGE);

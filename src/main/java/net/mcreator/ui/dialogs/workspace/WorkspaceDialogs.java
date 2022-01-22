@@ -459,6 +459,16 @@ public class WorkspaceDialogs {
 					apiEnableBox.setName(api.parent.id);
 					apiEnableBox.setText(api.parent.name);
 
+					if (api.parent.id.equals("geckolib")) {
+						apiEnableBox.addActionListener( e -> {
+							ModAPIManager.ENABLE_GECKOLIB_FEATURES = apiEnableBox.isSelected();
+							if (apiEnableBox.isSelected()) {
+								JOptionPane.showMessageDialog(parent, L10N.t("dialog.workspace_settings.section.external_apis.geckolib_warning"),
+										"GeckoLib", JOptionPane.WARNING_MESSAGE);
+							}
+						});
+					}
+
 					if (api.parent.id.equals("mcreator_link")) {
 						apiList.add(PanelUtils.westAndCenterElement(
 								ComponentUtils.wrapWithInfoButton(apiEnableBox, "https://mcreator.net/link"),

@@ -198,6 +198,33 @@ public class ModelImportActions {
 			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
 	}
 
+	public static class GECKOLIB extends BasicAction {
+		public GECKOLIB(ActionRegistry actionRegistry) {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_geckolib_model"), actionEvent -> {
+				File geoModel = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".geo.json" });
+				File[] animations = FileDialogs.getMultiOpenDialog(actionRegistry.getMCreator(), new String[] { ".animation.json" });
+				if (geoModel != null)
+					importGeckoLibModels(actionRegistry.getMCreator(), geoModel, animations);
+			});
+		}
+
+		@Override public boolean isEnabled() {
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_geckolib")
+					!= GeneratorStats.CoverageStatus.NONE;
+		}
+	}
+
+	public static void importGeckoLibModels(MCreator mcreator, File geoModel, File[] animations) {
+		FileIO.copyFile(geoModel, new File(mcreator.getFolderManager().getModelsDir(),
+				Transliteration.transliterateString(geoModel.getName()).toLowerCase(Locale.ENGLISH).trim()
+						.replace(":", "").replace(" ", "_")));
+		for (File animation : animations) {
+			FileIO.copyFile(animation, new File(mcreator.getFolderManager().getAnimationsDir(),
+					Transliteration.transliterateString(animation.getName()).toLowerCase(Locale.ENGLISH).trim()
+							.replace(":", "").replace(" ", "_")));
+		}
+	}
+
 	public static class JSON extends BasicAction {
 		public JSON(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_json_model"), actionEvent -> {

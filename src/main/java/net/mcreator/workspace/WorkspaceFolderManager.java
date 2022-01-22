@@ -150,6 +150,14 @@ public class WorkspaceFolderManager {
 		return new File(workspaceFolder, "models/");
 	}
 
+	/**
+	 *
+	 * @return <p>The directory used for GeckoLib animation files</p>
+	 */
+	public File getAnimationsDir() {
+		return new File(workspaceFolder, "animations/");
+	}
+
 	public File getWorkspaceCacheDir() {
 		return new File(workspaceFolder, ".mcreator/");
 	}

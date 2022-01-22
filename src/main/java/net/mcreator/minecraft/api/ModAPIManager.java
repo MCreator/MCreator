@@ -39,6 +39,8 @@ public class ModAPIManager {
 
 	private static final Map<String, ModAPI> modApiList = new HashMap<>();
 
+	public static boolean ENABLE_GECKOLIB_FEATURES = false;
+
 	public static void initAPIs() {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("apis", Pattern.compile(".*\\.yaml"));
 		for (String apidefinition : fileNames) {
