@@ -700,7 +700,6 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobModelTexture = "test.png";
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
-			livingEntity.mobModelType = "BUILTIN";
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;
 			livingEntity.isBoss = _true;
