@@ -155,7 +155,7 @@ public class WorkspaceFolderManager {
 	 * @return <p>The directory used for GeckoLib animation files</p>
 	 */
 	public File getAnimationsDir() {
-		return new File(workspaceFolder, "animations/");
+		return new File(GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mod_assets_root"), "animations/");
 	}
 
 	public File getWorkspaceCacheDir() {

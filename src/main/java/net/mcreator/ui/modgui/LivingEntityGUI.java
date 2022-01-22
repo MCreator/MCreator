@@ -1109,6 +1109,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.modelShadowSize = (double) modelShadowSize.getValue();
 		livingEntity.armorBaseValue = (double) armorBaseValue.getValue();
 		livingEntity.mobModelName = ((Model) Objects.requireNonNull(mobModel.getSelectedItem())).getReadableName();
+		livingEntity.mobModelType = ((Model) Objects.requireNonNull(mobModel.getSelectedItem())).getType().name();
 		livingEntity.waterMob = waterMob.isSelected();
 		livingEntity.flyingMob = flyingMob.isSelected();
 		livingEntity.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());

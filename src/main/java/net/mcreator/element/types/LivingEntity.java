@@ -28,17 +28,22 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -51,6 +56,7 @@ import java.util.Locale;
 	public String mobLabel;
 
 	public String mobModelName;
+	public String mobModelType;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
 
@@ -173,11 +179,7 @@ import java.util.Locale;
 	}
 
 	@Override public Model getEntityModel() {
-		Model.Type modelType = Model.Type.BUILTIN;
-		if (Arrays.stream(LivingEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(mobModelName::equals)
-				&& !mobModelName.equals("Zombie")) // legacy check as zombie was supported in the past
-			modelType = Model.Type.JAVA;
-		return Model.getModelByParams(getModElement().getWorkspace(), mobModelName, modelType);
+		return Model.getModelByParams(getModElement().getWorkspace(), mobModelName, Model.Type.valueOf(mobModelType));
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
@@ -196,12 +198,36 @@ import java.util.Locale;
 				mobModelTexture, spawnEggBaseColor, spawnEggDotColor, hasSpawnEgg);
 	}
 
+	public boolean isGeckoLibModel() {
+		return getEntityModel().getType() == Model.Type.GECKOLIB;
+	}
+
 	public boolean hasDrop() {
 		return !mobDrop.isEmpty();
 	}
 
 	public boolean hasCustomProjectile() {
 		return ranged && "Default item".equals(rangedItemType);
+	}
+
+	@Override public void finalizeModElementGeneration() {
+		if (isGeckoLibModel()) {
+			Workspace workspace = getModElement().getWorkspace();
+			File originalModelFileLocation = new File(getModElement().getFolderManager().getModelsDir(),
+					mobModelName + ".geo.json");
+			File newLocation = new File(
+					GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mod_assets_root"),
+					"geo/" + mobModelName + ".geo.json");
+			FileIO.copyFile(originalModelFileLocation, newLocation);
+
+			// We check if the user has imported an animation file using the same name as the model, so we can automatically move it.
+			File mainAnimationFile = new File(getModElement().getFolderManager().getAnimationsDir(),
+					mobModelName + ".animation.json");
+			if (mainAnimationFile.exists()) {
+				FileIO.copyFile(originalModelFileLocation, new File(getModElement().getFolderManager().getAnimationsDir(),
+						mobModelName + ".animation.json"));
+			}
+		}
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

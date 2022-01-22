@@ -98,8 +98,8 @@ public class TemplateConditionParser {
 				}
 				int value = Integer.parseInt(condData[1].trim());
 				return value == field;
-			} else if (condition.contains("%=")) { // compare strings
-				var condData = condition.split("%=");
+			} else if (condition.contains("%=") || condition.contains("%!=")) { // compare strings
+				var condData = condition.contains("%!=") ? condition.split("%!=") : condition.split("%=");
 				String field;
 				if (!condData[0].contains("()")) { // field
 					field = (String) conditionDataProvider.getClass().getField(condData[0].trim())
@@ -109,6 +109,8 @@ public class TemplateConditionParser {
 							.invoke(conditionDataProvider);
 				}
 				String value = condData[1].trim();
+				if (condition.contains("%!="))
+					return !value.equals(field);
 				return value.equals(field);
 			} else if (condition.contains("()")) { // check if method return value is true
 				return (boolean) conditionDataProvider.getClass().getMethod(condition.replace("()", "").trim())
