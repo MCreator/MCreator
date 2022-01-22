@@ -22,8 +22,10 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
@@ -103,6 +105,19 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 		imp1.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJavaModel.doAction());
 
+		JButton impGeckoLib = L10N.button("action.workspace.resources.import_geckolib_model");
+		impGeckoLib.setIcon(UIRES.get("16px.importgeckolibmodel"));
+		impGeckoLib.setContentAreaFilled(false);
+		impGeckoLib.setOpaque(false);
+		ComponentUtils.deriveFont(impGeckoLib, 12);
+		impGeckoLib.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+
+		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_geckolib")
+				!= GeneratorStats.CoverageStatus.NONE)
+			bar.add(impGeckoLib);
+
+		impGeckoLib.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importGeckoLibModel.doAction());
+
 		JButton imp2 = L10N.button("action.workspace.resources.import_json_model");
 		imp2.setIcon(UIRES.get("16px.importjsonmodel"));
 		imp2.setContentAreaFilled(false);
@@ -171,6 +186,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					Model model = modelList.getSelectedValue();
 					if (model.getType() == Model.Type.JAVA) {
 						editSelectedModelAnimations();
+					} else if (model.getType() == Model.Type.GECKOLIB) {
+						importCustomAnimations();
 					} else {
 						editSelectedModelTextureMappings();
 					}
@@ -234,6 +251,15 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					L10N.t("workspace.3dmodels.animation_unsupported_message"),
 					L10N.t("workspace.3dmodels.animation_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	private void importCustomAnimations() {
+		File[] animations = FileDialogs.getMultiOpenDialog(workspacePanel.getMcreator(),
+				new String[] { ".animation.json" });
+		Arrays.stream(animations).toList().forEach(animation -> FileIO.copyFile(animation,
+				new File(workspacePanel.getMcreator().getFolderManager().getAnimationsDir(),
+						Transliteration.transliterateString(animation.getName()).toLowerCase(Locale.ENGLISH).trim()
+								.replace(":", "").replace(" ", "_"))));
 	}
 
 	private void editSelectedModelTextureMappings() {
@@ -317,7 +343,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item ->
 					(item.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
 							|| (item.getType().name().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
+							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
 
 			if (workspacePanel.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(Model::getReadableName));

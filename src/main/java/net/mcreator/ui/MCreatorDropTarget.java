@@ -70,7 +70,9 @@ public class MCreatorDropTarget implements DropTargetListener {
 							SoundElementDialog.importSound(mcreator, new File[] { file });
 						} else if (file.getName().endsWith(".java")) {
 							ModelImportActions.importJavaModel(mcreator, file);
-						} else if (file.getName().endsWith(".json")) {
+						} else if (file.getName().endsWith(".geo.json")) {
+							ModelImportActions.importGeckoLibModels(mcreator, file);
+						} else if (file.getName().endsWith(".json") && file.getName().endsWith(".animation.json")) {
 							ModelImportActions.importJSONModel(mcreator, file);
 						} else if (file.getName().endsWith(".obj")) {
 							ModelImportActions.importOBJModel(mcreator, file, null);

@@ -254,7 +254,7 @@ public class ActionRegistry {
 				UIRES.get("16px.importstructure"));
 		this.importStructureFromMinecraft = new StructureImportActions.ImportStructureFromMinecraft(this);
 		this.importJavaModel = new ModelImportActions.JAVA(this).setIcon(UIRES.get("16px.importjavamodel"));
-		this.importGeckoLibModel = new ModelImportActions.GECKOLIB(this);
+		this.importGeckoLibModel = new ModelImportActions.GECKOLIB(this).setIcon(UIRES.get("16px.importgeckolibmodel"));
 		this.importJSONModel = new ModelImportActions.JSON(this).setIcon(UIRES.get("16px.importjsonmodel"));
 		this.importOBJModel = new ModelImportActions.OBJ(this).setIcon(UIRES.get("16px.importobjmodel"));
 		this.closeWorkspace = new BasicAction(this, L10N.t("action.workspace.close"),

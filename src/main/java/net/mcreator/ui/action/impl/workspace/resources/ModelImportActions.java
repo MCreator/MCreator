@@ -202,9 +202,8 @@ public class ModelImportActions {
 		public GECKOLIB(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_geckolib_model"), actionEvent -> {
 				File geoModel = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".geo.json" });
-				File[] animations = FileDialogs.getMultiOpenDialog(actionRegistry.getMCreator(), new String[] { ".animation.json" });
 				if (geoModel != null)
-					importGeckoLibModels(actionRegistry.getMCreator(), geoModel, animations);
+					importGeckoLibModels(actionRegistry.getMCreator(), geoModel);
 			});
 		}
 
@@ -214,10 +213,11 @@ public class ModelImportActions {
 		}
 	}
 
-	public static void importGeckoLibModels(MCreator mcreator, File geoModel, File[] animations) {
+	public static void importGeckoLibModels(MCreator mcreator, File geoModel) {
 		FileIO.copyFile(geoModel, new File(mcreator.getFolderManager().getModelsDir(),
 				Transliteration.transliterateString(geoModel.getName()).toLowerCase(Locale.ENGLISH).trim()
 						.replace(":", "").replace(" ", "_")));
+		File[] animations = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".animation.json" });
 		for (File animation : animations) {
 			FileIO.copyFile(animation, new File(mcreator.getFolderManager().getAnimationsDir(),
 					Transliteration.transliterateString(animation.getName()).toLowerCase(Locale.ENGLISH).trim()
