@@ -164,6 +164,7 @@ public class MainMenuBar extends JMenuBar {
 		resources.add(mcreator.actionRegistry.importStructureFromMinecraft);
 		resources.addSeparator();
 		resources.add(mcreator.actionRegistry.importJavaModel);
+		resources.add(mcreator.actionRegistry.importGeckoLibModel);
 		resources.add(mcreator.actionRegistry.importJSONModel);
 		resources.add(mcreator.actionRegistry.importOBJModel);
 		add(resources);

@@ -459,15 +459,12 @@ public class WorkspaceDialogs {
 					apiEnableBox.setName(api.parent.id);
 					apiEnableBox.setText(api.parent.name);
 
-					if (api.parent.id.equals("geckolib")) {
-						apiEnableBox.addActionListener( e -> {
-							ModAPIManager.ENABLE_GECKOLIB_FEATURES = apiEnableBox.isSelected();
-							if (apiEnableBox.isSelected()) {
-								JOptionPane.showMessageDialog(parent, L10N.t("dialog.workspace_settings.section.external_apis.geckolib_warning"),
-										"GeckoLib", JOptionPane.WARNING_MESSAGE);
-							}
-						});
-					}
+					apiEnableBox.addActionListener( e -> {
+						if (apiEnableBox.isSelected()) {
+							JOptionPane.showMessageDialog(parent, L10N.t("dialog.workspace_settings.section.external_apis.geckolib_warning"),
+									"GeckoLib", JOptionPane.WARNING_MESSAGE);
+						}
+					});
 
 					if (api.parent.id.equals("mcreator_link")) {
 						apiList.add(PanelUtils.westAndCenterElement(
@@ -598,6 +595,9 @@ public class WorkspaceDialogs {
 
 			Set<String> mcreatordeps = new HashSet<>();
 			for (JCheckBox box : apis.values()) {
+				if (box.getName().equals("geckolib") && workspace != null)
+					workspace.ENABLE_GECKOLIB_FEATURES = box.isSelected();
+
 				if (box.isSelected()) {
 					mcreatordeps.add(box.getName());
 				}

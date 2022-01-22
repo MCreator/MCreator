@@ -52,6 +52,8 @@ public class ModelComboBoxRenderer extends JLabel implements ListCellRenderer<Mo
 			setIcon(UIRES.get("model.small_obj"));
 		else if (value.getType() == Model.Type.JAVA)
 			setIcon(UIRES.get("model.small_java"));
+		else if (value.getType() == Model.Type.GECKOLIB)
+			setIcon(UIRES.get("model.small_geckolib"));
 		else if (value.getType() == Model.Type.BUILTIN)
 			setIcon(UIRES.get("model.small_builtin"));
 		else

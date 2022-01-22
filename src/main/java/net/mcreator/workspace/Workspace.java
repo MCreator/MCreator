@@ -73,6 +73,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	@Nonnull private final transient WorkspaceInfo workspaceInfo;
 
+	public boolean ENABLE_GECKOLIB_FEATURES;
+
 	private Workspace(WorkspaceSettings workspaceSettings) {
 		this();
 		this.workspaceSettings = workspaceSettings;

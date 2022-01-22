@@ -50,6 +50,7 @@ public class MainToolBar extends JToolBar {
 		addSeparator(new Dimension(10, 4));
 
 		add(mcreator.actionRegistry.importJavaModel);
+		add(mcreator.actionRegistry.importGeckoLibModel);
 		add(mcreator.actionRegistry.importJSONModel);
 		add(mcreator.actionRegistry.importOBJModel);
 

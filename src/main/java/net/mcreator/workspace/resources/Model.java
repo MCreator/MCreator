@@ -73,7 +73,7 @@ public class Model {
 		if (this.file == null)
 			return;
 
-		this.readableName = this.file[0].getName().substring(0, this.file[0].getName().lastIndexOf('.'));
+		this.readableName = this.file[0].getName().substring(0, this.file[0].getName().lastIndexOf('.')).replace(".geo", "");
 	}
 
 	public File getFile() {

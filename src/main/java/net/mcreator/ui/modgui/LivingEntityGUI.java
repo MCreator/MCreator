@@ -35,6 +35,7 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.BlocklyEditorToolbar;
@@ -191,7 +192,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
+					"IronGolem").sorted().toList().toArray(new String[0]));
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
@@ -855,8 +856,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
+						.filter(el -> {
+							if (getModElement().getWorkspace().ENABLE_GECKOLIB_FEATURES)
+								return el.getType() == Model.Type.JAVA || el.getType() == Model.Type.GECKOLIB || el.getType() == Model.Type.BUILTIN;
+							else
+								return el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR;
+						}).collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
