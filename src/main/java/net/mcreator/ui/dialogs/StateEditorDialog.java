@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class StateEditorDialog {
 
@@ -48,19 +47,19 @@ public class StateEditorDialog {
 		entries.setOpaque(false);
 
 		Map<String, Object> values = !stateString.startsWith("!") ?
-				Stream.of(stateString.split(","))
+				Arrays.stream(stateString.split(","))
 						.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1])) :
 				Collections.emptyMap();
 		properties.forEach((name, data) -> {
 			JComponent component = generatePropertyComponent(data);
 			if (component != null) {
 				StateEntry stateEntry = new StateEntry(entries, entryList, name, component);
-				if (values.containsKey(stateEntry.property)) {
-					if (!data.setValueOfComponent(stateEntry.entryComponent, values.get(stateEntry.property)))
-						setValueOfComponent(stateEntry.entryComponent, data, values.get(stateEntry.property));
+				if (values.containsKey(name)) {
+					if (!data.setValueOfComponent(stateEntry.entryComponent, values.get(name)))
+						setValueOfComponent(stateEntry.entryComponent, data, values.get(name));
 				} else {
 					setValueOfComponent(stateEntry.entryComponent, data, null);
-					if (!values.isEmpty() && !stateString.equals("!new")) // property is not used in this state
+					if (!stateString.equals("!new")) // property is not used in this state
 						stateEntry.useEntry.doClick();
 				}
 			}
@@ -76,15 +75,13 @@ public class StateEditorDialog {
 		dialog.getRootPane().setDefaultButton(ok);
 
 		ok.addActionListener(e -> {
-			StringJoiner joiner = new StringJoiner(",");
-			entryList.stream().filter(el -> el.useEntry.isSelected()).forEach(el -> {
+			retVal.set(entryList.stream().filter(el -> el.useEntry.isSelected()).map(el -> {
 				PropertyData prop = properties.get(el.property);
 				Object value = prop.getValueFromComponent(el.entryComponent);
 				if (value == null)
-					value = getValueFromComponent(el.entryComponent, prop.type());
-				joiner.add(el.property + "=" + value);
-			});
-			retVal.set(joiner.toString());
+					value = getValueFromComponent(el.entryComponent, prop);
+				return el.property + "=" + value;
+			}).collect(Collectors.joining(",")));
 			dialog.setVisible(false);
 		});
 		cancel.addActionListener(e -> dialog.setVisible(false));
@@ -131,32 +128,32 @@ public class StateEditorDialog {
 		return null;
 	}
 
-	private static Object getValueFromComponent(JComponent component, Class<?> type) {
+	private static Object getValueFromComponent(JComponent component, PropertyData param) {
 		if (component == null)
-			return getDefaultValueForType(type);
-		else if (type.equals(boolean.class) || type.equals(Boolean.class))
+			return getDefaultValueForType(param.type());
+		else if (param.type().equals(boolean.class) || param.type().equals(Boolean.class))
 			return ((JCheckBox) component).isSelected();
-		else if (type.equals(int.class) || type.equals(Integer.class) || type.equals(float.class) || type.equals(
-				Float.class))
+		else if (param.type().equals(int.class) || param.type().equals(Integer.class) || param.type()
+				.equals(float.class) || param.type().equals(Float.class))
 			return ((JSpinner) component).getValue();
-		else if (type.equals(String.class))
+		else if (param.type().equals(String.class))
 			return ((JComboBox<?>) component).getSelectedItem();
 		return null;
 	}
 
-	private static void setValueOfComponent(JComponent component, PropertyData property, Object value) {
+	private static void setValueOfComponent(JComponent component, PropertyData param, Object value) {
 		if (value == null)
-			value = getDefaultValueForType(property.type());
+			value = getDefaultValueForType(param.type());
 		if (value != null && component != null) {
-			if (property.type().equals(boolean.class) || property.type().equals(Boolean.class))
+			if (param.type().equals(boolean.class) || param.type().equals(Boolean.class))
 				((JCheckBox) component).setSelected((boolean) value);
-			else if (property.type().equals(int.class) || property.type().equals(Integer.class))
-				((JSpinner) component).setValue(Math.max((Integer) property.min(),
-						Math.min((Integer) property.max(), Integer.parseInt(value.toString()))));
-			else if (property.type().equals(float.class) || property.type().equals(Float.class))
-				((JSpinner) component).setValue(Math.max((Float) property.min(),
-						Math.min((Float) property.max(), Float.parseFloat(value.toString()))));
-			else if (property.type().equals(String.class))
+			else if (param.type().equals(int.class) || param.type().equals(Integer.class))
+				((JSpinner) component).setValue(Math.max((Integer) param.min(),
+						Math.min((Integer) param.max(), Integer.parseInt(value.toString()))));
+			else if (param.type().equals(float.class) || param.type().equals(Float.class))
+				((JSpinner) component).setValue(Math.max((Float) param.min(),
+						Math.min((Float) param.max(), Float.parseFloat(value.toString()))));
+			else if (param.type().equals(String.class))
 				((JComboBox<?>) component).setSelectedItem(value);
 		}
 	}

@@ -79,13 +79,17 @@ package ${package}.init;
 				ItemModelsProperties.registerProperty(${item.getModElement().getRegistryNameUpper()}, new ResourceLocation("${property.getKey()}"),
 						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> {
 					<#if hasProcedure(property.getValue())>
-					ItemStack itemstack = itemStackToRender;
-					Entity entity = livingEntity;
-					double x = entity.getX();
-					double y = entity.getY();
-					double z = entity.getZ();
-					Level world = entity.level;
-					return <@procedureOBJToNumberCode property.getValue()/>;
+					double x = livingEntity != null ? livingEntity.getX() : 0D;
+					double y = livingEntity != null ? livingEntity.getY() : 0D;
+					double z = livingEntity != null ? livingEntity.getZ() : 0D;
+					return <@procedureCode property.getValue(), {
+						"x": "x",
+						"y": "y",
+						"z": "z",
+						"world": "livingEntity != null ? livingEntity.level : clientLevel",
+						"entity": "livingEntity",
+						"itemstack": "itemStackToRender"
+					}/>
 					<#else>
 					return 0F;
 					</#if>

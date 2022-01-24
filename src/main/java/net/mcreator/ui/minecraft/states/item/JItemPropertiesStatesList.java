@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
@@ -96,7 +95,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			@Override public void componentRemoved(ContainerEvent e) {
 				if (propertiesList.size() > 0) {
 					Map<String, PropertyData> propertiesMap = buildPropertiesMap();
-					statesList.forEach(s -> s.state.setText(Stream.of(s.state.getText().split(","))
+					statesList.forEach(s -> s.state.setText(Arrays.stream(s.state.getText().split(","))
 							.filter(el -> propertiesMap.containsKey(el.split("=")[0]))
 							.collect(Collectors.joining(","))));
 					Set<String> duplicates = new HashSet<>(); // when states are trimmed, we remove possible duplicates
@@ -192,7 +191,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private void propertyRenamed(JItemPropertiesListEntry property) {
 		getValidationResult(false).validateIsErrorFree(); // this highlights all the property names errors
 		statesList.forEach(e -> {
-			int builtinPropertiesFound = (int) Stream.of(e.state.getText().split(","))
+			int builtinPropertiesFound = (int) Arrays.stream(e.state.getText().split(","))
 					.filter(el -> builtinProperties.containsKey(el.split("=")[0])).count();
 			e.propertyRenamed(property.nameString, property.name.getText(),
 					propertiesList.indexOf(property) + builtinPropertiesFound);
@@ -212,6 +211,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 						L10N.t("elementgui.item.custom_states.add.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
 			else if (!newState.startsWith("!")) // valid state was returned
 				(entry != null ? entry : addStatesEntry()).state.setText(newState);
+		} else {
+			Toolkit.getDefaultToolkit().beep();
 		}
 	}
 

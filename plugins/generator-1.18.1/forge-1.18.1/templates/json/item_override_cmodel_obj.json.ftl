@@ -10,10 +10,5 @@
         </#list>
     </#if>
     "particle": "${modid}:items/${element.modelTexture}"
-  }<#--,
-  <#if var_type?? && var_type=="tool">
-  "transform": "forge:default-tool"
-  <#else>
-  "transform": "forge:default-item"
-  </#if>-->
+  }
 }

@@ -49,7 +49,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	private final ProcedureSelector value;
 
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemPropertiesListEntry> entryMap, int propertyId) {
+			List<JItemPropertiesListEntry> entryList, int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
 		nameString = "property" + propertyId;
 		name.setText(nameString);
@@ -69,13 +69,13 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		add(value);
 
 		parent.add(container);
-		entryMap.add(this);
+		entryList.add(this);
 		revalidate();
 		repaint();
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_properties.remove"));
-		remove.addActionListener(e -> removeProperty(parent, entryMap));
+		remove.addActionListener(e -> removeProperty(parent, entryList));
 		add(remove);
 
 		parent.revalidate();

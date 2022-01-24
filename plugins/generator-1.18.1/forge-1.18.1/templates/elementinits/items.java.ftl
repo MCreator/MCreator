@@ -40,35 +40,62 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
 
-    private static final List<Item> REGISTRY = new ArrayList<>();
+	private static final List<Item> REGISTRY = new ArrayList<>();
 
-    <#list items as item>
-        <#if item.getModElement().getTypeString() == "armor">
-            <#if item.enableHelmet>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
-            </#if>
-            <#if item.enableBody>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
-            </#if>
-            <#if item.enableLeggings>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
-            </#if>
-            <#if item.enableBoots>
-            public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
-            </#if>
-        <#elseif item.getModElement().getTypeString() == "livingentity">
-            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-                    ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
-                    .tab(CreativeModeTab.TAB_MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
-        <#else>
-            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
-        </#if>
-    </#list>
+	<#list items as item>
+		<#if item.getModElement().getTypeString() == "armor">
+			<#if item.enableHelmet>
+			public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
+			</#if>
+			<#if item.enableBody>
+			public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
+			</#if>
+			<#if item.enableLeggings>
+			public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
+			</#if>
+			<#if item.enableBoots>
+			public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
+			</#if>
+		<#elseif item.getModElement().getTypeString() == "livingentity">
+			public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+					${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
+					.tab(CreativeModeTab.TAB_MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
+		<#else>
+			public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+		</#if>
+	</#list>
 
-    private static Item register(Item item) {
+	<#if w.hasItemsWithCustomProperties()>
+		static {
+		<#list items as item>
+			<#list item.customProperties.entrySet() as property>
+				ItemModelsProperties.registerProperty(${item.getModElement().getRegistryNameUpper()}, new ResourceLocation("${property.getKey()}"),
+						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> {
+					<#if hasProcedure(property.getValue())>
+					double x = livingEntity != null ? livingEntity.getX() : 0D;
+					double y = livingEntity != null ? livingEntity.getY() : 0D;
+					double z = livingEntity != null ? livingEntity.getZ() : 0D;
+					return <@procedureCode property.getValue(), {
+						"x": "x",
+						"y": "y",
+						"z": "z",
+						"world": "livingEntity != null ? livingEntity.level : clientLevel",
+						"entity": "livingEntity",
+						"itemstack": "itemStackToRender"
+					}/>
+					<#else>
+					return 0F;
+					</#if>
+				});
+			</#list>
+		</#list>
+		}
+	</#if>
+
+	private static Item register(Item item) {
 		REGISTRY.add(item);
-    	return item;
-    }
+		return item;
+	}
 
 	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Item[0]));

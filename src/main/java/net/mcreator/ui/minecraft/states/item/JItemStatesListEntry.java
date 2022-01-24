@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
@@ -132,7 +131,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	public void propertyRenamed(String property, String newName, int index) {
 		String[] stateParts = state.getText().split(",");
 		if (index >= stateParts.length || !stateParts[index].startsWith(property + "="))
-			index = Stream.of(stateParts).map(e -> e.split("=")[0]).toList().indexOf(property);
+			index = Arrays.stream(stateParts).map(e -> e.split("=")[0]).toList().indexOf(property);
 		stateParts[index] = stateParts[index].replace(property + "=", newName + "=");
 		state.setText(String.join(",", stateParts));
 	}

@@ -144,11 +144,11 @@ import java.util.Map;
 	}
 
 	public boolean hasNormalModel() {
-		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Normal");
+		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Normal");
 	}
 
 	public boolean hasToolModel() {
-		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
+		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 	}
 
 	public boolean hasInventory() {
@@ -173,13 +173,11 @@ import java.util.Map;
 		}
 
 		public boolean isNormalModel(Workspace workspace) {
-			return getItemModel(workspace).getType() == Model.Type.BUILTIN && getItemModel(workspace).getReadableName()
-					.equals("Normal");
+			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Normal");
 		}
 
 		public boolean isToolModel(Workspace workspace) {
-			return getItemModel(workspace).getType() == Model.Type.BUILTIN && getItemModel(workspace).getReadableName()
-					.equals("Tool");
+			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Tool");
 		}
 
 	}
