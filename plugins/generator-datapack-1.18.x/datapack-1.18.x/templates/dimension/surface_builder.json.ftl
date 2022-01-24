@@ -3,33 +3,41 @@
 
 <#macro vanilla biome>
   <#if biome?contains("frozen_ocean") || biome?contains("frozen_river")>
-    <@default biome w.itemBlock("Blocks.ICE") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.ICE") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("ocean") || biome?contains("ocean")>
-    <@default biome w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("badlands")>
-    <@default biome w.itemBlock("Blocks.SAND#1") w.itemBlock("Blocks.STAINED_HARDENED_CLAY") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.SAND#1") w.itemBlock("Blocks.STAINED_HARDENED_CLAY") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "basalt_deltas">
-    <@default biome w.itemBlock("Blocks.BLACKSTONE") w.itemBlock("Blocks.BASALT") w.itemBlock("Blocks.MAGMA")/>
+    <@vanillaSB biome w.itemBlock("Blocks.BLACKSTONE") w.itemBlock("Blocks.BASALT") w.itemBlock("Blocks.MAGMA") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "crimson_forest">
-    <@default biome w.itemBlock("Blocks.CRIMSON_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHER_WART_BLOCK")/>
+    <@vanillaSB biome w.itemBlock("Blocks.CRIMSON_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHER_WART_BLOCK") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("desert") || biome?contains("beaches")>
-    <@default biome w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("end")>
-    <@default biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE")/>
+    <@vanillaSB biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("mushroom_field")>
-    <@default biome w.itemBlock("Blocks.MYCELIUM") w.itemBlock("Blocks.DIRT") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.MYCELIUM") w.itemBlock("Blocks.DIRT") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "nether">
-    <@default biome w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK")/>
+    <@vanillaSB biome w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "soul_sand_valley">
-    <@default biome w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND")/>
+    <@vanillaSB biome w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "stone_beach">
-    <@default biome w.itemBlock("Blocks.STONE") w.itemBlock("Blocks.STONE") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.STONE") w.itemBlock("Blocks.STONE") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "warped_forest">
-    <@default biome w.itemBlock("Blocks.WARPED_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.WARPED_WART_BLOCK")/>
+    <@vanillaSB biome w.itemBlock("Blocks.WARPED_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.WARPED_WART_BLOCK") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "warped_forest">
-    <@default biome w.itemBlock("Blocks.WARPED_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.WARPED_WART_BLOCK")/>
+    <@vanillaSB biome w.itemBlock("Blocks.WARPED_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.WARPED_WART_BLOCK") data.worldGenType != "Normal world gen"/>
   <#else>
-    <@default biome w.itemBlock("Blocks.GRASS") w.itemBlock("Blocks.DIRT") w.itemBlock("Blocks.GRAVEL")/>
+    <@vanillaSB biome w.itemBlock("Blocks.GRASS") w.itemBlock("Blocks.DIRT") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
+  </#if>
+</#macro>
+
+<#macro vanillaSB biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties=undergroundBlockWithProperties coverAny=false>
+  <#if coverAny>
+    <@defaultAny biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties />
+  <#else>
+    <@default biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties />
   </#if>
 </#macro>
 
