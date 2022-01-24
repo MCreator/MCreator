@@ -72,7 +72,7 @@ public class ${name}Block extends
 	<#macro blockProperties>
 	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		BlockBehaviour.Properties.of(Material.${data.material},MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
-	<#else
+	<#else>
 		BlockBehaviour.Properties.of(Material.${data.material})
 	</#if>
 			<#if data.isCustomSoundType>
