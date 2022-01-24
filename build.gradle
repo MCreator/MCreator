@@ -91,7 +91,7 @@ dependencies {
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
 
     // JFX natives
-    win64 group: 'org.openjfx', name: 'javafx-base', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-base', version: '17.0.2', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-controls', version: '17.0.1', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.1', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-media', version: '17.0.1', classifier: 'win'
