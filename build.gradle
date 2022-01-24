@@ -96,7 +96,7 @@ dependencies {
     win64 group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.1', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-media', version: '17.0.1', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-web', version: '17.0.1', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-swing', version: '17.0.1', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-swing', version: '17.0.2', classifier: 'win'
 
     mac64 group: 'org.openjfx', name: 'javafx-base', version: '17.0.1', classifier: 'mac'
     mac64 group: 'org.openjfx', name: 'javafx-controls', version: '17.0.1', classifier: 'mac'
