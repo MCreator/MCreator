@@ -70,7 +70,11 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro blockProperties>
-		BlockBehaviour.Properties.of(Material.${data.material}<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">,MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}</#if>)
+	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+		BlockBehaviour.Properties.of(Material.${data.material},MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+	<#else
+		BlockBehaviour.Properties.of(Material.${data.material})
+	</#if>
 			<#if data.isCustomSoundType>
 				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
