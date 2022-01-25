@@ -181,13 +181,7 @@ public class WorkspaceFileManager implements Closeable {
 		void dataSaved();
 	}
 
-	private static class SaveTask implements Runnable {
-
-		private final WorkspaceFileManager fileManager;
-
-		SaveTask(WorkspaceFileManager fileManager) {
-			this.fileManager = fileManager;
-		}
+	private record SaveTask(WorkspaceFileManager fileManager) implements Runnable {
 
 		@Override public void run() {
 			fileManager.saveWorkspaceIfChanged();

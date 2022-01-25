@@ -109,8 +109,8 @@ public class ModAPIManager {
 				.map(e -> ModAPIManager.getModAPIForNameAndGenerator(e, workspace.getGenerator().getGeneratorName()))
 				.toList();
 		for (ModAPI.Implementation api : apis) {
-			if (api.update_files != null) {
-				for (String fileRelative : api.update_files) {
+			if (api.update_files() != null) {
+				for (String fileRelative : api.update_files()) {
 					File file = new File(workspace.getWorkspaceFolder(), fileRelative);
 					if (workspace.getFolderManager().isFileInWorkspace(file)) {
 						if (file.isFile()) {

@@ -38,21 +38,7 @@ public class ModAPI {
 		this.implementations = implementations;
 	}
 
-	public static class Implementation {
-
-		public final String gradle;
-		@Nullable public final List<String> update_files;
-		public final ModAPI parent;
-		public final boolean requiredWhenEnabled;
-
-		public Implementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
-				boolean requiredWhenEnabled) {
-			this.gradle = gradle;
-			this.update_files = update_files;
-			this.parent = parent;
-			this.requiredWhenEnabled = requiredWhenEnabled;
-		}
-
-	}
+	public record Implementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
+								 boolean requiredWhenEnabled) {}
 
 }

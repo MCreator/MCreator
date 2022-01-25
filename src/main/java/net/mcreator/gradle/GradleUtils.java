@@ -108,7 +108,7 @@ public class GradleUtils {
 					ModAPI.Implementation implementation = ModAPIManager.getModAPIForNameAndGenerator(dep,
 							workspace.getGenerator().getGeneratorName());
 					if (implementation != null) {
-						mcreatorGradleConfBuilder.append(implementation.gradle).append("\n\n");
+						mcreatorGradleConfBuilder.append(implementation.gradle()).append("\n\n");
 					}
 				}
 			}

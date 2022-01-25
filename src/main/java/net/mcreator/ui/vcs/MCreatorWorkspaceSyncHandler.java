@@ -45,13 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
-
-	private final MCreator mcreator;
-
-	public MCreatorWorkspaceSyncHandler(MCreator mcreator) {
-		this.mcreator = mcreator;
-	}
+public record MCreatorWorkspaceSyncHandler(MCreator mcreator) implements ICustomSyncHandler {
 
 	@Override
 	public boolean handleSync(Git git, boolean hasMergeConflists, List<FileSyncHandle> handles, boolean dryRun)

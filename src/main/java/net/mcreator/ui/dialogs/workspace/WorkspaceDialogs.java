@@ -455,10 +455,10 @@ public class WorkspaceDialogs {
 						workspace.getGenerator().getGeneratorName());
 				for (ModAPI.Implementation api : apisSupported) {
 					JCheckBox apiEnableBox = new JCheckBox();
-					apiEnableBox.setName(api.parent.id);
-					apiEnableBox.setText(api.parent.name);
+					apiEnableBox.setName(api.parent().id);
+					apiEnableBox.setText(api.parent().name);
 
-					if (api.parent.id.equals("mcreator_link")) {
+					if (api.parent().id.equals("mcreator_link")) {
 						apiList.add(PanelUtils.westAndCenterElement(
 								ComponentUtils.wrapWithInfoButton(apiEnableBox, "https://mcreator.net/link"),
 								new JLabel(UIRES.get("16px.link"))));
@@ -466,7 +466,7 @@ public class WorkspaceDialogs {
 						apiList.add(PanelUtils.join(FlowLayout.LEFT, apiEnableBox));
 					}
 
-					apis.put(api.parent.id, apiEnableBox);
+					apis.put(api.parent().id, apiEnableBox);
 				}
 
 				apiSettings.add("West", apiList);
