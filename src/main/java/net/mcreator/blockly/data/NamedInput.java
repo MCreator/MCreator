@@ -38,6 +38,4 @@
 
 package net.mcreator.blockly.data;
 
-public record NamedInput(String name) implements IInput {
-
-}
+public record NamedInput(String name) implements IInput {}
