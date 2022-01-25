@@ -171,7 +171,7 @@ import java.util.stream.Stream;
 	public Set<String> getRequiredMods() {
 		List<String> apisSupportedNames = ModAPIManager.getModAPIsForGenerator(
 						workspace.getGenerator().getGeneratorName()).stream().filter(e -> e.requiredWhenEnabled)
-				.map(e -> e.parent.id).collect(Collectors.toList());
+				.map(e -> e.parent.id).toList();
 
 		return Stream.concat(requiredMods.stream(), mcreatorDependencies.stream().filter(apisSupportedNames::contains))
 				.collect(Collectors.toSet());
@@ -180,7 +180,7 @@ import java.util.stream.Stream;
 	public Set<String> getDependencies() {
 		List<String> apisSupportedNames = ModAPIManager.getModAPIsForGenerator(
 						workspace.getGenerator().getGeneratorName()).stream().filter(e -> !e.requiredWhenEnabled)
-				.map(e -> e.parent.id).collect(Collectors.toList());
+				.map(e -> e.parent.id).toList();
 
 		return Stream.concat(dependencies.stream(), mcreatorDependencies.stream().filter(apisSupportedNames::contains))
 				.collect(Collectors.toSet());
@@ -192,8 +192,7 @@ import java.util.stream.Stream;
 
 	public Set<String> getMCreatorDependencies() {
 		List<String> apisSupportedNames = ModAPIManager.getModAPIsForGenerator(
-						workspace.getGenerator().getGeneratorName()).stream().map(e -> e.parent.id)
-				.collect(Collectors.toList());
+				workspace.getGenerator().getGeneratorName()).stream().map(e -> e.parent.id).toList();
 		return mcreatorDependencies.stream().filter(apisSupportedNames::contains).collect(Collectors.toSet());
 	}
 

@@ -1524,7 +1524,7 @@ import java.util.stream.Collectors;
 								return true;
 
 						return false;
-					}).collect(Collectors.toList()));
+					}).toList());
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
