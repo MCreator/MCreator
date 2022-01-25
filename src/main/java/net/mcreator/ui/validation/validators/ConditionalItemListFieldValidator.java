@@ -25,18 +25,18 @@ import javax.swing.*;
 
 public class ConditionalItemListFieldValidator implements Validator {
 
-	private final JItemListField holder;
+	private final JItemListField<?> holder;
 	private final String emptyMessage;
 	private final ValidationResultType answer;
 	private final boolean validateTextWhenBooleanIs;
 	private final JToggleButton conditionElement;
 
-	public ConditionalItemListFieldValidator(JItemListField holder, String emptyMessage, JToggleButton condition,
+	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, JToggleButton condition,
 			boolean validateTextWhenBooleanIs) {
 		this(holder, emptyMessage, condition, validateTextWhenBooleanIs, ValidationResultType.ERROR);
 	}
 
-	public ConditionalItemListFieldValidator(JItemListField holder, String emptyMessage, JToggleButton condition,
+	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, JToggleButton condition,
 			boolean validateTextWhenBooleanIs, ValidationResultType answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
