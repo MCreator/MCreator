@@ -40,7 +40,7 @@ public class ZipIO {
 		try (ZipFile zipFile = new ZipFile(zipFilePointer)) {
 			List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
 			if (sortByName)
-				entries.sort(Comparator.comparing(e -> e.getName().toLowerCase()));
+				entries.sort(Comparator.comparing(ZipEntry::getName));
 			entries.forEach(action);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
