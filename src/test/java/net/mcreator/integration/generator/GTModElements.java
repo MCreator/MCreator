@@ -42,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -73,7 +72,7 @@ public class GTModElements {
 				workspace.getModElementManager().storeModElement(generatableElement);
 
 				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
-						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
+						.stream().map(GeneratorTemplate::getFile).toList();
 
 				// test generated JSON syntax (Java is tested later in the build)
 				for (File modElementFile : modElementFiles) {

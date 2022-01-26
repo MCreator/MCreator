@@ -390,10 +390,8 @@ public record MCreatorWorkspaceSyncHandler(MCreator mcreator) implements ICustom
 						.getGeneratableElement();
 				if (generatableElement != null) {
 					// regenerate this mod element to reduce conflicts number, we prefer to use baseWorkspace for this
-					if (baseWorkspace != null)
-						baseWorkspace.getGenerator().generateElement(generatableElement);
-					else
-						localWorkspace.getGenerator().generateElement(generatableElement);
+					Objects.requireNonNullElse(baseWorkspace, localWorkspace).getGenerator()
+							.generateElement(generatableElement);
 					localWorkspace.getModElementManager().storeModElementPicture(
 							generatableElement); // we regenerate mod element images as we do not have remote images yet
 				}
