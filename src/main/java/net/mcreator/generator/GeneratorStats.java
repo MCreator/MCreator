@@ -210,12 +210,12 @@ public class GeneratorStats {
 
 	public enum Status {
 
-		DEPRECATED("dialog.generator_selector.generator_status.deprecated"), DEV(
-				"dialog.generator_selector.generator_status.dev"), EXPERIMENTAL(
-				"dialog.generator_selector.generator_status.experimental"), LEGACY(
-				"dialog.generator_selector.generator_status.legacy"), LTS(
-				"dialog.generator_selector.generator_status.lts"), STABLE(
-				"dialog.generator_selector.generator_status.stable");
+		DEPRECATED("dialog.generator_selector.generator_status.deprecated"),
+		DEV("dialog.generator_selector.generator_status.dev"),
+		EXPERIMENTAL("dialog.generator_selector.generator_status.experimental"),
+		LEGACY("dialog.generator_selector.generator_status.legacy"),
+		LTS("dialog.generator_selector.generator_status.lts"),
+		STABLE("dialog.generator_selector.generator_status.stable");
 
 		private final String name;
 
