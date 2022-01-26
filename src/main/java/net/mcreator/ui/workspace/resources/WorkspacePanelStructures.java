@@ -31,7 +31,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class WorkspacePanelStructures extends JPanel implements IReloadableFilterable {
 
@@ -169,8 +168,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 			filterItems.clear();
 			String term = workspacePanel.search.getText();
 			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> (item.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH))))
-					.collect(Collectors.toList()));
+					.filter(e -> (e.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))).toList());
 
 			if (workspacePanel.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(String::toString));
