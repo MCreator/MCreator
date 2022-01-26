@@ -64,7 +64,7 @@ frozen_peaks: frozen_peaks
 jagged_peaks: jagged_peaks
 stony_peaks: stony_peaks
 
-# legacy
+# legacy (removed/merged in 1.18)
 snowy_mountains: windswept_hills
 mushroom_field_shore: mushroom_fields
 desert_hills: desert
