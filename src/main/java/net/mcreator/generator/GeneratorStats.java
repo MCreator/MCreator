@@ -208,6 +208,7 @@ public class GeneratorStats {
 		FULL, PARTIAL, NONE
 	}
 
+	// @formatter:off
 	public enum Status {
 
 		DEPRECATED("dialog.generator_selector.generator_status.deprecated"),
@@ -228,4 +229,5 @@ public class GeneratorStats {
 		}
 
 	}
+	// @formatter:on
 }
