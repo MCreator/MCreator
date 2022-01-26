@@ -1,0 +1,1 @@
+(net.minecraft.locale.Language.getInstance().getOrDefault(${input$key}))
