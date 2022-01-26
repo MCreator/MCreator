@@ -50,8 +50,6 @@ import net.mcreator.ui.views.editor.image.tool.action.*;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,13 +217,11 @@ public class ActionRegistry {
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
-				e -> mcreator.getProjectBrowser().openSelectedFileAsCode(true)).setIcon(UIRES.get("16px.edit.gif"));
+				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit.gif"));
 		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
 				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
 		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.show_in_explorer"),
-				e -> DesktopUtils.openSafe(
-						((File) ((DefaultMutableTreeNode) mcreator.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject()),
-						true)).setIcon(UIRES.get("16px.open.gif"));
+				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open.gif"));
 		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
 				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
 		this.newClass = new NewClassAction(this);

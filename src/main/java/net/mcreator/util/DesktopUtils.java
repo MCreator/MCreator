@@ -49,11 +49,11 @@ public class DesktopUtils {
 		openSafe(file, false);
 	}
 
-	public static void openSafe(File file, boolean selectFile) {
+	public static void openSafe(File file, boolean selectOnly) {
 		try {
 			new Thread(() -> {
 				try {
-					open(file, selectFile);
+					open(file, selectOnly);
 				} catch (Exception ignored) {
 				}
 			}).start();
@@ -75,8 +75,8 @@ public class DesktopUtils {
 		return false;
 	}
 
-	private static boolean open(File file, boolean selectFile) {
-		if (openDESKTOP(file, selectFile)) {
+	private static boolean open(File file, boolean selectOnly) {
+		if (openDESKTOP(file, selectOnly)) {
 			return true;
 		}
 

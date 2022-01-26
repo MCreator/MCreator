@@ -63,7 +63,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	FilterTreeNode sourceCode = null;
 	FilterTreeNode currRes = null;
 
-	public JTree tree = new JTree(mods) {
+	public final JTree tree = new JTree(mods) {
 		@Override public void paintComponent(Graphics g) {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
@@ -190,7 +190,7 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 2)
-					openSelectedFileAsCode(false);
+					openSelectedFile(false);
 				else if (mouseEvent.getButton() == MouseEvent.BUTTON3 && tree.getLastSelectedPathComponent() != null)
 					new WorkspaceFileBrowserContextMenu(WorkspaceFileBrowser.this).show(tree, mouseEvent.getX(),
 							mouseEvent.getY());
@@ -284,7 +284,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
-	public void openSelectedFileAsCode(boolean forceExpansion) {
+	public void openSelectedFile(boolean forceExpansion) {
 		if (tree.getLastSelectedPathComponent() != null) {
 			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
 			if (selection.getUserObject() instanceof File selFile) {
@@ -321,14 +321,23 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
+	public void showSelectedFileInDesktop() {
+		if (tree.getLastSelectedPathComponent() != null) {
+			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selection.getUserObject() instanceof File sel)
+				DesktopUtils.openSafe(sel, true);
+			else
+				Toolkit.getDefaultToolkit().beep();
+		}
+	}
+
 	public void deleteSelectedFile() {
 		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
 		if (selected != null && selected != sourceCode && selected != currRes) {
-			if (selected.getUserObject() instanceof File) {
+			if (selected.getUserObject() instanceof File file) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file.message"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
-					File file = (File) selected.getUserObject();
 					if (file.isFile())
 						file.delete();
 					else
@@ -338,7 +347,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			} else {
 				Toolkit.getDefaultToolkit().beep();
 			}
-		} else {
+		} else if (selected == sourceCode || selected == currRes) {
 			Toolkit.getDefaultToolkit().beep();
 		}
 	}
