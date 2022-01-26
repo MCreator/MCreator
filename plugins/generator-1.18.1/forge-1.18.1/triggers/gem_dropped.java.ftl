@@ -1,15 +1,14 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onGemDropped(ItemTossEvent event) {
-		Player entity=event.getPlayer();
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "entity.getX()",
-			"y": "entity.getY()",
-			"z": "entity.getZ()",
-			"entity": "entity",
+			"x": "event.getPlayer().getX()",
+			"y": "event.getPlayer().getY()",
+			"z": "event.getPlayer().getZ()",
+			"world": "event.getPlayer().level",
+			"entity": "event.getPlayer()",
 			"itemstack": "event.getEntityItem().getItem()",
-			"world": "entity.level",
 			"event": "event"
 			}/>
 		</#compress></#assign>

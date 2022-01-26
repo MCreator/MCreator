@@ -1,17 +1,16 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockMultiPlace(BlockEvent.EntityMultiPlaceEvent event) {
-		Entity entity = event.getEntity();
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getPos().getX()",
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",
-			"px": "entity.getX()",
-			"py": "entity.getY()",
-			"pz": "entity.getZ()",
+			"px": "event.getEntity().getX()",
+			"py": "event.getEntity().getY()",
+			"pz": "event.getEntity().getZ()",
 			"world": "event.getWorld()",
-			"entity": "entity",
+			"entity": "event.getEntity()",
 			"blockstate": "event.getState()",
 			"placedagainst": "event.getPlacedAgainst()",
 			"event": "event"

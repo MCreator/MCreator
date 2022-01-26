@@ -1,7 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onBonemeal(BonemealEvent event){
-		Player entity=event.getPlayer();
+	@SubscribeEvent public static void onBonemeal(BonemealEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getPos().getX()",
@@ -9,7 +8,7 @@
 			"z": "event.getPos().getZ()",
 			"world": "event.getWorld()",
 			"itemstack": "event.getStack()",
-			"entity": "entity",
+			"entity": "event.getPlayer()",
 			"blockstate": "event.getBlock()",
 			"event": "event"
 			}/>
