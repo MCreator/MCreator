@@ -218,14 +218,14 @@ public class GeneratorStats {
 		LTS("dialog.generator_selector.generator_status.lts"),
 		STABLE("dialog.generator_selector.generator_status.stable");
 
-		private final String name;
+		private final String key;
 
 		Status(String key) {
-			name = L10N.t(key);
+			this.key = key;
 		}
 
 		public String getName() {
-			return name;
+			return L10N.t(key);
 		}
 
 	}
