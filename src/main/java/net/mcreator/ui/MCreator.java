@@ -382,9 +382,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 
 			application.getDiscordClient()
-					.updatePresence(L10N.t("dialog.discord_rpc.working_on", workspace.getWorkspaceSettings().getModName() + tabAddition),
-							L10N.t("dialog.discord_rpc.working_on.details", Launcher.version.getMajorString(),
-									workspace.getGenerator().getGeneratorMinecraftVersion()),
+					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
+							Launcher.version.getMajorString() + " for " + workspace.getGenerator()
+									.getGeneratorMinecraftVersion(),
 							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
