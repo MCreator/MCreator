@@ -104,7 +104,7 @@ public class WorkspaceFolderManager {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	@Nullable public File getTexturesDirTypeFromSectionType(TextureSection section) {
+	@Nullable public File getTexturesFolderForSectionType(TextureSection section) {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), section.getID() + "_textures_dir");
 	}
 
