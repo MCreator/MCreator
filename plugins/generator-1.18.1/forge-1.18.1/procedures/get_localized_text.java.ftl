@@ -1,1 +1,1 @@
-(net.minecraft.locale.Language.getInstance().getOrDefault(${input$key}))
+(new TranslatableComponent(${input$key}).getString())
