@@ -181,7 +181,7 @@ public class WorkspaceFileManager implements Closeable {
 		void dataSaved();
 	}
 
-	private static class SaveTask implements Runnable {
+	@SuppressWarnings("ClassCanBeRecord") private static class SaveTask implements Runnable {
 
 		private final WorkspaceFileManager fileManager;
 

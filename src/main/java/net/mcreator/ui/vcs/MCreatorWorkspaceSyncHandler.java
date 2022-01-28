@@ -45,7 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
+@SuppressWarnings("ClassCanBeRecord") public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 	private final MCreator mcreator;
 
