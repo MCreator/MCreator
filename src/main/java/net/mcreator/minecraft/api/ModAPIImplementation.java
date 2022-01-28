@@ -18,6 +18,8 @@
 
 package net.mcreator.minecraft.api;
 
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.List;
 
-public record ModAPI(String id, String name, Map<String, ModAPIImplementation> implementations) {}
+public record ModAPIImplementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
+								   boolean requiredWhenEnabled) {}

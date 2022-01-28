@@ -292,7 +292,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> L10N.t("elementgui.advancement.trigger") + compileNote.message())
+					.map(compileNote -> L10N.t("elementgui.advancement.trigger", compileNote.message()))
 					.collect(Collectors.toList()));
 
 		return new AggregatedValidationResult(page1group);

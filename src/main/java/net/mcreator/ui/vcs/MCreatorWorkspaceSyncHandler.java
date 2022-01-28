@@ -45,10 +45,16 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public record MCreatorWorkspaceSyncHandler(MCreator mcreator) implements ICustomSyncHandler {
+public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
+
+	private final MCreator mcreator;
+
+	public MCreatorWorkspaceSyncHandler(MCreator mcreator) {
+		this.mcreator = mcreator;
+	}
 
 	@Override
-	public boolean handleSync(Git git, boolean hasMergeConflists, List<FileSyncHandle> handles, boolean dryRun)
+	public boolean handleSync(Git git, boolean hasMergeConflicts, List<FileSyncHandle> handles, boolean dryRun)
 			throws GitAPIException, IOException, TooNewWorkspaceVerisonException {
 		boolean required_user_action;
 
