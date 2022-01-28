@@ -185,7 +185,9 @@ public class WorkspaceFileManager implements Closeable {
 
 		private final WorkspaceFileManager fileManager;
 
-		private SaveTask(WorkspaceFileManager fileManager) {this.fileManager = fileManager;}
+		private SaveTask(WorkspaceFileManager fileManager) {
+			this.fileManager = fileManager;
+		}
 
 		@Override public void run() {
 			fileManager.saveWorkspaceIfChanged();
