@@ -145,23 +145,6 @@ public class SyncTwoRefsWithMerge {
 		void call() throws GitAPIException;
 	}
 
-	public static class SyncResult {
-
-		private final boolean requiredCustomMergeHandler;
-		private final boolean requiredUserAction;
-
-		SyncResult(boolean requiredCustomMergeHandler, boolean requiredUserAction) {
-			this.requiredCustomMergeHandler = requiredCustomMergeHandler;
-			this.requiredUserAction = requiredUserAction;
-		}
-
-		public boolean wasCustomMergeHandlerRequired() {
-			return requiredCustomMergeHandler;
-		}
-
-		public boolean wasUserActionRequired() {
-			return requiredUserAction;
-		}
-	}
+	public record SyncResult(boolean requiredCustomMergeHandler, boolean requiredUserAction) {}
 
 }

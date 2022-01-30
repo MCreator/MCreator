@@ -239,7 +239,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -585,7 +585,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			return new AggregatedValidationResult.PASS();
 		else if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::getMessage)
+					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
 							.collect(Collectors.toList()));
 		else
 			return new AggregatedValidationResult.FAIL(

@@ -149,7 +149,7 @@ public class BlocklyBlockCodeGenerator {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name")
-							.equals(advancedInput.name)) {
+							.equals(advancedInput.name())) {
 						found = true;
 
 						// check if nesting statement block that already provides any dependency with
@@ -159,7 +159,7 @@ public class BlocklyBlockCodeGenerator {
 								if (master.checkIfDepProviderInputsProvide(dependency)) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 											L10N.t("blockly.errors.duplicate_dependencies_provided",
-													advancedInput.name)));
+													advancedInput.name())));
 									return; // no need to do further processing, this needs to be resolved first by the user
 								}
 							}
@@ -169,14 +169,14 @@ public class BlocklyBlockCodeGenerator {
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
 						master.popDepProviderInputStack();
 
-						dataModel.put("input$" + advancedInput.name, generatedCode);
+						dataModel.put("input$" + advancedInput.name(), generatedCode);
 
 						break; // found, no need to look other elements
 					}
 				}
 				if (!found) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.input_empty", advancedInput.name, type)));
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, 
+							L10N.t("blockly.errors.input_empty", advancedInput.name(), type)));
 				}
 			}
 		}

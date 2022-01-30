@@ -191,7 +191,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
+					"IronGolem").sorted().toArray(String[]::new));
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
@@ -266,7 +266,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -881,7 +881,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Living entity AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
@@ -1113,7 +1113,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		return livingEntity;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
 	}
 

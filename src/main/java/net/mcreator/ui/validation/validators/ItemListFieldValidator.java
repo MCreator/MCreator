@@ -23,15 +23,15 @@ import net.mcreator.ui.validation.Validator;
 
 public class ItemListFieldValidator implements Validator {
 
-	private final JItemListField holder;
+	private final JItemListField<?> holder;
 	private final String emptyMessage;
 	private final ValidationResultType answer;
 
-	public ItemListFieldValidator(JItemListField holder, String emptyMessage) {
+	public ItemListFieldValidator(JItemListField<?> holder, String emptyMessage) {
 		this(holder, emptyMessage, ValidationResultType.ERROR);
 	}
 
-	public ItemListFieldValidator(JItemListField holder, String emptyMessage, ValidationResultType answer) {
+	public ItemListFieldValidator(JItemListField<?> holder, String emptyMessage, ValidationResultType answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
 		this.answer = answer;

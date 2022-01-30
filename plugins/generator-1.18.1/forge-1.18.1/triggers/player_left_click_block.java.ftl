@@ -1,8 +1,7 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-		Player entity=event.getPlayer();
-		if (event.getHand() != entity.getUsedItemHand())
+		if (event.getHand() != event.getPlayer().getUsedItemHand())
 			return;
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
@@ -10,7 +9,7 @@
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",
 			"world": "event.getWorld()",
-			"entity": "entity",
+			"entity": "event.getPlayer()",
 			"direction": "event.getFace()",
 			"blockstate": "event.getWorld().getBlockState(event.getPos())",
 			"event": "event"

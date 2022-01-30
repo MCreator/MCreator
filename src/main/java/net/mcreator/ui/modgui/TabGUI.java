@@ -127,7 +127,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 		return tab;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-creative-inventory-tab");
 	}
 
