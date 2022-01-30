@@ -16,21 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.vcs.diff;
+package net.mcreator.minecraft.api;
 
-import org.eclipse.jgit.diff.DiffEntry;
+import javax.annotation.Nullable;
+import java.util.List;
 
-record AffectedObjectWithType<T>(T affected, DiffEntry.ChangeType changeType) {
-
-	@Override public boolean equals(Object o) {
-		return o instanceof AffectedObjectWithType && ((AffectedObjectWithType<?>) o).affected.equals(affected);
-	}
-
-	@Override public int hashCode() {
-		return affected.hashCode();
-	}
-
-	@Override public String toString() {
-		return affected.toString();
-	}
-}
+public record ModAPIImplementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
+								   boolean requiredWhenEnabled) {}

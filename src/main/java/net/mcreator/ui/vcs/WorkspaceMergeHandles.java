@@ -27,49 +27,11 @@ import net.mcreator.workspace.settings.WorkspaceSettings;
 
 import java.util.Set;
 
-public class WorkspaceMergeHandles {
+public record WorkspaceMergeHandles(MergeHandle<WorkspaceSettings> workspaceSettingsMergeHandle,
+									Set<MergeHandle<ModElement>> conflictingModElements,
+									Set<MergeHandle<VariableElement>> conflictingVariableElements,
+									Set<MergeHandle<SoundElement>> conflictingSoundElements,
+									Set<MergeHandle<String>> conflictingLangMaps,
+									MergeHandle<FolderElement> workspaceFoldersMergeHandle) {
 
-	private final MergeHandle<WorkspaceSettings> workspaceSettingsMergeHandle;
-	private final Set<MergeHandle<ModElement>> conflictingModElements;
-	private final Set<MergeHandle<VariableElement>> conflictingVariableElements;
-	private final Set<MergeHandle<SoundElement>> conflictingSoundElements;
-	private final Set<MergeHandle<String>> conflictingLangMaps;
-	private final MergeHandle<FolderElement> workspaceFoldersMergeHandle;
-
-	public WorkspaceMergeHandles(MergeHandle<WorkspaceSettings> workspaceSettingsMergeHandle,
-			Set<MergeHandle<ModElement>> conflictingModElements,
-			Set<MergeHandle<VariableElement>> conflictingVariableElements,
-			Set<MergeHandle<SoundElement>> conflictingSoundElements, Set<MergeHandle<String>> conflictingLangMaps,
-			MergeHandle<FolderElement> workspaceFoldersMergeHandle) {
-		this.workspaceSettingsMergeHandle = workspaceSettingsMergeHandle;
-		this.conflictingModElements = conflictingModElements;
-		this.conflictingVariableElements = conflictingVariableElements;
-		this.conflictingSoundElements = conflictingSoundElements;
-		this.conflictingLangMaps = conflictingLangMaps;
-		this.workspaceFoldersMergeHandle = workspaceFoldersMergeHandle;
-	}
-
-	public MergeHandle<WorkspaceSettings> getWorkspaceSettingsMergeHandle() {
-		return workspaceSettingsMergeHandle;
-	}
-
-	public Set<MergeHandle<ModElement>> getConflictingModElements() {
-		return conflictingModElements;
-	}
-
-	public Set<MergeHandle<VariableElement>> getConflictingVariableElements() {
-		return conflictingVariableElements;
-	}
-
-	public Set<MergeHandle<SoundElement>> getConflictingSoundElements() {
-		return conflictingSoundElements;
-	}
-
-	public Set<MergeHandle<String>> getConflictingLangMaps() {
-		return conflictingLangMaps;
-	}
-
-	public MergeHandle<FolderElement> getWorkspaceFoldersMergeHandle() {
-		return workspaceFoldersMergeHandle;
-	}
 }

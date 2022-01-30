@@ -127,7 +127,7 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 											// we pull changes before custom merge handler tasks
 											git.pull().setRemote("origin").setCredentialsProvider(credentialsProvider)
 													.call();
-										}, false).wasCustomMergeHandlerRequired();
+										}, false).requiredCustomMergeHandler();
 
 								// possible refactor after sync start
 								actionRegistry.getMCreator().getWorkspace().reloadFromFS();
