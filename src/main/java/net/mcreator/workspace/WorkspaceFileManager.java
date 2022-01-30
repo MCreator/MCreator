@@ -181,11 +181,11 @@ public class WorkspaceFileManager implements Closeable {
 		void dataSaved();
 	}
 
-	private static class SaveTask implements Runnable {
+	@SuppressWarnings("ClassCanBeRecord") private static class SaveTask implements Runnable {
 
 		private final WorkspaceFileManager fileManager;
 
-		SaveTask(WorkspaceFileManager fileManager) {
+		private SaveTask(WorkspaceFileManager fileManager) {
 			this.fileManager = fileManager;
 		}
 
@@ -196,6 +196,7 @@ public class WorkspaceFileManager implements Closeable {
 			fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
 					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 		}
+
 	}
 
 }

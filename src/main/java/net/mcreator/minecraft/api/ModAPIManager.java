@@ -50,9 +50,7 @@ public class ModAPIManager {
 				Map<?, ?> apiconfiguration = (Map<?, ?>) reader.read();
 
 				ModAPI modAPI = new ModAPI(FilenameUtilsPatched.getBaseName(apidefinition),
-						(String) apiconfiguration.get("name"));
-
-				Map<String, ModAPI.Implementation> implementations = new HashMap<>();
+						(String) apiconfiguration.get("name"), new HashMap<>());
 
 				for (Object keyraw : apiconfiguration.keySet()) {
 					String key = (String) keyraw;
@@ -67,14 +65,12 @@ public class ModAPIManager {
 						if (updateFiles == null)
 							updateFiles = Collections.emptyList();
 
-						ModAPI.Implementation implementation = new ModAPI.Implementation(modAPI, gradle,
+						ModAPIImplementation implementation = new ModAPIImplementation(modAPI, gradle,
 								updateFiles.stream().map(Object::toString).collect(Collectors.toList()),
 								requiredWhenEnabled);
-						implementations.put(key, implementation);
+						modAPI.implementations().put(key, implementation);
 					}
 				}
-
-				modAPI.setImplementations(implementations);
 
 				modApiList.put(FilenameUtilsPatched.getBaseName(apidefinition), modAPI);
 
@@ -85,38 +81,35 @@ public class ModAPIManager {
 		}
 	}
 
-	public static List<ModAPI.Implementation> getModAPIsForGenerator(String generatorName) {
-		List<ModAPI.Implementation> implementations = new ArrayList<>();
+	public static List<ModAPIImplementation> getModAPIsForGenerator(String generatorName) {
+		List<ModAPIImplementation> implementations = new ArrayList<>();
 
 		for (ModAPI api : modApiList.values())
-			if (api.implementations.containsKey(generatorName))
-				implementations.add(api.implementations.get(generatorName));
+			if (api.implementations().containsKey(generatorName))
+				implementations.add(api.implementations().get(generatorName));
 
 		return implementations;
 	}
 
-	public static ModAPI.Implementation getModAPIForNameAndGenerator(String name, String generatorName) {
+	public static ModAPIImplementation getModAPIForNameAndGenerator(String name, String generatorName) {
 		ModAPI modAPI = modApiList.get(name);
 		if (modAPI != null) {
-			return modAPI.implementations.get(generatorName);
+			return modAPI.implementations().get(generatorName);
 		}
 
 		return null;
 	}
 
 	public static void deleteAPIs(Workspace workspace, WorkspaceSettings workspaceSettings) {
-		List<ModAPI.Implementation> apis = workspaceSettings.getMCreatorDependencies().stream()
+		List<ModAPIImplementation> apis = workspaceSettings.getMCreatorDependencies().stream()
 				.map(e -> ModAPIManager.getModAPIForNameAndGenerator(e, workspace.getGenerator().getGeneratorName()))
 				.toList();
-		for (ModAPI.Implementation api : apis) {
-			if (api.update_files != null) {
-				for (String fileRelative : api.update_files) {
+		for (ModAPIImplementation api : apis) {
+			if (api.update_files() != null) {
+				for (String fileRelative : api.update_files()) {
 					File file = new File(workspace.getWorkspaceFolder(), fileRelative);
-					if (workspace.getFolderManager().isFileInWorkspace(file)) {
-						if (file.isFile()) {
-							file.delete();
-						}
-					}
+					if (workspace.getFolderManager().isFileInWorkspace(file) && file.isFile())
+						file.delete();
 				}
 			}
 		}

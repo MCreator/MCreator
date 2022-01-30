@@ -18,23 +18,7 @@
 
 package net.mcreator.blockly;
 
-public class BlocklyCompileNote {
-
-	private final Type type;
-	private final String message;
-
-	public BlocklyCompileNote(Type type, String message) {
-		this.type = type;
-		this.message = message;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public String getMessage() {
-		return message;
-	}
+public record BlocklyCompileNote(Type type, String message) {
 
 	@Override public String toString() {
 		return type.name() + ": " + message;

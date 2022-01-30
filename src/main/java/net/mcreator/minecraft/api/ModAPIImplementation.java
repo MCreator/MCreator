@@ -16,12 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.zip;
+package net.mcreator.minecraft.api;
 
-import java.util.zip.ZipEntry;
+import javax.annotation.Nullable;
+import java.util.List;
 
-public interface IZipFileAction {
-
-	void process(ZipEntry entry);
-
-}
+public record ModAPIImplementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
+								   boolean requiredWhenEnabled) {}
