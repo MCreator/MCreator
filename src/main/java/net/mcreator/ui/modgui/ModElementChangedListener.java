@@ -39,8 +39,8 @@ public interface ModElementChangedListener
 	default void registerUI(JComponent container, boolean addIdleListeners) {
 		Component[] components = container.getComponents();
 		for (Component component : components) {
-			if (component instanceof MCItemHolder mcItemHolder) {
-				mcItemHolder.addBlockSelectedListener(this);
+			if (component instanceof MCItemHolder itemHolder) {
+				itemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
@@ -53,8 +53,8 @@ public interface ModElementChangedListener
 					component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
-			} else if (component instanceof JSpinner button) {
-				button.addChangeListener(this);
+			} else if (component instanceof JSpinner spinner) {
+				spinner.addChangeListener(this);
 			} else if (component instanceof JComboBox<?> comboBox) {
 				comboBox.addActionListener(this);
 			} else if (component instanceof JTextComponent textComponent) {
