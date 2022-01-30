@@ -335,8 +335,7 @@ public class WorkspaceDialogs {
 			selectGenerator.addActionListener(e -> {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
-						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
-						workspace == null);
+						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter, workspace == null);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});

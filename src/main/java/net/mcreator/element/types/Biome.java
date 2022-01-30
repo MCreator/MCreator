@@ -56,7 +56,6 @@ import java.util.List;
 	public double particlesProbability;
 
 	public String biomeCategory;
-	public BiomeEntry parent;
 	public double rainingPossibility;
 	public double temperature;
 	public double baseHeight;
