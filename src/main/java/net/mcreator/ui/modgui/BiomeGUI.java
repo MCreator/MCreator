@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
@@ -40,7 +41,6 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -52,7 +52,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
@@ -629,6 +628,27 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		} else {
 			particleToSpawn.setEnabled(false);
 			particlesProbability.setEnabled(false);
+		}
+	}
+
+	@Override protected void afterGeneratableElementGenerated() {
+		super.afterGeneratableElementGenerated();
+
+		// if we are in editing mode, changes affecting dimensions using biome may be made
+		if (isEditingMode()) {
+			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+				// if this mod element is not locked and has procedures, we try to update dependencies
+				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
+				if (!element.isCodeLocked()) {
+					GeneratableElement generatableElement = element.getGeneratableElement();
+					if (generatableElement instanceof net.mcreator.element.types.Dimension dimension) {
+						if (dimension.biomesInDimension.contains(
+								new BiomeEntry(modElement.getWorkspace(), new DataListEntry.Custom(modElement)))) {
+							mcreator.getGenerator().generateElement(generatableElement);
+						}
+					}
+				}
+			}
 		}
 	}
 
