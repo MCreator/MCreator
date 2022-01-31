@@ -112,8 +112,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/zip/ZipEntry.html" title="class or interface in java.util.zip" class="external-link">ZipEntry</a>&nbsp;entry)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#iterateZip(java.io.File,net.mcreator.io.zip.IZipFileAction)" class="member-name-link">iterateZip</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;zipFilePointer,
- <a href="IZipFileAction.html" title="interface in net.mcreator.io.zip">IZipFileAction</a>&nbsp;action)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#iterateZip(java.io.File,java.util.function.Consumer,boolean)" class="member-name-link">iterateZip</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;zipFilePointer,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/zip/ZipEntry.html" title="class or interface in java.util.zip" class="external-link">ZipEntry</a>&gt;&nbsp;action,
+ boolean&nbsp;sortByName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readCodeInZip(java.io.File,java.lang.String)" class="member-name-link">readCodeInZip</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;zipFilePointer,
@@ -160,10 +161,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="iterateZip(java.io.File,net.mcreator.io.zip.IZipFileAction)">
+<section class="detail" id="iterateZip(java.io.File,java.util.function.Consumer,boolean)">
 <h3>iterateZip</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">iterateZip</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;zipFilePointer,
- <a href="IZipFileAction.html" title="interface in net.mcreator.io.zip">IZipFileAction</a>&nbsp;action)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/zip/ZipEntry.html" title="class or interface in java.util.zip" class="external-link">ZipEntry</a>&gt;&nbsp;action,
+ boolean&nbsp;sortByName)</span></div>
 </section>
 </li>
 <li>
