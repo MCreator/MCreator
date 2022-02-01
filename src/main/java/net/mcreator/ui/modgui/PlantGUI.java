@@ -126,7 +126,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final JRadioButton growapableType = L10N.radiobutton("elementgui.plant.use_growable_plant_type");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
@@ -985,7 +985,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		return plant;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-plant");
 	}
 

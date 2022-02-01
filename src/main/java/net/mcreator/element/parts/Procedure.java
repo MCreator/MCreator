@@ -21,6 +21,7 @@ package net.mcreator.element.parts;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -43,10 +44,13 @@ import java.util.List;
 	}
 
 	public List<Dependency> getDependencies(Workspace workspace) {
-		GeneratableElement generatableElement = workspace.getModElementByName(name).getGeneratableElement();
-		if (generatableElement instanceof net.mcreator.element.types.Procedure) {
-			this.exists = true;
-			return ((net.mcreator.element.types.Procedure) generatableElement).getDependencies();
+		ModElement modElement = workspace.getModElementByName(name);
+		if (modElement != null) {
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof net.mcreator.element.types.Procedure) {
+				this.exists = true;
+				return ((net.mcreator.element.types.Procedure) generatableElement).getDependencies();
+			}
 		}
 
 		this.exists = false;

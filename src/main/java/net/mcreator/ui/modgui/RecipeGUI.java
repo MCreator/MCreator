@@ -26,9 +26,9 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.datapack.recipe.*;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.recipemakers.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -46,7 +46,7 @@ import java.util.Locale;
 
 public class RecipeGUI extends ModElementGUI<Recipe> {
 
-	private CraftingReciepeMaker rm;
+	private CraftingRecipeMaker rm;
 	private SmeltingRecipeMaker fm;
 	private BlastFurnaceRecipeMaker bm;
 	private SmokerRecipeMaker sm;
@@ -77,8 +77,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	}
 
 	@Override protected void initGUI() {
-		rm = new CraftingReciepeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
-				ElementUtil::loadBlocksAndItems);
+		rm = new CraftingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 		fm = new SmeltingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 		bm = new BlastFurnaceRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
@@ -380,7 +379,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		return recipe;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-recipe");
 	}
 
