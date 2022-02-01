@@ -191,10 +191,11 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private void propertyRenamed(JItemPropertiesListEntry property) {
 		getValidationResult(false).validateIsErrorFree(); // this highlights all the property names errors
 		statesList.forEach(e -> {
-			int builtinPropertiesFound = (int) Arrays.stream(e.state.getText().split(","))
+			long indexBuiltin = Arrays.stream(e.state.getText().split(","))
 					.filter(el -> builtinProperties.containsKey(el.split("=")[0])).count();
-			e.propertyRenamed(property.nameString, property.name.getText(),
-					propertiesList.indexOf(property) + builtinPropertiesFound);
+			long indexCustom = propertiesList.stream()
+					.filter(el -> ("," + e.state.getText()).contains("," + el.nameString + "=")).count();
+			e.propertyRenamed(property.nameString, property.name.getText(), (int) (indexBuiltin + indexCustom));
 		});
 		property.nameString = property.name.getText();
 	}
