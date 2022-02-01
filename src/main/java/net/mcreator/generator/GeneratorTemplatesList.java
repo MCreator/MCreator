@@ -31,18 +31,17 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
 			String filePath = generatorFile.getPath();
 			String[] templatePathParts = generatorTemplate.getFile().getPath().split("@elementindex");
-			boolean validated;
 
-			try { // we check if given file name has list template's index in place of @elementindex
-				int i = Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
-				validated = ignoreConditions || templates.get(generatorTemplate).get(i);
-			} catch (NumberFormatException ignored) {
-				validated = false;
+			if (filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1])) {
+				try { // we check if given file name has list template's index in place of @elementindex
+					int i = Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
+					if (ignoreConditions || templates.get(generatorTemplate).get(i))
+						return generatorTemplate;
+				} catch (ArrayIndexOutOfBoundsException | NumberFormatException ignored) {
+				}
 			}
-
-			if (validated && filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1]))
-				return generatorTemplate;
 		}
+
 		return null;
 	}
 }

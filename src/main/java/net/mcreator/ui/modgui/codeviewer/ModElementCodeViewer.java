@@ -54,7 +54,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 	private final Map<GeneratorTemplatesList, JTabbedPane> listPager;
 
-	private volatile boolean updateRunning = false;
+	private boolean updateRunning = false;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
