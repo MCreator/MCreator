@@ -56,6 +56,8 @@ package ${package}.init;
             <#if item.enableBoots>
             public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
             </#if>
+        <#elseif item.getModElement().getTypeString() == "dimension">
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
         <#elseif item.getModElement().getTypeString() == "livingentity">
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
                     ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
