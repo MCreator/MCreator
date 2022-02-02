@@ -60,9 +60,6 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-${generator.getGeneratorBuildFileVersion()}'
-
-    // Apply for https://github.com/McModLauncher/modlauncher/issues/91
-    implementation 'cpw.mods:modlauncher:8.1.3'
 }
 
 apply from: 'mcreator.gradle'
