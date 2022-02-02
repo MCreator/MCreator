@@ -56,6 +56,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
+/**
+ * Workspace file browser is used by a workspace window to view source files of the project contained in the workspace
+ * and also observe source code of external libraries used by that project.
+ */
 public class WorkspaceFileBrowser extends JPanel {
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
@@ -92,6 +96,11 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	final MCreator mcreator;
 
+	/**
+	 * The sole constructor.
+	 *
+	 * @param mcreator Workspace window that is the future owner of this browser instance.
+	 */
 	public WorkspaceFileBrowser(MCreator mcreator) {
 		setLayout(new BorderLayout(0, 0));
 		this.mcreator = mcreator;
@@ -201,6 +210,9 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	private boolean initial = true;
 
+	/**
+	 * Reloads all the project files.
+	 */
 	public void reloadTree() {
 		if (jtf1.getText().isEmpty()) {
 			List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
@@ -284,6 +296,13 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
+	/**
+	 * If a file is selected, opens this file in built-in code editor if its type is supported, otherwise calls the
+	 * program assigned to that file type.
+	 *
+	 * @param forceExpansion If selected node represents a directory and is expanded, specifies whether to keep it open
+	 *                       or let it collapse.
+	 */
 	public void openSelectedFile(boolean forceExpansion) {
 		if (tree.getLastSelectedPathComponent() != null) {
 			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
@@ -300,6 +319,9 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
+	/**
+	 * If a file is selected, opens this file using the program assigned to that file type.
+	 */
 	public void openSelectedFileInDesktop() {
 		if (tree.getLastSelectedPathComponent() != null) {
 			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
@@ -321,6 +343,9 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
+	/**
+	 * If a file is selected, opens that file's parent folder via OS native file explorer and highlights the file.
+	 */
 	public void showSelectedFileInDesktop() {
 		if (tree.getLastSelectedPathComponent() != null) {
 			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
@@ -331,6 +356,9 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
+	/**
+	 * If a file is selected, attempts to remove it from the file system.
+	 */
 	public void deleteSelectedFile() {
 		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
 		if (selected != null && selected != sourceCode && selected != currRes) {
