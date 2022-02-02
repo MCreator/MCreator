@@ -121,7 +121,8 @@ public class StateEditorDialog {
 			} else if (param.type().equals(String.class) && param.arrayData() != null) {
 				JComboBox<String> box = new JComboBox<>(param.arrayData());
 				box.setEditable(false);
-				box.setSelectedItem(value);
+				if (Arrays.asList(param.arrayData()).contains(value.toString()))
+					box.setSelectedItem(value);
 				return box;
 			}
 		}
@@ -129,15 +130,17 @@ public class StateEditorDialog {
 	}
 
 	private static Object getValueFromComponent(JComponent component, PropertyData param) {
-		if (component == null)
+		if (component == null) {
 			return getDefaultValueForType(param.type());
-		else if (param.type().equals(boolean.class) || param.type().equals(Boolean.class))
+		} else if (param.type().equals(boolean.class) || param.type().equals(Boolean.class)) {
 			return ((JCheckBox) component).isSelected();
-		else if (param.type().equals(int.class) || param.type().equals(Integer.class) || param.type()
-				.equals(float.class) || param.type().equals(Float.class))
-			return ((JSpinner) component).getValue();
-		else if (param.type().equals(String.class))
+		} else if (param.type().equals(int.class) || param.type().equals(Integer.class) || param.type()
+				.equals(float.class) || param.type().equals(Float.class)) {
+			Number val = (Number) ((JSpinner) component).getValue();
+			return (float) Math.round(val.floatValue() * 1000) / 1000;
+		} else if (param.type().equals(String.class)) {
 			return ((JComboBox<?>) component).getSelectedItem();
+		}
 		return null;
 	}
 
