@@ -2,7 +2,7 @@ name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [model_java]
 status: lts
 buildfileversion: 36.2.20
-subversion: 1.0.3
+subversion: 1.0.4
 
 java_models:
   key: legacy
