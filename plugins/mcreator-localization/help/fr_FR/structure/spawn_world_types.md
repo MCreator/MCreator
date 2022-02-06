@@ -1,1 +1,1 @@
-Utilisez ce champ pour définir l'endroit où le frai doit avoir lieu.
+Utilisez ce champ pour définir l'endroit où l’apparition doit avoir lieu.
