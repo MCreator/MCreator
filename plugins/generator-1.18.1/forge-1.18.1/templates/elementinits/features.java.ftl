@@ -50,7 +50,7 @@ package ${package}.init;
 			REGISTRY.put(${feature.getModElement().getName()}Feature.FEATURE, new FeatureRegistration(GenerationStep.Decoration.
 						<#if feature.spawnLocation == "Air">RAW_GENERATION<#elseif feature.spawnLocation == "Underground">UNDERGROUND_STRUCTURES<#else>SURFACE_STRUCTURES</#if>,
 						${feature.getModElement().getName()}Feature.GENERATE_BIOMES, ${feature.getModElement().getName()}Feature.CONFIGURED_FEATURE,
-						${feature.getModElement().getName()}Feature.PLACED_FEATURE));
+						${feature.getModElement().getName()}Feature.CONFIGURED_FEATURE.placed(List.of())));
 		</#if>
     </#list>
 	}

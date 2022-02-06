@@ -38,7 +38,6 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
 	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.configured(FeatureConfiguration.NONE);
-	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(Collections.emptyList());
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content>
@@ -98,10 +97,9 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				int i = context.origin().getX() + context.random().nextInt(16);
 				int k = context.origin().getZ() + context.random().nextInt(16);
 
-				int j = context.level().getHeight(Heightmap.Types.<#if data.surfaceDetectionType=="First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>, i, k);
-				<#if data.spawnLocation == "Ground">
-				j -= 1;
-				<#elseif data.spawnLocation == "Air">
+				int j = context.level().getHeight(Heightmap.Types.<#if data.surfaceDetectionType == "First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>,
+					i, k)<#if data.spawnLocation == "Ground"> - 1</#if>;
+				<#if data.spawnLocation == "Air">
 				j += context.random().nextInt(50) + 16;
 				<#elseif data.spawnLocation == "Underground">
 				j = Math.abs(context.random().nextInt(Math.max(1, j)) - 24);
