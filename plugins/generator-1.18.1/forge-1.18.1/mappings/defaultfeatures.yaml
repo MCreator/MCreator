@@ -1,7 +1,7 @@
 _default: null
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
-BerryBushes: BerryBushes
+BerryBushes: CommonBerryBushes
 Caves: DefaultCarversAndLakes
 DeadBushes: DesertVegetation
 DesertFeatures: DesertExtraDecoration
