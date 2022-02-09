@@ -284,7 +284,6 @@ public class TestWorkspaceDataProvider {
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
 			biome.airColor = Color.red;
-			biome.treeType = _true ? 0 : 1;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
@@ -394,11 +393,13 @@ public class TestWorkspaceDataProvider {
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
 			biome.defaultFeatures = biomeDefaultFeatures;
 			if (!emptyLists) {
+				biome.treeType = biome.TREES_CUSTOM;
 				biome.treeVines = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 				biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			} else {
+				biome.treeType = biome.TREES_VANILLA;
 				biome.treeVines = new MItemBlock(modElement.getWorkspace(), "");
 				biome.treeStem = new MItemBlock(modElement.getWorkspace(), "");
 				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), "");
