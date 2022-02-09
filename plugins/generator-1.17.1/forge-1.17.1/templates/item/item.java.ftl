@@ -66,7 +66,7 @@ public class ${name}Item extends Item {
 		setRegistryName("${registryname}");
 	}
 
-	<#if data.isFood && (data.animation != "eat")>
+	<#if data.animation != "eat">
     	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
     		return UseAnim.${data.animation?upper_case};
     	}
@@ -201,7 +201,7 @@ public class ${name}Item extends Item {
 	}
     </#if>
 
-    <#if hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty())>
+    <#if hasProcedure(data.onFinishUsingItem) || (data.resultItem?? && !data.resultItem.isEmpty())>
     	@Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
     		ItemStack retval =
     			<#if data.resultItem?? && !data.resultItem.isEmpty()>
@@ -209,11 +209,11 @@ public class ${name}Item extends Item {
     			</#if>
     		super.finishUsingItem(itemstack, world, entity);
 
-    		<#if hasProcedure(data.onEaten)>
+    		<#if hasProcedure(data.onFinishUsingItem)>
     			double x = entity.getX();
     			double y = entity.getY();
     			double z = entity.getZ();
-    			<@procedureOBJToCode data.onEaten/>
+    			<@procedureOBJToCode data.onFinishUsingItem/>
     		</#if>
 
     		<#if data.resultItem?? && !data.resultItem.isEmpty()>

@@ -77,6 +77,7 @@ import java.util.Map;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
+	public Procedure onFinishUsingItem;
 
 	public boolean hasDispenseBehavior;
 	public Procedure dispenseSuccessCondition;
@@ -90,7 +91,6 @@ import java.util.Map;
 	public boolean forDogs;
 	public boolean isAlwaysEdible;
 	public String animation;
-	public Procedure onEaten;
 
 	private Item() {
 		this(null);

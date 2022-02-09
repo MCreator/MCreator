@@ -121,16 +121,14 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			setRegistryName("${registryname}");
 		}
 
-        <#if data.isFood>
-            @Override public UseAction getUseAction(ItemStack itemstack) {
-        	    return UseAction.${data.animation?upper_case};
-        	}
+        @Override public UseAction getUseAction(ItemStack itemstack) {
+            return UseAction.${data.animation?upper_case};
+        }
 
-        	<#if data.animation == "drink">
-        		@Override public net.minecraft.util.SoundEvent getEatSound() {
-        			return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
-        		}
-        	</#if>
+        <#if data.isFood && (data.animation == "drink")>
+        	@Override public net.minecraft.util.SoundEvent getEatSound() {
+                return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
+            }
         </#if>
 
 		<#if data.stayInGridWhenCrafting>
@@ -348,7 +346,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
         }
         </#if>
 
-        <#if data.isFood && (hasProcedure(data.onEaten) || (data.resultItem?? && !data.resultItem.isEmpty()))>
+        <#if data.isFood && (hasProcedure(data.onFinishUsingItem) || (data.resultItem?? && !data.resultItem.isEmpty()))>
             @Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
         	    ItemStack retval =
         		    <#if data.resultItem?? && !data.resultItem.isEmpty()>
@@ -356,11 +354,11 @@ import net.minecraft.entity.ai.attributes.Attributes;
         			</#if>
         		super.onItemUseFinish(itemstack, world, entity);
 
-        		<#if hasProcedure(data.onEaten)>
+        		<#if hasProcedure(data.onFinishUsingItem)>
         			double x = entity.getPosX();
         			double y = entity.getPosY();
         			double z = entity.getPosZ();
-        			<@procedureOBJToCode data.onEaten/>
+        			<@procedureOBJToCode data.onFinishUsingItem/>
         		</#if>
 
         		<#if data.resultItem?? && !data.resultItem.isEmpty()>

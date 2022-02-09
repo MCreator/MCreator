@@ -101,6 +101,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
+	private ProcedureSelector onFinishUsingItem;
 
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector dispenseSuccessCondition;
@@ -121,7 +122,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
 	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector onEaten;
 	private final JComboBox<String> animation = new JComboBox<>(
 			new String[] { "eat", "drink", "block", "bow", "crossbow", "none", "spear" });
 	private final MCItemHolder resultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -161,8 +161,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onEaten = new ProcedureSelector(this.withEntry("item/when_eaten"), mcreator,
-				L10N.t("elementgui.food.event_on_eaten"),
+		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
+				L10N.t("trigger.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
@@ -416,7 +416,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onStoppedUsing);
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
-		events.add(onEaten);
+		events.add(onFinishUsingItem);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
@@ -467,16 +467,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 			saturation.setEnabled(true);
 			forDogs.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
-			onEaten.setEnabled(true);
-			animation.setEnabled(true);
 			resultItem.setEnabled(true);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);
 			forDogs.setEnabled(false);
 			isAlwaysEdible.setEnabled(false);
-			onEaten.setEnabled(false);
-			animation.setEnabled(false);
 			resultItem.setEnabled(false);
 		}
 	}
@@ -501,7 +497,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
-		onEaten.refreshListKeepSelected();
+		onFinishUsingItem.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		dispenseSuccessCondition.refreshListKeepSelected();
 		dispenseResultItemstack.refreshListKeepSelected();
@@ -566,7 +562,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		isFood.setSelected(item.isFood);
 		forDogs.setSelected(item.forDogs);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
-		onEaten.setSelectedProcedure(item.onEaten);
+		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
@@ -621,7 +617,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.forDogs = forDogs.isSelected();
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
 		item.animation = (String) animation.getSelectedItem();
-		item.onEaten = onEaten.getSelectedProcedure();
+		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
 		item.resultItem = resultItem.getBlock();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());

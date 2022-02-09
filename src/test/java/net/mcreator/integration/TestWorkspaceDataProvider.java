@@ -1108,7 +1108,7 @@ public class TestWorkspaceDataProvider {
 			item.resultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
 					"" :
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-			item.onEaten = new Procedure("procedure3");
+			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
