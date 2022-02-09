@@ -7,6 +7,6 @@
     "ingredient": {
         ${mappedMCItemToIngameItemName(data.stoneCuttingInputStack)}
     },
-    "result": ${mappedMCItemToIngameItemName(data.stoneCuttingReturnStack)?replace("\"item\":", "")}
+    "result": "${mappedMCItemToIngameNameNoTags(data.stoneCuttingReturnStack)}"
 }
 <#-- @formatter:on -->

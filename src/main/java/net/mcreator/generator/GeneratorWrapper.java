@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused") public class GeneratorWrapper {
+@SuppressWarnings({ "unused", "ClassCanBeRecord" }) public class GeneratorWrapper {
 
 	private final Generator generator;
 
