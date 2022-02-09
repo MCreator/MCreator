@@ -398,6 +398,11 @@ public class TestWorkspaceDataProvider {
 				biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			} else {
+				biome.treeVines = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeStem = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
 			}
 			biome.spawnBiome = !_true;
 			return biome;
