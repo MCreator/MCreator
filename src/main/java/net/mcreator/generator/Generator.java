@@ -660,16 +660,17 @@ public class Generator implements IGenerator, Closeable {
 			int templateID = 0;
 			for (Object list : templateLists) {
 				Map<GeneratorTemplate, List<Boolean>> files = new HashMap<>();
-				String listName = (String) ((Map<?, ?>) list).get("name");
+				String groupName = (String) Objects.requireNonNullElse(((Map<?, ?>) list).get("name"),
+						"Templates group");
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
 				List<?> elementsData = new ArrayList<>();
+				if (listData instanceof Map<?, ?> listMap)
+					elementsData = new ArrayList<>(listMap.entrySet());
+				else if (listData instanceof Collection<?> collection)
+					elementsData = new ArrayList<>(collection);
 				if (templates != null) {
-					if (listData instanceof Map<?, ?> listMap)
-						elementsData = new ArrayList<>(listMap.entrySet());
-					else if (listData instanceof Collection<?> collection)
-						elementsData = new ArrayList<>(collection);
 					for (Object template : templates) {
 						String rawname = (String) ((Map<?, ?>) template).get("name");
 
@@ -730,7 +731,8 @@ public class Generator implements IGenerator, Closeable {
 
 						templateID++;
 					}
-					fileLists.add(new GeneratorTemplatesList(listName, elementsData, files));
+					if (!elementsData.isEmpty() || !performFSTasks)
+						fileLists.add(new GeneratorTemplatesList(groupName, elementsData, files));
 				}
 			}
 		}

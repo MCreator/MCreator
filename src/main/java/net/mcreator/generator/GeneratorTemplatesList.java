@@ -24,20 +24,34 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generator templates list is used for generating several similar templates for each item from a list
+ * provided by a mod element. Output objects are called <i>list templates</i>.
+ *
+ * @param groupName The name of this group of templates shown in workspace panel
+ * @param listData  The collection used by workspace to generate given templates
+ * @param templates The list of templates to generate for each entry of {@code listData}
+ */
 public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
+	/**
+	 * Attempts to locate the source generator template used to create given file.
+	 *
+	 * @param generatorFile    The output file claimed to be generated from a template from this list
+	 * @param ignoreConditions Specifies whether generation conditions of templates should not be respected
+	 * @return Corresponding list template in case of success, or {@code null} otherwise
+	 */
 	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
+		String filePath = generatorFile.getPath();
 		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
-			String filePath = generatorFile.getPath();
-			String[] templatePathParts = generatorTemplate.getFile().getPath().split("@elementindex");
-
-			if (filePath.startsWith(templatePathParts[0]) && filePath.endsWith(templatePathParts[1])) {
+			String[] templatePath = generatorTemplate.getFile().getPath().split("@elementindex");
+			if (filePath.startsWith(templatePath[0]) && filePath.endsWith(templatePath[1])) {
 				try { // we check if given file name has list template's index in place of @elementindex
-					int i = Integer.parseInt(filePath.replace(templatePathParts[0], "").replace(templatePathParts[1], ""));
-					if (ignoreConditions || templates.get(generatorTemplate).get(i))
+					int i = Integer.parseInt(filePath.replace(templatePath[0], "").replace(templatePath[1], ""));
+					if (templates.get(generatorTemplate).get(i) || ignoreConditions)
 						return generatorTemplate;
-				} catch (ArrayIndexOutOfBoundsException | NumberFormatException ignored) {
+				} catch (IndexOutOfBoundsException | NumberFormatException ignored) {
 				}
 			}
 		}
