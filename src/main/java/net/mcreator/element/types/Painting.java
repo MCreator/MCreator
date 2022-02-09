@@ -47,7 +47,7 @@ public class Painting extends GeneratableElement {
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
 				.getTextureFileFromSectionType(FilenameUtilsPatched.removeExtension(texture), TextureSection.OTHER);
-		File newLocation = new File(getModElement().getFolderManager().getTexturesDirTypeFromSectionType(
+		File newLocation = new File(getModElement().getFolderManager().getTexturesFolderForSectionType(
 				TextureSection.OTHER),
 				"painting/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);

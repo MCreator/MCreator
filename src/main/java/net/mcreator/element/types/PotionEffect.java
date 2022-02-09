@@ -60,7 +60,7 @@ import java.io.File;
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
 				.getTextureFileFromSectionType(FilenameUtilsPatched.removeExtension(icon), TextureSection.OTHER);
-		File newLocation = new File(getModElement().getWorkspace().getFolderManager().getTexturesDirTypeFromSectionType(
+		File newLocation = new File(getModElement().getWorkspace().getFolderManager().getTexturesFolderForSectionType(
 				TextureSection.OTHER),
 				"mob_effect/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);

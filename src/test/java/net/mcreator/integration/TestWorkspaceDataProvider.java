@@ -191,7 +191,7 @@ public class TestWorkspaceDataProvider {
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(TextureSection.BLOCK) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.BLOCK) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFileFromSectionType("test", TextureSection.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
@@ -206,7 +206,7 @@ public class TestWorkspaceDataProvider {
 					workspace.getFolderManager().getTextureFileFromSectionType("test6", TextureSection.BLOCK));
 		}
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(TextureSection.ITEM) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFileFromSectionType("test", TextureSection.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
@@ -220,12 +220,12 @@ public class TestWorkspaceDataProvider {
 
 		}
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(TextureSection.OTHER) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFileFromSectionType("test", TextureSection.OTHER));
 		}
 
-		if (workspace.getFolderManager().getTexturesDirTypeFromSectionType(TextureSection.ARMOR) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);

@@ -84,11 +84,11 @@ public class Particle extends GeneratableElement {
 		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
 
 		if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
-			new File(getModElement().getFolderManager().getTexturesDirTypeFromSectionType(TextureSection.OTHER), "particle").mkdirs();
+			new File(getModElement().getFolderManager().getTexturesFolderForSectionType(TextureSection.OTHER), "particle").mkdirs();
 			if (original.getIconWidth() >= original.getIconHeight()
 					|| original.getIconHeight() % original.getIconWidth() != 0) {
 				FileIO.copyFile(originalTextureFileLocation,
-						new File(getModElement().getFolderManager().getTexturesDirTypeFromSectionType(
+						new File(getModElement().getFolderManager().getTexturesFolderForSectionType(
 								TextureSection.OTHER),
 								"particle/" + getModElement().getRegistryName() + ".png"));
 			} else {
@@ -98,7 +98,7 @@ public class Particle extends GeneratableElement {
 					int tiles = getTextureTileCount();
 					for (int i = 1; i <= tiles; i++) {
 						ImageIO.write(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()), "png",
-								new File(getModElement().getFolderManager().getTexturesDirTypeFromSectionType(
+								new File(getModElement().getFolderManager().getTexturesFolderForSectionType(
 										TextureSection.OTHER),
 										"particle/" + getModElement().getRegistryName() + "_" + i + ".png"));
 					}

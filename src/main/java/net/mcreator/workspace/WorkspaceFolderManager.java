@@ -76,7 +76,7 @@ public class WorkspaceFolderManager {
 	}
 
 	public File getTextureFileFromSectionType(String textureIdentifier, TextureSection section) {
-		return new File(getTexturesDirTypeFromSectionType(section), textureIdentifier + ".png");
+		return new File(getTexturesFolderForSectionType(section), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -92,12 +92,12 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getTexturesDirTypeFromSectionType(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
-				new File(getTexturesDirTypeFromSectionType(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesFolderForSectionType(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
+				new File(getTexturesFolderForSectionType(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
 	public List<File> getTexturesListFromSectionType(TextureSection section) {
-		return listPNGsInDir(getTexturesDirTypeFromSectionType(section));
+		return listPNGsInDir(getTexturesFolderForSectionType(section));
 	}
 
 	public void removeStructure(String name) {
