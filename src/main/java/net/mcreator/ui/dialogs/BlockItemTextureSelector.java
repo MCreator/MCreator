@@ -136,17 +136,10 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.addActionListener(event -> {
 
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
-			List<File> block1;
-			if (type == TextureType.BLOCK) {
-				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.BLOCK);
-			} else {
-				block1 = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.ITEM);
-			}
+			List<File> block1 = mcreator.getFolderManager().getTexturesListForTextureSection(
+					type == TextureType.BLOCK ? TextureSection.BLOCK : TextureSection.ITEM);
 			model.removeAllElements();
-			for (File element : block1) {
-				if (element.getName().endsWith(".png"))
-					model.addElement(element);
-			}
+			block1.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 			if (model.getSize() > 0) {
 				layout.show(center, "list");
 			}
@@ -164,17 +157,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block;
-		if (type == TextureType.BLOCK) {
-			block = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.BLOCK);
-		} else {
-			block = mcreator.getFolderManager().getTexturesListFromSectionType(TextureSection.ITEM);
-		}
+		List<File> block = mcreator.getFolderManager().getTexturesListForTextureSection(type == TextureType.BLOCK ? TextureSection.BLOCK : TextureSection.ITEM);
 		model.removeAllElements();
-		for (File element : block) {
-			if (element.getName().endsWith(".png"))
-				model.addElement(element);
-		}
+		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 		list.setSelectedIndex(0);
 		if (block.size() == 0) {
 			layout.show(center, "help");

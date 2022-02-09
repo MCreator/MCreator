@@ -247,7 +247,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			Arrays.stream(TextureSection.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
-				workspacePanel.getMcreator().getFolderManager().getTexturesListFromSectionType(section)
+				workspacePanel.getMcreator().getFolderManager().getTexturesListForTextureSection(section)
 						.forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {

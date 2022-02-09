@@ -190,41 +190,41 @@ public class TestWorkspaceDataProvider {
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
-		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.BLOCK) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForTextureSection(TextureSection.BLOCK) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test", TextureSection.BLOCK));
+					workspace.getFolderManager().getTextureFileForTextureSection("test", TextureSection.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test2", TextureSection.BLOCK));
+					workspace.getFolderManager().getTextureFileForTextureSection("test2", TextureSection.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test3", TextureSection.BLOCK));
+					workspace.getFolderManager().getTextureFileForTextureSection("test3", TextureSection.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test4", TextureSection.BLOCK));
+					workspace.getFolderManager().getTextureFileForTextureSection("test4", TextureSection.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test5", TextureSection.BLOCK));
+					workspace.getFolderManager().getTextureFileForTextureSection("test5", TextureSection.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test6", TextureSection.BLOCK));
+					workspace.getFolderManager().getTextureFileForTextureSection("test6", TextureSection.BLOCK));
 		}
 
-		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.ITEM) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForTextureSection(TextureSection.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test", TextureSection.ITEM));
+					workspace.getFolderManager().getTextureFileForTextureSection("test", TextureSection.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test2", TextureSection.ITEM));
+					workspace.getFolderManager().getTextureFileForTextureSection("test2", TextureSection.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test3", TextureSection.ITEM));
+					workspace.getFolderManager().getTextureFileForTextureSection("test3", TextureSection.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test4", TextureSection.ITEM));
+					workspace.getFolderManager().getTextureFileForTextureSection("test4", TextureSection.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("itest", TextureSection.ITEM));
+					workspace.getFolderManager().getTextureFileForTextureSection("itest", TextureSection.ITEM));
 
 		}
 
-		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.OTHER) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForTextureSection(TextureSection.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFileFromSectionType("test", TextureSection.OTHER));
+					workspace.getFolderManager().getTextureFileForTextureSection("test", TextureSection.OTHER));
 		}
 
-		if (workspace.getFolderManager().getTexturesFolderForSectionType(TextureSection.ARMOR) != null) {
+		if (workspace.getFolderManager().getTexturesFolderForTextureSection(TextureSection.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);

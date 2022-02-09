@@ -128,7 +128,7 @@ public class OrePackMakerTool {
 						new ResourcePointer("templates/textures/texturemaker/ore10.png")), color, true));
 		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
-				mcreator.getFolderManager().getTextureFileFromSectionType(RegistryNameFixer.fix(oreTextureName),
+				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(oreTextureName),
 						TextureSection.BLOCK));
 
 		// next, ore block texture
@@ -138,7 +138,7 @@ public class OrePackMakerTool {
 								"oreblock7", "oreblock8")) + ".png")), color, true);
 		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()),
-				mcreator.getFolderManager().getTextureFileFromSectionType(RegistryNameFixer.fix(oreBlockTextureName),
+				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(oreBlockTextureName),
 						TextureSection.BLOCK));
 
 		// next, gem texture
@@ -162,7 +162,7 @@ public class OrePackMakerTool {
 			gemTextureName = (name + "_ingot").toLowerCase(Locale.ENGLISH);
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
-				mcreator.getFolderManager().getTextureFileFromSectionType(RegistryNameFixer.fix(gemTextureName),
+				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(gemTextureName),
 						TextureSection.BLOCK));
 
 		String oreItemName;

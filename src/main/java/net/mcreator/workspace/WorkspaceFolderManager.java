@@ -71,12 +71,12 @@ public class WorkspaceFolderManager {
 		return workspaceFolder;
 	}
 
-	public ImageIcon getTextureImageIconFromSectionType(String textureIdentifier, TextureSection section) {
-		return new ImageIcon(getTextureFileFromSectionType(textureIdentifier, section).getAbsolutePath());
+	public ImageIcon getTextureImageIconForTextureSection(String textureIdentifier, TextureSection section) {
+		return new ImageIcon(getTextureFileForTextureSection(textureIdentifier, section).getAbsolutePath());
 	}
 
-	public File getTextureFileFromSectionType(String textureIdentifier, TextureSection section) {
-		return new File(getTexturesFolderForSectionType(section), textureIdentifier + ".png");
+	public File getTextureFileForTextureSection(String textureIdentifier, TextureSection section) {
+		return new File(getTexturesFolderForTextureSection(section), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -92,19 +92,19 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getTexturesFolderForSectionType(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
-				new File(getTexturesFolderForSectionType(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesFolderForTextureSection(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
+				new File(getTexturesFolderForTextureSection(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getTexturesListFromSectionType(TextureSection section) {
-		return listPNGsInDir(getTexturesFolderForSectionType(section));
+	public List<File> getTexturesListForTextureSection(TextureSection section) {
+		return listPNGsInDir(getTexturesFolderForTextureSection(section));
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	@Nullable public File getTexturesFolderForSectionType(TextureSection section) {
+	@Nullable public File getTexturesFolderForTextureSection(TextureSection section) {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), section.getID() + "_textures_dir");
 	}
 
