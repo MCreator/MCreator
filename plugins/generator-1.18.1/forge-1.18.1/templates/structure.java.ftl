@@ -51,7 +51,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	null;
 	</#if>
 
-	private final Set<ResourceKey<Level>> GENERATE_DIMENSIONS = Set.of(
+	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType == "Surface">
 				Level.OVERWORLD
@@ -67,7 +67,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	);
 
 	<#if data.restrictionBlocks?has_content>
-	private final List<Block> BASE_BLOCKS = List.of(
+	private final List<Block> base_blocks = List.of(
 		<#list data.restrictionBlocks as restrictionBlock>
 			${mappedBlockToBlock(restrictionBlock)}<#sep>,
 		</#list>
@@ -81,7 +81,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		if (!GENERATE_DIMENSIONS.contains(context.level().getLevel().dimension()))
+		if (!generate_dimensions.contains(context.level().getLevel().dimension()))
 			return false;
 
 		if (template == null)
@@ -107,7 +107,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				</#if>
 
 				<#if data.restrictionBlocks?has_content>
-				if (!BASE_BLOCKS.contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
+				if (!base_blocks.contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
 					continue;
 				</#if>
 
