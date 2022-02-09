@@ -163,7 +163,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				L10N.label("elementgui.structuregen.spawn_height_offset")));
 		params.add(PanelUtils.gridElements(1, 3, 2, 2, spawnOffsetX, spawnHeightOffset, spawnOffsetZ));
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/spawn_world_types"),
 				L10N.label("elementgui.structuregen.spawn_world_types")));
 		params.add(spawnWorldTypes);
 
