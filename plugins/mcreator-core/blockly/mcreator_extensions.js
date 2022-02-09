@@ -101,16 +101,12 @@ Blockly.Extensions.registerMutator('variable_entity_input',
 
 Blockly.Extensions.register('biome_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
-                javabridge.getReadableListOf("biome"))), 'biome');
+        this.appendDummyInput().appendField(new FieldDataListSelector('biome'), 'biome');
     });
 
 Blockly.Extensions.register('entity_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
-                javabridge.getReadableListOf("entity"))), 'entity');
+        this.appendDummyInput().appendField(new FieldDataListSelector('entity'), 'entity');
     });
 
 Blockly.Extensions.register('custom_entity_with_entity_data_list_provider',
@@ -182,8 +178,7 @@ Blockly.Extensions.register('enhancement_list_provider',
 Blockly.Extensions.register('sound_list_provider',
     function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
-            .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
+            .appendField(new FieldDataListSelector('sound'), 'sound');
     });
 
 Blockly.Extensions.register('particle_list_provider',

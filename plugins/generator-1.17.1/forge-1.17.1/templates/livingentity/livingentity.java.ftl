@@ -582,7 +582,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
-			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#if breedTriggerItem?has_next>,</#if></#list>).contains(stack);
+			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#if breedTriggerItem?has_next>,</#if></#list>).contains(stack.getItem());
 		}
     </#if>
 

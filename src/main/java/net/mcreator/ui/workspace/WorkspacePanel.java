@@ -120,6 +120,8 @@ import java.util.stream.Collectors;
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
+	private final JPanel detailsbar = new JPanel(new GridLayout(1, 6));
+
 	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
 	private final TransparentToolBar modElementsBar = new TransparentToolBar();
@@ -630,7 +632,15 @@ import java.util.stream.Collectors;
 
 		mainp.setOpaque(false);
 
-		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"),
+				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
+				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
+		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
+		detailsbar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+
+		modElementsPanel.add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0),
+						mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
@@ -992,6 +1002,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.tiles.gif"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender());
@@ -1000,6 +1011,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.large.gif"));
 			view.setText(L10N.t("workspace.elements.list.large"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.MEDIUM) {
 			list.setCellRenderer(new MediumIconModListRender());
@@ -1008,6 +1020,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.medium.gif"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.SMALL) {
 			list.setCellRenderer(new SmallIconModListRender(true));
@@ -1016,6 +1029,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.small.gif"));
 			view.setText(L10N.t("workspace.elements.list.small"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LIST) {
 			list.setCellRenderer(new ListIconModListRender());
@@ -1024,6 +1038,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.VERTICAL);
 			view.setIcon(UIRES.get("16px.list.gif"));
 			view.setText(L10N.t("workspace.elements.list.list"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.DETAILS) {
 			list.setCellRenderer(new DetailsIconModListRender());
@@ -1032,6 +1047,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.VERTICAL);
 			view.setIcon(UIRES.get("16px.details.gif"));
 			view.setText(L10N.t("workspace.elements.list.details"));
+			detailsbar.setVisible(true);
 		}
 	}
 
@@ -1508,7 +1524,7 @@ import java.util.stream.Collectors;
 								return true;
 
 						return false;
-					}).collect(Collectors.toList()));
+					}).toList());
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
