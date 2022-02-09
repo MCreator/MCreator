@@ -133,13 +133,7 @@ import java.util.Arrays;
 		return optimisedRecipe.getOptimisedRecipe();
 	}
 
-	private static class OptimisedRecipe {
-
-		private final Recipe recipe;
-
-		OptimisedRecipe(Recipe recipe) {
-			this.recipe = recipe;
-		}
+	private record OptimisedRecipe(Recipe recipe) {
 
 		MItemBlock[][] getOptimisedRecipe() {
 			MItemBlock[][] mtx = { { recipe.recipeSlots[0], recipe.recipeSlots[1], recipe.recipeSlots[2] },

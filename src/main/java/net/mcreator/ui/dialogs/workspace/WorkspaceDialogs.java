@@ -22,7 +22,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.JavaConventions;
-import net.mcreator.minecraft.api.ModAPI;
+import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -335,7 +335,7 @@ public class WorkspaceDialogs {
 			selectGenerator.addActionListener(e -> {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
-						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
+						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter, workspace == null);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});
@@ -345,7 +345,7 @@ public class WorkspaceDialogs {
 					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
 									workspace.getGeneratorConfiguration().getGeneratorFlavor() :
-									flavorFilter);
+									flavorFilter, workspace == null);
 					if (gc != null)
 						generator.setSelectedItem(gc);
 				}
@@ -451,14 +451,14 @@ public class WorkspaceDialogs {
 				JPanel apiList = new JPanel();
 				apiList.setLayout(new BoxLayout(apiList, BoxLayout.PAGE_AXIS));
 
-				List<ModAPI.Implementation> apisSupported = ModAPIManager.getModAPIsForGenerator(
+				List<ModAPIImplementation> apisSupported = ModAPIManager.getModAPIsForGenerator(
 						workspace.getGenerator().getGeneratorName());
-				for (ModAPI.Implementation api : apisSupported) {
+				for (ModAPIImplementation api : apisSupported) {
 					JCheckBox apiEnableBox = new JCheckBox();
-					apiEnableBox.setName(api.parent.id);
-					apiEnableBox.setText(api.parent.name);
+					apiEnableBox.setName(api.parent().id());
+					apiEnableBox.setText(api.parent().name());
 
-					if (api.parent.id.equals("mcreator_link")) {
+					if (api.parent().id().equals("mcreator_link")) {
 						apiList.add(PanelUtils.westAndCenterElement(
 								ComponentUtils.wrapWithInfoButton(apiEnableBox, "https://mcreator.net/link"),
 								new JLabel(UIRES.get("16px.link"))));
@@ -466,7 +466,7 @@ public class WorkspaceDialogs {
 						apiList.add(PanelUtils.join(FlowLayout.LEFT, apiEnableBox));
 					}
 
-					apis.put(api.parent.id, apiEnableBox);
+					apis.put(api.parent().id(), apiEnableBox);
 				}
 
 				apiSettings.add("West", apiList);

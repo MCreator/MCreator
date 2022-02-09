@@ -19,11 +19,11 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -37,7 +37,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.AITasksEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JColor;
@@ -191,7 +191,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
+					"IronGolem").sorted().toArray(String[]::new));
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
@@ -252,9 +252,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getGeneratorAITasks());
 
-		BlocklyToAITasks blocklyToJava;
+		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToAITasks(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "aitasks_container", blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
@@ -266,7 +266,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -642,7 +642,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
-		bpb.add(PanelUtils.northAndCenterElement(new AITasksEditorToolbar(mcreator, blocklyPanel), blocklyPanel));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, "ai_setup", "aitpl",
+				blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
 
@@ -878,7 +881,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Living entity AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
@@ -1110,7 +1113,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		return livingEntity;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
 	}
 

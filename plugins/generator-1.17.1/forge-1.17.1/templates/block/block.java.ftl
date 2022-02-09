@@ -70,7 +70,11 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro blockProperties>
+	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+		BlockBehaviour.Properties.of(Material.${data.material},MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+	<#else>
 		BlockBehaviour.Properties.of(Material.${data.material})
+	</#if>
 			<#if data.isCustomSoundType>
 				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
@@ -375,12 +379,6 @@ public class ${name}Block extends
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 	@Override public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
-	}
-	</#if>
-
-	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-	@Override public MaterialColor defaultMaterialColor() {
-		return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
 	}
 	</#if>
 

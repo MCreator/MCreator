@@ -536,7 +536,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		return rangedItem;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-gun");
 	}
 
