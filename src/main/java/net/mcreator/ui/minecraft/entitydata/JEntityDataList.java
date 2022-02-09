@@ -22,8 +22,10 @@ package net.mcreator.ui.minecraft.entitydata;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnListEntry;
 
 import javax.swing.*;
@@ -33,7 +35,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JEntityDataList extends JPanel {
+public class JEntityDataList extends JEntriesList {
 
 	private final List<JEntityDataEntry> entryList = new ArrayList<>();
 
@@ -41,8 +43,8 @@ public class JEntityDataList extends JPanel {
 
 	private final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
-	public JEntityDataList(MCreator mcreator) {
-		super(new BorderLayout());
+	public JEntityDataList(MCreator mcreator, IHelpContext gui) {
+		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -56,7 +58,7 @@ public class JEntityDataList extends JPanel {
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> new JEntityDataEntry(entries, entryList));
+		add.addActionListener(e -> new JEntityDataEntry(mcreator, gui, entries, entryList));
 
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
@@ -78,7 +80,7 @@ public class JEntityDataList extends JPanel {
 	}
 
 	public void setEntries(List<LivingEntity.EntityDataEntry> pool) {
-		pool.forEach(e -> new JEntityDataEntry(entries, entryList).setEntry(e));
+		pool.forEach(e -> new JEntityDataEntry(mcreator, gui, entries, entryList).setEntry(e));
 	}
 
 }

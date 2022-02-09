@@ -188,7 +188,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
-	private final JEntityDataList entityDataList = new JEntityDataList(mcreator);
+	private final JEntityDataList entityDataList = new JEntityDataList(mcreator, this);
 
 	//mob bases
 	private final JComboBox<String> aiBase = new JComboBox<>(
@@ -451,13 +451,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		JPanel entityDataListPanel = new JPanel(new GridLayout());
 
-		JComponent component = PanelUtils.northAndCenterElement(
+		JComponent entityDataListComp = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/entity_data"),
 						L10N.label("elementgui.living_entity.entity_data")), entityDataList);
 
-		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		entityDataListPanel.add(component);
+		entityDataListPanel.add(entityDataListComp);
 
 		entityDataListPanel.setOpaque(false);
 

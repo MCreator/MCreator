@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft.entitydata;
 
 import net.mcreator.element.types.LivingEntity;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -39,7 +40,7 @@ public class JEntityDataEntry extends JPanel {
 	private final JSpinner defaultValue = new JSpinner(
 			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 
-	public JEntityDataEntry(JPanel parent, List<JEntityDataEntry> entryList) {
+	public JEntityDataEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
@@ -49,11 +50,11 @@ public class JEntityDataEntry extends JPanel {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("dialog.entity_data.name.needs_name")));
 		name.enableRealtimeValidation();
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/data_name"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"),
 				L10N.label("dialog.entity_data.name")));
 		add(name);
 
-		add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("entity/data_default_value"),
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_default_value"),
 				L10N.label("dialog.entity_data.default_value")));
 		add(defaultValue);
 
