@@ -86,6 +86,6 @@ public class FoodToItemConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 25;
+		return 26;
 	}
 }
