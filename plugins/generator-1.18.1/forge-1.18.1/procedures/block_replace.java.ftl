@@ -18,7 +18,7 @@
     BlockEntity _be = world.getBlockEntity(_bp);
     CompoundTag _bnbt = null;
     if(_be != null) {
-        _bnbt = _be.save(new CompoundTag());
+        _bnbt = _be.saveWithFullMetadata();
         _be.setRemoved();
     }
     </#if>
