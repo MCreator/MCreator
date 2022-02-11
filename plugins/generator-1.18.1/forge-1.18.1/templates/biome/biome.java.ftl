@@ -31,21 +31,12 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 
-<#assign hasConfiguredFeatures = false/>
-
 package ${package}.world.biome;
 
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 
 public class ${name}Biome {
-
-	<#-- TODO: what to do with this ?
-	private static final ConfiguredSurfaceBuilder<?> SURFACE_BUILDER = SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderBaseConfiguration(
-            ${mappedBlockToBlockStateCode(data.groundBlock)},
-            ${mappedBlockToBlockStateCode(data.undergroundBlock)},
-            ${mappedBlockToBlockStateCode(data.undergroundBlock)}));
-    -->
 
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -162,7 +153,6 @@ public class ${name}Biome {
 
         <#if (data.treesPerChunk > 0)>
         	<#assign ct = data.treeType == data.TREES_CUSTOM>
-            <#assign hasConfiguredFeatures = true/>
 
         	<#if data.vanillaTreeType == "Big trees">
         	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -272,91 +262,111 @@ public class ${name}Biome {
             	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
         	</#if>
-        </#if>
+        </#if>-->
 
         <#if (data.grassPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("grass", Feature.RANDOM_PATCH.configured(Features.Configs.DEFAULT_GRASS_CONFIG)
-                .decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE)
-                .decorated(FeatureDecorator.COUNT_NOISE.configured(new NoiseDependantDecoratorConfiguration(-0.8D, 5, ${data.grassPerChunk})))));
+                PlacementUtils.register("${modid}_grass", VegetationFeatures.PATCH_GRASS.placed(
+				    NoiseThresholdCountPlacement.of(-0.8D, 5, ${data.grassPerChunk}),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                    BiomeFilter.biome()
+            )));
         </#if>
 
         <#if (data.seagrassPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("seagrass", Feature.SEAGRASS.configured(new ProbabilityFeatureConfiguration(0.3F))
-                .count(${data.seagrassPerChunk})
-                .decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE)));
+			    PlacementUtils.register("${modid}_seagrass", AquaticFeatures.SEAGRASS_SHORT.placed(
+				    AquaticPlacements.seagrassPlacement(${data.seagrassPerChunk})
+            )));
         </#if>
 
         <#if (data.flowersPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("flower", Feature.FLOWER.configured(Features.Configs.DEFAULT_FLOWER_CONFIG)
-                .decorated(Features.Decorators.ADD_32)
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .count(${data.flowersPerChunk})));
+			    PlacementUtils.register("${modid}_flower", VegetationFeatures.FLOWER_DEFAULT.placed(
+				    CountPlacement.of(${data.flowersPerChunk}),
+                    RarityFilter.onAverageOnceEvery(32),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP,
+                    BiomeFilter.biome()
+            )));
         </#if>
 
         <#if (data.mushroomsPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("brown_mushroom", Feature.RANDOM_PATCH.configured((new RandomPatchConfiguration.GrassConfigurationBuilder(
-                new SimpleStateProvider(Blocks.BROWN_MUSHROOM.defaultBlockState()), SimpleBlockPlacer.INSTANCE))
-                .tries(${data.mushroomsPerChunk}).noProjection().build())));
+			    PlacementUtils.register("${modid}_brown_mushroom", VegetationFeatures.PATCH_BROWN_MUSHROOM.placed(
+				    CountPlacement.of(${data.mushroomsPerChunk}),
+				    RarityFilter.onAverageOnceEvery(32),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+			)));
+
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("red_mushroom", Feature.RANDOM_PATCH.configured((new RandomPatchConfiguration.GrassConfigurationBuilder(
-                new SimpleStateProvider(Blocks.RED_MUSHROOM.defaultBlockState()), SimpleBlockPlacer.INSTANCE))
-                .tries(${data.mushroomsPerChunk}).noProjection().build())));
+			    PlacementUtils.register("${modid}_red_mushroom", VegetationFeatures.PATCH_RED_MUSHROOM.placed(
+				    CountPlacement.of(${data.mushroomsPerChunk}),
+				    RarityFilter.onAverageOnceEvery(32),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+			)));
         </#if>
 
         <#if (data.bigMushroomsChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("brown_mushroom_huge", Feature.HUGE_BROWN_MUSHROOM.configured(new HugeMushroomFeatureConfiguration(
-                new SimpleStateProvider(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)),
-                new SimpleStateProvider(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE)
-                .setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk}))));
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("red_mushroom_huge", Feature.HUGE_RED_MUSHROOM.configured(new HugeMushroomFeatureConfiguration(
-                new SimpleStateProvider(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)),
-                new SimpleStateProvider(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE)
-                .setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), ${data.bigMushroomsChunk}))));
-        </#if>
-
-        <#if (data.sandPatchesPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("disk_sand", Feature.DISK.configured(new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 4), 2,
-                ImmutableList.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-                .decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(${data.sandPatchesPerChunk})));
-        </#if>
-
-        <#if (data.gravelPatchesPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("disk_gravel", Feature.DISK.configured(new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 3), 2,
-                ImmutableList.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-                .decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(${data.gravelPatchesPerChunk})));
+			    PlacementUtils.register("${modid}_mushrooms_huge", VegetationFeatures.MUSHROOM_ISLAND_VEGETATION.placed(
+				    CountPlacement.of(${data.bigMushroomsChunk}),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+            )));
         </#if>
 
         <#if (data.reedsPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("patch_sugar_cane", Feature.RANDOM_PATCH.configured(Features.Configs.SUGAR_CANE_CONFIG)
-                .decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE).count(${data.reedsPerChunk})));
+			    PlacementUtils.register("${modid}_patch_sugar_cane", VegetationFeatures.PATCH_SUGAR_CANE.placed(
+				    RarityFilter.onAverageOnceEvery(${data.reedsPerChunk}),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP,
+                    BiomeFilter.biome()
+            )));
         </#if>
 
         <#if (data.cactiPerChunk > 0)>
-            <#assign hasConfiguredFeatures = true/>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    register("patch_cactus", Feature.RANDOM_PATCH.configured((new RandomPatchConfiguration.GrassConfigurationBuilder(
-                new SimpleStateProvider(Blocks.CACTUS.defaultBlockState()), new ColumnPlacer(BiasedToBottomInt.of(1, 2))))
-                .tries(${data.cactiPerChunk}).noProjection().build())));
+			    PlacementUtils.register("${modid}_patch_cactus", VegetationFeatures.PATCH_SUGAR_CANE.placed(
+				    RarityFilter.onAverageOnceEvery(${data.cactiPerChunk}),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+			)));
         </#if>
 
-        -->
+        <#if (data.sandPatchesPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}_disk_sand", FeatureUtils.register("${modid}_disk_sand",
+                        Feature.DISK.configured(new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
+                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
+                    ).placed(
+				        CountPlacement.of(${data.sandPatchesPerChunk}),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP_TOP_SOLID,
+                        BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#if (data.gravelPatchesPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}_disk_gravel", FeatureUtils.register("${modid}_disk_gravel",
+			        Feature.DISK.configured(new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
+			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
+			    ).placed(
+			        CountPlacement.of(${data.gravelPatchesPerChunk}),
+			        InSquarePlacement.spread(),
+			        PlacementUtils.HEIGHTMAP_TOP_SOLID,
+			        BiomeFilter.biome()
+            )));
+        </#if>
 
         <#list data.defaultFeatures as defaultFeature>
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
@@ -384,10 +394,6 @@ public class ${name}Biome {
         return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
             .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
-            <#-- TODO: no longer supported
-            .depth(${data.baseHeight}f)
-            .scale(${data.heightVariation}f)
-            -->
             .temperature(${data.temperature}f)
             .downfall(${data.rainingPossibility}f)
             .specialEffects(effects)
@@ -397,10 +403,6 @@ public class ${name}Biome {
     }
 
     public static void init() {
-        <#if hasConfiguredFeatures>
-        CONFIGURED_FEATURES.forEach((resourceLocation, configuredFeature) -> Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, resourceLocation, configuredFeature));
-        </#if>
-
         <#if data.biomeDictionaryTypes?has_content>
             BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
             <#list data.biomeDictionaryTypes as biomeDictionaryType>
@@ -410,21 +412,18 @@ public class ${name}Biome {
         </#if>
 
         <#-- TODO: this does in fact no longer work. new api / mixin needed
+        Should also include these parameters:
+        ${mappedBlockToBlockStateCode(data.groundBlock)}
+        ${mappedBlockToBlockStateCode(data.undergroundBlock)}
+        ${data.baseHeight}
+        ${data.heightVariation}
+
         <#if data.spawnBiome>
             BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
                 new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
         </#if>
         -->
     }
-
-    <#if hasConfiguredFeatures>
-    private static final Map<ResourceLocation, ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = new HashMap<>();
-
-    private static ConfiguredFeature<?, ?> register(String name, ConfiguredFeature<?, ?> configuredFeature) {
-		CONFIGURED_FEATURES.put(new ResourceLocation(${JavaModName}.MODID, name + "_${registryname}"), configuredFeature);
-    	return configuredFeature;
-    }
-    </#if>
 
 }
 
