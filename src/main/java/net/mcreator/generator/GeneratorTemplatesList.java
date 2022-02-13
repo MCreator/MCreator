@@ -25,12 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Generator templates list is used for generating several similar templates for each item from a list
- * provided by a mod element. Output objects are called <i>list templates</i>.
+ * Generator templates list is used for generating several similar templates (called <i>list templates</i>)
+ * for each item from a list provided by a mod element.
  *
  * @param groupName The name of this group of templates shown in workspace panel
  * @param listData  The collection used by workspace to generate given templates
- * @param templates The list of templates to generate for each entry of {@code listData}
+ * @param templates The map of list templates to be generated for each entry of {@code listData};
+ *                  keys are templates themselves, values represent generation conditions of their key template
+ *                  for all items on the mentioned collection
  */
 public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
@@ -38,7 +40,7 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 	/**
 	 * Attempts to locate the source generator template used to create given file.
 	 *
-	 * @param generatorFile    The output file claimed to be generated from a template from this list
+	 * @param generatorFile    The input file claimed to be generated from a template from this list
 	 * @param ignoreConditions Specifies whether generation conditions of templates should not be respected
 	 * @return Corresponding list template in case of success, or {@code null} otherwise
 	 */
