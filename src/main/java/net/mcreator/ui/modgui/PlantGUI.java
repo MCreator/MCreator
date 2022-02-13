@@ -121,7 +121,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
-	private final JRadioButton doubleType = new JRadioButton("<html><b>Use double plant type");
+	private final JRadioButton doubleType = L10N.radiobutton("elementgui.plant.use_double_plant_type");
 	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
