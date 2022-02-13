@@ -37,17 +37,27 @@ package ${package}.world.features.lakes;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ${name}Feature extends LakeFeature {
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}_lake");
+	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.configured(new LakeFeature.Configuration(
-			BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState()),
-			BlockStateProvider.simple(Blocks.AIR.defaultBlockState())));
+			BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}), BlockStateProvider.simple(Blocks.AIR)));
 	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of(
 			RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
 			InSquarePlacement.spread(),
-			PlacementUtils.FULL_RANGE
+			PlacementUtils.HEIGHTMAP
 	));
 
-	private final Set<ResourceKey<Level>> GENERATE_DIMENSIONS = Set.of(
+	public static final Set<ResourceLocation> GENERATE_BIOMES =
+	<#if data.restrictionBiomes?has_content>
+	Set.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+			new ResourceLocation("${restrictionBiome}")<#sep>,
+		</#list>
+	);
+	<#else>
+	null;
+	</#if>
+
+	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType == "Surface">
 				Level.OVERWORLD
@@ -62,17 +72,6 @@ public class ${name}Feature extends LakeFeature {
 		</#list>
 	);
 
-	public static final Set<ResourceLocation> GENERATE_BIOMES =
-	<#if data.restrictionBiomes?has_content>
-	Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#sep>,
-		</#list>
-	);
-	<#else>
-	null;
-	</#if>
-
 	public ${name}Feature() {
 		super(LakeFeature.Configuration.CODEC);
 	}
@@ -80,7 +79,7 @@ public class ${name}Feature extends LakeFeature {
 	@Override public boolean place(FeaturePlaceContext<LakeFeature.Configuration> context) {
 		WorldGenLevel world = context.level();
 
-		if (!GENERATE_DIMENSIONS.contains(world.getLevel().dimension()))
+		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
 
 		<#if hasProcedure(data.generateCondition)>
@@ -91,9 +90,7 @@ public class ${name}Feature extends LakeFeature {
 			return false;
 		</#if>
 
-		boolean flag = super.place(context);
-		${JavaModName}.LOGGER.debug(flag);
-		return flag;
+		return super.place(context);
 	}
 }
 
