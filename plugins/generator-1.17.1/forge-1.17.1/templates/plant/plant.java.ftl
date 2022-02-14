@@ -83,8 +83,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
 		.noDrops()
 		</#if>
-	);
-	setRegistryName("${registryname}");
+		);
+		setRegistryName("${registryname}");
 	}
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
@@ -351,6 +351,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 <#macro canPlaceOnList blockList condition>
 <#if (blockList?size > 1) && condition>(</#if>
 <#list blockList as canBePlacedOn>
-groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#if canBePlacedOn?has_next>||</#if>
+groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
 </#list><#if (blockList?size > 1) && condition>)</#if>
 </#macro>
