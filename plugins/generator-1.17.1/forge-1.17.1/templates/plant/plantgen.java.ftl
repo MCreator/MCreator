@@ -72,9 +72,7 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 	null;
 	</#if>
 
-	private final Set<ResourceKey<Level>> generate_dimensions =
-	<#if data.restrictionBiomes?has_content>
-	Set.of(
+	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType == "Surface">
 				Level.OVERWORLD
@@ -88,9 +86,6 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 			</#if>
 		</#list>
 	);
-	<#else>
-	null;
-	</#if>
 
 	public ${name}Feature() {
 		super(RandomPatchConfiguration.CODEC);
