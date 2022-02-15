@@ -83,7 +83,7 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 			<#else>
 				ResourceKey.create(Registry.DIMENSION_REGISTRY,
 						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if>
+			</#if><#sep>,
 		</#list>
 	);
 
