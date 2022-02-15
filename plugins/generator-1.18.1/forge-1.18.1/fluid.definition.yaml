@@ -22,6 +22,9 @@ templates:
   - template: json/fluid_states.json.ftl
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/fluid.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
 
 global_templates:
   - template: elementinits/fluids.java.ftl

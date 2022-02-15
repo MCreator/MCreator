@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/air"
+      "model": "${modid}:block/${registryname}"
     }
   }
 }
