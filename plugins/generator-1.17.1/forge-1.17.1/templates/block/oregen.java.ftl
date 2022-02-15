@@ -46,27 +46,12 @@ public class ${name}Feature extends OreFeature {
 	<#if data.restrictionBiomes?has_content>
 	Set.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#sep>,
+		new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
 		</#list>
 	);
 	<#else>
 	null;
 	</#if>
-
-	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
-				Level.OVERWORLD
-			<#elseif worldType == "Nether">
-				Level.NETHER
-			<#elseif worldType == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registry.DIMENSION_REGISTRY,
-						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
 
 	public ${name}Feature() {
 		super(OreConfiguration.CODEC);
@@ -74,14 +59,34 @@ public class ${name}Feature extends OreFeature {
 
 	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
 		WorldGenLevel world = context.level();
-		if (!generate_dimensions.contains(world.getLevel().dimension()))
+		ResourceKey<Level> dimensionType = world.getLevel().dimension();
+		boolean dimensionCriteria = false;
+
+        <#list data.spawnWorldTypes as worldType>
+			<#if worldType=="Surface">
+        		if(dimensionType == Level.OVERWORLD)
+					dimensionCriteria = true;
+			<#elseif worldType=="Nether">
+        		if(dimensionType == Level.NETHER)
+					dimensionCriteria = true;
+			<#elseif worldType=="End">
+        		if(dimensionType == Level.END)
+					dimensionCriteria = true;
+			<#else>
+        		if(dimensionType == ResourceKey.create(Registry.DIMENSION_REGISTRY,
+						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
+					dimensionCriteria = true;
+			</#if>
+		</#list>
+
+		if(!dimensionCriteria)
 			return false;
 
-		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
+        <#if hasProcedure(data.generateCondition)>
+        int x = context.origin().getX();
+        int y = context.origin().getY();
+        int z = context.origin().getZ();
+        if (!<@procedureOBJToConditionCode data.generateCondition/>)
 			return false;
 		</#if>
 
@@ -96,14 +101,15 @@ public class ${name}Feature extends OreFeature {
 		static final RuleTestType<${name}FeatureRuleTest> CUSTOM_MATCH = Registry.register(Registry.RULE_TEST,
 				new ResourceLocation("${modid}:${registryname}_match"), () -> codec);
 
-		private final List<Block> base_blocks = List.of(
-			<#list data.blocksToReplace as targetBlock>
-				${mappedBlockToBlock(targetBlock)}<#sep>,
-			</#list>
-		);
-
 		public boolean test(BlockState blockAt, Random random) {
-			return base_blocks.contains(blockAt.getBlock());
+			boolean blockCriteria = false;
+
+			<#list data.blocksToReplace as replacementBlock>
+			if(blockAt.getBlock() == ${mappedBlockToBlock(replacementBlock)})
+				blockCriteria = true;
+			</#list>
+
+			return blockCriteria;
 		}
 
 		protected RuleTestType<?> getType() {
