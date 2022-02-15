@@ -50,28 +50,27 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private JScrollablePopupMenu results = new JScrollablePopupMenu();
 	private final JButton templateLib;
 
-	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel) {
-		this(mcreator, id, extension, blocklyPanel, null);
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
+		this(mcreator, blocklyEditorType, blocklyPanel, null);
 	}
 
 	/**
 	 * <p>A {@link BlocklyEditorToolbar} is the top panel added on every Java {@link BlocklyPanel}.
 	 * It contains buttons like templates, an export and an import template buttons.</p>
 	 *
-	 * @param mcreator     <p>The {@link MCreator} instance used</p>
-	 * @param id           <p>This String is mainly used for externalized texts.</p>
-	 * @param extension    <p>This is the file extension of exported and imported templates.</p>
-	 * @param blocklyPanel <p>The {@link BlocklyPanel} to use for some features</p>
-	 * @param procedureGUI <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param mcreator     		<p>The {@link MCreator} instance used</p>
+	 * @param blocklyEditorType	<p>Type of the Blockly editor this toolbar will be used on.</p>
+	 * @param blocklyPanel 		<p>The {@link BlocklyPanel} to use for some features</p>
+	 * @param procedureGUI 		<p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
 	 */
-	public BlocklyEditorToolbar(MCreator mcreator, String id, String extension, BlocklyPanel blocklyPanel,
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
 			ProcedureGUI procedureGUI) {
 		setBorder(null);
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
-				TemplatesLoader.loadTemplates(extension, extension), procedureGUI);
+				TemplatesLoader.loadTemplates(blocklyEditorType.getExtension(), blocklyEditorType.getExtension()), procedureGUI);
 
-		templateLib = L10N.button("blockly.templates." + id);
+		templateLib = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey());
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
 		templateLib.setOpaque(false);
@@ -189,40 +188,44 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton export = L10N.button("blockly.templates." + id + ".export");
+		JButton export = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
 		export.setOpaque(false);
 		add(export);
 		export.addActionListener(event -> {
-			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + extension });
+			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.getExtension() });
 			if (exp != null) {
 				try {
-					ProcedureTemplateIO.exportAITaskSetup(blocklyPanel.getXML(), exp);
+					if (blocklyEditorType == BlocklyEditorType.AI_TASK) {
+						ProcedureTemplateIO.exportAITaskSetup(blocklyPanel.getXML(), exp);
+					} else if (blocklyEditorType == BlocklyEditorType.PROCEDURE) {
+						ProcedureTemplateIO.exportProcedure(blocklyPanel.getXML(), exp);
+					}
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + id + ".export_failed.message"),
-							L10N.t("blockly.templates." + id + ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		ComponentUtils.normalizeButton4(export);
 		export.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton import_ = L10N.button("blockly.templates." + id + ".import");
+		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
 		import_.setOpaque(false);
 		add(import_);
 		import_.addActionListener(event -> {
-			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { extension });
+			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.getExtension() });
 			if (imp != null) {
 				try {
 					blocklyPanel.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML(imp));
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + id + ".import_failed.message"),
-							L10N.t("blockly.templates." + id + ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
