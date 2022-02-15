@@ -43,7 +43,7 @@ public class ${name}Feature extends LakeFeature {
 	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of(
 			RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
 			InSquarePlacement.spread(),
-			PlacementUtils.HEIGHTMAP
+			PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT
 	));
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
