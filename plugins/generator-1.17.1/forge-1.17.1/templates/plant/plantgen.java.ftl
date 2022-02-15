@@ -54,7 +54,11 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 				)
 				.decorated(FeatureDecorator.HEIGHTMAP<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || data.plantType == "growapable">_SPREAD_DOUBLE</#if>.configured(new HeightmapConfiguration(Heightmap.Types.MOTION_BLOCKING)))
 				.squared()
-				<#if !(data.plantType == "growapable")>.rarity(32)</#if>
+				<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Flower") ||
+					 (data.plantType == "double" && data.doublePlantGenerationType == "Flower") ||
+					  data.plantType == "growapable">
+					.rarity(32)
+				</#if>
 				.count(${data.frequencyOnChunks});
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
@@ -73,8 +77,8 @@ public class ${name}Feature extends <#if data.plantType == "normal" && data.stat
 	}
 
 	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
-		Level world = context.level().getLevel();
-		ResourceKey<Level> dimensionType = world.dimension();
+		WorldGenLevel world = context.level();
+		ResourceKey<Level> dimensionType = world.getLevel().dimension();
 		boolean dimensionCriteria = false;
 
 		<#list data.spawnWorldTypes as worldType>

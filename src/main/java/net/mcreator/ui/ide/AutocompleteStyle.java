@@ -48,7 +48,7 @@ class AutocompleteStyle {
 				Class<?> treeNodeClass2 = Class.forName("org.fife.ui.autocomplete.AutoCompletePopupWindow");
 				Field field2 = treeNodeClass2.getDeclaredField("list");
 				field2.setAccessible(true);
-				JList list = (JList) field2.get(autoCompletePopupWindowRaw);
+				JList<?> list = (JList<?>) field2.get(autoCompletePopupWindowRaw);
 				list.setForeground(new Color(0xD9D9D9));
 				list.setSelectionForeground(Color.white);
 				list.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -60,8 +60,7 @@ class AutocompleteStyle {
 				for (Component com : components) {
 					if (com instanceof JComponent)
 						((JComponent) com).setBorder(null);
-					if (com instanceof JScrollPane) {
-						JScrollPane pane = (JScrollPane) com;
+					if (com instanceof JScrollPane pane) {
 						pane.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 						pane.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0,
 								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));

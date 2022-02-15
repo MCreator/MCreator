@@ -120,6 +120,8 @@ import java.util.stream.Collectors;
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
 
+	private final JPanel detailsbar = new JPanel(new GridLayout(1, 6));
+
 	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
 	private final TransparentToolBar modElementsBar = new TransparentToolBar();
@@ -209,8 +211,7 @@ import java.util.stream.Collectors;
 				super.mouseMoved(e);
 				int idx = list.locationToIndex(e.getPoint());
 				IElement element = list.getModel().getElementAt(idx);
-				if (element instanceof ModElement) {
-					ModElement modElement = (ModElement) element;
+				if (element instanceof ModElement modElement) {
 					mcreator.getStatusBar()
 							.setMessage(modElement.getType().getReadableName() + ": " + modElement.getName());
 				}
@@ -631,7 +632,15 @@ import java.util.stream.Collectors;
 
 		mainp.setOpaque(false);
 
-		modElementsPanel.add("Center", PanelUtils.northAndCenterElement(elementsBreadcrumb, mainp));
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"),
+				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
+				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
+		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
+		detailsbar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+
+		modElementsPanel.add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0),
+						mainp));
 
 		panels.add(modElementsPanel, "mods");
 		panels.add(resourcesPan, "res");
@@ -993,6 +1002,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.tiles.gif"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender());
@@ -1001,6 +1011,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.large.gif"));
 			view.setText(L10N.t("workspace.elements.list.large"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.MEDIUM) {
 			list.setCellRenderer(new MediumIconModListRender());
@@ -1009,6 +1020,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.medium.gif"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.SMALL) {
 			list.setCellRenderer(new SmallIconModListRender(true));
@@ -1017,6 +1029,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			view.setIcon(UIRES.get("16px.small.gif"));
 			view.setText(L10N.t("workspace.elements.list.small"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.LIST) {
 			list.setCellRenderer(new ListIconModListRender());
@@ -1025,6 +1038,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.VERTICAL);
 			view.setIcon(UIRES.get("16px.list.gif"));
 			view.setText(L10N.t("workspace.elements.list.list"));
+			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
 				== PreferencesData.WorkspaceIconSize.DETAILS) {
 			list.setCellRenderer(new DetailsIconModListRender());
@@ -1033,6 +1047,7 @@ import java.util.stream.Collectors;
 			list.setLayoutOrientation(JList.VERTICAL);
 			view.setIcon(UIRES.get("16px.details.gif"));
 			view.setText(L10N.t("workspace.elements.list.details"));
+			detailsbar.setVisible(true);
 		}
 	}
 
@@ -1063,8 +1078,7 @@ import java.util.stream.Collectors;
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
 				list.getSelectedValuesList().forEach(el -> {
-					if (el instanceof ModElement) {
-						ModElement mu = (ModElement) el;
+					if (el instanceof ModElement mu) {
 						if (mu.isCodeLocked()) {
 							mu.setCodeLock(false);
 							mcreator.getWorkspace().updateModElement(mu);
@@ -1114,8 +1128,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void duplicateCurrentlySelectedModElement() {
-		if (list.getSelectedValue() instanceof ModElement) {
-			ModElement mu = (ModElement) list.getSelectedValue();
+		if (list.getSelectedValue() instanceof ModElement mu) {
 			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
@@ -1267,8 +1280,7 @@ import java.util.stream.Collectors;
 							}
 
 							mcreator.getWorkspace().removeModElement(((ModElement) re));
-						} else if (re instanceof FolderElement) {
-							FolderElement folder = (FolderElement) re;
+						} else if (re instanceof FolderElement folder) {
 
 							// re-assign mod-elements from deleted folder to parent folder
 							for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
@@ -1512,7 +1524,7 @@ import java.util.stream.Collectors;
 								return true;
 
 						return false;
-					}).collect(Collectors.toList()));
+					}).toList());
 
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders

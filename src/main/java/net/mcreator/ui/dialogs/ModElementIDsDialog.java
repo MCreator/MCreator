@@ -30,9 +30,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class ModElementIDsDialog {
 
@@ -50,7 +47,7 @@ public class ModElementIDsDialog {
 		VTextField registryName = new VTextField();
 		JComponent reghol = PanelUtils.join(L10N.label("dialog.modelement_id.registry_name"), registryName);
 		reghol.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.modelement_id.registry_name_info"), 0, 0, reghol.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -66,42 +63,6 @@ public class ModElementIDsDialog {
 
 		panel.add(reghol);
 
-		JPanel ids = new JPanel();
-		ids.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("dialog.modelement_id.numerical_id"), 0, 0, reghol.getFont().deriveFont(12.0f), Color.white));
-
-		ids.setLayout(new BorderLayout());
-
-		Map<Integer, JSpinner> idspinners = new HashMap<>();
-
-		if (!modElement.getIDMap().isEmpty()) {
-			int offset = mcreator.getGenerator()
-					.getStartIDFor(modElement.getType().getBaseType().name().toLowerCase(Locale.ENGLISH));
-			if (offset != -1) {
-				ids.add("North", PanelUtils.maxMargin(
-						L10N.label("dialog.modelement_id.id_offset", modElement.getType().getReadableName(), offset), 5,
-						false, true, false, false));
-			}
-
-			JPanel idsmap = new JPanel(new GridLayout(modElement.getIDMap().size(), 2));
-			for (Map.Entry<Integer, Integer> mapping : modElement.getIDMap().entrySet()) {
-				idsmap.add(L10N.label("dialog.modelement_id.id_mapping", mapping.getKey()));
-				JSpinner id = new JSpinner(
-						new SpinnerNumberModel((int) mapping.getValue(), Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
-				idspinners.put(mapping.getKey(), id);
-				idsmap.add(id);
-			}
-
-			ids.add("Center", PanelUtils.centerInPanel(idsmap));
-		} else {
-			ids.add(L10N.label("dialog.modelement_id.error_no_numerical_id"));
-		}
-
-		panel.add(new JEmptyBox(20, 20));
-
-		panel.add(ids);
-
 		panel.add(new JEmptyBox(20, 20));
 
 		registryName.setText(modElement.getRegistryName());
@@ -111,12 +72,6 @@ public class ModElementIDsDialog {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (option == JOptionPane.OK_OPTION) {
-			if (!modElement.getIDMap().isEmpty()) { // if this mod element has id map, write changes
-				for (Map.Entry<Integer, JSpinner> spinnerEntry : idspinners.entrySet()) {
-					modElement.setIDAt(spinnerEntry.getKey(), (Integer) spinnerEntry.getValue().getValue());
-				}
-			}
-
 			boolean regenerateCode = false;
 
 			// check if registry name has been changed

@@ -22,14 +22,20 @@ import com.google.gson.JsonElement;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.init.UIRES;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.rsta.ac.java.DecoratableIcon;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 
@@ -62,8 +68,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		} else if (value instanceof JsonTree.JsonArrayNode) {
 			setIcon(UIRES.get("16px.jsonarray.gif"));
 			setText(value.toString());
-		} else if (value instanceof JsonTree.JsonNode) {
-			JsonTree.JsonNode node = (JsonTree.JsonNode) value;
+		} else if (value instanceof JsonTree.JsonNode node) {
 			JsonElement element = node.getElement();
 			String type = null;
 			if (element.isJsonNull())
@@ -76,9 +81,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 				if (element.getAsJsonPrimitive().isNumber())
 					type = "number";
 			}
-			setText("<html>" + value.toString() + (type == null ?
-					"" :
-					("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
+			setText("<html>" + value + (type == null ? "" : ("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
 			setIcon(UIRES.get("16px.jsonel.gif"));
 		} else {
 			try {
@@ -88,7 +91,8 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 				icon.setAccessible(true);
 				text.setAccessible(true);
 				setText((String) text.invoke(value, sel));
-				setIcon((Icon) icon.invoke(value));
+
+				setIcon(RSTAIcons.themeRSTAIcon((Icon) icon.invoke(value)));
 			} catch (Exception e) {
 				if (value instanceof DefaultMutableTreeNode) {
 					setText(value.toString());

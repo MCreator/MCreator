@@ -29,6 +29,7 @@
   "nextStatement": null,
   "colour": 175,
   "mcreator": {
+    "group": "gui",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",

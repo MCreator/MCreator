@@ -15,6 +15,7 @@
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
+    "group": "scoreboard",
     "toolbox_id": "playermanagement",
     "toolbox_init": [
       "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",

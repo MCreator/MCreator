@@ -138,7 +138,11 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		return function;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override protected boolean allowCodePreview() {
+		return false;
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-function");
 	}
 

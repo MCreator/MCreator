@@ -66,10 +66,6 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 		fm.setOpaque(false);
 
 		enderpanel.setOpaque(false);
-		enderpanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.fuel.properties"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(enderpanel));
 
@@ -94,7 +90,7 @@ public class FuelGUI extends ModElementGUI<Fuel> {
 		return fuel;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-fuel");
 	}
 

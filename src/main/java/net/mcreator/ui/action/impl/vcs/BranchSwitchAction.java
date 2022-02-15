@@ -37,7 +37,6 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.CredentialsProvider;
 
 import javax.swing.*;
-import java.util.stream.Collectors;
 
 public class BranchSwitchAction {
 
@@ -63,15 +62,12 @@ public class BranchSwitchAction {
 				}
 
 				git.reset().setMode(ResetCommand.ResetType.HARD).call();
-				git.checkout().setCreateBranch(
-								!git.branchList().call().stream().map(Ref::getName).collect(Collectors.toList())
-										.contains("refs/heads/" + FilenameUtilsPatched.getName(branchToSwitchTo)))
+				git.checkout().setCreateBranch(!git.branchList().call().stream().map(Ref::getName).toList()
+								.contains("refs/heads/" + FilenameUtilsPatched.getName(branchToSwitchTo)))
 						.setName(FilenameUtilsPatched.getName(branchToSwitchTo)).call();
 
 				// possible refactor after sync start
 				mcreator.getWorkspace().reloadFromFS();
-
-				localWorkspace = mcreator.getWorkspace();
 
 				// if version changed, switch the generator
 				if (!localWorkspace.getWorkspaceSettings().getCurrentGenerator()

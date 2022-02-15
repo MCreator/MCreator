@@ -29,11 +29,48 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
-class ImportFormat {
+public class ImportFormat {
 
 	private Map<String, List<String>> cache = new HashMap<>();
 
-	String arrangeImports(@Nullable Workspace workspace, String code, boolean skipModClassReloading) {
+	public static String removeImports(String code, String replacement) {
+		CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
+
+		int spos = 0, epos = 0;
+		List<ImportDeclaration> currentImports = cu.getImports();
+		for (int i = 0; i < currentImports.size(); i++) {
+			ImportDeclaration imp = currentImports.get(i);
+			if (i == 0)
+				spos = imp.getNameStartOffset();
+
+			if (i == currentImports.size() - 1)
+				epos = imp.getNameEndOffset();
+		}
+
+		String before, after;
+		if (epos != 0) { // we found imports
+			before = code.substring(0, spos);
+			int last = before.lastIndexOf("import");
+			before = before.substring(0, last);
+
+			after = code.substring(epos);
+			int first = after.indexOf(";");
+			after = after.substring(first + 1);
+		} else if (cu.getPackage() != null) {
+			before = code.substring(0, cu.getPackage().getNameEndOffset()) + ";";
+
+			after = code.substring(cu.getPackage().getNameEndOffset());
+			int first = after.indexOf(";");
+			after = after.substring(first + 1);
+		} else {
+			before = "";
+			after = code;
+		}
+
+		return before.trim() + replacement + after.trim();
+	}
+
+	public String arrangeImports(@Nullable Workspace workspace, String code, boolean skipModClassReloading) {
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			if (!skipModClassReloading) {
 				cache = new HashMap<>();
@@ -195,7 +232,8 @@ class ImportFormat {
 					// if class with multiple packages is not included in one of the default packages, we do not import it
 					if (!_import.startsWith("net.minecraft") && !_import.startsWith("java.util") && !_import.startsWith(
 							"java.io") && !_import.startsWith("org.lwjgl") && !_import.startsWith("java.lang")
-							&& !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc")) {
+							&& !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc")
+							&& !_import.startsWith("com.google.gson")) {
 						importsToRemove.add(_import);
 						continue outer;
 					}

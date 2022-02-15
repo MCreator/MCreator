@@ -70,7 +70,11 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro blockProperties>
+	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+		BlockBehaviour.Properties.of(Material.${data.material},MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+	<#else>
 		BlockBehaviour.Properties.of(Material.${data.material})
+	</#if>
 			<#if data.isCustomSoundType>
 				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
@@ -82,10 +86,16 @@ public class ${name}Block extends
 			</#if>
 			<#if data.unbreakable>
 				.strength(-1, 3600000)
+			<#elseif (data.hardness == 0) && (data.resistance == 0)>
+				.instabreak()
+			<#elseif data.hardness == data.resistance>
+				.strength(${data.hardness}f)
 			<#else>
 				.strength(${data.hardness}f, ${data.resistance}f)
 			</#if>
+			<#if data.luminance != 0>
 				.lightLevel(s -> ${data.luminance})
+			</#if>
 			<#if data.destroyTool != "Not specified">
 				.requiresCorrectToolForDrops()
 			</#if>
@@ -116,6 +126,9 @@ public class ${name}Block extends
 			<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
 					|| (data.blockBase?has_content && data.blockBase == "Stairs")>
 				.dynamicShape()
+			</#if>
+			<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
+				.noDrops()
 			</#if>
 	</#macro>
 
@@ -151,48 +164,6 @@ public class ${name}Block extends
 
 		setRegistryName("${registryname}");
 	}
-
-	<#if data.blockBase?has_content && data.blockBase == "Fence">
-	@Override public boolean connectsTo(BlockState state, boolean checkattach, Direction face) {
-	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
-	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, face);
-	  return !isExceptionForConnection(state) && checkattach || flag || flag1;
-	}
-	<#elseif data.blockBase?has_content && data.blockBase == "Wall">
-   private static final int WALL_WIDTH = 3;
-   private static final int WALL_HEIGHT = 14;
-   private static final int POST_WIDTH = 4;
-   private static final int POST_COVER_WIDTH = 1;
-   private static final int WALL_COVER_START = 7;
-   private static final int WALL_COVER_END = 9;
-   private static final VoxelShape POST_TEST = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-   private static final VoxelShape NORTH_TEST = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 9.0D);
-   private static final VoxelShape SOUTH_TEST = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 16.0D);
-   private static final VoxelShape WEST_TEST = Block.box(0.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-   private static final VoxelShape EAST_TEST = Block.box(7.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
-
-	@Override ${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "getStateForPlacement", "BlockPlaceContext")}
-	@Override ${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "topUpdate", "LevelReader", "BlockState", "BlockPos", "BlockState")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "sideUpdate", "LevelReader", "BlockPos", "BlockState", "BlockPos", "BlockState", "Direction")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateShape", "LevelReader", "BlockState", "BlockPos", "BlockState", "boolean", "boolean", "boolean", "boolean")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "updateSides", "BlockState", "boolean", "boolean", "boolean", "boolean", "VoxelShape")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "makeWallState", "boolean", "VoxelShape", "VoxelShape")}
-	${mcc.getMethod("net.minecraft.world.level.block.WallBlock", "shouldRaisePost", "BlockState", "BlockState", "VoxelShape")}
-
-	private boolean connectsTo(BlockState state, boolean checkattach, Direction face) {
-		boolean flag = state.getBlock() instanceof WallBlock || state.getBlock() instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, face);
-		return !isExceptionForConnection(state) && checkattach || flag;
-	}
-
-	private static boolean isConnected(BlockState state, Property<WallSide> heightProperty) {
-		return state.getValue(heightProperty) != WallSide.NONE;
-	}
-
-	private static boolean isCovered(VoxelShape shape1, VoxelShape shape2) {
-		return !Shapes.joinIsNotEmpty(shape2, shape1, BooleanOp.ONLY_FIRST);
-	}
-	</#if>
 
 	<#if data.specialInfo?has_content>
 	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
@@ -411,12 +382,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-	@Override public MaterialColor defaultMaterialColor() {
-		return MaterialColor.${generator.map(data.colorOnMap, "mapcolors")};
-	}
-	</#if>
-
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
 	@Override public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
 		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
@@ -463,7 +428,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if !data.useLootTableForDrops>
+	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
 		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
@@ -510,7 +475,7 @@ public class ${name}Block extends
 		</#if>
 	</#if>
 
-	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && !data.tickRandomly, data.tickRate/>
+	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && data.shouldScheduleTick(), data.tickRate/>
 
 	<@onRedstoneOrNeighborChanged data.onRedstoneOn, data.onRedstoneOff, data.onNeighbourBlockChanges/>
 
@@ -524,7 +489,7 @@ public class ${name}Block extends
 
 		<@procedureOBJToCode data.onTickUpdate/>
 
-		<#if !data.tickRandomly>
+		<#if data.shouldScheduleTick()>
 		world.getBlockTicks().scheduleTick(pos, this, ${data.tickRate});
 		</#if>
 	}
@@ -539,8 +504,10 @@ public class ${name}Block extends
 		int y = pos.getY();
 		int z = pos.getZ();
 		<#if data.spawnParticles>
-	        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious
-	        data.particleAmount data.particleCondition/>
+			<#if hasProcedure(data.particleCondition)>
+			if(<@procedureOBJToConditionCode data.particleCondition/>)
+			</#if>
+	        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
 	    </#if>
 		<@procedureOBJToCode data.onRandomUpdateEvent/>
 	}

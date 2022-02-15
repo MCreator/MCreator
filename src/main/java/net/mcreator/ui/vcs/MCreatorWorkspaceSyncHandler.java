@@ -19,7 +19,6 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -46,7 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
+@SuppressWarnings("ClassCanBeRecord") public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 	private final MCreator mcreator;
 
@@ -55,7 +54,7 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 	}
 
 	@Override
-	public boolean handleSync(Git git, boolean hasMergeConflists, List<FileSyncHandle> handles, boolean dryRun)
+	public boolean handleSync(Git git, boolean hasMergeConflicts, List<FileSyncHandle> handles, boolean dryRun)
 			throws GitAPIException, IOException, TooNewWorkspaceVerisonException {
 		boolean required_user_action;
 
@@ -271,27 +270,6 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 						baseWorkspace.addSoundElement(addedSoundElement);
 			}
 
-			// ID MAP (always silent, just increment to from common base)
-			if (!dryRun) {
-				Map<BaseType, Integer> base_id_map = baseWorkspace.getIDMap();
-				Map<BaseType, Integer> local_id_map = localWorkspace.getIDMap();
-				Map<BaseType, Integer> remote_id_map = remoteWorkspace.getIDMap();
-				for (Map.Entry<BaseType, Integer> base_mapping : base_id_map.entrySet()) {
-					int baseid = base_mapping.getValue();
-					int localid = local_id_map.get(base_mapping.getKey());
-					int remoteid = remote_id_map.get(base_mapping.getKey());
-					int newid = baseid + Math.max(0, remoteid - baseid) + Math.max(0, localid - baseid);
-					baseWorkspace.getIDMap().put(base_mapping.getKey(), newid);
-				}
-
-				// after we merge exising IDs, we add any possibly new IDs from remote
-				for (Map.Entry<BaseType, Integer> remote_mapping : remote_id_map.entrySet()) {
-					baseWorkspace.getIDMap().putIfAbsent(remote_mapping.getKey(),
-							remote_mapping.getValue()); // we only put directly from remote
-					// if there is no local mapping for this value yet
-				}
-			}
-
 			// LANGUAGE MAP
 			Map<String, ConcurrentHashMap<String, String>> base_language_map = baseWorkspace.getLanguageMap();
 			Map<String, ConcurrentHashMap<String, String>> local_language_map = localWorkspace.getLanguageMap();
@@ -418,10 +396,8 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 						.getGeneratableElement();
 				if (generatableElement != null) {
 					// regenerate this mod element to reduce conflicts number, we prefer to use baseWorkspace for this
-					if (baseWorkspace != null)
-						baseWorkspace.getGenerator().generateElement(generatableElement);
-					else
-						localWorkspace.getGenerator().generateElement(generatableElement);
+					Objects.requireNonNullElse(baseWorkspace, localWorkspace).getGenerator()
+							.generateElement(generatableElement);
 					localWorkspace.getModElementManager().storeModElementPicture(
 							generatableElement); // we regenerate mod element images as we do not have remote images yet
 				}

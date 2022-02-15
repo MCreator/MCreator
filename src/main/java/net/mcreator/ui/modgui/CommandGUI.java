@@ -83,7 +83,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		JPanel evente = new JPanel();
 		evente.setOpaque(false);
 		evente.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.command.on_command_executed"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		evente.add(onCommandExecuted);
@@ -131,7 +131,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		return command;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/making-command");
 	}
 

@@ -59,8 +59,7 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 	}
 
 	@Override public boolean isCellEditable(EventObject eo) {
-		if (eo instanceof KeyEvent) {
-			KeyEvent ke = (KeyEvent) eo;
+		if (eo instanceof KeyEvent ke) {
 			((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setText(String.valueOf(ke.getKeyChar()));
 			initialValSet = true;
 		} else {

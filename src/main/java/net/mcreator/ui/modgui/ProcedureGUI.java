@@ -31,9 +31,10 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
-import net.mcreator.ui.blockly.ProcedureEditorToolbar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
@@ -239,7 +240,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -572,7 +573,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel, this));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.PROCEDURE,
+				blocklyPanel, this);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
+		pane5.add("North", blocklyEditorToolbar);
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}
@@ -582,16 +586,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			return new AggregatedValidationResult.PASS();
 		else if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::getMessage)
+					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
 							.collect(Collectors.toList()));
 		else
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
-
 	}
 
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
+	@Override protected void afterGeneratableElementGenerated() {
+		super.afterGeneratableElementGenerated();
 
 		// check if dependency list has changed
 		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
@@ -622,6 +625,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				}
 			}
 		}
+
+		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {

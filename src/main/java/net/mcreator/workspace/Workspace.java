@@ -19,7 +19,6 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.BaseType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -52,7 +51,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private ConcurrentHashMap<BaseType, Integer> id_map = new ConcurrentHashMap<>();
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
@@ -106,7 +104,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public Collection<VariableElement> getVariableElements() {
-		return variable_elements;
+		// make sure that variable types are supported by generator
+		return variable_elements.stream().filter(e -> e.getType() != null).toList();
 	}
 
 	public Collection<SoundElement> getSoundElements() {
@@ -115,10 +114,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
 		return language_map;
-	}
-
-	public ConcurrentHashMap<BaseType, Integer> getIDMap() {
-		return id_map;
 	}
 
 	public FolderElement getFoldersRoot() {
@@ -272,19 +267,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public int getNextFreeIDAndIncrease(BaseType baseType) {
-		if (id_map.get(baseType) == null) {
-			id_map.put(baseType, 1);
-			markDirty();
-			return 1;
-		} else {
-			int free = id_map.get(baseType) + 1;
-			id_map.put(baseType, free);
-			markDirty();
-			return free;
-		}
-	}
-
 	public void setMCreatorVersion(long mcreatorVersion) {
 		this.mcreatorVersion = mcreatorVersion;
 		markDirty();
@@ -426,7 +408,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 							"Unsupported generator", JOptionPane.WARNING_MESSAGE);
 					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
 							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-									currentFlavor), currentFlavor);
+									currentFlavor), currentFlavor, false);
 					if (generatorConfiguration != null) {
 						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
@@ -499,7 +481,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void loadStoredDataFrom(Workspace other) {
-		this.id_map = other.id_map;
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;

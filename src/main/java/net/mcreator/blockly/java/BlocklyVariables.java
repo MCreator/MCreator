@@ -19,6 +19,7 @@
 package net.mcreator.blockly.java;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
@@ -33,13 +34,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BlocklyVariables {
-
-	private final BlocklyToJava generator;
-
-	BlocklyVariables(BlocklyToJava generator) {
-		this.generator = generator;
-	}
+public record BlocklyVariables(BlocklyToJava generator) {
 
 	List<VariableElement> processLocalVariables(Element variables_block) {
 		List<VariableElement> varlist = new ArrayList<>();
@@ -57,8 +52,8 @@ public class BlocklyVariables {
 					element.setScope(VariableType.Scope.LOCAL);
 					varlist.add(element); // add variable to the array of variables
 				} else {
-					generator.addCompileNote(
-							new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, "Skipping unknown variable type!"));
+					generator.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							L10N.t("blockly.warnings.skip_unknown_var_type")));
 				}
 			}
 		}

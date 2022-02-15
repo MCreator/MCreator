@@ -32,13 +32,13 @@ Blockly.Extensions.register('material_list_provider',
 Blockly.Extensions.register('plant_type_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("planttype"))), 'planttype');
+            arrayToBlocklyDropDownArray(javabridge.getListOf("planttypes"))), 'planttype');
     });
 
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
-        Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push(this.type);
+        Blockly.blocks.loops.loopTypes.add(this.type);
     });
 
 // marks in the xml if the block is attached to a block/item input, for proper mapping
@@ -101,16 +101,12 @@ Blockly.Extensions.registerMutator('variable_entity_input',
 
 Blockly.Extensions.register('biome_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("biome"),
-                javabridge.getReadableListOf("biome"))), 'biome');
+        this.appendDummyInput().appendField(new FieldDataListSelector('biome'), 'biome');
     });
 
 Blockly.Extensions.register('entity_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("entity"),
-                javabridge.getReadableListOf("entity"))), 'entity');
+        this.appendDummyInput().appendField(new FieldDataListSelector('entity'), 'entity');
     });
 
 Blockly.Extensions.register('gui_list_provider',
@@ -185,8 +181,7 @@ Blockly.Extensions.register('enhancement_list_provider',
 Blockly.Extensions.register('sound_list_provider',
     function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
-            .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf("sound"))), 'sound');
+            .appendField(new FieldDataListSelector('sound'), 'sound');
     });
 
 Blockly.Extensions.register('particle_list_provider',

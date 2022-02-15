@@ -32,15 +32,12 @@ import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
-public class MCreatorDropTarget implements DropTargetListener {
+record MCreatorDropTarget(MCreator mcreator) implements DropTargetListener {
 
 	private static final Logger LOG = LogManager.getLogger("DND");
 
-	private final MCreator mcreator;
-
-	MCreatorDropTarget(MCreator mcreator) {
+	MCreatorDropTarget {
 		new DropTarget(mcreator, DnDConstants.ACTION_MOVE, this, true, null);
-		this.mcreator = mcreator;
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
@@ -65,8 +62,7 @@ public class MCreatorDropTarget implements DropTargetListener {
 				List<?> transferData = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				if (transferData.size() > 0) {
 					Object transfObj = transferData.get(0);
-					if (transfObj instanceof File) {
-						File file = (File) transfObj;
+					if (transfObj instanceof File file) {
 						if (file.getName().endsWith(".ogg")) {
 							SoundElementDialog.importSound(mcreator, new File[] { file });
 						} else if (file.getName().endsWith(".java")) {
