@@ -60,6 +60,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Generator implements IGenerator, Closeable {
 
@@ -670,6 +671,8 @@ public class Generator implements IGenerator, Closeable {
 					elementsData = new ArrayList<>(listMap.entrySet());
 				else if (listData instanceof Collection<?> collection)
 					elementsData = new ArrayList<>(collection);
+				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
+					elementsData = new ArrayList<>(StreamSupport.stream(iterable.spliterator(), false).toList());
 				if (templates != null) {
 					for (Object template : templates) {
 						String rawname = (String) ((Map<?, ?>) template).get("name");

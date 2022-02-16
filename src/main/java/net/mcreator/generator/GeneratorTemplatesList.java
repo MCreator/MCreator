@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Generator templates list is used for generating several similar templates (called <i>list templates</i>)
+ * A generator templates list is used for generating several similar templates (called <i>list templates</i>)
  * for each item from a list provided by a mod element.
  *
  * @param groupName The name of this group of templates shown in workspace panel
