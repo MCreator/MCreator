@@ -48,7 +48,7 @@ public class ${name}Feature extends OreFeature {
 	<#if data.restrictionBiomes?has_content>
 	Set.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		new ResourceLocation("${restrictionBiome}")<#sep>,
+			new ResourceLocation("${restrictionBiome}")<#sep>,
 		</#list>
 	);
 	<#else>
