@@ -65,7 +65,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		container = PanelUtils.expandHorizontally(this);
 
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
-				L10N.label("elementgui.item.custom_property.name"), name, 3));
+				L10N.t("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
 		parent.add(container);
@@ -108,7 +108,6 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	@Override public void setValidator(Validator validator) {
-		name.setValidator(validator);
 	}
 
 	@Override public Validator getValidator() {

@@ -107,7 +107,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 		add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
-				L10N.label("elementgui.item.custom_states.model"), model, 3));
+				L10N.t("elementgui.item.custom_states.model"), model, 3));
 
 		parent.add(container);
 		entryList.add(this);
@@ -164,7 +164,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	@Override public void setValidator(Validator validator) {
-		texture.setValidator(validator);
 	}
 
 	@Override public Validator getValidator() {

@@ -160,7 +160,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
 				propertyId);
 
-		pe.name.setValidator(new PropertyNameValidator(pe.name, "Property name",
+		pe.setValidator(new PropertyNameValidator(pe.name, "Property name",
 				() -> propertiesList.stream().map(e -> e.name.getText()), builtinPropertyNames,
 				new RegistryNameValidator(pe.name, "Property name")));
 		pe.name.enableRealtimeValidation();
@@ -188,14 +188,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		return se;
 	}
 
-	private void propertyRenamed(JItemPropertiesListEntry property) {
+	private void propertyRenamed(JItemPropertiesListEntry entry) {
 		getValidationResult(false).validateIsErrorFree(); // this highlights all the property names errors
-		statesList.forEach(e -> {
-			int builtin = (int) Arrays.stream(e.state.getText().split(","))
+		statesList.forEach(s -> {
+			int indexBuiltin = (int) Arrays.stream(s.state.getText().split(","))
 					.filter(el -> builtinPropertyNames.contains(el.split("=")[0])).count();
-			e.propertyRenamed(property.nameString, property.name.getText(), propertiesList.indexOf(property) + builtin);
+			int indexCustom = propertiesList.stream()
+					.filter(e -> ("," + s.state.getText()).contains("," + e.nameString + "=")).toList().indexOf(entry);
+			s.propertyRenamed(entry.nameString, entry.name.getText(), indexBuiltin + indexCustom);
 		});
-		property.nameString = property.name.getText();
+		entry.nameString = entry.name.getText();
 	}
 
 	private void editState(JItemStatesListEntry entry) {

@@ -47,6 +47,10 @@ public class PropertyNameValidator implements Validator {
 		this.extraValidator = extraValidator;
 	}
 
+	public Validator getExtraValidator() {
+		return extraValidator;
+	}
+
 	@Override public ValidationResult validate() {
 		if (holder.getText() == null || holder.getText().equals(""))
 			return new ValidationResult(ValidationResultType.ERROR,

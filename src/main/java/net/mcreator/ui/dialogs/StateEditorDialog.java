@@ -37,7 +37,7 @@ public class StateEditorDialog {
 
 	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
 			String help) {
-		String stateString = initialState.equals("") ? "!esc" : initialState;
+		final String stateString = initialState.equals("") ? "!esc" : initialState;
 
 		AtomicReference<String> retVal = new AtomicReference<>(stateString);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
@@ -65,10 +65,10 @@ public class StateEditorDialog {
 			}
 		});
 
-		JPanel stateList = new JPanel(new BorderLayout());
-		stateList.setOpaque(false);
-		stateList.setPreferredSize(new Dimension(270, 340));
-		stateList.add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
+		JPanel stateParts = new JPanel(new BorderLayout());
+		stateParts.setOpaque(false);
+		stateParts.setPreferredSize(new Dimension(270, 340));
+		stateParts.add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -87,7 +87,7 @@ public class StateEditorDialog {
 		cancel.addActionListener(e -> dialog.setVisible(false));
 
 		Component editor = HelpUtils.stackHelpTextAndComponent(IHelpContext.NONE.withEntry(help),
-				L10N.label("dialog.state_editor.header"), stateList, 7);
+				L10N.t("dialog.state_editor.header"), stateParts, 7);
 		dialog.getContentPane().add("Center", PanelUtils.centerAndSouthElement(editor, PanelUtils.join(ok, cancel)));
 
 		dialog.setSize(300, 400);
@@ -211,4 +211,3 @@ public class StateEditorDialog {
 	}
 
 }
-
