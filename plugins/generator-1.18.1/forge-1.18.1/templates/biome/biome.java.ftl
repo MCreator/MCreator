@@ -66,7 +66,6 @@ public class ${name}Biome {
         BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder();
 
 		<#-- TODO: what to do with this?
-
         <#if data.spawnStronghold>
             biomeGenerationSettings.addStructureStart(StructureFeatures.STRONGHOLD);
         </#if>
@@ -146,10 +145,7 @@ public class ${name}Biome {
         <#if data.spawnRuinedPortal != "NONE">
             biomeGenerationSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
         </#if>
-
         -->
-
-        <#--
 
         <#if (data.treesPerChunk > 0)>
         	<#assign ct = data.treeType == data.TREES_CUSTOM>
@@ -172,8 +168,9 @@ public class ${name}Biome {
             	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
             	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
         	);
-        	<#elseif data.vanillaTreeType == "Savanna trees">
-        	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+            <#--
+            <#elseif data.vanillaTreeType == "Savanna trees">
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
                     new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
@@ -182,19 +179,19 @@ public class ${name}Biome {
                     new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                     new TwoLayersFeatureSize(1, 0, 2)))
                     <#if data.hasVines() || data.hasFruits()>
-                    	<@vinesAndFruits/>
+                        <@vinesAndFruits/>
                     <#else>
-                    	.ignoreVines()
+                        .ignoreVines()
                     </#if>
                     <#if data.treeType == data.TREES_CUSTOM>
                     </#if>
-            	.build())
-            	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-        	);
-        	<#elseif data.vanillaTreeType == "Mega pine trees">
-        	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+                .build())
+                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
+            );
+            <#elseif data.vanillaTreeType == "Mega pine trees">
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
@@ -202,15 +199,15 @@ public class ${name}Biome {
                     new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
                     new TwoLayersFeatureSize(1, 1, 2)))
                     <#if data.hasVines() || data.hasFruits()>
-                    	<@vinesAndFruits/>
+                        <@vinesAndFruits/>
                     </#if>
-            	.build())
-            	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-        	);
-        	<#elseif data.vanillaTreeType == "Mega spruce trees">
-        	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+                .build())
+                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
+            );
+            <#elseif data.vanillaTreeType == "Mega spruce trees">
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
                     new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
@@ -219,15 +216,15 @@ public class ${name}Biome {
                     new TwoLayersFeatureSize(1, 1, 2)))
                     .decorators(ImmutableList.of(new AlterGroundDecorator(new SimpleStateProvider(Blocks.PODZOL.defaultBlockState()))))
                     <#if data.hasVines() || data.hasFruits()>
-                    	<@vinesAndFruits/>
+                        <@vinesAndFruits/>
                     </#if>
-            	.build())
-            	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-        	);
-        	<#elseif data.vanillaTreeType == "Birch trees">
-        	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+                .build())
+                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
+            );
+            <#elseif data.vanillaTreeType == "Birch trees">
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
                     new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
@@ -235,17 +232,17 @@ public class ${name}Biome {
                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                     new TwoLayersFeatureSize(1, 0, 1)))
                     <#if data.hasVines() || data.hasFruits()>
-                    	<@vinesAndFruits/>
+                        <@vinesAndFruits/>
                     <#else>
-                    	.ignoreVines()
+                        .ignoreVines()
                     </#if>
-            	.build())
-            	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-        	);
-        	<#else>
-        	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
+                .build())
+                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
+            );
+            <#else>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
                     new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
                     new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
@@ -253,16 +250,16 @@ public class ${name}Biome {
                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                     new TwoLayersFeatureSize(1, 0, 1)))
                     <#if data.hasVines() || data.hasFruits()>
-                    	<@vinesAndFruits/>
+                        <@vinesAndFruits/>
                     <#else>
-                    	.ignoreVines()
+                        .ignoreVines()
                     </#if>
-            	.build())
-            	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-        	);
-        	</#if>
-        </#if>-->
+                .build())
+                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
+            );-->
+            </#if>
+        </#if>
 
         <#if (data.grassPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
