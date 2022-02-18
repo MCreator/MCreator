@@ -41,7 +41,7 @@ public class LineTool extends AbstractModificationTool {
 
 	public LineTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager) {
 		super(L10N.t("dialog.image_maker.tools.types.linetool"),
-				L10N.t("dialog.image_maker.tools.types.linetool_description"), UIRES.get("img_editor.shape"), canvas,
+				L10N.t("dialog.image_maker.tools.types.linetool_description"), UIRES.get("img_editor.line"), canvas,
 				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
