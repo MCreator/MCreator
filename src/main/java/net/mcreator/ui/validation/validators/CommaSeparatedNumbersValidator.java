@@ -22,12 +22,13 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
+import javax.swing.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CommaSeparatedNumbersValidator implements Validator {
 
-	private final VTextField holder;
+	private final JTextField holder;
 
 	public CommaSeparatedNumbersValidator(VTextField holder) {
 		this.holder = holder;

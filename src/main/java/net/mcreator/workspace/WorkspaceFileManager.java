@@ -116,7 +116,7 @@ public class WorkspaceFileManager implements Closeable {
 			// We do an "atomic" write to the FS
 			File outFile = workspaceFile;
 			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock");
-			FileIO.writeStringToFile(workspacestring, tmpFile);
+			FileIO.writeUTF8toFile(workspacestring, tmpFile);
 			try {
 				Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
 			} catch (Exception e) {
@@ -127,7 +127,7 @@ public class WorkspaceFileManager implements Closeable {
 				} catch (IOException e1) {
 					LOG.error(e1.getMessage(), e1);
 					LOG.error("Falling back to normal write (non atomic, without move!)");
-					FileIO.writeStringToFile(workspacestring, outFile);
+					FileIO.writeUTF8toFile(workspacestring, outFile);
 				}
 			}
 
@@ -181,11 +181,11 @@ public class WorkspaceFileManager implements Closeable {
 		void dataSaved();
 	}
 
-	private static class SaveTask implements Runnable {
+	@SuppressWarnings("ClassCanBeRecord") private static class SaveTask implements Runnable {
 
 		private final WorkspaceFileManager fileManager;
 
-		SaveTask(WorkspaceFileManager fileManager) {
+		private SaveTask(WorkspaceFileManager fileManager) {
 			this.fileManager = fileManager;
 		}
 
@@ -196,6 +196,7 @@ public class WorkspaceFileManager implements Closeable {
 			fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
 					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 		}
+
 	}
 
 }
