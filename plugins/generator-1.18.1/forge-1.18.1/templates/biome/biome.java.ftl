@@ -35,6 +35,7 @@ package ${package}.world.biome;
 
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ${name}Biome {
 
@@ -65,7 +66,249 @@ public class ${name}Biome {
 
         BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder();
 
-		<#-- TODO: what to do with this?
+        <#if (data.treesPerChunk > 0)>
+        	<#assign ct = data.treeType == data.TREES_CUSTOM>
+
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacementUtils.register("${modid}:tree_${registryname}",
+                FeatureUtils.register("${modid}:tree_${registryname}", Feature.TREE.configured(new TreeConfiguration.TreeConfigurationBuilder
+        	    <#if data.vanillaTreeType == "Big trees">
+        	        (
+			    	    BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
+			    		new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
+			    		BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
+			    		new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
+			    		new TwoLayersFeatureSize(1, 1, 2)
+                    )
+                    <#if data.hasVines() || data.hasFruits()>
+                        <@vinesAndFruits/>
+                    <#else>
+                        .decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
+                    </#if>
+                <#elseif data.vanillaTreeType == "Savanna trees">
+                    (
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
+                        new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
+                        new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
+                        new TwoLayersFeatureSize(1, 0, 2)
+                    )
+                    <#if data.hasVines() || data.hasFruits()>
+                        <@vinesAndFruits/>
+                    <#else>
+                        .ignoreVines()
+                    </#if>
+                <#elseif data.vanillaTreeType == "Mega pine trees">
+                    (
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
+                        new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
+                        new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
+                        new TwoLayersFeatureSize(1, 1, 2)
+                    )
+                    <#if data.hasVines() || data.hasFruits()>
+                        <@vinesAndFruits/>
+                    </#if>
+                <#elseif data.vanillaTreeType == "Mega spruce trees">
+                    (
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
+                        new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
+                        new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
+                        new TwoLayersFeatureSize(1, 1, 2)
+                    )
+                    .decorators(ImmutableList.of(new AlterGroundDecorator(BlockStateProvider.simple(Blocks.PODZOL.defaultBlockState()))))
+                    <#if data.hasVines() || data.hasFruits()>
+                        <@vinesAndFruits/>
+                    </#if>
+                <#elseif data.vanillaTreeType == "Birch trees">
+                    (
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
+                        new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
+                        new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                        new TwoLayersFeatureSize(1, 0, 1)
+                    )
+                    <#if data.hasVines() || data.hasFruits()>
+                        <@vinesAndFruits/>
+                    <#else>
+                        .ignoreVines()
+                    </#if>
+                <#else>
+                    (
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
+                        new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
+                        BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
+                        new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                        new TwoLayersFeatureSize(1, 0, 1)
+                    )
+                    <#if data.hasVines() || data.hasFruits()>
+                        <@vinesAndFruits/>
+                    <#else>
+                        .ignoreVines()
+                    </#if>
+                </#if>
+            .build())).placed(CountOnEveryLayerPlacement.of(${data.treesPerChunk}))));
+        </#if>
+
+        <#if (data.grassPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                PlacementUtils.register("${modid}:grass_${registryname}", VegetationFeatures.PATCH_GRASS.placed(
+				    NoiseThresholdCountPlacement.of(-0.8D, 5, ${data.grassPerChunk}),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                    BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#if (data.seagrassPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:seagrass_${registryname}", AquaticFeatures.SEAGRASS_SHORT.placed(
+				    AquaticPlacements.seagrassPlacement(${data.seagrassPerChunk})
+            )));
+        </#if>
+
+        <#if (data.flowersPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:flower_${registryname}", VegetationFeatures.FLOWER_DEFAULT.placed(
+				    CountPlacement.of(${data.flowersPerChunk}),
+                    RarityFilter.onAverageOnceEvery(32),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP,
+                    BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#if (data.mushroomsPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:brown_mushroom_${registryname}", VegetationFeatures.PATCH_BROWN_MUSHROOM.placed(
+				    CountPlacement.of(${data.mushroomsPerChunk}),
+				    RarityFilter.onAverageOnceEvery(32),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+			)));
+
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:red_mushroom_${registryname}", VegetationFeatures.PATCH_RED_MUSHROOM.placed(
+				    CountPlacement.of(${data.mushroomsPerChunk}),
+				    RarityFilter.onAverageOnceEvery(32),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+			)));
+        </#if>
+
+        <#if (data.bigMushroomsChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:mushrooms_huge_${registryname}", VegetationFeatures.MUSHROOM_ISLAND_VEGETATION.placed(
+				    CountPlacement.of(${data.bigMushroomsChunk}),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#if (data.reedsPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:patch_sugar_cane_${registryname}", VegetationFeatures.PATCH_SUGAR_CANE.placed(
+				    RarityFilter.onAverageOnceEvery(${data.reedsPerChunk}),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP,
+                    BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#if (data.cactiPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:patch_cactus_${registryname}", VegetationFeatures.PATCH_SUGAR_CANE.placed(
+				    RarityFilter.onAverageOnceEvery(${data.cactiPerChunk}),
+				    InSquarePlacement.spread(),
+				    PlacementUtils.HEIGHTMAP,
+				    BiomeFilter.biome()
+			)));
+        </#if>
+
+        <#if (data.sandPatchesPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:disk_sand_${registryname}", FeatureUtils.register("${modid}:disk_sand_${registryname}",
+                        Feature.DISK.configured(new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
+                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
+                    ).placed(
+				        CountPlacement.of(${data.sandPatchesPerChunk}),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP_TOP_SOLID,
+                        BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#if (data.gravelPatchesPerChunk > 0)>
+            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+			    PlacementUtils.register("${modid}:disk_gravel_${registryname}", FeatureUtils.register("${modid}:disk_gravel_${registryname}",
+			        Feature.DISK.configured(new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
+			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
+			    ).placed(
+			        CountPlacement.of(${data.gravelPatchesPerChunk}),
+			        InSquarePlacement.spread(),
+			        PlacementUtils.HEIGHTMAP_TOP_SOLID,
+			        BiomeFilter.biome()
+            )));
+        </#if>
+
+        <#list data.defaultFeatures as defaultFeature>
+        	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
+        	<#if mfeat != "null">
+            BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
+        	</#if>
+        </#list>
+
+        MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder();
+        <#list data.spawnEntries as spawnEntry>
+            <#if !spawnEntry.entity.getUnmappedValue().contains("CUSTOM:")>
+                <#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
+                <#if entity != "null">
+                mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+		    			new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+                </#if>
+            <#else>
+            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+                    new MobSpawnSettings.SpawnerData(${JavaModName}Entities
+                        .${generator.getRegistryNameForModElement(spawnEntry.entity.getUnmappedValue()?replace("CUSTOM:", ""))?upper_case},
+                        ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+            </#if>
+        </#list>
+
+        return new Biome.BiomeBuilder()
+            .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
+            .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
+            .temperature(${data.temperature}f)
+            .downfall(${data.rainingPossibility}f)
+            .specialEffects(effects)
+            .mobSpawnSettings(mobSpawnInfo.build())
+            .generationSettings(biomeGenerationSettings.build())
+            .build();
+    }
+
+    public static void init() {
+        <#if data.biomeDictionaryTypes?has_content>
+            BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
+            <#list data.biomeDictionaryTypes as biomeDictionaryType>
+                BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
+        	</#list>
+        	);
+        </#if>
+
+        <#-- TODO: this does in fact no longer work. new api / mixin needed
+        Should also include these parameters:
+        ${mappedBlockToBlockStateCode(data.groundBlock)}
+        ${mappedBlockToBlockStateCode(data.undergroundBlock)}
+        ${data.baseHeight}
+        ${data.heightVariation}
+
+        <#if data.spawnBiome>
+            BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
+                new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
+        </#if>
+
         <#if data.spawnStronghold>
             biomeGenerationSettings.addStructureStart(StructureFeatures.STRONGHOLD);
         </#if>
@@ -144,280 +387,6 @@ public class ${name}Biome {
 
         <#if data.spawnRuinedPortal != "NONE">
             biomeGenerationSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
-        </#if>
-        -->
-
-        <#if (data.treesPerChunk > 0)>
-        	<#assign ct = data.treeType == data.TREES_CUSTOM>
-
-        	<#if data.vanillaTreeType == "Big trees">
-        	biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-				register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
-                    new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
-                    new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
-                    new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
-                    new TwoLayersFeatureSize(1, 1, 2)))
-                    <#if data.hasVines() || data.hasFruits()>
-                    	<@vinesAndFruits/>
-                    <#else>
-                    	.decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
-                    </#if>
-            	.build())
-            	.decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-            	.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-        	);
-            <#--
-            <#elseif data.vanillaTreeType == "Savanna trees">
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
-                    new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
-                    new SimpleStateProvider(Blocks.ACACIA_SAPLING.defaultBlockState()),
-                    new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
-                    new TwoLayersFeatureSize(1, 0, 2)))
-                    <#if data.hasVines() || data.hasFruits()>
-                        <@vinesAndFruits/>
-                    <#else>
-                        .ignoreVines()
-                    </#if>
-                    <#if data.treeType == data.TREES_CUSTOM>
-                    </#if>
-                .build())
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-            );
-            <#elseif data.vanillaTreeType == "Mega pine trees">
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
-                    new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
-                    new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
-                    new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
-                    new TwoLayersFeatureSize(1, 1, 2)))
-                    <#if data.hasVines() || data.hasFruits()>
-                        <@vinesAndFruits/>
-                    </#if>
-                .build())
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-            );
-            <#elseif data.vanillaTreeType == "Mega spruce trees">
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
-                    new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
-                    new SimpleStateProvider(Blocks.SPRUCE_SAPLING.defaultBlockState()),
-                    new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
-                    new TwoLayersFeatureSize(1, 1, 2)))
-                    .decorators(ImmutableList.of(new AlterGroundDecorator(new SimpleStateProvider(Blocks.PODZOL.defaultBlockState()))))
-                    <#if data.hasVines() || data.hasFruits()>
-                        <@vinesAndFruits/>
-                    </#if>
-                .build())
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-            );
-            <#elseif data.vanillaTreeType == "Birch trees">
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
-                    new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
-                    new SimpleStateProvider(Blocks.BIRCH_SAPLING.defaultBlockState()),
-                    new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-                    new TwoLayersFeatureSize(1, 0, 1)))
-                    <#if data.hasVines() || data.hasFruits()>
-                        <@vinesAndFruits/>
-                    <#else>
-                        .ignoreVines()
-                    </#if>
-                .build())
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-            );
-            <#else>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                register("trees", Feature.TREE.configured((new TreeConfiguration.TreeConfigurationBuilder(
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
-                    new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
-                    new SimpleStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
-                    new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState()),
-                    new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-                    new TwoLayersFeatureSize(1, 0, 1)))
-                    <#if data.hasVines() || data.hasFruits()>
-                        <@vinesAndFruits/>
-                    <#else>
-                        .ignoreVines()
-                    </#if>
-                .build())
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(${data.treesPerChunk}, 0.1F, 1))))
-            );-->
-            </#if>
-        </#if>
-
-        <#if (data.grassPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                PlacementUtils.register("${modid}_grass", VegetationFeatures.PATCH_GRASS.placed(
-				    NoiseThresholdCountPlacement.of(-0.8D, 5, ${data.grassPerChunk}),
-                    InSquarePlacement.spread(),
-                    PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
-                    BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#if (data.seagrassPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_seagrass", AquaticFeatures.SEAGRASS_SHORT.placed(
-				    AquaticPlacements.seagrassPlacement(${data.seagrassPerChunk})
-            )));
-        </#if>
-
-        <#if (data.flowersPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_flower", VegetationFeatures.FLOWER_DEFAULT.placed(
-				    CountPlacement.of(${data.flowersPerChunk}),
-                    RarityFilter.onAverageOnceEvery(32),
-                    InSquarePlacement.spread(),
-                    PlacementUtils.HEIGHTMAP,
-                    BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#if (data.mushroomsPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_brown_mushroom", VegetationFeatures.PATCH_BROWN_MUSHROOM.placed(
-				    CountPlacement.of(${data.mushroomsPerChunk}),
-				    RarityFilter.onAverageOnceEvery(32),
-				    InSquarePlacement.spread(),
-				    PlacementUtils.HEIGHTMAP,
-				    BiomeFilter.biome()
-			)));
-
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_red_mushroom", VegetationFeatures.PATCH_RED_MUSHROOM.placed(
-				    CountPlacement.of(${data.mushroomsPerChunk}),
-				    RarityFilter.onAverageOnceEvery(32),
-				    InSquarePlacement.spread(),
-				    PlacementUtils.HEIGHTMAP,
-				    BiomeFilter.biome()
-			)));
-        </#if>
-
-        <#if (data.bigMushroomsChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_mushrooms_huge", VegetationFeatures.MUSHROOM_ISLAND_VEGETATION.placed(
-				    CountPlacement.of(${data.bigMushroomsChunk}),
-				    InSquarePlacement.spread(),
-				    PlacementUtils.HEIGHTMAP,
-				    BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#if (data.reedsPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_patch_sugar_cane", VegetationFeatures.PATCH_SUGAR_CANE.placed(
-				    RarityFilter.onAverageOnceEvery(${data.reedsPerChunk}),
-                    InSquarePlacement.spread(),
-                    PlacementUtils.HEIGHTMAP,
-                    BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#if (data.cactiPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_patch_cactus", VegetationFeatures.PATCH_SUGAR_CANE.placed(
-				    RarityFilter.onAverageOnceEvery(${data.cactiPerChunk}),
-				    InSquarePlacement.spread(),
-				    PlacementUtils.HEIGHTMAP,
-				    BiomeFilter.biome()
-			)));
-        </#if>
-
-        <#if (data.sandPatchesPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_disk_sand", FeatureUtils.register("${modid}_disk_sand",
-                        Feature.DISK.configured(new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
-                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-                    ).placed(
-				        CountPlacement.of(${data.sandPatchesPerChunk}),
-                        InSquarePlacement.spread(),
-                        PlacementUtils.HEIGHTMAP_TOP_SOLID,
-                        BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#if (data.gravelPatchesPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}_disk_gravel", FeatureUtils.register("${modid}_disk_gravel",
-			        Feature.DISK.configured(new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
-			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-			    ).placed(
-			        CountPlacement.of(${data.gravelPatchesPerChunk}),
-			        InSquarePlacement.spread(),
-			        PlacementUtils.HEIGHTMAP_TOP_SOLID,
-			        BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#list data.defaultFeatures as defaultFeature>
-        	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
-        	<#if mfeat != "null">
-            BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
-        	</#if>
-        </#list>
-
-        MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder();
-        <#list data.spawnEntries as spawnEntry>
-            <#if !spawnEntry.entity.getUnmappedValue().contains("CUSTOM:")>
-                <#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
-                <#if entity != "null">
-                mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-		    			new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-                </#if>
-            <#else>
-            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-                    new MobSpawnSettings.SpawnerData(${JavaModName}Entities
-                        .${generator.getRegistryNameForModElement(spawnEntry.entity.getUnmappedValue()?replace("CUSTOM:", ""))?upper_case},
-                        ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-            </#if>
-        </#list>
-
-        return new Biome.BiomeBuilder()
-            .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
-            .temperature(${data.temperature}f)
-            .downfall(${data.rainingPossibility}f)
-            .specialEffects(effects)
-            .mobSpawnSettings(mobSpawnInfo.build())
-            .generationSettings(biomeGenerationSettings.build())
-            .build();
-    }
-
-    public static void init() {
-        <#if data.biomeDictionaryTypes?has_content>
-            BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})),
-            <#list data.biomeDictionaryTypes as biomeDictionaryType>
-                BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
-        	</#list>
-        	);
-        </#if>
-
-        <#-- TODO: this does in fact no longer work. new api / mixin needed
-        Should also include these parameters:
-        ${mappedBlockToBlockStateCode(data.groundBlock)}
-        ${mappedBlockToBlockStateCode(data.undergroundBlock)}
-        ${data.baseHeight}
-        ${data.heightVariation}
-
-        <#if data.spawnBiome>
-            BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
-                new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
         </#if>
         -->
     }
