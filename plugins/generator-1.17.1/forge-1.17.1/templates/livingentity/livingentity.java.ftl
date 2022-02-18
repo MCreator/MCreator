@@ -295,7 +295,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (source.getDirectEntity() instanceof ThrownPotion)
+			if (source.getDirectEntity() instanceof ThrownPotion || source.getDirectEntity() instanceof AreaEffectCloud)
 				return false;
 		</#if>
 		<#if data.immuneToFallDamage>

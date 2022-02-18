@@ -407,7 +407,7 @@ import net.minecraft.block.material.Material;
 					return false;
 			</#if>
 			<#if data.immuneToPotions>
-				if (source.getImmediateSource() instanceof PotionEntity)
+				if (source.getImmediateSource() instanceof PotionEntity || source.getImmediateSource() instanceof AreaEffectCloudEntity)
 					return false;
 			</#if>
 			<#if data.immuneToFallDamage>

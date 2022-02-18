@@ -144,7 +144,7 @@ public class TextureHolder extends VButton {
 	}
 
 	@Override public void setIcon(Icon icon) {
-		if (!xFlip) {
+		if (!xFlip || icon == null) {
 			super.setIcon(icon);
 		} else {
 			super.setIcon(new Icon() {
