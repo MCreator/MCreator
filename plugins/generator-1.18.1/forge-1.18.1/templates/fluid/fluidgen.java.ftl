@@ -34,6 +34,7 @@
 
 package ${package}.world.features.lakes;
 
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ${name}Feature extends LakeFeature {
@@ -43,7 +44,8 @@ public class ${name}Feature extends LakeFeature {
 	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of(
 			RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
 			InSquarePlacement.spread(),
-			PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT
+			PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
+			EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), 32)
 	));
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
@@ -78,7 +80,6 @@ public class ${name}Feature extends LakeFeature {
 
 	@Override public boolean place(FeaturePlaceContext<LakeFeature.Configuration> context) {
 		WorldGenLevel world = context.level();
-
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
 
