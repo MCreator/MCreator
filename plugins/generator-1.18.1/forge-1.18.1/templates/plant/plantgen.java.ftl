@@ -32,16 +32,43 @@
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 
-package ${package}.world.features.ores;
+package ${package}.world.features.plants;
 
-public class ${name}Feature extends OreFeature {
+import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+
+public class ${name}Feature extends RandomPatchFeature {
 
 	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
 	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
-				.configured(new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), ${data.frequencyOnChunk}));
+		.configured(
+			<#if data.plantType == "growapable">
+				FeatureUtils.simpleRandomPatchConfiguration(${data.patchSize}, Feature.BLOCK_COLUMN.configured(BlockColumnConfiguration.simple(BiasedToBottomInt.of(2, 4),
+					BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState())))
+						.placed(
+							BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE,
+							BlockPredicate.wouldSurvive(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), BlockPos.ZERO)))
+						)
+				)
+			<#else>
+				FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK.configured(
+						new SimpleBlockConfiguration(BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState()))
+				), List.of(), ${data.patchSize})
+			</#if>
+		);
 	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of(
-				CountPlacement.of(${data.frequencyPerChunks}),
-				HeightRangePlacement.uniform(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight}))
+		<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Flower") ||
+			 (data.plantType == "double" && data.doublePlantGenerationType == "Flower") ||
+			  data.plantType == "growapable">
+		RarityFilter.onAverageOnceEvery(32),
+		</#if>
+		InSquarePlacement.spread(),
+		PlacementUtils.HEIGHTMAP<#if
+			(data.plantType == "normal" && data.staticPlantGenerationType == "Grass") ||
+			(data.plantType == "double" && data.doublePlantGenerationType == "Grass") ||
+			 data.plantType == "growapable">_WORLD_SURFACE</#if>,
+		CountPlacement.of(${data.frequencyOnChunks})
 	));
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
@@ -71,10 +98,10 @@ public class ${name}Feature extends OreFeature {
 	);
 
 	public ${name}Feature() {
-		super(OreConfiguration.CODEC);
+		super(RandomPatchConfiguration.CODEC);
 	}
 
-	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
+	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
 		WorldGenLevel world = context.level();
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
@@ -89,31 +116,6 @@ public class ${name}Feature extends OreFeature {
 
 		return super.place(context);
 	}
-
-	private static class ${name}FeatureRuleTest extends RuleTest {
-
-		static final ${name}FeatureRuleTest INSTANCE = new ${name}FeatureRuleTest();
-		static final com.mojang.serialization.Codec<${name}FeatureRuleTest> codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-
-		static final RuleTestType<${name}FeatureRuleTest> CUSTOM_MATCH = Registry.register(Registry.RULE_TEST,
-				new ResourceLocation("${modid}:${registryname}_match"), () -> codec);
-
-		private final List<Block> base_blocks = List.of(
-			<#list data.blocksToReplace as replacementBlock>
-				${mappedBlockToBlock(replacementBlock)}<#sep>,
-			</#list>
-		);
-
-		public boolean test(BlockState blockAt, Random random) {
-			return base_blocks.contains(blockAt.getBlock());
-		}
-
-		protected RuleTestType<?> getType() {
-			return CUSTOM_MATCH;
-		}
-
-	}
-
 }
 
 <#-- @formatter:on -->

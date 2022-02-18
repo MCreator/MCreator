@@ -335,7 +335,8 @@ public class WorkspaceDialogs {
 			selectGenerator.addActionListener(e -> {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
-						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter, workspace == null);
+						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
+						workspace == null);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});
@@ -537,11 +538,11 @@ public class WorkspaceDialogs {
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
 				if (!workspace.getWorkspaceSettings().requiredMods.isEmpty())
-					requiredMods.setText(String.join(", ", workspace.getWorkspaceSettings().requiredMods).trim());
+					requiredMods.setText(String.join(",", workspace.getWorkspaceSettings().requiredMods).trim());
 				if (!workspace.getWorkspaceSettings().dependencies.isEmpty())
-					dependencies.setText(String.join(", ", workspace.getWorkspaceSettings().dependencies).trim());
+					dependencies.setText(String.join(",", workspace.getWorkspaceSettings().dependencies).trim());
 				if (!workspace.getWorkspaceSettings().dependants.isEmpty())
-					dependants.setText(String.join(", ", workspace.getWorkspaceSettings().dependants).trim());
+					dependants.setText(String.join(",", workspace.getWorkspaceSettings().dependants).trim());
 
 				for (String mcrdep : workspace.getWorkspaceSettings().getMCreatorDependenciesRaw()) {
 					JCheckBox box = apis.get(mcrdep);
@@ -577,13 +578,14 @@ public class WorkspaceDialogs {
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 
 			retVal.setRequiredMods(
-					Arrays.stream(requiredMods.getText().split(",")).filter(text -> !text.trim().equals(""))
+					Arrays.stream(requiredMods.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
 							.collect(Collectors.toSet()));
 			retVal.setDependencies(
-					Arrays.stream(dependencies.getText().split(",")).filter(text -> !text.trim().equals(""))
+					Arrays.stream(dependencies.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
 							.collect(Collectors.toSet()));
-			retVal.setDependants(Arrays.stream(dependants.getText().split(",")).filter(text -> !text.trim().equals(""))
-					.collect(Collectors.toSet()));
+			retVal.setDependants(
+					Arrays.stream(dependants.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
+							.collect(Collectors.toSet()));
 
 			Set<String> mcreatordeps = new HashSet<>();
 			for (JCheckBox box : apis.values()) {
