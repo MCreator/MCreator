@@ -62,8 +62,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		</#if>
 	}
 
-	@Override public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	@Override public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 
 		if (!this.trySaveLootTable(compound)) {
 			ContainerHelper.saveAllItems(compound, this.stacks);
@@ -76,8 +76,6 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		<#if data.isFluidTank>
 		compound.put("fluidTank", fluidTank.writeToNBT(new CompoundTag()));
 		</#if>
-
-		return compound;
 	}
 
 	@Override public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -85,7 +83,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public CompoundTag getUpdateTag() {
-		return this.save(new CompoundTag());
+		return this.saveWithFullMetadata();
 	}
 
 	@Override public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
