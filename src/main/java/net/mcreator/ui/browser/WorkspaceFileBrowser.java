@@ -300,8 +300,8 @@ public class WorkspaceFileBrowser extends JPanel {
 	 * If a file is selected, opens this file in built-in code editor if its type is supported, otherwise calls the
 	 * program assigned to that file type.
 	 *
-	 * @param forceExpansion If selected node represents a directory and is expanded, specifies whether to keep it open
-	 *                       or let it collapse.
+	 * @param forceExpansion If selected node represents a directory and is expanded, value of <i>{@code true}</i>
+	 *                       will keep it open and value of <i>{@code false}</i> will let it collapse.
 	 */
 	public void openSelectedFile(boolean forceExpansion) {
 		if (tree.getLastSelectedPathComponent() != null) {
