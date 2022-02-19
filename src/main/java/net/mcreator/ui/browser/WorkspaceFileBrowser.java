@@ -57,8 +57,8 @@ import java.util.Objects;
 import java.util.Vector;
 
 /**
- * Workspace file browser is used by a workspace window to view source files of the project contained in the workspace
- * and also observe source code of external libraries used by that project.
+ * Workspace file browser is used in a workspace window by the user to view source files of the project contained in
+ * the workspace and also observe source code of external libraries used by that project.
  */
 public class WorkspaceFileBrowser extends JPanel {
 
