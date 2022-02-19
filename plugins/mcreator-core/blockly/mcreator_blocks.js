@@ -86,7 +86,7 @@ Blockly.Blocks['condition_input'] = {
         this.appendValueInput('CONDITION').setCheck('Boolean').setAlign(Blockly.ALIGN_RIGHT)
             .appendField(javabridge.t("blockly.block.condition_input"));
         this.setStyle('hat_blocks');
-        this.setColour(Blockly.Constants.Logic.HUE);
+        this.setColour(210);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setTooltip(javabridge.t("blockly.block.condition_input.tooltip"));
@@ -124,7 +124,7 @@ Blockly.Blocks['text_contains'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'Boolean');
-        this.setColour(Blockly.Constants.Logic.HUE);
+        this.setColour(210);
     }
 };
 
@@ -140,7 +140,7 @@ Blockly.Blocks['text_substring'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(Blockly.Constants.Text.HUE);
+        this.setColour(160);
     }
 };
 
@@ -156,7 +156,7 @@ Blockly.Blocks['text_replace'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(Blockly.Constants.Text.HUE);
+        this.setColour(160);
     }
 };
 
@@ -170,7 +170,7 @@ Blockly.Blocks['text_format_number'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(Blockly.Constants.Text.HUE);
+        this.setColour(160);
     }
 };
 
@@ -182,7 +182,7 @@ Blockly.Blocks['time_to_formatted_string'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(Blockly.Constants.Text.HUE);
+        this.setColour(160);
     }
 };
 

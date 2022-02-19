@@ -38,16 +38,4 @@
 
 package net.mcreator.blockly.data;
 
-public class NamedInput implements IInput {
-
-	private final String name;
-
-	public NamedInput(String name) {
-		this.name = name;
-	}
-
-	@Override public String getName() {
-		return this.name;
-	}
-
-}
+public record NamedInput(String name) implements IInput {}

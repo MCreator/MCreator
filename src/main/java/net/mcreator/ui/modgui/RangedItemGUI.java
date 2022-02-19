@@ -110,7 +110,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private final Model adefault = new Model.BuiltInModel("Default");
-	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>(new Model[] { adefault });
 	private final VComboBox<String> customBulletModelTexture = new SearchableComboBox<>();
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -536,7 +536,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		return rangedItem;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-gun");
 	}
 

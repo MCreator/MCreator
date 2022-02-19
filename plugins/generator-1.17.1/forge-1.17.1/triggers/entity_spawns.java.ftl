@@ -1,14 +1,13 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntitySpawned(EntityJoinWorldEvent event) {
-		Entity entity=event.getEntity();
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "entity.getX()",
-			"y": "entity.getY()",
-			"z": "entity.getZ()",
+			"x": "event.getEntity().getX()",
+			"y": "event.getEntity().getY()",
+			"z": "event.getEntity().getZ()",
 			"world": "event.getWorld()",
-			"entity": "entity",
+			"entity": "event.getEntity()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

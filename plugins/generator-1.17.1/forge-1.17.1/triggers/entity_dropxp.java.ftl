@@ -2,17 +2,16 @@
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onLivingDropXp(LivingExperienceDropEvent event) {
 		if (event != null && event.getEntity() != null) {
-			Entity entity = event.getEntity();
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-		    	"x": "entity.getX()",
-		    	"y": "entity.getY()",
-		    	"z": "entity.getZ()",
+				"x": "event.getEntity().getX()",
+				"y": "event.getEntity().getY()",
+				"z": "event.getEntity().getZ()",
 				"droppedexperience": "event.getDroppedExperience()",
 				"originalexperience": "event.getOriginalExperience()",
 				"sourceentity": "event.getAttackingPlayer()",
-				"world": "entity.level",
-				"entity": "entity",
+				"world": "event.getEntity().level",
+				"entity": "event.getEntity()",
 				"event": "event"
 				}/>
 			</#compress></#assign>

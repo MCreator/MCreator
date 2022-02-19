@@ -106,7 +106,7 @@ public class SyncRemoteToLocalAction extends VCSAction {
 				}
 
 				// we can pull from remote only if custom merge handler was not required and no user interaction was required
-				if (!syncResult.wasCustomMergeHandlerRequired() && !syncResult.wasUserActionRequired()) {
+				if (!syncResult.requiredCustomMergeHandler() && !syncResult.requiredUserAction()) {
 					Workspace localWorkspace = actionRegistry.getMCreator().getWorkspace();
 					WorkspaceSettings preMergeSettings = GSONClone.deepClone(localWorkspace.getWorkspaceSettings(),
 							WorkspaceSettings.class);

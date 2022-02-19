@@ -232,8 +232,8 @@ public class ImportFormat {
 					// if class with multiple packages is not included in one of the default packages, we do not import it
 					if (!_import.startsWith("net.minecraft") && !_import.startsWith("java.util") && !_import.startsWith(
 							"java.io") && !_import.startsWith("org.lwjgl") && !_import.startsWith("java.lang")
-							&& !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc") &&
-							!_import.startsWith("com.google.gson")) {
+							&& !_import.startsWith("org.bukkit") && !_import.startsWith("net.fabricmc")
+							&& !_import.startsWith("com.google.gson")) {
 						importsToRemove.add(_import);
 						continue outer;
 					}
