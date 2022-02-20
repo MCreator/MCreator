@@ -44,7 +44,7 @@ public abstract class JEntriesList extends JPanel {
 		this.gui = gui;
 	}
 
-	public final void addEntryCreationListener(Consumer<JComponent> entryListener) {
+	public final void addEntryRegisterListener(Consumer<JComponent> entryListener) {
 		entryListeners.add(entryListener);
 	}
 

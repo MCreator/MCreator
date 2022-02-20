@@ -37,15 +37,14 @@ public interface ModElementChangedListener
 		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
 
 	default void registerUI(JComponent container, boolean addIdleListeners) {
-		Component[] components = container.getComponents();
-		for (Component component : components) {
+		for (Component component : container.getComponents()) {
 			if (component instanceof MCItemHolder itemHolder) {
 				itemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
 				registerUI(entriesList, addIdleListeners);
-				entriesList.addEntryCreationListener(c -> {
+				entriesList.addEntryRegisterListener(c -> {
 					registerUI(c, addIdleListeners);
 					modElementChanged();
 				});
