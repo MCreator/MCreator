@@ -200,32 +200,50 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			</#if>
 		}
 
+		@Override protected void arrowHit(LivingEntity entity) {
+			super.arrowHit(entity);
+			entity.setArrowCountInEntity(entity.getArrowCountInEntity() - 1); <#-- #53957 -->
+		}
+
 		<#if hasProcedure(data.onBulletHitsPlayer)>
 		@Override public void onCollideWithPlayer(PlayerEntity entity) {
 			super.onCollideWithPlayer(entity);
 			Entity sourceentity = this.func_234616_v_();
+			Entity imediatesourceentity = this;
 			double x = this.getPosX();
 			double y = this.getPosY();
 			double z = this.getPosZ();
 			World world = this.world;
-			Entity imediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletHitsPlayer/>
 		}
         </#if>
 
-		@Override protected void arrowHit(LivingEntity entity) {
-			super.arrowHit(entity);
-			entity.setArrowCountInEntity(entity.getArrowCountInEntity() - 1); <#-- #53957 -->
-			<#if hasProcedure(data.onBulletHitsEntity)>
-				Entity sourceentity = this.func_234616_v_();
-				double x = this.getPosX();
-				double y = this.getPosY();
-				double z = this.getPosZ();
-				World world = this.world;
-				Entity imediatesourceentity = this;
-				<@procedureOBJToCode data.onBulletHitsEntity/>
-			</#if>
+		<#if hasProcedure(data.onBulletHitsEntity)>
+		@Override public void onEntityHit(EntityRayTraceResult entityRayTraceResult) {
+			super.onEntityHit(entityRayTraceResult);
+			Entity entity = entityRayTraceResult.getEntity();
+			Entity sourceentity = this.func_234616_v_();
+			Entity imediatesourceentity = this;
+			double x = this.getPosX();
+			double y = this.getPosY();
+			double z = this.getPosZ();
+			World world = this.world;
+			<@procedureOBJToCode data.onBulletHitsEntity/>
 		}
+		</#if>
+
+		<#if hasProcedure(data.onBulletHitsBlock)>
+		@Override public void func_230299_a_(BlockRayTraceResult blockRayTraceResult) {
+			super.func_230299_a_(blockRayTraceResult);
+			double x = blockRayTraceResult.getPos().getX();
+			double y = blockRayTraceResult.getPos().getY();
+			double z = blockRayTraceResult.getPos().getZ();
+			World world = this.world;
+			Entity entity = this.func_234616_v_();
+			Entity imediatesourceentity = this;
+			<@procedureOBJToCode data.onBulletHitsBlock/>
+		}
+		</#if>
 
 		@Override public void tick() {
 			super.tick();
