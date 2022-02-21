@@ -172,6 +172,7 @@ public class ActionRegistry {
 	public final BasicAction imageEditorSave;
 	public final BasicAction imageEditorSaveAs;
 	public final BasicAction imageEditorPencil;
+	public final BasicAction imageEditorLine;
 	public final BasicAction imageEditorShape;
 	public final BasicAction imageEditorEraser;
 	public final BasicAction imageEditorStamp;
@@ -312,6 +313,7 @@ public class ActionRegistry {
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
 		this.imageEditorPencil = new PencilToolAction(this);
+		this.imageEditorLine = new LineToolAction(this);
 		this.imageEditorShape = new ShapeToolAction(this);
 		this.imageEditorEraser = new EraserToolAction(this);
 		this.imageEditorStamp = new StampToolAction(this);
