@@ -20,6 +20,7 @@
 package net.mcreator.ui.browser;
 
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -41,23 +42,23 @@ class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 
 			if (browser.mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 					== GeneratorFlavor.BaseLanguage.JAVA) {
-				if (file.isDirectory() && file.getAbsolutePath()
-						.startsWith(browser.mcreator.getGenerator().getSourceRoot().getAbsolutePath())) {
+				if (file.isDirectory() && FileIO.isFileSomewhereInDirectory(file,
+						browser.mcreator.getGenerator().getSourceRoot())) {
 					fileActionsAllowed = true;
 					createMenu.add(browser.mcreator.actionRegistry.newClass);
 					createMenu.add(browser.mcreator.actionRegistry.newPackage);
-				} else if (file.isDirectory() && file.getAbsolutePath()
-						.startsWith(browser.mcreator.getGenerator().getResourceRoot().getAbsolutePath())) {
+				} else if (file.isDirectory() && FileIO.isFileSomewhereInDirectory(file,
+						browser.mcreator.getGenerator().getResourceRoot())) {
 					fileActionsAllowed = true;
 					createMenu.add(browser.mcreator.actionRegistry.newJson);
 					createMenu.add(browser.mcreator.actionRegistry.newImage);
 					createMenu.add(browser.mcreator.actionRegistry.newFolder);
 				}
 			} else {
-				if (file.isDirectory() && (file.getAbsolutePath()
-						.startsWith(browser.mcreator.getGenerator().getSourceRoot().getAbsolutePath())
-						|| file.getAbsolutePath()
-						.startsWith(browser.mcreator.getGenerator().getResourceRoot().getAbsolutePath()))) {
+				if (file.isDirectory() && (
+						FileIO.isFileSomewhereInDirectory(file, browser.mcreator.getGenerator().getSourceRoot())
+								|| FileIO.isFileSomewhereInDirectory(file,
+								browser.mcreator.getGenerator().getResourceRoot()))) {
 					fileActionsAllowed = true;
 					createMenu.add(browser.mcreator.actionRegistry.newJson);
 					createMenu.add(browser.mcreator.actionRegistry.newImage);

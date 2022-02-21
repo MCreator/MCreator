@@ -30,6 +30,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -138,8 +139,6 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
-		add("Center", jsp);
-
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf1.setBorder(BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter()));
 		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -170,7 +169,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(0, 5, 6, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -182,8 +181,16 @@ public class WorkspaceFileBrowser extends JPanel {
 				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
 				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
 
+		JLabel sil = new JLabel(UIRES.get("16px.search"));
+		sil.setPreferredSize(new Dimension(sil.getIcon().getIconWidth(), sil.getIcon().getIconHeight()));
+
+		JComponent search = PanelUtils.westAndCenterElement(sil, bar);
+		search.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		search.setOpaque(true);
+		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
+
 		add("North", topBar);
-		add("South", bar);
+		add("Center", PanelUtils.northAndCenterElement(search, jsp));
 
 		tree.addMouseListener(new MouseAdapter() {
 
