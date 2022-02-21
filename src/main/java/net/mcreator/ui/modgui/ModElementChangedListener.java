@@ -36,6 +36,7 @@ import java.awt.event.*;
 
 /**
  * Gets triggered whenever a change to a mod element is detected inside {@link ModElementGUI}
+ *
  * @see ModElementGUI#elementUpdateListener
  * @see ModElementCodeViewer#codeChangedListener
  */
@@ -43,15 +44,16 @@ public interface ModElementChangedListener
 		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
 
 	/**
-	 * The main listener method, triggered when an event occurs on a registered component
+	 * The main listener method, triggered when an event occurs on a registered container
 	 */
 	void modElementChanged();
 
 	/**
 	 * Registers the given UI component to trigger this listener when a change is detected on it
 	 *
-	 * @param container The UI element to register
-	 * @param addIdleListeners Specifies whether to track mouse/keyboard events for this container
+	 * @param container        The UI element to register
+	 * @param addIdleListeners Specifies whether to track mouse clicks or keyboard events on empty panels
+	 *                         for this container
 	 */
 	default void registerUI(JComponent container, boolean addIdleListeners) {
 		for (Component component : container.getComponents()) {
