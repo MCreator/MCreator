@@ -93,7 +93,7 @@ import java.util.stream.Collectors;
 				"bucket"))
 			return false;
 
-		return this.getRecipeElementType(elementName) == RecipeType.BLOCK;
+		return this.isRecipeTypeBlockOrBucket(elementName);
 	}
 
 	public boolean isRecipeTypeBlockOrBucket(String elementName) {
