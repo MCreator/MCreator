@@ -63,19 +63,16 @@ public class LineTool extends AbstractModificationTool {
 	@Override public boolean process(ZoomedMouseEvent e) {
 		layer.resetOverlay();
 		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
-		if (layer.in(e.getX(), e.getY())) {
-			Graphics2D g = layer.getOverlay().createGraphics();
-			g.setColor(colorSelector.getForegroundColor());
-			if (aliasing.isSelected())
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			if (firstPoint == null)
-				firstPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
-			g.setStroke(new BasicStroke(size));
-			g.drawLine(firstPoint.x, firstPoint.y, e.getX() - layer.getX(), e.getY() - layer.getY());
-			g.dispose();
-			canvas.getCanvasRenderer().repaint();
-			return true;
-		}
-		return false;
+		Graphics2D g = layer.getOverlay().createGraphics();
+		g.setColor(colorSelector.getForegroundColor());
+		if (aliasing.isSelected())
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (firstPoint == null)
+			firstPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
+		g.setStroke(new BasicStroke(size));
+		g.drawLine(firstPoint.x, firstPoint.y, e.getX() - layer.getX(), e.getY() - layer.getY());
+		g.dispose();
+		canvas.getCanvasRenderer().repaint();
+		return true;
 	}
 }
