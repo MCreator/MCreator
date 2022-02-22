@@ -32,12 +32,12 @@ import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
-import net.mcreator.ui.component.util.WrapLayout;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
@@ -52,17 +52,23 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
+/**
+ * Workspace file browser is used in a workspace window by the user to view source files of the project contained in
+ * the workspace and also observe source code of external libraries used by that project.
+ */
 public class WorkspaceFileBrowser extends JPanel {
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
 	FilterTreeNode sourceCode = null;
+	FilterTreeNode currRes = null;
 
-	public JTree tree = new JTree(mods) {
+	public final JTree tree = new JTree(mods) {
 		@Override public void paintComponent(Graphics g) {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
@@ -91,6 +97,11 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	final MCreator mcreator;
 
+	/**
+	 * The sole constructor.
+	 *
+	 * @param mcreator Workspace window that is the future owner of this browser instance.
+	 */
 	public WorkspaceFileBrowser(MCreator mcreator) {
 		setLayout(new BorderLayout(0, 0));
 		this.mcreator = mcreator;
@@ -128,8 +139,6 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
-		add("Center", jsp);
-
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf1.setBorder(BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter()));
 		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -157,32 +166,10 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 		});
 
-		JPanel tools = new JPanel(new WrapLayout(FlowLayout.LEFT, 0, 4));
-
-		JButton create = L10N.button("workspace_file_browser.add");
-		create.setIcon(UIRES.get("16px.add.gif"));
-		create.setContentAreaFilled(false);
-		create.setOpaque(false);
-		create.setForeground(Color.white);
-		ComponentUtils.deriveFont(create, 11);
-		create.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 7));
-		tools.add(create);
-
-		JButton delete = new JButton(UIRES.get("16px.delete.gif"));
-		delete.setContentAreaFilled(false);
-		delete.setOpaque(false);
-		delete.setForeground(Color.white);
-		delete.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 7));
-		tools.add(delete);
-
-		tools.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-				BorderFactory.createEmptyBorder(0, 5, 0, 0)));
-
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(0, 5, 6, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -194,32 +181,16 @@ public class WorkspaceFileBrowser extends JPanel {
 				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
 				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
 
-		add("North", PanelUtils.northAndCenterElement(topBar, tools));
-		add("South", bar);
+		JLabel sil = new JLabel(UIRES.get("16px.search"));
+		sil.setPreferredSize(new Dimension(sil.getIcon().getIconWidth(), sil.getIcon().getIconHeight()));
 
-		create.addActionListener(e -> new AddFileDropdown(this).show(create, 0, 20));
+		JComponent search = PanelUtils.westAndCenterElement(sil, bar);
+		search.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		search.setOpaque(true);
+		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
 
-		delete.addActionListener(e -> {
-			FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
-			if (selected != null) {
-				if (selected.getUserObject() instanceof File) {
-					int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file"),
-							L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if (n == 0) {
-						File file = (File) selected.getUserObject();
-						if (file.isFile())
-							file.delete();
-						else
-							FileIO.deleteDir(file);
-						mods.removeNodeFromParent(selected);
-					}
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-				}
-			} else {
-				Toolkit.getDefaultToolkit().beep();
-			}
-		});
+		add("North", topBar);
+		add("Center", PanelUtils.northAndCenterElement(search, jsp));
 
 		tree.addMouseListener(new MouseAdapter() {
 
@@ -234,12 +205,11 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2) {
-					if (tree.getLastSelectedPathComponent() != null) {
-						Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
-						FileOpener.openFile(mcreator, selection);
-					}
-				}
+				if (mouseEvent.getClickCount() == 2)
+					openSelectedFile(false);
+				else if (mouseEvent.getButton() == MouseEvent.BUTTON3 && tree.getLastSelectedPathComponent() != null)
+					new WorkspaceFileBrowserContextMenu(WorkspaceFileBrowser.this).show(tree, mouseEvent.getX(),
+							mouseEvent.getY());
 			}
 
 		});
@@ -247,6 +217,9 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	private boolean initial = true;
 
+	/**
+	 * Reloads all the project files.
+	 */
 	public void reloadTree() {
 		if (jtf1.getText().isEmpty()) {
 			List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
@@ -258,7 +231,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
-			FilterTreeNode currRes = new FilterTreeNode("Resources (Gradle)");
+			currRes = new FilterTreeNode("Resources (Gradle)");
 			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
@@ -310,7 +283,7 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 					== GeneratorFlavor.BaseLanguage.JAVA)
-				loadExtSoruces(root);
+				loadExtSources(root);
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
 					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
@@ -330,7 +303,91 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
-	private void loadExtSoruces(FilterTreeNode node) {
+	/**
+	 * If a file is selected, opens this file in built-in code editor if its type is supported, otherwise calls the
+	 * program assigned to that file type.
+	 *
+	 * @param forceExpansion If selected node represents a directory and is expanded, value of <i>{@code true}</i>
+	 *                       will keep it open and value of <i>{@code false}</i> will let it collapse.
+	 */
+	public void openSelectedFile(boolean forceExpansion) {
+		if (tree.getLastSelectedPathComponent() != null) {
+			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selection.getUserObject() instanceof File selFile) {
+				if (selFile.isDirectory() && forceExpansion)
+					tree.expandPath(tree.getSelectionPath());
+				else
+					FileOpener.openFile(mcreator, selFile);
+			} else if (!selection.isLeaf() && forceExpansion) {
+				tree.expandPath(tree.getSelectionPath());
+			} else {
+				FileOpener.openFile(mcreator, selection.getUserObject());
+			}
+		}
+	}
+
+	/**
+	 * If a file is selected, opens this file using the program assigned to that file type.
+	 */
+	public void openSelectedFileInDesktop() {
+		if (tree.getLastSelectedPathComponent() != null) {
+			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selection.getUserObject() instanceof File selectedFile) {
+				if (Files.isRegularFile(selectedFile.toPath()) || Files.isDirectory(selectedFile.toPath()))
+					DesktopUtils.openSafe(selectedFile);
+				else
+					Toolkit.getDefaultToolkit().beep();
+			} else if (selection.getUserObject() instanceof String selectedObject) {
+				if (selectedObject.equals("Source (Gradle)"))
+					DesktopUtils.openSafe(mcreator.getGenerator().getSourceRoot());
+				else if (selectedObject.equals("Resources (Gradle)"))
+					DesktopUtils.openSafe(mcreator.getGenerator().getResourceRoot());
+				else
+					Toolkit.getDefaultToolkit().beep();
+			} else {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		}
+	}
+
+	/**
+	 * If a file is selected, opens that file's parent folder via OS native file explorer and highlights the file.
+	 */
+	public void showSelectedFileInDesktop() {
+		if (tree.getLastSelectedPathComponent() != null) {
+			FilterTreeNode selection = (FilterTreeNode) tree.getLastSelectedPathComponent();
+			if (selection.getUserObject() instanceof File sel)
+				DesktopUtils.openSafe(sel, true);
+			else
+				Toolkit.getDefaultToolkit().beep();
+		}
+	}
+
+	/**
+	 * If a file is selected, attempts to remove it from the file system.
+	 */
+	public void deleteSelectedFile() {
+		FilterTreeNode selected = (FilterTreeNode) tree.getLastSelectedPathComponent();
+		if (selected != null && selected != sourceCode && selected != currRes) {
+			if (selected.getUserObject() instanceof File file) {
+				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("workspace_file_browser.remove_file.message"),
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (n == 0) {
+					if (file.isFile())
+						file.delete();
+					else
+						FileIO.deleteDir(file);
+					mods.removeNodeFromParent(selected);
+				}
+			} else {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		} else if (selected == sourceCode || selected == currRes) {
+			Toolkit.getDefaultToolkit().beep();
+		}
+	}
+
+	private void loadExtSources(FilterTreeNode node) {
 		FilterTreeNode extDeps = new FilterTreeNode("External libraries");
 
 		if (mcreator.getGenerator().getProjectJarManager() != null) {

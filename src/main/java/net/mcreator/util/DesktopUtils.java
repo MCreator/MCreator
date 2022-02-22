@@ -22,6 +22,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -45,10 +46,14 @@ public class DesktopUtils {
 	}
 
 	public static void openSafe(File file) {
+		openSafe(file, false);
+	}
+
+	public static void openSafe(File file, boolean selectOnly) {
 		try {
 			new Thread(() -> {
 				try {
-					open(file);
+					open(file, selectOnly);
 				} catch (Exception ignored) {
 				}
 			}).start();
@@ -70,8 +75,8 @@ public class DesktopUtils {
 		return false;
 	}
 
-	public static boolean open(File file) {
-		if (openDESKTOP(file)) {
+	private static boolean open(File file, boolean selectOnly) {
+		if (openDESKTOP(file, selectOnly)) {
 			return true;
 		}
 
@@ -84,7 +89,7 @@ public class DesktopUtils {
 		return false;
 	}
 
-	public static boolean edit(File file) {
+	private static boolean edit(File file) {
 		if (editDESKTOP(file)) {
 			return true;
 		}
@@ -123,35 +128,30 @@ public class DesktopUtils {
 			}
 		}
 
-		if (SystemUtils.IS_OS_MAC) {
-			if (runCommand("open", "%s", what)) {
+		if (SystemUtils.IS_OS_MAC)
+			if (runCommand("open", "%s", what))
 				return true;
-			}
-		}
 
-		if (SystemUtils.IS_OS_WINDOWS) {
-			if (runCommand("explorer", "%s", what)) {
-				return true;
-			}
-		}
+		if (SystemUtils.IS_OS_WINDOWS)
+			return runCommand("explorer", "%s", what);
 
 		return false;
 	}
 
 	private static boolean browseDESKTOP(URI uri) {
 		try {
-			if (!java.awt.Desktop.isDesktopSupported()) {
+			if (!Desktop.isDesktopSupported()) {
 				LOG.debug("Platform is not supported.");
 				return false;
 			}
 
-			if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE)) {
+			if (!Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 				LOG.debug("BROWSE is not supported.");
 				return false;
 			}
 
 			LOG.info("Trying to use Desktop.getDesktop().browse() with " + uri.toString());
-			java.awt.Desktop.getDesktop().browse(uri);
+			Desktop.getDesktop().browse(uri);
 
 			return true;
 		} catch (Throwable t) {
@@ -160,20 +160,34 @@ public class DesktopUtils {
 		}
 	}
 
-	private static boolean openDESKTOP(File file) {
+	private static boolean openDESKTOP(File file, boolean selectOnly) {
 		try {
-			if (!java.awt.Desktop.isDesktopSupported()) {
+			if (!Desktop.isDesktopSupported()) {
 				LOG.debug("Platform is not supported.");
 				return false;
 			}
 
-			if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.OPEN)) {
+			if (selectOnly && !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE_FILE_DIR)
+					&& !SystemUtils.IS_OS_WINDOWS) {
+				LOG.debug("BROWSE_FILE_DIR is not supported.");
+				return openDESKTOP(file, false);
+			} else if (!Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
 				LOG.debug("OPEN is not supported.");
 				return false;
 			}
 
-			LOG.info("Trying to use Desktop.getDesktop().open() with " + file.toString());
-			java.awt.Desktop.getDesktop().open(file);
+			if (selectOnly) {
+				if (SystemUtils.IS_OS_WINDOWS) { // https://bugs.openjdk.java.net/browse/JDK-8233994
+					LOG.info("Trying to execute: explorer /select," + file.getPath());
+					return Runtime.getRuntime().exec("explorer /select," + file.getPath()) != null;
+				} else {
+					LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with " + file.toString());
+					Desktop.getDesktop().browseFileDirectory(file);
+				}
+			} else {
+				LOG.info("Trying to use Desktop.getDesktop().open() with " + file.toString());
+				Desktop.getDesktop().open(file);
+			}
 
 			return true;
 		} catch (Throwable t) {
@@ -184,18 +198,18 @@ public class DesktopUtils {
 
 	private static boolean editDESKTOP(File file) {
 		try {
-			if (!java.awt.Desktop.isDesktopSupported()) {
+			if (!Desktop.isDesktopSupported()) {
 				LOG.debug("Platform is not supported.");
 				return false;
 			}
 
-			if (!java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.EDIT)) {
+			if (!Desktop.getDesktop().isSupported(Desktop.Action.EDIT)) {
 				LOG.debug("EDIT is not supported.");
 				return false;
 			}
 
 			LOG.info("Trying to use Desktop.getDesktop().edit() with " + file);
-			java.awt.Desktop.getDesktop().edit(file);
+			Desktop.getDesktop().edit(file);
 
 			return true;
 		} catch (Throwable t) {
@@ -219,11 +233,10 @@ public class DesktopUtils {
 				int retval = p.exitValue();
 				if (retval == 0) {
 					LOG.error("Process ended immediately.");
-					return false;
 				} else {
 					LOG.error("Process crashed.");
-					return false;
 				}
+				return false;
 			} catch (IllegalThreadStateException itse) {
 				LOG.error("Process is running.");
 				return true;
