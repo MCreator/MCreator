@@ -35,7 +35,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Gets triggered whenever a change to a mod element is detected inside {@link ModElementGUI}
+ * <p>Gets triggered whenever a change to a mod element is detected inside {@link ModElementGUI}</p>
  *
  * @see ModElementGUI#elementUpdateListener
  * @see ModElementCodeViewer#codeChangedListener
@@ -44,31 +44,28 @@ public interface ModElementChangedListener
 		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
 
 	/**
-	 * The main listener method, triggered when an event occurs on a registered container
+	 * <p>The main listener method, triggered when an event occurs on a registered container</p>
 	 */
 	void modElementChanged();
 
 	/**
-	 * Registers the given UI component to trigger this listener when a change is detected on it
+	 * <p>Registers the given UI component to trigger this listener when a change is detected on it</p>
 	 *
-	 * @param container        The UI element to register
-	 * @param addIdleListeners Specifies whether to track mouse clicks or keyboard events on empty panels
-	 *                         for this container
+	 * @param container The UI element to register
 	 */
-	default void registerUI(JComponent container, boolean addIdleListeners) {
+	default void registerUI(JComponent container) {
 		for (Component component : container.getComponents()) {
 			if (component instanceof MCItemHolder itemHolder) {
 				itemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
-				registerUI(entriesList, addIdleListeners);
+				registerUI(entriesList);
 				entriesList.addEntryRegisterListener(c -> {
-					registerUI(c, addIdleListeners);
+					registerUI(c);
 					modElementChanged();
 				});
-				if (addIdleListeners)
-					component.addMouseListener(this);
+				component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner spinner) {
@@ -81,9 +78,9 @@ public interface ModElementChangedListener
 				component.addMouseListener(this);
 				component.addKeyListener(this);
 			} else if (component instanceof JComponent jcomponent) {
-				registerUI(jcomponent, addIdleListeners);
+				registerUI(jcomponent);
 
-				if (!(component instanceof JLabel) && !(component instanceof JPanel) && addIdleListeners) {
+				if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
 				}

@@ -407,7 +407,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
-		SwingUtilities.invokeLater(() -> elementUpdateListener.registerUI(centerComponent, false));
+		SwingUtilities.invokeLater(() -> elementUpdateListener.registerUI(centerComponent));
 
 		disableUnsupportedFields();
 	}
