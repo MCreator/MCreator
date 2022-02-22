@@ -47,7 +47,7 @@ import net.minecraft.block.material.Material;
 	<#if data.ranged && data.rangedItemType == "Default item">
 	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1)
-			.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
+			.setCustomClientFactory(ArrowCustomEntity::new).size(0.5f, 0.5f)).build("projectile_${registryname}").setRegistryName("projectile_${registryname}");
 	</#if>
 
 	public ${name}Entity(${JavaModName}Elements instance) {
