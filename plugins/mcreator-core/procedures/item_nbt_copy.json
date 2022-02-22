@@ -1,0 +1,25 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "MCItem"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}
