@@ -23,7 +23,6 @@ import javafx.embed.swing.JFXPanel;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -37,8 +36,9 @@ import java.awt.event.*;
 /**
  * <p>Gets triggered whenever a change to a mod element is detected inside {@link ModElementGUI}</p>
  *
- * @see ModElementGUI#elementUpdateListener
- * @see ModElementCodeViewer#codeChangedListener
+ * <p>One case of this listener usage is warning the user about some unsaved changes made to a mod element.
+ * Another case is the {@link net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer ModElementCodeViewer} which
+ * regenerates the code preview upon UI changes.</p>
  */
 public interface ModElementChangedListener
 		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
@@ -80,7 +80,8 @@ public interface ModElementChangedListener
 			} else if (component instanceof JComponent jcomponent) {
 				registerUI(jcomponent);
 
-				if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
+				if (!(component instanceof JLabel) && !(component instanceof JPanel)
+						&& !(component instanceof JScrollPane) && !(component instanceof JViewport)) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
 				}
@@ -88,7 +89,7 @@ public interface ModElementChangedListener
 		}
 	}
 
-	// Listener methods
+	// Trigger methods
 
 	@Override default void mouseReleased(MouseEvent e) {
 		modElementChanged();
