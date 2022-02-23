@@ -98,14 +98,14 @@ public class CompileNotesPanel extends JPanel {
 			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			setForeground(Color.white);
 			ComponentUtils.deriveFont(this, 12);
-			if (value.getType() == BlocklyCompileNote.Type.ERROR) {
+			if (value.type() == BlocklyCompileNote.Type.ERROR) {
 				setIcon(UIRES.get("18px.remove"));
-			} else if (value.getType() == BlocklyCompileNote.Type.WARNING) {
+			} else if (value.type() == BlocklyCompileNote.Type.WARNING) {
 				setIcon(UIRES.get("18px.warning"));
 			} else {
 				setIcon(UIRES.get("18px.info"));
 			}
-			setText(value.getMessage());
+			setText(value.message());
 			return this;
 		}
 	}

@@ -1634,7 +1634,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		return block;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-block");
 	}
 
