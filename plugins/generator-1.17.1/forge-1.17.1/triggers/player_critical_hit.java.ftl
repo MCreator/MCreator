@@ -1,15 +1,14 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
-		Player sourceentity=event.getPlayer();
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": " sourceentity.getX()",
-			"y": " sourceentity.getY()",
-			"z": " sourceentity.getZ()",
-			"world": " sourceentity.level",
+			"x": "event.getPlayer().getX()",
+			"y": "event.getPlayer().getY()",
+			"z": "event.getPlayer().getZ()",
+			"world": "event.getPlayer().level",
 			"entity": "event.getTarget()",
-			"sourceentity": " sourceentity",
+			"sourceentity": "event.getPlayer()",
 			"damagemodifier": "event.getDamageModifier()",
 			"isvanillacritical": "event.isVanillaCritical()",
 			"event": "event"

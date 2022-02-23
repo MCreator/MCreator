@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
+import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -31,25 +32,22 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class GeneratorSelector {
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
 
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor) {
+			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
-		JComboBox<CBoxEntry> generator = new JComboBox<>();
+		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
 
 		mainPanel.add("North",
 				PanelUtils.westAndCenterElement(L10N.label("dialog.generator_selector.current"), generator, 10, 10));
@@ -57,16 +55,11 @@ public class GeneratorSelector {
 		CardLayout cardLayout = new CardLayout();
 		JPanel statsPan = new JPanel(cardLayout);
 
-		generator.setRenderer(new ConditionalComboBoxRenderer());
-
 		for (GeneratorConfiguration generatorConfiguration : Generator.GENERATOR_CACHE.values()) {
 			GeneratorStats stats = generatorConfiguration.getGeneratorStats();
 
-			if (currentFlavor != null) {
-				generator.addItem(new CBoxEntry(generatorConfiguration,
-						currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())));
-			} else {
-				generator.addItem(new CBoxEntry(generatorConfiguration));
+			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
+				generator.addItem(generatorConfiguration);
 			}
 
 			JPanel genStats = new JPanel();
@@ -169,30 +162,35 @@ public class GeneratorSelector {
 
 		mainPanel.add("Center", statsPan);
 
-		generator.addActionListener(new ActionListener() {
-			CBoxEntry oldItem;
-
-			@Override public void actionPerformed(ActionEvent e) {
-				Object selectedItem = generator.getSelectedItem();
-				if (selectedItem != null) {
-					if (!((CBoxEntry) selectedItem).enabled) {
-						generator.setSelectedItem(oldItem);
-					} else {
-						oldItem = (CBoxEntry) selectedItem;
-					}
-				}
-				cardLayout.show(statsPan, ((CBoxEntry) Objects.requireNonNull(
-						generator.getSelectedItem())).generatorConfiguration.getGeneratorName());
-			}
+		generator.addActionListener(e -> {
+			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)
+				cardLayout.show(statsPan, generatorConfiguration.getGeneratorName());
 		});
 
-		generator.setSelectedItem(new CBoxEntry(current));
+		generator.setSelectedItem(current);
+
+		generator.addActionListener(new ActionListener() {
+			GeneratorConfiguration oldItem = current;
+
+			@Override public void actionPerformed(ActionEvent e) {
+				if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration) {
+					if (!Launcher.version.isDevelopment() && !newWorkspace && generatorConfiguration != current
+							&& generatorConfiguration.getGeneratorStats().getStatus() == GeneratorStats.Status.DEV) {
+						generator.setSelectedItem(oldItem);
+						JOptionPane.showMessageDialog(parent, L10N.t("dialog.generator_selector.dev_gen_message"),
+								L10N.t("dialog.generator_selector.dev_gen_title"), JOptionPane.WARNING_MESSAGE);
+					} else {
+						oldItem = generatorConfiguration;
+					}
+				}
+			}
+		});
 
 		int resultval = JOptionPane.showConfirmDialog(parent, mainPanel, L10N.t("dialog.generator_selector.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
-			return ((CBoxEntry) generator.getSelectedItem()).generatorConfiguration;
+			return (GeneratorConfiguration) generator.getSelectedItem();
 		}
 		return null;
 	}
@@ -244,47 +242,6 @@ public class GeneratorSelector {
 
 		supportedElements.add(new JLabel(label + ": "));
 		supportedElements.add(bar);
-	}
-
-	static class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
-
-		private final BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
-
-		@Override
-		public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.generatorConfiguration, index,
-					isSelected, cellHasFocus);
-			if (!value.enabled) {
-				component.setBackground(list.getBackground());
-				component.setForeground(Color.gray.brighter());
-				component.setText(L10N.t("dialog.generator_selector.different_type", component.getText(),
-						value.generatorConfiguration.getGeneratorFlavor().name().toLowerCase(Locale.ENGLISH)));
-			}
-			return component;
-		}
-	}
-
-	private static class CBoxEntry {
-		GeneratorConfiguration generatorConfiguration;
-		boolean enabled;
-
-		CBoxEntry(GeneratorConfiguration generatorConfiguration) {
-			this(generatorConfiguration, true);
-		}
-
-		CBoxEntry(GeneratorConfiguration generatorConfiguration, boolean enabled) {
-			this.generatorConfiguration = generatorConfiguration;
-			this.enabled = enabled;
-		}
-
-		@Override public boolean equals(Object o) {
-			return o instanceof CBoxEntry && ((CBoxEntry) o).generatorConfiguration.equals(this.generatorConfiguration);
-		}
-
-		@Override public String toString() {
-			return generatorConfiguration.toString();
-		}
 	}
 
 }

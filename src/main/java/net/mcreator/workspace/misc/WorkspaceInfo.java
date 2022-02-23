@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GameRule;
 import net.mcreator.element.types.Recipe;
@@ -198,6 +199,10 @@ import java.util.stream.Collectors;
 						return true;
 			}
 		return false;
+	}
+
+	public MItemBlock itemBlock(String itemBlock) {
+		return new MItemBlock(workspace, itemBlock);
 	}
 
 	public Workspace getWorkspace() {

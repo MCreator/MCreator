@@ -30,71 +30,42 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
-import java.text.ParseException;
 import java.util.List;
 
 public class BlocklyToProcedure extends BlocklyToJava {
 
-	private static final Logger LOG = LogManager.getLogger("Blockly2Procedure");
-
-	private String externalTrigger = null;
+	private String externalTrigger;
 	private List<VariableElement> variables;
-	private VariableType returnType = null;
+	private VariableType returnType;
 
 	public BlocklyToProcedure(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, templateGenerator, externalGenerators);
+		super(workspace, "event_trigger", sourceXML, templateGenerator, externalGenerators);
+	}
 
-		BlocklyVariables variableGenerator = new BlocklyVariables(this);
+	@Override public void preBlocksPlacement(Document doc) {
+		if (doc != null) {
+			// first we load data from startblock
+			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, "event_trigger"),
+					"field");
+			if (trigger != null && !trigger.getTextContent().equals("no_ext_trigger")) {
+				externalTrigger = trigger.getTextContent();
+			}
 
-		if (sourceXML != null) {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(new InputSource(new StringReader(sourceXML)));
-				doc.getDocumentElement().normalize();
+			// then we add custom local variables
+			Element variables = XMLUtil.getFirstChildrenWithName(doc.getDocumentElement(), "variables");
+			this.variables = variableGenerator.processLocalVariables(variables);
+		}
+	}
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, "event_trigger");
-
-				// if there is no start block, we return empty string
-				if (start_block == null)
-					throw new ParseException("Could not find start block!", -1);
-
-				// first we load data from startblock
-				Element trigger = XMLUtil.getFirstChildrenWithName(start_block, "field");
-				if (trigger != null && !trigger.getTextContent().equals("no_ext_trigger")) {
-					externalTrigger = trigger.getTextContent();
-				}
-
-				// first we add custom local variables
-				Element variables = XMLUtil.getFirstChildrenWithName(doc.getDocumentElement(), "variables");
-				this.variables = variableGenerator.processLocalVariables(variables);
-
-				// find all blocks placed under start block
-				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-				processBlockProcedure(base_blocks);
-
-				if (getReturnType() != null) {
-					if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
-						addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								L10N.t("blockly.errors.invalid_return_block")));
-					}
-				}
-			} catch (TemplateGeneratorException e) {
-				throw e;
-			} catch (Exception e) {
-				LOG.error(e.getMessage(), e);
+	@Override public void postBlocksPlacement(Document doc) {
+		if (getReturnType() != null) {
+			if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
+						L10N.t("blockly.errors.invalid_return_block")));
 			}
 		}
 	}

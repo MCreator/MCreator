@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2021, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +19,91 @@
 
 package net.mcreator.blockly.java;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.*;
 import net.mcreator.generator.template.TemplateGenerator;
+import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
-public abstract class BlocklyToJava extends BlocklyToCode {
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.text.ParseException;
+import java.util.List;
 
-	public BlocklyToJava(Workspace workspace, TemplateGenerator templateGenerator,
-			IBlockGenerator... externalGenerators) {
+public class BlocklyToJava extends BlocklyToCode {
+
+	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
+	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
+
+	/**
+	 * @param workspace         <p>The {@link Workspace} executing the code</p>
+	 * @param firstBlockName    <p>The name of the start block</p>
+	 * @param sourceXML         <p>The XML code used by Blockly</p>
+	 * @param templateGenerator <p>The folder location in each {@link net.mcreator.generator.Generator} containing the code template files<p>
+	 */
+	public BlocklyToJava(Workspace workspace, String firstBlockName, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+			throws TemplateGeneratorException {
 		super(workspace, templateGenerator, externalGenerators);
 
+		addJavaBlocks();
+
+		if (sourceXML != null) {
+			try {
+				final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+						.parse(new InputSource(new StringReader(sourceXML)));
+				doc.getDocumentElement().normalize();
+
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, firstBlockName);
+
+				// if there is no start block, we return empty string
+				if (start_block == null)
+					throw new ParseException("Could not find start block!", -1);
+
+				// we execute extra actions needed before placing blocks
+				preBlocksPlacement(doc);
+
+				// find all blocks placed under start block
+				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
+				processBlockProcedure(base_blocks);
+
+				// we execute extra actions needed after blocks are placed
+				postBlocksPlacement(doc);
+
+			} catch (TemplateGeneratorException e) {
+				throw e;
+			} catch (Exception e) {
+				LOG.error(e.getMessage(), e);
+				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
+			}
+		}
+	}
+
+	/**
+	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
+	 *
+	 * @param doc Blockly XML document
+	 */
+	public void preBlocksPlacement(Document doc) {}
+
+	/**
+	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
+	 *
+	 * @param doc Blockly XML document
+	 */
+	public void postBlocksPlacement(Document doc) {}
+
+	private void addJavaBlocks() {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());
@@ -85,5 +159,4 @@ public abstract class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
 	}
-
 }
