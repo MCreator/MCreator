@@ -492,8 +492,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
-		changed = false;
-
 		GE element = getElementFromGUI();
 
 		// if new element, and if we are not in the root folder, specify the folder of the mod element
@@ -539,6 +537,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
+
+		changed = false;
 	}
 
 	public @Nonnull ModElement getModElement() {
