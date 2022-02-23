@@ -87,9 +87,22 @@ public class ShapeTool extends AbstractModificationTool {
 		}
 		switch (shape) {
 		case CIRCLE:
+			if (aliasing.isSelected()) {
+				sizex += 1;
+				sizey += 1;
+			} else {
+				x0 -= 1;
+				y0 -= 1;
+				sizex += 2;
+				sizey += 2;
+			}
 			g.fillOval(x0, y0, sizex, sizey);
 			break;
 		case SQUARE:
+			if (sizex >= 0)
+				sizex += 1;
+			if (sizey >= 0)
+				sizey += 1;
 			g.fillRect(x0, y0, sizex, sizey);
 			break;
 		case RING:
