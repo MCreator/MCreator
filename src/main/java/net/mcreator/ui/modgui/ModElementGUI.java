@@ -580,16 +580,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		void modElementCreated(GE generatableElement);
 	}
 
-	@Override @Nullable public String getContextName() {
+	@Override @Nullable public String contextName() {
 		return modElement.getType().getReadableName();
 	}
 
 	@Override @Nullable public IHelpContext withEntry(String entry) {
 		try {
-			return new ModElementHelpContext(this.getContextName(), this.getContextURL(), entry,
+			return new ModElementHelpContext(this.contextName(), this.contextURL(), entry,
 					this::getElementFromGUI);
 		} catch (URISyntaxException e) {
-			return new ModElementHelpContext(this.getContextName(), null, entry, this::getElementFromGUI);
+			return new ModElementHelpContext(this.contextName(), null, entry, this::getElementFromGUI);
 		}
 	}
 

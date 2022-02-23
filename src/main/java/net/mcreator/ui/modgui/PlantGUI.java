@@ -121,7 +121,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
-	private final JRadioButton doubleType = new JRadioButton("<html><b>Use double plant type");
+	private final JRadioButton doubleType = L10N.radiobutton("elementgui.plant.use_double_plant_type");
 	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
@@ -416,7 +416,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel northPanel = new JPanel(new GridLayout(2, 2, 10, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_bounding_box"),
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/custom_bounding_box"),
 				L10N.label("elementgui.common.custom_bounding_box")));
 		northPanel.add(customBoundingBox);
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
@@ -985,7 +985,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		return plant;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-plant");
 	}
 

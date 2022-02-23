@@ -7,11 +7,15 @@ templates:
     deleteWhenConditionFalse: true
   - template: json/item.json.ftl
     writer: json
-    condition: ["renderType #= 0", "hasNormalModel()"]
+    condition:
+      - "renderType #= 0"
+      - "hasNormalModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
     writer: json
-    condition: ["renderType #= 0", "hasToolModel()"]
+    condition:
+      - "renderType #= 0"
+      - "hasToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json

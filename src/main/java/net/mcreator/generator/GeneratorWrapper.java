@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused") public class GeneratorWrapper {
+@SuppressWarnings({ "unused", "ClassCanBeRecord" }) public class GeneratorWrapper {
 
 	private final Generator generator;
 
@@ -93,7 +93,7 @@ import java.util.stream.Collectors;
 				"bucket"))
 			return false;
 
-		return this.getRecipeElementType(elementName) == RecipeType.BLOCK;
+		return this.isRecipeTypeBlockOrBucket(elementName);
 	}
 
 	public boolean isRecipeTypeBlockOrBucket(String elementName) {

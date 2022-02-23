@@ -81,8 +81,8 @@ public class ReordarableListTransferHandler extends TransferHandler {
 			return false;
 		}
 
-		JList target = (JList) info.getComponent();
-		DefaultListModel listModel = (DefaultListModel) target.getModel();
+		JList<?> target = (JList<?>) info.getComponent();
+		DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
 		int max = listModel.getSize();
 		int index = dl.getIndex();
 		index = index < 0 ? max : index; // If it is out of range, it is appended to the end
