@@ -116,6 +116,7 @@ public class StampTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
+		canvas.enableCustomPreview(false);
 		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 		int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();
 		Graphics2D graphics2D = layer.getOverlay().createGraphics();
@@ -153,6 +154,8 @@ public class StampTool extends AbstractModificationTool {
 
 	@Override public void mouseReleased(MouseEvent e) {
 		super.mouseReleased(e);
+		canvas.enableCustomPreview(true);
+		canvas.updateCustomPreview(e, getImage());
 		first = true;
 	}
 
