@@ -101,7 +101,7 @@ public class DialogsTest {
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
-						GeneratorFlavor.FORGE));
+						GeneratorFlavor.FORGE, true));
 	}
 
 	@Test public void testAboutDialog() throws Throwable {

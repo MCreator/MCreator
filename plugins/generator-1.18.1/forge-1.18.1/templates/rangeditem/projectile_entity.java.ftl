@@ -73,51 +73,71 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
     	</#if>
 	}
 
+	@Override protected void doPostHurtEffects(LivingEntity entity) {
+		super.doPostHurtEffects(entity);
+		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
+	}
+
 	<#if hasProcedure(data.onBulletHitsPlayer)>
 	@Override public void playerTouch(Player entity) {
 		super.playerTouch(entity);
 		Entity sourceentity = this.getOwner();
+		Entity imediatesourceentity = this;
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();
 		Level world = this.level;
-		Entity imediatesourceentity = this;
 		<@procedureOBJToCode data.onBulletHitsPlayer/>
 	}
     </#if>
 
-	@Override protected void doPostHurtEffects(LivingEntity entity) {
-		super.doPostHurtEffects(entity);
-		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
-		<#if hasProcedure(data.onBulletHitsEntity)>
-			Entity sourceentity = this.getOwner();
-			double x = this.getX();
-			double y = this.getY();
-			double z = this.getZ();
-			Level world = this.level;
-			Entity imediatesourceentity = this;
-            <@procedureOBJToCode data.onBulletHitsEntity/>
-        </#if>
-	}
-
-	@Override public void tick() {
-		super.tick();
+	<#if hasProcedure(data.onBulletHitsEntity)>
+	@Override public void onHitEntity(EntityHitResult entityHitResult) {
+		super.onHitEntity(entityHitResult);
+		Entity entity = entityHitResult.getEntity();
+		Entity sourceentity = this.getOwner();
+		Entity imediatesourceentity = this;
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();
 		Level world = this.level;
+		<@procedureOBJToCode data.onBulletHitsEntity/>
+	}
+	</#if>
+
+	<#if hasProcedure(data.onBulletHitsBlock)>
+	@Override public void onHitBlock(BlockHitResult blockHitResult) {
+		super.onHitBlock(blockHitResult);
+		double x = blockHitResult.getBlockPos().getX();
+		double y = blockHitResult.getBlockPos().getY();
+		double z = blockHitResult.getBlockPos().getZ();
+		Level world = this.level;
 		Entity entity = this.getOwner();
 		Entity imediatesourceentity = this;
-		<@procedureOBJToCode data.onBulletFlyingTick/>
-		if (this.inGround) {
-			<@procedureOBJToCode data.onBulletHitsBlock/>
+		<@procedureOBJToCode data.onBulletHitsBlock/>
+	}
+	</#if>
+
+	@Override public void tick() {
+		super.tick();
+
+		<#if hasProcedure(data.onBulletFlyingTick)>
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
+			Level world = this.level;
+			Entity entity = this.getOwner();
+			Entity imediatesourceentity = this;
+			<@procedureOBJToCode data.onBulletFlyingTick/>
+		</#if>
+
+		if (this.inGround)
 			this.discard();
-		}
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, world);
-		entityarrow.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, power * 2, 0);
+		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
 		entityarrow.setCritArrow(${data.bulletParticles});
 		entityarrow.setBaseDamage(damage);

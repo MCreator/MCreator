@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,7 +37,8 @@ package ${package}.item;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-<#if data.hasDispenseBehavior>@Mod.EventBusSubscriber</#if> public class ${name}Item extends Item {
+<#if data.hasDispenseBehavior>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if>
+public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
@@ -120,7 +122,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 	</#if>
 
     <#if data.hasGlow>
-    @Override public boolean isFoil(ItemStack itemstack) {
+    @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
     	<#if hasProcedure(data.glowCondition)>
     	Player entity = Minecraft.getInstance().player;
     	Level world = entity.level;

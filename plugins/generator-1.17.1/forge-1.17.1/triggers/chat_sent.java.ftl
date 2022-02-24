@@ -1,14 +1,13 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onChat(ServerChatEvent event){
-		ServerPlayer entity=event.getPlayer();
+	@SubscribeEvent public static void onChat(ServerChatEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "entity.getX()",
-			"y": "entity.getY()",
-			"z": "entity.getZ()",
-			"world": "entity.level",
-			"entity": "entity",
+			"x": "event.getPlayer().getX()",
+			"y": "event.getPlayer().getY()",
+			"z": "event.getPlayer().getZ()",
+			"world": "event.getPlayer().level",
+			"entity": "event.getPlayer()",
 			"text": "event.getMessage()",
 			"event": "event"
 			}/>
