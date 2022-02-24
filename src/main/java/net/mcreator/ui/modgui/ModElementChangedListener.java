@@ -80,13 +80,17 @@ public interface ModElementChangedListener
 			} else if (component instanceof JComponent jcomponent) {
 				registerUI(jcomponent);
 
-				if (!(component instanceof JLabel) && !(component instanceof JPanel)
-						&& !(component instanceof JScrollPane) && !(component instanceof JViewport)) {
+				if (!isGenericComponent(component)) {
 					component.addMouseListener(this);
 					component.addKeyListener(this);
 				}
 			}
 		}
+	}
+
+	private boolean isGenericComponent(Component component) {
+		return component instanceof JLabel || component instanceof JPanel || component instanceof JScrollBar
+				|| component instanceof JScrollPane || component instanceof JViewport;
 	}
 
 	// Trigger methods

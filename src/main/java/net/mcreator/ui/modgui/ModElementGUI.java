@@ -56,7 +56,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
 
-	private boolean changed;
+	private boolean changed, listeningEnabled = false;
 	private final ModElementChangedListener elementUpdateListener;
 
 	@Nonnull protected ModElement modElement;
@@ -74,7 +74,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		this.modElement = modElement;
 
 		this.changed = !editingMode; // new mod elements should always warn about unsaved changes unless they are saved
-		this.elementUpdateListener = () -> changed = true;
+		this.elementUpdateListener = () -> {
+			if (listeningEnabled)
+				changed = true;
+		};
 	}
 
 	public final void addPage(JComponent component) {
@@ -106,15 +109,22 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// reload data lists in a background thread
 		this.tabIn.setTabShownListener(tab -> {
-			if (PreferencesManager.PREFERENCES.ui.autoreloadTabs)
+			if (PreferencesManager.PREFERENCES.ui.autoreloadTabs) {
+				listeningEnabled = false;
 				reloadDataLists();
+				listeningEnabled = true;
+			}
 		});
-		this.tabIn.setTabClosingListener(tab -> {
-			if (changed)
-				return 0 == JOptionPane.showConfirmDialog(mcreator, L10N.label("dialog.unsaved_changes.message"),
-						L10N.t("dialog.unsaved_changes.title"), JOptionPane.YES_NO_OPTION);
-			return true;
-		});
+
+		if (PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges) {
+			this.tabIn.setTabClosingListener(tab -> {
+				if (changed)
+					return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
+							L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
+							JOptionPane.YES_NO_OPTION);
+				return true;
+			});
+		}
 
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tabIn);
 		if (existing == null) {
@@ -128,8 +138,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		finalizeGUI(true);
 	}
 
-	protected final void finalizeGUI(boolean wrapInScrollpane) {
-		JComponent centerComponent;
+	protected final void finalizeGUI(boolean wrapInScrollPane) {
+		JComponent centerComponent, parameters = new JPanel();
 
 		if (allowCodePreview())
 			this.modElementCodeViewer = new ModElementCodeViewer<>(this);
@@ -298,7 +308,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			add("North", PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, true, false,
 					false));
 
-			if (wrapInScrollpane) {
+			if (wrapInScrollPane) {
 				JScrollPane splitScroll = new JScrollPane(split);
 				splitScroll.setOpaque(false);
 				splitScroll.getViewport().setOpaque(false);
@@ -306,11 +316,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
 				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				centerComponent = PanelUtils.centerAndSouthElement(
-						new JLayer<>(splitScroll, new ScrollWheelPassLayer()), pager);
+				parameters = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
 			} else {
-				centerComponent = PanelUtils.centerAndSouthElement(split, pager);
+				parameters = PanelUtils.join(split);
 			}
+			centerComponent = PanelUtils.centerAndSouthElement(parameters, pager);
 		} else {
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
@@ -374,7 +384,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, false,
 							false));
 
-			if (wrapInScrollpane) {
+			if (wrapInScrollPane) {
 				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
 				splitScroll.setOpaque(false);
 				splitScroll.getViewport().setOpaque(false);
@@ -407,7 +417,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
-		SwingUtilities.invokeLater(() -> elementUpdateListener.registerUI(centerComponent));
+		listeningEnabled = true;
+		if (PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges)
+			elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 
 		disableUnsupportedFields();
 	}
@@ -586,8 +598,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	@Override @Nullable public IHelpContext withEntry(String entry) {
 		try {
-			return new ModElementHelpContext(this.contextName(), this.contextURL(), entry,
-					this::getElementFromGUI);
+			return new ModElementHelpContext(this.contextName(), this.contextURL(), entry, this::getElementFromGUI);
 		} catch (URISyntaxException e) {
 			return new ModElementHelpContext(this.contextName(), null, entry, this::getElementFromGUI);
 		}
