@@ -88,6 +88,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		builtinProperties.put("lefthanded", builtinLogic);
 		builtinProperties.put("cooldown", builtinNumber);
 
+		setOpaque(false);
 		propertyEntries.setOpaque(false);
 		stateEntries.setOpaque(false);
 
@@ -123,12 +124,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		topbar.add(addState);
 
 		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
+		left.setOpaque(false);
+		left.getViewport().setOpaque(false);
 		left.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
 				L10N.t("elementgui.item.custom_properties.title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JScrollPane right = new JScrollPane(PanelUtils.pullElementUp(stateEntries));
+		right.setOpaque(false);
+		right.getViewport().setOpaque(false);
 		right.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
 				L10N.t("elementgui.item.custom_states.title"), 0, 0, getFont().deriveFont(12.0f),

@@ -68,10 +68,9 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				L10N.t("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
+		setOpaque(false);
 		parent.add(container);
 		entryList.add(this);
-		revalidate();
-		repaint();
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_properties.remove"));

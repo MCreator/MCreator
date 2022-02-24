@@ -67,7 +67,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
-		texture.setOpaque(false);
 		texture.setValidator(new TileHolderValidator(texture));
 
 		JButton edit = new JButton(UIRES.get("16px.edit.gif"));
@@ -109,6 +108,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
 				L10N.t("elementgui.item.custom_states.model"), model, 3));
 
+		setOpaque(false);
 		parent.add(container);
 		entryList.add(this);
 
