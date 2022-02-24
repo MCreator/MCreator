@@ -35,12 +35,11 @@ import java.util.stream.Collectors;
 
 public class StateEditorDialog {
 
-	public static String open(MCreator mcreator, String initialState, Map<String, PropertyData> properties,
-			String help) {
+	public static String open(MCreator parent, String initialState, Map<String, PropertyData> properties, String help) {
 		final String stateString = initialState.equals("") ? "!esc" : initialState;
 
 		AtomicReference<String> retVal = new AtomicReference<>(stateString);
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
+		MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.state_editor.title"), true);
 
 		List<StateEntry> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
@@ -91,7 +90,7 @@ public class StateEditorDialog {
 		dialog.getContentPane().add("Center", PanelUtils.centerAndSouthElement(editor, PanelUtils.join(ok, cancel)));
 
 		dialog.setSize(300, 400);
-		dialog.setLocationRelativeTo(mcreator);
+		dialog.setLocationRelativeTo(parent);
 		dialog.setVisible(true);
 
 		return retVal.get();
@@ -134,8 +133,9 @@ public class StateEditorDialog {
 			return getDefaultValueForType(param.type());
 		} else if (param.type().equals(boolean.class) || param.type().equals(Boolean.class)) {
 			return ((JCheckBox) component).isSelected();
-		} else if (param.type().equals(int.class) || param.type().equals(Integer.class) || param.type()
-				.equals(float.class) || param.type().equals(Float.class)) {
+		} else if (param.type().equals(int.class) || param.type().equals(Integer.class)) {
+			return ((JSpinner) component).getValue();
+		} else if (param.type().equals(float.class) || param.type().equals(Float.class)) {
 			Number val = (Number) ((JSpinner) component).getValue();
 			return (float) Math.round(val.floatValue() * 1000) / 1000;
 		} else if (param.type().equals(String.class)) {

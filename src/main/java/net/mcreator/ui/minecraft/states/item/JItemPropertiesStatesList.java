@@ -160,7 +160,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
 				propertyId);
 
-		pe.setValidator(new PropertyNameValidator(pe.name, "Property name",
+		pe.name.setValidator(new PropertyNameValidator(pe.name, "Property name",
 				() -> propertiesList.stream().map(e -> e.name.getText()), builtinPropertyNames,
 				new RegistryNameValidator(pe.name, "Property name")));
 		pe.name.enableRealtimeValidation();

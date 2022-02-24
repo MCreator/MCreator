@@ -7,11 +7,15 @@ templates:
     deleteWhenConditionFalse: true
   - template: json/item.json.ftl
     writer: json
-    condition: ["renderType #= 0", "hasNormalModel()"]
+    condition:
+      - "renderType #= 0"
+      - "hasNormalModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
     writer: json
-    condition: ["renderType #= 0", "hasToolModel()"]
+    condition:
+      - "renderType #= 0"
+      - "hasToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json
@@ -29,11 +33,15 @@ list_templates:
     forEach:
       - template: json/item_override.json.ftl
         writer: json
-        condition: [ "renderType #= 0", "${isNormalModel(w.getWorkspace())}" ]
+        condition:
+          - "renderType #= 0"
+          - "${isNormalModel(w.getWorkspace())}"
         name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
       - template: json/tool_override.json.ftl
         writer: json
-        condition: [ "renderType #= 0", "${isToolModel(w.getWorkspace())}" ]
+        condition:
+          - "renderType #= 0"
+          - "${isToolModel(w.getWorkspace())}"
         name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
       - template: json/item_override_cmodel.json.ftl
         writer: json

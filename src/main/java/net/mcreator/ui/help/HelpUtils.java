@@ -138,7 +138,7 @@ public class HelpUtils {
 
 	public static Component stackHelpTextAndComponent(IHelpContext context, String text, Component ca, int gap,
 			int direction, int helpAlign) {
-		Component button = HelpUtils.wrapWithHelpButton(context, new JLabel(text), SwingConstants.LEFT);
+		Component button = wrapWithHelpButton(context, new JLabel(text), SwingConstants.LEFT);
 
 		JComponent helpLabel = switch (helpAlign) {
 			case SwingConstants.LEFT -> PanelUtils.westAndCenterElement(button, new JEmptyBox());
