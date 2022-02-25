@@ -115,16 +115,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				listeningEnabled = true;
 			}
 		});
-
-		if (PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges) {
-			this.tabIn.setTabClosingListener(tab -> {
-				if (changed)
-					return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
-							L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
-							JOptionPane.YES_NO_OPTION);
-				return true;
-			});
-		}
+		this.tabIn.setTabClosingListener(tab -> {
+			if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges)
+				return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
+						L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
+						JOptionPane.YES_NO_OPTION);
+			return true;
+		});
 
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tabIn);
 		if (existing == null) {
@@ -547,7 +544,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
 
 		if (!editingMode && modElementCreatedListener
-				!= null) // only call this event if listener registered and we are not in editing mode
+				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
 
 		changed = false;
