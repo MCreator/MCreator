@@ -43,13 +43,13 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 
 	private boolean updateRunning = false;
-	private final ModElementChangedListener codeChangedListener;
+	private final ModElementChangedListener codeChangeListener;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM);
 
 		this.modElementGUI = modElementGUI;
-		this.codeChangedListener = this::reload;
+		this.codeChangeListener = this::reload;
 
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -64,7 +64,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	public void registerUI(JComponent container) {
-		codeChangedListener.registerUI(container);
+		codeChangeListener.registerUI(container);
 	}
 
 	private void reload() {

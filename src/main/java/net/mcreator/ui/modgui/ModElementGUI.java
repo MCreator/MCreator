@@ -414,9 +414,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
+		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 		listeningEnabled = true;
-		if (PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges)
-			elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 
 		disableUnsupportedFields();
 	}
