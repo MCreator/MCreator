@@ -68,7 +68,7 @@ public class TemplateExpressionParser {
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
 		try {
-			if (condition.startsWith("${") && condition.endsWith("}")) {
+			if (condition.startsWith("${")) {
 				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
 						conditionDataProvider);
 				return processed instanceof Boolean check && check;
@@ -109,18 +109,19 @@ public class TemplateExpressionParser {
 	public static Object processFTLExpression(Generator generator, String expression, Object dataHolder) {
 		try {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
-			dataModel.put("retVal", new AtomicReference<>(null));
+			AtomicReference<?> retVal = new AtomicReference<>(null);
+			dataModel.put("retVal", retVal);
 			if (dataHolder != null)
 				dataModel.put("data", dataHolder);
 
-			String expr = checkStartsWithAnyKey(expression, dataModel) ?
+			String expr = checkStartsWithAnyKey(expression, dataModel) && dataHolder != null ?
 					expression :
 					"data." + expression; // by default, dataHolder is used to process the expression
 			Template t = new Template("INLINE EXPRESSION", new StringReader("${retVal.set(" + expr + ")}"),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
 			t.process(dataModel, new StringWriter());
 
-			return ((AtomicReference<?>) dataModel.get("retVal")).get();
+			return retVal.get();
 		} catch (Exception e) {
 			LOG.error("Failed to parse FTL expression: " + expression, e);
 			return null;

@@ -64,16 +64,12 @@ public class TemplateGenerator {
 	}
 
 	public String generateListItemFromTemplate(Object item, int itemIndex, GeneratableElement element,
-			String templateName, Map<String, Object> dataModel, @Nullable IAdditionalTemplateDataProvider provider)
-			throws TemplateGeneratorException {
+			String templateName, Map<String, Object> dataModel) throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());
 
 		dataModel.put("element", item);
 		dataModel.put("elementindex", itemIndex);
 		dataModel.put("owner", element);
-
-		if (provider != null)
-			provider.provideAdditionalData(dataModel);
 
 		return generateTemplate(templateName, dataModel);
 	}

@@ -292,8 +292,7 @@ public class Generator implements IGenerator, Closeable {
 							extractVariables(generatorTemplate, dataModel);
 
 							String code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
-									listData.get(index), index, element, templateName, dataModel,
-									element.getAdditionalTemplateData());
+									listData.get(index), index, element, templateName, dataModel);
 
 							File templateFile = new File(
 									templateFileName.replace("@elementindex", Integer.toString(index)));
@@ -660,7 +659,7 @@ public class Generator implements IGenerator, Closeable {
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
-				Map<GeneratorTemplate, List<Boolean>> files = new HashMap<>();
+				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
 				String groupName = (String) Objects.requireNonNullElse(((Map<?, ?>) list).get("name"),
 						"Templates group");
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
@@ -713,7 +712,8 @@ public class Generator implements IGenerator, Closeable {
 						// we check for potential excludes to be deleted,
 						// this is only called if condition above is passed
 						String exclude = (String) ((Map<?, ?>) template).get("exclude");
-						boolean doExclude = ((Map<?, ?>) template).get("excludeIfAllPresent") != null ?
+						boolean doExclude = ((Map<?, ?>) template).get("excludeIfAllPresent") != null
+								&& ((Map<?, ?>) template).get("excludeIfAllPresent").equals("true") ?
 								!conditionChecks.contains(false) :
 								conditionChecks.contains(true);
 						if (exclude != null && doExclude && performFSTasks) {

@@ -542,8 +542,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected void afterGeneratableElementGenerated() {
 	}
 
-	@SuppressWarnings("unchecked") protected boolean allowCodePreview() {
-		GE generatable = (GE) Objects.requireNonNullElse(modElement.getGeneratableElement(), getElementFromGUI());
+	protected boolean allowCodePreview() {
+		@SuppressWarnings("unchecked") GE generatable = (GE) Objects.requireNonNullElse(
+				modElement.getGeneratableElement(), getElementFromGUI());
 		return !modElement.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(modElement, generatable)
 				.isEmpty() || !modElement.getWorkspace().getGenerator()
 				.getModElementListTemplates(modElement, generatable).isEmpty();
