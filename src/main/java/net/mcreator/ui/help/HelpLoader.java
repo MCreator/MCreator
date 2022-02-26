@@ -84,14 +84,14 @@ public class HelpLoader {
 	}
 
 	public static boolean hasFullHelp(IHelpContext helpContext) {
-		return helpContext != null && helpContext.getEntry() != null && getFromCache(helpContext.getEntry()) != null;
+		return helpContext != null && helpContext.entry() != null && getFromCache(helpContext.entry()) != null;
 	}
 
 	public static String loadHelpFor(IHelpContext helpContext) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
-				uri = helpContext.getContextURL();
+				uri = helpContext.contextURL();
 			} catch (URISyntaxException ignored) {
 			}
 
@@ -99,27 +99,29 @@ public class HelpLoader {
 					"<html><head><style>table{ border-collapse: collapse; border-spacing: 0; } "
 							+ "th { border: 1px solid #a0a0a0; } td { border: 1px solid #a0a0a0; } </style></head><body>");
 
-			if (helpContext.getEntry() != null) {
-				String helpText = getFromCache(helpContext.getEntry());
+			if (helpContext.entry() != null) {
+				String helpText = getFromCache(helpContext.entry());
 				if (helpText != null) {
-					if ((helpText.contains("${") || helpText.contains("<#"))
-							&& helpContext instanceof ModElementHelpContext meHelpContext) {
+					if (helpText.contains("${") || helpText.contains("<#")) {
 						try {
 							Map<String, Object> dataModel = new HashMap<>();
-							dataModel.put("data", meHelpContext.getModElementFromGUI());
-							dataModel.put("registryname",
-									meHelpContext.getModElementFromGUI().getModElement().getRegistryName());
-							dataModel.put("name", meHelpContext.getModElementFromGUI().getModElement().getName());
-							dataModel.put("elementtype",
-									meHelpContext.getModElementFromGUI().getModElement().getType().getReadableName());
 							dataModel.put("l10n", new L10N());
 
-							if (meHelpContext.getModElementFromGUI().getModElement().getGenerator() != null)
-								dataModel.putAll(meHelpContext.getModElementFromGUI().getModElement().getGenerator()
-										.getBaseDataModelProvider().provide());
+							if (helpContext instanceof ModElementHelpContext meHelpContext) {
+								dataModel.put("data", meHelpContext.getModElementFromGUI());
+								dataModel.put("registryname",
+										meHelpContext.getModElementFromGUI().getModElement().getRegistryName());
+								dataModel.put("name", meHelpContext.getModElementFromGUI().getModElement().getName());
+								dataModel.put("elementtype",
+										meHelpContext.getModElementFromGUI().getModElement().getType()
+												.getReadableName());
+								if (meHelpContext.getModElementFromGUI().getModElement().getGenerator() != null)
+									dataModel.putAll(meHelpContext.getModElementFromGUI().getModElement().getGenerator()
+											.getBaseDataModelProvider().provide());
+							}
 
-							Template freemarkerTemplate = new Template(helpContext.getEntry(),
-									new StringReader(helpText), configuration);
+							Template freemarkerTemplate = new Template(helpContext.entry(), new StringReader(helpText),
+									configuration);
 							StringWriter stringWriter = new StringWriter();
 							freemarkerTemplate.process(dataModel, stringWriter, configuration.getBeansWrapper());
 
@@ -131,16 +133,16 @@ public class HelpLoader {
 						helpString.append(renderer.render(parser.parse(helpText)));
 					}
 				} else {
-					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.getEntry()));
+					helpString.append(L10N.t("help_loader.no_help_entry", helpContext.entry()));
 				}
 
-				if (uri != null && helpContext.getContextName() != null) {
-					helpString.append(L10N.t("help_loader.learn_about", uri.toString(), helpContext.getContextName()));
+				if (uri != null && helpContext.contextName() != null) {
+					helpString.append(L10N.t("help_loader.learn_about", uri.toString(), helpContext.contextName()));
 				}
 
 				return helpString.toString();
-			} else if (uri != null && helpContext.getContextName() != null) {
-				return L10N.t("help_loader.no_entry_learn_more", uri.toString(), helpContext.getContextName());
+			} else if (uri != null && helpContext.contextName() != null) {
+				return L10N.t("help_loader.no_entry_learn_more", uri.toString(), helpContext.contextName());
 			}
 		}
 

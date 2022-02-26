@@ -121,9 +121,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		addPage(pane3);
 
 		// add first pool
-		if (!isEditingMode()) {
+		if (!isEditingMode())
 			lootTablePools.addInitialPool();
-		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -157,7 +156,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		return loottable;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-loot-table");
 	}
 

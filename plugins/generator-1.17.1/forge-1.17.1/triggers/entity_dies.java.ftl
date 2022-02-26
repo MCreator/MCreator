@@ -2,14 +2,13 @@
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntityDeath(LivingDeathEvent event) {
 		if (event!=null && event.getEntity()!=null) {
-			Entity entity=event.getEntity();
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-		    	"x": "entity.getX()",
-		    	"y": "entity.getY()",
-		    	"z": "entity.getZ()",
-				"world": "entity.level",
-				"entity": "entity",
+				"x": "event.getEntity().getX()",
+				"y": "event.getEntity().getY()",
+				"z": "event.getEntity().getZ()",
+				"world": "event.getEntity().level",
+				"entity": "event.getEntity()",
 				"sourceentity": "event.getSource().getEntity()",
 				"event": "event"
 				}/>

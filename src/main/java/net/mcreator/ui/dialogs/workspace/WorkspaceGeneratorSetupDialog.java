@@ -121,6 +121,8 @@ public class WorkspaceGeneratorSetupDialog {
 				WorkspaceGeneratorSetup.completeSetup(m.getGenerator());
 
 				dial.hideAll();
+
+				m.mcreatorTabs.showTab(m.workspaceTab);
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
 				p3.err();

@@ -1,15 +1,14 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event){
-		Entity entity=event.getEntity();
+	@SubscribeEvent public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "entity.getX()",
-			"y": "entity.getY()",
-			"z": "entity.getZ()",
-			"world": "entity.level",
+			"x": "event.getEntity().getX()",
+			"y": "event.getEntity().getY()",
+			"z": "event.getEntity().getZ()",
+			"world": "event.getEntity().level",
 			"dimension": "event.getDimension()",
-			"entity": "entity",
+			"entity": "event.getEntity()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
