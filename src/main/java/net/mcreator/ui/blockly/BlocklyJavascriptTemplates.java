@@ -62,8 +62,7 @@ public class BlocklyJavascriptTemplates {
 				"output": "%s",
 				"colour": "%s",
 				"mutator": "variable_entity_input"
-			}]);"""
-			.formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
+			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
 					variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
@@ -141,7 +140,7 @@ public class BlocklyJavascriptTemplates {
 				],
 				"previousStatement": null,
 				"colour": "%s"
-			}]);"""	.formatted(variableType.getName(), L10N.t("blockly.block.return"),
-						variableType.getBlocklyVariableType(), variableType.getColor());
+			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.return"),
+					variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 }
