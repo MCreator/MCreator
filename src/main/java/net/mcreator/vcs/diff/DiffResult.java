@@ -23,18 +23,14 @@ import org.eclipse.jgit.diff.DiffEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public record DiffResult<T>(Set<T> changed, Set<T> removed, Set<T> added) {
 
 	List<AffectedObjectWithType<T>> getAffected() {
 		List<AffectedObjectWithType<T>> retval = new ArrayList<>();
-		retval.addAll(changed.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.MODIFY))
-				.collect(Collectors.toList()));
-		retval.addAll(removed.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.DELETE))
-				.collect(Collectors.toList()));
-		retval.addAll(added.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.ADD))
-				.collect(Collectors.toList()));
+		retval.addAll(changed.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.MODIFY)).toList());
+		retval.addAll(removed.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.DELETE)).toList());
+		retval.addAll(added.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.ADD)).toList());
 		return retval;
 	}
 

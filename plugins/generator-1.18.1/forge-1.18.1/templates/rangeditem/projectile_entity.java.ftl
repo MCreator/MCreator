@@ -73,51 +73,76 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
     	</#if>
 	}
 
-	<#if hasProcedure(data.onBulletHitsPlayer)>
-	@Override public void playerTouch(Player entity) {
-		super.playerTouch(entity);
-		Entity sourceentity = this.getOwner();
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Level world = this.level;
-		Entity imediatesourceentity = this;
-		<@procedureOBJToCode data.onBulletHitsPlayer/>
-	}
-    </#if>
-
 	@Override protected void doPostHurtEffects(LivingEntity entity) {
 		super.doPostHurtEffects(entity);
 		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
-		<#if hasProcedure(data.onBulletHitsEntity)>
-			Entity sourceentity = this.getOwner();
-			double x = this.getX();
-			double y = this.getY();
-			double z = this.getZ();
-			Level world = this.level;
-			Entity imediatesourceentity = this;
-            <@procedureOBJToCode data.onBulletHitsEntity/>
-        </#if>
 	}
+
+	<#if hasProcedure(data.onBulletHitsPlayer)>
+	@Override public void playerTouch(Player entity) {
+		super.playerTouch(entity);
+		<@procedureCode data.onBulletHitsPlayer, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "entity",
+			"sourceentity": "this.getOwner()",
+			"immediatesourceentity": "this",
+			"world": "this.level"
+		}/>
+	}
+    </#if>
+
+	<#if hasProcedure(data.onBulletHitsEntity)>
+	@Override public void onHitEntity(EntityHitResult entityHitResult) {
+		super.onHitEntity(entityHitResult);
+		<@procedureCode data.onBulletHitsEntity, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "entityHitResult.getEntity()",
+			"sourceentity": "this.getOwner()",
+			"immediatesourceentity": "this",
+			"world": "this.level"
+		}/>
+	}
+	</#if>
+
+	<#if hasProcedure(data.onBulletHitsBlock)>
+	@Override public void onHitBlock(BlockHitResult blockHitResult) {
+		super.onHitBlock(blockHitResult);
+		<@procedureCode data.onBulletHitsBlock, {
+			"x": "blockHitResult.getBlockPos().getX()",
+			"y": "blockHitResult.getBlockPos().getY()",
+			"z": "blockHitResult.getBlockPos().getZ()",
+			"entity": "this.getOwner()",
+			"immediatesourceentity": "this",
+			"world": "this.level"
+		}/>
+	}
+	</#if>
 
 	@Override public void tick() {
 		super.tick();
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Level world = this.level;
-		Entity entity = this.getOwner();
-		Entity imediatesourceentity = this;
-		<@procedureOBJToCode data.onBulletFlyingTick/>
-		if (this.inGround) {
-			<@procedureOBJToCode data.onBulletHitsBlock/>
+
+		<#if hasProcedure(data.onBulletFlyingTick)>
+			<@procedureCode data.onBulletFlyingTick, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"world": "this.level",
+				"entity": "this.getOwner()",
+				"immediatesourceentity": "this"
+			}/>
+		</#if>
+
+		if (this.inGround)
 			this.discard();
-		}
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, world);
-		entityarrow.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, power * 2, 0);
+		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
 		entityarrow.setCritArrow(${data.bulletParticles});
 		entityarrow.setBaseDamage(damage);
@@ -127,7 +152,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		</#if>
 		world.addFreshEntity(entityarrow);
 
-		world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
+		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 
 		return entityarrow;
@@ -135,10 +160,10 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public static ${name}Entity shoot(LivingEntity entity, LivingEntity target) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, entity.level);
-		double d0 = target.getY() + (double) target.getEyeHeight() - 1.1;
-		double d1 = target.getX() - entity.getX();
-		double d3 = target.getZ() - entity.getZ();
-		entityarrow.shoot(d1, d0 - entityarrow.getY() + Math.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, ${data.bulletPower}f * 2, 12.0F);
+		double dx = target.getX() - entity.getX();
+		double dy = target.getY() + target.getEyeHeight() - 1.1;
+		double dz = target.getZ() - entity.getZ();
+		entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
 		entityarrow.setBaseDamage(${data.bulletDamage});
@@ -148,11 +173,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			entityarrow.setSecondsOnFire(100);
 		</#if>
 		entity.level.addFreshEntity(entityarrow);
-
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		entity.level.playSound((Player) null, (double) x, (double) y, (double) z, ForgeRegistries.SOUND_EVENTS
+		entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
 
 		return entityarrow;

@@ -5,13 +5,10 @@
     "precipitation": <#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>"rain"<#else>"snow"</#if><#else>"none"</#if>,
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
-    "category": "${data.biomeCategory?replace("THEEND", "THE_END")?lower_case}",
+    "category": "${data.biomeCategory?replace("THEEND", "THE_END")?replace("MOUNTAIN", "NONE")?lower_case}",
 	"surface_builder": "${modid}:${registryname}",
 	"spawn_costs": {},
     "player_spawn_friendly": true,
-	<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
-	"parent": "${data.parent}",
-	</#if>
     "effects": {
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},

@@ -1,4 +1,7 @@
 <#include "mcitems.ftl">
+<#if field$nbt?lower_case == "false" && field$state?lower_case == "false">
+world.setBlock(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${mappedBlockToBlockStateCode(input$block)},3);
+<#else>
 {
     BlockPos _bp = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
     BlockState _bs = ${mappedBlockToBlockStateCode(input$block)};
@@ -18,7 +21,7 @@
     BlockEntity _be = world.getBlockEntity(_bp);
     CompoundTag _bnbt = null;
     if(_be != null) {
-        _bnbt = _be.save(new CompoundTag());
+        _bnbt = _be.saveWithFullMetadata();
         _be.setRemoved();
     }
     </#if>
@@ -36,3 +39,4 @@
     }
     </#if>
 }
+</#if>

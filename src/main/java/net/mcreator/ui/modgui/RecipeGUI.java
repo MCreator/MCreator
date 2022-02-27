@@ -379,7 +379,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		return recipe;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-recipe");
 	}
 

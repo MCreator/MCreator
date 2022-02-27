@@ -45,7 +45,7 @@ import java.lang.reflect.Type;
 
 @JsonAdapter(IInput.GSONAdapter.class) public interface IInput {
 
-	String getName();
+	String name();
 
 	class GSONAdapter implements JsonDeserializer<IInput> {
 
