@@ -68,7 +68,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 					<#if data.repairItems?has_content>
 					return Ingredient.of(
 						<#list data.repairItems as repairItem>
-						${mappedMCItemToItemStackCode(repairItem,1)}<#sep>,</#list>
+						${mappedMCItemToItemStackCode(repairItem,1)}<#sep>,
+						</#list>
 					);
 					<#else>
 					return Ingredient.EMPTY;
@@ -148,9 +149,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
     </#if>
 
 	<#if data.toolType=="MultiTool">
-		<@onEntityHitWith data.onEntityHitWith, true/>
-
 		<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
+
+		<@onEntityHitWith data.onEntityHitWith, true/>
 	<#else>
 		<@onBlockDestroyedWith data.onBlockDestroyedWithTool/>
 
@@ -180,7 +181,8 @@ public class ${name}Item extends Item {
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
     	return List.of(
 			<#list data.blocksAffected as restrictionBlock>
-			${mappedBlockToBlock(restrictionBlock)}<#sep>,</#list>
+			${mappedBlockToBlock(restrictionBlock)}<#sep>,
+			</#list>
 		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
 	}
 
@@ -227,7 +229,8 @@ public class ${name}Item extends FishingRodItem {
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return List.of(
 			<#list data.repairItems as repairItem>
-				${mappedMCItemToItem(repairItem)}<#sep>,</#list>
+				${mappedMCItemToItem(repairItem)}<#sep>,
+				</#list>
 		).contains(repairitem.getItem());
 	}
 	</#if>
