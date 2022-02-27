@@ -48,6 +48,7 @@ import java.util.Locale;
 		return type.toLowerCase(Locale.ENGLISH);
 	}
 
+	//TODO: Temporal, used for testing
 	public List<MItemBlock> getItems() {
 		return items.stream().toList();
 	}

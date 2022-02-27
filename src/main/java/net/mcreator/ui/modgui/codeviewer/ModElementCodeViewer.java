@@ -22,7 +22,6 @@ package net.mcreator.ui.modgui.codeviewer;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplatesList;
-import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.modgui.ModElementChangedListener;
@@ -45,7 +44,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
-	private final Map<GeneratorTemplatesList, JTabbedPane> listPager;
+	private Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
 
 	private boolean updateRunning = false;
 	private final ModElementChangedListener codeChangeListener;
@@ -65,11 +64,12 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				reload();
 			}
 		});
+	}
 
-		// we group list templates inside separate tabs to improve UX
+	public void loadListTemplatesTabs() {
 		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
-		this.listPager = modElementGUI.getModElement().getGenerator()
+		listPager = modElementGUI.getModElement().getGenerator()
 				.getModElementListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
 				.stream().collect(Collectors.toUnmodifiableMap(key -> key, list -> {
 					JTabbedPane listTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);

@@ -417,6 +417,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 		listeningEnabled = true;
 
+		if (modElementCodeViewer != null)
+			modElementCodeViewer.loadListTemplatesTabs();
+
 		disableUnsupportedFields();
 	}
 

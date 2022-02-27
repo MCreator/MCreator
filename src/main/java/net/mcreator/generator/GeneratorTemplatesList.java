@@ -51,7 +51,7 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 			if (filePath.startsWith(templatePath[0]) && filePath.endsWith(templatePath[1])) {
 				try { // we check if given file name has list template's index in place of @elementindex
 					int i = Integer.parseInt(filePath.replace(templatePath[0], "").replace(templatePath[1], ""));
-					if (templates.get(generatorTemplate).get(i) || ignoreConditions)
+					if (ignoreConditions || templates.get(generatorTemplate).get(i))
 						return generatorTemplate;
 				} catch (IndexOutOfBoundsException | NumberFormatException ignored) {
 				}

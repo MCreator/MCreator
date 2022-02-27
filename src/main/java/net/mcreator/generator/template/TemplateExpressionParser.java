@@ -78,12 +78,12 @@ public class TemplateExpressionParser {
 				return Arrays.stream(condData[1].trim().split(",")).mapToInt(Integer::parseInt)
 						.anyMatch(e -> e == field);
 			} else if (condition.contains("#=")) { // check if value == other value
-				var condData = condition.split("#=");
+				String[] condData = condition.split("#=");
 				int field = (int) getValueFrom(condData[0], conditionDataProvider);
 				int value = Integer.parseInt(condData[1].trim());
 				return value == field;
 			} else if (condition.contains("%=")) { // compare strings
-				var condData = condition.split("%=");
+				String[] condData = condition.split("%=");
 				String field = (String) getValueFrom(condData[0], conditionDataProvider);
 				String value = condData[1].trim();
 				return value.equals(field);
@@ -114,9 +114,9 @@ public class TemplateExpressionParser {
 			if (dataHolder != null)
 				dataModel.put("data", dataHolder);
 
-			String expr = checkStartsWithAnyKey(expression, dataModel) && dataHolder != null ?
-					expression :
-					"data." + expression; // by default, dataHolder is used to process the expression
+			String expr = !checkStartsWithAnyKey(expression, dataModel) && dataHolder != null ?
+					"data." + expression : // by default, dataHolder is used to process the expression
+					expression;
 			Template t = new Template("INLINE EXPRESSION", new StringReader("${retVal.set(" + expr + ")}"),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
 			t.process(dataModel, new StringWriter());
