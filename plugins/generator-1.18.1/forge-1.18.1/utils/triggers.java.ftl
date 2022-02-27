@@ -50,20 +50,50 @@
 </#if>
 </#macro>
 
-<#macro onEntityHitWith procedure="">
-<#if hasProcedure(procedure)>
+<#macro onEntityHitWith procedure="" hurtStack=false>
+<#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-	boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-	<@procedureCode procedure, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"world": "entity.level",
-		"entity": "entity",
-		"sourceentity": "sourceentity",
-		"itemstack": "itemstack"
-	}/>
-	return retval;
+	<#if hurtStack>
+		itemstack.hurtAndBreak(2, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+	<#else>
+		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
+	</#if>
+	<#if hasProcedure(procedure)>
+		<@procedureCode procedure, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"world": "entity.level",
+			"entity": "entity",
+			"sourceentity": "sourceentity",
+			"itemstack": "itemstack"
+		}/>
+	</#if>
+	return <#if hurtStack>true<#else>retval</#if>;
+}
+</#if>
+</#macro>
+
+<#macro onBlockDestroyedWith procedure="" hurtStack=false>
+<#if hasProcedure(procedure) || hurtStack>
+@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
+	<#if hurtStack>
+		itemstack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+	<#else>
+		boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
+	</#if>
+	<#if hasProcedure(procedure)>
+		<@procedureCode procedure, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"entity": "entity",
+			"itemstack": "itemstack",
+			"blockstate": "blockstate"
+		}/>
+	</#if>
+	return <#if hurtStack>true<#else>retval</#if>;
 }
 </#if>
 </#macro>
