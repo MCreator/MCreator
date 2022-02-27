@@ -44,7 +44,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		setRegistryName("${registryname}_portal");
 	}
 
-	@Override public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
 		<#if hasProcedure(data.onPortalTickUpdate)>
 			int x = pos.getX();
 			int y = pos.getY();
