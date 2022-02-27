@@ -73,27 +73,13 @@ public class VariableTypeLoader {
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
 			switch (variableType.getName()) {
-			case "logic":
-				BuiltInTypes.LOGIC = variableType;
-				break;
-			case "number":
-				BuiltInTypes.NUMBER = variableType;
-				break;
-			case "string":
-				BuiltInTypes.STRING = variableType;
-				break;
-			case "direction":
-				BuiltInTypes.DIRECTION = variableType;
-				break;
-			case "itemstack":
-				BuiltInTypes.ITEMSTACK = variableType;
-				break;
-			case "blockstate":
-				BuiltInTypes.BLOCKSTATE = variableType;
-				break;
-			case "actionresulttype":
-				BuiltInTypes.ACTIONRESULTTYPE = variableType;
-				break;
+				case "logic" -> BuiltInTypes.LOGIC = variableType;
+				case "number" -> BuiltInTypes.NUMBER = variableType;
+				case "string" -> BuiltInTypes.STRING = variableType;
+				case "direction" -> BuiltInTypes.DIRECTION = variableType;
+				case "itemstack" -> BuiltInTypes.ITEMSTACK = variableType;
+				case "blockstate" -> BuiltInTypes.BLOCKSTATE = variableType;
+				case "actionresulttype" -> BuiltInTypes.ACTIONRESULTTYPE = variableType;
 			}
 		}
 
