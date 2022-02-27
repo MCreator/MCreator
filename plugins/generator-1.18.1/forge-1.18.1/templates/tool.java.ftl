@@ -67,10 +67,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
    				public Ingredient getRepairIngredient() {
 					<#if data.repairItems?has_content>
 					return Ingredient.of(
-							<#list data.repairItems as repairItem>
-							${mappedMCItemToItemStackCode(repairItem,1)}<#if repairItem?has_next>,</#if>
-                    </#list>
-							);
+						<#list data.repairItems as repairItem>
+						${mappedMCItemToItemStackCode(repairItem,1)}<#sep>,</#list>
+					);
 					<#else>
 					return Ingredient.EMPTY;
 					</#if>
@@ -149,51 +148,13 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
     </#if>
 
 	<#if data.toolType=="MultiTool">
-		@Override public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity sourceentity) {
-			stack.hurtAndBreak(2, sourceentity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-			<#if hasProcedure(data.onEntityHitWith)>
-				double x = entity.getX();
-				double y = entity.getY();
-				double z = entity.getZ();
-				Level world = entity.level;
-				<@procedureOBJToCode data.onEntityHitWith/>
-			</#if>
-			return true;
-		}
+		<@onEntityHitWith data.onEntityHitWith, true/>
 
-		@Override public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
-			stack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-			<#if hasProcedure(data.onBlockDestroyedWithTool)>
-				int x = pos.getX();
-				int y = pos.getY();
-				int z = pos.getZ();
-				<@procedureOBJToCode data.onBlockDestroyedWithTool/>
-			</#if>
-			return true;
-		}
+		<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
 	<#else>
-		<#if hasProcedure(data.onBlockDestroyedWithTool)>
-    	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
-			boolean retval = super.mineBlock(itemstack, world, blockstate, pos, entity);
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-            <@procedureOBJToCode data.onBlockDestroyedWithTool/>
-			return retval;
-		}
-		</#if>
+		<@onBlockDestroyedWith data.onBlockDestroyedWithTool/>
 
-		<#if hasProcedure(data.onEntityHitWith)>
-    	@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-			boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			Level world = entity.level;
-    		<@procedureOBJToCode data.onEntityHitWith/>
-			return retval;
-		}
-		</#if>
+		<@onEntityHitWith data.onEntityHitWith/>
     </#if>
 
     <@onRightClickedInAir data.onRightClickedInAir/>
@@ -219,33 +180,14 @@ public class ${name}Item extends Item {
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
     	return List.of(
 			<#list data.blocksAffected as restrictionBlock>
-			${mappedBlockToBlock(restrictionBlock)}<#if restrictionBlock?has_next>,</#if>
+			${mappedBlockToBlock(restrictionBlock)}<#sep>,
 			</#list>
 		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
 	}
 
-	@Override public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
-		stack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-		<#if hasProcedure(data.onBlockDestroyedWithTool)>
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onBlockDestroyedWithTool/>
-		</#if>
-		return true;
-	}
+	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
 
-	@Override public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity sourceentity) {
-		stack.hurtAndBreak(2, sourceentity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-		<#if hasProcedure(data.onEntityHitWith)>
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			Level world = entity.level;
-			<@procedureOBJToCode data.onEntityHitWith/>
-		</#if>
-		return true;
-	}
+	<@onEntityHitWith data.onEntityHitWith, true/>
 	
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
@@ -286,8 +228,7 @@ public class ${name}Item extends FishingRodItem {
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return List.of(
 			<#list data.repairItems as repairItem>
-				${mappedMCItemToItem(repairItem)}<#if repairItem?has_next>,</#if>
-			</#list>
+				${mappedMCItemToItem(repairItem)}<#sep>,</#list>
 		).contains(repairitem.getItem());
 	}
 	</#if>
@@ -296,16 +237,7 @@ public class ${name}Item extends FishingRodItem {
 		return ${data.enchantability};
 	}
 
-    <#if hasProcedure(data.onBlockDestroyedWithTool)>
-    	@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity){
-			boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-            <@procedureOBJToCode data.onBlockDestroyedWithTool/>
-			return retval;
-		}
-	</#if>
+	<@onBlockDestroyedWith data.onBlockDestroyedWithTool/>
 
 	<@onEntityHitWith data.onEntityHitWith/>
     
@@ -344,10 +276,14 @@ public class ${name}Item extends FishingRodItem {
 		}
 		
 		<#if hasProcedure(data.onRightClickedInAir)>
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onRightClickedInAir/>
+			<@procedureCode data.onRightClickedInAir, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+                "world": "world",
+                "entity": "entity",
+                "itemstack": "itemstack"
+			}/>
 		</#if>
 
 		return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
