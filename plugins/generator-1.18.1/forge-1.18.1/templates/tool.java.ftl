@@ -180,8 +180,7 @@ public class ${name}Item extends Item {
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
     	return List.of(
 			<#list data.blocksAffected as restrictionBlock>
-			${mappedBlockToBlock(restrictionBlock)}<#sep>,
-			</#list>
+			${mappedBlockToBlock(restrictionBlock)}<#sep>,</#list>
 		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
 	}
 
@@ -280,9 +279,9 @@ public class ${name}Item extends FishingRodItem {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
-                "world": "world",
-                "entity": "entity",
-                "itemstack": "itemstack"
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "itemstack"
 			}/>
 		</#if>
 
