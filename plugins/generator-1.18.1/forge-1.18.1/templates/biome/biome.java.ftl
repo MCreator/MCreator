@@ -298,6 +298,7 @@ public class ${name}Biome {
         </#if>
 
         <#-- TODO: this does in fact no longer work. new api / mixin needed
+        // maybe https://github.com/SpongePowered/Mixin/wiki/Mixins-on-Minecraft-Forge
         Should also include these parameters:
         ${mappedBlockToBlockStateCode(data.groundBlock)}
         ${mappedBlockToBlockStateCode(data.undergroundBlock)}
