@@ -43,7 +43,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 	public static final EntityType arrow = (EntityType.Builder.<ArrowCustomEntity>create(ArrowCustomEntity::new, EntityClassification.MISC)
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).setCustomClientFactory(ArrowCustomEntity::new)
-			.size(0.5f, 0.5f)).build("entitybullet${registryname}").setRegistryName("entitybullet${registryname}");
+			.size(0.5f, 0.5f)).build("projectile_${registryname}").setRegistryName("projectile_${registryname}");
 
 	public ${name}Item(${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
