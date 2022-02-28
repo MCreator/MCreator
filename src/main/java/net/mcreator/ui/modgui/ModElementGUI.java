@@ -402,7 +402,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			modElementCodeViewer.setVisible(false);
 			splitPane.setDividerSize(0);
 			add("Center", splitPane);
-			modElementCodeViewer.registerUI(centerComponent);
 		} else {
 			add("Center", centerComponent);
 		}
@@ -414,11 +413,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
+		if (modElementCodeViewer != null) {
+			modElementCodeViewer.loadListTemplatesTabs();
+			modElementCodeViewer.registerUI(centerComponent);
+		}
+
 		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 		listeningEnabled = true;
-
-		if (modElementCodeViewer != null)
-			modElementCodeViewer.loadListTemplatesTabs();
 
 		disableUnsupportedFields();
 	}
