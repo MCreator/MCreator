@@ -32,10 +32,14 @@ global_templates:
   - template: json/fluidtag.json.ftl
     writer: json
     variables: "type=water"
+    condition: ${w.hasFluidsOfType('water')}
+    deleteWhenConditionFalse: true
     name: "@RESROOT/data/minecraft/tags/fluids/water.json"
   - template: json/fluidtag.json.ftl
     writer: json
     variables: "type=lava"
+    condition: ${w.hasFluidsOfType('lava')}
+    deleteWhenConditionFalse: true
     name: "@RESROOT/data/minecraft/tags/fluids/lava.json"
 
 localizationkeys:
