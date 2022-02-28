@@ -36,6 +36,7 @@ import java.util.Map;
 	private String color;
 	private String blocklyVariableType;
 	private boolean returnTypeOnly;
+	private boolean nullable;
 
 	public void setName(String name) {
 		this.name = name;
@@ -70,6 +71,10 @@ import java.util.Map;
 
 	public boolean isReturnTypeOnly() {
 		return returnTypeOnly;
+	}
+
+	public boolean isNullable() {
+		return nullable;
 	}
 
 	public String getBlocklyVariableType() {

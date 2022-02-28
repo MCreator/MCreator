@@ -66,6 +66,35 @@ public class BlocklyJavascriptTemplates {
 					variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
+	// Same as the normal "Get variable" block, but with the NULL icon at the beginning
+	public static String nullableGetVariableBlock(VariableType variableType) {
+		return """
+			Blockly.defineBlocksWithJsonArray([{
+				"type": "variables_get_%s",
+				"message0": "%%2 %s %%1",
+				"args0": [
+					{
+						"type": "input_dummy",
+						"name": "var"
+					},
+					{
+						"type": "field_image",
+						"src": "./res/null.png",
+						"width": 8,
+						"height": 24
+					}
+				],
+				"extensions": [
+					"%s_variables"
+				],
+				"inputsInline": true,
+				"output": "%s",
+				"colour": "%s",
+				"mutator": "variable_entity_input"
+			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
+				variableType.getBlocklyVariableType(), variableType.getColor());
+	}
+
 	public static String setVariableBlock(VariableType variableType) {
 		return """
 			Blockly.defineBlocksWithJsonArray([{
@@ -124,6 +153,30 @@ public class BlocklyJavascriptTemplates {
 				"colour": "%s"
 			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"), variableType.getName(),
 						variableType.getBlocklyVariableType(), variableType.getColor());
+	}
+
+	// Same as the "Procedure return value" block, but with the NULL icon at the beginning
+	public static String nullableProcedureReturnValueBlock(VariableType variableType) {
+		return """
+			Blockly.defineBlocksWithJsonArray([{
+				"type": "procedure_retval_%s",
+				"message0": "%%1 %s",
+				"args0": [
+					{
+						"type": "field_image",
+						"src": "./res/null.png",
+						"width": 8,
+						"height": 24
+					}
+				],
+				"extensions": [
+					"procedure_retval_%s"
+				],
+				"output": "%s",
+				"inputsInline": true,
+				"colour": "%s"
+			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"), variableType.getName(),
+				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	public static String returnBlock(VariableType variableType) {
