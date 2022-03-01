@@ -65,10 +65,15 @@ public class VariableTypeLoader {
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureListExtensions(variableType));
 
 			//Then, we create the blocks related to variables
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variableType));
+			if (variableType.isNullable()) {
+				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.nullableGetVariableBlock(variableType));
+				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.nullableProcedureReturnValueBlock(variableType));
+			} else {
+				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variableType));
+				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variableType));
+			}
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.setVariableBlock(variableType));
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.customDependencyBlock(variableType));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variableType));
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.returnBlock(variableType));
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
@@ -80,6 +85,7 @@ public class VariableTypeLoader {
 				case "itemstack" -> BuiltInTypes.ITEMSTACK = variableType;
 				case "blockstate" -> BuiltInTypes.BLOCKSTATE = variableType;
 				case "actionresulttype" -> BuiltInTypes.ACTIONRESULTTYPE = variableType;
+				case "entity" -> BuiltInTypes.ENTITY = variableType;
 			}
 		}
 
@@ -125,5 +131,6 @@ public class VariableTypeLoader {
 		public static VariableType BLOCKSTATE;
 		public static VariableType ITEMSTACK;
 		public static VariableType ACTIONRESULTTYPE;
+		public static VariableType ENTITY;
 	}
 }
