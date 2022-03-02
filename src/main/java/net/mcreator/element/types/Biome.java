@@ -19,8 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Sound;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -157,38 +159,38 @@ import java.util.Locale;
 
 	public boolean hasStructure(String structureType) {
 		return switch (structureType.toLowerCase(Locale.ENGLISH)) {
-			case "mineshaft": yield spawnMineshaft;
-			case "igloo": yield spawnIgloo;
-			case "stronghold": yield spawnStronghold;
-			case "mineshaft_mesa": yield spawnMineshaftMesa;
-			case "pillager_outpost": yield spawnPillagerOutpost;
-			case "woodland_mansion": yield spawnWoodlandMansion;
-			case "jungle_temple": yield spawnJungleTemple;
-			case "desert_pyramid": yield spawnDesertPyramid;
-			case "swamp_hut": yield spawnSwampHut;
-			case "ocean_monument": yield spawnOceanMonument;
-			case "shipwreck": yield spawnShipwreck;
-			case "shipwreck_beached": yield spawnShipwreckBeached;
-			case "buried_treasure": yield spawnBuriedTreasure;
-			case "nether_fortress": yield spawnNetherBridge;
-			case "nether_fossil": yield spawnNetherFossil;
-			case "bastion_remnant": yield spawnBastionRemnant;
-			case "end_city": yield spawnEndCity;
-			case "village_desert": yield villageType.equals("desert");
-			case "village_plains": yield villageType.equals("plains");
-			case "village_savanna": yield villageType.equals("savanna");
-			case "village_snowy": yield villageType.equals("snowy");
-			case "village_taiga": yield villageType.equals("taiga");
-			case "ocean_ruin_cold": yield oceanRuinType.equals("COLD");
-			case "ocean_ruin_warm": yield oceanRuinType.equals("WARM");
-			case "ruined_portal_standard": yield spawnRuinedPortal.equals("STANDARD");
-			case "ruined_portal_desert": yield spawnRuinedPortal.equals("DESERT");
-			case "ruined_portal_jungle": yield spawnRuinedPortal.equals("JUNGLE");
-			case "ruined_portal_swamp": yield spawnRuinedPortal.equals("SWAMP");
-			case "ruined_portal_mountain": yield spawnRuinedPortal.equals("MOUNTAIN");
-			case "ruined_portal_ocean": yield spawnRuinedPortal.equals("OCEAN");
-			case "ruined_portal_nether": yield spawnRuinedPortal.equals("NETHER");
-			default: yield false;
+			case "mineshaft" -> spawnMineshaft;
+			case "igloo" -> spawnIgloo;
+			case "stronghold" -> spawnStronghold;
+			case "mineshaft_mesa" -> spawnMineshaftMesa;
+			case "pillager_outpost" -> spawnPillagerOutpost;
+			case "woodland_mansion" -> spawnWoodlandMansion;
+			case "jungle_temple" -> spawnJungleTemple;
+			case "desert_pyramid" -> spawnDesertPyramid;
+			case "swamp_hut" -> spawnSwampHut;
+			case "ocean_monument" -> spawnOceanMonument;
+			case "shipwreck" -> spawnShipwreck;
+			case "shipwreck_beached" -> spawnShipwreckBeached;
+			case "buried_treasure" -> spawnBuriedTreasure;
+			case "nether_fortress" -> spawnNetherBridge;
+			case "nether_fossil" -> spawnNetherFossil;
+			case "bastion_remnant" -> spawnBastionRemnant;
+			case "end_city" -> spawnEndCity;
+			case "village_desert" -> villageType.equals("desert");
+			case "village_plains" -> villageType.equals("plains");
+			case "village_savanna" -> villageType.equals("savanna");
+			case "village_snowy" -> villageType.equals("snowy");
+			case "village_taiga" -> villageType.equals("taiga");
+			case "ocean_ruin_cold" -> oceanRuinType.equals("COLD");
+			case "ocean_ruin_warm" -> oceanRuinType.equals("WARM");
+			case "ruined_portal_standard" -> spawnRuinedPortal.equals("STANDARD");
+			case "ruined_portal_desert" -> spawnRuinedPortal.equals("DESERT");
+			case "ruined_portal_jungle" -> spawnRuinedPortal.equals("JUNGLE");
+			case "ruined_portal_swamp" -> spawnRuinedPortal.equals("SWAMP");
+			case "ruined_portal_mountain" -> spawnRuinedPortal.equals("MOUNTAIN");
+			case "ruined_portal_ocean" -> spawnRuinedPortal.equals("OCEAN");
+			case "ruined_portal_nether" -> spawnRuinedPortal.equals("NETHER");
+			default -> false;
 		};
 	}
 
