@@ -28,6 +28,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement {
 
@@ -152,6 +153,43 @@ import java.util.List;
 
 	public boolean hasVines() {
 		return !treeVines.isEmpty();
+	}
+
+	public boolean hasStructure(String structureType) {
+		return switch (structureType.toLowerCase(Locale.ENGLISH)) {
+			case "mineshaft": yield spawnMineshaft;
+			case "igloo": yield spawnIgloo;
+			case "stronghold": yield spawnStronghold;
+			case "mineshaft_mesa": yield spawnMineshaftMesa;
+			case "pillager_outpost": yield spawnPillagerOutpost;
+			case "woodland_mansion": yield spawnWoodlandMansion;
+			case "jungle_temple": yield spawnJungleTemple;
+			case "desert_pyramid": yield spawnDesertPyramid;
+			case "swamp_hut": yield spawnSwampHut;
+			case "ocean_monument": yield spawnOceanMonument;
+			case "shipwreck": yield spawnShipwreck;
+			case "shipwreck_beached": yield spawnShipwreckBeached;
+			case "buried_treasure": yield spawnBuriedTreasure;
+			case "nether_fortress": yield spawnNetherBridge;
+			case "nether_fossil": yield spawnNetherFossil;
+			case "bastion_remnant": yield spawnBastionRemnant;
+			case "end_city": yield spawnEndCity;
+			case "village_desert": yield villageType.equals("desert");
+			case "village_plains": yield villageType.equals("plains");
+			case "village_savanna": yield villageType.equals("savanna");
+			case "village_snowy": yield villageType.equals("snowy");
+			case "village_taiga": yield villageType.equals("taiga");
+			case "ocean_ruin_cold": yield oceanRuinType.equals("COLD");
+			case "ocean_ruin_warm": yield oceanRuinType.equals("WARM");
+			case "ruined_portal_standard": yield spawnRuinedPortal.equals("STANDARD");
+			case "ruined_portal_desert": yield spawnRuinedPortal.equals("DESERT");
+			case "ruined_portal_jungle": yield spawnRuinedPortal.equals("JUNGLE");
+			case "ruined_portal_swamp": yield spawnRuinedPortal.equals("SWAMP");
+			case "ruined_portal_mountain": yield spawnRuinedPortal.equals("MOUNTAIN");
+			case "ruined_portal_ocean": yield spawnRuinedPortal.equals("OCEAN");
+			case "ruined_portal_nether": yield spawnRuinedPortal.equals("NETHER");
+			default: yield false;
+		};
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

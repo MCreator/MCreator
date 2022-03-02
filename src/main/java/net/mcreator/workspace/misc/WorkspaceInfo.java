@@ -208,6 +208,16 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
+	public boolean hasBiomesWithStructure(String type) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.BIOME) {
+				if (element.getGeneratableElement() instanceof Biome biome)
+					if (biome.hasStructure(type))
+						return true;
+			}
+		return false;
+	}
+
 	public MItemBlock itemBlock(String itemBlock) {
 		return new MItemBlock(workspace, itemBlock);
 	}
