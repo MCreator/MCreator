@@ -1,3 +1,3 @@
 <#include "mcelements.ftl">
 <#include "mcitems.ftl">
-(BlockTags.getAllTags().getTagOrEmpty(${toResourceLocation(input$b)}).contains(${mappedBlockToBlock(input$a)}))
+(${mappedBlockToBlockStateCode(input$a)}.is(BlockTags.create(${toResourceLocation(input$b)})))

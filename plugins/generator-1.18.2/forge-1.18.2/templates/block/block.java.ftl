@@ -640,11 +640,11 @@ public class ${name}Block extends
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos) : -1;
 					<#elseif data.tintType == "Sky">
-						Minecraft.getInstance().level.getBiome(pos).getSkyColor() : 8562943;
+						Minecraft.getInstance().level.getBiome(pos).value().getSkyColor() : 8562943;
 					<#elseif data.tintType == "Fog">
-						Minecraft.getInstance().level.getBiome(pos).getFogColor() : 12638463;
+						Minecraft.getInstance().level.getBiome(pos).value().getFogColor() : 12638463;
 					<#else>
-						Minecraft.getInstance().level.getBiome(pos).getWaterFogColor() : 329011;
+						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()});
 		}

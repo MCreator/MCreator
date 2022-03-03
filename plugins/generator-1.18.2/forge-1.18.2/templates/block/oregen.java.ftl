@@ -37,9 +37,9 @@ package ${package}.world.features.ores;
 public class ${name}Feature extends OreFeature {
 
 	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
-	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE
-				.configured(new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), ${data.frequencyOnChunk}));
-	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of(
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
+				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), ${data.frequencyOnChunk}));
+	public static final Holder<PlacedFeature> PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
 				CountPlacement.of(${data.frequencyPerChunks}),
 				HeightRangePlacement.uniform(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight}))
 	));

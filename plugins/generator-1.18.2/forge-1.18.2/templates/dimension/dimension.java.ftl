@@ -45,8 +45,8 @@ package ${package}.world.dimension;
 			<#list w.filterBrokenReferences(data.biomesInDimension) as biome>
 				<#if biome.getUnmappedValue().startsWith("CUSTOM:")>
 					<#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
-					replaceableBlocks.add(${mappedBlockToBlockStateCode(ge.groundBlock)});
-					replaceableBlocks.add(${mappedBlockToBlockStateCode(ge.undergroundBlock)});
+					replaceableBlocks.add(${mappedBlockToBlock(ge.groundBlock)});
+					replaceableBlocks.add(${mappedBlockToBlock(ge.undergroundBlock)});
 				</#if>
 			</#list>
 

@@ -37,8 +37,8 @@ package ${package}.world.features;
 public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
 	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
-	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.configured(FeatureConfiguration.NONE);
-	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of());
+	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, FeatureConfiguration.NONE);
+	public static final Holder<PlacedFeature> PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of());
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content>

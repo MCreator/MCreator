@@ -39,9 +39,9 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 public class ${name}Feature extends LakeFeature {
 	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
-	public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.configured(new LakeFeature.Configuration(
+	public static final Holder<ConfiguredFeature<LakeFeature.Configuration, ?>> CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, new LakeFeature.Configuration(
 			BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}), BlockStateProvider.simple(Blocks.AIR)));
-	public static final PlacedFeature PLACED_FEATURE = CONFIGURED_FEATURE.placed(List.of(
+	public static final Holder<PlacedFeature> PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
 			RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
 			InSquarePlacement.spread(),
 			PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,

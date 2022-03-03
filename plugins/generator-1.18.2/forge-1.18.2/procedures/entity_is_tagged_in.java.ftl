@@ -1,2 +1,2 @@
 <#include "mcelements.ftl">
-(EntityTypeTags.getAllTags().getTagOrEmpty(${toResourceLocation(input$tag)}).contains(${input$entity}.getType()))
+(${input$entity}.getType().is(TagKey.create(Registry.ENTITY_TYPE_REGISTRY, ${toResourceLocation(input$tag)})))
