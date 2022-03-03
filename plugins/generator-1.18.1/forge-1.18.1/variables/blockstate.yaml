@@ -2,17 +2,17 @@ defaultvalue: Blocks.AIR.defaultBlockState()
 scopes:
   local:
     init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
-    get: /*@BlockState*/(${name})
+    get: /*@BlockState*/${name}
     set: <#include "mcitems.ftl"> ${name} = ${mappedBlockToBlockStateCode(value)};
   global_session:
     init: public static BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
-    get: /*@BlockState*/(${JavaModName}Variables.${name})
+    get: /*@BlockState*/${JavaModName}Variables.${name}
     set: <#include "mcitems.ftl"> ${JavaModName}Variables.${name} = ${mappedBlockToBlockStateCode(value)};
   global_world:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
     read: ${var.getName()} = NbtUtils.readBlockState(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
-    get: /*@BlockState*/(${JavaModName}Variables.WorldVariables.get(world).${name})
+    get: /*@BlockState*/${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${mappedBlockToBlockStateCode(value)};
@@ -21,7 +21,7 @@ scopes:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
     read: ${var.getName()} = NbtUtils.readBlockState(nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
-    get: /*@BlockState*/(${JavaModName}Variables.MapVariables.get(world).${name})
+    get: /*@BlockState*/${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${mappedBlockToBlockStateCode(value)};
