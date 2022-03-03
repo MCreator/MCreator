@@ -48,6 +48,7 @@
           "jaggedness": 0
         }
       },
+      <#include "nether_noise_router.json.ftl">,
       "surface_rule": {
          "type": "minecraft:sequence",
          "sequence": [
