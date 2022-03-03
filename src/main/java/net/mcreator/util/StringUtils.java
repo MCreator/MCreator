@@ -22,10 +22,12 @@ import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -58,6 +60,10 @@ public class StringUtils {
 		return (c >= 'A' && c <= 'Z');
 	}
 
+	public static boolean isLowercaseLetter(char c) {
+		return (c >= 'a' && c <= 'z');
+	}
+
 	public static String uppercaseFirstLetter(String name) {
 		if (name.length() <= 1)
 			return name.toUpperCase(Locale.ENGLISH);
@@ -72,6 +78,10 @@ public class StringUtils {
 
 	public static String camelToSnake(String original) {
 		return underscoreReducer.matcher(String.join("_", namePartsSplitter.split(original))).replaceAll("");
+	}
+
+	public static String snakeToCamel(String original) {
+		return Arrays.stream(original.split("_")).map(StringUtils::uppercaseFirstLetter).collect(Collectors.joining());
 	}
 
 	public static String machineToReadableName(@Nonnull String input) {
