@@ -94,8 +94,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				.fireResistant()
 				</#if>
 		</#if>);
-
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.toolType=="Shears">
@@ -174,8 +172,6 @@ public class ${name}Item extends Item {
 			.fireResistant()
 			</#if>
 		);
-
-		setRegistryName("${registryname}");
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
@@ -221,8 +217,6 @@ public class ${name}Item extends FishingRodItem {
 			.fireResistant()
 			</#if>
 		);
-
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.repairItems?has_content>

@@ -161,8 +161,6 @@ public class ${name}Block extends
 	                             </#if>
 	    );
 		</#if>
-
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.specialInfo?has_content>
@@ -614,18 +612,18 @@ public class ${name}Block extends
 	<#if data.transparencyType != "SOLID">
 	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
 		<#if data.transparencyType == "CUTOUT">
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.cutout());
 		<#elseif data.transparencyType == "CUTOUT_MIPPED">
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutoutMipped());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.cutoutMipped());
 		<#elseif data.transparencyType == "TRANSLUCENT">
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.translucent());
 		<#else>
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.solid());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.solid());
 		</#if>
 	}
 	<#elseif data.hasTransparency> <#-- for cases when user selected SOLID but checked transparency -->
 	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.cutout());
 	}
 	</#if>
 
@@ -646,7 +644,7 @@ public class ${name}Block extends
 					<#else>
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()});
+			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 
 		<#if data.isItemTinted>
@@ -665,7 +663,7 @@ public class ${name}Block extends
 				<#else>
 					return 329011;
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()});
+			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 		</#if>
 	</#if>

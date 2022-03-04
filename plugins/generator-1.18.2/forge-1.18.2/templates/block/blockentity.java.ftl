@@ -40,7 +40,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}, position, state);
+		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
 	}
 
 	@Override public void load(CompoundTag compound) {
@@ -183,7 +183,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			<#list data.fluidRestrictions as fluidRestriction>
                 <#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
 					if(fs.getFluid() ==
-					${JavaModName}Fluids.<#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>FLOWING_</#if>${generator.getRegistryNameForModElement(fluidRestriction.getUnmappedValue()?remove_beginning("CUSTOM:")?remove_ending(":Flowing"))?upper_case}) return true;
+					${JavaModName}Fluids.<#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>FLOWING_</#if>${generator.getRegistryNameForModElement(fluidRestriction.getUnmappedValue()?remove_beginning("CUSTOM:")?remove_ending(":Flowing"))?upper_case}.get()) return true;
                 <#else>
 				if(fs.getFluid() == Fluids.${fluidRestriction}) return true;
                 </#if>

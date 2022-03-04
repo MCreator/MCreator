@@ -41,7 +41,6 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	public ${name}PortalBlock() {
 		super(BlockBehaviour.Properties.of(Material.PORTAL).noCollission().randomTicks()
 				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noDrops());
-		setRegistryName("${registryname}_portal");
 	}
 
 	<#if hasProcedure(data.onPortalTickUpdate)>

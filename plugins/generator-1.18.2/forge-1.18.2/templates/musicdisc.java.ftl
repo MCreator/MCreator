@@ -45,8 +45,6 @@ public class ${name}Item extends RecordItem {
 		super(0, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		</#if>
-
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.hasGlow>

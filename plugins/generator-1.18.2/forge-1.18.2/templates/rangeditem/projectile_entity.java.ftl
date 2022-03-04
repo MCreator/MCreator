@@ -38,7 +38,7 @@ package ${package}.entity;
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
-		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, world);
+		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, Level world) {
@@ -141,7 +141,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, world);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
 		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
 		entityarrow.setCritArrow(${data.bulletParticles});
@@ -159,7 +159,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(LivingEntity entity, LivingEntity target) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, entity, entity.level);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.level);
 		double dx = target.getX() - entity.getX();
 		double dy = target.getY() + target.getEyeHeight() - 1.1;
 		double dz = target.getZ() - entity.getZ();

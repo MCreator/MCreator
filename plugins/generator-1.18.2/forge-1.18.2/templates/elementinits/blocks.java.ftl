@@ -61,26 +61,19 @@ package ${package}.init;
     </#if>
 </#list>
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Blocks {
+public class ${JavaModName}Blocks {
 
-    private static final List<Block> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
 
     <#list blocks as block>
         <#if block.getModElement().getTypeString() == "dimension">
-            public static final Block ${block.getModElement().getRegistryNameUpper()}_PORTAL = register(new ${block.getModElement().getName()}PortalBlock());
+            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
+			    REGISTRY.register("${block.getModElement().getRegistryName()}_portal", () -> new ${block.getModElement().getName()}PortalBlock());
         <#else>
-            public static final Block ${block.getModElement().getRegistryNameUpper()} = register(new ${block.getModElement().getName()}Block());
+            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
         </#if>
     </#list>
-
-    private static Block register(Block block) {
-		REGISTRY.add(block);
-    	return block;
-    }
-
-	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
-	}
 
 	<#if hasTransparentBlocks || hasTintedBlocks || hasTintedBlockItems>
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {

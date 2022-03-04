@@ -54,7 +54,7 @@
 
 <#function mappedElementToRegistryEntry mappedElement>
     <#return JavaModName + generator.isBlock(mappedElement)?then("Blocks", "Items") + "."
-    + generator.getRegistryNameFromFullName(mappedElement)?upper_case + transformExtension(mappedElement)?upper_case>
+    + generator.getRegistryNameFromFullName(mappedElement)?upper_case + transformExtension(mappedElement)?upper_case + ".get()">
 </#function>
 
 <#function transformExtension mappedBlock>

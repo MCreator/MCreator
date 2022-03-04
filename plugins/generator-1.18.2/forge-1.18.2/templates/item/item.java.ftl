@@ -55,7 +55,6 @@ import javax.annotation.Nullable;
 				</#if>
 				.rarity(Rarity.${data.rarity})
 		);
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.stayInGridWhenCrafting>
@@ -221,7 +220,7 @@ import javax.annotation.Nullable;
 
 	<#if data.hasDispenseBehavior>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		event.enqueueWork(() -> DispenserBlock.registerBehavior(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}, new OptionalDispenseItemBehavior() {
+		event.enqueueWork(() -> DispenserBlock.registerBehavior(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get(), new OptionalDispenseItemBehavior() {
 			public ItemStack execute(BlockSource blockSource, ItemStack stack) {
 				ItemStack itemstack = stack.copy();
 				Level world = blockSource.getLevel();

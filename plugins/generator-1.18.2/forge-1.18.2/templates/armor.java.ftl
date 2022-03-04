@@ -92,8 +92,6 @@ public abstract class ${name}Item extends ArmorItem {
 
 		public Helmet() {
 			super(EquipmentSlot.HEAD, new Item.Properties().tab(${data.creativeTab})<#if data.helmetImmuneToFire>.fireResistant()</#if>);
-
-			setRegistryName("${registryname}_helmet");
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -144,8 +142,6 @@ public abstract class ${name}Item extends ArmorItem {
 
 		public Chestplate() {
 			super(EquipmentSlot.CHEST, new Item.Properties().tab(${data.creativeTab})<#if data.bodyImmuneToFire>.fireResistant()</#if>);
-
-			setRegistryName("${registryname}_chestplate");
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -196,8 +192,6 @@ public abstract class ${name}Item extends ArmorItem {
 
 		public Leggings() {
 			super(EquipmentSlot.LEGS, new Item.Properties().tab(${data.creativeTab})<#if data.leggingsImmuneToFire>.fireResistant()</#if>);
-
-			setRegistryName("${registryname}_leggings");
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -248,8 +242,6 @@ public abstract class ${name}Item extends ArmorItem {
 
 		public Boots() {
 			super(EquipmentSlot.FEET, new Item.Properties().tab(${data.creativeTab})<#if data.bootsImmuneToFire>.fireResistant()</#if>);
-
-			setRegistryName("${registryname}_boots");
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>

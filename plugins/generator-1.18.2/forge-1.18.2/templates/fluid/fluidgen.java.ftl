@@ -38,15 +38,28 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ${name}Feature extends LakeFeature {
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
-	public static final Holder<ConfiguredFeature<LakeFeature.Configuration, ?>> CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, new LakeFeature.Configuration(
-			BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}), BlockStateProvider.simple(Blocks.AIR)));
-	public static final Holder<PlacedFeature> PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
-			RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
-			InSquarePlacement.spread(),
-			PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-			EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), 32)
-	));
+
+	public static ${name}Feature FEATURE = null;
+	public static Holder<ConfiguredFeature<LakeFeature.Configuration, ?>> CONFIGURED_FEATURE = null;
+	public static Holder<PlacedFeature> PLACED_FEATURE = null;
+
+	public static Feature<?> feature() {
+		FEATURE = new ${name}Feature();
+		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, new LakeFeature.Configuration(
+				BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get()), BlockStateProvider.simple(Blocks.AIR))
+		);
+		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
+				RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
+				InSquarePlacement.spread(),
+				PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
+				EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), 32)
+		));
+		return FEATURE;
+	}
+
+	public static Holder<PlacedFeature> placedFeature() {
+		return PLACED_FEATURE;
+	}
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content>

@@ -42,7 +42,6 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties().tab(${data.creativeTab})<#if data.usageCount != 0>.durability(${data.usageCount})<#else>.stacksTo(${data.stackSize})</#if>);
-		setRegistryName("${registryname}");
 	}
 
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {

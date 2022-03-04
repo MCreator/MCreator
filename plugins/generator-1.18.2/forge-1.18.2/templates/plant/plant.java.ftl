@@ -84,7 +84,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		.noDrops()
 		</#if>
 		);
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
@@ -302,7 +301,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>
 
 	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
-		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.cutout());
 	}
 
 	<#if data.tintType != "No tint">
@@ -322,7 +321,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 					<#else>
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()});
+			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 
 		<#if data.isItemTinted>
@@ -341,7 +340,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 				<#else>
 					return 329011;
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()});
+			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 		</#if>
 	</#if>

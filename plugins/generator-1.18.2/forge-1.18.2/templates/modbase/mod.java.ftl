@@ -32,7 +32,14 @@ import org.apache.logging.log4j.Logger;
 
 	public ${JavaModName}() {
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
-	}
+
+		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
 										BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {

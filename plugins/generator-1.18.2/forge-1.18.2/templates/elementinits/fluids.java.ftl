@@ -36,29 +36,22 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Fluids {
+public class ${JavaModName}Fluids {
 
-	private static final List<Fluid> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<Fluid> REGISTRY = DeferredRegister.create(ForgeRegistries.FLUIDS, ${JavaModName}.MODID);
 
 	<#list fluids as fluid>
-	public static final FlowingFluid ${fluid.getModElement().getRegistryNameUpper()} = register(new ${fluid.getModElement().getName()}Fluid.Source());
-	public static final FlowingFluid FLOWING_${fluid.getModElement().getRegistryNameUpper()} = register(new ${fluid.getModElement().getName()}Fluid.Flowing());
+	public static final RegistryObject<Fluid> ${fluid.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Source());
+	public static final RegistryObject<Fluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Flowing());
 	</#list>
-
-	private static FlowingFluid register(FlowingFluid fluid) {
-		REGISTRY.add(fluid);
-		return fluid;
-	}
-
-	@SubscribeEvent public static void registerFluids(RegistryEvent.Register<Fluid> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Fluid[0]));
-	}
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
 		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
 			<#list fluids as fluid>
-			ItemBlockRenderTypes.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.translucent());
-			ItemBlockRenderTypes.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}, renderType -> renderType == RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}.get(), renderType -> renderType == RenderType.translucent());
 			</#list>
 		}
 	}

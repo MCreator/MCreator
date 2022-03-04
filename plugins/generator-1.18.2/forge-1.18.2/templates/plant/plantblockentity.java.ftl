@@ -34,7 +34,7 @@ package ${package}.block.entity;
 public class ${name}BlockEntity extends BlockEntity {
 
 	public ${name}BlockEntity(BlockPos pos, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}, pos, state);
+		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), pos, state);
 	}
 
 	@Override public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {

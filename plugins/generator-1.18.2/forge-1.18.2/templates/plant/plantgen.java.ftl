@@ -40,36 +40,47 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 public class ${name}Feature extends RandomPatchFeature {
 
-	public static final ${name}Feature FEATURE = (${name}Feature) new ${name}Feature().setRegistryName("${modid}:${registryname}");
-	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
+	public static ${name}Feature FEATURE = null;
+	public static Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> CONFIGURED_FEATURE = null;
+	public static Holder<PlacedFeature> PLACED_FEATURE = null;
+
+	public static Feature<?> feature() {
+		FEATURE = new ${name}Feature();
+		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
 			<#if data.plantType == "growapable">
 				FeatureUtils.simpleRandomPatchConfiguration(${data.patchSize}, PlacementUtils.filtered(
-						Feature.BLOCK_COLUMN, BlockColumnConfiguration.simple(BiasedToBottomInt.of(2, 4),
-								BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState())),
+								Feature.BLOCK_COLUMN, BlockColumnConfiguration.simple(BiasedToBottomInt.of(2, 4),
+										BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState())),
 						BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE,
-								BlockPredicate.wouldSurvive(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState(), BlockPos.ZERO))
+								BlockPredicate.wouldSurvive(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), BlockPos.ZERO))
 				))
 			<#else>
 				FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK,
-						new SimpleBlockConfiguration(BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.defaultBlockState())),
-					List.of(), ${data.patchSize})
+						new SimpleBlockConfiguration(BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState())),
+						List.of(), ${data.patchSize})
 			</#if>
 		);
-	public static final Holder<PlacedFeature> PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
-		List.of(
+		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
+				List.of(
 			<#if (data.plantType == "normal" && data.staticPlantGenerationType == "Flower") ||
-				 (data.plantType == "double" && data.doublePlantGenerationType == "Flower") ||
-				  data.plantType == "growapable">
+			(data.plantType == "double" && data.doublePlantGenerationType == "Flower") ||
+			data.plantType == "growapable">
 			RarityFilter.onAverageOnceEvery(32),
 			</#if>
-			InSquarePlacement.spread(),
-			PlacementUtils.HEIGHTMAP<#if
+						InSquarePlacement.spread(),
+						PlacementUtils.HEIGHTMAP<#if
 				(data.plantType == "normal" && data.staticPlantGenerationType == "Grass") ||
 				(data.plantType == "double" && data.doublePlantGenerationType == "Grass") ||
-				 data.plantType == "growapable">_WORLD_SURFACE</#if>,
-			CountPlacement.of(${data.frequencyOnChunks})
-		)
-	);
+				data.plantType == "growapable">_WORLD_SURFACE</#if>,
+						CountPlacement.of(${data.frequencyOnChunks})
+				)
+		);
+		return FEATURE;
+	}
+
+	public static Holder<PlacedFeature> placedFeature() {
+		return PLACED_FEATURE;
+	}
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content>

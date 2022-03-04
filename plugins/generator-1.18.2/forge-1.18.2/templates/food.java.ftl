@@ -44,7 +44,6 @@ public class ${name}Item extends Item {
 			<#if data.isAlwaysEdible>.alwaysEat()</#if>
 			<#if data.forDogs>.meat()</#if>
 			.build()));
-		setRegistryName("${registryname}");
 	}
 
 	<#if data.eatingSpeed != 32>

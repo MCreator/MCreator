@@ -39,8 +39,8 @@ package ${package}.world.teleporter;
 	public static PoiType poi = null;
 
 	@SubscribeEvent public static void registerPointOfInterest(RegistryEvent.Register<PoiType> event) {
-		poi = new PoiType("${registryname}_portal", com.google.common.collect.Sets.newHashSet(ImmutableSet.copyOf(${JavaModName}Blocks.${registryname?upper_case}_PORTAL
-								.getStateDefinition().getPossibleStates())), 0, 1).setRegistryName("${registryname}_portal");
+		poi = new PoiType("${registryname}_portal", com.google.common.collect.Sets.newHashSet(ImmutableSet.copyOf(
+			${JavaModName}Blocks.${registryname?upper_case}_PORTAL.get().getStateDefinition().getPossibleStates())), 0, 1).setRegistryName("${registryname}_portal");
 		ForgeRegistries.POI_TYPES.register(poi);
 	}
 
@@ -55,12 +55,12 @@ package ${package}.world.teleporter;
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "findPortalAround", "BlockPos", "boolean", "WorldBorder")
 		.replace("PoiType.NETHER_PORTAL", "poi")
 		.replace("TicketType.PORTAL", "CUSTOM_PORTAL")
-		.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL")}
+		.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "createPortal", "BlockPos", "Direction.Axis")
 		.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
 		.replace(",blockstate,18);", ", blockstate, 18);\nthis.level.getPoiManager().add(blockpos$mutableblockpos, poi);")
-		.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL")}
+		.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
 
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "canHostFrame", "BlockPos", "BlockPos.MutableBlockPos", "Direction", "int")}
 
