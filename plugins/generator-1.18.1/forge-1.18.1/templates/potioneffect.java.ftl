@@ -54,41 +54,53 @@ public class ${name}MobEffect extends MobEffect {
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
 		@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
-			Level world = entity.level;
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			<@procedureOBJToCode data.onStarted/>
+			<@procedureCode data.onStarted, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "entity.level",
+				"entity": "entity",
+				"amplifier": "amplifier"
+			}/>
 		}
 		<#else>
 		@Override public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-			Level world = entity.level;
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			<@procedureOBJToCode data.onStarted/>
+			<@procedureCode data.onStarted, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "entity.level",
+				"entity": "entity",
+				"amplifier": "amplifier"
+			}/>
 		}
 		</#if>
 	</#if>
 
 	<#if hasProcedure(data.onActiveTick)>
 	@Override public void applyEffectTick(LivingEntity entity, int amplifier) {
-		Level world = entity.level;
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onActiveTick/>
+		<@procedureCode data.onActiveTick, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"world": "entity.level",
+			"entity": "entity",
+			"amplifier": "amplifier"
+		}/>
 	}
 	</#if>
 
    	<#if hasProcedure(data.onExpired)>
 	@Override public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
    		super.removeAttributeModifiers(entity, attributeMap, amplifier);
-   		Level world = entity.level;
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		<@procedureOBJToCode data.onExpired/>
+		<@procedureCode data.onExpired, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"world": "entity.level",
+			"entity": "entity",
+			"amplifier": "amplifier"
+		}/>
 	}
 	</#if>
 

@@ -120,9 +120,8 @@ public class ExternalBlockLoader {
 
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
-		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
+		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
 			toolboxBlocks.put(toolboxBlock.machine_name, toolboxBlock);
-		}
 
 		// generate JSON for loaded blocks
 		JsonArray blocksJSON = new JsonArray();
@@ -182,8 +181,8 @@ public class ExternalBlockLoader {
 			StringBuilder categoryBuilder = new StringBuilder();
 			categoryBuilder.append("<category name=\"").append(category.getName()).append("\" colour=\"")
 					.append(category.color).append("\">");
-			if (category.description != null) {
-				categoryBuilder.append("<label text=\"").append(category.description)
+			if (category.getDescription() != null) {
+				categoryBuilder.append("<label text=\"").append(category.getDescription())
 						.append("\" web-class=\"whlab\"/>");
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
@@ -202,9 +201,8 @@ public class ExternalBlockLoader {
 			}
 			categoryBuilder.append("</category>");
 
-			if (categoryBuilder.toString().contains("<block type=")) {
+			if (categoryBuilder.toString().contains("<block type="))
 				toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryBuilder.toString()));
-			}
 		}
 	}
 
