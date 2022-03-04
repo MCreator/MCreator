@@ -28,17 +28,23 @@ import java.awt.*;
 public class ToolboxCategory {
 	private static final Logger LOG = LogManager.getLogger("Toolbox category");
 
-	String id, name, description;
-
-	String color;
+	String id, name, description, color;
 	boolean api;
 
 	public String getName() {
-		String l10nname = L10N.t("blockly.category." + id);
-		if (l10nname != null)
-			return l10nname;
+		String localized_name = L10N.t("blockly.category." + id);
+		if (localized_name != null)
+			return localized_name;
 
 		return name;
+	}
+
+	public String getDescription() {
+		String localized_desc = L10N.t("blockly.category." + id + ".description");
+		if (localized_desc != null)
+			return localized_desc;
+
+		return description;
 	}
 
 	/**
@@ -55,7 +61,7 @@ public class ToolboxCategory {
 				return Color.decode(color);
 		} catch (Exception e) {
 			LOG.warn("The color for toolbox category " + getName()
-					+ " isn't formatted correctly. Using color black for it");
+					+ " isn't formatted correctly. Using black color for it");
 			return Color.BLACK;
 		}
 	}

@@ -298,7 +298,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (source.getDirectEntity() instanceof ThrownPotion)
+			if (source.getDirectEntity() instanceof ThrownPotion || source.getDirectEntity() instanceof AreaEffectCloud)
 				return false;
 		</#if>
 		<#if data.immuneToFallDamage>
@@ -548,7 +548,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     <#if data.ranged>
 	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
+				<#if !data.rangedAttackItem.isEmpty()>
 				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE, this, this.level);
+				<#else>
+				Arrow entityarrow = new Arrow(this.level, this);
+				</#if>
 				double d0 = target.getY() + target.getEyeHeight() - 1.1;
 				double d1 = target.getX() - this.getX();
 				double d3 = target.getZ() - this.getZ();

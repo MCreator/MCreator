@@ -44,14 +44,17 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		setRegistryName("${registryname}_portal");
 	}
 
-	@Override public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
-		<#if hasProcedure(data.onPortalTickUpdate)>
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onPortalTickUpdate/>
-		</#if>
+	<#if hasProcedure(data.onPortalTickUpdate)>
+	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
+		<@procedureCode data.onPortalTickUpdate, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+		}/>
 	}
+	</#if>
 
 	<#-- Prevent ZOMBIFIED_PIGLINs from spawning -->
 	@Override public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {

@@ -27,7 +27,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 
-public class ModElementNameValidator extends JavaMemeberNameValidator {
+public class ModElementNameValidator extends JavaMemberNameValidator {
 
 	private final VTextField textField;
 	private final Workspace workspace;

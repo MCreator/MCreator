@@ -35,7 +35,8 @@ import java.util.Map;
 	private String name;
 	private String color;
 	private String blocklyVariableType;
-	private boolean returnTypeOnly;
+	private boolean ignoredByCoverage;
+	private boolean nullable;
 
 	public void setName(String name) {
 		this.name = name;
@@ -68,8 +69,12 @@ import java.util.Map;
 		}
 	}
 
-	public boolean isReturnTypeOnly() {
-		return returnTypeOnly;
+	public boolean isIgnoredByCoverage() {
+		return ignoredByCoverage;
+	}
+
+	public boolean isNullable() {
+		return nullable;
 	}
 
 	public String getBlocklyVariableType() {
