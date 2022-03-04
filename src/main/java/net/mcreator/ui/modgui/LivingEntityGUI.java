@@ -189,7 +189,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
-	private final JEntityDataList entityDataList = new JEntityDataList(mcreator, this);
+	private JEntityDataList entityDataList;
 
 	//mob bases
 	private final JComboBox<String> aiBase = new JComboBox<>(
@@ -319,6 +319,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		entityDataList = new JEntityDataList(mcreator, this);
 
 		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
 		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));

@@ -58,7 +58,10 @@ public class JEntityDataList extends JEntriesList {
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> new JEntityDataEntry(mcreator, gui, entries, entryList));
+		add.addActionListener(e -> {
+			JEntityDataEntry entry = new JEntityDataEntry(gui, entries, entryList);
+			registerEntryUI(entry);
+		});
 
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
@@ -80,7 +83,11 @@ public class JEntityDataList extends JEntriesList {
 	}
 
 	public void setEntries(List<LivingEntity.EntityDataEntry> pool) {
-		pool.forEach(e -> new JEntityDataEntry(mcreator, gui, entries, entryList).setEntry(e));
+		pool.forEach(e -> {
+			JEntityDataEntry entry = new JEntityDataEntry(gui, entries, entryList);
+			registerEntryUI(entry);
+			entry.setEntry(e);
+		});
 	}
 
 }

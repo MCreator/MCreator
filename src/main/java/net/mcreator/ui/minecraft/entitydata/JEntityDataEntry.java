@@ -27,7 +27,6 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 
 import javax.swing.*;
@@ -40,7 +39,7 @@ public class JEntityDataEntry extends JPanel {
 	private final JSpinner defaultValue = new JSpinner(
 			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 
-	public JEntityDataEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList) {
+	public JEntityDataEntry(IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
