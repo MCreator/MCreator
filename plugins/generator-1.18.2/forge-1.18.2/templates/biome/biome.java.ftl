@@ -70,7 +70,7 @@ public class ${name}Biome {
         	<#assign ct = data.treeType == data.TREES_CUSTOM>
 
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacementUtils.register("${modid}:tree_${registryname}",
-                FeatureUtils.register("${modid}:tree_${registryname}", Feature.TREE.configured(new TreeConfiguration.TreeConfigurationBuilder
+                FeatureUtils.register("${modid}:tree_${registryname}", Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder
         	    <#if data.vanillaTreeType == "Big trees">
         	        (
 			    	    BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
@@ -147,12 +147,12 @@ public class ${name}Biome {
                         .ignoreVines()
                     </#if>
                 </#if>
-            .build())).placed(CountOnEveryLayerPlacement.of(${data.treesPerChunk}))));
+            .build()), List.of(CountOnEveryLayerPlacement.of(${data.treesPerChunk}))));
         </#if>
 
         <#if (data.grassPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                PlacementUtils.register("${modid}:grass_${registryname}", VegetationFeatures.PATCH_GRASS.placed(
+                PlacementUtils.register("${modid}:grass_${registryname}", VegetationFeatures.PATCH_GRASS, List.of(
 				    NoiseThresholdCountPlacement.of(-0.8D, 5, ${data.grassPerChunk}),
                     InSquarePlacement.spread(),
                     PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
@@ -162,14 +162,14 @@ public class ${name}Biome {
 
         <#if (data.seagrassPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:seagrass_${registryname}", AquaticFeatures.SEAGRASS_SHORT.placed(
-				    AquaticPlacements.seagrassPlacement(${data.seagrassPerChunk})
-            )));
+			    PlacementUtils.register("${modid}:seagrass_${registryname}", AquaticFeatures.SEAGRASS_SHORT,
+                        AquaticPlacements.seagrassPlacement(${data.seagrassPerChunk})
+            ));
         </#if>
 
         <#if (data.flowersPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:flower_${registryname}", VegetationFeatures.FLOWER_DEFAULT.placed(
+			    PlacementUtils.register("${modid}:flower_${registryname}", VegetationFeatures.FLOWER_DEFAULT, List.of(
 				    CountPlacement.of(${data.flowersPerChunk}),
                     RarityFilter.onAverageOnceEvery(32),
                     InSquarePlacement.spread(),
@@ -180,7 +180,7 @@ public class ${name}Biome {
 
         <#if (data.mushroomsPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:brown_mushroom_${registryname}", VegetationFeatures.PATCH_BROWN_MUSHROOM.placed(
+			    PlacementUtils.register("${modid}:brown_mushroom_${registryname}", VegetationFeatures.PATCH_BROWN_MUSHROOM, List.of(
 				    CountPlacement.of(${data.mushroomsPerChunk}),
 				    RarityFilter.onAverageOnceEvery(32),
 				    InSquarePlacement.spread(),
@@ -189,7 +189,7 @@ public class ${name}Biome {
 			)));
 
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:red_mushroom_${registryname}", VegetationFeatures.PATCH_RED_MUSHROOM.placed(
+			    PlacementUtils.register("${modid}:red_mushroom_${registryname}", VegetationFeatures.PATCH_RED_MUSHROOM, List.of(
 				    CountPlacement.of(${data.mushroomsPerChunk}),
 				    RarityFilter.onAverageOnceEvery(32),
 				    InSquarePlacement.spread(),
@@ -200,7 +200,7 @@ public class ${name}Biome {
 
         <#if (data.bigMushroomsChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:mushrooms_huge_${registryname}", VegetationFeatures.MUSHROOM_ISLAND_VEGETATION.placed(
+			    PlacementUtils.register("${modid}:mushrooms_huge_${registryname}", VegetationFeatures.MUSHROOM_ISLAND_VEGETATION, List.of(
 				    CountPlacement.of(${data.bigMushroomsChunk}),
 				    InSquarePlacement.spread(),
 				    PlacementUtils.HEIGHTMAP,
@@ -210,7 +210,7 @@ public class ${name}Biome {
 
         <#if (data.reedsPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:patch_sugar_cane_${registryname}", VegetationFeatures.PATCH_SUGAR_CANE.placed(
+			    PlacementUtils.register("${modid}:patch_sugar_cane_${registryname}", VegetationFeatures.PATCH_SUGAR_CANE, List.of(
 				    RarityFilter.onAverageOnceEvery(${data.reedsPerChunk}),
                     InSquarePlacement.spread(),
                     PlacementUtils.HEIGHTMAP,
@@ -220,7 +220,7 @@ public class ${name}Biome {
 
         <#if (data.cactiPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:patch_cactus_${registryname}", VegetationFeatures.PATCH_SUGAR_CANE.placed(
+			    PlacementUtils.register("${modid}:patch_cactus_${registryname}", VegetationFeatures.PATCH_SUGAR_CANE, List.of(
 				    RarityFilter.onAverageOnceEvery(${data.cactiPerChunk}),
 				    InSquarePlacement.spread(),
 				    PlacementUtils.HEIGHTMAP,
@@ -231,9 +231,9 @@ public class ${name}Biome {
         <#if (data.sandPatchesPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
 			    PlacementUtils.register("${modid}:disk_sand_${registryname}", FeatureUtils.register("${modid}:disk_sand_${registryname}",
-                        Feature.DISK.configured(new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
-                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-                    ).placed(
+                        Feature.DISK, new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
+                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
+                    ), List.of(
 				        CountPlacement.of(${data.sandPatchesPerChunk}),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP_TOP_SOLID,
@@ -244,9 +244,9 @@ public class ${name}Biome {
         <#if (data.gravelPatchesPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
 			    PlacementUtils.register("${modid}:disk_gravel_${registryname}", FeatureUtils.register("${modid}:disk_gravel_${registryname}",
-			        Feature.DISK.configured(new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
-			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)})))
-			    ).placed(
+			        Feature.DISK, new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
+			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
+			    ), List.of(
 			        CountPlacement.of(${data.gravelPatchesPerChunk}),
 			        InSquarePlacement.spread(),
 			        PlacementUtils.HEIGHTMAP_TOP_SOLID,
