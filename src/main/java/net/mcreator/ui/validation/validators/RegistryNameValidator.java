@@ -22,6 +22,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -34,7 +35,7 @@ public class RegistryNameValidator implements Validator {
 
 	private boolean allowEmpty = false;
 
-	List<Character> validChars = Collections.singletonList('_');
+	private List<Character> validChars = Collections.singletonList('_');
 
 	private int maxLength = 64;
 
@@ -94,12 +95,8 @@ public class RegistryNameValidator implements Validator {
 		return Validator.ValidationResult.PASSED;
 	}
 
-	private static boolean isLCLetter(char c) {
-		return c >= 'a' && c <= 'z';
-	}
-
 	public static boolean isLCLetterOrDigit(char c) {
-		return isLCLetter(c) || (c >= '0' && c <= '9');
+		return StringUtils.isLowercaseLetter(c) || (c >= '0' && c <= '9');
 	}
 
 }
