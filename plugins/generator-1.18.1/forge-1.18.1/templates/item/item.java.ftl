@@ -136,7 +136,7 @@ import javax.annotation.Nullable;
 	</#if>
 
     <#if data.hasGlow>
-    @Override public boolean isFoil(ItemStack itemstack) {
+    @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
     	<#if hasProcedure(data.glowCondition)>
     	Player entity = Minecraft.getInstance().player;
     	Level world = entity.level;

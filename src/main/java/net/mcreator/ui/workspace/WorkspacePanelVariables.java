@@ -31,7 +31,7 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
@@ -112,7 +112,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					Validator validator = new JavaMemeberNameValidator(name, false);
+					Validator validator = new JavaMemberNameValidator(name, false);
 					name.setValidator(() -> {
 						String textname = Transliteration.transliterateString(name.getText());
 						for (int i = 0; i < elements.getRowCount(); i++) {
@@ -226,7 +226,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMcreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							Validator validator = new JavaMemberNameValidator((VTextField) component, false);
 							String textname = Transliteration.transliterateString(((VTextField) component).getText());
 							for (int i = 0; i < elements.getRowCount(); i++) {
 								String nameinrow = (String) elements.getValueAt(i, 0);

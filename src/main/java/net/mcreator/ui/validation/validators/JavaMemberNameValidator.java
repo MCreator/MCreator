@@ -29,12 +29,12 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class JavaMemeberNameValidator implements Validator {
+public class JavaMemberNameValidator implements Validator {
 
 	private final VTextField textField;
 	private final boolean firstLetterUppercase;
 
-	public JavaMemeberNameValidator(VTextField textField, boolean requireFirstLetterUppercase) {
+	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase) {
 		this.textField = textField;
 		this.firstLetterUppercase = requireFirstLetterUppercase;
 	}
