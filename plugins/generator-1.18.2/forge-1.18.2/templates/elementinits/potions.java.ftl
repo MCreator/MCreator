@@ -36,26 +36,16 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Potions {
+public class ${JavaModName}Potions {
 
-    private static final List<Potion> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<Potion> REGISTRY = DeferredRegister.create(ForgeRegistries.POTIONS, ${JavaModName}.MODID);
 
     <#list potions as potion>
-    public static final Potion ${potion.getModElement().getRegistryNameUpper()} = register(new Potion(
+    public static final RegistryObject<Potion> ${potion.getModElement().getRegistryNameUpper()} = REGISTRY.register("${potion.getModElement().getRegistryName()}", () -> new Potion(
         <#list potion.effects as effect>
         new MobEffectInstance(${effect.effect}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#if effect?has_next>,</#if>
-        </#list>)
-    .setRegistryName("${potion.getModElement().getRegistryName()}"));
+        </#list>));
     </#list>
-
-    private static Potion register(Potion potion) {
-		REGISTRY.add(potion);
-    	return potion;
-    }
-
-	@SubscribeEvent public static void registerPotions(RegistryEvent.Register<Potion> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Potion[0]));
-	}
 
 }
 

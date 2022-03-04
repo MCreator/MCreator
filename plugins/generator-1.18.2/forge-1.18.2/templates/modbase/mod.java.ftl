@@ -39,7 +39,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
 		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		}
+		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+	}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
 										BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {

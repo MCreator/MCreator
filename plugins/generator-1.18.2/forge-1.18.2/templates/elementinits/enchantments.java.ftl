@@ -36,23 +36,14 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Enchantments {
+public class ${JavaModName}Enchantments {
 
-	private static final List<Enchantment> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ${JavaModName}.MODID);
 
 	<#list enchantments as enchantment>
-	public static final Enchantment ${enchantment.getModElement().getRegistryNameUpper()} =
-		register("${modid}:${enchantment.getModElement().getRegistryName()}", new ${enchantment.getModElement().getName()}Enchantment());
+	public static final RegistryObject<Enchantment> ${enchantment.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("${enchantment.getModElement().getRegistryName()}", () -> new ${enchantment.getModElement().getName()}Enchantment());
 	</#list>
-
-	private static Enchantment register(String registryname, Enchantment enchantment) {
-		REGISTRY.add(enchantment.setRegistryName(registryname));
-		return enchantment;
-	}
-
-	@SubscribeEvent public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Enchantment[0]));
-	}
 
 }
 <#-- @formatter:on -->

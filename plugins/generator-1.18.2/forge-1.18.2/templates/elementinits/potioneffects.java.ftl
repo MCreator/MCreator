@@ -36,22 +36,14 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}MobEffects {
+public class ${JavaModName}MobEffects {
 
-	private static final List<MobEffect> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, ${JavaModName}.MODID);
 
 	<#list potioneffects as effect>
-	public static final MobEffect ${effect.getModElement().getRegistryNameUpper()} = register(new ${effect.getModElement().getName()}MobEffect());
+	public static final RegistryObject<MobEffect> ${effect.getModElement().getRegistryNameUpper()} =
+			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}MobEffect());
 	</#list>
-
-	private static MobEffect register(MobEffect effect) {
-		REGISTRY.add(effect);
-		return effect;
-	}
-
-	@SubscribeEvent public static void registerMobEffects(RegistryEvent.Register<MobEffect> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new MobEffect[0]));
-	}
 }
 
 <#-- @formatter:on -->

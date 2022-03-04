@@ -134,7 +134,7 @@ public class ${name}Block extends
 
 	public ${name}Block() {
 		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-		super(() -> new Block(<@blockProperties/>).defaultBlockState(),
+		super(() -> Blocks.AIR.defaultBlockState(),
 		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
 		    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
 		        super(Sensitivity.EVERYTHING,
@@ -162,6 +162,16 @@ public class ${name}Block extends
 	    );
 		</#if>
 	}
+
+	<#if data.blockBase?has_content && data.blockBase == "Stairs">
+   	@Override public float getExplosionResistance() {
+		   return ${data.resistance}f;
+   	}
+
+   	@Override public boolean isRandomlyTicking(BlockState p_56947_) {
+		   return ${data.tickRandomly?c};
+   	}
+	</#if>
 
 	<#if data.specialInfo?has_content>
 	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
