@@ -22,6 +22,7 @@ package net.mcreator.element.converter.fv26;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.types.Command;
 import net.mcreator.workspace.Workspace;
 
@@ -30,7 +31,8 @@ public class CommandArgumentBlockFixer implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Command command = (Command) input;
-		command.argsxml = "<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+		String procedure = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("onCommandExecuted").getAsJsonObject().get("name").getAsString();
+		command.argsxml = "<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\">" + procedure + "</field></block></next></block></xml>";
 		return command;
 	}
 
