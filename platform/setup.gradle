@@ -14,7 +14,7 @@ task downloadJDKWin64(type: DefaultTask, group: 'setup') {
         if (!file('jdk/jdk17_win_64/bin/java.exe').exists()) {
             mkdir 'jdk/jdk17_win_64'
 
-            download {
+            download.run {
                 src jdk17_win_64
                 dest 'build/tmp/jdk17_win_64'
                 overwrite false
@@ -33,7 +33,7 @@ task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
         if (!file('jdk/jdk17_linux_64/bin/java').exists()) {
             mkdir 'jdk/jdk17_linux_64'
 
-            download {
+            download.run {
                 src jdk17_linux_64
                 dest 'build/tmp/jdk17_linux_64'
                 overwrite false
@@ -52,7 +52,7 @@ task downloadJDKMac64(type: DefaultTask, group: 'setup') {
         if (!file('jdk/jdk17_mac_64/').exists()) {
             mkdir 'jdk/jdk17_mac_64'
 
-            download {
+            download.run {
                 src jdk17_mac_64
                 dest 'build/tmp/jdk17_mac_64'
                 overwrite false
@@ -71,7 +71,7 @@ task downloadNSIS(type: DefaultTask, group: 'setup') {
     doLast {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             if (!file('build/tools/nsis/').exists()) {
-                download {
+                download.run {
                     src nsis_url
                     dest 'build/tmp/nsis'
                     overwrite false
@@ -80,7 +80,7 @@ task downloadNSIS(type: DefaultTask, group: 'setup') {
                 file('build/tools/nsis-3.05').renameTo(file('build/tools/nsis'))
                 delete 'build/tmp/nsis'
 
-                download {
+                download.run {
                     src nsis_lockedlist_plugin_url
                     dest 'build/tmp/nsis_lockedlist_plugin'
                     overwrite false
@@ -96,7 +96,7 @@ task downloadMKISOFS(type: DefaultTask, group: 'setup') {
     doLast {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             if (!file('build/tools/mkisofs/').exists()) {
-                download {
+                download.run {
                     src mkisofs_url
                     dest 'build/tmp/mkisofs'
                     overwrite false

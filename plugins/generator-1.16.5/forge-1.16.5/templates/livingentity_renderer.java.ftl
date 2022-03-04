@@ -81,7 +81,7 @@ package ${package}.entity.renderer;
 				});
             </#if>
 
-			<#if data.ranged && data.rangedItemType == "Default item">
+			<#if data.ranged && data.rangedItemType == "Default item" && !data.rangedAttackItem.isEmpty()>
 			RenderingRegistry.registerEntityRenderingHandler(${name}Entity.arrow, renderManager -> new SpriteRenderer(renderManager, Minecraft.getInstance().getItemRenderer()));
             </#if>
 		}

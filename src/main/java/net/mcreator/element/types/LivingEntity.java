@@ -203,7 +203,7 @@ import java.util.Locale;
 	}
 
 	public boolean hasCustomProjectile() {
-		return ranged && "Default item".equals(rangedItemType);
+		return ranged && "Default item".equals(rangedItemType) && !rangedAttackItem.isEmpty();
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

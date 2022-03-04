@@ -1,5 +1,5 @@
 {
   "color": 90,
   "blocklyVariableType": "ActionResultType",
-  "returnTypeOnly": true
+  "ignoredByCoverage": true
 }
