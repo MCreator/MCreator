@@ -5,5 +5,5 @@ FAIL if the interaction failed, and PASS if there was no interaction.
 
 If the procedure doesn't return any value, the result action type will be PASS.
 
-If you want the "When right clicked" procedure to be only called when entity right clicks in the air with this item,
-this procedure should always return SUCCESS/CONSUME.
+If you want the "${l10n.t("elementgui.common.event_right_clicked_air")}" procedure to be only called 
+when entity right clicks in the air with this item, this procedure should always return SUCCESS/CONSUME.
