@@ -38,21 +38,12 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Biomes {
 
-    private static final List<Biome> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<Biome> REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
 
     <#list biomes as biome>
-    public static Biome ${biome.getModElement().getRegistryNameUpper()}
-        = register("${biome.getModElement().getRegistryName()}", ${biome.getModElement().getName()}Biome.createBiome());
+    public static final RegistryObject<Biome> ${biome.getModElement().getRegistryNameUpper()}
+        = REGISTRY.register("${biome.getModElement().getRegistryName()}", () -> ${biome.getModElement().getName()}Biome.createBiome());
     </#list>
-
-    private static Biome register(String registryname, Biome biome) {
-		REGISTRY.add(biome.setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname)));
-    	return biome;
-    }
-
-	@SubscribeEvent public static void registerBiomes(RegistryEvent.Register<Biome> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Biome[0]));
-	}
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
