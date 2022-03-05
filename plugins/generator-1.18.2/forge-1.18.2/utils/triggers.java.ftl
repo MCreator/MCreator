@@ -209,7 +209,7 @@
 	"entity": "entity",
 	"itemstack": "itemstack"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -227,7 +227,7 @@
 	"blockstate": "blockstate"
 	}/>
 			return retval;
-			}
+}
 	</#if>
 </#macro>
 
@@ -241,7 +241,7 @@
 	"z": "pos.getZ()",
 	"world": "world"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -257,7 +257,7 @@
 	"entity": "entity",
 	"blockstate": "blockstate"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -279,7 +279,7 @@
 		"moving": "moving"
 		}/>
 	</#if>
-			}
+}
 	</#if>
 </#macro>
 
@@ -295,7 +295,7 @@
 	"entity": "entity",
 	"blockstate": "blockstate"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -312,7 +312,7 @@
 	"blockstate": "blockstate",
 	"itemstack": "itemstack"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -328,7 +328,7 @@
 	"entity": "entity",
 	"blockstate": "blockstate"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -368,7 +368,7 @@
 		"blockstate": "blockstate"
 		}/>
 	</#if>
-			}
+}
 	</#if>
 </#macro>
 
@@ -384,7 +384,7 @@
 	"entity": "Minecraft.getInstance().player",
 	"blockstate": "blockstate"
 	}/>
-			}
+}
 	</#if>
 </#macro>
 
@@ -402,7 +402,7 @@
 	<#if scheduleTick>
 	world.scheduleTick(pos, this, ${tickRate});
 	</#if>
-			}
+}
 	</#if>
 </#macro>
 
@@ -422,6 +422,6 @@
 	"hitY": "hit.getLocation().y()",
 	"hitZ": "hit.getLocation().z()"
 	}/>
-			}
+}
 	</#if>
 </#macro>
