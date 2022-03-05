@@ -45,7 +45,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -380,7 +380,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							Validator validator = new JavaMemberNameValidator((VTextField) component, false);
 							String textname = Transliteration.transliterateString(((VTextField) component).getText());
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
