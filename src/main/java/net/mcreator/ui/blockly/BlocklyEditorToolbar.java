@@ -196,11 +196,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.getExtension() });
 			if (exp != null) {
 				try {
-					if (blocklyEditorType == BlocklyEditorType.AI_TASK) {
-						ProcedureTemplateIO.exportAITaskSetup(blocklyPanel.getXML(), exp);
-					} else if (blocklyEditorType == BlocklyEditorType.PROCEDURE) {
-						ProcedureTemplateIO.exportProcedure(blocklyPanel.getXML(), exp);
-					}
+					ProcedureTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,

@@ -30,7 +30,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.swing.*;
@@ -85,7 +85,7 @@ public class TextureMappingDialog {
 							L10N.t("dialog.textures_mapping.enter_name_message"),
 							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidatior() {
 								@Override public Validator.ValidationResult validate(JComponent component) {
-									return new JavaMemeberNameValidator((VTextField) component, false).validate();
+									return new JavaMemberNameValidator((VTextField) component, false).validate();
 								}
 							});
 					if (mapping != null) {

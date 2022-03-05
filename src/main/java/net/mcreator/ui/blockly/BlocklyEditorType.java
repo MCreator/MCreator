@@ -21,15 +21,17 @@ package net.mcreator.ui.blockly;
 
 public enum BlocklyEditorType {
 
-	PROCEDURE("procedures", "ptpl"),
-	AI_TASK("ai_setup", "aitpl");
+	PROCEDURE("procedures", "ptpl", "event_trigger"),
+	AI_TASK("ai_setup", "aitpl", "aitasks_container");
 
 	private final String translationKey;
 	private final String extension;
+	private final String startBlockName;
 
-	BlocklyEditorType(String translationKey, String extension) {
+	BlocklyEditorType(String translationKey, String extension, String startBlockName) {
 		this.translationKey = translationKey;
 		this.extension = extension;
+		this.startBlockName = startBlockName;
 	}
 
 	public String getTranslationKey() {
@@ -38,5 +40,9 @@ public enum BlocklyEditorType {
 
 	public String getExtension() {
 		return extension;
+	}
+
+	public String getStartBlockName() {
+		return startBlockName;
 	}
 }
