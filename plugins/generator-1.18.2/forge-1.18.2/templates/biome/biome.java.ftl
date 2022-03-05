@@ -36,8 +36,9 @@ package ${package}.world.biome;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import com.mojang.datafixers.util.Pair;
 
-public class ${name}Biome {
+<#if data.spawnBiome>@Mod.EventBusSubscriber </#if>public class ${name}Biome {
 
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -297,21 +298,52 @@ public class ${name}Biome {
         	);
         </#if>
 
-        <#-- TODO: this does in fact no longer work. new api / mixin needed
-        // worth checking https://github.com/team-abnormals/blueprint/commit/7a65df5aab627d31dff13af322d4b1f88b58952c
-        // the best soultion would be https://github.com/MinecraftForge/MinecraftForge/pull/8316
-        // maybe https://github.com/SpongePowered/Mixin/wiki/Mixins-on-Minecraft-Forge
-        Should also include these parameters:
-        ${mappedBlockToBlockStateCode(data.groundBlock)}
-        ${mappedBlockToBlockStateCode(data.undergroundBlock)}
-        ${data.baseHeight}
-        ${data.heightVariation}
-        <#if data.spawnBiome>
-            BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
-                new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
-        </#if>
-        -->
     }
+
+    <#if data.spawnBiome>
+    <#-- TODO: implement these, will need to hack into SurfaceRuleData likely
+    ${mappedBlockToBlockStateCode(data.groundBlock)}
+    ${mappedBlockToBlockStateCode(data.undergroundBlock)}
+    ${data.baseHeight}
+    ${data.heightVariation}
+    ${data.biomeWeight}
+    ${data.biomeType}
+    -->
+
+    @SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
+    	MinecraftServer server = event.getServer();
+    	WorldGenSettings worldGenSettings = server.getWorldData().worldGenSettings();
+		Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
+		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+
+		for (Map.Entry<ResourceKey<LevelStem>, LevelStem> entry : worldGenSettings.dimensions().entrySet()) {
+            ChunkGenerator chunkGenerator = entry.getValue().generator();
+            BiomeSource source = chunkGenerator.getBiomeSource();
+
+			DimensionType dimensionType = entry.getValue().typeHolder().value();
+			if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.OVERWORLD_LOCATION)
+                    && source instanceof MultiNoiseBiomeSource noiseSource) {
+				List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
+				Climate.ParameterPoint parameterPoint = new Climate.ParameterPoint(
+						Climate.Parameter.point(0), // temperature
+						Climate.Parameter.point(0), // humidity
+						Climate.Parameter.point(0), // continentalness
+						Climate.Parameter.point(0), // erosion
+						Climate.Parameter.point(0), // depth
+						Climate.Parameter.point(0), // weirdness
+                        0 // offset
+                );
+
+				Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("${modid}:${registryname}")));
+				parameters.add(new Pair<>(parameterPoint, customBiomeHolder));
+
+				MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
+				chunkGenerator.biomeSource = moddedNoiseSource;
+				chunkGenerator.runtimeBiomeSource = moddedNoiseSource;
+			}
+    	}
+    }
+    </#if>
 
 }
 
