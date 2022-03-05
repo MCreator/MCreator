@@ -131,6 +131,17 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			hasResultTriggerLabel.setIcon(null);
 			sideTriggerLabel.setIcon(null);
 
+			// Check that no local variable has the same name as one of the dependencies
+			for (var dependency : dependenciesArrayList) {
+				for (int i = 0; i < localVars.getSize(); i++) {
+					if (dependency.getName().equals(localVars.get(i).getName())) {
+						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.getName())));
+						break; // We found a match, there's no need to check the other variables
+					}
+				}
+			}
+
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
 			} else if (dependenciesBeforeEdit != null) {
