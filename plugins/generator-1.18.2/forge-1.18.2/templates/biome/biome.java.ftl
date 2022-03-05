@@ -298,96 +298,17 @@ public class ${name}Biome {
         </#if>
 
         <#-- TODO: this does in fact no longer work. new api / mixin needed
+        // worth checking https://github.com/team-abnormals/blueprint/commit/7a65df5aab627d31dff13af322d4b1f88b58952c
+        // the best soultion would be https://github.com/MinecraftForge/MinecraftForge/pull/8316
         // maybe https://github.com/SpongePowered/Mixin/wiki/Mixins-on-Minecraft-Forge
         Should also include these parameters:
         ${mappedBlockToBlockStateCode(data.groundBlock)}
         ${mappedBlockToBlockStateCode(data.undergroundBlock)}
         ${data.baseHeight}
         ${data.heightVariation}
-
         <#if data.spawnBiome>
             BiomeManager.addBiome(BiomeManager.BiomeType.${data.biomeType},
                 new BiomeManager.BiomeEntry(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case})), ${data.biomeWeight}));
-        </#if>
-
-        <#if data.spawnStronghold>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.STRONGHOLD);
-        </#if>
-
-        <#if data.spawnMineshaft>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.MINESHAFT);
-        </#if>
-
-        <#if data.spawnMineshaftMesa>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.MINESHAFT_MESA);
-        </#if>
-
-        <#if data.spawnPillagerOutpost>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.PILLAGER_OUTPOST);
-        </#if>
-
-        <#if data.villageType != "none">
-            biomeGenerationSettings.addStructureStart(StructureFeatures.VILLAGE_${data.villageType?upper_case});
-        </#if>
-
-        <#if data.spawnWoodlandMansion>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.WOODLAND_MANSION);
-        </#if>
-
-        <#if data.spawnJungleTemple>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.JUNGLE_TEMPLE);
-        </#if>
-
-        <#if data.spawnDesertPyramid>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.DESERT_PYRAMID);
-        </#if>
-
-        <#if data.spawnSwampHut>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.SWAMP_HUT);
-        </#if>
-
-        <#if data.spawnIgloo>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.IGLOO);
-        </#if>
-
-        <#if data.spawnOceanMonument>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.OCEAN_MONUMENT);
-        </#if>
-
-        <#if data.spawnShipwreck>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.SHIPWRECK);
-        </#if>
-
-        <#if data.spawnShipwreckBeached>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.SHIPWRECH_BEACHED);
-        </#if>
-
-        <#if data.spawnBuriedTreasure>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.BURIED_TREASURE);
-        </#if>
-
-        <#if data.oceanRuinType != "NONE">
-            biomeGenerationSettings.addStructureStart(StructureFeatures.OCEAN_RUIN_${data.oceanRuinType});
-        </#if>
-
-        <#if data.spawnNetherBridge>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.NETHER_BRIDGE);
-        </#if>
-
-        <#if data.spawnNetherFossil>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.NETHER_FOSSIL);
-        </#if>
-
-        <#if data.spawnBastionRemnant>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.BASTION_REMNANT);
-        </#if>
-
-        <#if data.spawnEndCity>
-            biomeGenerationSettings.addStructureStart(StructureFeatures.END_CITY);
-        </#if>
-
-        <#if data.spawnRuinedPortal != "NONE">
-            biomeGenerationSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_${data.spawnRuinedPortal});
         </#if>
         -->
     }
