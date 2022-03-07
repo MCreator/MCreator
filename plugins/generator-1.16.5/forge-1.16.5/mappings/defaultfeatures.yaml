@@ -2,9 +2,7 @@ _default: null
 Bamboo: BambooVegetation
 BerryBushes: ChanceBerries
 Caves: CavesAndCanyons
-DeadBushes: DesertDeadBushes
 DesertFeatures: DesertWells
-ExtraEmeraldOre: EmeraldOre
 ExtraGoldOre: ExtraGoldOre
 Fossils: Fossils
 FrozenTopLayer: FrozenTopLayer
