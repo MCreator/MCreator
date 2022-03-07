@@ -301,48 +301,75 @@ import com.mojang.datafixers.util.Pair;
     }
 
     <#if data.spawnBiome>
-    <#-- TODO: implement these, will need to hack into SurfaceRuleData likely
-    ${mappedBlockToBlockStateCode(data.groundBlock)}
-    ${mappedBlockToBlockStateCode(data.undergroundBlock)}
-    ${data.baseHeight}
-    ${data.heightVariation}
-    ${data.biomeWeight}
-    ${data.biomeType}
-    -->
-
     @SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
     	MinecraftServer server = event.getServer();
-    	WorldGenSettings worldGenSettings = server.getWorldData().worldGenSettings();
 		Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
-		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+		WorldGenSettings worldGenSettings = server.getWorldData().worldGenSettings();
 
 		for (Map.Entry<ResourceKey<LevelStem>, LevelStem> entry : worldGenSettings.dimensions().entrySet()) {
-            ChunkGenerator chunkGenerator = entry.getValue().generator();
-            BiomeSource source = chunkGenerator.getBiomeSource();
-
 			DimensionType dimensionType = entry.getValue().typeHolder().value();
-			if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.OVERWORLD_LOCATION)
-                    && source instanceof MultiNoiseBiomeSource noiseSource) {
-				List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
-				Climate.ParameterPoint parameterPoint = new Climate.ParameterPoint(
-						Climate.Parameter.point(0), // temperature
-						Climate.Parameter.point(0), // humidity
-						Climate.Parameter.point(0), // continentalness
-						Climate.Parameter.point(0), // erosion
-						Climate.Parameter.point(0), // depth
-						Climate.Parameter.point(0), // weirdness
-                        0 // offset
-                );
-
-				Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("${modid}:${registryname}")));
-				parameters.add(new Pair<>(parameterPoint, customBiomeHolder));
-
-				MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
-				chunkGenerator.biomeSource = moddedNoiseSource;
-				chunkGenerator.runtimeBiomeSource = moddedNoiseSource;
+			if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.OVERWORLD_LOCATION)) {
+				registerToDimension(server, entry.getValue());
 			}
     	}
     }
+
+	public static void registerToDimension(MinecraftServer server, LevelStem levelStem) {
+		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+
+		// Inject biome source
+		ChunkGenerator chunkGenerator = levelStem.generator();
+		if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
+			List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
+			Climate.ParameterPoint parameterPoint = new Climate.ParameterPoint(
+					// source: https://minecraft.fandom.com/wiki/Custom_dimension
+					Climate.Parameter.point(0), // temperature - use ${data.biomeType}
+					Climate.Parameter.point(0), // humidity - use ${data.biomeType}
+					Climate.Parameter.point(0), // continentalness (low: oceans, high: inlands) - ${data.baseHeight}
+					Climate.Parameter.point(0), // erosion (high: flat terrain) - ${data.heightVariation}
+					Climate.Parameter.point(0), // depth - 0 surface, 1 - 128 below surface - cave biome
+					Climate.Parameter.point(0), // weirdness
+					0 // offset - bigger value makes biome rarer - use ${data.biomeWeight}
+			);
+
+            Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("${modid}:${registryname}")));
+			parameters.add(new Pair<>(parameterPoint, customBiomeHolder));
+
+			MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
+			chunkGenerator.biomeSource = moddedNoiseSource;
+			chunkGenerator.runtimeBiomeSource = moddedNoiseSource;
+        }
+
+		// Inject surface rule
+		/*if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+			NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
+			SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
+			if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+				SurfaceRules.RuleSource customBiomeRule = SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
+				    SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
+					    SurfaceRules.sequence(
+						    SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
+							    SurfaceRules.sequence(
+								    SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
+									    SurfaceRules.state(${mappedBlockToBlockStateCode(data.groundBlock)})
+									),
+								    SurfaceRules.state(${mappedBlockToBlockStateCode(data.undergroundBlock)})
+                                )
+						    ),
+							SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
+							    SurfaceRules.state(${mappedBlockToBlockStateCode(data.undergroundBlock)})
+							)
+                        )
+                    )
+                );
+
+				List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
+				surfaceRules.add(1, customBiomeRule);
+
+				noiseGeneratorSettings.surfaceRule = SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i]));
+			}
+		}*/
+	}
     </#if>
 
 }

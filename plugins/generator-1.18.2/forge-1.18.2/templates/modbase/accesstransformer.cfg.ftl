@@ -13,6 +13,9 @@ public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48438_ #preset
 public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48435_ #parameters
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_62137_ #biomeSource
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_62138_ #runtimeBiomeSource
+public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
+public-f net.minecraft.world.level.levelgen.NoiseGeneratorSettings f_188871_ #surfaceRule
+public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
 
 <#if w.hasGameRulesOfType("Number")>
