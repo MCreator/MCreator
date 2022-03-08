@@ -317,6 +317,8 @@ import com.mojang.datafixers.util.Pair;
 	public static void registerToDimension(MinecraftServer server, LevelStem levelStem) {
 		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
 
+		ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("${modid}:${registryname}"));
+
 		// Inject biome source
 		ChunkGenerator chunkGenerator = levelStem.generator();
 		if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
@@ -332,7 +334,7 @@ import com.mojang.datafixers.util.Pair;
 					0 // offset - bigger value makes biome rarer - use ${data.biomeWeight}
 			);
 
-            Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("${modid}:${registryname}")));
+            Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(biomeKey);
 			parameters.add(new Pair<>(parameterPoint, customBiomeHolder));
 
 			MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
@@ -341,7 +343,7 @@ import com.mojang.datafixers.util.Pair;
         }
 
 		// Inject surface rule
-		/*if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+		if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
 			NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
 			SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
 			if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
@@ -368,7 +370,7 @@ import com.mojang.datafixers.util.Pair;
 
 				noiseGeneratorSettings.surfaceRule = SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i]));
 			}
-		}*/
+		}
 	}
     </#if>
 
