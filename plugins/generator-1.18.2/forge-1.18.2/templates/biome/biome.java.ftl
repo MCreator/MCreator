@@ -255,7 +255,7 @@ import com.mojang.datafixers.util.Pair;
             )));
         </#if>
 
-        <#list data.defaultFeatures as defaultFeature>
+        <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         	<#if mfeat != "null">
             BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
@@ -297,7 +297,6 @@ import com.mojang.datafixers.util.Pair;
         	</#list>
         	);
         </#if>
-
     }
 
     <#if data.spawnBiome>

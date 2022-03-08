@@ -1,18 +1,19 @@
 _default: null
+Icebergs: Icebergs
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
-BerryBushes: BerryBushes
 Caves: DefaultCarversAndLakes
 DeadBushes: DesertVegetation
 DesertFeatures: DesertExtraDecoration
 Dripstone: Dripstone
-ExtraEmeraldOre: ExtraEmeralds
 ExtraGoldOre: ExtraGold
+ExtraEmeraldOre: ExtraEmeralds
 Fossils: FossilDecoration
 FrozenTopLayer: SurfaceFreezing
-Icebergs: Icebergs
 InfestedStone: InfestedStone
 JungleGrass: JungleGrass
+# order seems ok up to here
+
 JungleTreeForest: JungleTrees
 LushCavesDecoration: LushCavesVegetationFeatures
 MeadowVegetation: MeadowVegetation
@@ -32,5 +33,5 @@ TallSeagrassLush: DefaultSeagrass
 WarmFlowers: WarmFlowers
 
 #Legcay
-Lakes: DefaultCarversAndLakes
-OceanCaves: DefaultCarversAndLakes
+Lakes: null
+OceanCaves: null
