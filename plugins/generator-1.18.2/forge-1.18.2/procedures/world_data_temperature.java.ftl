@@ -1,1 +1,2 @@
-/*@float*/(world.getBiome(new BlockPos((int) ${input$x}, (int) ${input$y}, (int) ${input$z})).value().getBaseTemperature() * 100f)
+<#include "mcelements.ftl">
+/*@float*/(world.getBiome(${toBlockPos(input$x,input$y,input$z)}).value().getBaseTemperature() * 100f)

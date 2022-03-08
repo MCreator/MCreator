@@ -1,2 +1,2 @@
-/*@int*/(world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}))
-        .getLightBlock(world,new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+/*@int*/(world.getBlockState(${toBlockPos(input$x,input$y,input$z)}).getLightBlock(world,${toBlockPos(input$x,input$y,input$z)}))

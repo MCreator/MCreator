@@ -1,7 +1,8 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 {
 	if(${input$entity} instanceof ServerPlayer _ent) {
-		BlockPos _bpos = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
+		BlockPos _bpos = ${toBlockPos(input$x,input$y,input$z)};
 		NetworkHooks.openGui((ServerPlayer) _ent, new MenuProvider() {
 			@Override public Component getDisplayName() {
 				return new TextComponent("${field$guiname}");

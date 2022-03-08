@@ -1,1 +1,2 @@
-(world.canSeeSkyFromBelowWater(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+(world.canSeeSkyFromBelowWater(${toBlockPos(input$x,input$y,input$z)}))

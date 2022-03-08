@@ -1,2 +1,3 @@
+<#include "mcelements.ftl">
 if (world.getLevelData() instanceof WritableLevelData _levelData)
-    _levelData.setSpawn(new BlockPos((int) ${input$x}, (int) ${input$y}, (int) ${input$z}), 0);
+    _levelData.setSpawn(${toBlockPos(input$x,input$y,input$z)}, 0);

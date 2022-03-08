@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@int*/(new Object() {
 	public int getAmount(LevelAccessor world, BlockPos pos, int slotid) {
@@ -8,5 +9,5 @@
 				.ifPresent(capability -> _retval.set(capability.getStackInSlot(slotid).getCount()));
 		return _retval.get();
 	}
-}.getAmount(world, new BlockPos((int) ${input$x}, (int) ${input$y}, (int) ${input$z}), ${opt.toInt(input$slotid)}))
+}.getAmount(world, ${toBlockPos(input$x,input$y,input$z)}, ${opt.toInt(input$slotid)}))
 <#-- @formatter:on -->

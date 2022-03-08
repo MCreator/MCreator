@@ -1,1 +1,2 @@
-(new ResourceLocation("${generator.map(field$biome, "biomes")}").equals(world.getBiome(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).value().getRegistryName()))
+<#include "mcelements.ftl">
+(new ResourceLocation("${generator.map(field$biome, "biomes")}").equals(world.getBiome(${toBlockPos(input$x,input$y,input$z)}).value().getRegistryName()))

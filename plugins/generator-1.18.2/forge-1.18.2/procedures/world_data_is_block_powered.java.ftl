@@ -1,1 +1,2 @@
-(world instanceof Level _lvl_isPow ? _lvl_isPow.hasNeighborSignal(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})):false)
+<#include "mcelements.ftl">
+(world instanceof Level _lvl_isPow ? _lvl_isPow.hasNeighborSignal(${toBlockPos(input$x,input$y,input$z)}):false)

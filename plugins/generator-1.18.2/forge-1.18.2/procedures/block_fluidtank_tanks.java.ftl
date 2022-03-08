@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@int*/(new Object() {
 	public int getBlockTanks(LevelAccessor level, BlockPos pos) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.getTanks()));
 		return _retval.get();
 	}
-}.getBlockTanks(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+}.getBlockTanks(world, ${toBlockPos(input$x,input$y,input$z)}))
 <#-- @formatter:on -->
