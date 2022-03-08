@@ -1,10 +1,12 @@
 _default: null
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
-BerryBushes: CommonBerryBushes
+BerryBushes: BerryBushes
 Caves: DefaultCarversAndLakes
+DeadBushes: DesertVegetation
 DesertFeatures: DesertExtraDecoration
 Dripstone: Dripstone
+ExtraEmeraldOre: ExtraEmeralds
 ExtraGoldOre: ExtraGold
 Fossils: FossilDecoration
 FrozenTopLayer: SurfaceFreezing
@@ -20,13 +22,15 @@ PlainsTallGrass: SavannaGrass
 ReedsAndPumpkins: DefaultExtraVegetation
 SavannaTrees: SavannaTrees
 SedimentDisks: DefaultSoftDisks
+SwampClayDisks: SwampClayDisk
 SwampVegetation: SwampVegetation
 TaigaGrassAndMushrooms: TaigaGrass
+TaigaGrassDeadBushesMushrooms: GiantTaigaVegetation
 TaigaLargeFerns: Ferns
 TaigaRocks: MossyStoneBlock
 TallSeagrassLush: DefaultSeagrass
 WarmFlowers: WarmFlowers
 
 #Legcay
-Lakes: null
-OceanCaves: null
+Lakes: DefaultCarversAndLakes
+OceanCaves: DefaultCarversAndLakes
