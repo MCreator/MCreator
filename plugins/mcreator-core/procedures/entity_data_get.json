@@ -10,8 +10,8 @@
     "custom_entity_with_entity_data_list_provider"
   ],
   "inputsInline": true,
-  "colour": "%{BKY_MATH_HUE}",
-  "output": "Number",
+  "colour": 195,
+  "output": null,
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [

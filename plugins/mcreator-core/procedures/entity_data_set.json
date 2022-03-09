@@ -7,8 +7,7 @@
     },
     {
       "type": "input_value",
-      "name": "value",
-      "check": "Number"
+      "name": "value"
     }
   ],
   "extensions": [
@@ -21,8 +20,7 @@
   "mcreator": {
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "fields": [
       "customentity",

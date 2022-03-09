@@ -1,0 +1,1 @@
+This is the type of the entity's variable. It can be a number, logic or String value.
