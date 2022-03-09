@@ -58,7 +58,7 @@ public class JEntityDataEntry extends JPanel {
 		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"), L10N.label("dialog.entity_data.name")));
 		add(name);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_type"), L10N.label("elementgui.entity_data.type")));
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_type"), L10N.label("dialog.entity_data.type")));
 		entryType.addActionListener(e -> updateDefaultValueUI());
 		add(entryType);
 
