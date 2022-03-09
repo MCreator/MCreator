@@ -20,12 +20,12 @@
 package net.mcreator.ui.minecraft.entitydata;
 
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 
@@ -36,8 +36,14 @@ import java.util.List;
 public class JEntityDataEntry extends JPanel {
 
 	private final VTextField name = new VTextField(20);
-	private final JSpinner defaultValue = new JSpinner(
+	private final JComboBox<String> entryType = new JComboBox<>(new String[] { "Number", "Logic", "String" });
+	private final JSpinner defaultNumberValue = new JSpinner(
 			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
+	private final JComboBox<String> defaultLogicValue = new JComboBox<>(new String[] { "false", "true" });
+	private final JTextField defaultStringValue = new JTextField(15);
+
+	private final CardLayout cl = new CardLayout();
+	private final JPanel defaultValue = new JPanel(cl);
 
 	public JEntityDataEntry(IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
@@ -49,9 +55,16 @@ public class JEntityDataEntry extends JPanel {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("dialog.entity_data.name.needs_name")));
 		name.enableRealtimeValidation();
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"),
-				L10N.label("dialog.entity_data.name")));
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"), L10N.label("dialog.entity_data.name")));
 		add(name);
+
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_type"), L10N.label("elementgui.entity_data.type")));
+		entryType.addActionListener(e -> updateDefaultValueUI());
+		add(entryType);
+
+		defaultValue.add(defaultNumberValue, "Number");
+		defaultValue.add(defaultLogicValue, "Logic");
+		defaultValue.add(defaultStringValue, "String");
 
 		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_default_value"),
 				L10N.label("dialog.entity_data.default_value")));
@@ -67,19 +80,30 @@ public class JEntityDataEntry extends JPanel {
 		});
 		add(remove);
 
+		updateDefaultValueUI();
 		parent.revalidate();
 		parent.repaint();
+	}
+
+	private void updateDefaultValueUI() {
+		cl.show(defaultValue, (String) entryType.getSelectedItem());
 	}
 
 	public LivingEntity.EntityDataEntry getEntry() {
 		LivingEntity.EntityDataEntry entry = new LivingEntity.EntityDataEntry();
 		entry.name = name.getText().replace(" ", "_");
-		entry.defaultValue = (int) defaultValue.getValue();
+		entry.type = (String) entryType.getSelectedItem();
+		entry.defaultNumberValue = (int) defaultNumberValue.getValue();
+		entry.defaultLogicValue = Boolean.parseBoolean((String) defaultLogicValue.getSelectedItem());
+		entry.defaultStringValue = defaultStringValue.getText();
 		return entry;
 	}
 
 	public void setEntry(LivingEntity.EntityDataEntry entry) {
 		name.setText(entry.name);
-		defaultValue.setValue(entry.defaultValue);
+		entryType.setSelectedItem(entry.type);
+		defaultNumberValue.setValue(entry.defaultNumberValue);
+		defaultLogicValue.setSelectedItem(entry.defaultLogicValue);
+		defaultStringValue.setText(entry.defaultStringValue);
 	}
 }

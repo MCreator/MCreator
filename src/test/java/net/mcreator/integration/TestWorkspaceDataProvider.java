@@ -839,9 +839,22 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				for (int i = 0; i < 3; i++) {
 					LivingEntity.EntityDataEntry numberEntry = new LivingEntity.EntityDataEntry();
-					numberEntry.name = "test" + i;
-					numberEntry.defaultValue = i;
+					numberEntry.name = "testNumber" + i;
+					numberEntry.type = "Number";
+					numberEntry.defaultNumberValue = i;
 					livingEntity.entityDataEntries.add(numberEntry);
+
+					LivingEntity.EntityDataEntry logicEntry = new LivingEntity.EntityDataEntry();
+					logicEntry.name = "testLogic" + i;
+					logicEntry.type = "Logic";
+					logicEntry.defaultLogicValue = i > 1;
+					livingEntity.entityDataEntries.add(logicEntry);
+
+					LivingEntity.EntityDataEntry stringEntry = new LivingEntity.EntityDataEntry();
+					stringEntry.name = "testString" + i;
+					stringEntry.type = "String";
+					stringEntry.defaultStringValue = String.valueOf(i);
+					livingEntity.entityDataEntries.add(stringEntry);
 				}
 			}
 

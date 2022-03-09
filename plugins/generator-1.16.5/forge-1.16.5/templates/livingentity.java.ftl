@@ -209,7 +209,13 @@ import net.minecraft.block.material.Material;
 
         <#if data.entityDataEntries?has_content>
             <#list data.entityDataEntries as entry>
-                public static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.VARINT);
+                <#if entry.type == "Number">
+                    public static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.INT);
+                <#elseif entry.type == "Logic">
+                    public static final DataParameter<Boolean> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.BOOLEAN);
+                <#elseif entry.type == "String">
+                    public static final DataParameter<String> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.STRING);
+                </#if>
             </#list>
         </#if>
 
@@ -305,8 +311,14 @@ import net.minecraft.block.material.Material;
 	        @Override
         	    protected void registerData() {
         		    super.registerData();
-        		    <#list data.entityDataEntries as entry>
-        		        this.dataManager.register(${entry.name}, ${entry.defaultValue});
+                    <#list data.entityDataEntries as entry>
+                        <#if entry.type == "Number">
+                            this.dataManager.register(${entry.name}, ${entry.defaultNumberValue});
+                        <#elseif entry.type == "Logic">
+                            this.dataManager.register(${entry.name}, ${entry.defaultLogicValue});
+                        <#elseif entry.type == "String">
+                            this.dataManager.register(${entry.name}, "${entry.defaultStringValue}");
+                        </#if>
                     </#list>
         	    }
         </#if>
