@@ -205,8 +205,6 @@ public class GTProcedureBlocks {
 											.append(ListUtils.getRandomItem(random, values)).append("</field>");
 								}
 								processed++;
-							} else {
-								System.err.println("list: " + suggestedDataListName); // todo: remove me
 							}
 						}
 					}
