@@ -210,7 +210,7 @@ import net.minecraft.block.material.Material;
         <#if data.entityDataEntries?has_content>
             <#list data.entityDataEntries as entry>
                 <#if entry.type == "Number">
-                    public static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.INT);
+                    public static final DataParameter<Integer> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.VARINT);
                 <#elseif entry.type == "Logic">
                     public static final DataParameter<Boolean> ${entry.name} = EntityDataManager.createKey(${name}Entity.CustomEntity.class, DataSerializers.BOOLEAN);
                 <#elseif entry.type == "String">
