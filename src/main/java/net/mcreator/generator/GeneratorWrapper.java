@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
 
 	public Collection<String> sortByMappings(Collection<String> input, String mappingTable) {
 		List<?> mappingkeys = new ArrayList<>(generator.getMappings().getMapping(mappingTable).keySet());
-		return input.stream().sorted(Comparator.comparingInt(mappingkeys::indexOf)).toList();
+		return new LinkedHashSet<>(input.stream().sorted(Comparator.comparingInt(mappingkeys::indexOf)).toList());
 	}
 
 	public List<Procedure> procedureNamesToObjects(String proceduresString) {

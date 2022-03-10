@@ -1,30 +1,28 @@
 _default: null
+JungleTreeForest: JungleTrees
+PlainsTallGrass: SavannaGrass
 Icebergs: Icebergs
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
 Caves: DefaultCarversAndLakes
 DeadBushes: DesertVegetation
+SwampVegetation: SwampVegetation
 DesertFeatures: DesertExtraDecoration
 Dripstone: Dripstone
+Ores: DefaultOres
+SavannaTrees: SavannaTrees
 ExtraGoldOre: ExtraGold
 ExtraEmeraldOre: ExtraEmeralds
 Fossils: FossilDecoration
 FrozenTopLayer: SurfaceFreezing
 InfestedStone: InfestedStone
 JungleGrass: JungleGrass
-# order seems ok up to here
-
-JungleTreeForest: JungleTrees
 LushCavesDecoration: LushCavesVegetationFeatures
 MeadowVegetation: MeadowVegetation
 MonsterRooms: DefaultMonsterRoom
-Ores: DefaultOres
-PlainsTallGrass: SavannaGrass
 ReedsAndPumpkins: DefaultExtraVegetation
-SavannaTrees: SavannaTrees
-SedimentDisks: DefaultSoftDisks
-SwampClayDisks: SwampClayDisk
-SwampVegetation: SwampVegetation
+# order seems ok up to here
+
 TaigaGrassAndMushrooms: TaigaGrass
 TaigaGrassDeadBushesMushrooms: GiantTaigaVegetation
 TaigaLargeFerns: Ferns
