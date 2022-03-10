@@ -65,31 +65,33 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 	</#if>
 </#function>
 
-<#function baseHeight2continentalness baseHeight>
+<#function baseHeight2continentalness baseHeight biomeWeight>
 	<#-- continentalness (low: oceans, high: inlands) -->
-	<#assign base = baseHeight / 10>
-	<#return (base - 0.2)?string + "f, " + (base + 0.2)?string + "f">
+	<#assign base = baseHeight / 10.0>
+	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
 </#function>
 
-<#function heightVariation2erosion heightVariation>
+<#function heightVariation2erosion heightVariation biomeWeight>
 	<#-- erosion (high: flat terrain) -->
 	<#assign base = 2 - heightVariation - 1>
-	<#return (base - 0.2)?string + "f, " + (base + 0.2)?string + "f">
+	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
+</#function>
+
+<#function normalizeWeight biomeWeight>
+    <#return (biomeWeight / 50.0)>
 </#function>
 
 public class ${name}Biome {
 
 	<#if data.spawnBiome>
-	<#-- TODO: use data.biomeWeight as offset parameter for base span -->
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-			<#-- https://minecraft.fandom.com/wiki/Custom_dimension -->
-			Climate.Parameter.span(${type2temperature(data.biomeType)}),
-			Climate.Parameter.span(${type2humidity(data.biomeType)}),
-			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight)}),
-			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation)}),
-			Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-			Climate.Parameter.span(-1, 1), <#-- weirdness TODO: use random biome regname seeded value here so same param biomes can co-exist -->
-			0
+	    Climate.Parameter.span(${type2temperature(data.biomeType)}),
+	    Climate.Parameter.span(${type2humidity(data.biomeType)}),
+	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+	    Climate.Parameter.span(-1, 1), <#-- weirdness TODO: use random biome regname seeded value here so same param biomes can co-exist -->
+	    0 <#-- offset -->
 	);
 	</#if>
 
