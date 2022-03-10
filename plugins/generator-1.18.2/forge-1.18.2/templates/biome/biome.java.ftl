@@ -40,6 +40,17 @@ import com.mojang.datafixers.util.Pair;
 
 <#if data.spawnBiome>@Mod.EventBusSubscriber </#if>public class ${name}Biome {
 
+	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
+			// source: https://minecraft.fandom.com/wiki/Custom_dimension
+			Climate.Parameter.point(0), // temperature - use ${data.biomeType}
+			Climate.Parameter.point(0), // humidity - use ${data.biomeType}
+			Climate.Parameter.point(0), // continentalness (low: oceans, high: inlands) - ${data.baseHeight}
+			Climate.Parameter.point(0), // erosion (high: flat terrain) - ${data.heightVariation}
+			Climate.Parameter.point(0), // depth - 0 surface, 1 - 128 below surface - cave biome
+			Climate.Parameter.point(0), // weirdness
+			0 // offset - bigger value makes biome rarer - use ${data.biomeWeight}
+	);
+
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
                 .fogColor(${data.airColor?has_content?then(data.airColor.getRGB(), 12638463)})
@@ -322,19 +333,9 @@ import com.mojang.datafixers.util.Pair;
 		ChunkGenerator chunkGenerator = levelStem.generator();
 		if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
 			List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
-			Climate.ParameterPoint parameterPoint = new Climate.ParameterPoint(
-					// source: https://minecraft.fandom.com/wiki/Custom_dimension
-					Climate.Parameter.point(0), // temperature - use ${data.biomeType}
-					Climate.Parameter.point(0), // humidity - use ${data.biomeType}
-					Climate.Parameter.point(0), // continentalness (low: oceans, high: inlands) - ${data.baseHeight}
-					Climate.Parameter.point(0), // erosion (high: flat terrain) - ${data.heightVariation}
-					Climate.Parameter.point(0), // depth - 0 surface, 1 - 128 below surface - cave biome
-					Climate.Parameter.point(0), // weirdness
-					0 // offset - bigger value makes biome rarer - use ${data.biomeWeight}
-			);
 
             Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(biomeKey);
-			parameters.add(new Pair<>(parameterPoint, customBiomeHolder));
+			parameters.add(new Pair<>(PARAMETER_POINT, customBiomeHolder));
 
 			MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
 			chunkGenerator.biomeSource = moddedNoiseSource;

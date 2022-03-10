@@ -26,6 +26,6 @@ ReedsAndPumpkins: DefaultExtraVegetation
 TaigaRocks: MossyStoneBlock
 TallSeagrassLush: DefaultSeagrass
 
-#Legcay
+# These are now part of other default features
 Lakes: null
 OceanCaves: null
