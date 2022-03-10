@@ -36,20 +36,62 @@ package ${package}.world.biome;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import com.mojang.datafixers.util.Pair;
 
-<#if data.spawnBiome>@Mod.EventBusSubscriber </#if>public class ${name}Biome {
+<#function type2temperature type>
+<#if type == "WARM">
+	<#return "0, 0.55f">
+<#elseif type == "DESERT">
+	<#return "0.55f, 1">
+<#elseif type == "COOL">
+	<#return "-0.45f, 0">
+<#elseif type == "ICY">
+	<#return "-1, -0.45f">
+<#else>
+	<#return "0, 0">
+</#if>
+</#function>
 
+<#function type2humidity type>
+	<#if type == "WARM">
+		<#return "-0.5f, 1">
+	<#elseif type == "DESERT">
+		<#return "-1, 0">
+	<#elseif type == "COOL">
+		<#return "-0.5f, 1">
+	<#elseif type == "ICY">
+		<#return "-0.5f, 1">
+	<#else>
+		<#return "0, 0">
+	</#if>
+</#function>
+
+<#function baseHeight2continentalness baseHeight>
+	<#-- continentalness (low: oceans, high: inlands) -->
+	<#assign base = baseHeight / 10>
+	<#return (base - 0.2)?string + "f, " + (base + 0.2)?string + "f">
+</#function>
+
+<#function heightVariation2erosion heightVariation>
+	<#-- erosion (high: flat terrain) -->
+	<#assign base = 2 - heightVariation - 1>
+	<#return (base - 0.2)?string + "f, " + (base + 0.2)?string + "f">
+</#function>
+
+public class ${name}Biome {
+
+	<#if data.spawnBiome>
+	<#-- TODO: use data.biomeWeight as offset parameter for base span -->
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-			// source: https://minecraft.fandom.com/wiki/Custom_dimension
-			Climate.Parameter.point(0), // temperature - use ${data.biomeType}
-			Climate.Parameter.point(0), // humidity - use ${data.biomeType}
-			Climate.Parameter.point(0), // continentalness (low: oceans, high: inlands) - ${data.baseHeight}
-			Climate.Parameter.point(0), // erosion (high: flat terrain) - ${data.heightVariation}
-			Climate.Parameter.point(0), // depth - 0 surface, 1 - 128 below surface - cave biome
-			Climate.Parameter.point(0), // weirdness
-			0 // offset - bigger value makes biome rarer - use ${data.biomeWeight}
+			<#-- https://minecraft.fandom.com/wiki/Custom_dimension -->
+			Climate.Parameter.span(${type2temperature(data.biomeType)}),
+			Climate.Parameter.span(${type2humidity(data.biomeType)}),
+			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight)}),
+			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation)}),
+			Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+			Climate.Parameter.span(-1, 1), <#-- weirdness TODO: use random biome regname seeded value here so same param biomes can co-exist -->
+			0
 	);
+	</#if>
 
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
@@ -309,70 +351,6 @@ import com.mojang.datafixers.util.Pair;
         	);
         </#if>
     }
-
-    <#if data.spawnBiome>
-    @SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-    	MinecraftServer server = event.getServer();
-		Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
-		WorldGenSettings worldGenSettings = server.getWorldData().worldGenSettings();
-
-		for (Map.Entry<ResourceKey<LevelStem>, LevelStem> entry : worldGenSettings.dimensions().entrySet()) {
-			DimensionType dimensionType = entry.getValue().typeHolder().value();
-			if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.OVERWORLD_LOCATION)) {
-				registerToDimension(server, entry.getValue());
-			}
-    	}
-    }
-
-	public static void registerToDimension(MinecraftServer server, LevelStem levelStem) {
-		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-
-		ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("${modid}:${registryname}"));
-
-		// Inject biome source
-		ChunkGenerator chunkGenerator = levelStem.generator();
-		if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
-			List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
-
-            Holder<Biome> customBiomeHolder = biomeRegistry.getOrCreateHolder(biomeKey);
-			parameters.add(new Pair<>(PARAMETER_POINT, customBiomeHolder));
-
-			MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
-			chunkGenerator.biomeSource = moddedNoiseSource;
-			chunkGenerator.runtimeBiomeSource = moddedNoiseSource;
-        }
-
-		// Inject surface rule
-		if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-			NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
-			SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
-			if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
-				SurfaceRules.RuleSource customBiomeRule = SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
-				    SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
-					    SurfaceRules.sequence(
-						    SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-							    SurfaceRules.sequence(
-								    SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
-									    SurfaceRules.state(${mappedBlockToBlockStateCode(data.groundBlock)})
-									),
-								    SurfaceRules.state(${mappedBlockToBlockStateCode(data.undergroundBlock)})
-                                )
-						    ),
-							SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
-							    SurfaceRules.state(${mappedBlockToBlockStateCode(data.undergroundBlock)})
-							)
-                        )
-                    )
-                );
-
-				List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
-				surfaceRules.add(1, customBiomeRule);
-
-				noiseGeneratorSettings.surfaceRule = SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i]));
-			}
-		}
-	}
-    </#if>
 
 }
 
