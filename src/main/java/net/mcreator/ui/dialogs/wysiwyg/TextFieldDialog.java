@@ -26,7 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
 import javax.annotation.Nullable;
@@ -44,7 +44,7 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
 		nameField.enableRealtimeValidation();
-		Validator validator = new JavaMemeberNameValidator(nameField, false);
+		Validator validator = new JavaMemberNameValidator(nameField, false);
 		nameField.setValidator(() -> {
 			String textname = Transliteration.transliterateString(nameField.getText());
 			for (int i = 0; i < editor.list.getModel().getSize(); i++) {
