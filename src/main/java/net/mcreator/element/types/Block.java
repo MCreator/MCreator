@@ -174,6 +174,7 @@ import java.util.stream.Collectors;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public List<MItemBlock> blocksToReplace;
+	public String generationShape;
 	public int frequencyPerChunks;
 	public int frequencyOnChunk;
 	public int minGenerateHeight;
@@ -198,6 +199,7 @@ import java.util.stream.Collectors;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
+		this.generationShape = "UNIFORM";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 

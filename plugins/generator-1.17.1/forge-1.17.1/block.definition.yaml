@@ -399,3 +399,5 @@ global_templates:
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
     deleteWhenConditionFalse: true
     condition: ${w.hasBlocksMineableWith('hoe')}
+
+field_exclusions: [ generationShape ]
