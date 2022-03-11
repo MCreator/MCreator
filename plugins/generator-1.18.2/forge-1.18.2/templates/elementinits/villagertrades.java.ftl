@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../../utils/mcitems.ftl">
 
 /*
 *    MCreator note: This file will be REGENERATED on each build.
@@ -41,24 +41,24 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${JavaModName}Trades {
 
-	@SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-		Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+    @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
+        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
-		<#list villagertrades as trade>
-			<#list trade.tradeEntries as tradeEntry>
-				if (event.getType() == ${tradeEntry.tradeEntry}) {
-					<#list tradeEntry.entries as entry>
-						trades.get(${entry.level}).add(new ${JavaModName}RandomTradeBuilder(${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}F)
-								.setPrice(${mappedMCItemToItem(entry.price1)}, ${entry.countPrice1}, ${entry.countPrice1})
-							<#if entry.price2 != "">
-								.setPrice2(${mappedMCItemToItem(entry.price2)}, ${entry.countPrice2}, ${entry.countPrice2})
-							</#if>
-							.setForSale(${mappedMCItemToItem(entry.sale1)}, ${entry.countSale1}, ${entry.countSale1})
-							.build()
-						);
-					</#list>
-				}
-			</#list>
-		</#list>
-	}
+        <#list villagertrades as trade>
+            <#list trade.tradeEntries as tradeEntry>
+                if (event.getType() == ${tradeEntry.tradeEntry}) {
+                    <#list tradeEntry.entries as entry>
+                        trades.get(${entry.level}).add(new ${JavaModName}RandomTradeBuilder(${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}F)
+                                .setPrice(${mappedMCItemToItem(entry.price1)}, ${entry.countPrice1}, ${entry.countPrice1})
+                            <#if entry.price2 != "">
+                                .setPrice2(${mappedMCItemToItem(entry.price2)}, ${entry.countPrice2}, ${entry.countPrice2})
+                            </#if>
+                            .setForSale(${mappedMCItemToItem(entry.sale1)}, ${entry.countSale1}, ${entry.countSale1})
+                            .build()
+                        );
+                    </#list>
+                }
+            </#list>
+        </#list>
+    }
 }
