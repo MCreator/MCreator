@@ -1,7 +1,6 @@
 <#include "mcelements.ftl">
-if(world instanceof Level) {
-    Block.dropResources(world.getBlockState(
-        ${toBlockPos(input$x,input$y,input$z)}), (Level) world, ${toBlockPos(input$x2,input$y2,input$z2)});
-
-    world.destroyBlock(${toBlockPos(input$x,input$y,input$z)}, false);
+{
+    BlockPos _pos = ${toBlockPos(input$x,input$y,input$z)};
+    Block.dropResources(world.getBlockState(_pos), world, ${toBlockPos(input$x2,input$y2,input$z2)}, null);
+    world.destroyBlock(_pos, false);
 }
