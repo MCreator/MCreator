@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.ItemExtension;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -26,27 +27,34 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.FuelRecipeMaker;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
+	private final MCItemHolder item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JComboBox<String> extension = new JComboBox<>(
-			new String[] { "Fuel", "Dispenser behaviour", "Composter item" });
 	// Fuel
-	private final FuelRecipeMaker fm = new FuelRecipeMaker(mcreator, ElementUtil::loadBlocksAndItems);
+	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fuelPower = new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1));
 
-	private final CardLayout cl = new CardLayout();
-	private final JPanel panel = new JPanel(cl);
+	// Composter
+	private final JCheckBox isCompostable = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0.65f, 0.00f, 1.00f, 0.05f));
+
+	// Dispenser behaviour
+	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector dispenseSuccessCondition;
+	private ProcedureSelector dispenseResultItemstack;
 
 	public ItemExtensionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -56,62 +64,116 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	@Override protected void initGUI() {
 		//Fuel
-		JPanel fuelPanel = new JPanel(new BorderLayout(10, 10));
+		JPanel fuelPanel = new JPanel(new BorderLayout());
 		fuelPanel.setOpaque(false);
-		JPanel fuelSubPanel = new JPanel(new BorderLayout(15, 15));
-		fuelSubPanel.setOpaque(false);
-		JPanel powerPanel = new JPanel();
-		powerPanel.setOpaque(false);
 
-		powerPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
-				L10N.label("elementgui.item_extension.burn_time")));
-		powerPanel.add(fuelPower);
+		JComponent enableFuelComp = PanelUtils.gridElements(1, 2, 0, 5,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/enable_fuel"),
+						L10N.label("elementgui.item_extension.enable_fuel")), enableFuel);
+		enableFuel.setOpaque(false);
+		enableFuelComp.setOpaque(false);
+		fuelPanel.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(enableFuelComp,
+				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
+						L10N.label("elementgui.item_extension.burn_time")), PanelUtils.centerInPanel(fuelPower)))));
 
-		fuelSubPanel.add("North", powerPanel);
-		fuelSubPanel.add("Center", fm);
-		fm.setOpaque(false);
-		fuelPanel.add("Center", PanelUtils.totalCenterInPanel(fuelSubPanel));
+		fuelPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item_extension.fuel_properties"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel northPanel = new JPanel(new GridLayout(1, 2, 10, 15));
-		northPanel.setOpaque(false);
+		// Composter
+		JPanel composterPanel = new JPanel(new BorderLayout());
+		composterPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/extension"),
-				L10N.label("elementgui.item_extension.extension")));
-		northPanel.add(extension);
-		extension.addActionListener(e -> updateExtensionUI());
+		JComponent isCompostableComp = PanelUtils.gridElements(1, 2, 5, 5,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/is_compostable"),
+						L10N.label("elementgui.item_extension.is_compostable")), isCompostable);
+		isCompostable.setOpaque(false);
+		isCompostableComp.setOpaque(false);
+		composterPanel.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(isCompostableComp,
+				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
+						L10N.label("elementgui.item_extension.layer_chance")), layerChance))));
 
-		panel.add(fuelPanel, "Fuel");
-		panel.setOpaque(false);
+		composterPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item_extension.composter_properties"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(northPanel, panel)));
+		// Dispenser behaviour
+		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item_extension/dispense_success_condition"),
+				mcreator, L10N.t("elementgui.item_extension.dispense_success_condition"),
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction")).makeInline();
+		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item_extension/dispense_result_itemstack"),
+				mcreator, L10N.t("elementgui.item_extension.dispense_result_itemstack"),
+				VariableTypeLoader.BuiltInTypes.ITEMSTACK, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
+						L10N.t("elementgui.item_extension.dispense_result_itemstack.default")).makeInline()
+				.makeReturnValueOptional();
 
-		updateExtensionUI();
-	}
+		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 5,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
+						L10N.label("elementgui.item_extension.has_dispense_behavior")), hasDispenseBehavior);
+		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 2, dispenseSuccessCondition,
+				dispenseResultItemstack);
 
-	private void updateExtensionUI() {
-		cl.show(panel, (String) extension.getSelectedItem());
+		hasDispenseBehavior.setOpaque(false);
+		hasDispenseBehavior.setSelected(false);
+		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
+
+		JComponent dispenserBehaviourPanel = PanelUtils.northAndCenterElement(canDispense,
+				PanelUtils.centerInPanel(dispenseProcedures));
+
+		dispenserBehaviourPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item_extension.dispense_properties"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		dispenserBehaviourPanel.setOpaque(false);
+
+		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(
+						HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/item"),
+								L10N.label("elementgui.item_extension.item")), PanelUtils.centerInPanel(item)),
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel, composterPanel), dispenserBehaviourPanel))));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if ("Fuel".equals(extension.getSelectedItem())) {
-			if (!fm.getCb1().containsItem()) {
-				return new AggregatedValidationResult(fm.getCb1());
-			}
-		}
-
 		return new AggregatedValidationResult.PASS();
 	}
 
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+		dispenseSuccessCondition.refreshListKeepSelected();
+		dispenseResultItemstack.refreshListKeepSelected();
+	}
+
+	private void updateDispenseElements() {
+		dispenseSuccessCondition.setEnabled(hasDispenseBehavior.isSelected());
+		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
+	}
+
 	@Override protected void openInEditingMode(ItemExtension itemExtension) {
-		extension.setSelectedItem(itemExtension.extension);
+		item.setBlock(itemExtension.item);
 		fuelPower.setValue(itemExtension.fuelPower);
-		fm.getCb1().setBlock(itemExtension.fuelItem);
+		enableFuel.setSelected(itemExtension.enableFuel);
+		hasDispenseBehavior.setSelected(itemExtension.hasDispenseBehavior);
+		dispenseSuccessCondition.setSelectedProcedure(itemExtension.dispenseSuccessCondition);
+		dispenseResultItemstack.setSelectedProcedure(itemExtension.dispenseResultItemstack);
+		isCompostable.setSelected(itemExtension.isCompostable);
+		layerChance.setValue(itemExtension.layerChance);
+
+		updateDispenseElements();
 	}
 
 	@Override public ItemExtension getElementFromGUI() {
 		ItemExtension itemExtension = new ItemExtension(modElement);
+		itemExtension.item = item.getBlock();
+		itemExtension.enableFuel = enableFuel.isSelected();
 		itemExtension.fuelPower = (int) fuelPower.getValue();
-		itemExtension.fuelItem = fm.getBlock();
+		itemExtension.hasDispenseBehavior = hasDispenseBehavior.isSelected();
+		itemExtension.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
+		itemExtension.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
+		itemExtension.isCompostable = isCompostable.isSelected();
+		itemExtension.layerChance = (double) layerChance.getValue();
 		return itemExtension;
 	}
 

@@ -35,12 +35,54 @@ package ${package}.item.extension;
 
 @Mod.EventBusSubscriber public class ${name}ItemExtension {
 
-    <#if data.extension == "Fuel">
+    <#if data.enableFuel>
         @SubscribeEvent
         public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-            if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.fuelItem)})
+            if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.item)})
                 event.setBurnTime(${data.fuelPower});
         }
     </#if>
+
+	<#if data.hasDispenseBehavior || data.isCompostable>
+		@SubscribeEvent
+		public void init(FMLCommonSetupEvent event) {
+		    <#if data.isCompostable>
+		        ComposterBlock.COMPOSTABLES.put(${mappedMCItemToItem(extension.item)}, ${extension.layerChance}f);
+		    </#if>
+
+		    <#if data.hasDispenseBehavior>
+                DispenserBlock.registerDispenseBehavior(block, new OptionalDispenseBehavior() {
+                    public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
+                        ItemStack itemstack = stack.copy();
+                        World world = blockSource.getWorld();
+                        Direction direction = blockSource.getBlockState().get(DispenserBlock.FACING);
+                        int x = blockSource.getBlockPos().getX();
+                        int y = blockSource.getBlockPos().getY();
+                        int z = blockSource.getBlockPos().getZ();
+
+                        this.setSuccessful(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
+
+                        <#if hasProcedure(data.dispenseResultItemstack)>
+                            boolean success = this.isSuccessful();
+                            <#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
+                                return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
+                            <#else>
+                                <@procedureOBJToCode data.dispenseResultItemstack/>
+                                if(success) itemstack.shrink(1);
+                                return itemstack;
+                            </#if>
+                        <#else>
+                            if(this.isSuccessful()) itemstack.shrink(1);
+                            return itemstack;
+                        </#if>
+                    }
+                });
+            </#if>
+		}
+	</#if>
+
+
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+	public static class
 }
 <#-- @formatter:on -->

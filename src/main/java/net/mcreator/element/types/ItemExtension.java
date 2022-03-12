@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -28,17 +29,25 @@ import java.awt.image.BufferedImage;
 
 public class ItemExtension extends GeneratableElement {
 
-	public String extension;
+	public MItemBlock item;
 
+	public boolean enableFuel;
 	public int fuelPower;
-	public MItemBlock fuelItem;
+
+	public boolean hasDispenseBehavior;
+	public Procedure dispenseSuccessCondition;
+	public Procedure dispenseResultItemstack;
+
+	public boolean isCompostable;
+	public double layerChance;
 
 	public ItemExtension(ModElement element) {
 		super(element);
-		extension = "Fuel";
+		fuelPower = 1600;
+		layerChance = 0.65f;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateFuelPreviewPicture(getModElement().getWorkspace(), fuelItem);
+		return MinecraftImageGenerator.Preview.generateFuelPreviewPicture(getModElement().getWorkspace(), item);
 	}
 }

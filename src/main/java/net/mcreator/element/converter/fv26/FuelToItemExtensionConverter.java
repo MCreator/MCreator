@@ -36,8 +36,8 @@ public class FuelToItemExtensionConverter implements IConverter {
 		Fuel fuel = (Fuel) input;
 		ItemExtension itemExtension = new ItemExtension(
 				new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEMEXTENSION));
-		itemExtension.extension = "Fuel";
-		itemExtension.fuelItem = fuel.block;
+		itemExtension.item = fuel.block;
+		itemExtension.enableFuel = true;
 		itemExtension.fuelPower = fuel.power;
 
 		workspace.removeModElement(fuel.getModElement());
