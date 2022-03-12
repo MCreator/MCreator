@@ -77,8 +77,13 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
 </#function>
 
+<#function registryname2weirdness registryname biomeWeight>
+    <#assign base = (w.random(registryname) * 2) - 1>
+    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
+</#function>
+
 <#function normalizeWeight biomeWeight>
-    <#return (biomeWeight / 50.0)>
+    <#return (biomeWeight / 40.0)>
 </#function>
 
 public class ${name}Biome {
@@ -90,7 +95,7 @@ public class ${name}Biome {
 	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight))}),
 	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight))}),
 	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-	    Climate.Parameter.span(-1, 1), <#-- weirdness TODO: use random biome regname seeded value here so same param biomes can co-exist -->
+	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight))}),
 	    0 <#-- offset -->
 	);
 	</#if>
