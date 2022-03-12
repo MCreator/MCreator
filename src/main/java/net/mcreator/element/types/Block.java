@@ -171,15 +171,6 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
 
-	public List<String> spawnWorldTypes;
-	public List<BiomeEntry> restrictionBiomes;
-	public List<MItemBlock> blocksToReplace;
-	public int frequencyPerChunks;
-	public int frequencyOnChunk;
-	public int minGenerateHeight;
-	public int maxGenerateHeight;
-	public Procedure generateCondition;
-
 	private Block() {
 		this(null);
 	}
@@ -189,8 +180,6 @@ import java.util.stream.Collectors;
 
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
-		this.spawnWorldTypes = new ArrayList<>();
-		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
@@ -217,20 +206,12 @@ import java.util.stream.Collectors;
 		return !customDrop.isEmpty();
 	}
 
-	public boolean isGeneratedInWorld() {
-		return !spawnWorldTypes.isEmpty();
-	}
-
 	public boolean isBlockTinted() {
 		return !"No tint".equals(tintType);
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
 		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
-	}
-
-	public boolean doesGenerateInWorld() {
-		return spawnWorldTypes.size() > 0;
 	}
 
 	public boolean shouldScheduleTick() {
@@ -310,9 +291,6 @@ import java.util.stream.Collectors;
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
-
-		if (doesGenerateInWorld())
-			baseTypes.add(BaseType.FEATURE);
 
 		if (hasInventory)
 			baseTypes.add(BaseType.BLOCKENTITY);

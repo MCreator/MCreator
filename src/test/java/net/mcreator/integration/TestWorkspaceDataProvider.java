@@ -1348,23 +1348,6 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
-			block.restrictionBiomes = new ArrayList<>();
-			if (!emptyLists) {
-				block.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-			}
-			block.blocksToReplace = new ArrayList<>();
-			if (!emptyLists) {
-				block.blocksToReplace.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-			}
-			block.frequencyPerChunks = 6;
-			block.frequencyOnChunk = 7;
-			block.minGenerateHeight = 21;
-			block.maxGenerateHeight = 92;
 			if (emptyLists) {
 				block.onBlockAdded = new Procedure("procedure1");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
@@ -1379,7 +1362,6 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOn = new Procedure("procedure11");
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
-				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");
 			}
@@ -1478,6 +1460,32 @@ public class TestWorkspaceDataProvider {
 			}
 
 			return lootTable;
+		} else if (ModElementType.FEATURE.equals(modElement.getType())) {
+			Feature feature = new Feature(modElement);
+			feature.generationType = "Ore"; // we can hard-code the type for the moment as only 1 is available.
+			feature.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
+			feature.restrictionBiomes = new ArrayList<>();
+			feature.blocksToReplace = new ArrayList<>();
+			if (!emptyLists) {
+				feature.restrictionBiomes.addAll(
+						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				feature.blocksToReplace.addAll(
+						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+			}
+			if (emptyLists)
+				feature.generateCondition = new Procedure("condition1");
+
+			feature.blockToGenerate = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+
+			// Ore
+			feature.frequencyPerChunks = 6;
+			feature.frequencyOnChunk = 7;
+			feature.minGenerateHeight = 21;
+			feature.maxGenerateHeight = 92;
+
+			return feature;
 		} else if (ModElementType.FUNCTION.equals(modElement.getType())) {
 			Function function = new Function(modElement);
 			function.name = modElement.getName().toLowerCase(Locale.ENGLISH);

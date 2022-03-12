@@ -23,6 +23,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.types.Block;
+import net.mcreator.element.types.Feature;
 import net.mcreator.element.types.Item;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -194,11 +195,6 @@ public class OrePackMakerTool {
 		oreBlock.resistance = 5.0 * Math.pow(factor, 0.8);
 		oreBlock.destroyTool = "pickaxe";
 		oreBlock.breakHarvestLevel = (int) Math.round(2 * factor);
-		oreBlock.spawnWorldTypes = Collections.singletonList("Surface");
-		oreBlock.minGenerateHeight = 1;
-		oreBlock.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
-		oreBlock.frequencyPerChunks = (int) (11 / Math.pow(factor, 0.9));
-		oreBlock.frequencyOnChunk = (int) (7 / Math.pow(factor, 0.9));
 		if (type.equals("Dust based")) {
 			oreBlock.dropAmount = 3;
 		}
@@ -209,6 +205,15 @@ public class OrePackMakerTool {
 		mcreator.getWorkspace().addModElement(oreBlock.getModElement());
 		mcreator.getGenerator().generateElement(oreBlock);
 		mcreator.getModElementManager().storeModElement(oreBlock);
+
+		Feature oreFeature = (Feature) ModElementType.FEATURE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Feature", ModElementType.FEATURE), false).getElementFromGUI();
+		oreFeature.spawnWorldTypes = Collections.singletonList("Surface");
+		oreFeature.generationShape = "UNIFORM";
+		oreFeature.minGenerateHeight = 1;
+		oreFeature.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
+		oreFeature.frequencyPerChunks = (int) (11 / Math.pow(factor, 0.9));
+		oreFeature.frequencyOnChunk = (int) (7 / Math.pow(factor, 0.9));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,

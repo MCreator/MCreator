@@ -110,7 +110,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
-	private ProcedureSelector generateCondition;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
@@ -167,14 +166,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-
-	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, 0, 256, 1));
-	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
-	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
-	private BiomeListField restrictionBiomes;
-	private MCItemListField blocksToReplace;
-	private DimensionListField spawnWorldTypes;
 
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
@@ -259,16 +250,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override protected void initGUI() {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 
-		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		restrictionBiomes = new BiomeListField(mcreator);
-		spawnWorldTypes = new DimensionListField(mcreator);
-
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this);
-
-		blocksToReplace.setListElements(
-				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
@@ -323,11 +307,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
-				L10N.t("condition.common.no_additional")).makeInline();
-
-		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
 		blockBase.addActionListener(e -> {
@@ -413,7 +392,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane7 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane8 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane9 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
 		pane8.setOpaque(false);
@@ -1046,45 +1024,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane8.add("Center", PanelUtils.totalCenterInPanel(invblock));
 
-		JPanel enderpanel2 = new JPanel(new BorderLayout(30, 15));
-
-		JPanel slip = new JPanel(new GridLayout(7, 2, 20, 2));
-
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				L10N.label("elementgui.block.spawn_world_types")));
-		slip.add(spawnWorldTypes);
-
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
-				L10N.label("elementgui.block.gen_replace_blocks")));
-		slip.add(blocksToReplace);
-
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				L10N.label("elementgui.common.restrict_to_biomes")));
-		slip.add(restrictionBiomes);
-
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
-				L10N.label("elementgui.block.gen_chunck_count")));
-		slip.add(frequencyPerChunks);
-
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"),
-				L10N.label("elementgui.block.gen_group_size")));
-		slip.add(frequencyOnChunk);
-
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
-				L10N.label("elementgui.block.gen_min_height")));
-		slip.add(minGenerateHeight);
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
-				L10N.label("elementgui.block.gen_max_height")));
-		slip.add(maxGenerateHeight);
-
-		slip.setOpaque(false);
-
-		enderpanel2.add("West", PanelUtils.totalCenterInPanel(new JLabel(UIRES.get("chunk"))));
-		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(slip,
-				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), generateCondition), 5, 5)));
-
-		enderpanel2.setOpaque(false);
-
 		JPanel particleParameters = new JPanel(new GridLayout(5, 2, 0, 2));
 
 		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_particles"), spawnParticles));
@@ -1160,9 +1099,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(parred))));
 
 		pane7.setOpaque(false);
-		pane9.setOpaque(false);
-
-		pane9.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(enderpanel2)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -1197,7 +1133,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
 		addPage(L10N.t("elementgui.block.page_energy_fluid_storage"), pane10);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.common.page_generation"), pane9);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -1307,7 +1242,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		particleCondition.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
-		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
@@ -1336,11 +1270,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(page3group);
 		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 7) {
-			if ((int) minGenerateHeight.getValue() >= (int) maxGenerateHeight.getValue()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.block.error_minimal_generation_height"));
-			}
-		}
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -1382,16 +1311,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
 		name.setText(block.name);
-		maxGenerateHeight.setValue(block.maxGenerateHeight);
-		minGenerateHeight.setValue(block.minGenerateHeight);
-		frequencyPerChunks.setValue(block.frequencyPerChunks);
-		frequencyOnChunk.setValue(block.frequencyOnChunk);
 		spawnParticles.setSelected(block.spawnParticles);
 		particleToSpawn.setSelectedItem(block.particleToSpawn);
 		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
 		particleCondition.setSelectedProcedure(block.particleCondition);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
-		generateCondition.setSelectedProcedure(block.generateCondition);
 		particleSpawningRadious.setValue(block.particleSpawningRadious);
 		particleAmount.setValue(block.particleAmount);
 		hardness.setValue(block.hardness);
@@ -1439,9 +1363,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventoryStackSize.setValue(block.inventoryStackSize);
 		tickRate.setValue(block.tickRate);
 
-		spawnWorldTypes.setListElements(block.spawnWorldTypes);
-		blocksToReplace.setListElements(block.blocksToReplace);
-		restrictionBiomes.setListElements(block.restrictionBiomes);
 		fluidRestrictions.setListElements(block.fluidRestrictions);
 
 		isReplaceable.setSelected(block.isReplaceable);
@@ -1539,7 +1460,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.particleAmount = (int) particleAmount.getValue();
 		block.particleCondition = particleCondition.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
-		block.generateCondition = generateCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
 		block.openGUIOnRightClick = openGUIOnRightClick.isSelected();
@@ -1557,10 +1477,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		else
 			block.inventoryInSlotIDs = Stream.of(inSlotIDs.getText().split(",")).filter(e -> !e.equals(""))
 					.map(Integer::parseInt).collect(Collectors.toList());
-		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
-		block.frequencyOnChunk = (int) frequencyOnChunk.getValue();
-		block.minGenerateHeight = (int) minGenerateHeight.getValue();
-		block.maxGenerateHeight = (int) maxGenerateHeight.getValue();
 		block.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		block.onNeighbourBlockChanges = onNeighbourBlockChanges.getSelectedProcedure();
 		block.onTickUpdate = onTickUpdate.getSelectedProcedure();
@@ -1588,10 +1504,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 
-		block.spawnWorldTypes = spawnWorldTypes.getListElements();
-		block.restrictionBiomes = restrictionBiomes.getListElements();
 		block.fluidRestrictions = fluidRestrictions.getListElements();
-		block.blocksToReplace = blocksToReplace.getListElements();
 
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
