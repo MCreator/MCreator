@@ -208,7 +208,9 @@ public class ${name}Biome {
                         .ignoreVines()
                     </#if>
                 </#if>
-            .build()), List.of(CountOnEveryLayerPlacement.of(${data.treesPerChunk}))));
+            .build()), List.of(CountPlacement.of(${data.treesPerChunk}), InSquarePlacement.spread(),
+                SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR,
+                PlacementUtils.filteredByBlockSurvival(Blocks.OAK_SAPLING))));
         </#if>
 
         <#if (data.grassPerChunk > 0)>
