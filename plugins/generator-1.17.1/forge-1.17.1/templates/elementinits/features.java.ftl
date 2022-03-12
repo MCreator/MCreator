@@ -42,7 +42,7 @@ package ${package}.init;
 
 	static {
     <#list features as feature>
-		<#if feature.getModElement().getTypeString() == "block">
+		<#if feature.getModElement().getTypeString() == "feature">
 			REGISTRY.put(${feature.getModElement().getName()}Feature.FEATURE, new FeatureRegistration(GenerationStep.Decoration.UNDERGROUND_ORES,
 						${feature.getModElement().getName()}Feature.GENERATE_BIOMES, ${feature.getModElement().getName()}Feature.CONFIGURED_FEATURE));
 		<#elseif feature.getModElement().getTypeString() == "plant">

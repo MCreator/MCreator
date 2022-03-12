@@ -40,7 +40,7 @@ public class OreBlockToFeatureConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
 
-		if (block.spawnWorldTypes.size() > 0) {
+		if (block.spawnWorldTypes != null && block.spawnWorldTypes.size() > 0) {
 			Feature feature = new Feature(
 					new ModElement(workspace, input.getModElement().getName() + "Feature", ModElementType.FEATURE));
 
