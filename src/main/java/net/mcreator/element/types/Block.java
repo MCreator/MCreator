@@ -171,6 +171,16 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
 
+	// Used to convert old blocks to features
+	public List<String> spawnWorldTypes;
+	public List<BiomeEntry> restrictionBiomes;
+	public List<MItemBlock> blocksToReplace;
+	public int frequencyPerChunks;
+	public int frequencyOnChunk;
+	public int minGenerateHeight;
+	public int maxGenerateHeight;
+	public Procedure generateCondition;
+
 	private Block() {
 		this(null);
 	}
