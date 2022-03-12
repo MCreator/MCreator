@@ -19,6 +19,7 @@
 
 package net.mcreator.element;
 
+import net.mcreator.element.types.Fuel;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -141,11 +142,11 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> ENCHANTMENT;
 	public static ModElementType<?> FLUID;
 	public static ModElementType<?> FOOD;
-	public static ModElementType<?> FUEL;
 	public static ModElementType<?> FUNCTION;
 	public static ModElementType<?> GAMERULE;
 	public static ModElementType<?> GUI;
 	public static ModElementType<?> ITEM;
+	public static ModElementType<?> ITEMEXTENSION;
 	public static ModElementType<?> KEYBIND;
 	public static ModElementType<?> LIVINGENTITY;
 	public static ModElementType<?> LOOTTABLE;
@@ -164,4 +165,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 
+
+	// Legacy
+	public static ModElementType<?> FUEL = new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, null, Fuel.class);
 }

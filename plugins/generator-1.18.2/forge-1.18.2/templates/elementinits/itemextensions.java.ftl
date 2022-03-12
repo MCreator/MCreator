@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,13 +38,15 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Fuels {
+@Mod.EventBusSubscriber public class ${JavaModName}ItemExtensions {
 
 	@SubscribeEvent
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-		<#list fuels as fuel>
-		<#if fuel?index == 0>if<#else>else if</#if>(event.getItemStack().getItem() == ${mappedMCItemToItem(fuel.block)})
-			event.setBurnTime(${fuel.power});
+		<#list itemextensions as extension>
+            <#if extension.extension == "Fuel">
+                <#if extension?index == 0>if<#else>else if</#if>(event.getItemStack().getItem() == ${mappedMCItemToItem(extension.fuelItem)})
+                    event.setBurnTime(${extension.fuelPower});
+            </#if>
 		</#list>
 	}
 

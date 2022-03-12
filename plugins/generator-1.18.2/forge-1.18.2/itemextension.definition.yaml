@@ -1,4 +1,4 @@
 global_templates:
   - template: elementinits/itemextensions.java.ftl
     writer: java
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameItemExtensions.java"

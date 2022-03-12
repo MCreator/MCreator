@@ -39,6 +39,7 @@ import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
 import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
+import net.mcreator.element.converter.fv26.FuelToItemExtensionConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -68,6 +69,7 @@ public class ConverterRegistry {
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
+		put(ModElementType.FUEL, Collections.singletonList(new FuelToItemExtensionConverter()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

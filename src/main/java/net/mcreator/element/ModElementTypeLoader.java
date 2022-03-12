@@ -55,8 +55,6 @@ public class ModElementTypeLoader {
 				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
 		ModElementType.FOOD = register(
 				new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM, FoodGUI::new, Food.class));
-		ModElementType.FUEL = register(
-				new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
 		ModElementType.FUNCTION = register(
 				new ModElementType<>("function", null, BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
 						Function.class));
@@ -67,6 +65,8 @@ public class ModElementTypeLoader {
 				new ModElementType<>("gui", 'g', BaseType.GUI, RecipeType.NONE, CustomGUIGUI::new, GUI.class));
 		ModElementType.ITEM = register(
 				new ModElementType<>("item", 'i', BaseType.ITEM, RecipeType.ITEM, ItemGUI::new, Item.class));
+		ModElementType.ITEMEXTENSION = register(
+				new ModElementType<>("itemextension", null, BaseType.ITEM, RecipeType.ITEM, ItemExtensionGUI::new, ItemExtension.class));
 		ModElementType.KEYBIND = register(
 				new ModElementType<>("keybind", 'k', BaseType.OTHER, RecipeType.NONE, KeyBindGUI::new,
 						KeyBinding.class));
