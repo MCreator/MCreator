@@ -19,17 +19,19 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Feature extends GeneratableElement {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
 	public String generationType;
 	public List<String> spawnWorldTypes;
@@ -54,10 +56,7 @@ import java.util.List;
 		super(element);
 	}
 
-	public boolean isGeneratedInWorld() {
-		return !spawnWorldTypes.isEmpty();
-	}
-	public boolean doesGenerateInWorld() {
-		return spawnWorldTypes.size() > 0;
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		return Collections.singleton(BaseType.FEATURE);
 	}
 }

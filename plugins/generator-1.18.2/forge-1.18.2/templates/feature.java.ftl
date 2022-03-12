@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,26 +29,33 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../procedures.java.ftl">
-<#include "../mcitems.ftl">
+<#include "procedures.java.ftl">
+<#include "mcitems.ftl">
 
-package ${package}.world.features.ores;
+package ${package}.world.features;
 
-public class ${name}Feature extends OreFeature {
+public class ${name}Feature extends
+			<#if data.generationType == "Ore">
+			    OreFeature
+			</#if> {
 
 	public static ${name}Feature FEATURE = null;
-	public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = null;
+	    <#if data.generationType == "Ore">
+	        public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = null;
+	    </#if>
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
 
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
-				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), ${data.frequencyOnChunk})
-		);
-		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
-				CountPlacement.of(${data.frequencyPerChunks}),
-				HeightRangePlacement.uniform(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight}))
-		));
+	    <#if data.generationType == "Ore">
+            CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
+                    new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${mappedBlockToBlockStateCode(data.blockToGenerate)}, ${data.frequencyOnChunk})
+            );
+            PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
+                    CountPlacement.of(${data.frequencyPerChunks}),
+                    HeightRangePlacement.${data.generationShape?lower_case}(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight}))
+            ));
+	    </#if>
 		return FEATURE;
 	}
 
@@ -58,13 +65,13 @@ public class ${name}Feature extends OreFeature {
 
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
 	<#if data.restrictionBiomes?has_content>
-	Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#sep>,
-		</#list>
-	);
+        Set.of(
+            <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+                new ResourceLocation("${restrictionBiome}")<#sep>,
+            </#list>
+        );
 	<#else>
-	null;
+	    null;
 	</#if>
 
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
@@ -92,11 +99,11 @@ public class ${name}Feature extends OreFeature {
 			return false;
 
 		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
-			return false;
+            int x = context.origin().getX();
+            int y = context.origin().getY();
+            int z = context.origin().getZ();
+            if (!<@procedureOBJToConditionCode data.generateCondition/>)
+                return false;
 		</#if>
 
 		return super.place(context);

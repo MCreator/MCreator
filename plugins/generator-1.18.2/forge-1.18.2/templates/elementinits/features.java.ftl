@@ -43,7 +43,7 @@ package ${package}.init;
 	private static final List<FeatureRegistration> FEATURE_REGISTRATIONS = new ArrayList<>();
 
 	<#list features as feature>
-		<#if feature.getModElement().getTypeString() == "block">
+		<#if feature.getModElement().getTypeString() == "feature">
 			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
 				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
 						new FeatureRegistration(GenerationStep.Decoration.UNDERGROUND_ORES,

@@ -83,6 +83,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 	@Override protected void initGUI() {
 		blocksToReplace.setListElements(
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
+		spawnWorldTypes.setListElements(new ArrayList<>(Collections.singleton("Surface")));
 
 		generateCondition = new ProcedureSelector(this.withEntry("feature/generation_condition"), mcreator,
 				L10N.t("elementgui.feature.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
