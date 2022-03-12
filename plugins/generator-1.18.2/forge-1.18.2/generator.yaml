@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: dev
+status: stable
 buildfileversion: 40.0.12
 
 java_models:
