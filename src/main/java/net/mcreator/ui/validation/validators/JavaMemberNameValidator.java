@@ -33,10 +33,17 @@ public class JavaMemberNameValidator implements Validator {
 
 	private final VTextField textField;
 	private final boolean firstLetterUppercase;
+	private final boolean allowInitialUnderscore;
 
 	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase) {
+		this(textField, requireFirstLetterUppercase, true);
+	}
+
+	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase,
+			boolean allowInitialUnderscore) {
 		this.textField = textField;
 		this.firstLetterUppercase = requireFirstLetterUppercase;
+		this.allowInitialUnderscore = allowInitialUnderscore;
 	}
 
 	@Override public ValidationResult validate() {
@@ -45,6 +52,10 @@ public class JavaMemberNameValidator implements Validator {
 		if (text == null || text.length() == 0)
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					L10N.t("validators.java_name.needs_name"));
+
+		if (!allowInitialUnderscore && text.charAt(0) == '_')
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("validators.java_name.cannot_start_with_underscore"));
 
 		if (firstLetterUppercase && Character.isLowerCase(text.charAt(0))) {
 			if (text.length() > 1)

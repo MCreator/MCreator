@@ -1,7 +1,6 @@
 _default: null
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
-BerryBushes: BerryBushes
 Caves: DefaultCarvers
 DeadBushes: DesertVegetation
 DesertFeatures: DesertExtraDecoration
@@ -22,11 +21,8 @@ Ores: DefaultOres
 PlainsTallGrass: SavannaGrass
 ReedsAndPumpkins: DefaultExtraVegetation
 SavannaTrees: SavannaTrees
-SedimentDisks: DefaultSoftDisks
-SwampClayDisks: SwampClayDisk
 SwampVegetation: SwampVegetation
 TaigaGrassAndMushrooms: TaigaGrass
-TaigaGrassDeadBushesMushrooms: GiantTaigaVegetation
 TaigaLargeFerns: Ferns
 TaigaRocks: MossyStoneBlock
 TallSeagrassLush: DefaultSeagrass
