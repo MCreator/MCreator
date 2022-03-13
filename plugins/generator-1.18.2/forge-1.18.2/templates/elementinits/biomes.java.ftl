@@ -105,7 +105,19 @@ import com.mojang.datafixers.util.Pair;
 							));
 							</#list>
 
-							noiseGeneratorSettings.surfaceRule = SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i]));
+							NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
+								noiseGeneratorSettings.noiseSettings(),
+								noiseGeneratorSettings.defaultBlock(),
+								noiseGeneratorSettings.defaultFluid(),
+								noiseGeneratorSettings.noiseRouter(),
+								SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i])),
+								noiseGeneratorSettings.seaLevel(),
+								noiseGeneratorSettings.disableMobGeneration(),
+								noiseGeneratorSettings.aquifersEnabled(),
+								noiseGeneratorSettings.oreVeinsEnabled(),
+								noiseGeneratorSettings.useLegacyRandomSource()
+							);
+							noiseGenerator.settings = new Holder.Direct(moddedNoiseGeneratorSettings);
 						}
 					}
 				}
