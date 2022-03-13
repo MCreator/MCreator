@@ -82,7 +82,7 @@ package ${package}.item.extension;
 		        ItemStack itemstack = event.getItemStack();
                 if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.item)})
                     <#if hasReturnValueOf(data.fuelSuccessCondition, "logic")>if (<@procedureOBJToConditionCode data.fuelSuccessCondition/>)</#if>
-                        event.setBurnTime(${extension.fuelPower});
+                        event.setBurnTime(${data.fuelPower});
             }
         }
     </#if>
