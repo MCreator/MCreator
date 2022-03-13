@@ -1,0 +1,1 @@
+Cocher cette case pour permettre à cet item d'aller dans le composteur.

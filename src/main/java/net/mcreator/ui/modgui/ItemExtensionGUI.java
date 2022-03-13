@@ -112,7 +112,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				.makeReturnValueOptional();
 
 		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 5,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/has_dispense_behavior"),
+				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/has_dispense_behavior"),
 						L10N.label("elementgui.item_extension.has_dispense_behavior")), hasDispenseBehavior);
 		JComponent dispenseProcedures = PanelUtils.gridElements(2, 1, 0, 2, dispenseSuccessCondition,
 				dispenseResultItemstack);

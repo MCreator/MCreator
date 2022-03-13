@@ -1,0 +1,1 @@
+Cochez cette case pour faire de l'élément sélectionné un combustible pour les fours comme le charbon.

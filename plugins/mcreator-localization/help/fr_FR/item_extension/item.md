@@ -1,0 +1,1 @@
+C'est l'item qui recevra les propriétés.

@@ -1,0 +1,1 @@
+This is the item that will receive the properties.
