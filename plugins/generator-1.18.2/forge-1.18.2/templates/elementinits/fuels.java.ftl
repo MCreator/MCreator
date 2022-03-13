@@ -44,7 +44,7 @@ package ${package}.init;
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
 		<#list itemextensions as extension>
             <#if extension.enableFuel>
-                <#if extension?index == 0>if<#else>else if</#if>(event.getItemStack().getItem() == ${mappedMCItemToItem(extension.item)})
+                if (event.getItemStack().getItem() == ${mappedMCItemToItem(extension.item)})
                     event.setBurnTime(${extension.fuelPower});
             </#if>
 		</#list>
