@@ -33,15 +33,17 @@ import org.apache.logging.log4j.Logger;
 	public ${JavaModName}() {
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 
-		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
-		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());</#if>
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 	}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

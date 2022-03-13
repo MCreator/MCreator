@@ -91,6 +91,14 @@ import java.util.stream.Collectors;
 				.toString();
 	}
 
+	public double random(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextDouble();
+	}
+
 	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
 		if (input == null)
 			return Collections.emptySet();
@@ -102,7 +110,7 @@ import java.util.stream.Collectors;
 					retval.add(new MappableElement.Unique(t));
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:", ""));
+							.replaceFirst("CUSTOM:" , ""));
 				}
 			} else {
 				retval.add(new MappableElement.Unique(t));
@@ -120,7 +128,7 @@ import java.util.stream.Collectors;
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 					.collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
+			LOG.warn("Failed to list elements of non-existent type" , e);
 			return Collections.emptyList();
 		}
 	}
@@ -135,7 +143,7 @@ import java.util.stream.Collectors;
 						return false;
 					}).collect(Collectors.toList());
 		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
+			LOG.warn("Failed to list elements of non-existent type" , e);
 			return Collections.emptyList();
 		}
 	}
