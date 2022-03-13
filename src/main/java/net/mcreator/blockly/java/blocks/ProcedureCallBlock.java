@@ -35,6 +35,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
+		String type = block.getAttribute("type");
 
 		if (element != null) {
 			Procedure procedure = new Procedure(element.getTextContent());
@@ -91,8 +92,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 					master.append(code);
 				} else {
 					dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
-					String code = master.getTemplateGenerator()
-							.generateFromTemplate("_call_procedure.java.ftl", dataModel);
+					String code = master.getTemplateGenerator().generateFromTemplate(type.equals("call_procedure") ? "_call_procedure.java.ftl" : "_old_command.java.ftl", dataModel);
 					master.append(code);
 				}
 			}
@@ -104,7 +104,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "call_procedure", "call_procedure_at" };
+		return new String[] { "call_procedure", "call_procedure_at", "old_command" };
 	}
 
 	@Override public BlockType getBlockType() {

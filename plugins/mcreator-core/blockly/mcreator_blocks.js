@@ -83,6 +83,17 @@ Blockly.Blocks['args_start'] = {
     }
 };
 
+Blockly.Blocks['old_command'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.old_command"))
+            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure"))), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(160);
+    }
+};
+
 Blockly.Blocks['advancement_trigger'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.advancement_trigger"));
