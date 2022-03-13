@@ -1,0 +1,1 @@
+The condition has to be valid to use the selected item as fuel. If the condition fails, the item will not work as fuel until the condition successes.

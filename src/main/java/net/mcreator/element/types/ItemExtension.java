@@ -33,6 +33,7 @@ public class ItemExtension extends GeneratableElement {
 
 	public boolean enableFuel;
 	public int fuelPower;
+	public Procedure fuelSuccessCondition;
 
 	public boolean hasDispenseBehavior;
 	public Procedure dispenseSuccessCondition;

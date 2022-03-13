@@ -434,11 +434,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
-//		hasDispenseBehavior.setSelected(item.hasDispenseBehavior);
-//		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
-//		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
-//
-//		updateDispenseElements();
 		updateGlowElements();
 
 		Model model = item.getItemModel();

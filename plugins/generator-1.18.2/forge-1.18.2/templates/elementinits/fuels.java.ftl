@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 
 <#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -42,10 +43,13 @@ package ${package}.init;
 
 	@SubscribeEvent
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+		ItemStack itemstack = event.getItemStack();
 		<#list itemextensions as extension>
             <#if extension.enableFuel>
                 if (event.getItemStack().getItem() == ${mappedMCItemToItem(extension.item)})
-                    event.setBurnTime(${extension.fuelPower});
+                    <#if hasReturnValueOf(extension.fuelSuccessCondition, "logic")>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
+                        event.setBurnTime(${extension.fuelPower});
+
             </#if>
 		</#list>
 	}

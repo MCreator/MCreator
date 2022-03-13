@@ -24,6 +24,7 @@ import net.mcreator.element.types.ItemExtension;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -46,12 +47,11 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	// Fuel
 	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fuelPower = new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1));
-
-	// Composter
+	// Compostable
 	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0.00f, 1.00f, 0.05f));
-
 	// Dispenser behaviour
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector fuelSuccessCondition;
 	private ProcedureSelector dispenseSuccessCondition;
 	private ProcedureSelector dispenseResultItemstack;
 
@@ -70,20 +70,29 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/enable_fuel"),
 						L10N.label("elementgui.item_extension.enable_fuel")), enableFuel);
 		enableFuel.setOpaque(false);
-		enableFuel.addActionListener(e -> fuelPower.setEnabled(enableFuel.isSelected()));
+		enableFuel.addActionListener(e -> updateFuelElements());
 		enableFuelComp.setOpaque(false);
+
+		JComponent fuelPowerComponent = PanelUtils.westAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
+						L10N.label("elementgui.item_extension.burn_time")), PanelUtils.centerInPanel(fuelPower));
+
+		fuelSuccessCondition = new ProcedureSelector(this.withEntry("item_extension/fuel_success_condition"), mcreator,
+				L10N.t("elementgui.item_extension.fuel_success_condition"), ProcedureSelector.Side.BOTH, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("itemstack:itemstack")).makeInline();
+
 		fuelPanel.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(enableFuelComp,
-				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
-						L10N.label("elementgui.item_extension.burn_time")), PanelUtils.centerInPanel(fuelPower)))));
+				PanelUtils.northAndCenterElement(fuelPowerComponent, fuelSuccessCondition))));
 
 		fuelPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item_extension.fuel_properties"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		// Compostability
-		JPanel composter = (JPanel) PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
-				L10N.label("elementgui.item_extension.layer_chance")), layerChance);
+		// Compostable
+		JPanel compostPanel = (JPanel) PanelUtils.westAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
+						L10N.label("elementgui.item_extension.layer_chance")), layerChance);
 
 		// Dispenser behaviour
 		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item_extension/dispense_success_condition"),
@@ -119,7 +128,9 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(
 						HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/item"),
 								L10N.label("elementgui.item_extension.item")), PanelUtils.centerInPanel(item)),
-				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel, composter), dispenserBehaviourPanel))));
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel,
+								PanelUtils.northAndCenterElement(new JEmptyBox(5, 5), compostPanel)),
+						dispenserBehaviourPanel))));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -128,6 +139,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+		fuelSuccessCondition.refreshListKeepSelected();
 		dispenseSuccessCondition.refreshListKeepSelected();
 		dispenseResultItemstack.refreshListKeepSelected();
 	}
@@ -137,17 +149,23 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		dispenseResultItemstack.setEnabled(hasDispenseBehavior.isSelected());
 	}
 
+	private void updateFuelElements() {
+		fuelPower.setEnabled(enableFuel.isSelected());
+		fuelSuccessCondition.setEnabled(enableFuel.isSelected());
+	}
+
 	@Override protected void openInEditingMode(ItemExtension itemExtension) {
 		item.setBlock(itemExtension.item);
-		fuelPower.setValue(itemExtension.fuelPower);
 		enableFuel.setSelected(itemExtension.enableFuel);
+		fuelPower.setValue(itemExtension.fuelPower);
+		fuelSuccessCondition.setSelectedProcedure(itemExtension.fuelSuccessCondition);
 		hasDispenseBehavior.setSelected(itemExtension.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(itemExtension.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(itemExtension.dispenseResultItemstack);
 		layerChance.setValue(itemExtension.layerChance);
 
+		updateFuelElements();
 		updateDispenseElements();
-		fuelPower.setEnabled(enableFuel.isSelected());
 	}
 
 	@Override public ItemExtension getElementFromGUI() {
@@ -155,6 +173,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		itemExtension.item = item.getBlock();
 		itemExtension.enableFuel = enableFuel.isSelected();
 		itemExtension.fuelPower = (int) fuelPower.getValue();
+		itemExtension.fuelSuccessCondition = fuelSuccessCondition.getSelectedProcedure();
 		itemExtension.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		itemExtension.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
 		itemExtension.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
