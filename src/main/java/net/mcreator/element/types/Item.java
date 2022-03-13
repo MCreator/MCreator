@@ -78,6 +78,11 @@ import java.util.Map;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
 
+	// Legacy
+	public boolean hasDispenseBehavior;
+	public Procedure dispenseSuccessCondition;
+	public Procedure dispenseResultItemstack;
+
 	private Item() {
 		this(null);
 	}
