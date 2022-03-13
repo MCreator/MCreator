@@ -81,7 +81,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				L10N.t("elementgui.item_extension.fuel_properties"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		// Composter
+		// Compostability
 		JPanel composter = (JPanel) PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
 				L10N.label("elementgui.item_extension.layer_chance")), layerChance);
 
