@@ -36,7 +36,7 @@ package ${package}.item.extension;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
 
-	<#if data.hasDispenseBehavior || data.isCompostable>
+	<#if data.hasDispenseBehavior || data.layerChance gt 0>
 		@SubscribeEvent
 		public void init(FMLCommonSetupEvent event) {
 		    <#if data.layerChance gt 0>
