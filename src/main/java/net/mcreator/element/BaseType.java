@@ -34,6 +34,7 @@ public enum BaseType {
 	FUEL,
 	GUI,
 	ITEM,
+	EXTENSION,
 	OTHER,
 	PARTICLE,
 	POTION,
