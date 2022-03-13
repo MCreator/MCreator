@@ -165,7 +165,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 
-
 	// Legacy
 	public static ModElementType<?> FUEL = new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, null, Fuel.class);
 }
