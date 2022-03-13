@@ -1,1 +1,1 @@
-This is the item that will receive the properties.
+This is the target item of this extension.
