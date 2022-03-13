@@ -87,9 +87,10 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
-		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
+		} else if (type == ModElementType.ITEMEXTENSION || type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "3"), random, false, false, 2));
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.KEYBIND) {
 			generatableElements.add(
@@ -269,11 +270,6 @@ public class TestWorkspaceDataProvider {
 			achievement.triggerxml = "<xml><block type=\"tick\" x=\"40\" y=\"80\"><next>"
 					+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
 			return achievement;
-		} else if (ModElementType.FUEL.equals(modElement.getType())) {
-			Fuel fuel = new Fuel(modElement);
-			fuel.power = new int[] { 0, 100, 1000, 4000 }[valueIndex];
-			fuel.block = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
-			return fuel;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
@@ -1129,11 +1125,7 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
-			item.hasDispenseBehavior = _true;
-			item.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
-			item.dispenseResultItemstack = !_true ?
-					null :
-					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
+
 			if (!emptyLists) {
 				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
 						"info 1, info 2, test \\, is this, another one");
@@ -1144,6 +1136,19 @@ public class TestWorkspaceDataProvider {
 			item.renderType = 0;
 			item.customModelName = "Normal";
 			return item;
+		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())){
+			ItemExtension itemExtension = new ItemExtension(modElement);
+			itemExtension.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+
+			itemExtension.enableFuel = !emptyLists;
+			itemExtension.fuelPower = new int[] { 0, 100, 1000, 4000 }[valueIndex];
+			itemExtension.isCompostable = emptyLists && _true;
+			itemExtension.layerChance = new double[] { 0.3d, 0.5d, 1d}[valueIndex];
+			itemExtension.hasDispenseBehavior = _true;
+			itemExtension.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
+			itemExtension.dispenseResultItemstack = !_true ? null :
+					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
+			return itemExtension;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
 			rangedItem.name = modElement.getName();
