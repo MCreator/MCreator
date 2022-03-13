@@ -477,9 +477,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
-//		item.hasDispenseBehavior = hasDispenseBehavior.isSelected();
-//		item.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
-//		item.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
