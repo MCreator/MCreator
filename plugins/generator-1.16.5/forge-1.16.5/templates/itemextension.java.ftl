@@ -30,28 +30,21 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
+<#include "procedures.java.ftl">
 
 package ${package}.item.extension;
 
-@Mod.EventBusSubscriber public class ${name}ItemExtension {
-
-    <#if data.enableFuel>
-        @SubscribeEvent
-        public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-            if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.item)})
-                event.setBurnTime(${data.fuelPower});
-        }
-    </#if>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
 
 	<#if data.hasDispenseBehavior || data.isCompostable>
 		@SubscribeEvent
 		public void init(FMLCommonSetupEvent event) {
 		    <#if data.isCompostable>
-		        ComposterBlock.COMPOSTABLES.put(${mappedMCItemToItem(extension.item)}, ${extension.layerChance}f);
+		        ComposterBlock.CHANCES.put(${mappedMCItemToItem(data.item)}, ${data.layerChance}f);
 		    </#if>
 
 		    <#if data.hasDispenseBehavior>
-                DispenserBlock.registerDispenseBehavior(block, new OptionalDispenseBehavior() {
+                DispenserBlock.registerDispenseBehavior(${mappedMCItemToItem(data.item)}, new OptionalDispenseBehavior() {
                     public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
                         ItemStack itemstack = stack.copy();
                         World world = blockSource.getWorld();
@@ -81,8 +74,15 @@ package ${package}.item.extension;
 		}
 	</#if>
 
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-	public static class
+    <#if data.enableFuel>
+        @Mod.EventBusSubscriber
+        public static class Fuel {
+            @SubscribeEvent
+            public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+                if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.item)})
+                    event.setBurnTime(${data.fuelPower});
+            }
+        }
+    </#if>
 }
 <#-- @formatter:on -->
