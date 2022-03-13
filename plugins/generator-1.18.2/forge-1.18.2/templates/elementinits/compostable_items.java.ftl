@@ -43,7 +43,7 @@ package ${package}.init;
     @SubscribeEvent
 	public static void addComposterItems(FMLCommonSetupEvent event) {
 	    <#list itemextensions as extension>
-            <#if extension.isCompostable>
+            <#if (extension.layerChance > 0)>
 		        ComposterBlock.COMPOSTABLES.put(${mappedMCItemToItem(extension.item)}, ${extension.layerChance}f);
             </#if>
 		</#list>

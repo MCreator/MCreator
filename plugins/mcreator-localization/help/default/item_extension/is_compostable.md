@@ -1,1 +1,0 @@
-Check this case to allow this item to go in the composter block.

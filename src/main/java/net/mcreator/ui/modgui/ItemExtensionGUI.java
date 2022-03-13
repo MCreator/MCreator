@@ -48,8 +48,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	private final JSpinner fuelPower = new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1));
 
 	// Composter
-	private final JCheckBox isCompostable = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0.65f, 0.00f, 1.00f, 0.05f));
+	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0.00f, 1.00f, 0.05f));
 
 	// Dispenser behaviour
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
@@ -71,6 +70,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/enable_fuel"),
 						L10N.label("elementgui.item_extension.enable_fuel")), enableFuel);
 		enableFuel.setOpaque(false);
+		enableFuel.addActionListener(e -> fuelPower.setEnabled(enableFuel.isSelected()));
 		enableFuelComp.setOpaque(false);
 		fuelPanel.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(enableFuelComp,
 				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
@@ -82,22 +82,8 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		// Composter
-		JPanel composterPanel = new JPanel(new BorderLayout());
-		composterPanel.setOpaque(false);
-
-		JComponent isCompostableComp = PanelUtils.gridElements(1, 2, 5, 5,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/is_compostable"),
-						L10N.label("elementgui.item_extension.is_compostable")), isCompostable);
-		isCompostable.setOpaque(false);
-		isCompostableComp.setOpaque(false);
-		composterPanel.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(isCompostableComp,
-				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
-						L10N.label("elementgui.item_extension.layer_chance")), layerChance))));
-
-		composterPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.item_extension.composter_properties"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		JPanel composter = (JPanel) PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
+				L10N.label("elementgui.item_extension.layer_chance")), layerChance);
 
 		// Dispenser behaviour
 		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item_extension/dispense_success_condition"),
@@ -133,7 +119,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(
 						HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/item"),
 								L10N.label("elementgui.item_extension.item")), PanelUtils.centerInPanel(item)),
-				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel, composterPanel), dispenserBehaviourPanel))));
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel, composter), dispenserBehaviourPanel))));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -158,10 +144,10 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		hasDispenseBehavior.setSelected(itemExtension.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(itemExtension.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(itemExtension.dispenseResultItemstack);
-		isCompostable.setSelected(itemExtension.isCompostable);
 		layerChance.setValue(itemExtension.layerChance);
 
 		updateDispenseElements();
+		fuelPower.setEnabled(enableFuel.isSelected());
 	}
 
 	@Override public ItemExtension getElementFromGUI() {
@@ -172,7 +158,6 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		itemExtension.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		itemExtension.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
 		itemExtension.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
-		itemExtension.isCompostable = isCompostable.isSelected();
 		itemExtension.layerChance = (double) layerChance.getValue();
 		return itemExtension;
 	}

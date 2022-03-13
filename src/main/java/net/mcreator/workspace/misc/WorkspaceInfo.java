@@ -240,7 +240,7 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.ITEMEXTENSION) {
 				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
-					if (itemExtension.isCompostable)
+					if (itemExtension.layerChance > 0)
 						return true;
 			}
 		return false;

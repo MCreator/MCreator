@@ -39,7 +39,7 @@ package ${package}.item.extension;
 	<#if data.hasDispenseBehavior || data.isCompostable>
 		@SubscribeEvent
 		public void init(FMLCommonSetupEvent event) {
-		    <#if data.isCompostable>
+		    <#if (extension.layerChance > 0)>
 		        ComposterBlock.CHANCES.put(${mappedMCItemToItem(data.item)}, ${data.layerChance}f);
 		    </#if>
 
