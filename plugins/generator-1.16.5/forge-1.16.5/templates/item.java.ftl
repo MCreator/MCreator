@@ -115,7 +115,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 					            .hunger(${data.nutritionalValue})
 					            .saturation(${data.saturation}f)
                                 <#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
-                                <#if data.forDogs>.meat()</#if>.build())
+                                <#if data.isMeat>.meat()</#if>.build())
                     </#if>
 			);
 			setRegistryName("${registryname}");

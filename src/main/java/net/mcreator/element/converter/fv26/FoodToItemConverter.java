@@ -54,7 +54,7 @@ public class FoodToItemConverter implements IConverter {
 			item.nutritionalValue = food.nutritionalValue;
 			item.saturation = food.saturation;
 			item.isAlwaysEdible = food.isAlwaysEdible;
-			item.forDogs = food.forDogs;
+			item.isMeat = food.forDogs;
 			item.useDuration = food.eatingSpeed;
 			item.resultItem = food.resultItem;
 			item.animation = food.animation;

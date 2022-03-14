@@ -120,7 +120,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
 	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
-	private final JCheckBox forDogs = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
 			new String[] { "eat", "drink", "block", "bow", "crossbow", "none", "spear" });
@@ -359,7 +359,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		foodSubpane.setOpaque(false);
 
 		isFood.setOpaque(false);
-		forDogs.setOpaque(false);
+		isMeat.setOpaque(false);
 		isAlwaysEdible.setOpaque(false);
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
@@ -383,9 +383,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.food.eating_result")));
 		foodSubpane.add(PanelUtils.centerInPanel(resultItem));
 
-		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_for_dogs"),
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"),
 				L10N.label("elementgui.food.is_meat")));
-		foodSubpane.add(forDogs);
+		foodSubpane.add(isMeat);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.food.is_edible")));
@@ -465,13 +465,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (isFood.isSelected()) {
 			nutritionalValue.setEnabled(true);
 			saturation.setEnabled(true);
-			forDogs.setEnabled(true);
+			isMeat.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
 			resultItem.setEnabled(true);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);
-			forDogs.setEnabled(false);
+			isMeat.setEnabled(false);
 			isAlwaysEdible.setEnabled(false);
 			resultItem.setEnabled(false);
 		}
@@ -560,7 +560,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		dispenseSuccessCondition.setSelectedProcedure(item.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(item.dispenseResultItemstack);
 		isFood.setSelected(item.isFood);
-		forDogs.setSelected(item.forDogs);
+		isMeat.setSelected(item.isMeat);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
 		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
 		nutritionalValue.setValue(item.nutritionalValue);
@@ -614,7 +614,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();
-		item.forDogs = forDogs.isSelected();
+		item.isMeat = isMeat.isSelected();
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
 		item.animation = (String) animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();

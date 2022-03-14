@@ -142,6 +142,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;
 	public static ModElementType<?> FLUID;
+	@Deprecated
+	public static ModElementType<?> FOOD;
 	public static ModElementType<?> FUEL;
 	public static ModElementType<?> FUNCTION;
 	public static ModElementType<?> GAMERULE;
@@ -164,8 +166,5 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
-
-	// legacy
-	public static final ModElementType<?> FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null, Food.class); // we keep it with its values, so we can make a basic converter.
 
 }

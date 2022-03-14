@@ -51,7 +51,7 @@ import java.util.*;
 
 public class ConverterRegistry {
 
-	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
+	@SuppressWarnings("deprecation") private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));

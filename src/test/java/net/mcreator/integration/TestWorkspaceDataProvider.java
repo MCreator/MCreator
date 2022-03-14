@@ -1109,7 +1109,7 @@ public class TestWorkspaceDataProvider {
 			item.isFood = _true;
 			item.nutritionalValue = 5;
 			item.saturation = 0.8f;
-			item.forDogs = _true;
+			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });

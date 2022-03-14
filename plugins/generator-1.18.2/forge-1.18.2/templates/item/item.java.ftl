@@ -59,7 +59,7 @@ import javax.annotation.Nullable;
 				    .nutrition(${data.nutritionalValue})
                 	.saturationMod(${data.saturation}f)
                     <#if data.isAlwaysEdible>.alwaysEat()</#if>
-                    <#if data.forDogs>.meat()</#if>
+                    <#if data.isMeat>.meat()</#if>
                     .build())
                 </#if>
 		);
