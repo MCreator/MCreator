@@ -1,3 +1,0 @@
-global_templates:
-  - template: elementinits/paintings.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNamePaintings.java"

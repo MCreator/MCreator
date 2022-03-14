@@ -1,1 +1,0 @@
-(${input$direction}.getClockWise(Direction.Axis.Y))
