@@ -1,1 +1,0 @@
-/*@int*/(world instanceof Level _lvl_getRedPow ? _lvl_getRedPow.getSignal(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${input$direction}):0)

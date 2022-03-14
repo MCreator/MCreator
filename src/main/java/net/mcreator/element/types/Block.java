@@ -225,6 +225,10 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
+	public boolean isDoubleBlock() {
+		return "Door".equals(blockBase);
+	}
+
 	public boolean shouldOpenGUIOnRightClick() {
 		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
 	}
