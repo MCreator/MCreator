@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: stable
+status: legacy
 buildfileversion: 37.1.1
 
 java_models:
