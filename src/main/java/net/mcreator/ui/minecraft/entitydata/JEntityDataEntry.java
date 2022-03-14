@@ -103,7 +103,7 @@ public class JEntityDataEntry extends JPanel {
 		name.setText(entry.name);
 		entryType.setSelectedItem(entry.type);
 		defaultNumberValue.setValue(entry.defaultNumberValue);
-		defaultLogicValue.setSelectedItem(entry.defaultLogicValue);
+		defaultLogicValue.setSelectedItem(Boolean.toString(entry.defaultLogicValue));
 		defaultStringValue.setText(entry.defaultStringValue);
 	}
 }
