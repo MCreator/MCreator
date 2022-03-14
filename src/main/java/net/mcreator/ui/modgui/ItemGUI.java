@@ -162,7 +162,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				L10N.t("trigger.player_useitem_finish"),
+				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
@@ -372,27 +372,27 @@ public class ItemGUI extends ModElementGUI<Item> {
 		foodSubpane.add(isFood);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
-				L10N.label("elementgui.food.nutritional_value")));
+				L10N.label("elementgui.item.nutritional_value")));
 		foodSubpane.add(nutritionalValue);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
-				L10N.label("elementgui.food.saturation")));
+				L10N.label("elementgui.item.saturation")));
 		foodSubpane.add(saturation);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/result_item"),
-				L10N.label("elementgui.food.eating_result")));
+				L10N.label("elementgui.item.eating_result")));
 		foodSubpane.add(PanelUtils.centerInPanel(resultItem));
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"),
-				L10N.label("elementgui.food.is_meat")));
+				L10N.label("elementgui.item.is_meat")));
 		foodSubpane.add(isMeat);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
-				L10N.label("elementgui.food.is_edible")));
+				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
-				L10N.label("elementgui.food.item_animation")));
+				L10N.label("elementgui.item.item_animation")));
 		foodSubpane.add(animation);
 
 		foodSubpane.setBorder(BorderFactory.createTitledBorder(
