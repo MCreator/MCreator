@@ -135,14 +135,14 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing mod elements generation");
 				GTModElements.runTest(LOG, generator, random, workspace);
 
-				LOG.info("[" + generator + "] ----- Re-generating base after mod element generation");
-				assertTrue(workspace.getGenerator().generateBase());
-
 				LOG.info("[" + generator + "] ----- Testing procedure triggers");
 				GTProcedureTriggers.runTest(LOG, generator, workspace);
 
 				LOG.info("[" + generator + "] ----- Testing procedure blocks");
 				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
+
+				LOG.info("[" + generator + "] ----- Re-generating base to include generated mod elements");
+				assertTrue(workspace.getGenerator().generateBase());
 
 				LOG.info("[" + generator + "] ----- Reformatting the code and organising the imports");
 				ClassWriter.formatAndOrganiseImportsForFiles(workspace,
