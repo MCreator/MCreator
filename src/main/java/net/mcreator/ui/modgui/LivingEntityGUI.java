@@ -459,7 +459,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -470,6 +470,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
+
+		spo2.add(transparentModelCondition);
+		spo2.add(isShakingCondition);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
@@ -594,7 +597,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane2.setOpaque(false);
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(spo2, transparentModelCondition), isShakingCondition)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
 		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
 		aitop.setOpaque(false);
