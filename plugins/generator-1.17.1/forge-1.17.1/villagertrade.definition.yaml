@@ -1,5 +1,0 @@
-global_templates:
-  - template: elementinits/villagertrades.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTrades.java"
-  - template: elementinits/tradebuilder.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/village/@JavaModNameRandomTradeBuilder.java"
