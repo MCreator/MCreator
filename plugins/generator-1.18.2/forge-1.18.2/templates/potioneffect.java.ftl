@@ -38,7 +38,6 @@ public class ${name}MobEffect extends MobEffect {
 
 	public ${name}MobEffect() {
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
-		setRegistryName("${registryname}");
 	}
 
 	@Override public String getDescriptionId() {

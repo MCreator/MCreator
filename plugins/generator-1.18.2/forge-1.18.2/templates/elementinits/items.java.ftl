@@ -37,6 +37,7 @@
 package ${package}.init;
 
 <#assign hasBlocks = false>
+<#assign hasDoubleBlocks = false>
 
 public class ${JavaModName}Items {
 
@@ -67,9 +68,15 @@ public class ${JavaModName}Items {
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
                 REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
         <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
-            <#assign hasBlocks = true>
-            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-                block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+            <#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
+                <#assign hasDoubleBlocks = true>
+                public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                    doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+            <#else>
+                <#assign hasBlocks = true>
+                public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                    block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+            </#if>
         <#elseif item.getModElement().getTypeString() == "livingentity">
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
                 REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
@@ -84,6 +91,12 @@ public class ${JavaModName}Items {
     <#if hasBlocks>
 	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+	}
+    </#if>
+
+    <#if hasDoubleBlocks>
+	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block, CreativeModeTab tab) {
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties().tab(tab)));
 	}
     </#if>
 

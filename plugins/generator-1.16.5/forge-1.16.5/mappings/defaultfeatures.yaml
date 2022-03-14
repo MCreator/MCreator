@@ -1,6 +1,5 @@
 _default: null
 Bamboo: BambooVegetation
-BerryBushes: ChanceBerries
 Caves: CavesAndCanyons
 DeadBushes: DesertDeadBushes
 DesertFeatures: DesertWells
@@ -19,11 +18,8 @@ Ores: OverworldOres
 PlainsTallGrass: TallGrass
 ReedsAndPumpkins: SugarCaneAndPumpkins
 SavannaTrees: SavannaTrees
-SedimentDisks: Disks
-SwampClayDisks: ClayDisks
 SwampVegetation: SwampVegetation
 TaigaGrassAndMushrooms: TaigaGrassVegetation
-TaigaGrassDeadBushesMushrooms: GiantTaigaGrassVegetation
 TaigaLargeFerns: LargeFern
 TaigaRocks: ForestRocks
 TallSeagrassLush: SimpleSeagrass

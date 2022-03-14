@@ -1,2 +1,1 @@
-Ce paramètre contrôle le nombre de fois où votre biome apparaîtra sur 1024 fois
-du même type de biome (GLACÉ, FROID, CHAUD et DÉSERT).
+Ce paramètre contrôle la rareté de ce biome. Laissez le à 10 pour utiliser le poids standard d'un biome.

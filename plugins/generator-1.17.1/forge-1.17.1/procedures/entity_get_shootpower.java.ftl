@@ -1,1 +1,0 @@
-(${input$projectile_entity} instanceof Projectile _projEnt? _projEnt.getDeltaMovement().length():0)
