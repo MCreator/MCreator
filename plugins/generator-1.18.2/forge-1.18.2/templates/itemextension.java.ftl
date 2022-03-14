@@ -50,7 +50,8 @@ package ${package}.item.extension;
 
     				<#if hasProcedure(data.dispenseResultItemstack)>
     					boolean success = this.isSuccess();
-    					<#if hasReturnValueOf(data.dispenseResultItemstack, "logic")>
+    					<#if hasReturnValueOf(data.dispenseResultItemstack, "itemstack")>
+
     						return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
     					<#else>
     						<@procedureOBJToCode data.dispenseResultItemstack/>
