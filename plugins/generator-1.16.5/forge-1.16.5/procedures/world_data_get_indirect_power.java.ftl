@@ -1,1 +1,2 @@
-((world instanceof World)?((World) world).getRedstonePowerFromNeighbors(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})):0)
+<#include "mcelements.ftl">
+((world instanceof World)?((World) world).getRedstonePowerFromNeighbors(${toBlockPos(input$x,input$y,input$z)}):0)

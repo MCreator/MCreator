@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public int fillTankSimulate(IWorld world, BlockPos pos, int amount) {
@@ -17,5 +18,5 @@
 		);
 		return _retval.get();
 	}
-}.fillTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.fillTankSimulate(world, ${toBlockPos(input$x,input$y,input$z)},(int)${input$amount}))
 <#-- @formatter:on -->

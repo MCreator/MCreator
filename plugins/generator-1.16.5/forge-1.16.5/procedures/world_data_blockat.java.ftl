@@ -1,1 +1,2 @@
-/*@BlockState*/(world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+/*@BlockState*/(world.getBlockState(${toBlockPos(input$x,input$y,input$z)}))

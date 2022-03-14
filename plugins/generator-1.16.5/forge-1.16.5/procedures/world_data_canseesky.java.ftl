@@ -1,1 +1,2 @@
-(world.canBlockSeeSky(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+(world.canBlockSeeSky(${toBlockPos(input$x,input$y,input$z)}))

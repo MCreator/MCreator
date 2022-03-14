@@ -1,1 +1,2 @@
-/*@BlockState*/(world.getFluidState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getBlockState())
+<#include "mcelements.ftl">
+/*@BlockState*/(world.getFluidState(${toBlockPos(input$x,input$y,input$z)}).getBlockState())

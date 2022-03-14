@@ -1,1 +1,2 @@
-(world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getHarvestLevel())
+<#include "mcelements.ftl">
+(world.getBlockState(${toBlockPos(input$x,input$y,input$z)}).getHarvestLevel())

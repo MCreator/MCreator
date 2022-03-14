@@ -1,2 +1,3 @@
-(world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}))
-        .getBlockHardness(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+(world.getBlockState(${toBlockPos(input$x,input$y,input$z)})
+        .getBlockHardness(world, ${toBlockPos(input$x,input$y,input$z)}))

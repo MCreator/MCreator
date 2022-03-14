@@ -1,8 +1,9 @@
 <#-- @formatter:off -->
+<#include "mcelements.ftl">
 {
 	Entity _ent = ${input$entity};
 	if(_ent instanceof ServerPlayerEntity) {
-		BlockPos _bpos = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
+		BlockPos _bpos = ${toBlockPos(input$x,input$y,input$z)};
 		NetworkHooks.openGui((ServerPlayerEntity) _ent, new INamedContainerProvider() {
 			@Override public ITextComponent getDisplayName() {
 				return new StringTextComponent("${field$guiname}");

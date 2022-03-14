@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public boolean canReceiveEnergy(IWorld world, BlockPos pos) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.canReceive()));
 		return _retval.get();
 	}
-}.canReceiveEnergy(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+}.canReceiveEnergy(world, ${toBlockPos(input$x,input$y,input$z)}))
 <#-- @formatter:on -->

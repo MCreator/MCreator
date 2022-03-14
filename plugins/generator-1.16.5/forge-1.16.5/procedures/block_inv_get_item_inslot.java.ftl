@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@ItemStack*/(new Object() {
 	public ItemStack getItemStack(BlockPos pos, int sltid) {
@@ -10,5 +11,5 @@
 		}
 		return _retval.get();
 	}
-}.getItemStack(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
+}.getItemStack(${toBlockPos(input$x,input$y,input$z)},(int)(${input$slotid})))
 <#-- @formatter:on -->

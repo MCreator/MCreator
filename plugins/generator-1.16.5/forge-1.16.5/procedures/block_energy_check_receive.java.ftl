@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public int receiveEnergySimulate(IWorld world, BlockPos pos, int _amount) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.receiveEnergy(_amount, true)));
 		return _retval.get();
 	}
-}.receiveEnergySimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.receiveEnergySimulate(world, ${toBlockPos(input$x,input$y,input$z)},(int)${input$amount}))
 <#-- @formatter:on -->

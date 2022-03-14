@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object() {
 	public int getFluidTankLevel(BlockPos pos, int tank) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.getFluidInTank(tank).getAmount()));
 		return _retval.get();
 	}
-}.getFluidTankLevel(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), (int)${input$tank}))
+}.getFluidTankLevel(${toBlockPos(input$x,input$y,input$z)}, (int)${input$tank}))
 <#-- @formatter:on -->

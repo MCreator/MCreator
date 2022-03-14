@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public int extractEnergySimulate(IWorld world, BlockPos pos, int _amount) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.extractEnergy(_amount, true)));
 		return _retval.get();
 	}
-}.extractEnergySimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.extractEnergySimulate(world, ${toBlockPos(input$x,input$y,input$z)},(int)${input$amount}))
 <#-- @formatter:on -->

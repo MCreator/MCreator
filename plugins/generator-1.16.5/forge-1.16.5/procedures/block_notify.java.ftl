@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 if(world instanceof World)
-    ((World) world).notifyNeighborsOfStateChange(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),
-        ((World) world).getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getBlock());
+    ((World) world).notifyNeighborsOfStateChange(${toBlockPos(input$x,input$y,input$z)},
+        ((World) world).getBlockState(${toBlockPos(input$x,input$y,input$z)}).getBlock());

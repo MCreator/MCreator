@@ -1,7 +1,8 @@
+<#include "mcelements.ftl">
 <#include "mcitems.ftl">
 <#-- @formatter:off -->
 {
-	TileEntity _ent = world.getTileEntity(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
+	TileEntity _ent = world.getTileEntity(${toBlockPos(input$x,input$y,input$z)});
 	if (_ent != null) {
 		final int _sltid = (int)(${input$slotid});
 		final ItemStack _setstack = ${mappedMCItemToItemStackCode(input$item, 1)};
