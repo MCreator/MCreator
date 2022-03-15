@@ -137,6 +137,18 @@ public class BlocklyJavascriptBridge {
 					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds,
 					L10N.t("dialog.selector.sound.message"), L10N.t("dialog.selector.sound.title"));
+			case "effect" -> openDataListEntrySelector(w -> ElementUtil.loadAllPotionEffects(w).stream()
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.potion_effect.message"), L10N.t("dialog.selector.potion_effect.title"));
+			case "potion" -> openDataListEntrySelector(w -> ElementUtil.loadAllPotions(w).stream()
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.potion.message"), L10N.t("dialog.selector.potion.title"));
+			case "achievement" -> openDataListEntrySelector(w -> ElementUtil.loadAllAchievements(w).stream()
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.advancement.message"), L10N.t("dialog.selector.advancement.title"));
+			case "particle" -> openDataListEntrySelector(w -> ElementUtil.loadAllParticles(w).stream()
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.particle.message"), L10N.t("dialog.selector.particle.title"));
 			default -> "," + L10N.t("blockly.extension.data_list_selector.no_entry");
 		};
 
