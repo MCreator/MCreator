@@ -93,6 +93,10 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		JPanel compostPanel = (JPanel) PanelUtils.westAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
 						L10N.label("elementgui.item_extension.layer_chance")), layerChance);
+		compostPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item_extension.compost_properties"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		// Dispenser behaviour
 		dispenseSuccessCondition = new ProcedureSelector(this.withEntry("item_extension/dispense_success_condition"),
