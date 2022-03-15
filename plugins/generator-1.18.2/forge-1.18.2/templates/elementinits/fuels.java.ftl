@@ -47,7 +47,7 @@ package ${package}.init;
 		<#list itemextensions as extension>
             <#if extension.enableFuel>
                 if (event.getItemStack().getItem() == ${mappedMCItemToItem(extension.item)})
-                    <#if hasReturnValueOf(extension.fuelSuccessCondition, "logic")>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
+                    <#if hasProcedure(extension.fuelSuccessCondition)>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
                         event.setBurnTime(${extension.fuelPower});
 
             </#if>
