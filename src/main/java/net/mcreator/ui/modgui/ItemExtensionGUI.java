@@ -48,7 +48,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fuelPower = new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1));
 	// Compostable
-	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0.00f, 1.00f, 0.05f));
+	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
 	// Dispenser behaviour
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector fuelSuccessCondition;
