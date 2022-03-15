@@ -466,7 +466,7 @@ public class WorkspaceDialogs {
 						}
 					});
 
-					if (api.parent.id.equals("mcreator_link")) {
+					if (api.parent().id().equals("mcreator_link")) {
 
 						apiList.add(PanelUtils.westAndCenterElement(
 								ComponentUtils.wrapWithInfoButton(apiEnableBox, "https://mcreator.net/link"),
