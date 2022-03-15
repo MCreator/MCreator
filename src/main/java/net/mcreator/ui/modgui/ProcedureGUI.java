@@ -45,7 +45,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -130,6 +130,17 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			cancelableTriggerLabel.setIcon(null);
 			hasResultTriggerLabel.setIcon(null);
 			sideTriggerLabel.setIcon(null);
+
+			// Check that no local variable has the same name as one of the dependencies
+			for (var dependency : dependenciesArrayList) {
+				for (int i = 0; i < localVars.getSize(); i++) {
+					if (dependency.getName().equals(localVars.get(i).getName())) {
+						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.getName())));
+						break; // We found a match, there's no need to check the other variables
+					}
+				}
+			}
 
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
@@ -380,7 +391,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
 							String textname = Transliteration.transliterateString(((VTextField) component).getText());
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();

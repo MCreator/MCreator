@@ -1,1 +1,0 @@
-(${input$a} == ${input$b})

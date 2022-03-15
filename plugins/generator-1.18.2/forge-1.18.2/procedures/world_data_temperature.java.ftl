@@ -1,0 +1,1 @@
+/*@float*/(world.getBiome(new BlockPos((int) ${input$x}, (int) ${input$y}, (int) ${input$z})).value().getBaseTemperature() * 100f)

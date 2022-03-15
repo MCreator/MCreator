@@ -1,1 +1,0 @@
-${input$entity}.setDeltaMovement(${input$vx},${input$vy},${input$vz});
