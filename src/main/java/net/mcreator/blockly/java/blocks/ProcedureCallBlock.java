@@ -36,7 +36,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 
-		if (element != null) {
+		if (element != null && !"".equals(element.getTextContent())) {
 			Procedure procedure = new Procedure(element.getTextContent());
 			procedure.getDependencies(master.getWorkspace()).forEach(master::addDependency);
 

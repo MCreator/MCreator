@@ -149,6 +149,10 @@ public class BlocklyJavascriptBridge {
 			case "particle" -> openDataListEntrySelector(w -> ElementUtil.loadAllParticles(w).stream()
 							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.particle.message"), L10N.t("dialog.selector.particle.title"));
+			case "procedure" -> openStringEntrySelector(w -> w.getModElements().stream()
+					.filter(mel -> mel.getType() == ModElementType.PROCEDURE).map(ModElement::getName)
+							.toArray(String[]::new),
+					L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
 			default -> "," + L10N.t("blockly.extension.data_list_selector.no_entry");
 		};
 
