@@ -131,12 +131,12 @@ public class BlocklyJavascriptBridge {
 		String retval = switch (type) {
 			case "entity" -> openDataListEntrySelector(w -> ElementUtil.loadAllEntities(w).stream()
 							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.list_field.entity_message"), L10N.t("dialog.list_field.entity_title"));
+					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
 			case "biome" -> openDataListEntrySelector(w -> ElementUtil.loadAllBiomes(w).stream()
 							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.list_field.biome_list_message"), L10N.t("dialog.list_field.biome_list_title"));
-			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, L10N.t("dialog.selector.sound_title"),
-					L10N.t("dialog.selector.sound_message"));
+					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
+			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds,
+					L10N.t("dialog.selector.sound.message"), L10N.t("dialog.selector.sound.title"));
 			default -> "," + L10N.t("blockly.extension.data_list_selector.no_entry");
 		};
 
