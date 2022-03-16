@@ -55,6 +55,8 @@ public class GeneratorStats {
 
 		// determine supported mod element types
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+			if (type == ModElementType.FOOD)
+				continue;
 			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
 			if (definition != null) {
 				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {

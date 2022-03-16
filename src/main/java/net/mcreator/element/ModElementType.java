@@ -19,8 +19,6 @@
 
 package net.mcreator.element;
 
-import net.mcreator.element.types.Food;
-import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;

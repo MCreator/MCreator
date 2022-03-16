@@ -53,8 +53,8 @@ import java.util.List;
 						Enchantment.class));
 		ModElementType.FLUID = register(
 				new ModElementType<>("fluid", 'f', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
-		ModElementType.FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
-				Food.class); // we keep it with its values, so we can make a basic converter.
+		ModElementType.FOOD = register(new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
+				Food.class)); // we keep it with its values, so we can make a basic converter.
 		ModElementType.FUEL = register(
 				new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
 		ModElementType.FUNCTION = register(
