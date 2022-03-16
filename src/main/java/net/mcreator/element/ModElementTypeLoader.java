@@ -112,7 +112,7 @@ public class ModElementTypeLoader {
 		ModElementType.TOOL = register(
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
 		ModElementType.VILLAGERTRADE = register(
-				new ModElementType<>("villagertrade", null, BaseType.VILLAGER, RecipeType.NONE, VillagerTradeGUI::new, VillagerTrade.class));
+				new ModElementType<>("villagertrade", null, BaseType.OTHER, RecipeType.NONE, VillagerTradeGUI::new, VillagerTrade.class));
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {
