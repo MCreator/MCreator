@@ -46,7 +46,7 @@ package ${package}.recipes.brewing;
 		return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
 			&& PotionUtils.getPotion(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
 		<#elseif data.brewingInputStack?starts_with("TAG:")>
-		return ItemTags.getCollection().getTagByID(new ResourceLocation("${data.brewingInputStack?replace("TAG:","")}")).contains(input.getItem());
+		return ItemTags.create(new ResourceLocation("${data.brewingInputStack?replace("TAG:","")}")).test(input.getItem());
 		<#else>
 		return input.getItem() == ${mappedMCItemToItem(data.brewingInputStack)};
 		</#if>
@@ -55,7 +55,7 @@ package ${package}.recipes.brewing;
 	@Override
 	public boolean isIngredient(ItemStack ingredient) {
 		<#if data.brewingIngredientStack?starts_with("TAG:")>
-		return ItemTags.getCollection().getTagByID(new ResourceLocation("${data.brewingIngredientStack?replace("TAG:","")}")).contains(ingredient.getItem());
+		return ItemTags.create(new ResourceLocation("${data.brewingIngredientStack?replace("TAG:","")}")).test(ingredient.getItem());
 		<#else>
 		return ingredient.getItem() == ${mappedMCItemToItem(data.brewingIngredientStack)};
 		</#if>
