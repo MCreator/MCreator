@@ -19,7 +19,6 @@
 
 package net.mcreator.element;
 
-import net.mcreator.element.types.Fuel;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -166,5 +165,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TOOL;
 
 	// Legacy
-	public static ModElementType<?> FUEL = new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, null, Fuel.class);
+	@Deprecated
+	public static ModElementType<?> FUEL;
 }

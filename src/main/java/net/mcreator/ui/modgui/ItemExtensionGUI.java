@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.elements.ModElement;
@@ -46,7 +47,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	// Fuel
 	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner fuelPower = new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1));
+	private NumberProcedureSelector fuelPower;
 	// Compostable
 	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
 	// Dispenser behaviour
@@ -72,6 +73,10 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		enableFuel.setOpaque(false);
 		enableFuel.addActionListener(e -> updateFuelElements());
 		enableFuelComp.setOpaque(false);
+
+		fuelPower = new NumberProcedureSelector(null, mcreator,
+				new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1)),
+				Dependency.fromString("itemstack:itemstack"));
 
 		JComponent fuelPowerComponent = PanelUtils.westAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
@@ -143,6 +148,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+		fuelPower.refreshListKeepSelected();
 		fuelSuccessCondition.refreshListKeepSelected();
 		dispenseSuccessCondition.refreshListKeepSelected();
 		dispenseResultItemstack.refreshListKeepSelected();
@@ -161,7 +167,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	@Override protected void openInEditingMode(ItemExtension itemExtension) {
 		item.setBlock(itemExtension.item);
 		enableFuel.setSelected(itemExtension.enableFuel);
-		fuelPower.setValue(itemExtension.fuelPower);
+		fuelPower.setSelectedProcedure(itemExtension.fuelPower);
 		fuelSuccessCondition.setSelectedProcedure(itemExtension.fuelSuccessCondition);
 		hasDispenseBehavior.setSelected(itemExtension.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(itemExtension.dispenseSuccessCondition);
@@ -176,7 +182,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		ItemExtension itemExtension = new ItemExtension(modElement);
 		itemExtension.item = item.getBlock();
 		itemExtension.enableFuel = enableFuel.isSelected();
-		itemExtension.fuelPower = (int) fuelPower.getValue();
+		itemExtension.fuelPower = fuelPower.getSelectedProcedure();
 		itemExtension.fuelSuccessCondition = fuelSuccessCondition.getSelectedProcedure();
 		itemExtension.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		itemExtension.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();

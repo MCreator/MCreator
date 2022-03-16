@@ -42,6 +42,8 @@ public class DefinitionsProvider {
 
 	public DefinitionsProvider(String generatorName) {
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+			if (type == ModElementType.FUEL)
+				continue;
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
 							+ ".definition.yaml");

@@ -50,7 +50,7 @@ import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
 
 import java.util.*;
 
-public class ConverterRegistry {
+@SuppressWarnings("deprecation") public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));

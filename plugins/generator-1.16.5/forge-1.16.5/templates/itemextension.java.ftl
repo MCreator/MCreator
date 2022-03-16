@@ -82,7 +82,11 @@ package ${package}.item.extension;
 		        ItemStack itemstack = event.getItemStack();
                 if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.item)})
                     <#if hasProcedure(data.fuelSuccessCondition)>if (<@procedureOBJToConditionCode data.fuelSuccessCondition/>)</#if>
-                        event.setBurnTime(${data.fuelPower});
+                        <#if hasProcedure(extension.fuelPower)>
+                            event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
+                        <#else>
+                            event.setBurnTime(${extension.fuelPower.getFixedValue()});
+                        </#if>
             }
         }
     </#if>

@@ -55,6 +55,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
 		ModElementType.FOOD = register(
 				new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM, FoodGUI::new, Food.class));
+		ModElementType.FUEL = register(new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, null, Fuel.class));
 		ModElementType.FUNCTION = register(
 				new ModElementType<>("function", null, BaseType.DATAPACK, RecipeType.NONE, FunctionGUI::new,
 						Function.class));

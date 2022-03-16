@@ -1141,7 +1141,7 @@ public class TestWorkspaceDataProvider {
 			itemExtension.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
-			itemExtension.fuelPower = new int[] { 0, 100, 1000, 4000 }[valueIndex];
+			itemExtension.fuelPower = new NumberProcedure(emptyLists ? null : "number1", 1600);
 			itemExtension.fuelSuccessCondition = !emptyLists ? null : new Procedure("condition1");
 			itemExtension.layerChance = new double[] { 0.3d, 0.5d, 1d}[valueIndex];
 			itemExtension.hasDispenseBehavior = _true;

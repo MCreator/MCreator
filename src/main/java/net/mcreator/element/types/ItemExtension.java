@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -32,7 +33,7 @@ public class ItemExtension extends GeneratableElement {
 	public MItemBlock item;
 
 	public boolean enableFuel;
-	public int fuelPower;
+	public NumberProcedure fuelPower;
 	public Procedure fuelSuccessCondition;
 
 	public boolean hasDispenseBehavior;
@@ -43,7 +44,6 @@ public class ItemExtension extends GeneratableElement {
 
 	public ItemExtension(ModElement element) {
 		super(element);
-		fuelPower = 1600;
 		layerChance = 0.65;
 	}
 

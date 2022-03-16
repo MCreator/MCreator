@@ -23,6 +23,8 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.NumberProcedure;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.types.Fuel;
 import net.mcreator.element.types.ItemExtension;
 import net.mcreator.workspace.Workspace;
@@ -38,7 +40,7 @@ public class FuelToItemExtensionConverter implements IConverter {
 				new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEMEXTENSION));
 		itemExtension.item = fuel.block;
 		itemExtension.enableFuel = true;
-		itemExtension.fuelPower = fuel.power;
+		itemExtension.fuelPower = new NumberProcedure(null, fuel.power);
 
 		workspace.removeModElement(fuel.getModElement());
 		itemExtension.getModElement().setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));

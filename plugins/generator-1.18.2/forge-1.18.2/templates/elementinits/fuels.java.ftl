@@ -48,8 +48,11 @@ package ${package}.init;
             <#if extension.enableFuel>
                 if (event.getItemStack().getItem() == ${mappedMCItemToItem(extension.item)})
                     <#if hasProcedure(extension.fuelSuccessCondition)>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
-                        event.setBurnTime(${extension.fuelPower});
-
+                        <#if hasProcedure(extension.fuelPower)>
+                            event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
+                        <#else>
+                            event.setBurnTime(${extension.fuelPower.getFixedValue()});
+                        </#if>
             </#if>
 		</#list>
 	}
