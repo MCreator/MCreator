@@ -1,1 +1,0 @@
-(${input$entity} instanceof TamableAnimal _tamEnt ? (Entity) _tamEnt.getOwner():null)

@@ -1,1 +1,0 @@
-if (${input$entity} instanceof Player _player) _player.getFoodData().setSaturation(${opt.toFloat(input$amount)});
