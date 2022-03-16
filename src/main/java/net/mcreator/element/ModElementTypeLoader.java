@@ -53,8 +53,6 @@ import java.util.List;
 						Enchantment.class));
 		ModElementType.FLUID = register(
 				new ModElementType<>("fluid", 'f', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
-		ModElementType.FOOD = register(new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
-				Food.class)); // we keep it with its values, so we can make a basic converter.
 		ModElementType.FUEL = register(
 				new ModElementType<>("fuel", null, BaseType.FUEL, RecipeType.NONE, FuelGUI::new, Fuel.class));
 		ModElementType.FUNCTION = register(
@@ -111,6 +109,10 @@ import java.util.List;
 				new ModElementType<>("tag", 'j', BaseType.DATAPACK, RecipeType.NONE, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
+
+		// Legacy
+		ModElementType.FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
+				Food.class);
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {
@@ -120,11 +122,14 @@ import java.util.List;
 
 	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
 		// legacy support in case name was not converted up to this point
-		if (typeName.equals("gun")) {
+		switch (typeName) {
+		case "gun":
 			typeName = "rangeditem";
-		} else if (typeName.equals("mob")) {
+			break;
+		case "mob":
 			typeName = "livingentity";
-		} else if (typeName.equals("food")) {
+			break;
+		case "food":
 			return ModElementType.FOOD;
 		}
 

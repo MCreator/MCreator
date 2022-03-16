@@ -562,8 +562,6 @@ import java.util.stream.Collectors;
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			if (type == ModElementType.FOOD)
-				continue;
 			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> togglefilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
@@ -1502,8 +1500,6 @@ import java.util.stream.Collectors;
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
 					for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-						if (type == ModElementType.FOOD)
-							continue;
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}
