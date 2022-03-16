@@ -48,14 +48,11 @@ import net.minecraft.world.entity.npc.VillagerTrades;
             <#list trade.tradeEntries as tradeEntry>
                 if (event.getType() == ${tradeEntry.tradeEntry}) {
                     <#list tradeEntry.entries as entry>
-                        trades.get(${entry.level}).add(new ${JavaModName}RandomTradeBuilder(${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}F)
-                                .setPrice(${mappedMCItemToItem(entry.price1)}, ${entry.countPrice1}, ${entry.countPrice1})
-                            <#if entry.price2 != "">
-                                .setPrice2(${mappedMCItemToItem(entry.price2)}, ${entry.countPrice2}, ${entry.countPrice2})
-                            </#if>
-                            .setForSale(${mappedMCItemToItem(entry.sale1)}, ${entry.countSale1}, ${entry.countSale1})
-                            .build()
-                        );
+                        trades.get(${entry.level}).add(new BasicItemListing(${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
+                        <#if entry.price2 != "">
+                            ${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},
+                        </#if>
+                        ${mappedMCItemToItemStackCode(entry.sale1, entry.countSale1)}, ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}F));
                     </#list>
                 }
             </#list>
