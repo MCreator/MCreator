@@ -567,14 +567,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, isBoss, bossBarColor, bossBarType));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, isBoss, bossBarColor, bossBarType));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
 				L10N.label("elementgui.living_entity.label")));
