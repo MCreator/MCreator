@@ -136,7 +136,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.addActionListener(event -> {
 
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
-			List<File> block1 = mcreator.getFolderManager().getTexturesListForTextureSection(
+			List<File> block1 = mcreator.getFolderManager().getTexturesList(
 					type == TextureType.BLOCK ? TextureSection.BLOCK : TextureSection.ITEM);
 			model.removeAllElements();
 			block1.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
@@ -157,7 +157,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block = mcreator.getFolderManager().getTexturesListForTextureSection(type == TextureType.BLOCK ? TextureSection.BLOCK : TextureSection.ITEM);
+		List<File> block = mcreator.getFolderManager().getTexturesList(type == TextureType.BLOCK ? TextureSection.BLOCK : TextureSection.ITEM);
 		model.removeAllElements();
 		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 		list.setSelectedIndex(0);

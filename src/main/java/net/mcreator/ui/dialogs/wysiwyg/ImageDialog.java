@@ -46,7 +46,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 		setModal(true);
 
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
-				editor.mcreator.getFolderManager().getTexturesListForTextureSection(TextureSection.OTHER).stream().map(File::getName)
+				editor.mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).stream().map(File::getName)
 						.toArray(String[]::new));
 		textureSelector.setRenderer(new WTextureComboBoxRenderer.OtherTextures(editor.mcreator.getWorkspace()));
 
@@ -89,7 +89,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 			if (imageTxt != null) {
 				if (image == null) {
 					ImageIcon a = new ImageIcon(editor.mcreator.getFolderManager()
-							.getTextureFileForTextureSection(FilenameUtilsPatched.removeExtension(imageTxt), TextureSection.OTHER).getAbsolutePath());
+							.getTextureFile(FilenameUtilsPatched.removeExtension(imageTxt), TextureSection.OTHER).getAbsolutePath());
 
 					if (scale1x.isSelected())
 						editor.editor.setPositioningMode(a.getIconWidth() / 2, a.getIconHeight() / 2);

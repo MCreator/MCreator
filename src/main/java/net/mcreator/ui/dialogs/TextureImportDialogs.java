@@ -132,9 +132,9 @@ public class TextureImportDialogs {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
 			File file;
 			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-				file = fr.getFolderManager().getTextureFileForTextureSection(namec, TextureSection.BLOCK);
+				file = fr.getFolderManager().getTextureFile(namec, TextureSection.BLOCK);
 			} else {
-				file = fr.getFolderManager().getTextureFileForTextureSection(namec, TextureSection.ITEM);
+				file = fr.getFolderManager().getTextureFile(namec, TextureSection.ITEM);
 			}
 			if (file.isFile()) {
 				String name = JOptionPane.showInputDialog(fr,
@@ -143,9 +143,9 @@ public class TextureImportDialogs {
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
 					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-						file = fr.getFolderManager().getTextureFileForTextureSection(namec, TextureSection.BLOCK);
+						file = fr.getFolderManager().getTextureFile(namec, TextureSection.BLOCK);
 					} else {
-						file = fr.getFolderManager().getTextureFileForTextureSection(namec, TextureSection.ITEM);
+						file = fr.getFolderManager().getTextureFile(namec, TextureSection.ITEM);
 					}
 				} else {
 					return;
@@ -165,14 +165,14 @@ public class TextureImportDialogs {
 	public static void importOtherTextures(MCreator fr, File[] hohs) {
 		Arrays.stream(hohs).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
-			File file = fr.getFolderManager().getTextureFileForTextureSection(namec, TextureSection.OTHER);
+			File file = fr.getFolderManager().getTextureFile(namec, TextureSection.OTHER);
 			if (file.isFile()) {
 				String name = JOptionPane.showInputDialog(fr,
 						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
 						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
-					file = fr.getFolderManager().getTextureFileForTextureSection(namec, TextureSection.OTHER);
+					file = fr.getFolderManager().getTextureFile(namec, TextureSection.OTHER);
 				} else {
 					return;
 				}

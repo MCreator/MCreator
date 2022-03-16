@@ -86,7 +86,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(editor.overlayBaseTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesListForTextureSection(TextureSection.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		displayCondition.refreshListKeepSelected();

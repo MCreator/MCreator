@@ -127,12 +127,12 @@ public class TextureHolder extends VButton {
 			setToolTipText(texture);
 			if (td.getTextureType() == BlockItemTextureSelector.TextureType.BLOCK)
 				setIcon(new ImageIcon(
-						ImageUtils.resize(td.getMCreator().getFolderManager().getTextureImageIconForTextureSection(texture,
+						ImageUtils.resize(td.getMCreator().getFolderManager().getTextureImageIcon(texture,
 										TextureSection.BLOCK).getImage(),
 								this.size)));
 			else
 				setIcon(new ImageIcon(
-						ImageUtils.resize(td.getMCreator().getFolderManager().getTextureImageIconForTextureSection(texture, TextureSection.ITEM).getImage(),
+						ImageUtils.resize(td.getMCreator().getFolderManager().getTextureImageIcon(texture, TextureSection.ITEM).getImage(),
 								this.size)));
 		}
 	}

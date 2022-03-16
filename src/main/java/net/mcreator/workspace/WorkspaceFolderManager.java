@@ -71,12 +71,26 @@ public class WorkspaceFolderManager {
 		return workspaceFolder;
 	}
 
-	public ImageIcon getTextureImageIconForTextureSection(String textureIdentifier, TextureSection section) {
-		return new ImageIcon(getTextureFileForTextureSection(textureIdentifier, section).getAbsolutePath());
+	/**
+	 * <p>This method gets an image depending on the desired type.</p>
+	 *
+	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
+	 * @param section <p>This {@link TextureSection} defines which path, defined by each generator, MCreator will search the texture file.</p>
+	 * @return <p>The texture file as an {@link ImageIcon}.</p>
+	 */
+	public ImageIcon getTextureImageIcon(String textureIdentifier, TextureSection section) {
+		return new ImageIcon(getTextureFile(textureIdentifier, section).getAbsolutePath());
 	}
 
-	public File getTextureFileForTextureSection(String textureIdentifier, TextureSection section) {
-		return new File(getTexturesFolderForTextureSection(section), textureIdentifier + ".png");
+	/**
+	 * <p>This method gets a PNG texture file depending on the desired type.</p>
+	 *
+	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
+	 * @param section <p>This {@link TextureSection} defines which path, defined by each generator, MCreator will search the texture file.</p>
+	 * @return <p>A PNG {@link File}</p>
+	 */
+	public File getTextureFile(String textureIdentifier, TextureSection section) {
+		return new File(getTexturesFolder(section), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -92,19 +106,29 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getTexturesFolderForTextureSection(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
-				new File(getTexturesFolderForTextureSection(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesFolder(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
+				new File(getTexturesFolder(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getTexturesListForTextureSection(TextureSection section) {
-		return listPNGsInDir(getTexturesFolderForTextureSection(section));
+	/**
+	 *
+	 * @param section <p>The {@link TextureSection} we want to get the folder, defined by each generator.</p>
+	 * @return <p> A list containing all texture files found in the {@link TextureSection} provided.</p>
+	 */
+	public List<File> getTexturesList(TextureSection section) {
+		return listPNGsInDir(getTexturesFolder(section));
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	@Nullable public File getTexturesFolderForTextureSection(TextureSection section) {
+	/**
+	 *
+	 * @param section <p>The {@link TextureSection} we want to get the folder, defined by each generator.</p>
+	 * @return <p> The folder storing texture files of the given {@link TextureSection}.</p>
+	 */
+	@Nullable public File getTexturesFolder(TextureSection section) {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), section.getID() + "_textures_dir");
 	}
 

@@ -109,7 +109,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getTexturesListForTextureSection(TextureSection.OTHER).forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).forEach(el -> texture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
@@ -181,7 +181,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesListForTextureSection(TextureSection.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		additionalExpiryCondition.refreshListKeepSelected();

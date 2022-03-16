@@ -300,13 +300,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getTextureImageIconForTextureSection(texture, TextureSection.BLOCK).getImage();
+		return getModElement().getFolderManager().getTextureImageIcon(texture, TextureSection.BLOCK).getImage();
 	}
 
 	private Image getTextureWithFallback(String textureName) {
 		if (textureName.equals(""))
 			return getMainTexture();
-		return getModElement().getFolderManager().getTextureImageIconForTextureSection(textureName, TextureSection.BLOCK).getImage();
+		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureSection.BLOCK).getImage();
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

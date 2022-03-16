@@ -76,7 +76,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		Arrays.stream(TextureSection.values()).forEach(section -> {
 			JComponentWithList<File> compList = createListElement(new FilterModel(),
-					L10N.t("workspace.textures.category_" + section.getID()));
+					L10N.t("workspace.textures.category." + section.getID()));
 			respan.add(compList.component());
 			mapLists.put(section.getID(), compList);
 		});
@@ -247,7 +247,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			Arrays.stream(TextureSection.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
-				workspacePanel.getMcreator().getFolderManager().getTexturesListForTextureSection(section)
+				workspacePanel.getMcreator().getFolderManager().getTexturesList(section)
 						.forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {

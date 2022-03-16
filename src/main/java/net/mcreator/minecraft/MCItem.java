@@ -87,19 +87,19 @@ public class MCItem extends DataListEntry {
 							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
 									+ name.replace("CUSTOM:", "") + ".png");
 				} else if (name.endsWith(".helmet")) {
-					retval = workspace.getFolderManager().getTextureImageIconForTextureSection(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
 									.getGeneratableElement())).textureHelmet, TextureSection.ITEM);
 				} else if (name.endsWith(".body")) {
-					retval = workspace.getFolderManager().getTextureImageIconForTextureSection(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
 									.getGeneratableElement())).textureBody, TextureSection.ITEM);
 				} else if (name.endsWith(".legs")) {
-					retval = workspace.getFolderManager().getTextureImageIconForTextureSection(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
 									.getGeneratableElement())).textureLeggings, TextureSection.ITEM);
 				} else if (name.endsWith(".boots")) {
-					retval = workspace.getFolderManager().getTextureImageIconForTextureSection(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
 									.getGeneratableElement())).textureBoots, TextureSection.ITEM);
 				} else if (name.endsWith(".bucket")) {

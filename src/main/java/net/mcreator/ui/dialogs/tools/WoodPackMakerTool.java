@@ -121,7 +121,7 @@ public class WoodPackMakerTool {
 				color, true);
 		String woodTextureName = (name + "_log_side").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
-				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(woodTextureName),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(woodTextureName),
 						TextureSection.BLOCK));
 
 		//then we generate the missing log texture
@@ -130,7 +130,7 @@ public class WoodPackMakerTool {
 				color, true);
 		String logTextureName = (name + "_log_top").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
-				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(logTextureName),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(logTextureName),
 						TextureSection.BLOCK));
 
 		//then we generate the planks texture
@@ -139,7 +139,7 @@ public class WoodPackMakerTool {
 						+ ".png")), color, true);
 		String planksTextureName = (name + "_planks").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
-				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(planksTextureName),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(planksTextureName),
 						TextureSection.BLOCK));
 
 		//then we generate the leaves texture
@@ -149,7 +149,7 @@ public class WoodPackMakerTool {
 								"leaves_new1", "leaves_new2", "leaves2")) + ".png")), color, true);
 		String leavesTextureName = (name + "_leaves").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
-				mcreator.getFolderManager().getTextureFileForTextureSection(RegistryNameFixer.fix(leavesTextureName),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(leavesTextureName),
 						TextureSection.BLOCK));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
