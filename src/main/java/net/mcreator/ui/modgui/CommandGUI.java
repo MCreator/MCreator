@@ -45,6 +45,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,6 +102,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 				L10N.label("elementgui.command.permission_level")));
 		enderpanel.add(permissionLevel);
 
+		enderpanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.page_properties"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
 		enderpanel.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
@@ -122,6 +128,10 @@ public class CommandGUI extends ModElementGUI<Command> {
 		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
 						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel), blocklyPanel),
 				compileNotesPanel);
+		args.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		args.setOpaque(false);
 
 		commandName.setValidator(
@@ -130,8 +140,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		page1group.addValidationElement(commandName);
 
-		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(enderpanel));
-		addPage(L10N.t("elementgui.command.page_arguments"), args);
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(enderpanel), args));
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
