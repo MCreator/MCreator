@@ -70,8 +70,16 @@ public class ConverterRegistry {
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 	}};
 
+	// Converters that convert older mod element type to a newer one
+	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
+	}};
+
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
+	}
+
+	public static IConverter getConverterForModElementType(String modElementType) {
+		return converters_legacy.get(modElementType);
 	}
 
 }
