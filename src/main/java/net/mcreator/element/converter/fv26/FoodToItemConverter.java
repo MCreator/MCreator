@@ -20,10 +20,13 @@
 package net.mcreator.element.converter.fv26;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Food;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Item;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -31,47 +34,74 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FoodToItemConverter implements IConverter {
 
 	private static final Logger LOG = LogManager.getLogger(FoodToItemConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Food food = (Food) input;
+		JsonObject food = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 		Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
 
 		try {
-			item.name = food.name;
-			item.texture = food.texture;
-			item.renderType = food.renderType;
-			item.customModelName = food.customModelName;
-			item.creativeTab = food.creativeTab;
-			item.rarity = food.rarity;
-			item.specialInfo = food.specialInfo;
-			item.stackSize = food.stackSize;
+			item.name = food.get("name").getAsString();
+			item.texture = food.get("texture").getAsString();
+			item.renderType = food.get("renderType").getAsInt();
+			item.customModelName = food.get("customModelName").getAsString();
+			item.creativeTab = new TabEntry(workspace,
+					food.get("creativeTab").getAsJsonObject().get("value").getAsString());
+			item.rarity = food.get("rarity").getAsString();
+			List<String> specialInfo = new ArrayList<>();
+			food.getAsJsonArray("specialInfo").iterator()
+					.forEachRemaining(element -> specialInfo.add(element.getAsString()));
+			item.specialInfo = specialInfo;
+			item.stackSize = food.get("stackSize").getAsInt();
 			item.isFood = true;
-			item.nutritionalValue = food.nutritionalValue;
-			item.saturation = food.saturation;
-			item.isAlwaysEdible = food.isAlwaysEdible;
-			item.isMeat = food.forDogs;
-			item.useDuration = food.eatingSpeed;
-			item.resultItem = food.resultItem;
-			item.animation = food.animation;
-			item.hasGlow = food.hasGlow;
-			item.glowCondition = food.glowCondition;
-			item.onRightClickedInAir = food.onRightClicked;
-			item.onRightClickedOnBlock = food.onRightClickedOnBlock;
-			item.onCrafted = food.onCrafted;
-			item.onFinishUsingItem = food.onEaten;
-			item.onEntityHitWith = food.onEntityHitWith;
-			item.onEntitySwing = food.onEntitySwing;
-			item.onItemInInventoryTick = food.onItemInInventoryTick;
-			item.onItemInUseTick = food.onItemInUseTick;
-			item.onDroppedByPlayer = food.onDroppedByPlayer;
+			item.nutritionalValue = food.get("nutritionalValue").getAsInt();
+			item.saturation = food.get("saturation").getAsDouble();
+			item.isAlwaysEdible = food.get("isAlwaysEdible").getAsBoolean();
+			item.isMeat = food.get("forDogs").getAsBoolean();
+			item.useDuration = food.get("eatingSpeed").getAsInt();
+			item.resultItem = new MItemBlock(workspace,
+					food.get("resultItem").getAsJsonObject().get("value").getAsString());
+			item.animation = food.get("animation").getAsString();
+			item.hasGlow = food.get("hasGlow").getAsBoolean();
+			if (food.get("glowCondition") != null)
+				item.glowCondition = new Procedure(
+						food.get("glowCondition").getAsJsonObject().get("name").getAsString());
+			if (food.get("onRightClicked") != null)
+				item.onRightClickedInAir = new Procedure(
+						food.get("onRightClicked").getAsJsonObject().get("name").getAsString());
+			if (food.get("onRightClickedOnBlock") != null)
+				item.onRightClickedOnBlock = new Procedure(
+						food.get("onRightClickedOnBlock").getAsJsonObject().get("name").getAsString());
+			if (food.get("onCrafted") != null)
+				item.onCrafted = new Procedure(food.get("onCrafted").getAsJsonObject().get("name").getAsString());
+			if (food.get("onEaten") != null)
+				item.onFinishUsingItem = new Procedure(food.get("onEaten").getAsJsonObject().get("name").getAsString());
+			if (food.get("onEntityHitWith") != null)
+				item.onEntityHitWith = new Procedure(
+						food.get("onEntityHitWith").getAsJsonObject().get("name").getAsString());
+			if (food.get("onEntitySwing") != null)
+				item.onEntitySwing = new Procedure(
+						food.get("onEntitySwing").getAsJsonObject().get("name").getAsString());
+			if (food.get("onItemInInventoryTick") != null)
+				item.onItemInInventoryTick = new Procedure(
+						food.get("onItemInInventoryTick").getAsJsonObject().get("name").getAsString());
+			if (food.get("onItemInUseTick") != null)
+				item.onItemInUseTick = new Procedure(
+						food.get("onItemInUseTick").getAsJsonObject().get("name").getAsString());
+			if (food.get("onDroppedByPlayer") != null)
+				item.onDroppedByPlayer = new Procedure(
+						food.get("onDroppedByPlayer").getAsJsonObject().get("name").getAsString());
 
-			LOG.debug("Deleting " + input.getModElement().getName() + " food mod element and replacing it by an item mod element...");
-			workspace.removeModElement(food.getModElement());
+			LOG.debug("Deleting " + input.getModElement().getName()
+					+ " food mod element and replacing it by an item mod element...");
+			workspace.removeModElement(input.getModElement());
 
 			item.getModElement().setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
 			workspace.getModElementManager().storeModElementPicture(item);

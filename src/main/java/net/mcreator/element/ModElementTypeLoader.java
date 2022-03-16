@@ -112,7 +112,7 @@ import java.util.List;
 
 		// Legacy
 		ModElementType.FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
-				Food.class);
+				null);
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {

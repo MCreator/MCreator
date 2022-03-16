@@ -59,11 +59,13 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
-		for (Field field : modElementStorageClass.getFields())
-			if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
-				hasProcedureTriggers = true;
-				break;
-			}
+		if (modElementStorageClass != null) {
+			for (Field field : modElementStorageClass.getFields())
+				if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
+					hasProcedureTriggers = true;
+					break;
+				}
+		}
 	}
 
 	public String getRegistryName() {
