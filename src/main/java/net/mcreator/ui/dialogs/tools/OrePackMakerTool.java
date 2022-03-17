@@ -163,7 +163,7 @@ public class OrePackMakerTool {
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(gemTextureName),
-						TextureType.BLOCK));
+						TextureType.ITEM));
 
 		String oreItemName;
 		if (type.equals("Dust based")) {
