@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 
@@ -136,7 +137,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
 			List<File> block1 = mcreator.getFolderManager().getTexturesList(
-					type == BlockItemTextureSelector.TextureType.BLOCK ? net.mcreator.ui.workspace.resources.TextureType.BLOCK : net.mcreator.ui.workspace.resources.TextureType.ITEM);
+					type == TextureType.BLOCK ? TextureType.BLOCK : TextureType.ITEM);
 			model.removeAllElements();
 			block1.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 			if (model.getSize() > 0) {
@@ -156,7 +157,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block = mcreator.getFolderManager().getTexturesList(type == BlockItemTextureSelector.TextureType.BLOCK ? net.mcreator.ui.workspace.resources.TextureType.BLOCK : net.mcreator.ui.workspace.resources.TextureType.ITEM);
+		List<File> block = mcreator.getFolderManager().getTexturesList(type == TextureType.BLOCK ? net.mcreator.ui.workspace.resources.TextureType.BLOCK : net.mcreator.ui.workspace.resources.TextureType.ITEM);
 		model.removeAllElements();
 		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 		list.setSelectedIndex(0);
@@ -245,10 +246,6 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 					.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
-	}
-
-	public enum TextureType {
-		BLOCK, ITEM
 	}
 
 }

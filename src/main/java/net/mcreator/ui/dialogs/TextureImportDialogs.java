@@ -42,10 +42,10 @@ public class TextureImportDialogs {
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.BLOCK,
+			TextureImportDialogs.importTexturesBlockOrItem(mcreator, TextureType.BLOCK,
 					new File[] { file });
 		} else if (n == 1) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, BlockItemTextureSelector.TextureType.ITEM,
+			TextureImportDialogs.importTexturesBlockOrItem(mcreator, TextureType.ITEM,
 					new File[] { file });
 		} else if (n == 2) {
 			TextureImportDialogs.importOtherTextures(mcreator, new File[] { file });
@@ -121,32 +121,25 @@ public class TextureImportDialogs {
 			}
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type) {
+	public static void importTexturesBlockOrItem(MCreator fr, TextureType type) {
 		File[] hohe = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
 		if (hohe != null)
 			importTexturesBlockOrItem(fr, type, hohe);
 	}
 
-	public static void importTexturesBlockOrItem(MCreator fr, BlockItemTextureSelector.TextureType type, File[] hohe) {
+	public static void importTexturesBlockOrItem(MCreator fr, TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
 			File file;
-			if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-				file = fr.getFolderManager().getTextureFile(namec, TextureType.BLOCK);
-			} else {
-				file = fr.getFolderManager().getTextureFile(namec, TextureType.ITEM);
-			}
+
+			file = fr.getFolderManager().getTextureFile(namec, type);
 			if (file.isFile()) {
 				String name = JOptionPane.showInputDialog(fr,
 						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
 						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
 				if (name != null) {
 					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
-					if (type == BlockItemTextureSelector.TextureType.BLOCK) {
-						file = fr.getFolderManager().getTextureFile(namec, TextureType.BLOCK);
-					} else {
-						file = fr.getFolderManager().getTextureFile(namec, TextureType.ITEM);
-					}
+					file = fr.getFolderManager().getTextureFile(namec, type);
 				} else {
 					return;
 				}

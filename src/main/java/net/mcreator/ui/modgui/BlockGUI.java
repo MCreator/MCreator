@@ -57,6 +57,7 @@ import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -422,23 +423,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.setOpaque(false);
 
 		texture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
 		textureTop = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
 
 		textureLeft = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureFront = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureRight = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureBack = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 
 		itemTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
+				new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);

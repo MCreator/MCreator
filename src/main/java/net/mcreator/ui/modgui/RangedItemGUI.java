@@ -172,7 +172,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);
