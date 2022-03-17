@@ -24,6 +24,7 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,17 +102,18 @@ public abstract class GeneratableElement {
 		@Override
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-			String newType = jsonElement.getAsJsonObject().get("_type").getAsString();
-			switch (newType) {
-			case "gun" -> newType = "rangeditem";
-			case "mob" -> newType = "livingentity";
-			}
+			String newType = switch (jsonElement.getAsJsonObject().get("_type").getAsString()) {
+				case "gun" -> "rangeditem";
+				case "mob" -> "livingentity";
+				default -> jsonElement.getAsJsonObject().get("_type").getAsString();
+			};
+
+			int importedFormatVersion = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("_fv"),
+					Integer.class);
 
 			try {
 				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
-
-				int importedFormatVersion = jsonDeserializationContext.deserialize(
-						jsonElement.getAsJsonObject().get("_fv"), Integer.class);
+				System.out.println(modElementType);
 
 				final GeneratableElement[] generatableElement = {
 						gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
@@ -136,8 +138,26 @@ public abstract class GeneratableElement {
 				}
 
 				return generatableElement[0];
-			} catch (Exception e) {
-				LOG.warn("Failed to deserialize mod element " + lastModElement.getName(), e);
+			} catch (IllegalArgumentException e) { // we may be dealing with mod element type no longer existing
+				if (importedFormatVersion != GeneratableElement.formatVersion) {
+					IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
+					if (converter != null) {
+						LOG.debug("Converting mod element " + this.lastModElement.getName() + " of type " + newType
+								+ " to potential alternative.");
+
+						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement), jsonElement);
+						if (result != null) {
+							workspace.removeModElement(this.lastModElement);
+
+							result.getModElement().setParentFolder(FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
+							workspace.getModElementManager().storeModElementPicture(result);
+							workspace.addModElement(result.getModElement());
+							workspace.getGenerator().generateElement(result);
+							workspace.getModElementManager().storeModElement(result);
+						}
+					}
+				}
+
 				return null;
 			}
 		}
@@ -193,6 +213,13 @@ public abstract class GeneratableElement {
 			}
 		}
 
+	}
+
+	public static final class Unknown extends GeneratableElement {
+
+		public Unknown(ModElement element) {
+			super(element);
+		}
 	}
 
 }

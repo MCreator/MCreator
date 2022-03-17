@@ -165,7 +165,4 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 
-	// Legacy, used for importing old workspaces
-	@Deprecated public static ModElementType<?> FOOD;
-
 }
