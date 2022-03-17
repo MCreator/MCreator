@@ -93,6 +93,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private ProcedureSelector particleCondition;
 	private ProcedureSelector spawningCondition;
+	private ProcedureSelector transparentModelCondition;
+	private ProcedureSelector isShakingCondition;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
@@ -314,6 +316,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
+		transparentModelCondition = new ProcedureSelector(this.withEntry("entity/condition_is_model_transparent"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_model_transparent"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
+		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -448,7 +460,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -459,6 +471,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(transparentModelCondition);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(isShakingCondition);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
@@ -475,7 +493,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
 				L10N.label("elementgui.living_entity.texture")));
-		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture));
+		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
 				L10N.label("elementgui.living_entity.glow_texture")));
@@ -545,19 +563,19 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
 				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
-		spo2.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, isBoss, bossBarColor, bossBarType));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
 				L10N.label("elementgui.living_entity.label")));
@@ -845,6 +863,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
+		transparentModelCondition.refreshListKeepSelected();
+		isShakingCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
@@ -897,6 +917,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
+		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
+		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1024,6 +1046,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
 		livingEntity.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
+		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
+		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();

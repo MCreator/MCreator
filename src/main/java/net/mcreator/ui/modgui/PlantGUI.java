@@ -417,7 +417,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel northPanel = new JPanel(new GridLayout(2, 2, 10, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_bounding_box"),
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/custom_bounding_box"),
 				L10N.label("elementgui.common.custom_bounding_box")));
 		northPanel.add(customBoundingBox);
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),

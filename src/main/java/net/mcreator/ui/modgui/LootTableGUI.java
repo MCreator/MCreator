@@ -121,9 +121,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		addPage(pane3);
 
 		// add first pool
-		if (!isEditingMode()) {
+		if (!isEditingMode())
 			lootTablePools.addInitialPool();
-		}
 	}
 
 	@Override public void reloadDataLists() {

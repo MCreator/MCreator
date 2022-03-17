@@ -119,7 +119,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		onPortalTickUpdate = new ProcedureSelector(this.withEntry("dimension/on_portal_tick_update"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_tick_update"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onPlayerEntersDimension = new ProcedureSelector(this.withEntry("dimension/when_player_enters"), mcreator,
 				L10N.t("elementgui.dimension.event_player_enters"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));

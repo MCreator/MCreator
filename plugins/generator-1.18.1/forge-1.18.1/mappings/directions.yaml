@@ -1,6 +1,0 @@
-DOWN: Direction.DOWN
-UP: Direction.UP
-NORTH: Direction.NORTH
-SOUTH: Direction.SOUTH
-WEST: Direction.WEST
-EAST: Direction.EAST

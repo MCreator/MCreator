@@ -26,7 +26,7 @@ public class ResourceNameValidator extends RegistryNameValidator {
 
 	public ResourceNameValidator(VTextField holder, String name) {
 		super(holder, name);
-		this.validChars = Arrays.asList('_', '/', '.', '-');
+		setValidChars(Arrays.asList('_', '/', '.', '-'));
 	}
 
 }

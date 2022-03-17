@@ -31,22 +31,20 @@ public class FileOpener {
 
 	public static void openFile(MCreator mcreator, Object file) {
 		if (CodeEditorView.isFileSupported(file.toString())) {
-			if ((file instanceof FileNode node)) {
+			if (file instanceof FileNode node)
 				ProjectFileOpener.openCodeFileRO(mcreator, node);
-			} else if ((file instanceof File)) {
-				ProjectFileOpener.openCodeFile(mcreator, (File) file);
-			}
-		} else if (file instanceof File && ((File) file).getName().endsWith(".nbt")) {
-			NBTEditorView nbtEditorView = new NBTEditorView(mcreator, (File) file);
+			else if (file instanceof File code)
+				ProjectFileOpener.openCodeFile(mcreator, code);
+		} else if (file instanceof File nbt && nbt.getName().endsWith(".nbt")) {
+			NBTEditorView nbtEditorView = new NBTEditorView(mcreator, nbt);
 			nbtEditorView.showView();
-		} else if (file instanceof File && (((File) file).getName().endsWith(".png") || ((File) file).getName()
-				.endsWith(".gif"))) {
+		} else if (file instanceof File pic && (pic.getName().endsWith(".png") || pic.getName().endsWith(".gif"))) {
 			ImageMakerView imageMakerView = new ImageMakerView(mcreator);
-			imageMakerView.openInEditMode((File) file);
+			imageMakerView.openInEditMode(pic);
 			imageMakerView.showView();
 		} else {
-			if ((file instanceof File) && ((File) file).isFile())
-				DesktopUtils.openSafe((File) file);
+			if (file instanceof File text && text.isFile())
+				DesktopUtils.openSafe(text);
 		}
 	}
 

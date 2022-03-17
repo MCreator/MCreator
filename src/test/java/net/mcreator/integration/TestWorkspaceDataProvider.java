@@ -285,7 +285,6 @@ public class TestWorkspaceDataProvider {
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
 			biome.airColor = Color.red;
-			biome.treeType = _true ? 0 : 1;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
@@ -394,10 +393,19 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
 			biome.defaultFeatures = biomeDefaultFeatures;
-			biome.treeVines = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-			biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-			biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-			biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			if (!emptyLists) {
+				biome.treeType = biome.TREES_CUSTOM;
+				biome.treeVines = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+				biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			} else {
+				biome.treeType = biome.TREES_VANILLA;
+				biome.treeVines = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeStem = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
+			}
 			biome.spawnBiome = !_true;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
@@ -690,6 +698,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 			livingEntity.mobModelTexture = "test.png";
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
+			livingEntity.transparentModelCondition = new Procedure("condition1");
+			livingEntity.isShakingCondition = new Procedure("condition2");
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;
