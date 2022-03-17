@@ -36,7 +36,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.workspace.resources.TextureSection;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -109,7 +109,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> texture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
@@ -181,7 +181,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		additionalExpiryCondition.refreshListKeepSelected();

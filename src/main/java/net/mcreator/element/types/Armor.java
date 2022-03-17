@@ -27,7 +27,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.ui.workspace.resources.TextureSection;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
@@ -125,16 +125,16 @@ import java.util.Set;
 		ArrayList<File> armorPieces = new ArrayList<>();
 		if (enableHelmet)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureHelmet, TextureSection.ITEM));
+					.getTextureFile(textureHelmet, TextureType.ITEM));
 		if (enableBody)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureBody, TextureSection.ITEM));
+					.getTextureFile(textureBody, TextureType.ITEM));
 		if (enableLeggings)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureLeggings, TextureSection.ITEM));
+					.getTextureFile(textureLeggings, TextureType.ITEM));
 		if (enableBoots)
 			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureBoots, TextureSection.ITEM));
+					.getTextureFile(textureBoots, TextureType.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}

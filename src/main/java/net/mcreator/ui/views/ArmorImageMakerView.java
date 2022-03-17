@@ -26,7 +26,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.ArmorMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.workspace.resources.TextureSection;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -191,7 +191,7 @@ public class ArmorImageMakerView extends ViewBase {
 
 	public static void use(Workspace workspace, Image image, String nam) {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image),
-				workspace.getFolderManager().getTextureFile(nam.toLowerCase(Locale.ENGLISH), TextureSection.ITEM));
+				workspace.getFolderManager().getTextureFile(nam.toLowerCase(Locale.ENGLISH), TextureType.ITEM));
 	}
 
 	@Override public String getViewName() {

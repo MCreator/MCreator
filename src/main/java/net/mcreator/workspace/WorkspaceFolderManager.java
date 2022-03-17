@@ -20,7 +20,7 @@ package net.mcreator.workspace;
 
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.OS;
-import net.mcreator.ui.workspace.resources.TextureSection;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,10 +75,10 @@ public class WorkspaceFolderManager {
 	 * <p>This method gets an image depending on the desired type.</p>
 	 *
 	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
-	 * @param section <p>This {@link TextureSection} defines which path, defined by each generator, MCreator will search the texture file.</p>
+	 * @param section <p>This {@link TextureType} defines which path, defined by each generator, MCreator will search the texture file.</p>
 	 * @return <p>The texture file as an {@link ImageIcon}.</p>
 	 */
-	public ImageIcon getTextureImageIcon(String textureIdentifier, TextureSection section) {
+	public ImageIcon getTextureImageIcon(String textureIdentifier, TextureType section) {
 		return new ImageIcon(getTextureFile(textureIdentifier, section).getAbsolutePath());
 	}
 
@@ -86,10 +86,10 @@ public class WorkspaceFolderManager {
 	 * <p>This method gets a PNG texture file depending on the desired type.</p>
 	 *
 	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
-	 * @param section <p>This {@link TextureSection} defines which path, defined by each generator, MCreator will search the texture file.</p>
+	 * @param section <p>This {@link TextureType} defines which path, defined by each generator, MCreator will search the texture file.</p>
 	 * @return <p>A PNG {@link File}</p>
 	 */
-	public File getTextureFile(String textureIdentifier, TextureSection section) {
+	public File getTextureFile(String textureIdentifier, TextureType section) {
 		return new File(getTexturesFolder(section), textureIdentifier + ".png");
 	}
 
@@ -106,16 +106,16 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getTexturesFolder(TextureSection.ARMOR), armorTextureName + "_layer_1.png"),
-				new File(getTexturesFolder(TextureSection.ARMOR), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_1.png"),
+				new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
 	/**
 	 *
-	 * @param section <p>The {@link TextureSection} we want to get the folder, defined by each generator.</p>
-	 * @return <p> A list containing all texture files found in the {@link TextureSection} provided.</p>
+	 * @param section <p>The {@link TextureType} we want to get the folder, defined by each generator.</p>
+	 * @return <p> A list containing all texture files found in the {@link TextureType} provided.</p>
 	 */
-	public List<File> getTexturesList(TextureSection section) {
+	public List<File> getTexturesList(TextureType section) {
 		return listPNGsInDir(getTexturesFolder(section));
 	}
 
@@ -125,10 +125,10 @@ public class WorkspaceFolderManager {
 
 	/**
 	 *
-	 * @param section <p>The {@link TextureSection} we want to get the folder, defined by each generator.</p>
-	 * @return <p> The folder storing texture files of the given {@link TextureSection}.</p>
+	 * @param section <p>The {@link TextureType} we want to get the folder, defined by each generator.</p>
+	 * @return <p> The folder storing texture files of the given {@link TextureType}.</p>
 	 */
-	@Nullable public File getTexturesFolder(TextureSection section) {
+	@Nullable public File getTexturesFolder(TextureType section) {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), section.getID() + "_textures_dir");
 	}
 

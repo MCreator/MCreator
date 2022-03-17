@@ -60,7 +60,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.workspace.resources.TextureSection;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -467,10 +467,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			TextureImportDialogs.importOtherTextures(mcreator);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).forEach(el -> mobModelTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).forEach(el -> mobModelGlowTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
@@ -847,11 +847,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spawningCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureSection.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),

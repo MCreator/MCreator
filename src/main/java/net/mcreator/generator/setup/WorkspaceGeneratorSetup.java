@@ -26,7 +26,7 @@ import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.ui.workspace.resources.TextureSection;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -83,7 +83,7 @@ public class WorkspaceGeneratorSetup {
 		moveFilesToAnotherDir(workspace.getFolderManager().getSoundsDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "sounds_dir"));
 
-		Arrays.stream(TextureSection.values()).forEach(category -> moveFilesToAnotherDir(
+		Arrays.stream(TextureType.values()).forEach(category -> moveFilesToAnotherDir(
 				workspace.getFolderManager().getTexturesFolder(category),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, category + "_textures_dir")));
 

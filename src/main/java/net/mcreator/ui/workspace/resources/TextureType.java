@@ -19,12 +19,12 @@
 
 package net.mcreator.ui.workspace.resources;
 
-public enum TextureSection {
+public enum TextureType {
 	BLOCK("block"), ITEM("item"), ARMOR("armor"), OTHER("other");
 
 	private final String id;
 
-	TextureSection(String id) {
+	TextureType(String id) {
 		this.id = id;
 	}
 

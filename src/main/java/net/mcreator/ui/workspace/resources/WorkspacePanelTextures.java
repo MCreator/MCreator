@@ -74,7 +74,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		Arrays.stream(TextureSection.values()).forEach(section -> {
+		Arrays.stream(TextureType.values()).forEach(section -> {
 			JComponentWithList<File> compList = createListElement(new FilterModel(),
 					L10N.t("workspace.textures.category." + section.getID()));
 			respan.add(compList.component());
@@ -244,7 +244,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void reloadElements() {
 		new Thread(() -> {
-			Arrays.stream(TextureSection.values()).forEach(section -> {
+			Arrays.stream(TextureType.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
 				workspacePanel.getMcreator().getFolderManager().getTexturesList(section)
@@ -263,7 +263,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	}
 
 	@Override public void refilterElements() {
-		Arrays.stream(TextureSection.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
+		Arrays.stream(TextureType.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
 			FilterModel model = (FilterModel) compList.list().getModel();
 			model.refilter();
 			if (model.getSize() > 0) {
