@@ -40,7 +40,7 @@ import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
-import net.mcreator.element.converter.fv26.ProcedureShootArrowFixer;
+import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
