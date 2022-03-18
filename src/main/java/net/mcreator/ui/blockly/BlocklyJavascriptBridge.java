@@ -153,7 +153,15 @@ public class BlocklyJavascriptBridge {
 					.filter(mel -> mel.getType() == ModElementType.PROCEDURE).map(ModElement::getName)
 							.toArray(String[]::new),
 					L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
-			default -> "," + L10N.t("blockly.extension.data_list_selector.no_entry");
+			default -> {
+				if (type.startsWith("procedure_retval_")) {
+					var variableType = VariableTypeLoader.INSTANCE.fromName(
+							StringUtils.removeStart(type, "procedure_retval_"));
+					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType),
+							L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
+				}
+				yield "," + L10N.t("blockly.extension.data_list_selector.no_entry");
+			}
 		};
 
 		callback.call("callback", retval);
