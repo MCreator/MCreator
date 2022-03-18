@@ -105,7 +105,7 @@ import com.mojang.datafixers.util.Pair;
 							List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 							<#list spawn_overworld as biome>
-							surfaceRules.add(1, overworldRule(
+							surfaceRules.add(1, preliminarySurfaceRule(
 								ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
 								${mappedBlockToBlockStateCode(biome.groundBlock)},
 								${mappedBlockToBlockStateCode(biome.undergroundBlock)}
@@ -156,7 +156,7 @@ import com.mojang.datafixers.util.Pair;
 							List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 							<#list spawn_nether as biome>
-							surfaceRules.add(1, netherRule(
+							surfaceRules.add(1, anySurfaceRule(
 									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
 								${mappedBlockToBlockStateCode(biome.groundBlock)},
 								${mappedBlockToBlockStateCode(biome.undergroundBlock)}
@@ -184,7 +184,7 @@ import com.mojang.datafixers.util.Pair;
 		}
 
 		<#if spawn_overworld?has_content>
-		private static SurfaceRules.RuleSource overworldRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock) {
+		private static SurfaceRules.RuleSource preliminarySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock) {
 			return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
 				SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
 					SurfaceRules.sequence(
@@ -206,7 +206,7 @@ import com.mojang.datafixers.util.Pair;
 		</#if>
 		
 		<#if spawn_nether?has_content>
-		private static SurfaceRules.RuleSource netherRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock) {
+		private static SurfaceRules.RuleSource anySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock) {
 			return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
 				SurfaceRules.sequence(
 					SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
