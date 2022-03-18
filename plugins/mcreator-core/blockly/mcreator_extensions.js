@@ -156,8 +156,7 @@ Blockly.Extensions.register('gamerulesnumber_list_provider',
 
 Blockly.Extensions.register('enhancement_list_provider',
     function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("enhancement"))), 'enhancement');
+        this.appendDummyInput().appendField(new FieldDataListSelector("enchantment"), 'enhancement');
     });
 
 Blockly.Extensions.register('sound_list_provider',

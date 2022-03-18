@@ -153,6 +153,9 @@ public class BlocklyJavascriptBridge {
 					.filter(mel -> mel.getType() == ModElementType.PROCEDURE).map(ModElement::getName)
 							.toArray(String[]::new),
 					L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
+			case "enchantment" -> openDataListEntrySelector(w -> ElementUtil.loadAllEnchantments(w).stream()
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.enchantment.message"), L10N.t("dialog.selector.enchantment.title"));
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -160,6 +163,13 @@ public class BlocklyJavascriptBridge {
 					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType),
 							L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
 				}
+
+				if (!DataListLoader.loadDataList(type).isEmpty()) {
+					yield openDataListEntrySelector(w -> DataListLoader.loadDataList(type).stream()
+									.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+							L10N.t("dialog.selector." + type + ".message"), L10N.t("dialog.selector." + type + ".title"));
+				}
+
 				yield "," + L10N.t("blockly.extension.data_list_selector.no_entry");
 			}
 		};
