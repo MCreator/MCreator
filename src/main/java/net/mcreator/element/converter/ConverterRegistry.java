@@ -35,7 +35,7 @@ import net.mcreator.element.converter.fv19.FluidBucketSelectedFixer;
 import net.mcreator.element.converter.fv20.FluidNameFixer;
 import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
 import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
-import net.mcreator.element.converter.fv26.CommandArgumentBlockFixer;
+import net.mcreator.element.converter.fv27.CommandArgumentBlockFixer;
 import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
 import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
