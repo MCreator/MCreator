@@ -124,11 +124,9 @@ public class DialogsTest {
 
 	@Test public void testTextureDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importArmor(mcreator));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-				TextureType.BLOCK));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-				TextureType.ITEM));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importOtherTextures(mcreator));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.BLOCK));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER));
 	}
 
 	@Test public void testToolsDialogs() throws Throwable {

@@ -36,23 +36,102 @@ public class TextureImportDialogs {
 
 	private static File f1, f2;
 
-	public static void importTextureGeneral(final MCreator mcreator, File file, String message) {
+	/**
+	 * <p>This method opens a dialog to select the texture type to use for the provided texture file.</p>
+	 *
+	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
+	 * @param file <p>The texture file to import</p>
+	 * @param message <p>The message to display on the option dialog</p>
+	 */
+	public static void importSingleTexture(final MCreator mcreator, File file, String message) {
 		Object[] options = { L10N.t("dialog.textures_import.block"), L10N.t("dialog.textures_import.item"),
 				L10N.t("dialog.textures_import.other") };
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, TextureType.BLOCK,
+			TextureImportDialogs.saveTextures(mcreator, TextureType.BLOCK,
 					new File[] { file });
 		} else if (n == 1) {
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, TextureType.ITEM,
+			TextureImportDialogs.saveTextures(mcreator, TextureType.ITEM,
 					new File[] { file });
 		} else if (n == 2) {
-			TextureImportDialogs.importOtherTextures(mcreator, new File[] { file });
+			TextureImportDialogs.saveTextures(mcreator, TextureType.OTHER, new File[] { file });
 		}
 	}
 
-	public static void importArmor(final MCreator fra) {
+	/**
+	 * <p>This method opens a dialog to select the texture type to use. Then, a File dialog will open to let the user select textures to import.
+	 * Selected textures will all be imported as the selected texture type before.</p>
+	 *
+	 * @param mcreator  <p>The instance of {@link MCreator} to use</p>
+	 * @param message <p>The message to display on the option dialog</p>
+	 */
+	public static void importMultipleTextures(final MCreator mcreator, String message) {
+		Object[] options = { L10N.t("dialog.textures_import.block"), L10N.t("dialog.textures_import.item"),
+				L10N.t("dialog.textures_import.other") };
+
+		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+		if (n == -1)
+			return;
+
+		File[] files = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".png" });
+
+		if (n == 0) {
+			TextureImportDialogs.saveTextures(mcreator, TextureType.BLOCK, files);
+		} else if (n == 1) {
+			TextureImportDialogs.saveTextures(mcreator, TextureType.ITEM, files);
+		} else if (n == 2) {
+			TextureImportDialogs.saveTextures(mcreator, TextureType.OTHER, files);
+		}
+	}
+
+	/**
+	 * <p>This method will open a file dialog to let the user select textures to import. Those textures then be saved as the provided {@link TextureType}.</p>
+	 *
+	 * @param mcreator  <p>The instance of {@link MCreator} to use</p>
+	 * @param type <p>The texture type to use when importing texture files</p>
+	 */
+	public static void importMultipleTextures(final MCreator mcreator, TextureType type) {
+		File[] textures = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".png" });
+		if (textures != null)
+			saveTextures(mcreator, type, textures);
+	}
+
+	/**
+	 * <p>This is a general method to import a group of textures. It executes everything needed to save textures in the appropriate folder
+	 * depending on the {@link TextureType}.</p>
+	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
+	 * @param type <p>The texture type to use when saving texture files</p>
+	 * @param textures <p>Textures file to import</p>
+	 */
+	public static void saveTextures(MCreator mcreator, TextureType type, File[] textures) {
+		Arrays.stream(textures).forEach(texture -> {
+			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(texture.getName()));
+			File file;
+
+			file = mcreator.getFolderManager().getTextureFile(namec, type);
+			if (file.isFile()) {
+				String name = JOptionPane.showInputDialog(mcreator,
+						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
+						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
+				if (name != null) {
+					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
+					file = mcreator.getFolderManager().getTextureFile(namec, type);
+				} else {
+					return;
+				}
+			}
+			FileIO.copyFile(texture, file);
+			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
+				modElementGUI.reloadDataLists();
+			else
+				mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		});
+	}
+
+	public static void importArmor(final MCreator mcreator) {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel neno = new JPanel(new GridLayout(3, 2, 4, 4));
 		JButton p1 = new JButton("...");
@@ -64,7 +143,7 @@ public class TextureImportDialogs {
 		neno.add(L10N.label("dialog.textures_import.armor_part_two"));
 		neno.add(p2);
 		p1.addActionListener(event -> {
-			File[] f1a = FileDialogs.getFileChooserDialog(fra, null, FileDialogs.FileChooserType.OPEN, false,
+			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, null, FileDialogs.FileChooserType.OPEN, false,
 					new javax.swing.filechooser.FileFilter() {
 						@Override public boolean accept(File f) {
 							return (f.getName().toLowerCase(Locale.ENGLISH).endsWith(".png") && f.getName()
@@ -84,7 +163,7 @@ public class TextureImportDialogs {
 						f1.getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")) + " P1");
 		});
 		p2.addActionListener(event -> {
-			File[] f2a = FileDialogs.getFileChooserDialog(fra, null, FileDialogs.FileChooserType.OPEN, false,
+			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, null, FileDialogs.FileChooserType.OPEN, false,
 					new javax.swing.filechooser.FileFilter() {
 						@Override public boolean accept(File f) {
 							return (f.getName().toLowerCase(Locale.ENGLISH).endsWith(".png") && f.getName()
@@ -105,76 +184,20 @@ public class TextureImportDialogs {
 		});
 		od.add("Center", neno);
 
-		int ret = JOptionPane.showConfirmDialog(fra, od, L10N.t("dialog.textures_import.import_armor_texture"),
+		int ret = JOptionPane.showConfirmDialog(mcreator, od, L10N.t("dialog.textures_import.import_armor_texture"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 		if (ret == JOptionPane.OK_OPTION)
 			if (f1 == null || f2 == null) {
-				JOptionPane.showMessageDialog(fra,
+				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.textures_import.error_both_texture_files_not_selected"), null,
 						JOptionPane.ERROR_MESSAGE);
 			} else {
 				String namec = RegistryNameFixer.fix(
 						FilenameUtilsPatched.removeExtension(f1.getName().replace("layer_1", "")));
-				File[] armor = fra.getFolderManager().getArmorTextureFilesForName(namec);
+				File[] armor = mcreator.getFolderManager().getArmorTextureFilesForName(namec);
 				FileIO.copyFile(f1, armor[0]);
 				FileIO.copyFile(f2, armor[1]);
 			}
-	}
-
-	public static void importTexturesBlockOrItem(MCreator fr, TextureType type) {
-		File[] hohe = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
-		if (hohe != null)
-			importTexturesBlockOrItem(fr, type, hohe);
-	}
-
-	public static void importTexturesBlockOrItem(MCreator fr, TextureType type, File[] hohe) {
-		Arrays.stream(hohe).forEach(hoh -> {
-			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
-			File file;
-
-			file = fr.getFolderManager().getTextureFile(namec, type);
-			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr,
-						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
-				if (name != null) {
-					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
-					file = fr.getFolderManager().getTextureFile(namec, type);
-				} else {
-					return;
-				}
-			}
-			FileIO.copyFile(hoh, file);
-			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		});
-	}
-
-	public static void importOtherTextures(MCreator fr) {
-		File[] hohs = FileDialogs.getMultiOpenDialog(fr, new String[] { ".png" });
-		if (hohs != null)
-			importOtherTextures(fr, hohs);
-	}
-
-	public static void importOtherTextures(MCreator fr, File[] hohs) {
-		Arrays.stream(hohs).forEach(hoh -> {
-			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
-			File file = fr.getFolderManager().getTextureFile(namec, TextureType.OTHER);
-			if (file.isFile()) {
-				String name = JOptionPane.showInputDialog(fr,
-						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
-						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
-				if (name != null) {
-					namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(name));
-					file = fr.getFolderManager().getTextureFile(namec, TextureType.OTHER);
-				} else {
-					return;
-				}
-			}
-			FileIO.copyFile(hoh, file);
-			fr.mv.resourcesPan.workspacePanelTextures.reloadElements();
-			if (fr.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
-				modElementGUI.reloadDataLists();
-		});
 	}
 
 }

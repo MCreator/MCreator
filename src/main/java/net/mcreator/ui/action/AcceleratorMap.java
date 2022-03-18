@@ -77,7 +77,7 @@ public class AcceleratorMap {
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.createAnimatedTexture, KeyStroke.getKeyStroke(KeyEvent.VK_8,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.importOtherTexture, KeyStroke.getKeyStroke(KeyEvent.VK_7,
+		actionKeyStrokeMap.put(actionRegistry.importTexture, KeyStroke.getKeyStroke(KeyEvent.VK_7,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.importSound, KeyStroke.getKeyStroke(KeyEvent.VK_6,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
