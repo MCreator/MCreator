@@ -660,6 +660,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 			livingEntity.mobModelTexture = "test.png";
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
+			livingEntity.transparentModelCondition = new Procedure("condition1");
+			livingEntity.isShakingCondition = new Procedure("condition2");
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;

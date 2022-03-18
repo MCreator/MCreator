@@ -1,1 +1,2 @@
-(world.isEmptyBlock(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+(world.isEmptyBlock(${toBlockPos(input$x,input$y,input$z)}))

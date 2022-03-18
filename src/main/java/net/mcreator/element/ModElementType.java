@@ -59,13 +59,11 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
-		if (modElementStorageClass != null) {
-			for (Field field : modElementStorageClass.getFields())
-				if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
-					hasProcedureTriggers = true;
-					break;
-				}
-		}
+		for (Field field : modElementStorageClass.getFields())
+			if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
+				hasProcedureTriggers = true;
+				break;
+			}
 	}
 
 	public String getRegistryName() {
@@ -165,7 +163,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 
-	// Legacy, used for importing old workspaces
-	@Deprecated public static ModElementType<?> FOOD;
+	public static ModElementType<?> UNKNOWN;
 
 }

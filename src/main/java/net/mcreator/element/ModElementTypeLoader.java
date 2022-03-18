@@ -25,7 +25,7 @@ import net.mcreator.ui.modgui.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("deprecation") public class ModElementTypeLoader {
+public class ModElementTypeLoader {
 
 	public static List<ModElementType<?>> REGISTRY = new ArrayList<>();
 
@@ -110,9 +110,9 @@ import java.util.List;
 		ModElementType.TOOL = register(
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
 
-		// Legacy
-		ModElementType.FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
-				null);
+		// Unregistered type used to mask legacy removed mod element types
+		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER, RecipeType.NONE,
+				(mc, me, e) -> null, GeneratableElement.Unknown.class);
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {
@@ -122,15 +122,10 @@ import java.util.List;
 
 	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
 		// legacy support in case name was not converted up to this point
-		switch (typeName) {
-		case "gun":
+		if (typeName.equals("gun")) {
 			typeName = "rangeditem";
-			break;
-		case "mob":
+		} else if (typeName.equals("mob")) {
 			typeName = "livingentity";
-			break;
-		case "food":
-			return ModElementType.FOOD;
 		}
 
 		for (ModElementType<?> me : REGISTRY) {
