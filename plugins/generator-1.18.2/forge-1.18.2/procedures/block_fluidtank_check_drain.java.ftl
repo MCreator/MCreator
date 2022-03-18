@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@int*/(new Object(){
 	public int drainTankSimulate(LevelAccessor level, BlockPos pos, int amount) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.drain(amount, IFluidHandler.FluidAction.SIMULATE).getAmount()));
 		return _retval.get();
 	}
-}.drainTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$amount)}))
+}.drainTankSimulate(world, ${toBlockPos(input$x,input$y,input$z)},${opt.toInt(input$amount)}))
 <#-- @formatter:on -->

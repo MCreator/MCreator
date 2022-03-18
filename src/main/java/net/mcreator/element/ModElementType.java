@@ -165,4 +165,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TOOL;
 	public static ModElementType<?> VILLAGERTRADE;
 
+	public static ModElementType<?> UNKNOWN;
+
 }

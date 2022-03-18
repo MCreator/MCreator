@@ -439,8 +439,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			List<ModElement> corruptedElements = new ArrayList<>();
 
 			for (ModElement element : retval.getModElements()) {
-				if (element.getName() == null || element.getType() == null) {
+				if (element.getName() == null || element.getTypeString() == null) {
 					corruptedElements.add(element);
+					// this is handled by a converter later, if there is one
 				}
 			}
 
