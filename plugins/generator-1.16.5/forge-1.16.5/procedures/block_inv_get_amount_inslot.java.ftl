@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public int getAmount(IWorld world, BlockPos pos,int sltid) {
@@ -10,5 +11,5 @@
 		}
 		return _retval.get();
 	}
-}.getAmount(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
+}.getAmount(world, ${toBlockPos(input$x,input$y,input$z)},(int)(${input$slotid})))
 <#-- @formatter:on -->

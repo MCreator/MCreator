@@ -1,5 +1,6 @@
+<#include "mcelements.ftl">
 if (world instanceof Level _level) {
-    BlockPos _bp = new BlockPos((int) ${input$x}, (int) ${input$y}, (int) ${input$z});
+    BlockPos _bp = ${toBlockPos(input$x,input$y,input$z)};
     if (BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), _level, _bp)
         || BoneMealItem.growWaterPlant(new ItemStack(Items.BONE_MEAL), _level, _bp, null)){
         if (!_level.isClientSide())

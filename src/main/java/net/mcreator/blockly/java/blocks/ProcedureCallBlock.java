@@ -37,7 +37,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		String type = block.getAttribute("type");
 
-		if (element != null) {
+		if (element != null && !"".equals(element.getTextContent())) {
 			Procedure procedure = new Procedure(element.getTextContent());
 			procedure.getDependencies(master.getWorkspace()).forEach(master::addDependency);
 

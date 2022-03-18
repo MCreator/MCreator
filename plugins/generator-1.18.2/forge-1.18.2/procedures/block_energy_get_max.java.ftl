@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@int*/(new Object(){
 	public int getMaxEnergyStored(LevelAccessor level, BlockPos pos) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.getMaxEnergyStored()));
 		return _retval.get();
 	}
-}.getMaxEnergyStored(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+}.getMaxEnergyStored(world, ${toBlockPos(input$x,input$y,input$z)}))
 <#-- @formatter:on -->

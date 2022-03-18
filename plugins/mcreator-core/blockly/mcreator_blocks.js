@@ -38,7 +38,7 @@ Blockly.Blocks['call_procedure'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure"))), 'procedure');
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(250);
@@ -49,7 +49,7 @@ Blockly.Blocks['call_procedure_at'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure"))), 'procedure')
+            .appendField(new FieldDataListSelector('procedure'), 'procedure')
             .appendField(javabridge.t("blockly.block.call_procedure.at"));
         this.appendValueInput('x').setCheck('Number').appendField('x: ');
         this.appendValueInput('y').setCheck('Number').appendField('y: ');
