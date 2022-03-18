@@ -43,6 +43,7 @@
         },
         <#include "overworld_terrain_shaper.json.ftl">
       },
+      <#include "overworld_noise_router.json.ftl">,
       "surface_rule": {
          "type": "minecraft:sequence",
          "sequence": [

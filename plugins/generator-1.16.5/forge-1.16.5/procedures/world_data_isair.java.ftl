@@ -1,1 +1,2 @@
-(world.isAirBlock(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+(world.isAirBlock(${toBlockPos(input$x,input$y,input$z)}))

@@ -540,6 +540,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 
+		changed = false;
+
 		if (this.tabIn != null && closeTab)
 			mcreator.mcreatorTabs.closeTab(tabIn);
 		else
@@ -549,8 +551,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
-
-		changed = false;
 	}
 
 	public @Nonnull ModElement getModElement() {

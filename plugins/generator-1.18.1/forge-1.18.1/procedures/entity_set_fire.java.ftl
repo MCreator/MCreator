@@ -1,1 +1,0 @@
-${input$entity}.setSecondsOnFire(${opt.toInt(input$seconds)});

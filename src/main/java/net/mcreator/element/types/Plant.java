@@ -184,6 +184,10 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
+	public boolean isDoubleBlock() {
+		return "double".equals(plantType);
+	}
+
 	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
