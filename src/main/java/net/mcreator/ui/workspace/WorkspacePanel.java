@@ -1163,8 +1163,25 @@ import java.util.stream.Collectors;
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(mu);
+							mcreator.getGenerator().getModElementListTemplates(mu).forEach(list -> {
+								for (int i = 0; i < list.listData().size(); i++) {
+									for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
+										if (list.templates().get(generatorTemplate).get(i))
+											originalFiles.add(list.forIndex(generatorTemplate, i));
+									}
+								}
+							});
+
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(duplicateModElement);
+							mcreator.getGenerator().getModElementListTemplates(mu).forEach(list -> {
+								for (int i = 0; i < list.listData().size(); i++) {
+									for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
+										if (list.templates().get(generatorTemplate).get(i))
+											duplicateFiles.add(list.forIndex(generatorTemplate, i));
+									}
+								}
+							});
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
 								File originalFile = originalTemplate.getFile();
@@ -1233,23 +1250,23 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		JPopupMenu codeDropdown = new JPopupMenu();
-		codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-		codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-		int[] filesAdded = new int[] { 0, 0 };
-
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0) {
+			JPopupMenu codeDropdown = new JPopupMenu();
+			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
+			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+			int[] counter = new int[] { 0, 0, 0 };
+
 			for (GeneratorTemplate modElementFile : modElementFiles) {
-				filesAdded[0]++;
+				counter[0]++;
 				codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
 			}
 
 			if (modElementGlobalFiles.size() > 0) {
-				if (filesAdded[0] > 0)
+				if (counter[0] > 0)
 					codeDropdown.addSeparator();
 
 				for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles) {
-					filesAdded[1]++;
+					counter[1]++;
 					codeDropdown.add(newModElementTemplateItem(modElementGlobalFile.getFile()));
 				}
 			}
@@ -1280,9 +1297,10 @@ import java.util.stream.Collectors;
 						}
 
 						if (listFilesFound > 0) {
-							if (filesAdded[1] > 0 || modElementListFiles.indexOf(fileList) >= 1)
+							if (counter[0] + counter[1] + counter[2] > 0)
 								codeDropdown.addSeparator();
 
+							counter[2]++;
 							codeDropdown.add(listItem);
 						}
 					}

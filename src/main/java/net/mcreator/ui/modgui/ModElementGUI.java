@@ -402,6 +402,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			modElementCodeViewer.setVisible(false);
 			splitPane.setDividerSize(0);
 			add("Center", splitPane);
+			modElementCodeViewer.registerUI(centerComponent);
 		} else {
 			add("Center", centerComponent);
 		}
@@ -411,11 +412,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (editingMode) {
 			@SuppressWarnings("unchecked") GE generatableElement = (GE) modElement.getGeneratableElement();
 			openInEditingMode(generatableElement);
-		}
-
-		if (modElementCodeViewer != null) {
-			modElementCodeViewer.loadListTemplatesTabs();
-			modElementCodeViewer.registerUI(centerComponent);
 		}
 
 		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
@@ -571,8 +567,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected boolean allowCodePreview() {
-		@SuppressWarnings("unchecked") GE generatable = (GE) Objects.requireNonNullElse(
-				modElement.getGeneratableElement(), getElementFromGUI());
+		GE generatable = getElementFromGUI();
 		return !modElement.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(modElement, generatable)
 				.isEmpty() || !modElement.getWorkspace().getGenerator()
 				.getModElementListTemplates(modElement, generatable).isEmpty();

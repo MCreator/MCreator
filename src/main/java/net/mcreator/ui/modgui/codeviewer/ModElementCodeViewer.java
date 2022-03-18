@@ -44,7 +44,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
-	private Map<GeneratorTemplatesList, JTabbedPane> listPager = new HashMap<>();
+	private final Map<GeneratorTemplatesList, JTabbedPane> listPager;
 
 	private boolean updateRunning = false;
 	private final ModElementChangedListener codeChangeListener;
@@ -64,12 +64,11 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				reload();
 			}
 		});
-	}
 
-	public void loadListTemplatesTabs() {
+		// we group list templates inside separate tabs to improve UX
 		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
-		listPager = modElementGUI.getModElement().getGenerator()
+		this.listPager = modElementGUI.getModElement().getGenerator()
 				.getModElementListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
 				.stream().collect(Collectors.toUnmodifiableMap(key -> key, list -> {
 					JTabbedPane listTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -116,10 +115,11 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 											JTabbedPane ownerList = listPager.get(ownerListOptional.get());
 											int tabid = indexOfComponent(ownerList);
 											if (tabid != -1) {
-												setSelectedIndex(tabid);
 												int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
-												if (subtabid != -1)
+												if (subtabid != -1) {
+													setSelectedIndex(tabid);
 													ownerList.setSelectedIndex(subtabid);
+												}
 											}
 										} else { // simple file
 											int tabid = indexOfComponent(cache.get(file.file()));

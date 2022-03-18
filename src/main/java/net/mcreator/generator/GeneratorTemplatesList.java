@@ -60,4 +60,21 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 
 		return null;
 	}
+
+	/**
+	 * Extracts one of list templates for specified index and returns it.
+	 *
+	 * @param template One of templates in this list instance
+	 * @param index    Index of list data element for which to acquire the template
+	 * @return List template for given index, or {@code null} if it is greater or equal then list data size
+	 */
+	public GeneratorTemplate forIndex(GeneratorTemplate template, int index) {
+		try {
+			return new GeneratorTemplate(
+					new File(template.getFile().getPath().replace("@elementindex", Integer.toString(index))),
+					template.getTemplateIdentificator(), template.getTemplateData());
+		} catch (IndexOutOfBoundsException ignored) {
+			return null;
+		}
+	}
 }
