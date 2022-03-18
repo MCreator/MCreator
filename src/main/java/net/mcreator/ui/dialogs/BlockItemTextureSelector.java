@@ -135,8 +135,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
-			TextureImportDialogs.importMultipleTextures(mcreator, type);
-			List<File> block1 = mcreator.getFolderManager().getTexturesList(type);
+			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
+			List<File> block1 = mcreator.getFolderManager().getTexturesList(
+					type == TextureType.BLOCK ? TextureType.BLOCK : TextureType.ITEM);
 			model.removeAllElements();
 			block1.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 			if (model.getSize() > 0) {
@@ -156,7 +157,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block = mcreator.getFolderManager().getTexturesList(type);
+		List<File> block = mcreator.getFolderManager().getTexturesList(type == TextureType.BLOCK ? net.mcreator.ui.workspace.resources.TextureType.BLOCK : net.mcreator.ui.workspace.resources.TextureType.ITEM);
 		model.removeAllElements();
 		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 		list.setSelectedIndex(0);

@@ -132,8 +132,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		importMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importBlockTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importItemTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importArmorTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importOtherTexture);
 
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
 
@@ -211,7 +213,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void duplicateSelectedFile() {
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
-			TextureImportDialogs.importSingleTexture(workspacePanel.getMcreator(), file,
+			TextureImportDialogs.importTextureGeneral(workspacePanel.getMcreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
 		}
 	}

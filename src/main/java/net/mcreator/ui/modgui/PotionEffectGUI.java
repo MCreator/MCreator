@@ -122,7 +122,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		importicontexture.setToolTipText(L10N.t("elementgui.potioneffect.import_icon"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importOtherTextures(mcreator);
 			icon.removeAllItems();
 			icon.addItem("");
 			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> icon.addItem(el.getName()));

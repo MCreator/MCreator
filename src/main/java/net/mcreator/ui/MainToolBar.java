@@ -38,7 +38,9 @@ public class MainToolBar extends JToolBar {
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.importTexture);
+		add(mcreator.actionRegistry.importBlockTexture);
+		add(mcreator.actionRegistry.importItemTexture);
+		add(mcreator.actionRegistry.importOtherTexture);
 
 		addSeparator(new Dimension(10, 4));
 

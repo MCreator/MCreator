@@ -75,7 +75,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		importicontexture.setToolTipText(L10N.t("elementgui.painting.import_painting"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importOtherTextures(mcreator);
 			texture.removeAllItems();
 			texture.addItem("");
 			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> texture.addItem(el.getName()));

@@ -154,8 +154,10 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu resources = L10N.menu("menubar.resources");
 		resources.setMnemonic('R');
-		resources.add(mcreator.actionRegistry.importTexture);
+		resources.add(mcreator.actionRegistry.importBlockTexture);
+		resources.add(mcreator.actionRegistry.importItemTexture);
 		resources.add(mcreator.actionRegistry.importArmorTexture);
+		resources.add(mcreator.actionRegistry.importOtherTexture);
 		resources.addSeparator();
 		resources.add(mcreator.actionRegistry.importSound);
 		resources.addSeparator();
