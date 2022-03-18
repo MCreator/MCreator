@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public int drainTankSimulate(IWorld world, BlockPos pos, int amount) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.drain(amount, IFluidHandler.FluidAction.SIMULATE).getAmount()));
 		return _retval.get();
 	}
-}.drainTankSimulate(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)${input$amount}))
+}.drainTankSimulate(world, ${toBlockPos(input$x,input$y,input$z)},(int)${input$amount}))
 <#-- @formatter:on -->

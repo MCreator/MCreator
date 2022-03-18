@@ -1,6 +1,7 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 {
-	TileEntity _ent = world.getTileEntity(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
+	TileEntity _ent = world.getTileEntity(${toBlockPos(input$x,input$y,input$z)});
 	if (_ent != null) {
 		final int _sltid = (int)(${input$slotid});
 		_ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {

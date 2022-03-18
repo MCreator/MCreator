@@ -31,3 +31,7 @@
         <#return direction + ".getAxis()">
     </#if>
 </#function>
+
+<#function toBlockPos x y z>
+    <#return "new BlockPos(" + opt.removeParentheses(x) + "," + opt.removeParentheses(y) + "," + opt.removeParentheses(z) +")">
+</#function>
