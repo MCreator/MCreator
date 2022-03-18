@@ -50,12 +50,8 @@ import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
 import java.util.*;
 
 public class ConverterRegistry {
-	// Converters that convert older mod element type to a newer one
-	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
-		put("food", new FoodToItemConverter());
-	}};
 
-	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
+	@SuppressWarnings("deprecation") private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
@@ -73,14 +69,11 @@ public class ConverterRegistry {
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
+		put(ModElementType.FOOD, Collections.singletonList(new FoodToItemConverter()));
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
-	}
-
-	public static IConverter getConverterForModElementType(String modElementType) {
-		return converters_legacy.get(modElementType);
 	}
 
 }

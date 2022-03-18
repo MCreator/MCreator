@@ -109,6 +109,10 @@ import java.util.List;
 				new ModElementType<>("tag", 'j', BaseType.DATAPACK, RecipeType.NONE, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
+
+		// Legacy
+		ModElementType.FOOD = new ModElementType<>("food", null, BaseType.ITEM, RecipeType.ITEM, null,
+				null);
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {
@@ -125,6 +129,8 @@ import java.util.List;
 		case "mob":
 			typeName = "livingentity";
 			break;
+		case "food":
+			return ModElementType.FOOD;
 		}
 
 		for (ModElementType<?> me : REGISTRY) {

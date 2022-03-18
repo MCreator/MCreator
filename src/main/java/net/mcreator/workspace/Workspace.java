@@ -19,9 +19,6 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.ConverterRegistry;
-import net.mcreator.element.converter.IConverter;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -442,11 +439,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			List<ModElement> corruptedElements = new ArrayList<>();
 
 			for (ModElement element : retval.getModElements()) {
-				try {
-					if (element.getName() == null || element.getType() == null) {
-						corruptedElements.add(element);
-					}
-				} catch (IllegalArgumentException ignored) {
+				if (element.getName() == null || element.getType() == null) {
+					corruptedElements.add(element);
 				}
 			}
 
