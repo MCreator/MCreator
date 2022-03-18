@@ -1,6 +1,7 @@
+<#include "mcelements.ftl">
 {
 	Direction _dir = ${input$direction};
-	BlockPos _pos = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
+	BlockPos _pos = ${toBlockPos(input$x,input$y,input$z)};
 	BlockState _bs =  world.getBlockState(_pos);
 	Property<?> _property = _bs.getBlock().getStateDefinition().getProperty("facing");
 	if (_property instanceof DirectionProperty _dp && _dp.getPossibleValues().contains(_dir)) {

@@ -42,7 +42,7 @@ public abstract class GeneratableElement {
 
 	private transient ModElement element;
 
-	public static final transient int formatVersion = 25;
+	public static final transient int formatVersion = 26;
 
 	public GeneratableElement(ModElement element) {
 		if (element != null)
