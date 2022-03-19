@@ -66,6 +66,7 @@ import java.util.Locale;
 	public String biomeType;
 
 	public boolean spawnBiome;
+	public boolean spawnBiomeNether;
 	public int biomeWeight;
 	public List<String> biomeDictionaryTypes;
 
