@@ -1,1 +1,0 @@
-.then(Commands.literal("${field$name}")<#if statement$args??>${statement$args}</#if>)
