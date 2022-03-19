@@ -130,9 +130,7 @@ public class TextureImportDialogs {
 	public static void importTexturesBlockOrItem(MCreator fr, TextureType type, File[] hohe) {
 		Arrays.stream(hohe).forEach(hoh -> {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(hoh.getName()));
-			File file;
-
-			file = fr.getFolderManager().getTextureFile(namec, type);
+			File file = fr.getFolderManager().getTextureFile(namec, type);
 			if (file.isFile()) {
 				String name = JOptionPane.showInputDialog(fr,
 						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
