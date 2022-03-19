@@ -35,31 +35,62 @@ import java.util.stream.Collectors;
 
 public class StateEditorDialog {
 
-	public static String open(MCreator parent, String initialState, Map<String, PropertyData> properties, String help) {
-		final String stateString = initialState.equals("") ? "!esc" : initialState;
+	/**
+	 * Indicates that the dialog was closed with the native close button.
+	 */
+	public static final String TOKEN_ESC = "!esc";
 
-		AtomicReference<String> retVal = new AtomicReference<>(stateString);
+	/**
+	 * Indicates that the state passed into the state editor is only being created.
+	 */
+	public static final String TOKEN_NEW = "!new";
+
+	/**
+	 * Checks if the given string is a technical token used by the state editor.
+	 *
+	 * @param candidate The string to be tested
+	 * @return Whether the given string is a technical token used by the state editor.
+	 */
+	public static boolean isToken(String candidate) {
+		return candidate.startsWith("!");
+	}
+
+	/**
+	 * Decodes strings like {@code property1=true,property2=123.45,property3=check} into <b>property -> value</b> map
+	 * and vice versa.
+	 *
+	 * @param parent       The workspace window in which this method was called.
+	 * @param initialState The state that should be edited, passing {@linkplain StateEditorDialog#TOKEN_NEW} here means
+	 *                     the state is instead being created.
+	 * @param properties   Keys are property names, values store data of those properties.
+	 * @param help         The path to the help context file used as dialog's tooltip.
+	 * @return {@linkplain StateEditorDialog#TOKEN_ESC} if the {@code initialState} is empty and the dialog was closed
+	 *                     with the native close button, otherwise the state built from property names and their values
+	 *                     as shown above.
+	 */
+	public static String open(MCreator parent, String initialState, Map<String, PropertyData> properties, String help) {
+		AtomicReference<String> retVal = new AtomicReference<>(initialState.equals("") ? TOKEN_ESC : initialState);
 		MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.state_editor.title"), true);
 
-		List<StateEntry> entryList = new ArrayList<>();
+		List<StatePart> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		entries.setOpaque(false);
 
-		Map<String, Object> values = !stateString.startsWith("!") ?
-				Arrays.stream(stateString.split(","))
+		Map<String, Object> values = !isToken(retVal.get()) ?
+				Arrays.stream(retVal.get().split(","))
 						.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1])) :
 				Collections.emptyMap();
 		properties.forEach((name, data) -> {
 			JComponent component = generatePropertyComponent(data);
 			if (component != null) {
-				StateEntry stateEntry = new StateEntry(entries, entryList, name, component);
+				StatePart statePart = new StatePart(entries, entryList, name, component);
 				if (values.containsKey(name)) {
-					if (!data.setValueOfComponent(stateEntry.entryComponent, values.get(name)))
-						setValueOfComponent(stateEntry.entryComponent, data, values.get(name));
+					if (!data.setValueOfComponent(statePart.entryComponent, values.get(name)))
+						setValueOfComponent(statePart.entryComponent, data, values.get(name));
 				} else {
-					setValueOfComponent(stateEntry.entryComponent, data, null);
-					if (!stateString.equals("!new")) // property is not used in this state
-						stateEntry.useEntry.doClick();
+					setValueOfComponent(statePart.entryComponent, data, null);
+					if (!retVal.get().equals(TOKEN_NEW)) // property is not used in this state
+						statePart.useEntry.doClick();
 				}
 			}
 		});
@@ -137,7 +168,7 @@ public class StateEditorDialog {
 			return ((JSpinner) component).getValue();
 		} else if (param.type().equals(float.class) || param.type().equals(Float.class)) {
 			Number val = (Number) ((JSpinner) component).getValue();
-			return (float) Math.round(val.floatValue() * 1000) / 1000;
+			return Math.round(val.floatValue() * 1000) / 1000F;
 		} else if (param.type().equals(String.class)) {
 			return ((JComboBox<?>) component).getSelectedItem();
 		}
@@ -148,16 +179,17 @@ public class StateEditorDialog {
 		if (value == null)
 			value = getDefaultValueForType(param.type());
 		if (value != null && component != null) {
-			if (param.type().equals(boolean.class) || param.type().equals(Boolean.class))
-				((JCheckBox) component).setSelected((boolean) value);
-			else if (param.type().equals(int.class) || param.type().equals(Integer.class))
+			if (param.type().equals(boolean.class) || param.type().equals(Boolean.class)) {
+				((JCheckBox) component).setSelected(Boolean.parseBoolean(value.toString()));
+			} else if (param.type().equals(int.class) || param.type().equals(Integer.class)) {
 				((JSpinner) component).setValue(Math.max((Integer) param.min(),
 						Math.min((Integer) param.max(), Integer.parseInt(value.toString()))));
-			else if (param.type().equals(float.class) || param.type().equals(Float.class))
+			} else if (param.type().equals(float.class) || param.type().equals(Float.class)) {
 				((JSpinner) component).setValue(Math.max((Float) param.min(),
 						Math.min((Float) param.max(), Float.parseFloat(value.toString()))));
-			else if (param.type().equals(String.class))
+			} else if (param.type().equals(String.class)) {
 				((JComboBox<?>) component).setSelectedItem(value);
+			}
 		}
 	}
 
@@ -173,13 +205,13 @@ public class StateEditorDialog {
 		return null;
 	}
 
-	private static class StateEntry extends JPanel {
+	private static class StatePart extends JPanel {
 
 		private final JCheckBox useEntry = new JCheckBox();
 		private final String property;
 		private final JComponent entryComponent;
 
-		private StateEntry(JPanel parent, List<StateEntry> entryList, String name, JComponent component) {
+		private StatePart(JPanel parent, List<StatePart> entryList, String name, JComponent component) {
 			super(new FlowLayout(FlowLayout.LEFT));
 			property = name;
 			entryComponent = component;

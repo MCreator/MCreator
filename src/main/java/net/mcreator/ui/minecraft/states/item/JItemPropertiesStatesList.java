@@ -150,10 +150,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setEnabled(enabled);
 		addState.setEnabled(enabled);
 
-		if (!enabled) {
-			propertiesList.stream().toList().forEach(e -> e.removeProperty(propertyEntries, propertiesList));
-			statesList.stream().toList().forEach(e -> e.removeState(stateEntries, statesList));
-		}
+		propertiesList.forEach(e -> e.setEnabled(enabled));
+		statesList.forEach(e -> e.setEnabled(enabled));
 	}
 
 	public void reloadDataLists() {
@@ -188,7 +186,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemStatesListEntry addStatesEntry() {
-		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, this::editState);
+		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList);
+		se.edit.addActionListener(e -> editState(se));
 		registerEntryUI(se);
 		return se;
 	}
@@ -207,15 +206,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private void editState(JItemStatesListEntry entry) {
 		if (getValidationResult(false).validateIsErrorFree()) {
-			String newState = StateEditorDialog.open(mcreator, entry != null ? entry.state.getText() : "!new",
-					buildPropertiesMap(), "item/custom_state");
-			if (newState == null || newState.equals("")) // all properties were unchecked
+			String newState = StateEditorDialog.open(mcreator,
+					entry != null ? entry.state.getText() : StateEditorDialog.TOKEN_NEW, buildPropertiesMap(),
+					"item/custom_state");
+			if (newState.equals("")) // all properties were unchecked
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
 						L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
 			else if (statesList.stream().anyMatch(el -> el != entry && el.state.getText().equals(newState)))
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_duplicate"),
 						L10N.t("elementgui.item.custom_states.add.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
-			else if (!newState.startsWith("!")) // valid state was returned
+			else if (!StateEditorDialog.isToken(newState)) // valid state was returned
 				(entry != null ? entry : addStatesEntry()).state.setText(newState);
 		} else {
 			Toolkit.getDefaultToolkit().beep();
@@ -230,7 +230,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public Map<String, Procedure> getProperties() {
 		Map<String, Procedure> retVal = new LinkedHashMap<>();
-		propertiesList.forEach(e -> e.addEntry(retVal));
+		propertiesList.forEach(e -> retVal.put(e.name.getText(), e.getEntry()));
 		return retVal;
 	}
 
@@ -249,7 +249,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public Map<String, Item.ModelEntry> getStates() {
 		Map<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
-		statesList.forEach(e -> e.addEntry(retVal));
+		statesList.forEach(e -> retVal.put(e.state.getText(), e.getEntry()));
 		return retVal;
 	}
 

@@ -37,7 +37,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
@@ -68,33 +67,36 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				L10N.t("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
-		setOpaque(false);
 		parent.add(container);
 		entryList.add(this);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_properties.remove"));
-		remove.addActionListener(e -> removeProperty(parent, entryList));
+		remove.addActionListener(e -> {
+			entryList.remove(this);
+			parent.remove(container);
+			parent.revalidate();
+			parent.repaint();
+		});
 		add(remove);
 
 		parent.revalidate();
 		parent.repaint();
 	}
 
-	public void removeProperty(JPanel parent, List<JItemPropertiesListEntry> entryList) {
-		entryList.remove(this);
-		parent.remove(container);
-		parent.revalidate();
-		parent.repaint();
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		name.setEnabled(enabled);
+		value.setEnabled(enabled);
 	}
 
 	public void reloadDataLists() {
 		value.refreshListKeepSelected();
 	}
 
-	public void addEntry(Map<String, Procedure> map) {
-		if (name.getText() != null && !name.getText().equals(""))
-			map.put(name.getText(), value.getSelectedProcedure());
+	public Procedure getEntry() {
+		return value.getSelectedProcedure();
 	}
 
 	public void setEntry(String name, Procedure value) {

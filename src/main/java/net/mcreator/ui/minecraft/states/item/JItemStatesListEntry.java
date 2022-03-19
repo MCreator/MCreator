@@ -44,9 +44,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
@@ -54,12 +52,13 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final JComponent container;
 
 	final JLabel state = new JLabel();
+	final JButton edit = new JButton(UIRES.get("16px.edit.gif"));
 
 	private final TextureHolder texture;
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(ItemGUI.builtInItemModels());
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemStatesListEntry> entryList, Consumer<JItemStatesListEntry> editButtonListener) {
+			List<JItemStatesListEntry> entryList) {
 		super(new FlowLayout(FlowLayout.LEFT));
 		this.mcreator = mcreator;
 
@@ -69,13 +68,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
 		texture.setValidator(new TileHolderValidator(texture));
 
-		JButton edit = new JButton(UIRES.get("16px.edit.gif"));
 		edit.setOpaque(false);
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());
 		edit.setContentAreaFilled(false);
 		edit.setToolTipText(L10N.t("elementgui.item.custom_states.edit_state"));
-		edit.addActionListener(e -> editButtonListener.accept(this));
 
 		JButton copy = new JButton(UIRES.get("16px.copyclipboard"));
 		copy.setOpaque(false);
@@ -108,7 +105,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
 				L10N.t("elementgui.item.custom_states.model"), model, 3));
 
-		setOpaque(false);
 		parent.add(container);
 		entryList.add(this);
 
@@ -128,6 +124,14 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		parent.repaint();
 	}
 
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		edit.setEnabled(enabled);
+		texture.setEnabled(enabled);
+		model.setEnabled(enabled);
+	}
+
 	public void propertyRenamed(String property, String newName, int index) {
 		String[] stateParts = state.getText().split(",");
 		if (index >= stateParts.length || !stateParts[index].startsWith(property + "="))
@@ -142,13 +146,12 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}
 
-	public void addEntry(Map<String, Item.ModelEntry> map) {
-		Item.ModelEntry modelEntry = new Item.ModelEntry();
-		modelEntry.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
-		modelEntry.modelTexture = texture.getID();
-		modelEntry.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());
-
-		map.put(state.getText(), modelEntry);
+	public Item.ModelEntry getEntry() {
+		Item.ModelEntry retVal = new Item.ModelEntry();
+		retVal.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
+		retVal.modelTexture = texture.getID();
+		retVal.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());
+		return retVal;
 	}
 
 	public void setEntry(String state, Item.ModelEntry value) {
