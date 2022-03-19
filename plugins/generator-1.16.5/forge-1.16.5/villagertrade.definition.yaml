@@ -1,3 +1,4 @@
-templates:
+global_templates:
   - template: villagertrade.java.ftl
+    writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMETrade.java"
