@@ -87,6 +87,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
 		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
@@ -1592,13 +1593,13 @@ public class TestWorkspaceDataProvider {
 		return null;
 	}
 
-	private static GeneratableElement getToolExample(ModElement modElement, String recipeType, Random random,
+	private static GeneratableElement getToolExample(ModElement modElement, String toolType, Random random,
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
 		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-		tool.toolType = recipeType;
+		tool.toolType = toolType;
 		tool.harvestLevel = 3;
 		tool.efficiency = 6;
 		tool.attackSpeed = 4.8;
