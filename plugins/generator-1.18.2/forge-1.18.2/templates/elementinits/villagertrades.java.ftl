@@ -39,7 +39,7 @@ package ${package}.init;
 
 import net.minecraft.world.entity.npc.VillagerTrades;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${JavaModName}Trades {
+public class ${JavaModName}Trades {
 
     @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();

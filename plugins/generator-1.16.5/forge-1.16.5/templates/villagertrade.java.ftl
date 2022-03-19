@@ -35,7 +35,7 @@ package ${package}.village;
 
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
+public class ${name}Trade {
 
     @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
