@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * While a property name validator serves as a wrapper for the main validator of the text field instance, it also checks
+ * that the provided text field defines a non-empty property name that has no duplicates in the given properties list.
+ */
 public class PropertyNameValidator implements Validator {
 
 	private final String name;
@@ -38,6 +42,16 @@ public class PropertyNameValidator implements Validator {
 
 	private final Validator extraValidator;
 
+	/**
+	 * Sole constructor.
+	 *
+	 * @param holder         The element to add this validator to.
+	 * @param name           The text used to describe the purpose of the {@code holder}.
+	 * @param properties     Supplier of names of other properties in the same list. Those must all be unique names.
+	 * @param forbiddenNames List of strings that must not be used for property name, usually these are names
+	 *                       of built-in properties.
+	 * @param extraValidator The main validator for the {@code holder}.
+	 */
 	public PropertyNameValidator(VTextField holder, String name, Supplier<Stream<String>> properties,
 			List<String> forbiddenNames, Validator extraValidator) {
 		this.name = name;
@@ -47,6 +61,11 @@ public class PropertyNameValidator implements Validator {
 		this.extraValidator = extraValidator;
 	}
 
+	/**
+	 * Returns the main validator for the validated element.
+	 *
+	 * @return The main validator for the validated element.
+	 */
 	public Validator getExtraValidator() {
 		return extraValidator;
 	}
