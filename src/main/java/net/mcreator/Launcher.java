@@ -85,7 +85,8 @@ public class Launcher {
 		PreferencesManager.loadPreferences();
 
 		// set system properties from preferences
-		System.setProperty("apple.laf.useScreenMenuBar", Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar));
+		System.setProperty("apple.laf.useScreenMenuBar",
+				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar));
 		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType);
 		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aatext));
 		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration));

@@ -41,6 +41,17 @@ public final class FileIO {
 
 	private static final Logger LOG = LogManager.getLogger("File System");
 
+	public static void touchFile(File f) {
+		if (!f.getParentFile().isDirectory())
+			f.getParentFile().mkdirs();
+
+		try {
+			f.createNewFile();
+		} catch (Exception e) {
+			LOG.error("Error touching " + e.getMessage(), e);
+		}
+	}
+
 	public static String readFileToString(File f) {
 		try {
 			FileChannel channel = new FileInputStream(f).getChannel();
@@ -49,8 +60,7 @@ public final class FileIO {
 			channel.close();
 			return new String(buffer.array());
 		} catch (Exception e) {
-			LOG.error("Error reading: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -85,8 +95,7 @@ public final class FileIO {
 			}
 			return charset == null ? result.toString() : result.toString(charset);
 		} catch (Exception e) {
-			LOG.error("Error resource reading: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error resource reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -106,8 +115,7 @@ public final class FileIO {
 			}
 			return result.toString();
 		} catch (Exception e) {
-			LOG.error("Error resource reading: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error resource reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -119,8 +127,7 @@ public final class FileIO {
 		try (BufferedWriter out = new BufferedWriter(new FileWriter(f))) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing " + e.getMessage(), e);
 		}
 	}
 
@@ -131,8 +138,7 @@ public final class FileIO {
 		try (FileOutputStream out = new FileOutputStream(f)) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing " + e.getMessage(), e);
 		}
 	}
 
@@ -144,8 +150,7 @@ public final class FileIO {
 				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing " + e.getMessage(), e);
 		}
 	}
 
@@ -156,8 +161,7 @@ public final class FileIO {
 		try {
 			ImageIO.write(image, "png", f);
 		} catch (IOException e) {
-			LOG.error("Error writing image " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing image " + e.getMessage(), e);
 		}
 	}
 
@@ -196,8 +200,7 @@ public final class FileIO {
 
 			Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			LOG.error("Error copying file: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error copying file: " + e.getMessage(), e);
 		}
 	}
 
@@ -245,6 +248,14 @@ public final class FileIO {
 		}
 
 		return false;
+	}
+
+	public static boolean isFileSomewhereInDirectory(File file, File directory) {
+		try {
+			return file.getCanonicalPath().startsWith(directory.getCanonicalPath());
+		} catch (Exception ignored) {
+			return file.getAbsolutePath().startsWith(directory.getAbsolutePath());
+		}
 	}
 
 	public static boolean removeEmptyDirs(File root) {

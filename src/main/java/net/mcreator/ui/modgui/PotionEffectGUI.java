@@ -244,7 +244,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		return potion;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-potion");
 	}
 

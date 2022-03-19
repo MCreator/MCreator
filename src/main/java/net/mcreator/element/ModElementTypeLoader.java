@@ -52,7 +52,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("enchantment", 'm', BaseType.ENCHANTMENT, RecipeType.NONE, EnchantmentGUI::new,
 						Enchantment.class));
 		ModElementType.FLUID = register(
-				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BLOCK, FluidGUI::new, Fluid.class));
+				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
 		ModElementType.FOOD = register(
 				new ModElementType<>("food", 'f', BaseType.ITEM, RecipeType.ITEM, FoodGUI::new, Food.class));
 		ModElementType.FUEL = register(
@@ -111,6 +111,10 @@ public class ModElementTypeLoader {
 				new ModElementType<>("tag", 'j', BaseType.DATAPACK, RecipeType.NONE, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
+
+		// Unregistered type used to mask legacy removed mod element types
+		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER, RecipeType.NONE,
+				(mc, me, e) -> null, GeneratableElement.Unknown.class);
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {

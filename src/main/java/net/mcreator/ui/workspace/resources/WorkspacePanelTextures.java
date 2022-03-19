@@ -45,7 +45,6 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
@@ -381,7 +380,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			String term = workspacePanel.search.getText();
 			filterItems.addAll(items.stream().filter(Objects::nonNull)
 					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
+							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
 
 			if (workspacePanel.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(File::getName));

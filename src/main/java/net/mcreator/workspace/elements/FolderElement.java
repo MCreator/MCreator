@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FolderElement implements IElement {
 
@@ -105,7 +104,7 @@ public class FolderElement implements IElement {
 	private void doActionAndReassignRecursive(Workspace workspace, Runnable action) {
 		String originalFolderPath = this.getPath();
 		List<String> originalRecursiveFolderChildrenPaths = this.getRecursiveFolderChildren().stream()
-				.map(FolderElement::getPath).collect(Collectors.toList());
+				.map(FolderElement::getPath).toList();
 
 		action.run();
 

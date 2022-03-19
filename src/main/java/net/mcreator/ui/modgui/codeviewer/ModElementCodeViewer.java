@@ -19,43 +19,37 @@
 
 package net.mcreator.ui.modgui.codeviewer;
 
-import javafx.embed.swing.JFXPanel;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
-import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.laf.FileIcons;
-import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.modgui.ModElementChangedListener;
 import net.mcreator.ui.modgui.ModElementGUI;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane
-		implements MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
+public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane {
 
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
 
 	private boolean updateRunning = false;
+	private final ModElementChangedListener codeChangeListener;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM);
 
 		this.modElementGUI = modElementGUI;
+		this.codeChangeListener = this::reload;
 
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -70,44 +64,13 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	public void registerUI(JComponent container) {
-		Component[] components = container.getComponents();
-		for (Component component : components) {
-			if (component instanceof MCItemHolder mcItemHolder) {
-				mcItemHolder.addBlockSelectedListener(this);
-			} else if (component instanceof JItemListField<?> listField) {
-				listField.addChangeListener(this);
-			} else if (component instanceof JEntriesList entriesList) {
-				entriesList.setEntryCreationListener(c -> {
-					this.registerUI(c);
-					reload();
-				});
-				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button) {
-				button.addActionListener(this);
-			} else if (component instanceof JSpinner button) {
-				button.addChangeListener(this);
-			} else if (component instanceof JComboBox<?> comboBox) {
-				comboBox.addActionListener(this);
-			} else if (component instanceof JTextComponent textComponent) {
-				textComponent.getDocument().addDocumentListener(this);
-			} else if (component instanceof JFXPanel) {
-				component.addMouseListener(this);
-				component.addKeyListener(this);
-			} else if (component instanceof JComponent jcomponent) {
-				registerUI(jcomponent);
-
-				if (!(component instanceof JLabel) && !(component instanceof JPanel)) {
-					component.addMouseListener(this);
-					component.addKeyListener(this);
-				}
-			}
-		}
+		codeChangeListener.registerUI(container);
 	}
 
-	private synchronized void reload() {
+	private void reload() {
 		if (isVisible() && !updateRunning) {
+			updateRunning = true;
 			new Thread(() -> {
-				updateRunning = true;
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
@@ -118,18 +81,26 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					for (GeneratorFile file : files) {
 						if (cache.containsKey(file.file())) { // existing file
-							if (cache.get(file.file()).update(file)) {
-								int tabid = indexOfComponent(cache.get(file.file()));
-								if (tabid != -1)
-									setSelectedIndex(tabid);
-							}
+							SwingUtilities.invokeAndWait(() -> {
+								try {
+									if (cache.get(file.file()).update(file)) {
+										int tabid = indexOfComponent(cache.get(file.file()));
+										if (tabid != -1)
+											setSelectedIndex(tabid);
+									}
+								} catch (Exception ignored) {
+								}
+							});
 						} else { // new file
-							try {
-								FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-								addTab(file.file().getName(), FileIcons.getIconForFile(file.file()), fileCodeViewer);
-								cache.put(file.file(), fileCodeViewer);
-							} catch (Exception ignored) {
-							}
+							SwingUtilities.invokeAndWait(() -> {
+								try {
+									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
+									addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+											fileCodeViewer);
+									cache.put(file.file(), fileCodeViewer);
+								} catch (Exception ignored) {
+								}
+							});
 						}
 					}
 
@@ -150,52 +121,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	public ModElementGUI<T> getModElementGUI() {
 		return modElementGUI;
-	}
-
-	@Override public void mouseReleased(MouseEvent e) {
-		reload();
-	}
-
-	@Override public void keyReleased(KeyEvent e) {
-		reload();
-	}
-
-	@Override public void actionPerformed(ActionEvent e) {
-		reload();
-	}
-
-	@Override public void stateChanged(ChangeEvent e) {
-		reload();
-	}
-
-	@Override public void changedUpdate(DocumentEvent e) {
-		reload();
-	}
-
-	@Override public void insertUpdate(DocumentEvent e) {
-		reload();
-	}
-
-	@Override public void removeUpdate(DocumentEvent e) {
-		reload();
-	}
-
-	@Override public void keyTyped(KeyEvent e) {
-	}
-
-	@Override public void keyPressed(KeyEvent e) {
-	}
-
-	@Override public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override public void mousePressed(MouseEvent e) {
-	}
-
-	@Override public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override public void mouseExited(MouseEvent e) {
 	}
 
 }

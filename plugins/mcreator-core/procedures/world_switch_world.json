@@ -1,14 +1,8 @@
 {
   "args0": [
     {
-      "type": "input_dummy"
-    },
-    {
       "type": "input_statement",
       "name": "worldstatements"
-    },
-    {
-      "type": "input_dummy"
     }
   ],
   "extensions": [

@@ -129,19 +129,19 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing resource setup tasks");
 				workspace.getGenerator().runResourceSetupTasks();
 
-				LOG.info("[" + generator + "] ----- Testing empty workspace build");
-				GTBuild.runTest(LOG, generator, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing procedure triggers");
-				GTProcedureTriggers.runTest(LOG, generator, workspace);
-
 				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
 				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 
 				LOG.info("[" + generator + "] ----- Testing mod elements generation");
 				GTModElements.runTest(LOG, generator, random, workspace);
 
-				LOG.info("[" + generator + "] ----- Re-generating base after mod element generation");
+				LOG.info("[" + generator + "] ----- Testing procedure triggers");
+				GTProcedureTriggers.runTest(LOG, generator, workspace);
+
+				LOG.info("[" + generator + "] ----- Testing procedure blocks");
+				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
+
+				LOG.info("[" + generator + "] ----- Re-generating base to include generated mod elements");
 				assertTrue(workspace.getGenerator().generateBase());
 
 				LOG.info("[" + generator + "] ----- Reformatting the code and organising the imports");
@@ -150,12 +150,6 @@ public class GeneratorsTest {
 								.map(Path::toFile).collect(Collectors.toList()), null);
 
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
-				GTBuild.runTest(LOG, generator, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing procedure blocks");
-				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing building after procedure tests");
 				GTBuild.runTest(LOG, generator, workspace);
 			});
 		});

@@ -56,11 +56,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorVariableTypes generatorVariableTypes;
 
-	private final TemplateGeneratorConfiguration templateGeneratorConfiguration;
-	private final TemplateGeneratorConfiguration procedureGeneratorConfiguration;
-	private final TemplateGeneratorConfiguration triggerGeneratorConfiguration;
-	private final TemplateGeneratorConfiguration aitaskGeneratorConfiguration;
-	private final TemplateGeneratorConfiguration jsonTriggerGeneratorConfiguration;
+	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new HashMap<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
@@ -82,13 +78,6 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		// load mappings
 		this.mappingLoader = new MappingLoader(this);
 		this.definitionsProvider = new DefinitionsProvider(generatorName);
-
-		// load template configurations
-		this.templateGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "templates");
-		this.procedureGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "procedures");
-		this.triggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "triggers");
-		this.aitaskGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "aitasks");
-		this.jsonTriggerGeneratorConfiguration = new TemplateGeneratorConfiguration(generatorName, "jsontriggers");
 
 		// load global variable definitions
 		this.generatorVariableTypes = new GeneratorVariableTypes(this);
@@ -234,24 +223,14 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return generatorStats;
 	}
 
-	public TemplateGeneratorConfiguration getTemplateGeneratorConfiguration() {
-		return templateGeneratorConfiguration;
-	}
-
-	public TemplateGeneratorConfiguration getProcedureGeneratorConfiguration() {
-		return procedureGeneratorConfiguration;
-	}
-
-	public TemplateGeneratorConfiguration getTriggerGeneratorConfiguration() {
-		return triggerGeneratorConfiguration;
-	}
-
-	public TemplateGeneratorConfiguration getAITaskGeneratorConfiguration() {
-		return aitaskGeneratorConfiguration;
-	}
-
-	public TemplateGeneratorConfiguration getJSONTriggerGeneratorConfiguration() {
-		return jsonTriggerGeneratorConfiguration;
+	public TemplateGeneratorConfiguration getTemplateGenConfigFromName(String name) {
+		if (templateGeneratorConfigs.containsKey(name))
+			return templateGeneratorConfigs.get(name);
+		else {
+			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(generatorName, name);
+			templateGeneratorConfigs.put(name, tpl);
+			return tpl;
+		}
 	}
 
 	public GeneratorVariableTypes getVariableTypes() {

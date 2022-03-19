@@ -119,10 +119,10 @@ import java.util.stream.Collectors;
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
 	public Sound breakSound;
-	public Sound stepSound;
-	public Sound placeSound;
-	public Sound hitSound;
 	public Sound fallSound;
+	public Sound hitSound;
+	public Sound placeSound;
+	public Sound stepSound;
 
 	public int luminance;
 	public boolean unbreakable;
@@ -223,6 +223,10 @@ import java.util.stream.Collectors;
 
 	public boolean isBlockTinted() {
 		return !"No tint".equals(tintType);
+	}
+
+	public boolean isDoubleBlock() {
+		return "Door".equals(blockBase);
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {

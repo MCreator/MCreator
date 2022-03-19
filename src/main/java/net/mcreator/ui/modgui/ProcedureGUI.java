@@ -31,9 +31,10 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
-import net.mcreator.ui.blockly.ProcedureEditorToolbar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
@@ -44,7 +45,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -129,6 +130,17 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			cancelableTriggerLabel.setIcon(null);
 			hasResultTriggerLabel.setIcon(null);
 			sideTriggerLabel.setIcon(null);
+
+			// Check that no local variable has the same name as one of the dependencies
+			for (var dependency : dependenciesArrayList) {
+				for (int i = 0; i < localVars.getSize(); i++) {
+					if (dependency.getName().equals(localVars.get(i).getName())) {
+						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.getName())));
+						break; // We found a match, there's no need to check the other variables
+					}
+				}
+			}
 
 			if (isEditingMode() && dependenciesBeforeEdit == null) {
 				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
@@ -239,7 +251,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -379,7 +391,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemeberNameValidator((VTextField) component, false);
+							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
 							String textname = Transliteration.transliterateString(((VTextField) component).getText());
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
@@ -572,7 +584,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		pane5.add("North", new ProcedureEditorToolbar(mcreator, blocklyPanel, this));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.PROCEDURE,
+				blocklyPanel, this);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
+		pane5.add("North", blocklyEditorToolbar);
 
 		addPage(PanelUtils.gridElements(1, 1, pane5));
 	}
@@ -582,12 +597,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			return new AggregatedValidationResult.PASS();
 		else if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::getMessage)
+					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
 							.collect(Collectors.toList()));
 		else
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
-
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {

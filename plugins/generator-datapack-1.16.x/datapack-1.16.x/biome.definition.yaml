@@ -9,8 +9,10 @@ templates:
 field_inclusions: [heightVariation, baseHeight, rainingPossibility, temperature, biomeCategory,
                    parent, foliageColor, grassColor, airColor, waterColor, waterFogColor, spawnEntries,
                    defaultFeatures, name, groundBlock, undergroundBlock, spawnWoodlandMansion,
-                   spawnMineshaft, spawnStronghold, spawnPillagerOutpost, spawnShipwreck, oceanRuinType,
-                   spawnOceanMonument, spawnDesertPyramid, spawnJungleTemple, spawnIgloo, villageType]
+                   spawnMineshaft, spawnMineshaftMesa, spawnSwampHut, spawnStronghold, spawnPillagerOutpost,
+                   spawnShipwreck, spawnShipwreckBeached, oceanRuinType, spawnBuriedTreasure, spawnOceanMonument,
+                   spawnDesertPyramid, spawnJungleTemple, spawnIgloo, spawnNetherBridge, spawnNetherFossil,
+                   spawnBastionRemnant, spawnEndCity, spawnRuinedPortal, villageType]
 
 localizationkeys:
   - key: biome.@modid.@registryname

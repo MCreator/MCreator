@@ -42,6 +42,10 @@ public class MinecraftCompletionCellRenderer extends JavaCellRenderer {
 
 		super.getListCellRendererComponent(list, value, index, selected, hasFocus);
 
+		Icon icon = getIcon();
+		if (icon != null)
+			setIcon(RSTAIcons.themeRSTAIcon(icon));
+
 		if (tc != null) {
 			Completion c = (Completion) value;
 			if (c.getProvider().getAlreadyEnteredText(tc).contains("Blocks.")) {

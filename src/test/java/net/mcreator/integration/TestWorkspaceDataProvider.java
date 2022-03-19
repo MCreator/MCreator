@@ -54,7 +54,6 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
 
@@ -123,7 +122,7 @@ public class TestWorkspaceDataProvider {
 
 			int idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
 				VariableElement variable = new VariableElement();
 				variable.setName("logic" + (idx++));
 				variable.setValue("true");
@@ -134,7 +133,7 @@ public class TestWorkspaceDataProvider {
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
 				VariableElement variable = new VariableElement();
 				variable.setName("number" + (idx++));
 				variable.setValue("12");
@@ -145,7 +144,7 @@ public class TestWorkspaceDataProvider {
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
 				VariableElement variable = new VariableElement();
 				variable.setName("string" + (idx++));
 				variable.setValue("test");
@@ -156,7 +155,7 @@ public class TestWorkspaceDataProvider {
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
 				VariableElement variable = new VariableElement();
 				variable.setName("itemstack" + (idx++));
 				variable.setValue("ItemStack.EMPTY");
@@ -167,7 +166,7 @@ public class TestWorkspaceDataProvider {
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
 				VariableElement variable = new VariableElement();
 				variable.setName("direction" + (idx++));
 				variable.setValue("UP");
@@ -178,7 +177,7 @@ public class TestWorkspaceDataProvider {
 
 			idx = 0;
 			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
 				VariableElement variable = new VariableElement();
 				variable.setName("blockstate" + (idx++));
 				variable.setValue("UP");
@@ -285,7 +284,6 @@ public class TestWorkspaceDataProvider {
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
 			biome.airColor = Color.red;
-			biome.treeType = _true ? 0 : 1;
 			if (!emptyLists) {
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
@@ -346,12 +344,6 @@ public class TestWorkspaceDataProvider {
 			biome.biomeCategory = getRandomItem(random,
 					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
-			if (!emptyLists) {
-				biome.parent = new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes));
-			} else {
-				biome.parent = new BiomeEntry(modElement.getWorkspace(), "No parent");
-			}
-
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
@@ -400,10 +392,19 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
 			biome.defaultFeatures = biomeDefaultFeatures;
-			biome.treeVines = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-			biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-			biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-			biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			if (!emptyLists) {
+				biome.treeType = biome.TREES_CUSTOM;
+				biome.treeVines = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+				biome.treeStem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			} else {
+				biome.treeType = biome.TREES_VANILLA;
+				biome.treeVines = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeStem = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeBranch = new MItemBlock(modElement.getWorkspace(), "");
+				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
+			}
 			biome.spawnBiome = !_true;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
@@ -465,8 +466,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				fluid.restrictionBiomes.addAll(
 						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
-								.limit(biomes.size() / 4).map(DataListEntry::getName)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
 			fluid.frequencyOnChunks = 13;
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
@@ -517,9 +518,8 @@ public class TestWorkspaceDataProvider {
 			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
-			keyBinding.triggerKey = getRandomItem(random,
-					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName)
-							.toArray(String[]::new));
+			keyBinding.triggerKey = getRandomString(random,
+					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = "key.categories.misc";
 			keyBinding.onKeyPressed = new Procedure("procedure3");
@@ -549,8 +549,7 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				for (VariableType.Scope ignored : Arrays.stream(VariableType.Scope.values())
-						.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
 					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
 							Color.black, new Procedure("condition1")));
 					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
@@ -567,7 +566,7 @@ public class TestWorkspaceDataProvider {
 									Color.black, new Procedure("condition1")));
 					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
 							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				}
+				});
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -624,8 +623,7 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				for (VariableType.Scope ignored : Arrays.stream(VariableType.Scope.values())
-						.filter(e -> e != VariableType.Scope.LOCAL).collect(Collectors.toList())) {
+				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
 					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
 							Color.black, new Procedure("condition1")));
 					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
@@ -642,7 +640,7 @@ public class TestWorkspaceDataProvider {
 									Color.black, new Procedure("condition1")));
 					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
 							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				}
+				});
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -699,6 +697,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 			livingEntity.mobModelTexture = "test.png";
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
+			livingEntity.transparentModelCondition = new Procedure("condition1");
+			livingEntity.isShakingCondition = new Procedure("condition2");
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;
@@ -796,7 +796,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
-						"panic_when_attacked") && aiTasks.contains("attack_action")) {
+						"panic_when_attacked") && aiTasks.contains("attack_action") && aiTasks.contains(
+						"swim_in_water")) {
 					livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
 							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
 							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
@@ -837,8 +838,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				livingEntity.restrictionBiomes.addAll(
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
 			livingEntity.spawnInDungeons = _true;
 			livingEntity.modelWidth = 0.4;
@@ -914,8 +914,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				structure.restrictionBlocks.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
-								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			if (_true) {
 				structure.generateCondition = new Procedure("condition1");
@@ -980,8 +979,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				armor.repairItems.addAll(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
-								.limit(blocksAndItems.size() / 4).map(DataListEntry::getName)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+								.limit(blocksAndItems.size() / 4)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			armor.getModElement().putMetadata("eh", armor.enableHelmet);
 			armor.getModElement().putMetadata("ec", armor.enableBody);
@@ -1004,7 +1003,7 @@ public class TestWorkspaceDataProvider {
 			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.collect(Collectors.toList()));
+							.toList());
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.customBoundingBox = !_true;
@@ -1072,15 +1071,13 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				plant.canBePlacedOn.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
-								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				plant.restrictionBiomes.addAll(
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
 			plant.onNeighbourBlockChanges = new Procedure("procedure1");
 			plant.onTickUpdate = new Procedure("procedure2");
@@ -1366,15 +1363,13 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-								.map(DataListEntry::getName).map(e -> new BiomeEntry(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				block.blocksToReplace.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
-								.map(DataListEntry::getName).map(e -> new MItemBlock(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			block.frequencyPerChunks = 6;
 			block.frequencyOnChunk = 7;
@@ -1431,13 +1426,13 @@ public class TestWorkspaceDataProvider {
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
 			if (!emptyLists) {
-				tag.items.addAll(blocksAndItems.stream().map(DataListEntry::getName)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
-				tag.blocks.addAll(blocks.stream().map(DataListEntry::getName)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
-				tag.entities.addAll(
-						ElementUtil.loadAllEntities(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new EntityEntry(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+				tag.items.addAll(
+						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
+								.toList());
+				tag.blocks.addAll(
+						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
+						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1531,8 +1526,7 @@ public class TestWorkspaceDataProvider {
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 			enchantment.type = getRandomString(random,
-					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName)
-							.collect(Collectors.toList()));
+					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).toList());
 			enchantment.minLevel = 13;
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
@@ -1545,15 +1539,15 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				enchantment.compatibleItems.addAll(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
-								.limit(blocksAndItems.size() / 4).map(DataListEntry::getName)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e)).collect(Collectors.toList()));
+								.limit(blocksAndItems.size() / 4)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleEnchantments.addAll(
-						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(), e))
-								.collect(Collectors.toList()));
+						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
+								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+										e.getName())).toList());
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {

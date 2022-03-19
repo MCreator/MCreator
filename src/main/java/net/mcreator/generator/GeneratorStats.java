@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -129,7 +130,8 @@ public class GeneratorStats {
 			baseCoverageInfo.put("variables",
 					generatorConfiguration.getVariableTypes().getSupportedVariableTypes().size()
 							== VariableTypeLoader.INSTANCE.getAllVariableTypes().stream()
-							.filter(e -> !e.isReturnTypeOnly()).count() ? CoverageStatus.FULL : CoverageStatus.PARTIAL);
+							.filter(e -> !e.isIgnoredByCoverage()).count() ?
+							CoverageStatus.FULL : CoverageStatus.PARTIAL);
 		}
 
 		if (generatorConfiguration.getJavaModelsKey().equals("legacy")) {
@@ -207,20 +209,26 @@ public class GeneratorStats {
 		FULL, PARTIAL, NONE
 	}
 
+	// @formatter:off
 	public enum Status {
 
-		DEPRECATED("Deprecated"), DEV("In development"), EXPERIMENTAL("Experimental"), LEGACY("Legacy"), LTS(
-				"Long term support"), STABLE("Stable");
+		DEPRECATED("dialog.generator_selector.generator_status.deprecated"),
+		DEV("dialog.generator_selector.generator_status.dev"),
+		EXPERIMENTAL("dialog.generator_selector.generator_status.experimental"),
+		LEGACY("dialog.generator_selector.generator_status.legacy"),
+		LTS("dialog.generator_selector.generator_status.lts"),
+		STABLE("dialog.generator_selector.generator_status.stable");
 
-		String name;
+		private final String key;
 
-		Status(String name) {
-			this.name = name;
+		Status(String key) {
+			this.key = key;
 		}
 
 		public String getName() {
-			return name;
+			return L10N.t(key);
 		}
 
 	}
+	// @formatter:on
 }

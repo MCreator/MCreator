@@ -30,9 +30,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class ModElementIDsDialog {
 

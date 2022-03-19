@@ -265,7 +265,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		SwingUtilities.invokeLater(() -> {
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -292,7 +292,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> L10N.t("elementgui.advancement.trigger") + compileNote.getMessage())
+					.map(compileNote -> L10N.t("elementgui.advancement.trigger", compileNote.message()))
 					.collect(Collectors.toList()));
 
 		return new AggregatedValidationResult(page1group);
@@ -345,7 +345,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		return achievement;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-achievement");
 	}
 

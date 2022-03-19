@@ -34,13 +34,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BlocklyVariables {
-
-	private final BlocklyToJava generator;
-
-	BlocklyVariables(BlocklyToJava generator) {
-		this.generator = generator;
-	}
+public record BlocklyVariables(BlocklyToJava generator) {
 
 	List<VariableElement> processLocalVariables(Element variables_block) {
 		List<VariableElement> varlist = new ArrayList<>();

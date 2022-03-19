@@ -77,13 +77,13 @@ public class BlocklyBlockCodeGenerator {
 			if (toolboxBlock.type == IBlockGenerator.BlockType.PROCEDURAL) {
 				if (!supportedBlocksGenerator.contains(type)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							"Block " + type + " is not supported by the selected generator. It will be skipped."));
+							L10N.t("blockly.warnings.block_not_supported", type)));
 					return;
 				}
 			} else if (toolboxBlock.type == IBlockGenerator.BlockType.OUTPUT) {
 				if (!supportedBlocksGenerator.contains(type)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Block " + type + " is not supported by the selected generator!"));
+							L10N.t("blockly.errors.block_not_supported", type)));
 					return;
 				}
 			}
@@ -92,7 +92,7 @@ public class BlocklyBlockCodeGenerator {
 		// check if the block does work inside statement blocks
 		if (toolboxBlock.error_in_statement_blocks && !master.getStatementInputsMatching(si -> true).isEmpty()) {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Block " + type + " does not work inside statement blocks!"));
+					L10N.t("blockly.errors.block_errors_in_statements", type)));
 			return;
 		}
 
@@ -119,7 +119,7 @@ public class BlocklyBlockCodeGenerator {
 				}
 				if (!found) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Field " + fieldName + " on block " + type + " is not defined."));
+							L10N.t("blockly.errors.field_not_defined", fieldName, type)));
 				}
 			}
 		}
@@ -138,7 +138,7 @@ public class BlocklyBlockCodeGenerator {
 				}
 				if (!found) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Input " + inputName + " on block " + type + " is empty."));
+							L10N.t("blockly.errors.input_empty", inputName, type)));
 				}
 			}
 		}
@@ -149,7 +149,7 @@ public class BlocklyBlockCodeGenerator {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name")
-							.equals(advancedInput.name)) {
+							.equals(advancedInput.name())) {
 						found = true;
 
 						// check if nesting statement block that already provides any dependency with
@@ -158,8 +158,8 @@ public class BlocklyBlockCodeGenerator {
 							for (Dependency dependency : advancedInput.provides) {
 								if (master.checkIfDepProviderInputsProvide(dependency)) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-											"Input " + advancedInput.name
-													+ " provides dependencies already provided by parent statement inputs."));
+											L10N.t("blockly.errors.duplicate_dependencies_provided",
+													advancedInput.name())));
 									return; // no need to do further processing, this needs to be resolved first by the user
 								}
 							}
@@ -169,14 +169,14 @@ public class BlocklyBlockCodeGenerator {
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
 						master.popDepProviderInputStack();
 
-						dataModel.put("input$" + advancedInput.name, generatedCode);
+						dataModel.put("input$" + advancedInput.name(), generatedCode);
 
 						break; // found, no need to look other elements
 					}
 				}
 				if (!found) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Input " + advancedInput.name + " on block " + type + " is empty."));
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, 
+							L10N.t("blockly.errors.input_empty", advancedInput.name(), type)));
 				}
 			}
 		}
@@ -196,8 +196,8 @@ public class BlocklyBlockCodeGenerator {
 							for (Dependency dependency : statementInput.provides) {
 								if (master.checkIfDepProviderInputsProvide(dependency)) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-											"Statement input " + statementInput.name
-													+ " provides dependencies already provided by parent statement inputs."));
+											L10N.t("blockly.errors.duplicate_dependencies_provided.statement",
+													statementInput.name)));
 									return; // no need to do further processing, this needs to be resolved first by the user
 								}
 							}
@@ -215,7 +215,7 @@ public class BlocklyBlockCodeGenerator {
 				if (!found) {
 					dataModel.put("statement$" + statementInput.name, "");
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							"Statement input " + statementInput.name + " on block " + type + " is empty."));
+							L10N.t("blockly.warnings.statement_input_empty", statementInput.name, type)));
 				}
 			}
 		}
@@ -224,8 +224,7 @@ public class BlocklyBlockCodeGenerator {
 			for (String required_api : toolboxBlock.getRequiredAPIs()) {
 				if (!master.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							"Block " + type + " requires " + required_api
-									+ " enabled in workspace settings, or the current generator does not support it"));
+							L10N.t("blockly.errors.api_required", required_api, type)));
 				}
 			}
 		}

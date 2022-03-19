@@ -19,7 +19,6 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.BaseType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -409,7 +408,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 							"Unsupported generator", JOptionPane.WARNING_MESSAGE);
 					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
 							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-									currentFlavor), currentFlavor);
+									currentFlavor), currentFlavor, false);
 					if (generatorConfiguration != null) {
 						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
@@ -440,8 +439,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			List<ModElement> corruptedElements = new ArrayList<>();
 
 			for (ModElement element : retval.getModElements()) {
-				if (element.getName() == null || element.getType() == null) {
+				if (element.getName() == null || element.getTypeString() == null) {
 					corruptedElements.add(element);
+					// this is handled by a converter later, if there is one
 				}
 			}
 

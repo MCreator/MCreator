@@ -20,6 +20,7 @@ package net.mcreator.blockly.java;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.BinaryStringIO;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -38,36 +39,14 @@ import java.text.ParseException;
 
 public class ProcedureTemplateIO {
 
-	public static void exportProcedure(String procedure, File file)
+	public static void exportBlocklySetup(String blocklyXML, File file, BlocklyEditorType blocklyEditorType)
 			throws ParseException, ParserConfigurationException, IOException, SAXException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure)));
+		Document doc = dBuilder.parse(new InputSource(new StringReader(blocklyXML)));
 		doc.getDocumentElement().normalize();
 
-		Element start_block = BlocklyBlockUtil.getStartBlock(doc, "event_trigger");
-
-		// if there is no start block, we return empty string
-		if (start_block == null)
-			throw new ParseException("Could not find start block!", -1);
-
-		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
-		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
-
-		if (block == null)
-			throw new ParseException("Could not export block!", -1);
-
-		exportBlocklyXML(block, file);
-	}
-
-	public static void exportAITaskSetup(String procedure, File file)
-			throws ParseException, ParserConfigurationException, IOException, SAXException {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure)));
-		doc.getDocumentElement().normalize();
-
-		Element start_block = BlocklyBlockUtil.getStartBlock(doc, "aitasks_container");
+		Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
 
 		// if there is no start block, we return empty string
 		if (start_block == null)
@@ -94,12 +73,11 @@ public class ProcedureTemplateIO {
 	}
 
 	public static String importBlocklyXML(File template) {
-		return BinaryStringIO.readFileToString(template)
-				.replace("variables_get_text", "variables_get_string") // The same converter as fv21.ProcedureVariablesConverter, but it converts all Blockly templates
+		return BinaryStringIO.readFileToString(template).replace("variables_get_text",
+						"variables_get_string") // The same converter as fv21.ProcedureVariablesConverter, but it converts all Blockly templates
 				.replace("variables_set_text", "variables_set_string")
 				.replace("custom_dependency_text", "custom_dependency_string")
-				.replace("procedure_retval_text", "procedure_retval_string")
-				.replace("return_text", "return_string");
+				.replace("procedure_retval_text", "procedure_retval_string").replace("return_text", "return_string");
 	}
 
 	public static String importBlocklyXML(String template) {

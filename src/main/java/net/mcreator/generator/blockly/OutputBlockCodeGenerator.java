@@ -23,13 +23,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
-public class OutputBlockCodeGenerator implements IBlockGenerator {
-
-	private final BlocklyBlockCodeGenerator blocklyBlockCodeGenerator;
-
-	public OutputBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBlockCodeGenerator) {
-		this.blocklyBlockCodeGenerator = blocklyBlockCodeGenerator;
-	}
+public record OutputBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBlockCodeGenerator) implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		blocklyBlockCodeGenerator.generateBlock(master, block);

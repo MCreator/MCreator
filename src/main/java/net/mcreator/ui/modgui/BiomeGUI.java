@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
@@ -40,7 +41,6 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -52,7 +52,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
@@ -126,25 +125,22 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
-	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
+	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
 	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
 
 	private final JComboBox<String> biomeCategory = new JComboBox<>(
 			new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA", "ICY", "THEEND",
-					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER" });
+					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER", "UNDERGROUND",
+					"MOUNTAIN" });
 
 	private final JComboBox<String> vanillaTreeType = new JComboBox<>(
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 					"Mega spruce trees" });
 
-	private final DataListComboBox parent = new DataListComboBox(mcreator);
-
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
-
-	private final DataListEntry.Dummy noparent = new DataListEntry.Dummy("No parent");
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -295,7 +291,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(9, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
@@ -323,10 +319,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/category"),
 				L10N.label("elementgui.biome.category")));
 		spawnproperties.add(biomeCategory);
-
-		spawnproperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("biome/parent"), L10N.label("elementgui.biome.parent")));
-		spawnproperties.add(parent);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
 				L10N.label("elementgui.biome.dictionnary")));
@@ -605,9 +597,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		ComboBoxUtil.updateComboBoxContents(parent,
-				ListUtils.merge(Collections.singleton(noparent), ElementUtil.loadAllBiomes(mcreator.getWorkspace())),
-				noparent);
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
@@ -640,6 +629,27 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		} else {
 			particleToSpawn.setEnabled(false);
 			particlesProbability.setEnabled(false);
+		}
+	}
+
+	@Override protected void afterGeneratableElementGenerated() {
+		super.afterGeneratableElementGenerated();
+
+		// if we are in editing mode, changes affecting dimensions using biome may be made
+		if (isEditingMode()) {
+			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+				// if this mod element is not locked and has procedures, we try to update dependencies
+				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
+				if (!element.isCodeLocked()) {
+					GeneratableElement generatableElement = element.getGeneratableElement();
+					if (generatableElement instanceof net.mcreator.element.types.Dimension dimension) {
+						if (dimension.biomesInDimension.contains(
+								new BiomeEntry(modElement.getWorkspace(), new DataListEntry.Custom(modElement)))) {
+							mcreator.getGenerator().generateElement(generatableElement);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -714,7 +724,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biomeWeight.setValue(biome.biomeWeight);
 		biomeType.setSelectedItem(biome.biomeType);
 		biomeCategory.setSelectedItem(biome.biomeCategory);
-		parent.setSelectedItem(biome.parent);
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
@@ -765,7 +774,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.biomeWeight = (int) biomeWeight.getValue();
 		biome.biomeType = (String) biomeType.getSelectedItem();
 		biome.biomeCategory = (String) biomeCategory.getSelectedItem();
-		biome.parent = new BiomeEntry(mcreator.getWorkspace(), parent.getSelectedItem());
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
@@ -799,7 +807,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		return biome;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-biome");
 	}
 

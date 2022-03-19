@@ -19,11 +19,11 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -37,7 +37,8 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.AITasksEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JColor;
@@ -91,6 +92,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private ProcedureSelector particleCondition;
 	private ProcedureSelector spawningCondition;
+	private ProcedureSelector transparentModelCondition;
+	private ProcedureSelector isShakingCondition;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
@@ -191,7 +194,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
+					"IronGolem").sorted().toArray(String[]::new));
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
@@ -252,9 +255,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getGeneratorAITasks());
 
-		BlocklyToAITasks blocklyToJava;
+		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToAITasks(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "aitasks_container", blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
@@ -266,7 +269,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -312,6 +315,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
+		transparentModelCondition = new ProcedureSelector(this.withEntry("entity/condition_is_model_transparent"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_model_transparent"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
+		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -446,7 +459,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -457,6 +470,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(transparentModelCondition);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(isShakingCondition);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
@@ -473,7 +492,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
 				L10N.label("elementgui.living_entity.texture")));
-		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture));
+		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
 				L10N.label("elementgui.living_entity.glow_texture")));
@@ -543,19 +562,19 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
 				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
-		spo2.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, isBoss, bossBarColor, bossBarType));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
 				L10N.label("elementgui.living_entity.label")));
@@ -642,7 +661,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
-		bpb.add(PanelUtils.northAndCenterElement(new AITasksEditorToolbar(mcreator, blocklyPanel), blocklyPanel));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK, blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
 
@@ -841,6 +862,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
+		transparentModelCondition.refreshListKeepSelected();
+		isShakingCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
@@ -878,7 +901,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Living entity AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
@@ -893,6 +916,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
+		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
+		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1020,6 +1045,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
 		livingEntity.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
+		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
+		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();
@@ -1110,7 +1137,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		return livingEntity;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
 	}
 

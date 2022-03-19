@@ -90,7 +90,7 @@ public class StructureImportActions {
 						L10N.t("dialog.workspace.resources.import_structure_from_minecraft.title"),
 						JOptionPane.QUESTION_MESSAGE, null, mcsturcturesarray, "");
 				if (selected != null) {
-					File sch = selected.getFile();
+					File sch = selected.file();
 					if (sch.isFile()) {
 						FileIO.copyFile(sch,
 								new File(actionRegistry.getMCreator().getFolderManager().getStructuresDir(),
@@ -111,19 +111,7 @@ public class StructureImportActions {
 		}
 	}
 
-	private static class Structure {
-
-		private final String name;
-		private final File file;
-
-		Structure(String name, File file) {
-			this.name = name;
-			this.file = file;
-		}
-
-		public File getFile() {
-			return file;
-		}
+	private record Structure(String name, File file) {
 
 		@Override public String toString() {
 			return name;

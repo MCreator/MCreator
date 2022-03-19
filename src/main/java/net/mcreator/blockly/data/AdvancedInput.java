@@ -21,13 +21,13 @@ package net.mcreator.blockly.data;
 
 public class AdvancedInput extends DependencyProviderInput {
 
-	public final String name;
+	private final String name;
 
 	public AdvancedInput(String name) {
 		this.name = name;
 	}
 
-	@Override public String getName() {
+	@Override public String name() {
 		return this.name;
 	}
 
