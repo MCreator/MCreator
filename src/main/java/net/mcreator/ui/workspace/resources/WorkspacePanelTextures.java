@@ -253,11 +253,15 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				SwingUtilities.invokeLater(() -> {
 					JList<File> list = mapLists.get(section.getID()).list();
 					list.setModel(newfm);
-					textureRender.invalidateIconCache();
 					ListUtil.setSelectedValues(list, selected);
 
 					refilterElements();
 				});
+			});
+
+			SwingUtilities.invokeLater(() -> {
+				textureRender.invalidateIconCache();
+				refilterElements();
 			});
 		}).start();
 	}
@@ -273,7 +277,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				compList.component().setPreferredSize(new Dimension(0, 0));
 				compList.component().setVisible(false);
 			}
-		});}
+		});
+	}
 
 	private class FilterModel extends DefaultListModel<File> {
 		List<File> items;
