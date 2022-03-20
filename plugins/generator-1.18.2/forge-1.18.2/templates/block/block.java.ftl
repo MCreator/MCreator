@@ -48,6 +48,8 @@ public class ${name}Block extends
 				<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 			<#elseif data.blockBase?has_content>
 				${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
+			<#elseif data.enablePitch>
+				FaceAttachedHorizontalDirectionalBlock
 			<#else>
 				Block
 			</#if>
@@ -60,6 +62,9 @@ public class ${name}Block extends
 
 	<#if data.rotationMode == 1 || data.rotationMode == 3>
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+		<#if data.enablePitch>
+		public static final BooleanProperty FACE = BlockStateProperties.ATTACH_FACE;
+		</#if>
 	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	<#elseif data.rotationMode == 5>
@@ -151,6 +156,9 @@ public class ${name}Block extends
 	    this.registerDefaultState(this.stateDefinition.any()
 	                             <#if data.rotationMode == 1 || data.rotationMode == 3>
 	                             .setValue(FACING, Direction.NORTH)
+	                                 <#if data.enablePitch>
+	                                 .setValue(FACE, AttachFace.FLOOR)
+	                                 </#if>
 	                             <#elseif data.rotationMode == 2 || data.rotationMode == 4>
 	                             .setValue(FACING, Direction.NORTH)
 	                             <#elseif data.rotationMode == 5>
@@ -218,33 +226,46 @@ public class ${name}Block extends
 			return Shapes.empty();
 		<#else>
 			<#if !data.disableOffset>Vec3 offset = state.getOffset(world, pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
+			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode data.enablePitch/>
 		</#if>
 	}
 	</#if>
 
 	<#if data.rotationMode != 0>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		<#if data.isWaterloggable>
-			<#if data.rotationMode == 5>
-			builder.add(AXIS, WATERLOGGED);
-			<#else>
-			builder.add(FACING, WATERLOGGED);
-			</#if>
-		<#elseif data.rotationMode == 5>
-			builder.add(AXIS);
+		<#if data.rotationMode == 5>
+			builder.add(AXIS
 		<#else>
-			builder.add(FACING);
+			builder.add(FACING
+			<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>, FACE</#if>
 		</#if>
+		<#if data.isWaterloggable>, WATERLOGGED</#if>);
 	}
+
+	<#if data.rotationMode == 1 && data.enablePitch>
+	public AttachFace faceForDirection(Direction direction) {
+		if (direction.getAxis() == Direction.Axis.Y)
+			return direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR;
+		else
+			return AttachFace.WALL;
+	}
+	</#if>
 
 		<#if data.rotationMode != 5>
 		public BlockState rotate(BlockState state, Rotation rot) {
-			return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+			<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
+				return state.setValue(FACING, rot.rotate(super.getConnectedDirection(state)));
+			<#else>
+				return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+			</#if>
 		}
 
 		public BlockState mirror(BlockState state, Mirror mirrorIn) {
-			return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+			<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
+				return state.rotate(mirrorIn.getRotation(super.getConnectedDirection(state)));
+			<#else>
+				return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+			</#if>
 		}
 		<#else>
 		@Override public BlockState rotate(BlockState state, Rotation rot) {
@@ -273,6 +294,9 @@ public class ${name}Block extends
 		<#if data.rotationMode != 3>
 		return this.defaultBlockState()
 		        <#if data.rotationMode == 1>
+                    <#if data.enablePitch>
+                    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
+                    </#if>
 		        .setValue(FACING, context.getHorizontalDirection().getOpposite())
 		        <#elseif data.rotationMode == 2>
 		        .setValue(FACING, context.getNearestLookingDirection().getOpposite())
@@ -285,13 +309,21 @@ public class ${name}Block extends
 		        .setValue(WATERLOGGED, flag)
 		        </#if>
 		<#elseif data.rotationMode == 3>
-	    if (context.getClickedFace() == Direction.UP || context.getClickedFace() == Direction.DOWN)
+	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
 	        return this.defaultBlockState()
-	                .setValue(FACING, Direction.NORTH)
+	                <#if data.enablePitch>
+	                    .setValue(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+	                    .setValue(FACING, context.getHorizontalDirection())
+	                <#else>
+	                    .setValue(FACING, Direction.NORTH)
+	                </#if>
 	                <#if data.isWaterloggable>
 	                .setValue(WATERLOGGED, flag)
 	                </#if>;
 	    return this.defaultBlockState()
+	            <#if data.enablePitch>
+	                .setValue(FACE, AttachFace.WALL)
+	            </#if>
 	            .setValue(FACING, context.getClickedFace())
 	            <#if data.isWaterloggable>
 	            .setValue(WATERLOGGED, flag)

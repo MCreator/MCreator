@@ -56,6 +56,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	public String customModelName;
 	public int rotationMode;
+	public boolean enablePitch;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 

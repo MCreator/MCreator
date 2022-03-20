@@ -1259,6 +1259,7 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+			block.enablePitch = !_true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
