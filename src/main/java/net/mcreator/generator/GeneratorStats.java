@@ -48,6 +48,7 @@ public class GeneratorStats {
 	private Set<String> generatorTriggers;
 	private Set<String> jsonTriggers;
 	private Set<String> generatorAITasks;
+	private Set<String> featureProcedures;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
 		this.status = Status.valueOf(
@@ -88,6 +89,7 @@ public class GeneratorStats {
 		coverageInfo.put("triggers", 100d);
 		coverageInfo.put("jsontriggers", 100d);
 		coverageInfo.put("aitasks", 100d);
+		coverageInfo.put("features", 100d);
 
 		// lazy load actual values
 		new Thread(() -> {
@@ -121,6 +123,14 @@ public class GeneratorStats {
 					.collect(Collectors.toSet());
 			coverageInfo.put("aitasks", Math.min(
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
+							.getDefinedBlocks().size()) * 100, 100));
+
+			featureProcedures = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".features", ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+					.collect(Collectors.toSet());
+			coverageInfo.put("features", Math.min(
+					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getFeatureBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
 		}).start();
 
@@ -199,6 +209,10 @@ public class GeneratorStats {
 
 	public Set<String> getJsonTriggers() {
 		return jsonTriggers;
+	}
+
+	public Set<String> getFeatureProcedures() {
+		return featureProcedures;
 	}
 
 	public Set<String> getGeneratorAITasks() {

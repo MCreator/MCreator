@@ -29,6 +29,7 @@ public class BlocklyLoader {
 	private final ExternalBlockLoader procedureBlockLoader;
 	private final ExternalBlockLoader jsonTriggerLoader;
 	private final ExternalBlockLoader aitaskBlockLoader;
+	private final ExternalBlockLoader featureBlockLoader;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
 	private BlocklyLoader() {
@@ -36,6 +37,7 @@ public class BlocklyLoader {
 		aitaskBlockLoader = new ExternalBlockLoader("aitasks");
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
 		jsonTriggerLoader = new ExternalBlockLoader("jsontriggers");
+		featureBlockLoader = new ExternalBlockLoader("features");
 	}
 
 	public ExternalBlockLoader getProcedureBlockLoader() {
@@ -54,4 +56,7 @@ public class BlocklyLoader {
 		return jsonTriggerLoader;
 	}
 
+	public ExternalBlockLoader getFeatureBlockLoader() {
+		return featureBlockLoader;
+	}
 }
