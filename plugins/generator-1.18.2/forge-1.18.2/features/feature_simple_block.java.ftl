@@ -1,0 +1,1 @@
+new SimpleBlockConfiguration(${input$block})
