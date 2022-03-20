@@ -562,8 +562,6 @@ import java.util.stream.Collectors;
 				e -> togglefilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			if (type == ModElementType.FUEL)
-				continue;
 			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> togglefilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
