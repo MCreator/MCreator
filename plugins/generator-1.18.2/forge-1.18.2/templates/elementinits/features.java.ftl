@@ -72,6 +72,13 @@ package ${package}.init;
 							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
 							${feature.getModElement().getName()}Feature::placedFeature)
 				);
+		<#elseif feature.getModElement().getTypeString() == "feature">
+			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
+				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
+						new FeatureRegistration(GenerationStep.Decoration.${feature.generationStep},
+							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
+							${feature.getModElement().getName()}Feature::placedFeature)
+				);
 		</#if>
 	</#list>
 
