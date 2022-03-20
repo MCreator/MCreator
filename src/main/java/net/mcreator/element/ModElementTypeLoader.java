@@ -51,6 +51,8 @@ public class ModElementTypeLoader {
 		ModElementType.ENCHANTMENT = register(
 				new ModElementType<>("enchantment", 'm', BaseType.ENCHANTMENT, RecipeType.NONE, EnchantmentGUI::new,
 						Enchantment.class));
+		ModElementType.FEATURE = register(
+				new ModElementType<>("feature", null, BaseType.FEATURE, RecipeType.NONE, FeatureGUI::new, Feature.class));
 		ModElementType.FLUID = register(
 				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
 		ModElementType.FOOD = register(

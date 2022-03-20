@@ -139,6 +139,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> DIMENSION;
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;
+	public static ModElementType<?> FEATURE;
 	public static ModElementType<?> FLUID;
 	public static ModElementType<?> FOOD;
 	public static ModElementType<?> FUEL;
