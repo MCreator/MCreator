@@ -1,6 +1,7 @@
+<#include "mcelements.ftl">
 <#include "mcitems.ftl">
 {
-    BlockPos _bp = new BlockPos((int)${input$x},(int)${input$y},(int)${input$z});
+    BlockPos _bp = ${toBlockPos(input$x,input$y,input$z)};
     BlockState _bs = ${mappedBlockToBlockStateCode(input$block)};
 
     <#if field$state?lower_case == "true" || field$nbt?lower_case == "true">

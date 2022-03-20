@@ -112,6 +112,10 @@ public class ModElementTypeLoader {
 				new ModElementType<>("tag", 'j', BaseType.DATAPACK, RecipeType.NONE, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
+
+		// Unregistered type used to mask legacy removed mod element types
+		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER, RecipeType.NONE,
+				(mc, me, e) -> null, GeneratableElement.Unknown.class);
 	}
 
 	private static ModElementType<?> register(ModElementType<?> elementType) {

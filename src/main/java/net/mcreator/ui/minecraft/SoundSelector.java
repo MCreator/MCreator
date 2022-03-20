@@ -96,7 +96,7 @@ public class SoundSelector extends JPanel {
 
 		add("West", play);
 		add("Center", tfe);
-		add("East", PanelUtils.gridElements(1, 2, bt, rm));
+		add("East", PanelUtils.gridElements(1, 2, 0, 0, bt, rm));
 	}
 
 	@Override public void setEnabled(boolean enabled) {

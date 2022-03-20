@@ -40,7 +40,9 @@ import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.FuelToItemExtensionConverter;
-import net.mcreator.element.converter.fv26.ItemDispenserToItemExtensionConverter;
+import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
+import net.mcreator.element.converter.fv27.FuelToItemExtensionConverter;
+import net.mcreator.element.converter.fv27.ItemDispenserToItemExtensionConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -50,32 +52,39 @@ import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
 
 import java.util.*;
 
-@SuppressWarnings("deprecation") public class ConverterRegistry {
+public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
+		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
-		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
-				new BiomeFrozenTopLayerConverter()));
-		put(ModElementType.BLOCK,
-				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
-		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
-		put(ModElementType.FUEL, Collections.singletonList(new FuelToItemExtensionConverter()));
-		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
-		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenserToItemExtensionConverter()));
-		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
-				new LegacyProcedureBlockRemover()));
-		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
+				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover()));
+		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+				new BiomeFrozenTopLayerConverter()));
+		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
+		put(ModElementType.BLOCK,
+				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
+		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
+		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
+	}};
+
+	// Converters that convert older mod element type to a newer one
+	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
+		put("fuel", new FuelToItemExtensionConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
+	}
+
+	public static IConverter getConverterForModElementType(String modElementType) {
+		return converters_legacy.get(modElementType);
 	}
 
 }

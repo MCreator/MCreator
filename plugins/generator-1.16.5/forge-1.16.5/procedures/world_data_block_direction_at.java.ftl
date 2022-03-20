@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 (new Object() {
 	public Direction getDirection(BlockPos pos){
 		try {
@@ -10,4 +11,4 @@
 		} catch (Exception e) {
 			return Direction.NORTH;
 		}
-}}.getDirection(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+}}.getDirection(${toBlockPos(input$x,input$y,input$z)}))

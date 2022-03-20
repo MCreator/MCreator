@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@int*/(new Object() {
 	public int getFluidTankCapacity(LevelAccessor level, BlockPos pos, int tank) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.getTankCapacity(tank)));
 		return _retval.get();
 	}
-}.getFluidTankCapacity(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),${opt.toInt(input$tank)}))
+}.getFluidTankCapacity(world, ${toBlockPos(input$x,input$y,input$z)},${opt.toInt(input$tank)}))
 <#-- @formatter:on -->

@@ -1,2 +1,2 @@
-/*@float*/(world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}))
-        .getDestroySpeed(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+/*@float*/(world.getBlockState(${toBlockPos(input$x,input$y,input$z)}).getDestroySpeed(world, ${toBlockPos(input$x,input$y,input$z)}))

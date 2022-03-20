@@ -24,7 +24,7 @@
     </#if>
 </#function>
 
-<#function mappedMCItemToItemStackCode mappedBlock amount>
+<#function mappedMCItemToItemStackCode mappedBlock amount=1>
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock?contains("/*@?*/")>
@@ -32,9 +32,17 @@
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
             + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
-        <#return "new ItemStack("+ mappedElementToRegistryEntry(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
+        <#return toItemStack(mappedElementToRegistryEntry(mappedBlock), amount)>
     <#else>
-        <#return "new ItemStack(" + mappedBlock + (amount == 1)?then(")",", (int)(" + amount + "))")>
+        <#return toItemStack(mappedBlock, amount)>
+    </#if>
+</#function>
+
+<#function toItemStack item amount>
+    <#if amount == 1>
+        <#return "new ItemStack(" + item + ")">
+    <#else>
+        <#return "new ItemStack(" + item + "," + (amount == amount?floor)?then(amount + ")","(int)(" + amount + "))")>
     </#if>
 </#function>
 
