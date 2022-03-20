@@ -38,9 +38,9 @@ package ${package}.world.features;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-public class ${name}Feature extends LakeFeature { <#--TODO-->
+public class ${name}Feature extends ${featuretype!"Feature"} {
 	public static ${name}Feature FEATURE = null;
-	public static Holder<ConfiguredFeature<LakeFeature.Configuration, ?>> CONFIGURED_FEATURE = null;
+	public static Holder<ConfiguredFeature<${configuration}, ?>> CONFIGURED_FEATURE = null;
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
 
 	public static Feature<?> feature() {
@@ -67,7 +67,6 @@ public class ${name}Feature extends LakeFeature { <#--TODO-->
 	</#if>
 
 	public ${name}Feature() {
-		super(LakeFeature.Configuration.CODEC);
+		super(${configuration}.CODEC);
 	}
-
 }

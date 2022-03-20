@@ -28,6 +28,7 @@ import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -62,8 +63,11 @@ public class Feature extends GeneratableElement implements ICommonType {
 
 			additionalData.put("placementcode", blocklyToFeature.getGeneratedCode());
 			additionalData.put("featurecode", blocklyToFeature.getFeatureCode());
-			// additionalData.put("featureconfiguration", ...); TODO: the name of the configuration
-			// additionalData.put("featuretype", ...); TODO: the feature to extend (LakeFeature, SimpleBlockFeature etc.)
+
+			String featureType = blocklyToFeature.getFeatureType();
+			var featureMapper = new NameMapper(this.getModElement().getWorkspace(), "features");
+			additionalData.put("configuration", featureMapper.getMapping(featureType, 1));
+			additionalData.put("featuretype", featureMapper.getMapping(featureType));
 		};
 	}
 

@@ -45,6 +45,7 @@ public class BlocklyToFeature extends BlocklyToCode {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Feature");
 
 	private final StringBuilder featureCode;
+	private String featureType;
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -57,6 +58,7 @@ public class BlocklyToFeature extends BlocklyToCode {
 			throws TemplateGeneratorException {
 		super(workspace, templateGenerator, externalGenerators);
 		featureCode = new StringBuilder();
+		featureType = "";
 
 		blockGenerators.add(new SimpleBlockStateProvider());
 		if (sourceXML != null) {
@@ -73,8 +75,12 @@ public class BlocklyToFeature extends BlocklyToCode {
 
 				// Add the feature to the feature code
 				Element feature = XMLUtil.getFirstChildrenWithName(start_block, "value");
-				if (feature != null)
+				if (feature != null) {
 					featureCode.append(directProcessOutputBlock(this, feature));
+					Element featureBlock = XMLUtil.getFirstChildrenWithName(feature, "block");
+					if (featureBlock != null)
+						this.featureType = featureBlock.getAttribute("type");
+				}
 				else
 					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.features.missing_feature")));
@@ -96,5 +102,9 @@ public class BlocklyToFeature extends BlocklyToCode {
 
 	public final String getFeatureCode() {
 		return featureCode.toString();
+	}
+
+	public String getFeatureType() {
+		return featureType;
 	}
 }
