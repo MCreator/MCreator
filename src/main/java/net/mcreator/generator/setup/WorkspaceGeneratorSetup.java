@@ -85,7 +85,7 @@ public class WorkspaceGeneratorSetup {
 
 		Arrays.stream(TextureType.values()).forEach(category -> moveFilesToAnotherDir(
 				workspace.getFolderManager().getTexturesFolder(category),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, category + "_textures_dir")));
+				GeneratorUtils.getSpecificRoot(workspace, newGenerator, category.getID() + "_textures_dir")));
 
 		moveFilesToAnotherDir(workspace.getGenerator().getSourceRoot(),
 				GeneratorUtils.getSourceRoot(workspace, newGenerator));
