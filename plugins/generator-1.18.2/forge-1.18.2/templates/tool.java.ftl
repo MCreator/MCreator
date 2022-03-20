@@ -254,8 +254,8 @@ public class ${name}Item extends FishingRodItem {
 
 					@Override public boolean shouldStopFishing(Player player) {
 						if (!player.isRemoved() && player.isAlive() &&
-								(player.getMainHandItem().is(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}) ||
-								player.getOffhandItem().is(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}))
+								(player.getMainHandItem().is(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) ||
+								player.getOffhandItem().is(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()))
 								&& !(this.distanceToSqr(player) > 1024)) {
 							return false;
 						} else {
