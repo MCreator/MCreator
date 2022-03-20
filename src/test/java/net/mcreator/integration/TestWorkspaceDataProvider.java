@@ -57,8 +57,8 @@ import java.util.*;
 
 public class TestWorkspaceDataProvider {
 
-	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
-		return new ModElement(workspace, "Example" + type.getRegistryName() + sufix, type);
+	private static ModElement me(Workspace workspace, ModElementType<?> type, String suffix) {
+		return new ModElement(workspace, "Example" + type.getRegistryName() + suffix, type);
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,

@@ -1,5 +1,5 @@
 <#if data.rotationMode?? && (data.rotationMode == 1 || data.rotationMode == 3)>
-<#if data.enableAttachFaces>
+<#if data.enablePitch>
 {
   "variants": {
     "face=floor,facing=north": {
