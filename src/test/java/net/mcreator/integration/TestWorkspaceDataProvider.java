@@ -514,7 +514,6 @@ public class TestWorkspaceDataProvider {
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
 			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
-			command.argsxml = "<xml><block type=\"args_start\" deletable=\"!_true\"></block></xml>";
 			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
