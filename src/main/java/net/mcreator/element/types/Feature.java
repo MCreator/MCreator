@@ -24,6 +24,7 @@ import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -37,16 +38,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Feature extends GeneratableElement implements ICommonType {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
 	public String generationStep;
+	public List<String> restrictionDimensions;
 	public List<BiomeEntry> restrictionBiomes;
+	public Procedure generateCondition;
 	public String featurexml;
 
 	public Feature(ModElement element) {
 		super(element);
 
 		this.generationStep = "SURFACE_STRUCTURES";
+		this.restrictionDimensions = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 	}
 
@@ -69,6 +73,10 @@ public class Feature extends GeneratableElement implements ICommonType {
 			additionalData.put("configuration", featureMapper.getMapping(featureType, 1));
 			additionalData.put("featuretype", featureMapper.getMapping(featureType));
 		};
+	}
+
+	public boolean hasGenerationConditions() {
+		return restrictionDimensions.size() > 0 || generateCondition != null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

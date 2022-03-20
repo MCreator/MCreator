@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ package ${package}.world.features;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-public class ${name}Feature extends ${featuretype!"Feature"} {
+public class ${name}Feature extends ${featuretype} {
 	public static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<${configuration}, ?>> CONFIGURED_FEATURE = null;
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
@@ -66,7 +66,44 @@ public class ${name}Feature extends ${featuretype!"Feature"} {
 	null;
 	</#if>
 
+	<#if data.restrictionDimensions?has_content>
+	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
+		<#list data.restrictionDimensions as dimensions>
+			<#if dimensions == "Surface">
+				Level.OVERWORLD
+			<#elseif dimensions == "Nether">
+				Level.NETHER
+			<#elseif dimensions == "End">
+				Level.END
+			<#else>
+				ResourceKey.create(Registry.DIMENSION_REGISTRY,
+						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
+			</#if><#sep>,
+		</#list>
+	);
+	</#if>
+
 	public ${name}Feature() {
 		super(${configuration}.CODEC);
 	}
+
+	<#if data.hasGenerationConditions()>
+	public boolean place(FeaturePlaceContext<${configuration}> context) {
+		WorldGenLevel world = context.level();
+		<#if data.restrictionDimensions?has_content>
+		if (!generateDimensions.contains(world.getLevel().dimension()))
+			return false;
+		</#if>
+
+		<#if hasProcedure(data.generateCondition)>
+		int x = context.origin().getX();
+		int y = context.origin().getY();
+		int z = context.origin().getZ();
+		if (!<@procedureOBJToConditionCode data.generateCondition/>)
+			return false;
+		</#if>
+
+		return super.place(context);
+	}
+	</#if>
 }

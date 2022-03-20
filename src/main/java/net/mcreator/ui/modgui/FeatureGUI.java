@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.feature.BlocklyToFeature;
@@ -32,12 +33,16 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.minecraft.DimensionListField;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -48,7 +53,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FeatureGUI extends ModElementGUI<Feature> {
+	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
+	private DimensionListField restrictionDimensions;
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			new String[] { "RAW_GENERATION", "LAKES", "LOCAL_MODIFICATIONS", "UNDERGROUND_STRUCTURES",
 					"SURFACE_STRUCTURES", "STRONGHOLDS", "UNDERGROUND_ORES", "UNDERGROUND_DECORATION",
@@ -66,27 +73,43 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 	}
 
 	@Override protected void initGUI() {
+		generateCondition = new ProcedureSelector(this.withEntry("feature/generation_condition"), mcreator,
+				L10N.t("elementgui.feature.additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
+
 		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
+
+		restrictionDimensions = new DimensionListField(mcreator);
+		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		JPanel properties = new JPanel(new GridLayout(2, 2, 15, 2));
-
-		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
+		JPanel propertiesAndCondition = new JPanel();
+		JPanel properties = new JPanel(new GridLayout(3, 2, 15, 2));
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/generation_stage"),
 				L10N.label("elementgui.feature.generation_stage")));
 		properties.add(generationStep);
 
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+				L10N.label("elementgui.feature.restrict_to_dimensions")));
+		properties.add(restrictionDimensions);
+
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
 		properties.add(restrictionBiomes);
 
-		properties.setBorder(BorderFactory.createTitledBorder(
+		properties.setOpaque(false);
+
+		propertiesAndCondition.add("North", PanelUtils.totalCenterInPanel(properties));
+		propertiesAndCondition.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
+
+		propertiesAndCondition.setOpaque(false);
+		propertiesAndCondition.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.feature.properties"), 0, 0, properties.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		properties.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator);
@@ -109,7 +132,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		featureProcedure.setPreferredSize(new Dimension(0,500));
 
-		page1.add("Center", PanelUtils.northAndCenterElement(properties, featureProcedure));
+		page1.add("Center", PanelUtils.northAndCenterElement(propertiesAndCondition, featureProcedure));
 
 		page1.setOpaque(false);
 		addPage(page1);
@@ -150,9 +173,16 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 				new AggregatedValidationResult.PASS();
 	}
 
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+		generateCondition.refreshListKeepSelected();
+	}
+
 	@Override protected void openInEditingMode(Feature feature) {
 		generationStep.setSelectedItem(feature.generationStep);
+		restrictionDimensions.setListElements(feature.restrictionDimensions);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
+		generateCondition.setSelectedProcedure(feature.generateCondition);
 
 		blocklyPanel.setXMLDataOnly(feature.featurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
@@ -165,7 +195,9 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 	@Override public Feature getElementFromGUI() {
 		Feature feature = new Feature(modElement);
 		feature.generationStep = (String) generationStep.getSelectedItem();
+		feature.restrictionDimensions = restrictionDimensions.getListElements();
 		feature.restrictionBiomes = restrictionBiomes.getListElements();
+		feature.generateCondition = generateCondition.getSelectedProcedure();
 
 		feature.featurexml = blocklyPanel.getXML();
 
