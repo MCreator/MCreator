@@ -49,8 +49,12 @@ import net.mcreator.element.types.ItemExtension;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FuelToItemExtensionConverter implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger("FuelToItemExtensionConverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -58,16 +62,27 @@ public class FuelToItemExtensionConverter implements IConverter {
 
 		ItemExtension itemExtension = new ItemExtension(
 				new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEMEXTENSION));
-		itemExtension.item = new MItemBlock(workspace, fuel.get("block").getAsJsonObject().get("value").getAsString());
-		itemExtension.enableFuel = true;
-		itemExtension.fuelPower = new NumberProcedure(null, fuel.get("power").getAsInt());
+		try {
+			itemExtension.item = new MItemBlock(workspace,
+					fuel.get("block").getAsJsonObject().get("value").getAsString());
+			itemExtension.enableFuel = true;
+			itemExtension.fuelPower = new NumberProcedure(null, fuel.get("power").getAsInt());
 
-		workspace.removeModElement(input.getModElement());
-		itemExtension.getModElement().setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-		workspace.getModElementManager().storeModElementPicture(itemExtension);
-		workspace.addModElement(itemExtension.getModElement());
-		workspace.getGenerator().generateElement(itemExtension);
-		workspace.getModElementManager().storeModElement(itemExtension);
+			LOG.debug("Deleting " + input.getModElement().getName()
+					+ " food mod element and replacing it by an item mod element...");
+
+			workspace.removeModElement(input.getModElement());
+
+			itemExtension.getModElement()
+					.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+			workspace.getModElementManager().storeModElementPicture(itemExtension);
+			workspace.addModElement(itemExtension.getModElement());
+			workspace.getGenerator().generateElement(itemExtension);
+			workspace.getModElementManager().storeModElement(itemExtension);
+		} catch (Exception e) {
+			LOG.warn("Failed to update food to new format", e);
+			e.printStackTrace();
+		}
 
 		return itemExtension;
 	}

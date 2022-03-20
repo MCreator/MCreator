@@ -44,7 +44,6 @@ public class ItemExtension extends GeneratableElement {
 
 	public ItemExtension(ModElement element) {
 		super(element);
-		layerChance = 0.65;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
