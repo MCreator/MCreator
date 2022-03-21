@@ -228,11 +228,15 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public ModElementType<?> getType() {
-		return ModElementTypeLoader.getModElementType(type);
+		try {
+			return ModElementTypeLoader.getModElementType(type);
+		} catch (Exception e) {
+			return ModElementType.UNKNOWN;
+		}
 	}
 
 	public String getTypeString() {
-		return type.toLowerCase(Locale.ENGLISH);
+		return type == null ? null : type.toLowerCase(Locale.ENGLISH);
 	}
 
 	public void setType(ModElementType<?> type) {

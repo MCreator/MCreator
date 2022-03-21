@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 @Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
-		if(event.getEntityItem().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}) {
+		if(event.getEntityItem().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
 			if (Minecraft.getInstance().screen instanceof ${data.guiBoundTo}Screen) {
 				Minecraft.getInstance().player.closeContainer();
 			}
@@ -66,7 +66,7 @@ import javax.annotation.Nullable;
 			}
 
 			@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-				return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()};
+				return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get();
 			}
 
 			@Override public void setSize(int size) {

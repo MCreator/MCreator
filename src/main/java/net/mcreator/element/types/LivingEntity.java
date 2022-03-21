@@ -51,6 +51,8 @@ import java.util.List;
 	public String mobModelName;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
+	public Procedure transparentModelCondition;
+	public Procedure isShakingCondition;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
