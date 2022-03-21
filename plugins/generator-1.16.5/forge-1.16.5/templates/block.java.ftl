@@ -166,7 +166,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
             <#if data.enablePitch>
-            public static final BooleanProperty FACE = BlockStateProperties.ATTACH_FACE;
+            public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
             </#if>
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
@@ -244,7 +244,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             this.setDefaultState(this.stateContainer.getBaseState()
                                      <#if data.rotationMode == 1 || data.rotationMode == 3>
                                      .with(FACING, Direction.NORTH)
-                                         <#if data.enableenablePitch>
+                                         <#if data.enablePitch>
                                          .with(FACE, AttachFace.FLOOR)
                                          </#if>
                                      <#elseif data.rotationMode == 2 || data.rotationMode == 4>

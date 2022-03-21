@@ -63,7 +63,7 @@ public class ${name}Block extends
 	<#if data.rotationMode == 1 || data.rotationMode == 3>
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 		<#if data.enablePitch>
-		public static final BooleanProperty FACE = BlockStateProperties.ATTACH_FACE;
+		public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
 		</#if>
 	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
