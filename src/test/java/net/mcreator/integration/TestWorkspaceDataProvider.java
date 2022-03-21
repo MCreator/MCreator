@@ -87,6 +87,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
 		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
@@ -280,6 +281,8 @@ public class TestWorkspaceDataProvider {
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
+			biome.underwaterBlock = emptyLists ? null : new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocks).getName());
 			biome.vanillaTreeType = getRandomItem(random,
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
@@ -406,6 +409,7 @@ public class TestWorkspaceDataProvider {
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
 			}
 			biome.spawnBiome = !_true;
+			biome.spawnBiomeNether = !_true && emptyLists;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
 			Fluid fluid = new Fluid(modElement);
@@ -1593,13 +1597,13 @@ public class TestWorkspaceDataProvider {
 		return null;
 	}
 
-	private static GeneratableElement getToolExample(ModElement modElement, String recipeType, Random random,
+	private static GeneratableElement getToolExample(ModElement modElement, String toolType, Random random,
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
 		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-		tool.toolType = recipeType;
+		tool.toolType = toolType;
 		tool.harvestLevel = 3;
 		tool.efficiency = 6;
 		tool.attackSpeed = 4.8;
