@@ -47,7 +47,6 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.types.ItemExtension;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,21 +66,8 @@ public class FuelToItemExtensionConverter implements IConverter {
 					fuel.get("block").getAsJsonObject().get("value").getAsString());
 			itemExtension.enableFuel = true;
 			itemExtension.fuelPower = new NumberProcedure(null, fuel.get("power").getAsInt());
-
-			LOG.debug("Deleting " + input.getModElement().getName()
-					+ " food mod element and replacing it by an item mod element...");
-
-			workspace.removeModElement(input.getModElement());
-
-			itemExtension.getModElement()
-					.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-			workspace.getModElementManager().storeModElementPicture(itemExtension);
-			workspace.addModElement(itemExtension.getModElement());
-			workspace.getGenerator().generateElement(itemExtension);
-			workspace.getModElementManager().storeModElement(itemExtension);
 		} catch (Exception e) {
 			LOG.warn("Failed to update food to new format", e);
-			e.printStackTrace();
 		}
 
 		return itemExtension;
