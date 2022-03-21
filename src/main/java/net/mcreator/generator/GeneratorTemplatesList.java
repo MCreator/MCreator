@@ -19,10 +19,13 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.element.GeneratableElement;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A generator templates list is used for generating several similar templates (called <i>list templates</i>)
@@ -30,11 +33,12 @@ import java.util.Map;
  *
  * @param groupName The name of this group of templates shown in workspace panel
  * @param listData  The collection used by workspace to generate given templates
+ * @param element   Supplier of {@link GeneratableElement} used to process tokens in template names
  * @param templates The map of list templates to be generated for each entry of {@code listData};
  *                  keys are templates themselves, values represent generation conditions of their key template
  *                  for all items on the mentioned collection
  */
-public record GeneratorTemplatesList(String groupName, Collection<?> listData,
+public record GeneratorTemplatesList(String groupName, Collection<?> listData, Supplier<GeneratableElement> element,
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
 	/**
@@ -47,7 +51,7 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
 		String filePath = generatorFile.getPath();
 		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
-			String[] templatePath = generatorTemplate.getFile().getPath().split("@elementindex");
+			String[] templatePath = processTokens(generatorTemplate).split("@elementindex");
 			if (filePath.startsWith(templatePath[0]) && filePath.endsWith(templatePath[1])) {
 				try { // we check if given file name has list template's index in place of @elementindex
 					int i = Integer.parseInt(filePath.replace(templatePath[0], "").replace(templatePath[1], ""));
@@ -71,10 +75,17 @@ public record GeneratorTemplatesList(String groupName, Collection<?> listData,
 	public GeneratorTemplate forIndex(GeneratorTemplate template, int index) {
 		try {
 			return new GeneratorTemplate(
-					new File(template.getFile().getPath().replace("@elementindex", Integer.toString(index))),
+					new File(processTokens(template).replace("@elementindex", Integer.toString(index))),
 					template.getTemplateIdentificator(), template.getTemplateData());
 		} catch (IndexOutOfBoundsException ignored) {
 			return null;
 		}
+	}
+
+	String processTokens(GeneratorTemplate template) {
+		return GeneratorTokens.replaceVariableTokens(element.get(),
+				GeneratorTokens.replaceTokens(element.get().getModElement().getWorkspace(),
+						template.getFile().getPath().replace("@NAME", element.get().getModElement().getName())
+								.replace("@registryname", element.get().getModElement().getRegistryName())));
 	}
 }

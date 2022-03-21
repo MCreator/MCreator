@@ -281,10 +281,7 @@ public class Generator implements IGenerator, Closeable {
 			for (GeneratorTemplatesList generatorTemplatesList : generatorListTemplates) {
 				List<?> listData = generatorTemplatesList.listData().stream().toList();
 				for (GeneratorTemplate generatorTemplate : generatorTemplatesList.templates().keySet()) {
-					String templateFileName = GeneratorTokens.replaceVariableTokens(element,
-							GeneratorTokens.replaceTokens(workspace, generatorTemplate.getFile().getPath()
-									.replace("@NAME", element.getModElement().getName())
-									.replace("@registryname", element.getModElement().getRegistryName())));
+					String templateFileName = generatorTemplatesList.processTokens(generatorTemplate);
 					for (int index = 0; index < listData.size(); index++) {
 						if (generatorTemplatesList.templates().get(generatorTemplate).get(index)) {
 							String templateName = ((String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get(
@@ -391,7 +388,7 @@ public class Generator implements IGenerator, Closeable {
 				.forEach(el -> {
 					for (int i = 0; i < el.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : el.templates().keySet()) {
-							new File(generatorTemplate.getFile().getPath()
+							new File(el.processTokens(generatorTemplate)
 									.replace("@elementindex", Integer.toString(i))).delete();
 						}
 					}
@@ -427,9 +424,8 @@ public class Generator implements IGenerator, Closeable {
 			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 					workspace.getWorkspaceInfo(), operator)) {
 				if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-					if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
+					if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
 						new File(name).delete(); // if template is skipped, we delete its potential file
-					}
 				continue;
 			}
 
@@ -454,9 +450,8 @@ public class Generator implements IGenerator, Closeable {
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
 				for (GeneratorTemplate template : globalTemplatesList) {
-					if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
+					if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
 						template.getFile().delete();
-					}
 				}
 			}
 		}
@@ -483,9 +478,8 @@ public class Generator implements IGenerator, Closeable {
 			if (!baseTypeListMap.containsKey(baseType) || baseTypeListMap.get(baseType).isEmpty()) {
 				if (performFSTasks) { // if no elements of this type are present, delete the base type template for that type
 					for (GeneratorTemplate template : globalTemplatesList) {
-						if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
+						if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
 							template.getFile().delete();
-						}
 					}
 				}
 			} else {
@@ -528,9 +522,8 @@ public class Generator implements IGenerator, Closeable {
 				if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 						workspace.getWorkspaceInfo(), operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
+						if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
 							new File(name).delete(); // if template is skipped, we delete its potential file
-						}
 					continue;
 				}
 
@@ -596,9 +589,8 @@ public class Generator implements IGenerator, Closeable {
 				if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
 						operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
+						if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
 							new File(name).delete(); // if template is skipped, we delete its potential file
-						}
 					continue;
 				}
 
@@ -654,8 +646,10 @@ public class Generator implements IGenerator, Closeable {
 			return null;
 		}
 
+		final GeneratableElement generatable = generatableElement;
 		Set<GeneratorTemplatesList> fileLists = new HashSet<>();
 		List<?> templateLists = (List<?>) map.get("list_templates");
+
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
@@ -731,7 +725,7 @@ public class Generator implements IGenerator, Closeable {
 						templateID++;
 					}
 					if (!elementsData.isEmpty() || !performFSTasks)
-						fileLists.add(new GeneratorTemplatesList(groupName, elementsData, files));
+						fileLists.add(new GeneratorTemplatesList(groupName, elementsData, () -> generatable, files));
 				}
 			}
 		}
