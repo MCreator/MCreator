@@ -475,7 +475,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		entityDataListPanel.setOpaque(false);
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 2, 0, 2));
 
 		spo2.setOpaque(false);
 
