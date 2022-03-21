@@ -1289,7 +1289,7 @@ import java.util.stream.Collectors;
 							for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
 								if (fileList.templates().get(modElementListFile).get(i)) {
 									listFilesFound++;
-									String filePath = modElementListFile.getFile().getPath()
+									String filePath = fileList.processTokens(modElementListFile)
 											.replace("@elementindex", Integer.toString(i));
 									listItem.add(newModElementTemplateItem(new File(filePath)));
 								}

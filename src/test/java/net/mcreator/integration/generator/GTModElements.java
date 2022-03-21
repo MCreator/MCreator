@@ -33,6 +33,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
+import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
@@ -73,6 +74,15 @@ public class GTModElements {
 
 				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
 						.stream().map(GeneratorTemplate::getFile).toList();
+				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
+					for (int i = 0; i < list.listData().size(); i++) {
+						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
+							if (list.templates().get(generatorTemplate).get(i))
+								modElementFiles.add(new File(list.processTokens(generatorTemplate)
+										.replace("@elementindex", Integer.toString(i))));
+						}
+					}
+				}
 
 				// test generated JSON syntax (Java is tested later in the build)
 				for (File modElementFile : modElementFiles) {
@@ -101,7 +111,17 @@ public class GTModElements {
 
 				// testing if all element files were properly deleted
 				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
-						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+						.map(GeneratorTemplate::getFile).toList();
+				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
+					for (int i = 0; i < list.listData().size(); i++) {
+						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
+							if (list.templates().get(generatorTemplate).get(i))
+								modElementFiles.add(new File(list.processTokens(generatorTemplate)
+										.replace("@elementindex", Integer.toString(i))));
+						}
+					}
+				}
+
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (modElement
