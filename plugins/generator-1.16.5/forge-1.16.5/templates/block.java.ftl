@@ -166,7 +166,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
             <#if data.enablePitch>
-            public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
+            public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
             </#if>
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
