@@ -78,7 +78,7 @@ import java.util.HashMap;
 						.withSurfaceBuilder(SurfaceBuilder.DEFAULT.func_242929_a(
 								new SurfaceBuilderConfig(${mappedBlockToBlockStateCode(data.groundBlock)},
 									${mappedBlockToBlockStateCode(data.undergroundBlock)},
-									${mappedBlockToBlockStateCode(data.undergroundBlock)})));
+									${mappedBlockToBlockStateCode(data.getUnderwaterBlock())})));
 
 				<#if data.spawnStronghold>
 				biomeGenerationSettings.withStructure(StructureFeatures.STRONGHOLD);

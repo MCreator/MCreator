@@ -281,6 +281,8 @@ public class TestWorkspaceDataProvider {
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
+			biome.underwaterBlock = emptyLists ? null : new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocks).getName());
 			biome.vanillaTreeType = getRandomItem(random,
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
