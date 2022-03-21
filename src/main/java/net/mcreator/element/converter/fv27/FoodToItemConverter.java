@@ -98,16 +98,6 @@ public class FoodToItemConverter implements IConverter {
 			if (food.get("onDroppedByPlayer") != null)
 				item.onDroppedByPlayer = new Procedure(
 						food.get("onDroppedByPlayer").getAsJsonObject().get("name").getAsString());
-
-			LOG.debug("Deleting " + input.getModElement().getName()
-					+ " food mod element and replacing it by an item mod element...");
-			workspace.removeModElement(input.getModElement());
-
-			item.getModElement().setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-			workspace.getModElementManager().storeModElementPicture(item);
-			workspace.addModElement(item.getModElement());
-			workspace.getGenerator().generateElement(item);
-			workspace.getModElementManager().storeModElement(item);
 		} catch (Exception e) {
 			LOG.warn("Failed to update food to new format", e);
 		}
