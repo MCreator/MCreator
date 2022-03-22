@@ -43,6 +43,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -73,7 +74,7 @@ public class GTModElements {
 				workspace.getModElementManager().storeModElement(generatableElement);
 
 				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
-						.stream().map(GeneratorTemplate::getFile).toList();
+						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
@@ -111,7 +112,7 @@ public class GTModElements {
 
 				// testing if all element files were properly deleted
 				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
-						.map(GeneratorTemplate::getFile).toList();
+						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
