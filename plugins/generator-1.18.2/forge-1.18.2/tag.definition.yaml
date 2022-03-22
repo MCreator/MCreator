@@ -7,6 +7,6 @@ list_templates:
   - name: "Entry components"
     listData: getItems()
     forEach:
-      - template: json/crafting_ingredient.json.ftl
+      - template: json/tag_element.json.ftl
         writer: json
         name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@[getName()]_part.json"

@@ -151,9 +151,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					}
 
-					List<File> cacheFiles = files.stream().map(GeneratorFile::file).toList();
+					List<File> mapped = files.stream().map(GeneratorFile::file).toList();
 					cache.keySet().stream().toList().forEach(file -> {
-						if (!cacheFiles.contains(file)) { // deleted file
+						if (!mapped.contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
 									.filter(e -> e.getCorrespondingListTemplate(file, true) != null).findFirst();
 							if (ownerListOptional.isPresent()) { // file from list
