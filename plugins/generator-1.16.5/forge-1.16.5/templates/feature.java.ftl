@@ -83,7 +83,7 @@ package ${package}.world.feature;
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class FeatureRegisterHandler {
 		@SubscribeEvent public static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
 			feature = new ${name}Feature();
-			configuredFeature = feature.withConfiguration(${featurecode})${placementcode};
+			configuredFeature = feature.withConfiguration(${configurationcode})${placementcode};
 
 			event.getRegistry().register(feature.setRegistryName("${registryname}"));
 			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("${modid}:${registryname}"), configuredFeature);

@@ -44,7 +44,7 @@ import java.util.List;
 public class BlocklyToFeature extends BlocklyToCode {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Feature");
 
-	private final StringBuilder featureCode;
+	private final StringBuilder featureConfigurationCode;
 	private String featureType;
 
 	/**
@@ -57,7 +57,7 @@ public class BlocklyToFeature extends BlocklyToCode {
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, templateGenerator, externalGenerators);
-		featureCode = new StringBuilder();
+		featureConfigurationCode = new StringBuilder();
 		featureType = "";
 
 		blockGenerators.add(new MCItemBlock());
@@ -77,7 +77,7 @@ public class BlocklyToFeature extends BlocklyToCode {
 				// Add the feature to the feature code
 				Element feature = XMLUtil.getFirstChildrenWithName(start_block, "value");
 				if (feature != null) {
-					featureCode.append(directProcessOutputBlock(this, feature));
+					featureConfigurationCode.append(directProcessOutputBlock(this, feature));
 					Element featureBlock = XMLUtil.getFirstChildrenWithName(feature, "block");
 					if (featureBlock != null)
 						this.featureType = featureBlock.getAttribute("type");
@@ -101,8 +101,8 @@ public class BlocklyToFeature extends BlocklyToCode {
 		}
 	}
 
-	public final String getFeatureCode() {
-		return featureCode.toString();
+	public final String getFeatureConfigurationCode() {
+		return featureConfigurationCode.toString();
 	}
 
 	public String getFeatureType() {

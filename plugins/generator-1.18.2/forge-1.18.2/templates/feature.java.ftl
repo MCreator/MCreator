@@ -45,7 +45,7 @@ public class ${name}Feature extends ${featuretype} {
 
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, ${featurecode});
+		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, ${configurationcode});
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
 			List.of(${placementcode?remove_ending(",")}));
 		return FEATURE;

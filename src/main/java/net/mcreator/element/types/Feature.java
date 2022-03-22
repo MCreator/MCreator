@@ -66,7 +66,7 @@ import java.util.List;
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("placementcode", blocklyToFeature.getGeneratedCode());
-			additionalData.put("featurecode", blocklyToFeature.getFeatureCode());
+			additionalData.put("configurationcode", blocklyToFeature.getFeatureConfigurationCode());
 
 			String featureType = blocklyToFeature.getFeatureType();
 			var featureMapper = new NameMapper(this.getModElement().getWorkspace(), "features");
