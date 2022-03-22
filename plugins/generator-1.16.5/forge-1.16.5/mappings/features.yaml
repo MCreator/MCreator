@@ -1,0 +1,8 @@
+_default:
+  - NoOpFeature
+  - NoFeatureConfig
+  - NoFeatureConfig.field_236558_a_
+feature_lake:
+  - LakesFeature
+  - BlockStateFeatureConfig
+  - BlockStateFeatureConfig.field_236455_a_
