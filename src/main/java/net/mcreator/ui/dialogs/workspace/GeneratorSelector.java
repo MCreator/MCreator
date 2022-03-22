@@ -151,6 +151,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "ai_tasks"), "aitasks", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "global_triggers"), "triggers", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "advancement_triggers"), "jsontriggers", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "feature_blocks"), "features", supportedProcedures, stats);
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),
 					supportedProcedures, 10, 10));
 

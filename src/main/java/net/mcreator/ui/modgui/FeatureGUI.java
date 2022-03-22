@@ -85,14 +85,13 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		JPanel propertiesAndCondition = new JPanel();
 		JPanel properties = new JPanel(new GridLayout(3, 2, 15, 2));
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/generation_stage"),
 				L10N.label("elementgui.feature.generation_stage")));
 		properties.add(generationStep);
 
-		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/restrict_to_dimensions"),
 				L10N.label("elementgui.feature.restrict_to_dimensions")));
 		properties.add(restrictionDimensions);
 
@@ -102,8 +101,8 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		properties.setOpaque(false);
 
-		propertiesAndCondition.add("North", PanelUtils.totalCenterInPanel(properties));
-		propertiesAndCondition.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
+		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
+				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
 
 		propertiesAndCondition.setOpaque(false);
 		propertiesAndCondition.setBorder(BorderFactory.createTitledBorder(
