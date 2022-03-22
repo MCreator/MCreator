@@ -23,7 +23,7 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.feature.blocks.SimpleBlockStateProvider;
+import net.mcreator.blockly.java.blocks.MCItemBlock;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -60,7 +60,8 @@ public class BlocklyToFeature extends BlocklyToCode {
 		featureCode = new StringBuilder();
 		featureType = "";
 
-		blockGenerators.add(new SimpleBlockStateProvider());
+		blockGenerators.add(new MCItemBlock());
+
 		if (sourceXML != null) {
 			try {
 				final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
