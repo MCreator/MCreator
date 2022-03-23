@@ -1150,6 +1150,27 @@ public class TestWorkspaceDataProvider {
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = "Normal";
+			if (!emptyLists) {
+				int size1 = random.nextInt(3) + 1;
+				for (int i = 0; i < size1; i++)
+					item.customProperties.put("property" + i, new Procedure("number" + i));
+
+				int size2 = random.nextInt(4) + 1;
+				for (int i = 0; i < size2; i++) {
+					StringBuilder state = new StringBuilder();
+					for (int j = 1; j < size1; j++) {
+						if (random.nextBoolean())
+							state.append(",property").append(j).append("=").append(random.nextFloat(0F, 1000000F));
+					}
+
+					Item.ModelEntry model = new Item.ModelEntry();
+					model.modelName = _true ^ random.nextBoolean() ? "Tool" : "Normal";
+					model.modelTexture = "test";
+					model.renderType = 0;
+
+					item.modelsMap.put("property1=" + random.nextFloat(0F, 1000000F) + state, model);
+				}
+			}
 			return item;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);

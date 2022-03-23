@@ -27,6 +27,32 @@ templates:
     variables: "type=item"
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
+list_templates:
+  - name: "Custom models"
+    listData: modelsMap.values()
+    forEach:
+      - template: json/item_override.json.ftl
+        writer: json
+        condition:
+          - "renderType #= 0"
+          - "${isNormalModel(w.getWorkspace())}"
+        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+      - template: json/tool_override.json.ftl
+        writer: json
+        condition:
+          - "renderType #= 0"
+          - "${isToolModel(w.getWorkspace())}"
+        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+      - template: json/item_override_cmodel.json.ftl
+        writer: json
+        condition: "renderType #= 1"
+        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+      - template: json/item_override_cmodel_obj.json.ftl
+        writer: json
+        condition: "renderType #= 2"
+        variables: "type=item"
+        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name

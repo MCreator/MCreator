@@ -101,19 +101,22 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			ItemCustom itemCustom = new ItemCustom();
 			<#list data.customProperties.entrySet() as property>
 			ItemModelsProperties.registerProperty(itemCustom, new ResourceLocation("${property.getKey()}"),
-					(itemStackToRender, clientWorld, livingEntity) -> {
-				<#if hasProcedure(property.getValue())>
+					(itemStackToRender, clientWorld, livingEntity) ->
+				<#if hasProcedure(property.getValue())>{
+				Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getAttachedEntity();
+				if (entity == null)
+					return 0F;
+
 				ItemStack itemstack = itemStackToRender;
-				Entity entity = livingEntity;
 				double x = entity.getPosX();
 				double y = entity.getPosY();
 				double z = entity.getPosZ();
 				World world = entity.world;
 				return <@procedureOBJToNumberCode property.getValue()/>;
-        		<#else>
-				return 0F;
+        		}<#else>
+				0F
         		</#if>
-			});
+			);
 			</#list>
 		}
 		</#if>
