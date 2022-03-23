@@ -64,7 +64,7 @@
             "type": "minecraft:stone_depth",
             "surface_type": "floor",
             "add_surface_depth": false,
-            "add_surface_secondary_depth": false,
+            "secondary_depth_range": 0,
             "offset": 0
           },
           "then_run": {
@@ -96,7 +96,7 @@
             "type": "minecraft:stone_depth",
             "surface_type": "floor",
             "add_surface_depth": true,
-            "add_surface_secondary_depth": false,
+            "secondary_depth_range": 0,
             "offset": 0
           },
           "then_run": {
@@ -128,7 +128,7 @@
           "type": "minecraft:stone_depth",
           "surface_type": "floor",
           "add_surface_depth": false,
-          "add_surface_secondary_depth": false,
+          "secondary_depth_range": 0,
           "offset": 0
         },
         "then_run": {
@@ -160,7 +160,7 @@
           "type": "minecraft:stone_depth",
           "surface_type": "floor",
           "add_surface_depth": true,
-          "add_surface_secondary_depth": false,
+          "secondary_depth_range": 0,
           "offset": 0
         },
         "then_run": {

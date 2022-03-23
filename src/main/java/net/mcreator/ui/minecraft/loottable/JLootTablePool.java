@@ -98,7 +98,7 @@ public class JLootTablePool extends JEntriesList {
 		entries.setOpaque(false);
 
 		add.addActionListener(e -> {
-			JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList); // initial add
+			JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
 			registerEntryUI(entry);
 		});
 
@@ -123,18 +123,15 @@ public class JLootTablePool extends JEntriesList {
 	}
 
 	public LootTable.Pool getPool() {
-		LootTable.Pool entry = new LootTable.Pool();
-		entry.hasbonusrolls = hasbonusrolls.isSelected();
-		entry.minrolls = (int) minrolls.getValue();
-		entry.maxrolls = (int) maxrolls.getValue();
-		entry.minbonusrolls = (int) minbonusrolls.getValue();
-		entry.maxbonusrolls = (int) maxbonusrolls.getValue();
-		entry.entries = entryList.stream().map(JLootTableEntry::getEntry).filter(Objects::nonNull).toList();
+		LootTable.Pool pool = new LootTable.Pool();
+		pool.hasbonusrolls = hasbonusrolls.isSelected();
+		pool.minrolls = (int) minrolls.getValue();
+		pool.maxrolls = (int) maxrolls.getValue();
+		pool.minbonusrolls = (int) minbonusrolls.getValue();
+		pool.maxbonusrolls = (int) maxbonusrolls.getValue();
+		pool.entries = entryList.stream().map(JLootTableEntry::getEntry).filter(Objects::nonNull).toList();
 
-		if (entry.entries.isEmpty())
-			return null;
-
-		return entry;
+		return pool.entries.isEmpty() ? null : pool;
 	}
 
 	public void setPool(LootTable.Pool pool) {
@@ -144,12 +141,13 @@ public class JLootTablePool extends JEntriesList {
 		minbonusrolls.setValue(pool.minbonusrolls);
 		maxbonusrolls.setValue(pool.maxbonusrolls);
 
-		if (pool.entries != null)
+		if (pool.entries != null) {
 			pool.entries.forEach(e -> {
 				JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
 				registerEntryUI(entry);
 				entry.setEntry(e);
 			});
+		}
 	}
 
 }

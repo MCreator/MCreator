@@ -30,7 +30,8 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.JavaMemeberNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.swing.*;
@@ -85,7 +86,7 @@ public class TextureMappingDialog {
 							L10N.t("dialog.textures_mapping.enter_name_message"),
 							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidatior() {
 								@Override public Validator.ValidationResult validate(JComponent component) {
-									return new JavaMemeberNameValidator((VTextField) component, false).validate();
+									return new JavaMemberNameValidator((VTextField) component, false).validate();
 								}
 							});
 					if (mapping != null) {
@@ -161,7 +162,7 @@ public class TextureMappingDialog {
 		for (Map.Entry<String, String> s : entries) {
 			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
 			tx[idx] = new TextureHolder(
-					new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+					new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 			if (s.getValue() != null && !s.getValue().equals(""))
 				tx[idx].setTextureFromTextureName(s.getValue());
 			panel.add(PanelUtils.join(tx[idx]));

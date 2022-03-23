@@ -53,6 +53,8 @@ import java.util.Locale;
 	public String mobModelName;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
+	public Procedure transparentModelCondition;
+	public Procedure isShakingCondition;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
@@ -201,7 +203,7 @@ import java.util.Locale;
 	}
 
 	public boolean hasCustomProjectile() {
-		return ranged && "Default item".equals(rangedItemType);
+		return ranged && "Default item".equals(rangedItemType) && !rangedAttackItem.isEmpty();
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

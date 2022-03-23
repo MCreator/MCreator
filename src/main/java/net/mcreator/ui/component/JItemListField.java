@@ -86,7 +86,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			for (T el : list)
 				elementsListModel.addElement(el);
 
-			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+			if (!list.isEmpty())
+				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
 		bt2.addActionListener(e -> {

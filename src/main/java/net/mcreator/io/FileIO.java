@@ -250,6 +250,14 @@ public final class FileIO {
 		return false;
 	}
 
+	public static boolean isFileSomewhereInDirectory(File file, File directory) {
+		try {
+			return file.getCanonicalPath().startsWith(directory.getCanonicalPath());
+		} catch (Exception ignored) {
+			return file.getAbsolutePath().startsWith(directory.getAbsolutePath());
+		}
+	}
+
 	public static boolean removeEmptyDirs(File root) {
 		File[] files = root.listFiles();
 		for (File file : files != null ? files : new File[0]) {

@@ -25,6 +25,8 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class JEntriesList extends JPanel {
@@ -32,7 +34,7 @@ public abstract class JEntriesList extends JPanel {
 	protected final MCreator mcreator;
 	protected final IHelpContext gui;
 
-	private Consumer<JComponent> entryListener;
+	private final List<Consumer<JComponent>> entryListeners = new ArrayList<>();
 
 	protected final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
@@ -42,13 +44,12 @@ public abstract class JEntriesList extends JPanel {
 		this.gui = gui;
 	}
 
-	public final void setEntryCreationListener(Consumer<JComponent> entryListener) {
-		this.entryListener = entryListener;
+	public final void addEntryRegisterListener(Consumer<JComponent> entryListener) {
+		entryListeners.add(entryListener);
 	}
 
 	protected void registerEntryUI(JComponent entry) {
-		if (entryListener != null)
-			entryListener.accept(entry);
+		entryListeners.forEach(l -> l.accept(entry));
 	}
 
 }

@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 	public boolean canExtractEnergy(IWorld world, BlockPos pos) {
@@ -8,5 +9,5 @@
 				_retval.set(capability.canExtract()));
 		return _retval.get();
 	}
-}.canExtractEnergy(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+}.canExtractEnergy(world, ${toBlockPos(input$x,input$y,input$z)}))
 <#-- @formatter:on -->

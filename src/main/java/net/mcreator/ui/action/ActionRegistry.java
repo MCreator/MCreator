@@ -47,6 +47,7 @@ import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAction;
 import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAsAction;
 import net.mcreator.ui.views.editor.image.action.ImageEditorUndoAction;
 import net.mcreator.ui.views.editor.image.tool.action.*;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -107,6 +108,10 @@ public class ActionRegistry {
 	public final BasicAction injectDefaultTags;
 
 	// IDE actions
+	public final BasicAction openFile;
+	public final BasicAction openFileInDesktop;
+	public final BasicAction showFileInExplorer;
+	public final BasicAction deleteFile;
 	public final BasicAction newClass;
 	public final BasicAction newJson;
 	public final BasicAction newImage;
@@ -172,6 +177,7 @@ public class ActionRegistry {
 	public final BasicAction imageEditorSave;
 	public final BasicAction imageEditorSaveAs;
 	public final BasicAction imageEditorPencil;
+	public final BasicAction imageEditorLine;
 	public final BasicAction imageEditorShape;
 	public final BasicAction imageEditorEraser;
 	public final BasicAction imageEditorStamp;
@@ -212,6 +218,14 @@ public class ActionRegistry {
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
+		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
+				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit.gif"));
+		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
+				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
+		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.show_in_explorer"),
+				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open.gif"));
+		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
+				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
 		this.newClass = new NewClassAction(this);
 		this.newJson = new NewJsonFileAction(this);
 		this.newImage = new NewImageFileAction(this);
@@ -237,10 +251,10 @@ public class ActionRegistry {
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
 				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-						BlockItemTextureSelector.TextureType.BLOCK)).setIcon(UIRES.get("16px.importblock"));
+						TextureType.BLOCK)).setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
 				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-						BlockItemTextureSelector.TextureType.ITEM)).setIcon(UIRES.get("16px.importitem"));
+						TextureType.ITEM)).setIcon(UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
@@ -312,6 +326,7 @@ public class ActionRegistry {
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
 		this.imageEditorPencil = new PencilToolAction(this);
+		this.imageEditorLine = new LineToolAction(this);
 		this.imageEditorShape = new ShapeToolAction(this);
 		this.imageEditorEraser = new EraserToolAction(this);
 		this.imageEditorStamp = new StampToolAction(this);

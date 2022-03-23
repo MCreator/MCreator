@@ -118,6 +118,7 @@ public class ToolPanel extends JSplitPane {
 				e -> versionManager.redo(), general);
 		redo.setEnabled(false);
 
+		register(new LineTool(canvas, cs, layerPanel, versionManager), drawing);
 		register(new ShapeTool(canvas, cs, layerPanel, versionManager), drawing);
 		register(new EraserTool(canvas, cs, layerPanel, versionManager), drawing);
 		register(new StampTool(canvas, cs, layerPanel, versionManager, frame), drawing);

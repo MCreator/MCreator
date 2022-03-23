@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
@@ -347,11 +348,11 @@ public class AnimationMakerView extends ViewBase {
 			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
 			if (n == 0)
-				exportFile = mcreator.getFolderManager().getBlockTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getTextureFile(namec, TextureType.BLOCK);
 			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getItemTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getTextureFile(namec, TextureType.ITEM);
 			else
-				exportFile = mcreator.getFolderManager().getOtherTextureFile(namec);
+				exportFile = mcreator.getFolderManager().getTextureFile(namec, TextureType.OTHER);
 
 			if (exportFile.isFile()) {
 				JOptionPane.showMessageDialog(mcreator,

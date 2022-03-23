@@ -48,6 +48,7 @@
           "jaggedness": 0
         }
       },
+      <#include "nether_noise_router.json.ftl">,
       "surface_rule": {
          "type": "minecraft:sequence",
          "sequence": [
@@ -95,7 +96,7 @@
            <#list data.biomesInDimension as biome>
              <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
-               <@sb.defaultAny biome ge.groundBlock ge.undergroundBlock/>
+               <@sb.defaultAny biome ge.groundBlock ge.undergroundBlock ge.getUnderwaterBlock()/>
              <#else>
                <@sb.vanilla biome/>
              </#if>,
