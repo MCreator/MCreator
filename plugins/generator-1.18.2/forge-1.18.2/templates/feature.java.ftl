@@ -68,16 +68,16 @@ public class ${name}Feature extends ${featuretype} {
 
 	<#if data.restrictionDimensions?has_content>
 	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
-		<#list data.restrictionDimensions as dimensions>
-			<#if dimensions == "Surface">
+		<#list data.restrictionDimensions as dimension>
+			<#if dimension == "Surface">
 				Level.OVERWORLD
-			<#elseif dimensions == "Nether">
+			<#elseif dimension == "Nether">
 				Level.NETHER
-			<#elseif dimensions == "End">
+			<#elseif dimension == "End">
 				Level.END
 			<#else>
 				ResourceKey.create(Registry.DIMENSION_REGISTRY,
-						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
+						new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}"))
 			</#if><#sep>,
 		</#list>
 	);

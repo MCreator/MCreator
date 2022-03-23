@@ -59,7 +59,7 @@ package ${package}.world.feature;
 						dimensionCriteria = true;
 				<#else>
 					if(dimensionType == RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
-							new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}")))
+							new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}")))
 						dimensionCriteria = true;
 				</#if>
 			</#list>
