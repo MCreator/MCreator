@@ -1,4 +1,4 @@
-Add a procedure with return value to have more conditions for the generation of this feature.
+Add a procedure with logic return value to have more conditions for the generation of this feature.
 
 This condition is checked BEFORE the placement modifiers in the feature builder.
 
