@@ -129,9 +129,10 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 				L10N.t("elementgui.feature.feature_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 
-		featureProcedure.setPreferredSize(new Dimension(0,500));
+		featureProcedure.setPreferredSize(new Dimension(0,460));
 
-		page1.add("Center", PanelUtils.northAndCenterElement(propertiesAndCondition, featureProcedure));
+		page1.add("Center", PanelUtils.northAndCenterElement(
+				PanelUtils.totalCenterInPanel(propertiesAndCondition), featureProcedure));
 
 		page1.setOpaque(false);
 		addPage(page1);
