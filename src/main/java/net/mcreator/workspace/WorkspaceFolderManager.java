@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.OS;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,28 +46,51 @@ public class WorkspaceFolderManager {
 		this.workspace = workspace;
 	}
 
+	private static List<File> listPNGsInDir(@Nullable File dir) {
+		if (dir == null)
+			return Collections.emptyList();
+
+		List<File> retval = new ArrayList<>();
+		File[] block = dir.listFiles();
+		for (File element : block != null ? block : new File[0])
+			if (element.getName().endsWith(".png"))
+				retval.add(element);
+		return retval;
+	}
+
+	public static File getSuggestedWorkspaceFoldersRoot() {
+		File workspacesFolder = new File(System.getProperty("user.home"), "MCreatorWorkspaces");
+		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
+			if (OS.getOS() == OS.WINDOWS)
+				workspacesFolder = new File("C:/", "MCreatorWorkspaces");
+		}
+		return workspacesFolder;
+	}
+
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
 	}
 
-	public ImageIcon getBlockImageIcon(String textureIdentifier) {
-		return new ImageIcon(getBlockTextureFile(textureIdentifier).getAbsolutePath());
+	/**
+	 * <p>This method gets an image depending on the desired type.</p>
+	 *
+	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
+	 * @param section <p>This {@link TextureType} defines which path, defined by each generator, MCreator will search the texture file.</p>
+	 * @return <p>The texture file as an {@link ImageIcon}.</p>
+	 */
+	public ImageIcon getTextureImageIcon(String textureIdentifier, TextureType section) {
+		return new ImageIcon(getTextureFile(textureIdentifier, section).getAbsolutePath());
 	}
 
-	public ImageIcon getItemImageIcon(String textureIdentifier) {
-		return new ImageIcon(getItemTextureFile(textureIdentifier).getAbsolutePath());
-	}
-
-	public File getBlockTextureFile(String textureIdentifier) {
-		return new File(getBlocksTexturesDir(), textureIdentifier + ".png");
-	}
-
-	public File getItemTextureFile(String textureIdentifier) {
-		return new File(getItemsTexturesDir(), textureIdentifier + ".png");
-	}
-
-	public File getOtherTextureFile(String textureIdentifier) {
-		return new File(getOtherTexturesDir(), textureIdentifier + ".png");
+	/**
+	 * <p>This method gets a PNG texture file depending on the desired type.</p>
+	 *
+	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
+	 * @param section <p>This {@link TextureType} defines which path, defined by each generator, MCreator will search the texture file.</p>
+	 * @return <p>A PNG {@link File}</p>
+	 */
+	public File getTextureFile(String textureIdentifier, TextureType section) {
+		return new File(getTexturesFolder(section), textureIdentifier + ".png");
 	}
 
 	public List<String> getStructureList() {
@@ -82,56 +106,30 @@ public class WorkspaceFolderManager {
 	}
 
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getArmorTexturesDir(), armorTextureName + "_layer_1.png"),
-				new File(getArmorTexturesDir(), armorTextureName + "_layer_2.png") };
+		return new File[] { new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_1.png"),
+				new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
-	public List<File> getBlockTexturesList() {
-		return listPNGsInDir(getBlocksTexturesDir());
-	}
-
-	public List<File> getItemTexturesList() {
-		return listPNGsInDir(getItemsTexturesDir());
-	}
-
-	public List<File> getArmorTexturesList() {
-		return listPNGsInDir(getArmorTexturesDir());
-	}
-
-	public List<File> getOtherTexturesList() {
-		return listPNGsInDir(getOtherTexturesDir());
+	/**
+	 *
+	 * @param section <p>The {@link TextureType} we want to get the folder, defined by each generator.</p>
+	 * @return <p> A list containing all texture files found in the {@link TextureType} provided.</p>
+	 */
+	public List<File> getTexturesList(TextureType section) {
+		return listPNGsInDir(getTexturesFolder(section));
 	}
 
 	public void removeStructure(String name) {
 		new File(getStructuresDir(), name + ".nbt").delete();
 	}
 
-	private static List<File> listPNGsInDir(@Nullable File dir) {
-		if (dir == null)
-			return Collections.emptyList();
-
-		List<File> retval = new ArrayList<>();
-		File[] block = dir.listFiles();
-		for (File element : block != null ? block : new File[0])
-			if (element.getName().endsWith(".png"))
-				retval.add(element);
-		return retval;
-	}
-
-	@Nullable public File getBlocksTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "block_textures_dir");
-	}
-
-	@Nullable public File getItemsTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "item_textures_dir");
-	}
-
-	@Nullable public File getArmorTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "armor_textures_dir");
-	}
-
-	@Nullable public File getOtherTexturesDir() {
-		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "other_textures_dir");
+	/**
+	 *
+	 * @param section <p>The {@link TextureType} we want to get the folder, defined by each generator.</p>
+	 * @return <p> The folder storing texture files of the given {@link TextureType}.</p>
+	 */
+	@Nullable public File getTexturesFolder(TextureType section) {
+		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), section.getID() + "_textures_dir");
 	}
 
 	@Nullable public File getStructuresDir() {
@@ -172,15 +170,6 @@ public class WorkspaceFolderManager {
 			LOG.error(e.getMessage(), e);
 			return false;
 		}
-	}
-
-	public static File getSuggestedWorkspaceFoldersRoot() {
-		File workspacesFolder = new File(System.getProperty("user.home"), "MCreatorWorkspaces");
-		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
-			if (OS.getOS() == OS.WINDOWS)
-				workspacesFolder = new File("C:/", "MCreatorWorkspaces");
-		}
-		return workspacesFolder;
 	}
 
 }
