@@ -39,7 +39,6 @@ import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -172,21 +171,16 @@ public class DialogsTest {
 	@Test public void testStateEditorDialog() throws Throwable {
 		Random rng = new Random();
 		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
-		Map<Tuple<String, PropertyData>, Boolean> testProps = Map.of(
-				new Tuple<>("logic", new PropertyData(Boolean.class, null, null, null)), rng.nextBoolean(),
-				new Tuple<>("integer", new PropertyData(Integer.class, 0, 100, null)), rng.nextBoolean(),
-				new Tuple<>("float", new PropertyData(Float.class, 0F, 10000F, null)), rng.nextBoolean(),
-				new Tuple<>("text", new PropertyData(Boolean.class, null, null, meTypes.toArray(String[]::new))),
-				rng.nextBoolean());
-		Map<String, PropertyData> propsMap = new LinkedHashMap<>();
-		testProps.entrySet().stream().filter(Map.Entry::getValue)
-				.forEach(e -> propsMap.put(e.getKey().x(), e.getKey().y()));
+		Map<String, PropertyData> testProps = new LinkedHashMap<>();
+		testProps.put("logic", new PropertyData(Boolean.class, null, null, null));
+		testProps.put("integer", new PropertyData(Integer.class, 0, 1000, null));
+		testProps.put("float", new PropertyData(Float.class, 0F, 1000000F, null));
+		testProps.put("text", new PropertyData(Boolean.class, null, null, meTypes.toArray(String[]::new)));
 		String testState = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(),
 						"float=" + rng.nextFloat(), "text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
-				.filter(e -> testProps.keySet().stream().anyMatch(el -> el.x().equals(e) && testProps.get(el)))
-				.collect(Collectors.joining(","));
+				.filter(e -> rng.nextBoolean()).collect(Collectors.joining(","));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testState, propsMap, "block/custom_state"));
+				() -> StateEditorDialog.open(mcreator, testState, testProps, "block/custom_state"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
