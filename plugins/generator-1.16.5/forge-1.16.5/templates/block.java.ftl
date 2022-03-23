@@ -72,8 +72,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	@Override public void initElements() {
 		elements.blocks.add(() -> new CustomBlock());
 		elements.items.add(() -> new BlockItem(block, new Item.Properties()
-		                             .group(${data.creativeTab})
-		                             ).setRegistryName(block.getRegistryName()));
+		                            .group(${data.creativeTab})
+		                            ).setRegistryName(block.getRegistryName()));
 	}
 
 	<#if data.hasInventory>
@@ -159,20 +159,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#else>
 				Block
 			</#if>
-			<#if data.isWaterloggable>
-            implements IWaterLoggable
-            </#if> {
+			<#if data.isWaterloggable> implements IWaterLoggable</#if> {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-            <#if data.enablePitch>
-            public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
-            </#if>
+			<#if data.enablePitch>
+			public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
+			</#if>
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
 		<#elseif data.rotationMode == 5>
 		public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
-        </#if>
+		</#if>
         <#if data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
@@ -242,19 +240,19 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
             this.setDefaultState(this.stateContainer.getBaseState()
-                                     <#if data.rotationMode == 1 || data.rotationMode == 3>
-                                     .with(FACING, Direction.NORTH)
-                                         <#if data.enablePitch>
-                                         .with(FACE, AttachFace.FLOOR)
-                                         </#if>
-                                     <#elseif data.rotationMode == 2 || data.rotationMode == 4>
-                                     .with(FACING, Direction.NORTH)
-                                     <#elseif data.rotationMode == 5>
-                                     .with(AXIS, Direction.Axis.Y)
-                                     </#if>
-                                     <#if data.isWaterloggable>
-                                     .with(WATERLOGGED, false)
-                                     </#if>
+                                    <#if data.rotationMode == 1 || data.rotationMode == 3>
+                                    .with(FACING, Direction.NORTH)
+                                        <#if data.enablePitch>
+                                        .with(FACE, AttachFace.FLOOR)
+                                        </#if>
+                                    <#elseif data.rotationMode == 2 || data.rotationMode == 4>
+                                    .with(FACING, Direction.NORTH)
+                                    <#elseif data.rotationMode == 5>
+                                    .with(AXIS, Direction.Axis.Y)
+                                    </#if>
+                                    <#if data.isWaterloggable>
+                                    .with(WATERLOGGED, false)
+                                    </#if>
             );
 			</#if>
 
@@ -263,9 +261,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.blockBase?has_content && data.blockBase == "Fence">
 		@Override public boolean canConnect(BlockState state, boolean checkattach, Direction face) {
-    	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
-    	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
-    	  return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
+        	boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
+        	boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
+        	return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
    		}
    		<#elseif data.blockBase?has_content && data.blockBase == "Wall">
 		private static final VoxelShape CENTER_POLE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
@@ -409,9 +407,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.rotationMode != 3>
 			return this.getDefaultState()
 			        <#if data.rotationMode == 1>
-						<#if data.enablePitch>
-						.with(FACE, faceForDirection(context.getNearestLookingDirection()))
-						</#if>
+			            <#if data.enablePitch>
+			            .with(FACE, faceForDirection(context.getNearestLookingDirection()))
+			            </#if>
 			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
 			        <#elseif data.rotationMode == 2>
 			        .with(FACING, context.getNearestLookingDirection().getOpposite())
@@ -424,21 +422,21 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			        .with(WATERLOGGED, flag)
 			        </#if>
 			<#elseif data.rotationMode == 3>
-            if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
+            if (context.getFace().getAxis() == Direction.Axis.Y)
                 return this.getDefaultState()
-	                    <#if data.enablePitch>
-	                        .with(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
-	                        .with(FACING, context.getPlacementHorizontalFacing())
-	                    <#else>
-	                        .with(FACING, Direction.NORTH)
-	                    </#if>
+                        <#if data.enablePitch>
+                            .with(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+                            .with(FACING, context.getPlacementHorizontalFacing())
+                        <#else>
+                            .with(FACING, Direction.NORTH)
+                        </#if>
                         <#if data.isWaterloggable>
                         .with(WATERLOGGED, flag)
                         </#if>;
             return this.getDefaultState()
-	                <#if data.enablePitch>
-	                    .setValue(FACE, AttachFace.WALL)
-	                </#if>
+                    <#if data.enablePitch>
+                        .with(FACE, AttachFace.WALL)
+                    </#if>
                     .with(FACING, context.getFace())
                     <#if data.isWaterloggable>
                     .with(WATERLOGGED, flag)
