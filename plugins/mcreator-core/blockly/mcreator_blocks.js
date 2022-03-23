@@ -86,7 +86,7 @@ Blockly.Blocks['feature_container'] = {
         this.appendValueInput('feature').setCheck('Feature').appendField(javabridge.t("blockly.block.feature_container"));
         this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.feature_container.with_placement")));
         this.setStyle('hat_blocks');
-        this.setNextStatement(true, ['Placement','PlacementNone']);
+        this.setNextStatement(true, 'Placement');
         this.setColour(340);
         this.setInputsInline(false);
         this.setTooltip(javabridge.t("blockly.block.feature_container.tooltip"));
