@@ -20,12 +20,10 @@
 package net.mcreator.integration.ui;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.TestSetup;
-import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
@@ -36,10 +34,8 @@ import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -53,12 +49,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -167,26 +157,6 @@ public class DialogsTest {
 
 	@Test public void testAIConditionEditor() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
-	}
-
-	@Test public void testStateEditorDialog() throws Throwable {
-		Random rng = new Random();
-		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
-		Map<Tuple<String, PropertyData>, Boolean> testProps = Map.of(
-				new Tuple<>("logic", new PropertyData(Boolean.class, null, null, null)), rng.nextBoolean(),
-				new Tuple<>("integer", new PropertyData(Integer.class, 0, 100, null)), rng.nextBoolean(),
-				new Tuple<>("float", new PropertyData(Float.class, 0F, 10000F, null)), rng.nextBoolean(),
-				new Tuple<>("text", new PropertyData(Boolean.class, null, null, meTypes.toArray(String[]::new))),
-				rng.nextBoolean());
-		Map<String, PropertyData> propsMap = new LinkedHashMap<>();
-		testProps.entrySet().stream().filter(Map.Entry::getValue)
-				.forEach(e -> propsMap.put(e.getKey().x(), e.getKey().y()));
-		String testState = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(),
-						"float=" + rng.nextFloat(), "text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
-				.filter(e -> testProps.keySet().stream().anyMatch(el -> el.x().equals(e) && testProps.get(el)))
-				.collect(Collectors.joining(","));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testState, propsMap, "block/custom_state"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

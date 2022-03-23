@@ -37,82 +37,68 @@
 package ${package}.init;
 
 <#assign hasBlocks = false>
+<#assign hasDoubleBlocks = false>
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Items {
+public class ${JavaModName}Items {
 
-	private static final List<Item> REGISTRY = new ArrayList<>();
+	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
-	<#list items as item>
-		<#if item.getModElement().getTypeString() == "armor">
-			<#if item.enableHelmet>
-			public static final Item ${item.getModElement().getRegistryNameUpper()}_HELMET = register(new ${item.getModElement().getName()}Item.Helmet());
-			</#if>
-			<#if item.enableBody>
-			public static final Item ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE = register(new ${item.getModElement().getName()}Item.Chestplate());
-			</#if>
-			<#if item.enableLeggings>
-			public static final Item ${item.getModElement().getRegistryNameUpper()}_LEGGINGS = register(new ${item.getModElement().getName()}Item.Leggings());
-			</#if>
-			<#if item.enableBoots>
-			public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
-			</#if>
-		<#elseif item.getModElement().getTypeString() == "dimension">
-			public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
-		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
-			public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(new ${item.getModElement().getName()}Item());
-		<#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
-			<#assign hasBlocks = true>
-			public static final Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
-		<#elseif item.getModElement().getTypeString() == "livingentity">
-			public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-					${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
-					.tab(CreativeModeTab.TAB_MISC)</#if>).setRegistryName("${item.getModElement().getRegistryName()}_spawn_egg"));
-		<#else>
-			public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
-		</#if>
-	</#list>
-
-	<#if w.hasItemsWithCustomProperties()>
-		static {
-		<#list items as item>
-			<#list item.customProperties.entrySet() as property>
-				ItemModelsProperties.registerProperty(${item.getModElement().getRegistryNameUpper()}, new ResourceLocation("${property.getKey()}"),
-						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> {
-					<#if hasProcedure(property.getValue())>
-					double x = livingEntity != null ? livingEntity.getX() : 0D;
-					double y = livingEntity != null ? livingEntity.getY() : 0D;
-					double z = livingEntity != null ? livingEntity.getZ() : 0D;
-					return <@procedureCode property.getValue(), {
-						"x": "x",
-						"y": "y",
-						"z": "z",
-						"world": "livingEntity != null ? livingEntity.level : clientLevel",
-						"entity": "livingEntity",
-						"itemstack": "itemStackToRender"
-					}/>
-					<#else>
-					return 0F;
-					</#if>
-				});
-			</#list>
-		</#list>
-		}
-	</#if>
-
-	private static Item register(Item item) {
-		REGISTRY.add(item);
-		return item;
-	}
+    <#list items as item>
+        <#if item.getModElement().getTypeString() == "armor">
+            <#if item.enableHelmet>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
+                REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
+            </#if>
+            <#if item.enableBody>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
+                REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
+            </#if>
+            <#if item.enableLeggings>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
+                REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
+            </#if>
+            <#if item.enableBoots>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
+                REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
+            </#if>
+        <#elseif item.getModElement().getTypeString() == "dimension">
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+        <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
+                REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
+        <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
+            <#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
+                <#assign hasDoubleBlocks = true>
+                public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                    doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+            <#else>
+                <#assign hasBlocks = true>
+                public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                    block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+            </#if>
+        <#elseif item.getModElement().getTypeString() == "livingentity">
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+                    ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
+                    .tab(CreativeModeTab.TAB_MISC)</#if>));
+        <#else>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+        </#if>
+    </#list>
 
     <#if hasBlocks>
-	private static Item register(Block block, CreativeModeTab tab) {
-		return register(new BlockItem(block, new Item.Properties().tab(tab)).setRegistryName(block.getRegistryName()));
+	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {
+		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
 	}
     </#if>
 
-	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Item[0]));
+    <#if hasDoubleBlocks>
+	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block, CreativeModeTab tab) {
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties().tab(tab)));
 	}
+    </#if>
 
 }
 
