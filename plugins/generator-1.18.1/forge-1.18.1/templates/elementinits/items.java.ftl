@@ -56,6 +56,13 @@ package ${package}.init;
             <#if item.enableBoots>
             public static final Item ${item.getModElement().getRegistryNameUpper()}_BOOTS = register(new ${item.getModElement().getName()}Item.Boots());
             </#if>
+        <#elseif item.getModElement().getTypeString() == "dimension">
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new ${item.getModElement().getName()}Item());
+        <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+            public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET = register(new ${item.getModElement().getName()}Item());
+        <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
+            <#assign hasBlocks = true>
+            public static final Item ${item.getModElement().getRegistryNameUpper()} = register(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
         <#elseif item.getModElement().getTypeString() == "livingentity">
             public static final Item ${item.getModElement().getRegistryNameUpper()} = register(new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
                     ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
@@ -69,6 +76,12 @@ package ${package}.init;
 		REGISTRY.add(item);
     	return item;
     }
+
+    <#if hasBlocks>
+	private static Item register(Block block, CreativeModeTab tab) {
+		return register(new BlockItem(block, new Item.Properties().tab(tab)).setRegistryName(block.getRegistryName()));
+	}
+    </#if>
 
 	@SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Item[0]));
