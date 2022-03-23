@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VTextField;
@@ -52,6 +53,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -207,7 +209,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = Arrays.stream(TextureType.values()).filter(t -> !t.getID().equals("armor")).toArray();
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
 				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -219,17 +221,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 								L10N.t("dialog.image_maker.texture_name")).validate();
 					}
 				});
-		if (namec != null) {
-			File exportFile;
-			if (n == 0)
-				exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec),
-						TextureType.BLOCK);
-			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.ITEM);
-			else if (n == 2)
-				exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.OTHER);
-			else
-				return;
+		if (namec != null && n != -1) {
+			File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
 
 			if (exportFile.isFile())
 				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),

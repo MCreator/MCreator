@@ -44,11 +44,11 @@ public class TextureImportDialogs {
 	 * @param message <p>The message to display on the option dialog</p>
 	 */
 	public static void importSingleTexture(final MCreator mcreator, File file, String message) {
-		Object[] options = Arrays.stream(TextureType.values()).filter(t -> !t.getID().equals("armor")).toArray();
+		Object[] options = Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray();
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-		saveTextures(mcreator, Arrays.stream(TextureType.values()).toList().get(n), new File[] { file });
+		saveTextures(mcreator, TextureType.getTextureType(n, false), new File[] { file });
 	}
 
 	public static void importArmor(final MCreator fra) {
