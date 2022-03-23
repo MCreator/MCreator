@@ -36,6 +36,7 @@ import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.resources.Model;
 
@@ -65,7 +66,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		state.setOpaque(true);
 		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 		texture.setValidator(new TileHolderValidator(texture));
 
 		edit.setOpaque(false);
