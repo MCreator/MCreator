@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -157,7 +158,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel destal = new JPanel();
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);

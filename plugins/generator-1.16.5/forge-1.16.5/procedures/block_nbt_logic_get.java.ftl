@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
 public boolean getValue(IWorld world, BlockPos pos, String tag) {
@@ -6,5 +7,5 @@ public boolean getValue(IWorld world, BlockPos pos, String tag) {
 			return tileEntity.getTileData().getBoolean(tag);
 		return false;
 	}
-}.getValue(world, new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${input$tagName}))
+}.getValue(world, ${toBlockPos(input$x,input$y,input$z)}, ${input$tagName}))
 <#-- @formatter:on -->

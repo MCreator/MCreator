@@ -247,24 +247,26 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if hasProcedure(data.onStruckByLightning)>
 	@Override public void thunderHit(ServerLevel serverWorld, LightningBolt lightningBolt) {
 		super.thunderHit(serverWorld, lightningBolt);
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Entity entity = this;
-		Level world = this.level;
-		<@procedureOBJToCode data.onStruckByLightning/>
+		<@procedureCode data.onStruckByLightning, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "this",
+			"world": "this.level"
+		}/>
 	}
     </#if>
 
 	<#if hasProcedure(data.whenMobFalls) || data.flyingMob>
 	@Override public boolean causeFallDamage(float l, float d, DamageSource source) {
-		<#if hasProcedure(data.whenMobFalls) >
-			double x = this.getX();
-			double y = this.getY();
-			double z = this.getZ();
-			Entity entity = this;
-			Level world = this.level;
-			<@procedureOBJToCode data.whenMobFalls/>
+		<#if hasProcedure(data.whenMobFalls)>
+			<@procedureCode data.whenMobFalls, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level"
+			}/>
 		</#if>
 
 		<#if data.flyingMob >
@@ -281,13 +283,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		|| data.immuneToDragonBreath || data.immuneToWither>
 	@Override public boolean hurt(DamageSource source, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
-			double x = this.getX();
-			double y = this.getY();
-			double z = this.getZ();
-			Entity entity = this;
-			Level world = this.level;
-			Entity sourceentity = source.getEntity();
-			<@procedureOBJToCode data.whenMobIsHurt/>
+			<@procedureCode data.whenMobIsHurt, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level",
+				"sourceentity": "source.getEntity()"
+			}/>
 		</#if>
 		<#if data.immuneToArrows>
 			if (source.getDirectEntity() instanceof AbstractArrow)
@@ -346,13 +349,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if hasProcedure(data.whenMobDies)>
 	@Override public void die(DamageSource source) {
 		super.die(source);
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Entity sourceentity = source.getEntity();
-		Entity entity = this;
-		Level world = this.level;
-		<@procedureOBJToCode data.whenMobDies/>
+		<@procedureCode data.whenMobDies, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"sourceentity": "source.getEntity()",
+			"entity": "this",
+			"world": "this.level"
+		}/>
 	}
     </#if>
 
@@ -360,11 +364,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
 			MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
 		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Entity entity = this;
-		<@procedureOBJToCode data.onInitialSpawn/>
+		<@procedureCode data.onInitialSpawn, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"world": "world",
+			"entity": "this"
+		}/>
 		return retval;
 	}
     </#if>
@@ -512,36 +518,41 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if hasProcedure(data.whenThisMobKillsAnother)>
 	@Override public void awardKillScore(Entity entity, int score, DamageSource damageSource) {
 		super.awardKillScore(entity, score, damageSource);
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Entity sourceentity = this;
-		Level world = this.level;
-		<@procedureOBJToCode data.whenThisMobKillsAnother/>
+		<@procedureCode data.whenThisMobKillsAnother, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "entity",
+			"sourceentity": "this",
+			"world": "this.level"
+		}/>
 	}
     </#if>
 
 	<#if hasProcedure(data.onMobTickUpdate)>
 	@Override public void baseTick() {
 		super.baseTick();
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Entity entity = this;
-		Level world = this.level;
-		<@procedureOBJToCode data.onMobTickUpdate/>
+		<@procedureCode data.onMobTickUpdate, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "this",
+			"world": "this.level"
+		}/>
 	}
     </#if>
 
 	<#if hasProcedure(data.onPlayerCollidesWith)>
 	@Override public void playerTouch(Player sourceentity) {
 		super.playerTouch(sourceentity);
-		Entity entity = this;
-		Level world = this.level;
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		<@procedureOBJToCode data.onPlayerCollidesWith/>
+		<@procedureCode data.onPlayerCollidesWith, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "this",
+			"sourceentity": "sourceentity",
+			"world": "this.level"
+		}/>
 	}
     </#if>
 

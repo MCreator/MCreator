@@ -1,1 +1,2 @@
-world.destroyBlock(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), false);
+<#include "mcelements.ftl">
+world.destroyBlock(${toBlockPos(input$x,input$y,input$z)}, false);

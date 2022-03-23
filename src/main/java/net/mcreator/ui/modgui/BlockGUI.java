@@ -57,6 +57,7 @@ import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -156,10 +157,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
 	private final SoundSelector breakSound = new SoundSelector(mcreator);
-	private final SoundSelector stepSound = new SoundSelector(mcreator);
-	private final SoundSelector placeSound = new SoundSelector(mcreator);
-	private final SoundSelector hitSound = new SoundSelector(mcreator);
 	private final SoundSelector fallSound = new SoundSelector(mcreator);
+	private final SoundSelector hitSound = new SoundSelector(mcreator);
+	private final SoundSelector placeSound = new SoundSelector(mcreator);
+	private final SoundSelector stepSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
@@ -422,23 +423,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.setOpaque(false);
 
 		texture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
 		textureTop = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
 
 		textureLeft = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureFront = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureRight = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureBack = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 
 		itemTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
+				new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
+				new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
@@ -762,21 +763,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.soundtypes.break_sound")));
 		soundProperties.add(breakSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
-				L10N.label("elementgui.common.soundtypes.step_sound")));
-		soundProperties.add(stepSound);
-
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
-				L10N.label("elementgui.common.soundtypes.place_sound")));
-		soundProperties.add(placeSound);
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
+				L10N.label("elementgui.common.soundtypes.fall_sound")));
+		soundProperties.add(fallSound);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hit_sound"),
 				L10N.label("elementgui.common.soundtypes.hit_sound")));
 		soundProperties.add(hitSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
-				L10N.label("elementgui.common.soundtypes.fall_sound")));
-		soundProperties.add(fallSound);
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
+				L10N.label("elementgui.common.soundtypes.place_sound")));
+		soundProperties.add(placeSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
+				L10N.label("elementgui.common.soundtypes.step_sound")));
+		soundProperties.add(stepSound);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
 				L10N.label("elementgui.common.tick_rate")));
@@ -1175,20 +1176,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
 		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
+		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
 
 		page3group.addValidationElement(breakSound.getVTextField());
-		page3group.addValidationElement(stepSound.getVTextField());
-		page3group.addValidationElement(placeSound.getVTextField());
-		page3group.addValidationElement(hitSound.getVTextField());
 		page3group.addValidationElement(fallSound.getVTextField());
+		page3group.addValidationElement(hitSound.getVTextField());
+		page3group.addValidationElement(placeSound.getVTextField());
+		page3group.addValidationElement(stepSound.getVTextField());
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
@@ -1271,21 +1272,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateSoundType() {
-		if (customSoundType.isSelected()) {
-			breakSound.setEnabled(true);
-			stepSound.setEnabled(true);
-			placeSound.setEnabled(true);
-			hitSound.setEnabled(true);
-			fallSound.setEnabled(true);
-			soundOnStep.setEnabled(false);
-		} else {
-			breakSound.setEnabled(false);
-			stepSound.setEnabled(false);
-			placeSound.setEnabled(false);
-			hitSound.setEnabled(false);
-			fallSound.setEnabled(false);
-			soundOnStep.setEnabled(true);
-		}
+		breakSound.setEnabled(customSoundType.isSelected());
+		fallSound.setEnabled(customSoundType.isSelected());
+		hitSound.setEnabled(customSoundType.isSelected());
+		placeSound.setEnabled(customSoundType.isSelected());
+		stepSound.setEnabled(customSoundType.isSelected());
+		soundOnStep.setEnabled(defaultSoundType.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -1404,12 +1396,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep.getUnmappedValue());
 		breakSound.setSound(block.breakSound);
-		stepSound.setSound(block.stepSound);
-		placeSound.setSound(block.placeSound);
 		fallSound.setSound(block.fallSound);
+		hitSound.setSound(block.hitSound);
+		placeSound.setSound(block.placeSound);
+		stepSound.setSound(block.stepSound);
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
-		hitSound.setSound(block.hitSound);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
 		customDrop.setBlock(block.customDrop);
@@ -1525,10 +1517,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isCustomSoundType = customSoundType.isSelected();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.breakSound = breakSound.getSound();
-		block.stepSound = stepSound.getSound();
-		block.placeSound = placeSound.getSound();
-		block.hitSound = hitSound.getSound();
 		block.fallSound = fallSound.getSound();
+		block.hitSound = hitSound.getSound();
+		block.placeSound = placeSound.getSound();
+		block.stepSound = stepSound.getSound();
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();

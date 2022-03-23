@@ -1,1 +1,0 @@
-(Math.floor(x))

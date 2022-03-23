@@ -37,6 +37,7 @@ import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
@@ -133,9 +134,9 @@ public class DialogsTest {
 	@Test public void testTextureDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importArmor(mcreator));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-				BlockItemTextureSelector.TextureType.BLOCK));
+				TextureType.BLOCK));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-				BlockItemTextureSelector.TextureType.ITEM));
+				TextureType.ITEM));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importOtherTextures(mcreator));
 	}
 
@@ -205,10 +206,10 @@ public class DialogsTest {
 
 	@Test public void testBlockItemTextureSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK).setVisible(
+				() -> new BlockItemTextureSelector(mcreator, TextureType.BLOCK).setVisible(
 						true));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM).setVisible(
+				() -> new BlockItemTextureSelector(mcreator, TextureType.ITEM).setVisible(
 						true));
 	}
 

@@ -26,6 +26,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -103,7 +104,7 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File guiTextureFile = getModElement().getFolderManager().getOtherTextureFile(getModElement().getRegistryName());
+		File guiTextureFile = getModElement().getFolderManager().getTextureFile(getModElement().getRegistryName(), TextureType.OTHER);
 
 		if (renderBgLayer) {
 			int mx = WYSIWYG.W - width;

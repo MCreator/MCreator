@@ -3,7 +3,7 @@
   "config": {
     "top_material": ${mappedMCItemToBlockStateJSON(data.groundBlock)},
     "under_material": ${mappedMCItemToBlockStateJSON(data.undergroundBlock)},
-    "underwater_material": ${mappedMCItemToBlockStateJSON(data.undergroundBlock)}
+    "underwater_material": ${mappedMCItemToBlockStateJSON(data.getUnderwaterBlock())}
   },
   "type": "minecraft:default"
 }

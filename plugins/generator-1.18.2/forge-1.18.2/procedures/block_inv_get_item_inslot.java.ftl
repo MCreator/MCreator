@@ -1,3 +1,4 @@
+<#include "mcelements.ftl">
 <#-- @formatter:off -->
 /*@ItemStack*/(new Object() {
 	public ItemStack getItemStack(LevelAccessor world, BlockPos pos, int slotid) {
@@ -8,5 +9,5 @@
 				.ifPresent(capability -> _retval.set(capability.getStackInSlot(slotid).copy()));
 		return _retval.get();
 	}
-}.getItemStack(world, new BlockPos((int) ${input$x}, (int) ${input$y}, (int) ${input$z}), ${opt.toInt(input$slotid)}))
+}.getItemStack(world, ${toBlockPos(input$x,input$y,input$z)}, ${opt.toInt(input$slotid)}))
 <#-- @formatter:on -->
