@@ -24,7 +24,6 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
