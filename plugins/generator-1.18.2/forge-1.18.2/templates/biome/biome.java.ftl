@@ -88,7 +88,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 public class ${name}Biome {
 
-	<#if data.spawnBiome>
+	<#if data.spawnBiome || data.spawnBiomeNether>
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
 	    Climate.Parameter.span(${type2temperature(data.biomeType)}),
 	    Climate.Parameter.span(${type2humidity(data.biomeType)}),

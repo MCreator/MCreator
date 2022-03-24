@@ -26,6 +26,7 @@ import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.JZoomport;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.eclipse.jgit.annotations.Nullable;
 
@@ -243,8 +244,9 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		} else {
 			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null
 					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().equals("")) {
-				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getOtherTextureFile(
-								FilenameUtilsPatched.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()))
+				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getTextureFile(
+								FilenameUtilsPatched.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()),
+								TextureType.OTHER)
 						.getAbsolutePath()).getImage(), 0, 0, W, H, this);
 			}
 		}

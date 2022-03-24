@@ -67,7 +67,7 @@ import com.mojang.datafixers.util.Pair;
 		});
 	}
 
-	<#if spawn_overworld?has_content>
+	<#if spawn_overworld?has_content || spawn_nether?has_content>
 	@Mod.EventBusSubscriber public static class BiomeInjector {
 
 		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
