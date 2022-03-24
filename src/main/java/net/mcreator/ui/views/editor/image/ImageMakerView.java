@@ -209,7 +209,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = Arrays.stream(TextureType.values()).filter(t -> !t.getID().equals("armor")).toArray();
+		Object[] options = Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray();
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
 				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
