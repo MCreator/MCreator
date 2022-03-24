@@ -1152,20 +1152,20 @@ public class TestWorkspaceDataProvider {
 			item.customModelName = "Normal";
 			if (!emptyLists) {
 				int size1 = random.nextInt(3) + 1;
-				for (int i = 0; i < size1; i++)
+				for (int i = 1; i <= size1; i++)
 					item.customProperties.put("property" + i, new Procedure("number" + i));
 
 				int size2 = random.nextInt(4) + 1;
 				for (int i = 0; i < size2; i++) {
 					StringBuilder state = new StringBuilder();
-					for (int j = 1; j < size1; j++) {
+					for (int j = 2; j <= size1; j++) {
 						if (random.nextBoolean())
 							state.append(",property").append(j).append("=").append(random.nextFloat(0F, 1000000F));
 					}
 
 					Item.ModelEntry model = new Item.ModelEntry();
 					model.modelName = _true ^ random.nextBoolean() ? "Tool" : "Normal";
-					model.modelTexture = "test";
+					model.modelTexture = i == 0 ? "test" : "test" + i;
 					model.renderType = 0;
 
 					item.modelsMap.put("property1=" + random.nextFloat(0F, 1000000F) + state, model);

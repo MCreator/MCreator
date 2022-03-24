@@ -112,7 +112,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 				double y = entity.getPosY();
 				double z = entity.getPosZ();
 				World world = entity.world;
-				return <@procedureOBJToNumberCode property.getValue()/>;
+				return (float) <@procedureOBJToNumberCode property.getValue()/>;
         		}<#else>
 				0F
         		</#if>

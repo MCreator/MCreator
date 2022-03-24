@@ -176,7 +176,7 @@ public class DialogsTest {
 		testProps.put("logic", new PropertyData(Boolean.class, null, null, null));
 		testProps.put("integer", new PropertyData(Integer.class, 0, 1000, null));
 		testProps.put("float", new PropertyData(Float.class, 0F, 1000000F, null));
-		testProps.put("text", new PropertyData(Boolean.class, null, null, meTypes.toArray(String[]::new)));
+		testProps.put("text", new PropertyData(String.class, null, null, meTypes.toArray(String[]::new)));
 		String testState = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(),
 						"float=" + rng.nextFloat(), "text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
 				.filter(e -> rng.nextBoolean()).collect(Collectors.joining(","));

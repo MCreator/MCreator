@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -100,7 +101,7 @@ public class ${JavaModName}Items {
 					if (entity == null)
 						return 0F;
 
-					return <@procedureCode property.getValue(), {
+					return (float) <@procedureCode property.getValue(), {
 						"x": "entity.getX()",
 						"y": "entity.getY()",
 						"z": "entity.getZ()",

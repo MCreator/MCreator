@@ -51,6 +51,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	private final MCreator mcreator;
 	private final JComponent container;
+	private final JButton remove;
 
 	final JLabel state = new JLabel();
 	final JButton edit = new JButton(UIRES.get("16px.edit.gif"));
@@ -109,7 +110,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		parent.add(container);
 		entryList.add(this);
 
-		JButton remove = new JButton(UIRES.get("16px.clear"));
+		remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_states.remove"));
 		remove.addActionListener(e -> removeState(parent, entryList));
 		add(remove);
@@ -127,6 +128,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
+
+		remove.setEnabled(enabled);
 
 		edit.setEnabled(enabled);
 		texture.setEnabled(enabled);

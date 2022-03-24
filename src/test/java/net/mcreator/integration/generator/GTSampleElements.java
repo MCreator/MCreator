@@ -64,7 +64,7 @@ public class GTSampleElements {
 				workspace.getModElementManager().storeModElement(procedure);
 			}
 
-			for (int i = 1; i <= 1; i++) {
+			for (int i = 1; i <= 3; i++) {
 				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
 				workspace.addModElement(me);

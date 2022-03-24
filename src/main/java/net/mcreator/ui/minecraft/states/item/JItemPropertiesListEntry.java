@@ -41,6 +41,7 @@ import java.util.List;
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	private final JComponent container;
+	private final JButton remove;
 
 	final VTextField name = new VTextField(20);
 	String nameString;
@@ -70,7 +71,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		parent.add(container);
 		entryList.add(this);
 
-		JButton remove = new JButton(UIRES.get("16px.clear"));
+		remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_properties.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
@@ -86,6 +87,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
+
+		remove.setEnabled(enabled);
 
 		name.setEnabled(enabled);
 		value.setEnabled(enabled);
