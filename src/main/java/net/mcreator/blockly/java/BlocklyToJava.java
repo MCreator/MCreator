@@ -55,7 +55,7 @@ public class BlocklyToJava extends BlocklyToCode {
 			throws TemplateGeneratorException {
 		super(workspace, templateGenerator, externalGenerators);
 
-		addJavaBlocks();
+		preInitialization();
 
 		if (sourceXML != null) {
 			try {
@@ -70,14 +70,14 @@ public class BlocklyToJava extends BlocklyToCode {
 					throw new ParseException("Could not find start block!", -1);
 
 				// we execute extra actions needed before placing blocks
-				preBlocksPlacement(doc);
+				preBlocksPlacement(doc, start_block);
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
 				processBlockProcedure(base_blocks);
 
 				// we execute extra actions needed after blocks are placed
-				postBlocksPlacement(doc);
+				postBlocksPlacement(doc, start_block, base_blocks);
 
 			} catch (TemplateGeneratorException e) {
 				throw e;
@@ -93,17 +93,23 @@ public class BlocklyToJava extends BlocklyToCode {
 	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
 	 *
 	 * @param doc Blockly XML document
+	 * @param startBlock The basic block of the editor used to get other blocks.
 	 */
-	public void preBlocksPlacement(Document doc) {}
+	public void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {}
 
 	/**
 	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
 	 *
 	 * @param doc Blockly XML document
+	 * @param startBlock The basic block of the editor used to get other blocks.
+	 * @param baseBlocks A list of all blocks placed under start block.
 	 */
-	public void postBlocksPlacement(Document doc) {}
+	public void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {}
 
-	private void addJavaBlocks() {
+	/**
+	 * <p>This method is executed after the constructor is called, before the code is executed.</p>
+	 */
+	public void preInitialization() {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());

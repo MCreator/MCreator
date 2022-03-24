@@ -144,8 +144,8 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		BlocklyToFeature blocklyToFeature;
 		try {
-			blocklyToFeature = new BlocklyToFeature(mcreator.getWorkspace(), "feature_container",
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			blocklyToFeature = new BlocklyToFeature(mcreator.getWorkspace(), blocklyPanel.getXML(),
+					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;

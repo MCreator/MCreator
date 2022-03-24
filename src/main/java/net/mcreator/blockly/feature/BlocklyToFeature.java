@@ -19,14 +19,12 @@
 
 package net.mcreator.blockly.feature;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.java.blocks.MCItemBlock;
-import net.mcreator.generator.Generator;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
@@ -34,71 +32,46 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
-import java.text.ParseException;
 import java.util.List;
 
-public class BlocklyToFeature extends BlocklyToCode {
+public class BlocklyToFeature extends BlocklyToJava {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Feature");
 
-	private final StringBuilder featureConfigurationCode;
+	private StringBuilder featureConfigurationCode;
 	private String featureType;
 
-	/**
-	 * @param workspace          <p>The {@link Workspace} executing the code</p>
-	 * @param firstBlockName     <p>The name of the start block</p>
-	 * @param sourceXML          <p>The XML code used by Blockly</p>
-	 * @param templateGenerator  <p>The folder location in each {@link Generator} containing the code template files<p>
-	 */
-	public BlocklyToFeature(Workspace workspace, String firstBlockName, String sourceXML,
-			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
-			throws TemplateGeneratorException {
-		super(workspace, templateGenerator, externalGenerators);
+	public BlocklyToFeature(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
+			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
+		super(workspace, "feature_container", sourceXML, templateGenerator,
+				externalGenerators);
+	}
+
+	@Override public void preInitialization() {
+		super.preInitialization();
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
+	}
 
-		blockGenerators.add(new MCItemBlock());
+	@Override public void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {
+		super.preBlocksPlacement(doc, startBlock);
 
-		if (sourceXML != null) {
-			try {
-				final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-						.parse(new InputSource(new StringReader(sourceXML)));
-				doc.getDocumentElement().normalize();
+		// Add the feature to the feature code
+		Element feature = XMLUtil.getFirstChildrenWithName(startBlock, "value");
+		if (feature != null) {
+			featureConfigurationCode.append(directProcessOutputBlock(this, feature));
+			Element featureBlock = XMLUtil.getFirstChildrenWithName(feature, "block");
+			if (featureBlock != null)
+				this.featureType = featureBlock.getAttribute("type");
+		} else
+			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.features.missing_feature")));
+	}
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, firstBlockName);
-
-				// if there is no start block, we return empty string
-				if (start_block == null)
-					throw new ParseException("Could not find start block!", -1);
-
-				// Add the feature to the feature code
-				Element feature = XMLUtil.getFirstChildrenWithName(start_block, "value");
-				if (feature != null) {
-					featureConfigurationCode.append(directProcessOutputBlock(this, feature));
-					Element featureBlock = XMLUtil.getFirstChildrenWithName(feature, "block");
-					if (featureBlock != null)
-						this.featureType = featureBlock.getAttribute("type");
-				}
-				else
-					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.features.missing_feature")));
-
-				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-				if (base_blocks.isEmpty())
-					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.features.missing_placement")));
-				processBlockProcedure(base_blocks);
-			} catch (TemplateGeneratorException e) {
-				throw e;
-			} catch (Exception e) {
-				LOG.error(e.getMessage(), e);
-				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
-			}
-		}
+	@Override public void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
+		if (baseBlocks.isEmpty())
+			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.features.missing_placement")));
 	}
 
 	public final String getFeatureConfigurationCode() {
