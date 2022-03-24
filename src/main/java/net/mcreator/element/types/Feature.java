@@ -73,6 +73,7 @@ import java.util.List;
 			additionalData.put("featuretype", featureMapper.getMapping(featureType));
 			additionalData.put("configuration", featureMapper.getMapping(featureType, 1));
 			additionalData.put("configurationcodec", featureMapper.getMapping(featureType, 2)); // Needed because of 1.16 mappings
+			additionalData.put("featureblock", featureType);
 		};
 	}
 

@@ -6,3 +6,7 @@ feature_lake:
   - LakesFeature
   - BlockStateFeatureConfig
   - BlockStateFeatureConfig.field_236455_a_
+feature_simple_block:
+  - Feature<BlockStateFeatureConfig>
+  - BlockStateFeatureConfig
+  - BlockStateFeatureConfig.field_236455_a_

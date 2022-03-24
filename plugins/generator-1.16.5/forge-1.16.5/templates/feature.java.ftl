@@ -41,7 +41,7 @@ package ${package}.world.feature;
 		super(${configurationcodec});
 	}
 	
-	<#if data.hasGenerationConditions()>
+	<#if data.hasGenerationConditions() || featureblock == "feature_simple_block">
 	@Override public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		<#if data.restrictionDimensions?has_content>
 			RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
@@ -76,7 +76,21 @@ package ${package}.world.feature;
 				return false;
 		</#if>
 
-		return super.generate(world, generator, rand, pos, config);
+		<#if featureblock == "feature_simple_block">
+			BlockState state = config.state;
+			if (state.isValidPosition(world, pos)) {
+				if (state.getBlock() instanceof DoublePlantBlock) {
+					if (!world.isAirBlock(pos.up()))
+						return false;
+					((DoublePlantBlock) state.getBlock()).placeAt(world, pos, 2);
+				} else
+					world.setBlockState(pos, config.state, 2);
+				return true;
+			}
+			return false;
+		<#else>
+			return super.generate(world, generator, rand, pos, config);
+		</#if>
 	}
 	</#if>
 
