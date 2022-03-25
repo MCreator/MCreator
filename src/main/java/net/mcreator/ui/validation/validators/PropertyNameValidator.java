@@ -72,12 +72,10 @@ public class PropertyNameValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.getText() == null || holder.getText().equals(""))
-			return new ValidationResult(ValidationResultType.ERROR,
-					L10N.t("validators.property_name.empty", name.toLowerCase()));
+			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.property_name.empty", name));
 
 		if (properties.get().filter(holder.getText()::equals).count() > 1 || forbiddenNames.contains(holder.getText()))
-			return new ValidationResult(ValidationResultType.ERROR,
-					L10N.t("validators.property_name.duplicate", name.toLowerCase()));
+			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.property_name.duplicate", name));
 
 		return extraValidator.validate();
 	}
