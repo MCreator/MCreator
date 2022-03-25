@@ -40,6 +40,14 @@ import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
+import net.mcreator.element.converter.fv27.EffectTextureConverter;
+import net.mcreator.element.converter.fv27.ParticleTextureConverter;
+import net.mcreator.element.converter.fv27.entities.ArmorTexturesConverter;
+import net.mcreator.element.converter.fv27.entities.EntityTexturesConverter;
+import net.mcreator.element.converter.fv27.entities.RangedItemTextureConverter;
+import net.mcreator.element.converter.fv27.screens.AdvancementTextureConverter;
+import net.mcreator.element.converter.fv27.screens.GUITexturesConverter;
+import net.mcreator.element.converter.fv27.screens.OverlayTexturesConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -52,23 +60,28 @@ import java.util.*;
 public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
-		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
-		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
+		put(ModElementType.ADVANCEMENT, Arrays.asList(new AchievementFixer(), new AdvancementTextureConverter()));
+		put(ModElementType.ARMOR, Collections.singletonList(new ArmorTexturesConverter()));
+		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+				new BiomeFrozenTopLayerConverter()));
+		put(ModElementType.BLOCK,
+				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
+		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
+		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
+		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
+		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
+		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
+		put(ModElementType.POTIONEFFECT, Collections.singletonList(new EffectTextureConverter()));
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover()));
-		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
-				new BiomeFrozenTopLayerConverter()));
-		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
-		put(ModElementType.BLOCK,
-				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
-		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
+		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
+		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
+		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

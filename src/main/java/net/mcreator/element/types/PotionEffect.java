@@ -54,7 +54,7 @@ import java.io.File;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generatePotionEffectIcon(new ImageIcon(
 				getModElement().getWorkspace().getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.OTHER)
+						.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT)
 						.toString()).getImage());
 	}
 
