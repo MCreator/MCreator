@@ -46,10 +46,10 @@ public class StateEditorDialog {
 	public static final String TOKEN_NEW = "!new";
 
 	/**
-	 * Checks if the given string is a technical token used by the state editor.
+	 * Checks if the given string is a technical token recognized by the state editor.
 	 *
 	 * @param candidate The string to be tested
-	 * @return Whether the given string is a technical token used by the state editor.
+	 * @return Whether the given string is a technical token for the state editor.
 	 */
 	public static boolean isToken(String candidate) {
 		return candidate.startsWith("!");
