@@ -10,69 +10,69 @@ package ${package}.entity.renderer;
 			<#if data.mobModelName == "Chicken">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new ChickenModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Cow">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new CowModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Creeper">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new CreeperModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Ghast">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new GhastModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Pig">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new PigModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Slime">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new SlimeModel(0), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Spider">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new SpiderModel(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Villager">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new VillagerModel(0), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif data.mobModelName == "Silverfish">
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> new MobRenderer(renderManager, new SilverfishModel(), ${data.modelShadowSize}f) {
 					<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+					@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 				});
             <#elseif !data.isBuiltInModel()>
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> {
 					return new MobRenderer(renderManager, new ${data.mobModelName}(), ${data.modelShadowSize}f) {
 						<#if data.mobModelGlowTexture?has_content>{ this.addLayer(new GlowingLayer<>(this)); }</#if>
-						@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+						@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					<@renderConditions/>
 					};
 				});
             <#else>
 				RenderingRegistry.registerEntityRenderingHandler(${name}Entity.entity, renderManager -> {
 					BipedRenderer customRender = new BipedRenderer(renderManager, new BipedModel(0), ${data.modelShadowSize}f) {
-						@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); }
+						@Override public ResourceLocation getEntityTexture(Entity entity) { return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}"); }
 					    <@renderConditions/>
 					};
 					customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
@@ -96,7 +96,7 @@ package ${package}.entity.renderer;
 
 		public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing,
 				float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(new ResourceLocation("${modid}:textures/${data.mobModelGlowTexture}")));
+			IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}")));
 			this.getEntityModel().render(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 		}
 
