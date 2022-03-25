@@ -65,7 +65,7 @@ public class Particle extends GeneratableElement {
 
 	public int getTextureTileCount() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER);
+				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.PARTICLE);
 		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
 		if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
 			if (original.getIconWidth() >= original.getIconHeight()
@@ -79,18 +79,16 @@ public class Particle extends GeneratableElement {
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER);
+				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.PARTICLE);
 
 		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
 
 		if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
-			new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER), "particle").mkdirs();
 			if (original.getIconWidth() >= original.getIconHeight()
 					|| original.getIconHeight() % original.getIconWidth() != 0) {
 				FileIO.copyFile(originalTextureFileLocation,
-						new File(getModElement().getFolderManager().getTexturesFolder(
-								TextureType.OTHER),
-								"particle/" + getModElement().getRegistryName() + ".png"));
+						new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
+								getModElement().getRegistryName() + ".png"));
 			} else {
 				try {
 					TiledImageUtils tiu = new TiledImageUtils(ImageUtils.toBufferedImage(original.getImage()),
@@ -98,9 +96,8 @@ public class Particle extends GeneratableElement {
 					int tiles = getTextureTileCount();
 					for (int i = 1; i <= tiles; i++) {
 						ImageIO.write(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()), "png",
-								new File(getModElement().getFolderManager().getTexturesFolder(
-										TextureType.OTHER),
-										"particle/" + getModElement().getRegistryName() + "_" + i + ".png"));
+								new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
+										getModElement().getRegistryName() + "_" + i + ".png"));
 					}
 				} catch (InvalidTileSizeException | IOException ignored) {
 				}
@@ -109,8 +106,8 @@ public class Particle extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(
-				getModElement().getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER),
+		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(getModElement().getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.PARTICLE),
 				getTextureTileCount() > 1, getModElement().getName());
 	}
 

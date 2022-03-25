@@ -58,15 +58,14 @@ import java.io.File;
 						.toString()).getImage());
 	}
 
-	// Can be removed?
-//	@Override public void finalizeModElementGeneration() {
-//		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
-//				.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.OTHER);
-//		File newLocation = new File(
-//				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.OTHER),
-//				"mob_effect/" + getModElement().getRegistryName() + ".png");
-//		FileIO.copyFile(originalTextureFileLocation, newLocation);
-//	}
+	@Override public void finalizeModElementGeneration() {
+		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT);
+		File newLocation = new File(
+				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
+				getModElement().getRegistryName() + ".png");
+		FileIO.copyFile(originalTextureFileLocation, newLocation);
+	}
 
 	public boolean hasCustomRenderer() {
 		return !renderStatusInHUD || !renderStatusInInventory;
