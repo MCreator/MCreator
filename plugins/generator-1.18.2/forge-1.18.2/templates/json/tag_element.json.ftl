@@ -1,7 +1,9 @@
 <#-- @formatter:off -->
 {
+  "id": "${registryname}",
   "index": ${elementindex},
-  "value": "${element.getUnmappedValue()}",
-  "name": "${owner.getModElement().getName()}"
+  "name": "${owner.getModElement().getName()}",
+  "holder": "${name}",
+  "value": "${element.getUnmappedValue()}"
 }
 <#-- @formatter:on -->

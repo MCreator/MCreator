@@ -646,10 +646,10 @@ public class Generator implements IGenerator, Closeable {
 			return null;
 		}
 
-		final GeneratableElement generatable = generatableElement;
 		Set<GeneratorTemplatesList> fileLists = new HashSet<>();
-		List<?> templateLists = (List<?>) map.get("list_templates");
+		final GeneratableElement generatable = generatableElement;
 
+		List<?> templateLists = (List<?>) map.get("list_templates");
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
@@ -659,13 +659,13 @@ public class Generator implements IGenerator, Closeable {
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
-				List<?> elementsData = new ArrayList<>();
+				List<?> elements = new ArrayList<>();
 				if (listData instanceof Map<?, ?> listMap)
-					elementsData = new ArrayList<>(listMap.entrySet());
+					elements = new ArrayList<>(listMap.entrySet());
 				else if (listData instanceof Collection<?> collection)
-					elementsData = new ArrayList<>(collection);
+					elements = new ArrayList<>(collection);
 				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-					elementsData = new ArrayList<>(StreamSupport.stream(iterable.spliterator(), false).toList());
+					elements = new ArrayList<>(StreamSupport.stream(iterable.spliterator(), false).toList());
 				if (templates != null) {
 					for (Object template : templates) {
 						TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
@@ -682,14 +682,18 @@ public class Generator implements IGenerator, Closeable {
 						}
 
 						List<Boolean> conditionChecks = new ArrayList<>();
-						for (int i = 0; i < elementsData.size(); i++) {
+						for (int i = 0; i < elements.size(); i++) {
 							if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
-									elementsData.get(i), operator)) {
+									elements.get(i), operator)) {
 								conditionChecks.add(i, false);
 								if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks) {
-									File indexedFile = new File(name.replace("@elementindex", Integer.toString(i)));
-									if (workspace.getFolderManager().isFileInWorkspace(indexedFile))
-										indexedFile.delete(); //if template is skipped, we delete its potential file
+									String path = GeneratorTokens.replaceVariableTokens(generatableElement,
+											GeneratorTokens.replaceTokens(workspace,
+													name.replace("@NAME", element.getName())
+															.replace("@registryname", element.getRegistryName())
+															.replace("@elementindex", Integer.toString(i))));
+									if (workspace.getFolderManager().isFileInWorkspace(new File(path)))
+										new File(path).delete(); //if template is skipped, we delete its potential file
 								}
 							} else {
 								conditionChecks.add(i, true);
@@ -724,8 +728,8 @@ public class Generator implements IGenerator, Closeable {
 
 						templateID++;
 					}
-					if (!elementsData.isEmpty() || !performFSTasks)
-						fileLists.add(new GeneratorTemplatesList(groupName, elementsData, () -> generatable, files));
+					if (!elements.isEmpty() || !performFSTasks)
+						fileLists.add(new GeneratorTemplatesList(groupName, elements, () -> generatable, files));
 				}
 			}
 		}
