@@ -49,8 +49,8 @@ public class SplashScreen extends JWindow {
 
 		JLabel label = new JLabel(
 				"<html><p>MCreator is a Minecraft mod making toolkit developed by Pylo. Minecraft is a registered</p>"
-						+ "<p style='margin-top:-2'>trademark of Mojang AB. MCreator is not an official Minecraft product. "
-						+ "It is not approved<br>by or associated with Mojang AB.");
+						+ "<p style='margin-top:-2'>trademark of Mojang Studios. MCreator is not an official Minecraft product. "
+						+ "It is not approved<br>by or associated with Mojang Studios.");
 		label.setFont(splashFont.deriveFont(10f));
 		label.setForeground(Color.white);
 		label.setBounds(30 + 10 - 4, 330 - 10 - 10, 500, 45);
