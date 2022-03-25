@@ -20,7 +20,14 @@
 package net.mcreator.ui.workspace.resources;
 
 public enum TextureType {
-	BLOCK("block"), ITEM("item"), ARMOR("armor"), OTHER("other");
+	BLOCK("block"),
+	ITEM("item"),
+	ENTITY("entity"),
+	EFFECT("effect"),
+	PARTICLE("particle"),
+	SCREEN("screen"),
+	ARMOR("armor"),
+	OTHER("other");
 
 	private final String id;
 

@@ -62,7 +62,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		texture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.OTHER));
 		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		JPanel pane3 = new JPanel(new BorderLayout());
