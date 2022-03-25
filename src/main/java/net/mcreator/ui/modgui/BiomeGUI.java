@@ -76,6 +76,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
 
 	private final JCheckBox spawnBiome = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnInCaves = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBiomeNether = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnStronghold = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnMineshaft = L10N.checkbox("elementgui.common.enable");
@@ -294,12 +295,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(11, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
 				L10N.label("elementgui.biome.generate_overworld")));
 		spawnproperties.add(spawnBiome);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
+				L10N.label("elementgui.biome.generate_overworld_caves")));
+		spawnproperties.add(spawnInCaves);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
 				L10N.label("elementgui.biome.generate_nether")));
@@ -307,6 +312,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		spawnBiome.setSelected(true);
 		spawnBiome.setOpaque(false);
+		spawnInCaves.setOpaque(false);
 
 		spawnBiomeNether.setOpaque(false);
 
@@ -713,6 +719,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		heightVariation.setValue(biome.heightVariation);
 		spawnBiome.setSelected(biome.spawnBiome);
 		spawnBiomeNether.setSelected(biome.spawnBiomeNether);
+		spawnInCaves.setSelected(biome.spawnInCaves);
 		spawnStronghold.setSelected(biome.spawnStronghold);
 		spawnMineshaft.setSelected(biome.spawnMineshaft);
 		spawnMineshaftMesa.setSelected(biome.spawnMineshaftMesa);
@@ -802,6 +809,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeFruits = treeFruits.getBlock();
 		biome.spawnBiome = spawnBiome.isSelected();
 		biome.spawnBiomeNether = spawnBiomeNether.isSelected();
+		biome.spawnInCaves = spawnInCaves.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
 		biome.spawnMineshaftMesa = spawnMineshaftMesa.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();
