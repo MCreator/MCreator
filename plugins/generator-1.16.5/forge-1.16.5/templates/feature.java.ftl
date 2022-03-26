@@ -116,6 +116,6 @@ package ${package}.world.feature;
 			if (!biomeCriteria)
 				return;
 		</#if>
-		event.getGeneration().getFeatures(GenerationStage.Decoration.${data.generationStep?replace("FLUID_SPRINGS","UNDERGROUND_DECORATION")}).add(() -> configuredFeature);
+		event.getGeneration().getFeatures(GenerationStage.Decoration.${generator.map(data.generationStep, "generationsteps")}).add(() -> configuredFeature);
 	}
 }

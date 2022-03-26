@@ -126,6 +126,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "fluids"), "fluids", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "game_modes"), "gamemodes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "game_rules"), "gamerules", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "generation_steps"), "generationsteps", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "map_colors"), "mapcolors", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "materials"), "materials", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "particles"), "particles", supportedElements, stats);

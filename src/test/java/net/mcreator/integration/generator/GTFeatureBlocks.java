@@ -157,7 +157,7 @@ public class GTFeatureBlocks {
 					"<block type=\"" + featureBlock.machine_name + "\">" + additionalXML);
 
 			Feature feature = new Feature(modElement);
-			feature.generationStep = "LOCAL_MODIFICATIONS";
+			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random, ElementUtil.getDataListAsStringArray("generationsteps"));
 			feature.restrictionDimensions = random.nextBoolean() ? new ArrayList<>() :
 					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();

@@ -30,10 +30,12 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -48,6 +50,7 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,10 +59,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
 	private DimensionListField restrictionDimensions;
-	private final JComboBox<String> generationStep = new JComboBox<>(
-			new String[] { "RAW_GENERATION", "LAKES", "LOCAL_MODIFICATIONS", "UNDERGROUND_STRUCTURES",
-					"SURFACE_STRUCTURES", "STRONGHOLDS", "UNDERGROUND_ORES", "UNDERGROUND_DECORATION",
-					"FLUID_SPRINGS", "VEGETAL_DECORATION", "TOP_LAYER_MODIFICATION"});
+	private final JComboBox<String> generationStep = new JComboBox<>();
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
@@ -175,6 +175,8 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+		ComboBoxUtil.updateComboBoxContents(generationStep,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
 		generateCondition.refreshListKeepSelected();
 	}
 
