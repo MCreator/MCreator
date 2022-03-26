@@ -58,12 +58,15 @@ package ${package}.client.renderer;
 <#elseif data.mobModelName == "Pig">
 	<#assign super = "super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), " + data.modelShadowSize + "f);">
 	<#assign model = "PigModel">
-<#elseif data.mobModelName == "Pig">
+<#elseif data.mobModelName == "Piglin">
 	<#assign super = "super(context, new PiglinModel(context.bakeLayer(ModelLayers.PIGLIN)), " + data.modelShadowSize + "f);">
 	<#assign model = "PiglinModel">
 <#elseif data.mobModelName == "Slime">
 	<#assign super = "super(context, new SlimeModel(context.bakeLayer(ModelLayers.SLIME)), " + data.modelShadowSize + "f);">
 	<#assign model = "SlimeModel">
+<#elseif data.mobModelName == "Salmon">
+	<#assign super = "super(context, new SalmonModel(context.bakeLayer(ModelLayers.SALMON)), " + data.modelShadowSize + "f);">
+	<#assign model = "SalmonModel">
 <#elseif data.mobModelName == "Spider">
 	<#assign super = "super(context, new SpiderModel(context.bakeLayer(ModelLayers.SPIDER)), " + data.modelShadowSize + "f);">
 	<#assign model = "SpiderModel">
@@ -73,6 +76,9 @@ package ${package}.client.renderer;
 <#elseif data.mobModelName == "Silverfish">
 	<#assign super = "super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), " + data.modelShadowSize + "f);">
 	<#assign model = "SilverfishModel">
+<#elseif data.mobModelName == "Witch">
+	<#assign super = "super(context, new WitchModel(context.bakeLayer(ModelLayers.WITCH)), " + data.modelShadowSize + "f);">
+	<#assign model = "WitchModel">
 <#elseif !data.isBuiltInModel()>
 	<#assign super = "super(context, new ${data.mobModelName}(context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
 	<#assign model = data.mobModelName>
