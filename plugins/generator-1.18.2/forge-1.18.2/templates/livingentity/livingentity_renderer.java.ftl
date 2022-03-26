@@ -52,6 +52,9 @@ package ${package}.client.renderer;
 <#elseif data.mobModelName == "Ghast">
 	<#assign super = "super(context, new GhastModel(context.bakeLayer(ModelLayers.GHAST)), " + data.modelShadowSize + "f);">
 	<#assign model = "GhastModel">
+<#elseif data.mobModelName == "Ocelot">
+	<#assign super = "super(context, new OcelotModel(context.bakeLayer(ModelLayers.OCELOT)), " + data.modelShadowSize + "f);">
+	<#assign model = "OcelotModel">
 <#elseif data.mobModelName == "Pig">
 	<#assign super = "super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), " + data.modelShadowSize + "f);">
 	<#assign model = "PigModel">
