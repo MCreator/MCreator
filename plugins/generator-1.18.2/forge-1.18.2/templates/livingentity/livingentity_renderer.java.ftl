@@ -40,6 +40,9 @@ package ${package}.client.renderer;
 <#if data.mobModelName == "Chicken">
 	<#assign super = "super(context, new ChickenModel(context.bakeLayer(ModelLayers.CHICKEN)), " + data.modelShadowSize + "f);">
 	<#assign model = "ChickenModel">
+<#elseif data.mobModelName == "Cod">
+	<#assign super = "super(context, new CodModel(context.bakeLayer(ModelLayers.COD)), " + data.modelShadowSize + "f);">
+	<#assign model = "CodModel">
 <#elseif data.mobModelName == "Cow">
 	<#assign super = "super(context, new CowModel(context.bakeLayer(ModelLayers.COW)), " + data.modelShadowSize + "f);">
 	<#assign model = "CowModel">

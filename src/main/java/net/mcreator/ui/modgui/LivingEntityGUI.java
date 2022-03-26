@@ -176,6 +176,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private static final Model biped = new Model.BuiltInModel("Biped");
 	private static final Model chicken = new Model.BuiltInModel("Chicken");
+	private static final Model cod = new Model.BuiltInModel("Cod");
 	private static final Model cow = new Model.BuiltInModel("Cow");
 	private static final Model creeper = new Model.BuiltInModel("Creeper");
 	private static final Model ghast = new Model.BuiltInModel("Ghast");
@@ -184,7 +185,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private static final Model spider = new Model.BuiltInModel("Spider");
 	private static final Model villager = new Model.BuiltInModel("Villager");
 	private static final Model silverfish = new Model.BuiltInModel("Silverfish");
-	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cow, creeper, ghast, pig, slime,
+	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cod, cow, creeper, ghast, pig, slime,
 			spider, villager, silverfish };
 	private final JComboBox<Model> mobModel = new JComboBox<>(builtinmobmodels);
 
@@ -534,6 +535,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			} else if (chicken.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(0.4);
 				modelHeight.setValue(0.7);
+			} else if (cod.equals(mobModel.getSelectedItem())) {
+				modelWidth.setValue(0.5);
+				modelHeight.setValue(0.3);
 			} else if (cow.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(0.9);
 				modelHeight.setValue(1.4);
