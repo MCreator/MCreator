@@ -130,7 +130,7 @@ public class GeneratorStats {
 					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 					.collect(Collectors.toSet());
 			coverageInfo.put("features", Math.min(
-					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getFeatureBlockLoader()
+					(((double) featureProcedures.size()) / BlocklyLoader.INSTANCE.getFeatureBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
 		}).start();
 
