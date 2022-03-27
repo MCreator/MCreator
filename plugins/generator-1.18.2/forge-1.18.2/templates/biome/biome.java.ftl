@@ -86,6 +86,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
     <#return (biomeWeight / 40.0)>
 </#function>
 
+<#function normalizeWeightUnderground biomeWeight>
+    <#return (biomeWeight / 10.0)>
+</#function>
+
 public class ${name}Biome {
 
 	<#if data.spawnBiome || data.spawnBiomeNether>
@@ -99,6 +103,18 @@ public class ${name}Biome {
 	    0 <#-- offset -->
 	);
 	</#if>
+
+	<#if data.spawnInCaves>
+	public static final Climate.ParameterPoint PARAMETER_POINT_UNDERGROUND = new Climate.ParameterPoint(
+			Climate.Parameter.span(-1, 1),
+			Climate.Parameter.span(-1, 1),
+			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight))}),
+			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight))}),
+			Climate.Parameter.span(0.2f, 0.9f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight))}),
+			0 <#-- offset -->
+	);
+    </#if>
 
     public static Biome createBiome() {
             BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
