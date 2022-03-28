@@ -42,9 +42,9 @@ public enum TextureType {
 	 */
 	public static TextureType[] getTypes(boolean withArmor) {
 		if (withArmor)
-			return (TextureType[]) Arrays.stream(TextureType.values()).toArray();
+			return Arrays.stream(TextureType.values()).toArray(TextureType[]::new);
 		else
-			return (TextureType[]) Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray();
+			return Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray(TextureType[]::new);
 	}
 
 	/**
