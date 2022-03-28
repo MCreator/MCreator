@@ -38,9 +38,7 @@ public class BlocklyJavascriptTemplates {
 	public static String procedureListExtensions(VariableType variableType) {
 		return """
 			Blockly.Extensions.register('procedure_retval_%s',function () {
-				this.appendDummyInput().appendField(
-					new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure_retval_%s"))),
-					'procedure');
+				this.appendDummyInput().appendField(new FieldDataListSelector("procedure_retval_%s"), 'procedure');
 			});""".formatted(variableType.getName(), variableType.getName());
 	}
 

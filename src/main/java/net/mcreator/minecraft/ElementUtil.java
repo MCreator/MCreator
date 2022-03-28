@@ -23,6 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
@@ -296,4 +297,22 @@ public class ElementUtil {
 				.map(DataListEntry.Custom::new).collect(Collectors.toList());
 	}
 
+	/**
+	 * <p>Returns an array with the names of procedures that return the given variable type</p>
+	 *
+	 * @param workspace <p>The current workspace</p>
+	 * @param type <p>The {@link VariableType} that the procedures must return</p>
+	 * @return <p>An array of strings containing the names of the procedures</p>
+	 */
+	public static String[] getProceduresOfType(Workspace workspace, VariableType type) {
+		return workspace.getModElements().stream().filter(mod -> {
+			if (mod.getType() == ModElementType.PROCEDURE) {
+				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+						VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
+						null;
+				return returnTypeCurrent == type;
+			}
+			return false;
+		}).map(ModElement::getName).toArray(String[]::new);
+	}
 }

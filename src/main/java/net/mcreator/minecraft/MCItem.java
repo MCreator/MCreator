@@ -24,6 +24,7 @@ import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -86,21 +87,21 @@ public class MCItem extends DataListEntry {
 							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
 									+ name.replace("CUSTOM:", "") + ".png");
 				} else if (name.endsWith(".helmet")) {
-					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
-									.getGeneratableElement())).textureHelmet);
+									.getGeneratableElement())).textureHelmet, TextureType.ITEM);
 				} else if (name.endsWith(".body")) {
-					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
-									.getGeneratableElement())).textureBody);
+									.getGeneratableElement())).textureBody, TextureType.ITEM);
 				} else if (name.endsWith(".legs")) {
-					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
-									.getGeneratableElement())).textureLeggings);
+									.getGeneratableElement())).textureLeggings, TextureType.ITEM);
 				} else if (name.endsWith(".boots")) {
-					retval = workspace.getFolderManager().getItemImageIcon(((Armor) Objects.requireNonNull(
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
 							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
-									.getGeneratableElement())).textureBoots);
+									.getGeneratableElement())).textureBoots, TextureType.ITEM);
 				} else if (name.endsWith(".bucket")) {
 					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 							name.replace("CUSTOM:", "").replace(".bucket", "") + ".png").isFile()) {

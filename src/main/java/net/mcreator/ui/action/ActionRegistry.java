@@ -47,6 +47,7 @@ import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAction;
 import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAsAction;
 import net.mcreator.ui.views.editor.image.action.ImageEditorUndoAction;
 import net.mcreator.ui.views.editor.image.tool.action.*;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -250,10 +251,10 @@ public class ActionRegistry {
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
 				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-						BlockItemTextureSelector.TextureType.BLOCK)).setIcon(UIRES.get("16px.importblock"));
+						TextureType.BLOCK)).setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
 				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-						BlockItemTextureSelector.TextureType.ITEM)).setIcon(UIRES.get("16px.importitem"));
+						TextureType.ITEM)).setIcon(UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();

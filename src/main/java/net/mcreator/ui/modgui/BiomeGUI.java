@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
@@ -76,6 +77,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
 
 	private final JCheckBox spawnBiome = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnInCaves = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnBiomeNether = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnStronghold = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnMineshaft = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnMineshaftMesa = L10N.checkbox("elementgui.common.enable");
@@ -103,6 +106,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private MCItemHolder groundBlock;
 	private MCItemHolder undergroundBlock;
+	private MCItemHolder underwaterBlock;
 
 	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 1000, 1));
 	private MCItemHolder treeVines;
@@ -151,6 +155,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	@Override protected void initGUI() {
 		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		undergroundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		underwaterBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeVines = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -291,14 +296,26 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(9, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(11, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
 				L10N.label("elementgui.biome.generate_overworld")));
 		spawnproperties.add(spawnBiome);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
+				L10N.label("elementgui.biome.generate_overworld_caves")));
+		spawnproperties.add(spawnInCaves);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
+				L10N.label("elementgui.biome.generate_nether")));
+		spawnproperties.add(spawnBiomeNether);
+
 		spawnBiome.setSelected(true);
 		spawnBiome.setOpaque(false);
+		spawnInCaves.setOpaque(false);
+
+		spawnBiomeNether.setOpaque(false);
 
 		spawnproperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"), L10N.label("elementgui.biome.weight")));
@@ -411,7 +428,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane3.add("Center", PanelUtils.totalCenterInPanel(sbbp3));
 
 		JPanel sbbp4 = new JPanel(new GridLayout(7, 2, 0, 2));
-		JPanel sbbp4n = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel sbbp4n = new JPanel(new GridLayout(3, 2, 0, 2));
 
 		sbbp4n.setOpaque(false);
 
@@ -425,6 +442,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underground_block"),
 				L10N.label("elementgui.biome.undeground_block"), new Color(179, 94, 26).brighter()));
 		sbbp4n.add(PanelUtils.join(undergroundBlock));
+
+		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underwater_block"),
+				L10N.label("elementgui.biome.underwater_block")));
+		sbbp4n.add(PanelUtils.join(underwaterBlock));
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
 				L10N.label("elementgui.biome.air_color")));
@@ -491,7 +512,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		panels.setOpaque(false);
 
 		panels.add("Center", PanelUtils.northAndCenterElement(sbbp4n, sbbp4, 5, 5));
-		panels.add("East", new JLabel(UIRES.get("biomeblocks")));
+		panels.add("East", PanelUtils.pullElementUp(new JLabel(UIRES.get("biomeblocks"))));
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(panels, sbbp5, 15, 15)));
 
@@ -638,6 +659,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		// if we are in editing mode, changes affecting dimensions using biome may be made
 		if (isEditingMode()) {
 			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+				if (element.getType() != ModElementType.DIMENSION)
+					continue;
+
 				// if this mod element is not locked and has procedures, we try to update dependencies
 				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {
@@ -657,6 +681,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		name.setText(biome.name);
 		groundBlock.setBlock(biome.groundBlock);
 		undergroundBlock.setBlock(biome.undergroundBlock);
+		underwaterBlock.setBlock(biome.underwaterBlock);
 		treeVines.setBlock(biome.treeVines);
 		treeStem.setBlock(biome.treeStem);
 		treeBranch.setBlock(biome.treeBranch);
@@ -697,6 +722,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		baseHeight.setValue(biome.baseHeight);
 		heightVariation.setValue(biome.heightVariation);
 		spawnBiome.setSelected(biome.spawnBiome);
+		spawnBiomeNether.setSelected(biome.spawnBiomeNether);
+		spawnInCaves.setSelected(biome.spawnInCaves);
 		spawnStronghold.setSelected(biome.spawnStronghold);
 		spawnMineshaft.setSelected(biome.spawnMineshaft);
 		spawnMineshaftMesa.setSelected(biome.spawnMineshaftMesa);
@@ -738,6 +765,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.name = name.getText();
 		biome.groundBlock = groundBlock.getBlock();
 		biome.undergroundBlock = undergroundBlock.getBlock();
+		biome.underwaterBlock = underwaterBlock.getBlock();
 		if (customTrees.isSelected())
 			biome.treeType = biome.TREES_CUSTOM;
 		else
@@ -784,6 +812,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeBranch = treeBranch.getBlock();
 		biome.treeFruits = treeFruits.getBlock();
 		biome.spawnBiome = spawnBiome.isSelected();
+		biome.spawnBiomeNether = spawnBiomeNether.isSelected();
+		biome.spawnInCaves = spawnInCaves.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
 		biome.spawnMineshaftMesa = spawnMineshaftMesa.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();

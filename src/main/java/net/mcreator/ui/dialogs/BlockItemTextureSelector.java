@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 
@@ -135,17 +136,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.addActionListener(event -> {
 
 			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
-			List<File> block1;
-			if (type == TextureType.BLOCK) {
-				block1 = mcreator.getFolderManager().getBlockTexturesList();
-			} else {
-				block1 = mcreator.getFolderManager().getItemTexturesList();
-			}
+			List<File> block1 = mcreator.getFolderManager().getTexturesList(type);
 			model.removeAllElements();
-			for (File element : block1) {
-				if (element.getName().endsWith(".png"))
-					model.addElement(element);
-			}
+			block1.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 			if (model.getSize() > 0) {
 				layout.show(center, "list");
 			}
@@ -163,17 +156,9 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block;
-		if (type == TextureType.BLOCK) {
-			block = mcreator.getFolderManager().getBlockTexturesList();
-		} else {
-			block = mcreator.getFolderManager().getItemTexturesList();
-		}
+		List<File> block = mcreator.getFolderManager().getTexturesList(type);
 		model.removeAllElements();
-		for (File element : block) {
-			if (element.getName().endsWith(".png"))
-				model.addElement(element);
-		}
+		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 		list.setSelectedIndex(0);
 		if (block.size() == 0) {
 			layout.show(center, "help");
@@ -260,10 +245,6 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 					.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
-	}
-
-	public enum TextureType {
-		BLOCK, ITEM
 	}
 
 }
