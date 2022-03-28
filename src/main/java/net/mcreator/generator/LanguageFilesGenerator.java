@@ -64,7 +64,7 @@ public class LanguageFilesGenerator {
 
 			String fileName = GeneratorTokens.replaceTokens(workspace,
 					rawName.replace("@langname", entry.getKey()).replace("@lang_NAME", uppercaseLangName));
-			FileIO.writeUTF8toFile(langFileContent.toString(), new File(generator.getLangFilesRoot(), fileName));
+			FileIO.writeStringToFile(langFileContent.toString(), new File(generator.getLangFilesRoot(), fileName));
 		}
 	}
 
@@ -80,7 +80,7 @@ public class LanguageFilesGenerator {
 		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
 			ConcurrentHashMap<String, String> entries = entry.getValue();
 			String fileName = GeneratorTokens.replaceTokens(workspace, rawName.replace("@langname", entry.getKey()));
-			FileIO.writeUTF8toFile(new GsonBuilder().setPrettyPrinting().create().toJson(entries),
+			FileIO.writeStringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(entries),
 					new File(generator.getLangFilesRoot(), fileName));
 		}
 	}

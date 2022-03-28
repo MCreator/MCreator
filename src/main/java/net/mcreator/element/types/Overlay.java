@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -68,11 +69,11 @@ import java.util.List;
 		if (this.baseTexture != null && !this.baseTexture.equals("")) {
 			try {
 				ImageIcon texture = new ImageIcon(getModElement().getFolderManager()
-						.getOtherTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture)).getAbsolutePath());
+						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.OTHER).getAbsolutePath());
 				texture.getImage().flush();
 
 				texture = new ImageIcon(getModElement().getFolderManager()
-						.getOtherTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture)).getAbsolutePath());
+						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.OTHER).getAbsolutePath());
 
 				return new Dimension(texture.getIconWidth(), texture.getIconHeight());
 			} catch (Exception e) {
