@@ -42,6 +42,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -127,7 +128,8 @@ public class OrePackMakerTool {
 						new ResourcePointer("templates/textures/texturemaker/ore10.png")), color, true));
 		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(oreTextureName)));
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(oreTextureName),
+						TextureType.BLOCK));
 
 		// next, ore block texture
 		ImageIcon oreBlockIc = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -136,7 +138,8 @@ public class OrePackMakerTool {
 								"oreblock7", "oreblock8")) + ".png")), color, true);
 		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()),
-				mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(oreBlockTextureName)));
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(oreBlockTextureName),
+						TextureType.BLOCK));
 
 		// next, gem texture
 		ImageIcon gem;
@@ -159,7 +162,8 @@ public class OrePackMakerTool {
 			gemTextureName = (name + "_ingot").toLowerCase(Locale.ENGLISH);
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
-				mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(gemTextureName)));
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(gemTextureName),
+						TextureType.ITEM));
 
 		String oreItemName;
 		if (type.equals("Dust based")) {

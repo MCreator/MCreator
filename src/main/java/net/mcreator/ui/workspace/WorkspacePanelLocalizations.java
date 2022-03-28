@@ -306,7 +306,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 						writer.writeRow(langs.getKey(), langs.getValue(), en_us.get(langs.getKey()));
 					writer.close();
 
-					FileIO.writeUTF8toFile("SEP=,\n" + csvResult.toString(StandardCharsets.UTF_8), expFile);
+					FileIO.writeStringToFile("SEP=,\n" + csvResult.toString(StandardCharsets.UTF_8), expFile);
 				}
 			});
 

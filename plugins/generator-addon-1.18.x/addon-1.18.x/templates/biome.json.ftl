@@ -20,7 +20,7 @@
       },
       "minecraft:surface_parameters": {
         "sea_floor_depth": ${(-12.5 * data.baseHeight + 25)?round},
-        "sea_floor_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
+        "sea_floor_material": ${mappedMCItemToIngameItemName(data.getUnderwaterBlock())?replace("\"item\":", "")},
         "top_material": ${mappedMCItemToIngameItemName(data.groundBlock)?replace("\"item\":", "")},
         "mid_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
         "foundation_material": "minecraft:stone",

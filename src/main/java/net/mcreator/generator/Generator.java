@@ -38,6 +38,7 @@ import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -594,7 +595,7 @@ public class Generator implements IGenerator, Closeable {
 				// if this is GUI, we check for generated UI texture file too
 				if (element.getType() == ModElementType.GUI) {
 					File guiTextureFile = workspace.getFolderManager()
-							.getOtherTextureFile(element.getName().toLowerCase(Locale.ENGLISH));
+							.getTextureFile(element.getName().toLowerCase(Locale.ENGLISH), TextureType.OTHER);
 					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))
 						return element;
 				}
@@ -627,7 +628,7 @@ public class Generator implements IGenerator, Closeable {
 				else if (generatorFile.writer().equals("json"))
 					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
 				else if (generatorFile.writer().equals("file"))
-					FileIO.writeUTF8toFile(generatorFile.contents(), generatorFile.file());
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.file());
 			}
 		});
 	}
