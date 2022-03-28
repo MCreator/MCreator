@@ -336,7 +336,7 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	protected void use() {
-		Object[] options = Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray();
+		Object[] options = TextureType.getTypes(false).toArray();
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.animation_maker.kind_of_texture"),
 				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);

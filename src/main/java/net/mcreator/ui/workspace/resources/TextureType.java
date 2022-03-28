@@ -35,6 +35,19 @@ public enum TextureType {
 	}
 
 	/**
+	 * <p>Get all {@link TextureType}s of the enum as a list</p>
+	 *
+	 * @param withArmor <p>Set to true to include the armor texture type into the possible types.</p>
+	 * @return <p>A list of {@link TextureType}s</p>
+	 */
+	public static TextureType[] getTypes(boolean withArmor) {
+		if (withArmor)
+			return (TextureType[]) Arrays.stream(TextureType.values()).toArray();
+		else
+			return (TextureType[]) Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray();
+	}
+
+	/**
 	 * <p>Get the {@link TextureType} in the enum depending on {@param position} and {@param withArmor}.</p>
 	 *
 	 * @param position <p>The position of the texture type in the enum.</p>
@@ -42,9 +55,6 @@ public enum TextureType {
 	 * @return <p>The corresponding {@link TextureType}</p>
 	 */
 	public static TextureType getTextureType(int position, boolean withArmor) {
-		if (withArmor)
-			return Arrays.stream(TextureType.values()).toList().get(position);
-		else
-			return Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toList().get(position);
+		return getTypes(withArmor)[position];
 	}
 }

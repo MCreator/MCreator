@@ -44,7 +44,7 @@ public class TextureImportDialogs {
 	 * @param message <p>The message to display on the option dialog</p>
 	 */
 	public static void importSingleTexture(final MCreator mcreator, File file, String message) {
-		Object[] options = Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray();
+		Object[] options = TextureType.getTypes(false);
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
