@@ -36,14 +36,14 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Particles {
+public class ${JavaModName}ParticleTypes {
 
-	@SubscribeEvent public static void registerParticles(ParticleFactoryRegisterEvent event) {
-		<#list particles as particle>
-		Minecraft.getInstance().particleEngine.register((SimpleParticleType) ${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(),
-					${particle.getModElement().getName()}Particle::provider);
-		</#list>
-	}
+	public static final DeferredRegister<ParticleType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, ${JavaModName}.MODID);
+
+	<#list particles as particle>
+	public static final RegistryObject<ParticleType<?>> ${particle.getModElement().getRegistryNameUpper()} =
+			REGISTRY.register("${particle.getModElement().getRegistryName()}", () -> new SimpleParticleType(${particle.alwaysShow}));
+	</#list>
 
 }
 <#-- @formatter:on -->
