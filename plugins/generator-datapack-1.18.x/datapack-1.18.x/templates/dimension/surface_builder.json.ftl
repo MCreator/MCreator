@@ -2,11 +2,7 @@
 <#include "../mcitems.ftl">
 
 <#macro vanilla biome>
-  <#if biome?contains("frozen_ocean") || biome?contains("frozen_river")>
-    <@vanillaSB biome w.itemBlock("Blocks.ICE") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
-  <#elseif biome?contains("ocean") || biome?contains("ocean")>
-    <@vanillaSB biome w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
-  <#elseif biome?contains("badlands")>
+  <#if biome?contains("badlands")>
     <@vanillaSB biome w.itemBlock("Blocks.SAND#1") w.itemBlock("Blocks.STAINED_HARDENED_CLAY") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "basalt_deltas">
     <@vanillaSB biome w.itemBlock("Blocks.BLACKSTONE") w.itemBlock("Blocks.BASALT") w.itemBlock("Blocks.MAGMA") data.worldGenType != "Normal world gen"/>
