@@ -134,6 +134,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importItemTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEntityTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEffectTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importParticleTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importScreenTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importArmorTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importOtherTexture);
 

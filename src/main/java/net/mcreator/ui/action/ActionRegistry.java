@@ -129,6 +129,10 @@ public class ActionRegistry {
 	public final BasicAction createAnimatedTexture;
 	public final BasicAction importBlockTexture;
 	public final BasicAction importItemTexture;
+	public final BasicAction importEntityTexture;
+	public final BasicAction importEffectTexture;
+	public final BasicAction importParticleTexture;
+	public final BasicAction importScreenTexture;
 	public final BasicAction importArmorTexture;
 	public final BasicAction importOtherTexture;
 	public final BasicAction importSound;
@@ -254,6 +258,14 @@ public class ActionRegistry {
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
 				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM)).setIcon(
 				UIRES.get("16px.importitem"));
+		this.importEntityTexture = new TextureAction(this, L10N.t("action.import_entity_texture"),
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY));
+		this.importEffectTexture = new TextureAction(this, L10N.t("action.import_effect_texture"),
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.EFFECT));
+		this.importParticleTexture = new TextureAction(this, L10N.t("action.import_particle_texture"),
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.PARTICLE));
+		this.importScreenTexture = new TextureAction(this, L10N.t("action.import_screen_texture"),
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.SCREEN));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
