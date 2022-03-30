@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VTextField;
@@ -207,31 +208,49 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = TextureType.getTypes(false);
-		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
-				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		String namec = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"),
-				L10N.t("dialog.image_maker.image_name"), null, new OptionPaneValidatior() {
 
-					@Override public ValidationResult validate(JComponent component) {
-						return new RegistryNameValidator((VTextField) component,
-								L10N.t("dialog.image_maker.texture_name")).validate();
-					}
-				});
-		if (namec != null && n != -1) {
-			File exportFile = mcreator.getFolderManager()
-					.getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
+		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
 
-			if (exportFile.isFile())
-				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
-						L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
-			else
-				FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
-			this.image = exportFile;
-			this.name = this.image.getName();
-			refreshTab();
-		}
+		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type"), true);
+		typeDialog.setSize(250, 125);
+		typeDialog.setLocationRelativeTo(null);
+
+		JPanel panel = new JPanel(new GridLayout(3, 1));
+
+		panel.add(PanelUtils.totalCenterInPanel(new JLabel(L10N.t("dialog.image_maker.texture_kind"))));
+		panel.add(PanelUtils.totalCenterInPanel(types));
+
+		JButton ok = new JButton(L10N.t("dialog.image_maker.texture_type.ok"));
+		ok.addActionListener(e -> {
+			typeDialog.setVisible(false);
+			TextureType textureType = (TextureType) types.getSelectedItem();
+
+			String namec = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"),
+					L10N.t("dialog.image_maker.image_name"), null, new OptionPaneValidatior() {
+
+						@Override public ValidationResult validate(JComponent component) {
+							return new RegistryNameValidator((VTextField) component,
+									L10N.t("dialog.image_maker.texture_name")).validate();
+						}
+					});
+			if (namec != null && textureType != null) {
+				File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), textureType);
+
+				if (exportFile.isFile())
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
+							L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
+				else
+					FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
+				this.image = exportFile;
+				this.name = this.image.getName();
+				refreshTab();
+			}
+		});
+
+		panel.add(PanelUtils.totalCenterInPanel(ok));
+
+		typeDialog.add(panel);
+		typeDialog.setVisible(true);
 	}
 
 	public void newImage(int width, int height, String name) {
