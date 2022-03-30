@@ -1055,10 +1055,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.spawn_world_types")));
 		genPanel.add(spawnWorldTypes);
 
-		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/generation_shape"),
-				L10N.label("elementgui.block.generation_shape")));
-		genPanel.add(generationShape);
-
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
 		genPanel.add(blocksToReplace);
@@ -1066,6 +1062,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
 		genPanel.add(restrictionBiomes);
+
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/generation_shape"),
+				L10N.label("elementgui.block.generation_shape")));
+		genPanel.add(generationShape);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
 				L10N.label("elementgui.block.gen_chunck_count")));
