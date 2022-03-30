@@ -55,7 +55,8 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(
+				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {

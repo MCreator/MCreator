@@ -40,8 +40,8 @@ public class TextureImportDialogs {
 	 * <p>This method opens a dialog to select the texture type to use for the provided texture file.</p>
 	 *
 	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
-	 * @param file <p>The texture file to import</p>
-	 * @param message <p>The message to display on the option dialog</p>
+	 * @param file     <p>The texture file to import</p>
+	 * @param message  <p>The message to display on the option dialog</p>
 	 */
 	public static void importSingleTexture(final MCreator mcreator, File file, String message) {
 		Object[] options = TextureType.getTypes(false);
@@ -127,8 +127,8 @@ public class TextureImportDialogs {
 	/**
 	 * <p>This method will open a file dialog to let the user select textures to import. Those textures then be saved as the provided {@link TextureType}.</p>
 	 *
-	 * @param mcreator  <p>The instance of {@link MCreator} to use</p>
-	 * @param type <p>The texture type to use when importing texture files</p>
+	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
+	 * @param type     <p>The texture type to use when importing texture files</p>
 	 */
 	public static void importMultipleTextures(MCreator mcreator, TextureType type) {
 		File[] files = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".png" });
@@ -139,8 +139,9 @@ public class TextureImportDialogs {
 	/**
 	 * <p>This is a general method to import a group of textures. It executes everything needed to save textures in the appropriate folder
 	 * depending on the {@link TextureType}.</p>
+	 *
 	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
-	 * @param type <p>The texture type to use when saving texture files</p>
+	 * @param type     <p>The texture type to use when saving texture files</p>
 	 * @param textures <p>Textures file to import</p>
 	 */
 	public static void saveTextures(MCreator mcreator, TextureType type, File[] textures) {

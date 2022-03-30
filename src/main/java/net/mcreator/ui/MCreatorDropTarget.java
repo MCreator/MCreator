@@ -75,7 +75,8 @@ record MCreatorDropTarget(MCreator mcreator) implements DropTargetListener {
 						} else if (file.getName().endsWith(".mtl")) {
 							ModelImportActions.importOBJModel(mcreator, null, file);
 						} else if (file.getName().endsWith(".png")) {
-							TextureImportDialogs.importSingleTexture(mcreator, file, L10N.t("workspace.textures.select_texture_type"));
+							TextureImportDialogs.importSingleTexture(mcreator, file,
+									L10N.t("workspace.textures.select_texture_type"));
 						} else if (file.getName().endsWith(".nbt")) {
 							StructureImportActions.importStructure(mcreator, new File[] { file });
 						} else {

@@ -73,8 +73,7 @@ public class WTextureComboBoxRenderer extends JLabel implements ListCellRenderer
 		public OtherTextures(Workspace workspace) {
 			super(element -> {
 				File file = workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(element),
-								TextureType.OTHER);
+						.getTextureFile(FilenameUtilsPatched.removeExtension(element), TextureType.OTHER);
 				if (file.isFile())
 					return new ImageIcon(file.getAbsolutePath());
 				return null;

@@ -103,8 +103,8 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
-				.forEach(modElement -> elements.addAll(modElement.getMCItems()
-						.stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
+				.forEach(modElement -> elements.addAll(
+						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
@@ -277,7 +277,7 @@ public class ElementUtil {
 	 * <p>Returns an array with the names of procedures that return the given variable type</p>
 	 *
 	 * @param workspace <p>The current workspace</p>
-	 * @param type <p>The {@link VariableType} that the procedures must return</p>
+	 * @param type      <p>The {@link VariableType} that the procedures must return</p>
 	 * @return <p>An array of strings containing the names of the procedures</p>
 	 */
 	public static String[] getProceduresOfType(Workspace workspace, VariableType type) {

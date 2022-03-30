@@ -220,7 +220,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 					}
 				});
 		if (namec != null && n != -1) {
-			File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
+			File exportFile = mcreator.getFolderManager()
+					.getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
 
 			if (exportFile.isFile())
 				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
