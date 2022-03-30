@@ -51,7 +51,7 @@ public class TextureImportDialogs {
 		saveTextures(mcreator, TextureType.getTextureType(n, false), new File[] { file });
 	}
 
-	public static void importArmor(final MCreator fra) {
+	public static void importArmor(final MCreator mcreator) {
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel neno = new JPanel(new GridLayout(3, 2, 4, 4));
 		JButton p1 = new JButton("...");
@@ -63,7 +63,7 @@ public class TextureImportDialogs {
 		neno.add(L10N.label("dialog.textures_import.armor_part_two"));
 		neno.add(p2);
 		p1.addActionListener(event -> {
-			File[] f1a = FileDialogs.getFileChooserDialog(fra, null, FileDialogs.FileChooserType.OPEN, false,
+			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, null, FileDialogs.FileChooserType.OPEN, false,
 					new javax.swing.filechooser.FileFilter() {
 						@Override public boolean accept(File f) {
 							return (f.getName().toLowerCase(Locale.ENGLISH).endsWith(".png") && f.getName()
@@ -83,7 +83,7 @@ public class TextureImportDialogs {
 						f1.getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")) + " P1");
 		});
 		p2.addActionListener(event -> {
-			File[] f2a = FileDialogs.getFileChooserDialog(fra, null, FileDialogs.FileChooserType.OPEN, false,
+			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, null, FileDialogs.FileChooserType.OPEN, false,
 					new javax.swing.filechooser.FileFilter() {
 						@Override public boolean accept(File f) {
 							return (f.getName().toLowerCase(Locale.ENGLISH).endsWith(".png") && f.getName()
@@ -104,19 +104,23 @@ public class TextureImportDialogs {
 		});
 		od.add("Center", neno);
 
-		int ret = JOptionPane.showConfirmDialog(fra, od, L10N.t("dialog.textures_import.import_armor_texture"),
+		int ret = JOptionPane.showConfirmDialog(mcreator, od, L10N.t("dialog.textures_import.import_armor_texture"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 		if (ret == JOptionPane.OK_OPTION)
 			if (f1 == null || f2 == null) {
-				JOptionPane.showMessageDialog(fra,
+				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.textures_import.error_both_texture_files_not_selected"), null,
 						JOptionPane.ERROR_MESSAGE);
 			} else {
 				String namec = RegistryNameFixer.fix(
 						FilenameUtilsPatched.removeExtension(f1.getName().replace("layer_1", "")));
-				File[] armor = fra.getFolderManager().getArmorTextureFilesForName(namec);
+				File[] armor = mcreator.getFolderManager().getArmorTextureFilesForName(namec);
 				FileIO.copyFile(f1, armor[0]);
 				FileIO.copyFile(f2, armor[1]);
+
+				mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
+					modElementGUI.reloadDataLists();
 			}
 	}
 
@@ -143,7 +147,7 @@ public class TextureImportDialogs {
 		Arrays.stream(textures).forEach(textureFile -> {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(textureFile.getName()));
 			File file = mcreator.getFolderManager().getTextureFile(namec, type);
-			if (file.isFile()) {
+			while (file.isFile()) {
 				String name = JOptionPane.showInputDialog(mcreator,
 						L10N.t("dialog.textures_import.error_texture_already_exists", namec),
 						L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.WARNING_MESSAGE);
@@ -155,10 +159,11 @@ public class TextureImportDialogs {
 				}
 			}
 			FileIO.copyFile(textureFile, file);
-			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
-			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
-				modElementGUI.reloadDataLists();
 		});
+
+		mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
+			modElementGUI.reloadDataLists();
 	}
 
 }
