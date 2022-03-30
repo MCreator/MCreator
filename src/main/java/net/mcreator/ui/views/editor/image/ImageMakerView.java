@@ -207,7 +207,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = TextureType.getTypes(false);
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
 				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -219,17 +219,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 								L10N.t("dialog.image_maker.texture_name")).validate();
 					}
 				});
-		if (namec != null) {
-			File exportFile;
-			if (n == 0)
-				exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec),
-						TextureType.BLOCK);
-			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.ITEM);
-			else if (n == 2)
-				exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.OTHER);
-			else
-				return;
+		if (namec != null && n != -1) {
+			File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
 
 			if (exportFile.isFile())
 				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),

@@ -213,7 +213,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void duplicateSelectedFile() {
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
-			TextureImportDialogs.importTextureGeneral(workspacePanel.getMcreator(), file,
+			TextureImportDialogs.importSingleTexture(workspacePanel.getMcreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
 		}
 	}
