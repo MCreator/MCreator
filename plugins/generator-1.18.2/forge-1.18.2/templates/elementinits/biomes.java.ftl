@@ -40,6 +40,7 @@ package ${package}.init;
 import com.mojang.datafixers.util.Pair;
 
 <#assign spawn_overworld = []>
+<#assign spawn_overworld_caves = []>
 <#assign spawn_nether = []>
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Biomes {
@@ -52,6 +53,10 @@ import com.mojang.datafixers.util.Pair;
 
 		<#if biome.spawnBiome>
 			<#assign spawn_overworld += [biome]>
+		</#if>
+
+		<#if biome.spawnInCaves>
+			<#assign spawn_overworld_caves += [biome]>
 		</#if>
 
 		<#if biome.spawnBiomeNether>
@@ -67,7 +72,7 @@ import com.mojang.datafixers.util.Pair;
 		});
 	}
 
-	<#if spawn_overworld?has_content>
+	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
 	@Mod.EventBusSubscriber public static class BiomeInjector {
 
 		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
@@ -79,7 +84,7 @@ import com.mojang.datafixers.util.Pair;
 			for (Map.Entry<ResourceKey<LevelStem>, LevelStem> entry : worldGenSettings.dimensions().entrySet()) {
 				DimensionType dimensionType = entry.getValue().typeHolder().value();
 
-				<#if spawn_overworld?has_content>
+				<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
 				if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.OVERWORLD_LOCATION)) {
 					ChunkGenerator chunkGenerator = entry.getValue().generator();
 
@@ -90,6 +95,11 @@ import com.mojang.datafixers.util.Pair;
 						<#list spawn_overworld as biome>
 						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT, 
 							biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						</#list>
+
+						<#list spawn_overworld_caves as biome>
+						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT_UNDERGROUND,
+								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						</#list>
 						
 						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
@@ -103,6 +113,15 @@ import com.mojang.datafixers.util.Pair;
 						SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
 						if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
 							List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
+
+							<#list spawn_overworld_caves as biome>
+							surfaceRules.add(1, anySurfaceRule(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
+								${mappedBlockToBlockStateCode(biome.groundBlock)},
+								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+							));
+							</#list>
 
 							<#list spawn_overworld as biome>
 							surfaceRules.add(1, preliminarySurfaceRule(
@@ -206,8 +225,8 @@ import com.mojang.datafixers.util.Pair;
 			);
 		}
 		</#if>
-		
-		<#if spawn_nether?has_content>
+
+		<#if spawn_nether?has_content || spawn_overworld_caves?has_content>
 		private static SurfaceRules.RuleSource anySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
 			return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
 				SurfaceRules.sequence(

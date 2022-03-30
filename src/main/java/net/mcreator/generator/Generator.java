@@ -628,7 +628,7 @@ public class Generator implements IGenerator, Closeable {
 				else if (generatorFile.writer().equals("json"))
 					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
 				else if (generatorFile.writer().equals("file"))
-					FileIO.writeUTF8toFile(generatorFile.contents(), generatorFile.file());
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.file());
 			}
 		});
 	}
