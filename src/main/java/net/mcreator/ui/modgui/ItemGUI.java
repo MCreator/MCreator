@@ -124,7 +124,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "eat", "drink", "block", "bow", "crossbow", "none", "spear" });
+			new String[] { "eat", "block", "bow", "crossbow", "drink", "none", "spear" });
 	private final MCItemHolder resultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -259,7 +259,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 2, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 2, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -315,6 +315,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.recipe_remainder")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.item.item_animation")));
+		subpane2.add(animation);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
 				L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
@@ -356,7 +360,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
-		JPanel foodSubpane = new JPanel(new GridLayout(7, 2, 2, 2));
+		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
 		foodSubpane.setOpaque(false);
 
 		isFood.setOpaque(false);
@@ -391,10 +395,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
-
-		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
-				L10N.label("elementgui.item.item_animation")));
-		foodSubpane.add(animation);
 
 		foodSubpane.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),

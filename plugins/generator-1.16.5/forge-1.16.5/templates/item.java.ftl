@@ -121,9 +121,11 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			setRegistryName("${registryname}");
 		}
 
-        @Override public UseAction getUseAction(ItemStack itemstack) {
-            return UseAction.${data.animation?upper_case};
-        }
+        <#if data.animation != "eat">
+            @Override public UseAction getUseAction(ItemStack itemstack) {
+                return UseAction.${data.animation?upper_case};
+            }
+        </#if>
 
         <#if data.isFood && (data.animation == "drink")>
         	@Override public net.minecraft.util.SoundEvent getEatSound() {
