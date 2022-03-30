@@ -165,11 +165,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		destalx.setOpaque(false);
 
-		textureStill = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureStill = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureFlowing = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -231,8 +229,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
-		textureBucket = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
+		textureBucket = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
 		generateBucket.setOpaque(false);
 		textureBucket.setOpaque(false);
 

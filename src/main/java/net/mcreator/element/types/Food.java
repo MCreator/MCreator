@@ -33,10 +33,11 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused") public class Item extends GeneratableElement
+@SuppressWarnings("unused") public class Food extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
@@ -45,71 +46,47 @@ import java.util.Map;
 
 	public String name;
 	public String rarity;
+	public List<String> specialInfo;
 	public TabEntry creativeTab;
 	public int stackSize;
-	public int enchantability;
-	public int useDuration;
-	public double toolType;
-	public int damageCount;
-	public MItemBlock recipeRemainder;
-	public boolean destroyAnyBlock;
-	public boolean immuneToFire;
 
-	public boolean stayInGridWhenCrafting;
-	public boolean damageOnCrafting;
+	public int nutritionalValue;
+	public double saturation;
 
-	public boolean enableMeleeDamage;
-	public double damageVsEntity;
-
-	public List<String> specialInfo;
+	public int eatingSpeed;
+	public MItemBlock resultItem;
+	public boolean forDogs;
+	public boolean isAlwaysEdible;
+	public String animation;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 
-	public String guiBoundTo;
-	public int inventorySize;
-	public int inventoryStackSize;
-
-	public Procedure onRightClickedInAir;
+	public Procedure onRightClicked;
 	public Procedure onRightClickedOnBlock;
-	public Procedure onCrafted;
+	public Procedure onEaten;
 	public Procedure onEntityHitWith;
 	public Procedure onItemInInventoryTick;
 	public Procedure onItemInUseTick;
-	public Procedure onStoppedUsing;
+	public Procedure onCrafted;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
-	public Procedure onFinishUsingItem;
 
-	public boolean hasDispenseBehavior;
-	public Procedure dispenseSuccessCondition;
-	public Procedure dispenseResultItemstack;
-
-	// Food
-	public boolean isFood;
-	public int nutritionalValue;
-	public double saturation;
-	public MItemBlock resultItem;
-	public boolean isMeat;
-	public boolean isAlwaysEdible;
-	public String animation;
-
-	private Item() {
+	private Food() {
 		this(null);
 	}
 
-	public Item(ModElement element) {
+	public Food(ModElement element) {
 		super(element);
 
 		this.rarity = "COMMON";
-		this.inventorySize = 9;
-		this.inventoryStackSize = 64;
+		this.eatingSpeed = 32;
 		this.saturation = 0.3f;
 		this.animation = "eat";
-	}
 
-	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		this.renderType = 0;
+		this.customModelName = "Normal";
+
+		this.specialInfo = new ArrayList<>();
 	}
 
 	@Override public Model getItemModel() {
@@ -128,24 +105,17 @@ import java.util.Map;
 		return null;
 	}
 
+	@Override public BufferedImage generateModElementPicture() {
+		return ImageUtils.resizeAndCrop(
+				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+	}
+
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
 	}
 
 	@Override public String getTexture() {
 		return texture;
-	}
-
-	public boolean hasNormalModel() {
-		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Normal");
-	}
-
-	public boolean hasToolModel() {
-		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
-	}
-
-	public boolean hasInventory() {
-		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
 
 }
