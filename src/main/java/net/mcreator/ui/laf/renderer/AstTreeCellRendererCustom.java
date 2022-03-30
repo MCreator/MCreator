@@ -22,20 +22,14 @@ import com.google.gson.JsonElement;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.init.UIRES;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.DecoratableIcon;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 

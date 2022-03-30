@@ -103,8 +103,8 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
-				.forEach(modElement -> elements.addAll(modElement.getMCItems()
-						.stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
+				.forEach(modElement -> elements.addAll(
+						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
@@ -119,7 +119,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
-		List<DataListEntry> tabs = getCustomElementsOfType(workspace, BaseType.TAB);
+		List<DataListEntry> tabs = getCustomElementsOfType(workspace, ModElementType.TAB);
 		tabs.addAll(DataListLoader.loadDataList("tabs"));
 		return tabs;
 	}
@@ -132,7 +132,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENCHANTMENT);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.ENCHANTMENT);
 		retval.addAll(DataListLoader.loadDataList("enchantments"));
 		return retval;
 	}
@@ -153,19 +153,19 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.PARTICLE);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PARTICLE);
 		retval.addAll(DataListLoader.loadDataList("particles"));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTIONEFFECT);
 		retval.addAll(DataListLoader.loadDataList("effects"));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTION);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
 	}
@@ -232,7 +232,7 @@ public class ElementUtil {
 		dimensions.add("End");
 
 		for (ModElement mu : workspace.getModElements())
-			if (mu.getType().getBaseType() == BaseType.DIMENSION)
+			if (mu.getType() == ModElementType.DIMENSION)
 				dimensions.add("CUSTOM:" + mu.getName());
 
 		return dimensions.toArray(new String[0]);
@@ -277,7 +277,7 @@ public class ElementUtil {
 	 * <p>Returns an array with the names of procedures that return the given variable type</p>
 	 *
 	 * @param workspace <p>The current workspace</p>
-	 * @param type <p>The {@link VariableType} that the procedures must return</p>
+	 * @param type      <p>The {@link VariableType} that the procedures must return</p>
 	 * @return <p>An array of strings containing the names of the procedures</p>
 	 */
 	public static String[] getProceduresOfType(Workspace workspace, VariableType type) {

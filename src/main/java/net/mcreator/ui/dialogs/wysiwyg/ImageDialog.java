@@ -89,7 +89,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 			if (imageTxt != null) {
 				if (image == null) {
 					ImageIcon a = new ImageIcon(editor.mcreator.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(imageTxt), TextureType.SCREEN).getAbsolutePath());
+							.getTextureFile(FilenameUtilsPatched.removeExtension(imageTxt), TextureType.SCREEN)
+							.getAbsolutePath());
 
 					if (scale1x.isSelected())
 						editor.editor.setPositioningMode(a.getIconWidth() / 2, a.getIconHeight() / 2);

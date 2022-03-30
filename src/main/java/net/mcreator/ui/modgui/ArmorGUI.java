@@ -282,14 +282,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.ITEM));
-		textureBody = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.ITEM));
-		textureLeggings = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.ITEM));
-		textureBoots = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureHelmet = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureBody = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureLeggings = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureBoots = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);

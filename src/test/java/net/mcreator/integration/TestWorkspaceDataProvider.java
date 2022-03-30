@@ -430,6 +430,7 @@ public class TestWorkspaceDataProvider {
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
 			}
 			biome.spawnBiome = !_true;
+			biome.spawnInCaves = _true;
 			biome.spawnBiomeNether = !_true && emptyLists;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {

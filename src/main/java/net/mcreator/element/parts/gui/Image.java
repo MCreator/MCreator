@@ -56,9 +56,9 @@ public class Image extends GUIComponent {
 	}
 
 	public java.awt.Image getImage(Workspace workspace) {
-		return new ImageIcon(
-				workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN)
-						.getAbsolutePath()).getImage();
+		return new ImageIcon(workspace.getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN)
+				.getAbsolutePath()).getImage();
 	}
 
 	@Override public int getWeight() {
