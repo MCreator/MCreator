@@ -19,28 +19,20 @@
 
 package net.mcreator.element;
 
-// @formatter:off
 public enum BaseType {
 
+	// @formatter:off
 	ARMOR,
 	BIOME,
 	BLOCK,
 	BLOCKENTITY,
-	COMMAND,
 	DATAPACK,
-	DIMENSION,
-	ENCHANTMENT,
 	ENTITY,
-	FUEL,
 	GUI,
 	ITEM,
 	OTHER,
-	PARTICLE,
-	POTION,
-	POTIONEFFECT,
-	FEATURE,
-	TAB,
-	VILLAGER;
+	FEATURE;
+	// @formatter:on
 
 	public String getPluralName() {
 		if (this == ENTITY)
@@ -53,4 +45,3 @@ public enum BaseType {
 	}
 
 }
-// @formatter:on

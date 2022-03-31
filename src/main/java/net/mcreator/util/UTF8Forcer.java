@@ -26,7 +26,7 @@ public class UTF8Forcer {
 
 	public static void forceGlobalUTF8() {
 		try {
-			System.setProperty("file.encoding" , "UTF-8");
+			System.setProperty("file.encoding", "UTF-8");
 			Field charset = Charset.class.getDeclaredField("defaultCharset");
 			charset.setAccessible(true);
 			charset.set(null, null);

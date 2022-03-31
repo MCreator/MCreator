@@ -69,11 +69,13 @@ import java.util.List;
 		if (this.baseTexture != null && !this.baseTexture.equals("")) {
 			try {
 				ImageIcon texture = new ImageIcon(getModElement().getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.OTHER).getAbsolutePath());
+						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.OTHER)
+						.getAbsolutePath());
 				texture.getImage().flush();
 
 				texture = new ImageIcon(getModElement().getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.OTHER).getAbsolutePath());
+						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.OTHER)
+						.getAbsolutePath());
 
 				return new Dimension(texture.getIconWidth(), texture.getIconHeight());
 			} catch (Exception e) {

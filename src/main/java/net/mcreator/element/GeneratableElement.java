@@ -151,11 +151,13 @@ public abstract class GeneratableElement {
 						LOG.debug("Converting mod element " + this.lastModElement.getName() + " of type " + newType
 								+ " to potential alternative.");
 
-						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement), jsonElement);
+						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement),
+								jsonElement);
 						if (result != null) {
 							workspace.removeModElement(this.lastModElement);
 
-							result.getModElement().setParentFolder(FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
+							result.getModElement()
+									.setParentFolder(FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
 							workspace.getModElementManager().storeModElementPicture(result);
 							workspace.addModElement(result.getModElement());
 							workspace.getGenerator().generateElement(result);

@@ -138,7 +138,7 @@ public final class FileIO {
 			f.getParentFile().mkdirs();
 
 		try {
-			ImageIO.write(image, "png" , f);
+			ImageIO.write(image, "png", f);
 		} catch (IOException e) {
 			LOG.error("Error writing image " + e.getMessage(), e);
 		}
