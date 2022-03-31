@@ -7,8 +7,8 @@
 </#macro>
 
 <#macro checkPitchSupport positiveBoxes negativeBoxes noOffset facing enablePitch>
-    <#if (rotationMode == 1 || rotationMode == 3) && enablePitch>
-        switch ((AttachFace) state.get(FACE)) {
+    <#if enablePitch>
+        switch ((AttachFace) state.getValue(FACE)) {
             case FLOOR:
             default:
                 <@makeBoundingBox positiveBoxes negativeBoxes noOffset facing "floor"/>
@@ -26,16 +26,17 @@
     <#if rotationMode == 0>
         <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
     <#elseif rotationMode != 5>
+        <#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
         switch ((Direction) state.getValue(FACING)) {
             case SOUTH:
             default:
-                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "south" enablePitch/>
+                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "south" pitch/>
             case NORTH:
-                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "north" enablePitch/>
+                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "north" pitch/>
             case EAST:
-                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "east" enablePitch/>
+                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "east" pitch/>
             case WEST:
-                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "west" enablePitch/>
+                <@checkPitchSupport positiveBoxes negativeBoxes noOffset "west" pitch/>
             <#if rotationMode == 2 || rotationMode == 4>
                 case UP:
                     <@makeBoundingBox positiveBoxes negativeBoxes noOffset "up"/>

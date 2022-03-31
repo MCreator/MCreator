@@ -425,7 +425,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             if (context.getFace().getAxis() == Direction.Axis.Y)
                 return this.getDefaultState()
                         <#if data.enablePitch>
-                            .with(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+                            .with(FACE, context.getFace() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
                             .with(FACING, context.getPlacementHorizontalFacing())
                         <#else>
                             .with(FACING, Direction.NORTH)

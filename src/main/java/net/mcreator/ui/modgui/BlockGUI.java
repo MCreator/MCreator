@@ -578,6 +578,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
+		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
 		rotationMode.addActionListener(e -> enablePitch.setEnabled(
 				rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3));

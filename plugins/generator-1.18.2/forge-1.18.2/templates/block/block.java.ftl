@@ -312,7 +312,7 @@ public class ${name}Block extends
 	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
 	        return this.defaultBlockState()
 	                <#if data.enablePitch>
-	                    .setValue(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+	                    .setValue(FACE, context.getClickedFace() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
 	                    .setValue(FACING, context.getHorizontalDirection())
 	                <#else>
 	                    .setValue(FACING, Direction.NORTH)
