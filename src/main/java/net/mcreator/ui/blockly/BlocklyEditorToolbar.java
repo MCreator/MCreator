@@ -21,6 +21,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -32,6 +33,7 @@ import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +42,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -219,7 +222,21 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.getExtension() });
 			if (imp != null) {
 				try {
-					blocklyPanel.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML(imp));
+					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
+					if (procedureGUI != null) {
+						Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
+						List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+
+						for (VariableElement localVariable : localVariables) {
+							if (existingLocalVariables.contains(localVariable))
+								continue; // skip if variable with this name already exists
+
+							blocklyPanel.addLocalVariable(localVariable.getName(),
+									localVariable.getType().getBlocklyVariableType());
+							procedureGUI.localVars.addElement(localVariable);
+						}
+					}
+					blocklyPanel.addBlocksFromXML(procedureXml);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
