@@ -1,5 +1,4 @@
 _default: VillagerProfession.ARMORER
-_mcreator_prefix: "CUSTOM:"
 ARMORER: VillagerProfession.ARMORER
 BUTCHER: VillagerProfession.BUTCHER
 CARTOGRAPHER: VillagerProfession.CARTOGRAPHER
