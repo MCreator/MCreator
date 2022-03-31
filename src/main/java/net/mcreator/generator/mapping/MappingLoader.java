@@ -54,7 +54,8 @@ public class MappingLoader {
 					YamlReader reader = new YamlReader(config);
 
 					try {
-						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(new LinkedHashMap<>((Map<?, ?>) reader.read()));
+						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
+								new LinkedHashMap<>((Map<?, ?>) reader.read()));
 						if (mappings.get(mappingName) == null) {
 							mappings.put(mappingName, mappingsFromFile);
 						} else {

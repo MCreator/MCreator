@@ -36,7 +36,8 @@ public class LegacyBlockPosProcedureRemover implements IConverter {
 		try {
 			procedure.procedurexml = fixXML(procedure.procedurexml);
 		} catch (Exception e) {
-			LOG.warn("Failed to remove legacy blockpos coordinate blocks for procedure " + input.getModElement().getName());
+			LOG.warn("Failed to remove legacy blockpos coordinate blocks for procedure " + input.getModElement()
+					.getName());
 		}
 		return procedure;
 	}

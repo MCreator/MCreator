@@ -124,17 +124,13 @@ import java.util.Set;
 	@Override public BufferedImage generateModElementPicture() {
 		ArrayList<File> armorPieces = new ArrayList<>();
 		if (enableHelmet)
-			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureHelmet, TextureType.ITEM));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureHelmet, TextureType.ITEM));
 		if (enableBody)
-			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureBody, TextureType.ITEM));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBody, TextureType.ITEM));
 		if (enableLeggings)
-			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureLeggings, TextureType.ITEM));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureLeggings, TextureType.ITEM));
 		if (enableBoots)
-			armorPieces.add(getModElement().getFolderManager()
-					.getTextureFile(textureBoots, TextureType.ITEM));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBoots, TextureType.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
