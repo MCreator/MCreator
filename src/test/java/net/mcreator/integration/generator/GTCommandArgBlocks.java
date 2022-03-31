@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Random;
 import java.util.Set;
 
+import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -168,7 +169,7 @@ public class GTCommandArgBlocks {
 
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
-			command.permissionLevel = "1";
+			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 
 			if (commandArg.type == IBlockGenerator.BlockType.PROCEDURAL)
 				command.argsxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""
