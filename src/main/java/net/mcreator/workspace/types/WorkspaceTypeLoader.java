@@ -94,7 +94,7 @@ public class WorkspaceTypeLoader {
 		REGISTRY.add(new WorkspaceType("mod", ModElementTypeLoader.getModElementsInModWT()));
 	}
 
-	public static void loadGeneratorFlavors() {
+	public static void loadWorkspaceTypes() {
 		INSTANCE = new WorkspaceTypeLoader();
 	}
 

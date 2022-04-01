@@ -38,6 +38,7 @@ import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.types.WorkspaceTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -116,6 +117,9 @@ public class TestSetup {
 
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
+
+		// load workspace types
+		WorkspaceTypeLoader.loadWorkspaceTypes();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));

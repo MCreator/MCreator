@@ -150,8 +150,8 @@ public final class MCreatorApplication {
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
 
-		// load generator flavors
-		WorkspaceTypeLoader.loadGeneratorFlavors();
+		// load workspace types
+		WorkspaceTypeLoader.loadWorkspaceTypes();
 
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();
