@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,31 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element;
+package net.mcreator.util;
 
-public enum BaseType {
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 
-	// @formatter:off
-	ARMOR,
-	BIOME,
-	BLOCK,
-	BLOCKENTITY,
-	DATAPACK,
-	ENTITY,
-	GUI,
-	ITEM,
-	OTHER,
-	FEATURE;
-	// @formatter:on
+public class UTF8Forcer {
 
-	public String getPluralName() {
-		if (this == ENTITY)
-			return "entities";
-
-		if (this == BLOCKENTITY)
-			return "blockentities";
-
-		return name() + "s";
+	public static void forceGlobalUTF8() {
+		try {
+			System.setProperty("file.encoding", "UTF-8");
+			Field charset = Charset.class.getDeclaredField("defaultCharset");
+			charset.setAccessible(true);
+			charset.set(null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
