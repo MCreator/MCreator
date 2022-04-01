@@ -1,6 +1,7 @@
 name: Data Pack for Java Edition @minecraft
 status: stable
 buildfileversion: 1.0
+workspacetype: datapack
 
 # gradle task definitions
 gradle:

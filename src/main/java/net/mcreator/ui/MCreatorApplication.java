@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.workspace.types.WorkspaceTypeLoader;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.Analytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
@@ -148,6 +149,9 @@ public final class MCreatorApplication {
 
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
+
+		// load generator flavors
+		WorkspaceTypeLoader.loadGeneratorFlavors();
 
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();

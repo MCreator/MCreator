@@ -28,6 +28,8 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.types.WorkspaceType;
+import net.mcreator.workspace.types.WorkspaceTypeLoader;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -54,7 +56,8 @@ public class GeneratorStats {
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 
 		// determine supported mod element types
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+		WorkspaceType workspaceType = generatorConfiguration.getWorkspaceType();
+		for (ModElementType<?> type : workspaceType.getModElements()) {
 			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
 			if (definition != null) {
 				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {

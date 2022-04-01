@@ -1,0 +1,11 @@
+{
+  "modElements": [
+    "achievement",
+    "biome",
+    "dimension",
+    "function",
+    "loottable",
+    "recipe",
+    "tag"
+  ]
+}

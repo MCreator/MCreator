@@ -25,6 +25,8 @@ import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.workspace.types.WorkspaceType;
+import net.mcreator.workspace.types.WorkspaceTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -83,6 +85,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		this.generatorVariableTypes = new GeneratorVariableTypes(this);
 
 		this.generatorStats = new GeneratorStats(this);
+	}
+
+	@Nonnull public WorkspaceType getWorkspaceType() {
+		return WorkspaceTypeLoader.INSTANCE.fromID((String) generatorConfig.get("workspacetype"));
 	}
 
 	@Nonnull public String getSourceRoot() {

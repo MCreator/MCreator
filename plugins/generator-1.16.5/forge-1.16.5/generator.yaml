@@ -3,6 +3,7 @@ basefeatures: [model_java]
 status: lts
 buildfileversion: 36.2.26
 subversion: 1.0.4
+workspacetype: mod
 
 java_models:
   key: legacy

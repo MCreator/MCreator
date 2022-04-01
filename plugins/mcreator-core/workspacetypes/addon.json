@@ -1,0 +1,13 @@
+{
+  "modElements": [
+    "biome",
+    "block",
+    "food",
+    "function",
+    "item",
+    "livingentity",
+    "loottable",
+    "recipe",
+    "tool"
+  ]
+}
