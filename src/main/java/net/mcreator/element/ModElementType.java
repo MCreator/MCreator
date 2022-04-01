@@ -42,14 +42,12 @@ public class ModElementType<GE extends GeneratableElement> {
 	private final String readableName;
 	private final String description;
 	private final Character shortcut;
-	private final boolean addToModWorkspaceType;
 	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
 
 	private boolean hasProcedureTriggers;
 
 	public ModElementType(String registryName, Character shortcut, BaseType baseType, RecipeType recipeType,
-			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass,
-			boolean addToModWorkspaceType) {
+			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.baseType = baseType;
 		this.recipeType = recipeType;
 		this.registryName = registryName;
@@ -60,7 +58,6 @@ public class ModElementType<GE extends GeneratableElement> {
 
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
-		this.addToModWorkspaceType = addToModWorkspaceType;
 
 		for (Field field : modElementStorageClass.getFields())
 			if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
@@ -103,10 +100,6 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	public Class<? extends GeneratableElement> getModElementStorageClass() {
 		return modElementStorageClass;
-	}
-
-	public boolean addToModWorkspaceType() {
-		return addToModWorkspaceType;
 	}
 
 	public GeneratorStats.CoverageStatus getStatus() {
