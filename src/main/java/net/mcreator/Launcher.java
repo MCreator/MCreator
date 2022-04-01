@@ -70,7 +70,7 @@ public class Launcher {
 
 			version = new MCreatorVersionNumber(conf);
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to read MCreator config", e);
 		}
 
 		LOG.info("Starting MCreator " + version);
