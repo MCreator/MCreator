@@ -83,21 +83,15 @@ public class WorkspaceTypeLoader {
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("workspacetypes", Pattern.compile("^[^$].*\\.json"));
 		for (String file : fileNames) {
-			WorkspaceType flavor = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
+			WorkspaceType workspaceType = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
 					WorkspaceType.class);
-			flavor.setID(FilenameUtilsPatched.getBaseName(file));
+			workspaceType.setID(FilenameUtilsPatched.getBaseName(file));
 
-			REGISTRY.add(flavor);
-
-			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
-			switch (flavor.getID()) {
-			case "datapack" -> BuiltInTypes.DATAPACK = flavor;
-			case "addon" -> BuiltInTypes.ADDON = flavor;
-			}
+			REGISTRY.add(workspaceType);
 		}
 
 		// We manually add the mod workspace type as this is a special type
-		REGISTRY.add(BuiltInTypes.MOD);
+		REGISTRY.add(new WorkspaceType("mod", ModElementTypeLoader.getModElementsInModWT()));
 	}
 
 	public static void loadGeneratorFlavors() {
@@ -111,12 +105,5 @@ public class WorkspaceTypeLoader {
 		}
 
 		throw new IllegalArgumentException("Workspace type " + id + " is not a registered type");
-	}
-
-	public static class BuiltInTypes {
-
-		public static WorkspaceType MOD = new WorkspaceType("mod", ModElementTypeLoader.getModElementsInModWT());
-		public static WorkspaceType DATAPACK;
-		public static WorkspaceType ADDON;
 	}
 }

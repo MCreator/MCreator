@@ -21,10 +21,18 @@ package net.mcreator.workspace.types;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * <p>This is a general object used by generators to define their {@link ModElementType}s. A workspace type is not the equivalent to
+ * {@link GeneratorFlavor}. A workspace type can have generators with different {@link GeneratorFlavor}, such as <i>FORGE</i> and <i>FABRIC</i>
+ * for the Mod workspace type. On the contrary, a {@link GeneratorFlavor} could, for specific reasons, have multiple generators, but each generator
+ * uses a different workspace type.
+ * </p>
+ */
 public class WorkspaceType {
 
 	private String id;
