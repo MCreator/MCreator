@@ -281,9 +281,8 @@ public class Generator implements IGenerator, Closeable {
 			for (GeneratorTemplatesList generatorTemplatesList : generatorListTemplates) {
 				List<?> listData = generatorTemplatesList.listData().stream().toList();
 				for (GeneratorTemplate generatorTemplate : generatorTemplatesList.templates().keySet()) {
-					String templateFileName = generatorTemplatesList.processTokens(generatorTemplate);
-					for (int index = 0; index < listData.size(); index++) {
-						if (generatorTemplatesList.templates().get(generatorTemplate).get(index)) {
+					for (int i = 0; i < listData.size(); i++) {
+						if (generatorTemplatesList.templates().get(generatorTemplate).get(i)) {
 							String templateName = ((String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get(
 									"template"));
 
@@ -291,10 +290,9 @@ public class Generator implements IGenerator, Closeable {
 							extractVariables(generatorTemplate, dataModel);
 
 							String code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
-									listData.get(index), index, element, templateName, dataModel);
+									listData.get(i), i, element, templateName, dataModel);
 
-							File templateFile = new File(
-									templateFileName.replace("@elementindex", Integer.toString(index)));
+							File templateFile = new File(generatorTemplatesList.processTokens(generatorTemplate, i));
 
 							GeneratorFile generatorFile = new GeneratorFile(code, templateFile,
 									(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
@@ -304,13 +302,6 @@ public class Generator implements IGenerator, Closeable {
 							generatorFiles.add(generatorFile);
 						}
 					}
-
-					// we delete all templates in given list because its size could have changed
-					String[] fileNameParts = templateFileName.split("@elementindex");
-					File[] filesFound = new File(templateFileName).getParentFile().listFiles(
-							e -> e.getPath().startsWith(fileNameParts[0]) && e.getPath().endsWith(fileNameParts[1]));
-					if (filesFound != null && performFSTasks)
-						Arrays.asList(filesFound).forEach(File::delete);
 				}
 			}
 		}
@@ -387,10 +378,8 @@ public class Generator implements IGenerator, Closeable {
 		Objects.requireNonNull(getModElementListTemplates(element, true, element.getGeneratableElement()))
 				.forEach(el -> {
 					for (int i = 0; i < el.listData().size(); i++) {
-						for (GeneratorTemplate generatorTemplate : el.templates().keySet()) {
-							new File(el.processTokens(generatorTemplate)
-									.replace("@elementindex", Integer.toString(i))).delete();
-						}
+						for (GeneratorTemplate generatorTemplate : el.templates().keySet())
+							new File(el.processTokens(generatorTemplate, i)).delete();
 					}
 				});
 

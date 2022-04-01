@@ -79,8 +79,7 @@ public class GTModElements {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
 							if (list.templates().get(generatorTemplate).get(i))
-								modElementFiles.add(new File(list.processTokens(generatorTemplate)
-										.replace("@elementindex", Integer.toString(i))));
+								modElementFiles.add(new File(list.processTokens(generatorTemplate, i)));
 						}
 					}
 				}
@@ -117,8 +116,7 @@ public class GTModElements {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
 							if (list.templates().get(generatorTemplate).get(i))
-								modElementFiles.add(new File(list.processTokens(generatorTemplate)
-										.replace("@elementindex", Integer.toString(i))));
+								modElementFiles.add(new File(list.processTokens(generatorTemplate, i)));
 						}
 					}
 				}
