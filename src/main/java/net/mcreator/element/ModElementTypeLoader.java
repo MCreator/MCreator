@@ -118,6 +118,13 @@ public class ModElementTypeLoader {
 				(mc, me, e) -> null, GeneratableElement.Unknown.class);
 	}
 
+	/**
+	 * <p>Registers a {@link ModElementType} by adding it to the registry list.</p>
+	 *
+	 * @param elementType <p>The {@link ModElementType} to add to the registry list</p>
+	 * @param addToModWT <p>When true, this {@link ModElementType} will be added to the Mod {@link net.mcreator.workspace.types.WorkspaceType}</p>
+	 * @return <p>The {@param elementType}</p>
+	 */
 	private static ModElementType<?> register(ModElementType<?> elementType, boolean addToModWT) {
 		if (addToModWT)
 			MOD_WORKSPACE_TYPE.add(elementType.getRegistryName());
