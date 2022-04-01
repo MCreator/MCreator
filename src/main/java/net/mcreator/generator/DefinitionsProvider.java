@@ -40,8 +40,8 @@ public class DefinitionsProvider {
 
 	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
 
-	public DefinitionsProvider(String generatorName) {
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+	public DefinitionsProvider(String generatorName, GeneratorConfiguration genConfig) {
+		for (ModElementType<?> type : genConfig.getWorkspaceType().getModElements()) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
 							+ ".definition.yaml");
