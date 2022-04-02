@@ -13,7 +13,7 @@
       "minecraft:max_stack_size": ${data.stackSize},
       "minecraft:max_damage": ${data.damageCount},
       <#if data.isFood>
-          "minecraft:use_duration": ${data.eatingSpeed},
+          "minecraft:use_duration": ${data.useDuration},
           "minecraft:food": {
             "nutrition": ${data.nutritionalValue},
             "nutritionalValue": "${thelper.mapToString(data.saturation, 0, 1.2,
