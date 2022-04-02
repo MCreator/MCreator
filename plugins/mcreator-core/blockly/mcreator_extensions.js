@@ -38,7 +38,7 @@ Blockly.Extensions.register('plant_type_list_provider',
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
-        Blockly.blocks.loops.loopTypes.add(this.type);
+        Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
 // marks in the xml if the block is attached to a block/item input, for proper mapping
