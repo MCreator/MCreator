@@ -22,6 +22,7 @@ package net.mcreator.ui.component.filebrowser;
 import javafx.application.Platform;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -74,11 +75,13 @@ public class SynchronousJFXCaller<T> {
 		// a trick to emulate modality:
 		final JDialog modalBlocker = new JDialog();
 		modalBlocker.setModal(true);
-		modalBlocker.setUndecorated(true);
+		if (GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+				.isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT))
+			modalBlocker.setUndecorated(true);
 		modalBlocker.setOpacity(0.0f);
 		modalBlocker.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final CountDownLatch modalityLatch = new CountDownLatch(1);
-		final FutureTask<T> task = new FutureTask<T>(() -> {
+		final FutureTask<T> task = new FutureTask<>(() -> {
 			synchronized (taskStarted) {
 				if (taskCancelled.get()) {
 					return null;
