@@ -18,20 +18,15 @@
 
 package net.mcreator.ui.dialogs;
 
-import javafx.embed.swing.JFXPanel;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.stage.*;
-import net.mcreator.ui.component.filebrowser.SynchronousJFXCaller;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import net.mcreator.ui.component.filebrowser.SynchronousJFXDirectoryChooser;
 import net.mcreator.ui.component.filebrowser.SynchronousJFXFileChooser;
-import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
 import javax.swing.*;
-import java.awt.Window;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,13 +34,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class FileDialogs {
 
 	private static File prevDir = new File(System.getProperty("user.home"));
-
-	private static Stage stage = null;
 
 	public static File getOpenDialog(Window f, String[] exp) {
 		return getBasicFileChooserDialog(f, FileChooserType.OPEN, exp);
@@ -71,9 +63,7 @@ public class FileDialogs {
 		if (multiSelect && type == FileChooserType.SAVE)
 			throw new RuntimeException("Invalid file chooser type for multi selection mode");
 
-		initJFX();
-
-		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(stage, () -> {
+		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(null, () -> {
 			FileChooser ch = new FileChooser();
 			ch.setInitialDirectory(prevDir);
 			if (filters != null) {
@@ -114,9 +104,7 @@ public class FileDialogs {
 	}
 
 	public static File getWorkspaceDirectorySelectDialog(Window f, File file) {
-		initJFX();
-
-		SynchronousJFXDirectoryChooser chooser = new SynchronousJFXDirectoryChooser(stage, () -> {
+		SynchronousJFXDirectoryChooser chooser = new SynchronousJFXDirectoryChooser(null, () -> {
 			DirectoryChooser ch = new DirectoryChooser();
 			ch.setTitle(L10N.t("dialog.file.select_directory_title"));
 			ch.setInitialDirectory(file == null ? WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot() : file);
@@ -169,27 +157,6 @@ public class FileDialogs {
 		}
 
 		return chooser.showDialog();
-	}
-
-	private static void initJFX() {
-		if (stage == null) {
-			try {
-				ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
-				SynchronousJFXCaller<Stage> caller = new SynchronousJFXCaller<>(() -> {
-					Stage stage = new Stage(StageStyle.TRANSPARENT);
-					stage.getIcons().add(SwingFXUtils.toFXImage(ImageUtils.toBufferedImage(UIRES.getBuiltIn("icon").getImage()), null));
-					stage.initModality(Modality.NONE);
-					stage.setWidth(0);
-					stage.setHeight(0);
-					stage.show();
-					stage.setIconified(true);
-					return stage;
-				});
-				stage = caller.call(1, TimeUnit.SECONDS);
-			} catch (Exception ex) {
-				throw new AssertionError("Got unexpected checked exception", ex);
-			}
-		}
 	}
 
 	public enum FileChooserType {
