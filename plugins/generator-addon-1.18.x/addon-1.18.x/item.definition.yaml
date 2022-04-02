@@ -11,4 +11,4 @@ localizationkeys:
     mapto: name
 
 field_inclusions: [texture, name, hasGlow, stackSize, damageCount, damageVsEntity, enableMeleeDamage,
-                   useDuration, nutritionalValue, saturation, isAlwaysEdible, forDogs]
+                   useDuration, nutritionalValue, saturation, isAlwaysEdible, isMeat]

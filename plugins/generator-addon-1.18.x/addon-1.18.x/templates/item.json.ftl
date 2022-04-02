@@ -20,7 +20,7 @@
                     "poor", "low", "normal", "good", "high", "supernatural")}",
             "saturation_modifier": "low",
             "can_always_eat": ${data.isAlwaysEdible},
-            "is_meat": ${data.forDogs},
+            "is_meat": ${data.isMeat},
       </#if>
       "minecraft:creative_category": "Items"
     }
