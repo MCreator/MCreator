@@ -1098,6 +1098,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					.withConfiguration(new OreFeatureConfig(CustomRuleTest.INSTANCE, block.getDefaultState(), ${data.frequencyOnChunk}))
 					<#if data.maxGenerateHeight gt 256>
 					    .range(256)
+					<#elseif data.maxGenerateHeight lt 0>
+					    .range(0)
 					<#else>
 					    .range(${data.maxGenerateHeight})
 					</#if>
