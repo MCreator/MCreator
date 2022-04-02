@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 40.0.32
+buildfileversion: 40.0.36
 workspacetype: mod
 
 java_models:
