@@ -30,7 +30,6 @@ public enum BaseType {
 	ENTITY,
 	GUI,
 	ITEM,
-	EXTENSION,
 	OTHER,
 	FEATURE;
 	// @formatter:on
