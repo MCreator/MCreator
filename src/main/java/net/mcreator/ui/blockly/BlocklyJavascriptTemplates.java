@@ -26,172 +26,174 @@ public class BlocklyJavascriptTemplates {
 
 	public static String variableListExtension(VariableType variableType) {
 		return """
-			Blockly.Extensions.register('%s_variables', function () {
-				this.getInput("var").appendField(new Blockly.FieldDropdown(getVariablesOfType("%s")), 'VAR');
-				this.getField('VAR').setValidator(function (variable) {
-					var isPlayerVar = javabridge.isPlayerVariable(variable);
-					this.getSourceBlock().updateShape_(isPlayerVar, true);
-				});
-			});""".formatted(variableType.getName(), variableType.getBlocklyVariableType());
+				Blockly.Extensions.register('%s_variables', function () {
+					this.getInput("var").appendField(new Blockly.FieldDropdown(getVariablesOfType("%s")), 'VAR');
+					this.getField('VAR').setValidator(function (variable) {
+						var isPlayerVar = javabridge.isPlayerVariable(variable);
+						this.getSourceBlock().updateShape_(isPlayerVar, true);
+					});
+				});""".formatted(variableType.getName(), variableType.getBlocklyVariableType());
 	}
 
 	public static String procedureListExtensions(VariableType variableType) {
 		return """
-			Blockly.Extensions.register('procedure_retval_%s',function () {
-				this.appendDummyInput().appendField(new FieldDataListSelector("procedure_retval_%s"), 'procedure');
-			});""".formatted(variableType.getName(), variableType.getName());
+				Blockly.Extensions.register('procedure_retval_%s',function () {
+					this.appendDummyInput().appendField(new FieldDataListSelector("procedure_retval_%s"), 'procedure');
+				});""".formatted(variableType.getName(), variableType.getName());
 	}
 
 	public static String getVariableBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "variables_get_%s",
-				"message0": "%s %%1",
-				"args0": [
-					{
-						"type": "input_dummy",
-						"name": "var"
-					}
-				],
-				"extensions": [
-					"%s_variables"
-				],
-				"inputsInline": true,
-				"output": "%s",
-				"colour": "%s",
-				"mutator": "variable_entity_input"
-			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
-					variableType.getBlocklyVariableType(), variableType.getColor());
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "variables_get_%s",
+					"message0": "%s %%1",
+					"args0": [
+						{
+							"type": "input_dummy",
+							"name": "var"
+						}
+					],
+					"extensions": [
+						"%s_variables"
+					],
+					"inputsInline": true,
+					"output": "%s",
+					"colour": "%s",
+					"mutator": "variable_entity_input"
+				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
+				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	// Same as the normal "Get variable" block, but with the NULL icon at the beginning
 	public static String nullableGetVariableBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "variables_get_%s",
-				"message0": "%%2 %s %%1",
-				"args0": [
-					{
-						"type": "input_dummy",
-						"name": "var"
-					},
-					{
-						"type": "field_image",
-						"src": "./res/null.png",
-						"width": 8,
-						"height": 24
-					}
-				],
-				"extensions": [
-					"%s_variables"
-				],
-				"inputsInline": true,
-				"output": "%s",
-				"colour": "%s",
-				"mutator": "variable_entity_input"
-			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "variables_get_%s",
+					"message0": "%%2 %s %%1",
+					"args0": [
+						{
+							"type": "input_dummy",
+							"name": "var"
+						},
+						{
+							"type": "field_image",
+							"src": "./res/null.png",
+							"width": 8,
+							"height": 24
+						}
+					],
+					"extensions": [
+						"%s_variables"
+					],
+					"inputsInline": true,
+					"output": "%s",
+					"colour": "%s",
+					"mutator": "variable_entity_input"
+				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
 				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	public static String setVariableBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "variables_set_%s",
-				"message0": "%s %%1 %s %%2",
-				"args0": [
-					{
-						"type": "input_dummy",
-						"name": "var"
-					},
-					{
-						"type": "input_value",
-						"name": "VAL",
-						"check": "%s"
-					}
-				],
-				"extensions": [
-					"%s_variables"
-				],
-				"inputsInline": true,
-				"previousStatement": null,
-				"nextStatement": null,
-				"colour": "%s",
-				"mutator": "variable_entity_input"
-			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.set_var"), L10N.t("blockly.block.set_to"),
-					variableType.getBlocklyVariableType(), variableType.getName(), variableType.getColor());
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "variables_set_%s",
+					"message0": "%s %%1 %s %%2",
+					"args0": [
+						{
+							"type": "input_dummy",
+							"name": "var"
+						},
+						{
+							"type": "input_value",
+							"name": "VAL",
+							"check": "%s"
+						}
+					],
+					"extensions": [
+						"%s_variables"
+					],
+					"inputsInline": true,
+					"previousStatement": null,
+					"nextStatement": null,
+					"colour": "%s",
+					"mutator": "variable_entity_input"
+				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.set_var"),
+				L10N.t("blockly.block.set_to"), variableType.getBlocklyVariableType(), variableType.getName(),
+				variableType.getColor());
 	}
 
 	public static String customDependencyBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "custom_dependency_%s",
-				"message0": "%%1",
-				"args0": [
-					{
-						"type": "field_input",
-						"name": "NAME",
-						"text": "dependencyName"
-					}
-				],
-				"output": "%s",
-				"colour": "%s"
-			}]);""".formatted(variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "custom_dependency_%s",
+					"message0": "%%1",
+					"args0": [
+						{
+							"type": "field_input",
+							"name": "NAME",
+							"text": "dependencyName"
+						}
+					],
+					"output": "%s",
+					"colour": "%s"
+				}]);""".formatted(variableType.getName(), variableType.getBlocklyVariableType(),
+				variableType.getColor());
 	}
 
 	public static String procedureReturnValueBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "procedure_retval_%s",
-				"message0": "%s",
-				"extensions": [
-					"procedure_retval_%s"
-				],
-				"output": "%s",
-				"inputsInline": true,
-				"colour": "%s"
-			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"), variableType.getName(),
-						variableType.getBlocklyVariableType(), variableType.getColor());
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "procedure_retval_%s",
+					"message0": "%s",
+					"extensions": [
+						"procedure_retval_%s"
+					],
+					"output": "%s",
+					"inputsInline": true,
+					"colour": "%s"
+				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"),
+				variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	// Same as the "Procedure return value" block, but with the NULL icon at the beginning
 	public static String nullableProcedureReturnValueBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "procedure_retval_%s",
-				"message0": "%%1 %s",
-				"args0": [
-					{
-						"type": "field_image",
-						"src": "./res/null.png",
-						"width": 8,
-						"height": 24
-					}
-				],
-				"extensions": [
-					"procedure_retval_%s"
-				],
-				"output": "%s",
-				"inputsInline": true,
-				"colour": "%s"
-			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"), variableType.getName(),
-				variableType.getBlocklyVariableType(), variableType.getColor());
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "procedure_retval_%s",
+					"message0": "%%1 %s",
+					"args0": [
+						{
+							"type": "field_image",
+							"src": "./res/null.png",
+							"width": 8,
+							"height": 24
+						}
+					],
+					"extensions": [
+						"procedure_retval_%s"
+					],
+					"output": "%s",
+					"inputsInline": true,
+					"colour": "%s"
+				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"),
+				variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	public static String returnBlock(VariableType variableType) {
 		return """
-			Blockly.defineBlocksWithJsonArray([{
-				"type": "return_%s",
-				"message0": "%s %%1",
-				"args0": [
-					{
-						"type": "input_value",
-						"name": "return",
-						"check": "%s"
-					}
-				],
-				"previousStatement": null,
-				"colour": "%s"
-			}]);""".formatted(variableType.getName(), L10N.t("blockly.block.return"),
-					variableType.getBlocklyVariableType(), variableType.getColor());
+				Blockly.defineBlocksWithJsonArray([{
+					"type": "return_%s",
+					"message0": "%s %%1",
+					"args0": [
+						{
+							"type": "input_value",
+							"name": "return",
+							"check": "%s"
+						}
+					],
+					"previousStatement": null,
+					"colour": "%s"
+				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.return"),
+				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 }

@@ -40,16 +40,15 @@ public class ModElementTypeLoader {
 		ModElementType.BLOCK = register(
 				new ModElementType<>("block", 'b', BaseType.BLOCK, RecipeType.BLOCK, BlockGUI::new, Block.class));
 		ModElementType.COMMAND = register(
-				new ModElementType<>("command", 'c', BaseType.COMMAND, RecipeType.NONE, CommandGUI::new,
-						Command.class));
+				new ModElementType<>("command", 'c', BaseType.OTHER, RecipeType.NONE, CommandGUI::new, Command.class));
 		ModElementType.DIMENSION = register(
-				new ModElementType<>("dimension", 'd', BaseType.DIMENSION, RecipeType.ITEM, DimensionGUI::new,
+				new ModElementType<>("dimension", 'd', BaseType.OTHER, RecipeType.ITEM, DimensionGUI::new,
 						Dimension.class));
 		ModElementType.CODE = register(
 				new ModElementType<>("code", null, BaseType.OTHER, RecipeType.NONE, CustomElementGUI::new,
 						CustomElement.class));
 		ModElementType.ENCHANTMENT = register(
-				new ModElementType<>("enchantment", 'm', BaseType.ENCHANTMENT, RecipeType.NONE, EnchantmentGUI::new,
+				new ModElementType<>("enchantment", 'm', BaseType.OTHER, RecipeType.NONE, EnchantmentGUI::new,
 						Enchantment.class));
 		ModElementType.FLUID = register(
 				new ModElementType<>("fluid", 'u', BaseType.BLOCK, RecipeType.BUCKET, FluidGUI::new, Fluid.class));
@@ -85,14 +84,14 @@ public class ModElementTypeLoader {
 				new ModElementType<>("painting", null, BaseType.OTHER, RecipeType.NONE, PaintingGUI::new,
 						Painting.class));
 		ModElementType.PARTICLE = register(
-				new ModElementType<>("particle", 'y', BaseType.PARTICLE, RecipeType.NONE, ParticleGUI::new,
+				new ModElementType<>("particle", 'y', BaseType.OTHER, RecipeType.NONE, ParticleGUI::new,
 						Particle.class));
 		ModElementType.PLANT = register(
 				new ModElementType<>("plant", 'n', BaseType.BLOCK, RecipeType.BLOCK, PlantGUI::new, Plant.class));
 		ModElementType.POTION = register(
-				new ModElementType<>("potion", 'z', BaseType.POTION, RecipeType.NONE, PotionGUI::new, Potion.class));
+				new ModElementType<>("potion", 'z', BaseType.OTHER, RecipeType.NONE, PotionGUI::new, Potion.class));
 		ModElementType.POTIONEFFECT = register(
-				new ModElementType<>("potioneffect", null, BaseType.POTIONEFFECT, RecipeType.NONE, PotionEffectGUI::new,
+				new ModElementType<>("potioneffect", null, BaseType.OTHER, RecipeType.NONE, PotionEffectGUI::new,
 						PotionEffect.class));
 		ModElementType.PROCEDURE = register(
 				new ModElementType<>("procedure", 'p', BaseType.OTHER, RecipeType.NONE, ProcedureGUI::new,
@@ -106,7 +105,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("structure", 's', BaseType.FEATURE, RecipeType.NONE, StructureGenGUI::new,
 						Structure.class));
 		ModElementType.TAB = register(
-				new ModElementType<>("tab", 'w', BaseType.TAB, RecipeType.NONE, TabGUI::new, Tab.class));
+				new ModElementType<>("tab", 'w', BaseType.OTHER, RecipeType.NONE, TabGUI::new, Tab.class));
 		ModElementType.TAG = register(
 				new ModElementType<>("tag", 'j', BaseType.DATAPACK, RecipeType.NONE, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(

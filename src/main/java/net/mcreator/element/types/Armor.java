@@ -27,6 +27,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
@@ -123,13 +124,13 @@ import java.util.Set;
 	@Override public BufferedImage generateModElementPicture() {
 		ArrayList<File> armorPieces = new ArrayList<>();
 		if (enableHelmet)
-			armorPieces.add(getModElement().getFolderManager().getItemTextureFile(textureHelmet));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureHelmet, TextureType.ITEM));
 		if (enableBody)
-			armorPieces.add(getModElement().getFolderManager().getItemTextureFile(textureBody));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBody, TextureType.ITEM));
 		if (enableLeggings)
-			armorPieces.add(getModElement().getFolderManager().getItemTextureFile(textureLeggings));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureLeggings, TextureType.ITEM));
 		if (enableBoots)
-			armorPieces.add(getModElement().getFolderManager().getItemTextureFile(textureBoots));
+			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBoots, TextureType.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
