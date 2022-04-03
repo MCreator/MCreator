@@ -1,3 +1,2 @@
-If this option is checked, the item won't be dropped by dispensers with default action, but will call the
-"${l10n.t("elementgui.item.dispense_success_condition")}" and "${l10n.t("elementgui.item.dispense_result_itemstack")}"
-procedures instead.
+Если флажок установлен, раздатчик не выбросит данный предмет, а вызовет процедуры
+"${l10n.t("elementgui.item.dispense_success_condition")}" и "${l10n.t("elementgui.item.dispense_result_itemstack")}".

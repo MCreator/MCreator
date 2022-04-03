@@ -1,5 +1,4 @@
-This procedure determines what happens to the item after attempting at being dispensed. 
-If nothing is selected or the selected procedure does not return itemstack, the current itemstack
-used for dispensing will be shrank in size by 1 in case of dispense success.
+Эта процедура определяет, что произойдёт с предметом при попытке его раздачи. Если ничего не выбрано либо указанная
+процедура не возвращает предмет, количество предметов в изначальной стопке в случае успешной раздачи уменьшится на 1.
 
-You can use this procedure to consume the item, damage it, or replace it with another item.
+Можно использовать эту процедуру для использования, повреждения предмета или замены его другим.

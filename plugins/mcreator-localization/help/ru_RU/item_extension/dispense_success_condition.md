@@ -1,4 +1,4 @@
-This condition determines if dispense is completes. If the condition fails, the dispenser will play the fail effect.
+Задаёт условие успешной раздачи. Если оно не удовлетворяется, раздачи не прозойдёт.
 
-The value of this procedure is passed to "${l10n.t("elementgui.item.dispense_result_itemstack")}"
-as the "success" dependency.
+Возвращаемое значение указанного условия передаётся процедуре "${l10n.t("elementgui.item.dispense_result_itemstack")}"
+как логическая переменная "success".

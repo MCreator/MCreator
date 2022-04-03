@@ -1,10 +1,11 @@
-Burn Time indicates how many ticks a given fuel will last. 
+Время сгорания указывает, сколько тиков будет гореть это топливо.
 
-Coal takes 80 seconds to completely burn away and so it is 1600 ticks. (The default setting) This is just enough to smelt 8 items. This means that 20 ticks are 1 second of burning time.
+Углю нужно 80 секунд (1600 тиков - стандартное значение), чтобы сгореть дотла. Этого хватает, чтобы переплавить 8
+предметов. То есть, для переплавки одного предмета требуется 10 секунд.
 
-To measure how many ticks you need to use, use this equation: 
+Для расчёта желаемого времени сгорания используйте следующее уравнение:
 
-`#of ticks needed = #of items you want the fuel to smelt * 20`
+`#число тиков = #число переплавляемых предметов * 200`
 
-Click [here](https://mcreator.net/wiki/burn-time-fuels) for a list of burn times of commonly used items for smelting in Minecraft.
-
+Кликните [здесь](https://mcreator.net/wiki/burn-time-fuels), чтобы узнать время сгорания некоторых "ванильных"
+предметов.
