@@ -1,4 +1,4 @@
-<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing pitchType="none">
+<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing pitchType="wall">
     return <#if negativeBoxes?size != 0>VoxelShapes.combineAndSimplify(</#if>
     VoxelShapes.or(
     <#list positiveBoxes as box>
@@ -15,12 +15,12 @@
     <#if enablePitch>
         switch ((AttachFace) state.get(FACE)) {
             case FLOOR:
-            default:
                 <@makeBoundingBox positiveBoxes negativeBoxes noOffset facing "floor"/>
-            case WALL:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset facing "wall"/>
             case CEILING:
                 <@makeBoundingBox positiveBoxes negativeBoxes noOffset facing "ceiling"/>
+            case WALL:
+            default:
+                <@makeBoundingBox positiveBoxes negativeBoxes noOffset facing "wall"/>
         }
     <#else>
         <@makeBoundingBox positiveBoxes negativeBoxes noOffset facing/>
@@ -65,32 +65,26 @@
 <#macro makeCuboid box facing pitchType>
     <#if facing == "south">
         <#if pitchType == "floor">
-            makeCuboidShape(${16 - box.mx}, ${box.my}, ${16 - box.mz}, ${16 - box.Mx}, ${box.My}, ${16 - box.Mz})
-        <#elseif pitchType == "wall">
             makeCuboidShape(${16 - box.mx}, ${16 - box.mz}, ${16 - box.My}, ${16 - box.Mx}, ${16 - box.Mz}, ${16 - box.my})
         <#elseif pitchType == "ceiling">
-            makeCuboidShape(${16 - box.mx}, ${16 - box.My}, ${box.Mz}, ${16 - box.Mx}, ${16 - box.my}, ${box.mz})
-        <#else>
+            makeCuboidShape(${16 - box.mx}, ${box.mz}, ${box.My}, ${16 - box.Mx}, ${box.Mz}, ${box.my})
+        <#elseif pitchType == "wall">
             makeCuboidShape(${16 - box.mx}, ${box.my}, ${16 - box.mz}, ${16 - box.Mx}, ${box.My}, ${16 - box.Mz})
         </#if>
     <#elseif facing == "east">
         <#if pitchType == "floor">
-            makeCuboidShape(${16 - box.mz}, ${box.my}, ${box.mx}, ${16 - box.Mz}, ${box.My}, ${box.Mx})
-        <#elseif pitchType == "wall">
             makeCuboidShape(${16 - box.My}, ${16 - box.mz}, ${box.mx}, ${16 - box.my}, ${16 - box.Mz}, ${box.Mx})
         <#elseif pitchType == "ceiling">
-            makeCuboidShape(${box.Mz}, ${16 - box.My}, ${box.mx}, ${box.mz}, ${16 - box.my}, ${box.Mx})
-        <#else>
+            makeCuboidShape(${box.My}, ${box.mz}, ${box.mx}, ${box.my}, ${box.Mz}, ${box.Mx})
+        <#elseif pitchType == "wall">
             makeCuboidShape(${16 - box.mz}, ${box.my}, ${box.mx}, ${16 - box.Mz}, ${box.My}, ${box.Mx})
         </#if>
     <#elseif facing == "west">
         <#if pitchType == "floor">
-            makeCuboidShape(${box.mz}, ${box.my}, ${16 - box.mx}, ${box.Mz}, ${box.My}, ${16 - box.Mx})
-        <#elseif pitchType == "wall">
             makeCuboidShape(${box.my}, ${16 - box.Mz}, ${16 - box.mx}, ${box.My}, ${16 - box.mz}, ${16 - box.Mx})
         <#elseif pitchType == "ceiling">
-            makeCuboidShape(${16 - box.Mz}, ${16 - box.My}, ${16 - box.mx}, ${16 - box.mz}, ${16 - box.my}, ${16 - box.Mx})
-        <#else>
+            makeCuboidShape(${16 - box.my}, ${box.Mz}, ${16 - box.mx}, ${16 - box.My}, ${box.mz}, ${16 - box.Mx})
+        <#elseif pitchType == "wall">
             makeCuboidShape(${box.mz}, ${box.my}, ${16 - box.mx}, ${box.Mz}, ${box.My}, ${16 - box.Mx})
         </#if>
     <#elseif facing == "up">
@@ -101,12 +95,10 @@
         makeCuboidShape(${box.my}, ${box.mz}, ${box.mx}, ${box.My}, ${box.Mz}, ${box.Mx})
     <#else>
         <#if pitchType == "floor">
-            makeCuboidShape(${box.mx}, ${box.my}, ${box.mz}, ${box.Mx}, ${box.My}, ${box.Mz})
-        <#elseif pitchType == "wall">
             makeCuboidShape(${box.mx}, ${16 - box.Mz}, ${box.my}, ${box.Mx}, ${16 - box.mz}, ${box.My})
         <#elseif pitchType == "ceiling">
-            makeCuboidShape(${box.mx}, ${16 - box.My}, ${16 - box.Mz}, ${box.Mx}, ${16 - box.my}, ${16 - box.mz})
-        <#else>
+            makeCuboidShape(${box.mx}, ${box.Mz}, ${16 - box.my}, ${box.Mx}, ${box.mz}, ${16 - box.My})
+        <#elseif pitchType == "wall">
             makeCuboidShape(${box.mx}, ${box.my}, ${box.mz}, ${box.Mx}, ${box.My}, ${box.Mz})
         </#if>
     </#if>

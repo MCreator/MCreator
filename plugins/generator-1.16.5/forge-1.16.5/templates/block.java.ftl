@@ -154,8 +154,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 			<#elseif data.blockBase?has_content>
 				${data.blockBase}Block
-			<#elseif data.enablePitch>
-				HorizontalFaceBlock
 			<#else>
 				Block
 			</#if>
@@ -164,7 +162,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 			<#if data.enablePitch>
-			public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
+			public static final EnumProperty<AttachFace> FACE = HorizontalFaceBlock.FACE;
 			</#if>
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
@@ -243,7 +241,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                                     <#if data.rotationMode == 1 || data.rotationMode == 3>
                                     .with(FACING, Direction.NORTH)
                                         <#if data.enablePitch>
-                                        .with(FACE, AttachFace.FLOOR)
+                                        .with(FACE, AttachFace.WALL)
                                         </#if>
                                     <#elseif data.rotationMode == 2 || data.rotationMode == 4>
                                     .with(FACING, Direction.NORTH)
@@ -344,15 +342,21 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.rotationMode != 0>
+		<#if data.rotationMode != 0 || data.isWaterloggable>
 		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+			<#assign props = []>
 			<#if data.rotationMode == 5>
-				builder.add(AXIS
-			<#else>
-				builder.add(FACING
-				<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>, FACE</#if>
+				<#assign props += ["AXIS"]>
+			<#elseif data.rotationMode != 0>
+				<#assign props += ["FACING"]>
+				<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
+					<#assign props += ["FACE"]>
+				</#if>
 			</#if>
-			<#if data.isWaterloggable>, WATERLOGGED</#if>);
+			<#if data.isWaterloggable>
+				<#assign props += ["WATERLOGGED"]>
+			</#if>
+			builder.add(${props?join(", ")});
    		}
 
 		<#if data.rotationMode == 1 && data.enablePitch>
@@ -366,19 +370,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			<#if data.rotationMode != 5>
 			public BlockState rotate(BlockState state, Rotation rot) {
-				<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
-					return state.with(FACING, rot.rotate(super.getFacing(state)));
-				<#else>
-					return state.with(FACING, rot.rotate(state.get(FACING)));
-				</#if>
+				return state.with(FACING, rot.rotate(state.get(FACING)));
 			}
 
 			public BlockState mirror(BlockState state, Mirror mirrorIn) {
-				<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
-					return state.rotate(mirrorIn.toRotation(super.getFacing(state)));
-				<#else>
-					return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-				</#if>
+				return state.rotate(mirrorIn.toRotation(state.get(FACING)));
 			}
    			<#else>
 			@Override public BlockState rotate(BlockState state, Rotation rot) {
@@ -403,12 +399,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             </#if>
             <#if data.isWaterloggable>
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-            </#if>;
+            </#if>
 			<#if data.rotationMode != 3>
 			return this.getDefaultState()
 			        <#if data.rotationMode == 1>
 			            <#if data.enablePitch>
-			            .with(FACE, faceForDirection(context.getNearestLookingDirection()))
+			            .with(FACE, faceForDirection(context.getNearestLookingDirection().getOpposite()))
 			            </#if>
 			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
 			        <#elseif data.rotationMode == 2>

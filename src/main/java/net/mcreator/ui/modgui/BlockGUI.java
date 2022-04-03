@@ -580,8 +580,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
-		rotationMode.addActionListener(e -> enablePitch.setEnabled(
-				rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3));
+		rotationMode.addActionListener(e -> {
+			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
+			if (!enablePitch.isEnabled())
+				enablePitch.setSelected(false);
+		});
 
 		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
