@@ -124,37 +124,37 @@ public class BlocklyJavascriptBridge {
 	/**
 	 * Common method to open an entry selector of either data list entries or strings
 	 *
-	 * @param type The type of selector to open
+	 * @param type     The type of selector to open
 	 * @param callback The Javascript object that passes the "value,readableName" pair to the Blockly editor
 	 */
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, JSObject callback) {
 		String retval = switch (type) {
-			case "entity" -> openDataListEntrySelector(w -> ElementUtil.loadAllEntities(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "entity" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
-			case "biome" -> openDataListEntrySelector(w -> ElementUtil.loadAllBiomes(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "biome" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
-			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds,
-					L10N.t("dialog.selector.sound.message"), L10N.t("dialog.selector.sound.title"));
-			case "effect" -> openDataListEntrySelector(w -> ElementUtil.loadAllPotionEffects(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, L10N.t("dialog.selector.sound.message"),
+					L10N.t("dialog.selector.sound.title"));
+			case "effect" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllPotionEffects(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.potion_effect.message"), L10N.t("dialog.selector.potion_effect.title"));
-			case "potion" -> openDataListEntrySelector(w -> ElementUtil.loadAllPotions(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "potion" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllPotions(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.potion.message"), L10N.t("dialog.selector.potion.title"));
-			case "achievement" -> openDataListEntrySelector(w -> ElementUtil.loadAllAchievements(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "achievement" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllAchievements(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.advancement.message"), L10N.t("dialog.selector.advancement.title"));
-			case "particle" -> openDataListEntrySelector(w -> ElementUtil.loadAllParticles(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "particle" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllParticles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.particle.message"), L10N.t("dialog.selector.particle.title"));
-			case "procedure" -> openStringEntrySelector(w -> w.getModElements().stream()
-					.filter(mel -> mel.getType() == ModElementType.PROCEDURE).map(ModElement::getName)
-							.toArray(String[]::new),
+			case "procedure" -> openStringEntrySelector(
+					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+							.map(ModElement::getName).toArray(String[]::new),
 					L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
-			case "enchantment" -> openDataListEntrySelector(w -> ElementUtil.loadAllEnchantments(w).stream()
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(),
+			case "enchantment" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllEnchantments(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.enchantment.message"), L10N.t("dialog.selector.enchantment.title"));
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
@@ -165,9 +165,10 @@ public class BlocklyJavascriptBridge {
 				}
 
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
-					yield openDataListEntrySelector(w -> DataListLoader.loadDataList(type).stream()
-									.filter(e -> e.isSupportedInWorkspace(w)).toList(),
-							L10N.t("dialog.selector." + type + ".message"), L10N.t("dialog.selector." + type + ".title"));
+					yield openDataListEntrySelector(
+							w -> DataListLoader.loadDataList(type).stream().filter(e -> e.isSupportedInWorkspace(w))
+									.toList(), L10N.t("dialog.selector." + type + ".message"),
+							L10N.t("dialog.selector." + type + ".title"));
 				}
 
 				yield "," + L10N.t("blockly.extension.data_list_selector.no_entry");
@@ -181,8 +182,8 @@ public class BlocklyJavascriptBridge {
 	 * Opens a data list selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the entries from a given workspace
-	 * @param message The message of the data list selector window
-	 * @param title The title of the data list selector window
+	 * @param message       The message of the data list selector window
+	 * @param title         The title of the data list selector window
 	 * @return A "value,readable name" pair, or the default entry if no entry was selected
 	 */
 	private String openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String message,
@@ -213,8 +214,8 @@ public class BlocklyJavascriptBridge {
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
-	 * @param message The message of the string selector window
-	 * @param title The title of the string selector window
+	 * @param message       The message of the string selector window
+	 * @param title         The title of the string selector window
 	 * @return A "value,value" pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String openStringEntrySelector(Function<Workspace, String[]> entryProvider, String message, String title) {
@@ -324,7 +325,7 @@ public class BlocklyJavascriptBridge {
 		case "dimension":
 			return ElementUtil.loadAllDimensions(workspace);
 		case "dimension_custom":
-			retval = workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == BaseType.DIMENSION)
+			retval = workspace.getModElements().stream().filter(mu -> mu.getType() == ModElementType.DIMENSION)
 					.map(mu -> "CUSTOM:" + mu.getName()).collect(Collectors.toList());
 			break;
 		case "material":
@@ -386,20 +387,21 @@ public class BlocklyJavascriptBridge {
 	 * Gets the readable name of a data list entry from the type of searchable selector
 	 *
 	 * @param value The value of the data list entry
-	 * @param type The type of the searchable selector
+	 * @param type  The type of the searchable selector
 	 * @return The readable name of the passed entry, or an empty string if it can't find a readable name
 	 */
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
 		String datalist;
 		switch (type) {
-			case "entity" -> datalist = "entities";
-			case "biome" -> datalist = "biomes";
-			default -> {
-				return "";
-			}
+		case "entity" -> datalist = "entities";
+		case "biome" -> datalist = "biomes";
+		default -> {
+			return "";
+		}
 		}
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
-				DataListLoader.loadDataMap(datalist).get(value).getReadableName() : "";
+				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :
+				"";
 	}
 
 	public void setJavaScriptEventListener(JavaScriptEventListener listener) {

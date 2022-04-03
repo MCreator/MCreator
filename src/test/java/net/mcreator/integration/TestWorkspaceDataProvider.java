@@ -410,6 +410,7 @@ public class TestWorkspaceDataProvider {
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
 			}
 			biome.spawnBiome = !_true;
+			biome.spawnInCaves = _true;
 			biome.spawnBiomeNether = !_true && emptyLists;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
@@ -1376,6 +1377,7 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
+			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 6;
 			block.frequencyOnChunk = 7;
 			block.minGenerateHeight = 21;

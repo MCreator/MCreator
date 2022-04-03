@@ -141,7 +141,8 @@ public class GeneratorStats {
 					generatorConfiguration.getVariableTypes().getSupportedVariableTypes().size()
 							== VariableTypeLoader.INSTANCE.getAllVariableTypes().stream()
 							.filter(e -> !e.isIgnoredByCoverage()).count() ?
-							CoverageStatus.FULL : CoverageStatus.PARTIAL);
+							CoverageStatus.FULL :
+							CoverageStatus.PARTIAL);
 		}
 
 		if (generatorConfiguration.getJavaModelsKey().equals("legacy")) {

@@ -233,17 +233,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
-		textureBottom = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureBottom = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
-		itemTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
+		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
-		particleTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
+		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
 		JPanel tintPanel = new JPanel(new GridLayout(1, 2, 0, 2));
