@@ -21,6 +21,8 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.dialogs.file.FileChooserType;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -63,7 +65,7 @@ public class TextureImportDialogs {
 		neno.add(L10N.label("dialog.textures_import.armor_part_two"));
 		neno.add(p2);
 		p1.addActionListener(event -> {
-			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, null, FileDialogs.FileChooserType.OPEN, false,
+			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, null, FileChooserType.OPEN, false,
 					new javax.swing.filechooser.FileFilter() {
 						@Override public boolean accept(File f) {
 							return (f.getName().toLowerCase(Locale.ENGLISH).endsWith(".png") && f.getName()
@@ -83,7 +85,7 @@ public class TextureImportDialogs {
 						f1.getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")) + " P1");
 		});
 		p2.addActionListener(event -> {
-			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, null, FileDialogs.FileChooserType.OPEN, false,
+			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, null, FileChooserType.OPEN, false,
 					new javax.swing.filechooser.FileFilter() {
 						@Override public boolean accept(File f) {
 							return (f.getName().toLowerCase(Locale.ENGLISH).endsWith(".png") && f.getName()
