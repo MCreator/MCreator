@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.component.filebrowser;
 
-import javafx.application.Platform;
+import net.mcreator.ui.component.util.ThreadUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,21 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @param <T> the return type of the callable
  */
-public class SynchronousJFXCaller<T> {
-	private final Callable<T> callable;
-
-	/**
-	 * Constructs a new caller that will execute the provided callable.
-	 * <p>
-	 * The callable is accessed from the JavaFX event thread, so it should either
-	 * be immutable or at least its state shouldn't be changed randomly while
-	 * the call() method is in progress.
-	 *
-	 * @param callable the action to execute on the JFX event thread
-	 */
-	public SynchronousJFXCaller(Callable<T> callable) {
-		this.callable = callable;
-	}
+public record SynchronousJFXCaller<T>(Callable<T> callable) {
 
 	/**
 	 * Executes the Callable.
@@ -95,10 +81,10 @@ public class SynchronousJFXCaller<T> {
 				// Wait until the Swing thread is blocked in setVisible():
 				modalityLatch.await();
 				// and unblock it:
-				SwingUtilities.invokeLater(() -> modalBlocker.setVisible(false));
+				ThreadUtil.runOnSwingThread(() -> modalBlocker.setVisible(false));
 			}
 		});
-		Platform.runLater(task);
+		ThreadUtil.runOnFxThread(task);
 		if (!taskStarted.await(startTimeout, startTimeoutUnit)) {
 			synchronized (taskStarted) {
 				// the last chance, it could have been started just now
@@ -113,7 +99,7 @@ public class SynchronousJFXCaller<T> {
 		// a trick to notify the task AFTER we have been blocked
 		// in setVisible()
 		// notify that we are ready to get the result:
-		SwingUtilities.invokeLater(modalityLatch::countDown);
+		ThreadUtil.runOnSwingThread(modalityLatch::countDown);
 		modalBlocker.setVisible(true); // blocks
 		modalBlocker.dispose(); // release resources
 		try {

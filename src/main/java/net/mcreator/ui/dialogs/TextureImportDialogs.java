@@ -22,6 +22,8 @@ import javafx.stage.FileChooser;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.dialogs.file.FileChooserType;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -64,7 +66,7 @@ public class TextureImportDialogs {
 		neno.add(L10N.label("dialog.textures_import.armor_part_two"));
 		neno.add(p2);
 		p1.addActionListener(event -> {
-			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, FileDialogs.FileChooserType.OPEN, false,
+			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false,
 					new FileChooser.ExtensionFilter("Armor layer 1 texture files", "*layer_1*.png"));
 			if (f1a != null && f1a.length > 0)
 				f1 = f1a[0];
@@ -75,7 +77,7 @@ public class TextureImportDialogs {
 						f1.getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")) + " P1");
 		});
 		p2.addActionListener(event -> {
-			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, FileDialogs.FileChooserType.OPEN, false,
+			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false,
 					new FileChooser.ExtensionFilter("Armor layer 2 texture files", "*layer_2*.png"));
 			if (f2a != null && f2a.length > 0)
 				f2 = f2a[0];
