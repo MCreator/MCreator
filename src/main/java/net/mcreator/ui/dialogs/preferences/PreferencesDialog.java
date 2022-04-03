@@ -201,7 +201,6 @@ public class PreferencesDialog extends MCreatorDialog {
 		cons.weighty = 1;
 		cons.insets = new Insets(5, 10, 15, 10);
 		sectionPanel.setOpaque(false);
-		sectionPanel.add(L10N.label("dialog.preferences.description", name, description), cons);
 		cons.insets = new Insets(5, 10, 5, 10);
 
 		Field[] fields = sectionField.getType().getFields();
@@ -216,7 +215,13 @@ public class PreferencesDialog extends MCreatorDialog {
 				LOG.info("Reflection error: " + e.getMessage());
 			}
 		}
-		preferences.add(new JScrollPane(PanelUtils.pullElementUp(sectionPanel)), name);
+
+		JComponent titlebar = L10N.label("dialog.preferences.description", name, description);
+		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
+
+		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
 	}
 
 	private void storePreferences() {
