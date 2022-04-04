@@ -361,6 +361,29 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 			builder.add(${props?join(", ")});
    		}
+		</#if>
+
+		<#if data.rotationMode != 0>
+			<#if data.rotationMode != 5>
+			public BlockState rotate(BlockState state, Rotation rot) {
+				return state.with(FACING, rot.rotate(state.get(FACING)));
+			}
+
+			public BlockState mirror(BlockState state, Mirror mirrorIn) {
+				return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+			}
+			<#else>
+			@Override public BlockState rotate(BlockState state, Rotation rot) {
+				if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
+					if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
+						return state.with(AXIS, Direction.Axis.Z);
+					} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
+						return state.with(AXIS, Direction.Axis.X);
+					}
+				}
+				return state;
+			}
+			</#if>
 
 		<#if data.rotationMode == 1 && data.enablePitch>
 		public AttachFace faceForDirection(Direction direction) {
@@ -371,32 +394,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.rotationMode != 5>
-		public BlockState rotate(BlockState state, Rotation rot) {
-			return state.with(FACING, rot.rotate(state.get(FACING)));
-		}
-
-		public BlockState mirror(BlockState state, Mirror mirrorIn) {
-			return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-		}
-		<#else>
-		@Override public BlockState rotate(BlockState state, Rotation rot) {
-			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-				if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
-					return state.with(AXIS, Direction.Axis.Z);
-				} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
-					return state.with(AXIS, Direction.Axis.X);
-				}
-			}
-			return state;
-		}
-		</#if>
-
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
-            <#if data.isWaterloggable>
-            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-            </#if>
+			<#if data.isWaterloggable>
+			boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+			</#if>
 			<#if data.rotationMode != 3>
 			return this.getDefaultState()
 			        <#if data.rotationMode == 1>
@@ -436,7 +438,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                     </#if>;
 			</#if>
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.placingCondition)>
 		@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {
