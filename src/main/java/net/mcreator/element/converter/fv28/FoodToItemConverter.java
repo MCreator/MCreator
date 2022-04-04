@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv27;
+package net.mcreator.element.converter.fv28;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -29,7 +29,6 @@ import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Item;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,6 +105,6 @@ public class FoodToItemConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 27;
+		return 28;
 	}
 }
