@@ -36,34 +36,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv27.screens;
+package net.mcreator.element.converter.fv28.screens;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Image;
-import net.mcreator.element.types.Overlay;
+import net.mcreator.element.types.GUI;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class OverlayTexturesConverter implements IConverter {
+public class GUITexturesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Overlay overlay = (Overlay) input;
+		GUI gui = (GUI) input;
 
-		if (overlay.baseTexture != null && !overlay.baseTexture.isEmpty()) {
-			FileIO.copyFile(workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture), TextureType.OTHER),
-					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture),
-									TextureType.SCREEN));
-		}
+		FileIO.copyFile(
+				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER),
+				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.SCREEN));
 
-		if (overlay.components != null && !overlay.components.isEmpty()) {
-			for (GUIComponent component : overlay.components) {
+		if (gui.components != null && !gui.components.isEmpty()) {
+			for (GUIComponent component : gui.components) {
 				if (component instanceof Image image) {
 					FileIO.copyFile(workspace.getFolderManager()
 									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image), TextureType.OTHER),
@@ -74,10 +70,10 @@ public class OverlayTexturesConverter implements IConverter {
 			}
 		}
 
-		return overlay;
+		return gui;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 27;
+		return 28;
 	}
 }

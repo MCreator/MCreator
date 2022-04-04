@@ -18,7 +18,7 @@
  */
 
 
-package net.mcreator.element.converter.fv27.entities;
+package net.mcreator.element.converter.fv28.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -70,6 +70,6 @@ public class ArmorTexturesConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 27;
+		return 28;
 	}
 }

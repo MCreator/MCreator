@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package net.mcreator.element.converter.fv27.entities;
+package net.mcreator.element.converter.fv28.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -50,6 +50,6 @@ public class EntityTexturesConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 27;
+		return 28;
 	}
 }
