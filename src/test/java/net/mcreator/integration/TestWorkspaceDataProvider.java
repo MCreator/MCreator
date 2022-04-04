@@ -123,69 +123,75 @@ public class TestWorkspaceDataProvider {
 			workspace.addVariableElement(sampleVariable1);
 
 			int idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("logic" + (idx++));
-				variable.setValue("true");
-				variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("logic" + (idx++));
+					variable.setValue("true");
+					variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("number" + (idx++));
-				variable.setValue("12");
-				variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("number" + (idx++));
+					variable.setValue("12");
+					variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("string" + (idx++));
-				variable.setValue("test");
-				variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("string" + (idx++));
+					variable.setValue("test");
+					variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("itemstack" + (idx++));
-				variable.setValue("ItemStack.EMPTY");
-				variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("itemstack" + (idx++));
+					variable.setValue("ItemStack.EMPTY");
+					variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("direction" + (idx++));
-				variable.setValue("UP");
-				variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("direction" + (idx++));
+					variable.setValue("UP");
+					variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("blockstate" + (idx++));
-				variable.setValue("UP");
-				variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("blockstate" + (idx++));
+					variable.setValue("UP");
+					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 		}
 
@@ -555,24 +561,27 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
-					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
-							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
-							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				});
+				for (VariableType.Scope scope : VariableType.Scope.values()) {
+					if (scope != VariableType.Scope.LOCAL) {
+						components.add(
+								new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+								"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:itemstack" + idx + ">", 100, 150,
+								"text3 <VAR:itemstack" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:direction" + idx + ">", 100, 150,
+								"text3 <VAR:direction" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+								"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+					}
+				}
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -596,15 +605,11 @@ public class TestWorkspaceDataProvider {
 			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
-			if (!emptyLists)
-				overlay.baseTexture = "test.png";
-			else
-				overlay.baseTexture = "";
-			if (_true) {
+			overlay.baseTexture = emptyLists ? "" : "test.png";
+			if (_true)
 				overlay.overlayTarget = "Ingame";
-			} else {
+			else
 				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataListAsStringArray("screens"));
-			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			GUI gui = new GUI(modElement);
@@ -629,24 +634,27 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
-					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
-							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
-							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				});
+				for (VariableType.Scope scope : VariableType.Scope.values()) {
+					if (scope != VariableType.Scope.LOCAL) {
+						components.add(
+								new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+								"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:itemstack" + idx + ">", 100, 150,
+								"text3 <VAR:itemstack" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:direction" + idx + ">", 100, 150,
+								"text3 <VAR:direction" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+								"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+					}
+				}
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -769,12 +777,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.deathSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			if (!emptyLists) {
-				livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			} else {
-				livingEntity.stepSound = new Sound(modElement.getWorkspace(), "");
-			}
+			livingEntity.stepSound = new Sound(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.spawnParticles = _true;
 			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
@@ -812,10 +816,8 @@ public class TestWorkspaceDataProvider {
 							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
 				}
 			}
-			// fallback
-			if (livingEntity.aixml == null) {
+			if (livingEntity.aixml == null) // fallback
 				livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
-			}
 			livingEntity.breedable = _true;
 			livingEntity.tameable = _true;
 			livingEntity.breedTriggerItems = new ArrayList<>();
@@ -1316,10 +1318,7 @@ public class TestWorkspaceDataProvider {
 			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
-			if (!emptyLists)
-				block.beaconColorModifier = Color.cyan;
-			else
-				block.beaconColorModifier = null;
+			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
 			block.breakHarvestLevel = 4;
 			block.spawnParticles = _true;
@@ -1381,7 +1380,7 @@ public class TestWorkspaceDataProvider {
 			block.frequencyOnChunk = 7;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
-			if (emptyLists) {
+			if (!emptyLists) {
 				block.onBlockAdded = new Procedure("procedure1");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
 				block.onTickUpdate = new Procedure("procedure3");
