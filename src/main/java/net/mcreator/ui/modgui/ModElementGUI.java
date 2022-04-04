@@ -562,14 +562,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected void beforeGeneratableElementGenerated() {
 		// we delete mod element list templates (if any) to prevent outdated mod files from being present
 		// in case size of a list have changed
-		Objects.requireNonNull(
-						modElement.getWorkspace().getGenerator().getModElementListTemplates(modElement, getElementFromGUI()))
-				.forEach(el -> {
-					for (int i = 0; i < el.listData().size(); i++) {
-						for (GeneratorTemplate generatorTemplate : el.templates().keySet())
-							new File(el.processTokens(generatorTemplate, i)).delete();
-					}
-				});
+		if (editingMode) {
+			Objects.requireNonNull(modElement.getWorkspace().getGenerator().getModElementListTemplates(modElement))
+					.forEach(el -> {
+						for (int i = 0; i < el.listData().size(); i++) {
+							for (GeneratorTemplate generatorTemplate : el.templates().keySet())
+								new File(el.processTokens(generatorTemplate, i)).delete();
+						}
+					});
+		}
 	}
 
 	protected void afterGeneratableElementStored() {

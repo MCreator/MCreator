@@ -2,8 +2,8 @@
 {
   "id": "${registryname}",
   "index": ${elementindex},
-  "name": "${owner.getModElement().getName()}",
-  "holder": "${name}",
+  "name": "${name}",
+  "type": "${owner.getModElement().getType()}",
   "value": "${element.getUnmappedValue()}"
 }
 <#-- @formatter:on -->

@@ -9,4 +9,4 @@ list_templates:
     forEach:
       - template: json/tag_element.json.ftl
         writer: json
-        name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@[getName()]_part.json"
+        name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@registryname_@[getName()]@elementindex.json"
