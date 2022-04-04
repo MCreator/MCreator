@@ -211,16 +211,16 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
 
-		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type"), true);
+		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
 		typeDialog.setSize(250, 125);
 		typeDialog.setLocationRelativeTo(null);
 
 		JPanel panel = new JPanel(new GridLayout(3, 1));
 
-		panel.add(PanelUtils.totalCenterInPanel(new JLabel(L10N.t("dialog.image_maker.texture_kind"))));
+		panel.add(PanelUtils.totalCenterInPanel(new JLabel(L10N.t("dialog.image_maker.texture_type.message"))));
 		panel.add(PanelUtils.totalCenterInPanel(types));
 
-		JButton ok = new JButton(L10N.t("dialog.image_maker.texture_type.ok"));
+		JButton ok = new JButton(L10N.t("dialog.image_maker.texture_type.select"));
 		ok.addActionListener(e -> {
 			typeDialog.setVisible(false);
 			TextureType textureType = (TextureType) types.getSelectedItem();
