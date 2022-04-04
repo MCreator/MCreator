@@ -50,9 +50,9 @@ public class FileDialogs {
 	}
 
 	private static File getBasicFileChooserDialog(Window f, FileChooserType type, String[] filters) {
-		File[] secleted = getFileChooserDialog(f, type, false, getFileFiltersForStringArray(filters));
-		if (secleted != null)
-			return secleted[0];
+		File[] selected = getFileChooserDialog(f, type, false, getFileFiltersForStringArray(filters));
+		if (selected != null && selected.length > 0)
+			return selected[0];
 		return null;
 	}
 

@@ -67,7 +67,7 @@ class NativeFileDialogs {
 			}
 		}
 
-		return null;
+		return new File[] {};
 	}
 
 	protected static File getWorkspaceDirectorySelectDialog(Window f, File file) {
