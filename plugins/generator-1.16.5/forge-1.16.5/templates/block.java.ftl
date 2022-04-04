@@ -157,7 +157,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#else>
 				Block
 			</#if>
-			<#if data.isWaterloggable> implements IWaterLoggable</#if> {
+			<#if data.isWaterloggable>
+				implements IWaterLoggable
+			</#if>
+	{
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -368,35 +371,29 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-			<#if data.rotationMode != 5>
-			public BlockState rotate(BlockState state, Rotation rot) {
-				return state.with(FACING, rot.rotate(state.get(FACING)));
-			}
+		<#if data.rotationMode != 5>
+		public BlockState rotate(BlockState state, Rotation rot) {
+			return state.with(FACING, rot.rotate(state.get(FACING)));
+		}
 
-			public BlockState mirror(BlockState state, Mirror mirrorIn) {
-				return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-			}
-   			<#else>
-			@Override public BlockState rotate(BlockState state, Rotation rot) {
-				if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-					if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
-						return state.with(AXIS, Direction.Axis.Z);
-					} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
-						return state.with(AXIS, Direction.Axis.X);
-					}
+		public BlockState mirror(BlockState state, Mirror mirrorIn) {
+			return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		}
+		<#else>
+		@Override public BlockState rotate(BlockState state, Rotation rot) {
+			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
+				if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
+					return state.with(AXIS, Direction.Axis.Z);
+				} else if ((Direction.Axis) state.get(AXIS) == Direction.Axis.Z) {
+					return state.with(AXIS, Direction.Axis.X);
 				}
-				return state;
 			}
-			</#if>
+			return state;
+		}
+		</#if>
 
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
-		    <#if data.rotationMode == 4>
-		    Direction facing = context.getFace();
-		    </#if>
-		    <#if data.rotationMode == 5>
-		    Direction.Axis axis = context.getFace().getAxis();
-            </#if>
             <#if data.isWaterloggable>
             boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
             </#if>
@@ -410,18 +407,18 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			        <#elseif data.rotationMode == 2>
 			        .with(FACING, context.getNearestLookingDirection().getOpposite())
                     <#elseif data.rotationMode == 4>
-			        .with(FACING, facing)
+			        .with(FACING, context.getFace())
                     <#elseif data.rotationMode == 5>
-                    .with(AXIS, axis)
+                    .with(AXIS, context.getFace().getAxis())
 			        </#if>
 			        <#if data.isWaterloggable>
 			        .with(WATERLOGGED, flag)
-			        </#if>
+			        </#if>;
 			<#elseif data.rotationMode == 3>
             if (context.getFace().getAxis() == Direction.Axis.Y)
                 return this.getDefaultState()
                         <#if data.enablePitch>
-                            .with(FACE, context.getFace() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+                            .with(FACE, context.getFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
                             .with(FACING, context.getPlacementHorizontalFacing())
                         <#else>
                             .with(FACING, Direction.NORTH)
@@ -433,11 +430,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                     <#if data.enablePitch>
                         .with(FACE, AttachFace.WALL)
                     </#if>
-                    .with(FACING, context.getFace())
+                    .with(FACING, context.getFace().getOpposite())
                     <#if data.isWaterloggable>
                     .with(WATERLOGGED, flag)
-                    </#if>
-			</#if>;
+                    </#if>;
+			</#if>
 		}
         </#if>
 
@@ -455,17 +452,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
         <#if data.isWaterloggable>
-            <#if data.rotationMode == 0>
-            @Override
-            public BlockState getStateForPlacement(BlockItemUseContext context) {
-            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-                return this.getDefaultState().with(WATERLOGGED, flag);
-            }
-            @Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-                builder.add(WATERLOGGED);
-            }
-            </#if>
-
         @Override public FluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
