@@ -40,6 +40,7 @@ import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
+import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv27.EffectTextureConverter;
 import net.mcreator.element.converter.fv27.ParticleTextureConverter;
 import net.mcreator.element.converter.fv27.entities.ArmorTexturesConverter;
@@ -78,7 +79,8 @@ public class ConverterRegistry {
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
-				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover()));
+				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
+				new ProcedureShootArrowFixer()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));

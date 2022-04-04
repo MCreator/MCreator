@@ -31,7 +31,6 @@ import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -332,10 +331,11 @@ public class BlocklyJavascriptBridge {
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
 		case "rangeditem":
-			retval = ListUtils.merge(Collections.singleton("Arrow"),
-					workspace.getModElements().stream().filter(var -> var.getType() == ModElementType.RANGEDITEM)
-							.map(ModElement::getName).collect(Collectors.toList()));
-			break;
+			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "throwableprojectile":
+			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "fireballprojectile":
+			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
 		}
@@ -374,6 +374,12 @@ public class BlocklyJavascriptBridge {
 			case "entity" -> ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
 			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+			case "rangeditem" -> ElementUtil.loadArrowProjectiles(workspace).stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "fireballprojectile" -> ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getReadableName)
+					.toArray(String[]::new);
+			case "throwableprojectile" -> ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
 		};

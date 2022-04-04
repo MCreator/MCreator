@@ -23,7 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.component;
+package net.mcreator.ui.dialogs.file;
 
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.dialogs.file.FileDialogs;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-public class FileListField extends JItemListField<File> {
-
-	public FileListField(MCreator window) {
-		super(window);
-	}
-
-	@Override protected List<File> getElementsToAdd() {
-		return Arrays.asList(FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".ogg" }));
-	}
-
+public enum FileChooserType {
+	SAVE, OPEN
 }
