@@ -36,6 +36,15 @@ import java.util.stream.Collectors;
 public class ElementUtil {
 
 	/**
+	 * Provides a predicate to check the type of data list entries
+	 * @param type The type that the entry has to match
+	 * @return A predicate that checks if the type matches the parameter
+	 */
+	public static Predicate<DataListEntry> typeMatches(String type) {
+		return e -> e.getType().equals(type);
+	}
+
+	/**
 	 * Loads all mod elements and all Minecraft elements (blocks and items), including elements
 	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 *
@@ -107,7 +116,7 @@ public class ElementUtil {
 						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
+						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
 						.toList());
 		return elements;
 	}
@@ -182,7 +191,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
+				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
 		return retval;
 	}
 
@@ -194,7 +203,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
+				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
 		return retval;
 	}
 
@@ -227,6 +236,21 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadStepSounds() {
 		return DataListLoader.loadDataList("stepsounds");
+	}
+
+	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.RANGEDITEM);
+
+		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
+		return retval;
+	}
+
+	public static List<DataListEntry> loadThrowableProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("throwable")).toList();
+	}
+
+	public static List<DataListEntry> loadFireballProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("fireball")).toList();
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {
