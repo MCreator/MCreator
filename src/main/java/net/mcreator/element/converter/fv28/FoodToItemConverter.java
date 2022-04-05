@@ -42,11 +42,10 @@ public class FoodToItemConverter implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		JsonObject food = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
-
-		Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
-
 		try {
+			Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
+
+			JsonObject food = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 			item.name = food.get("name").getAsString();
 			item.texture = food.get("texture").getAsString();
 			item.renderType = food.get("renderType").getAsInt();
@@ -97,11 +96,12 @@ public class FoodToItemConverter implements IConverter {
 			if (food.get("onDroppedByPlayer") != null)
 				item.onDroppedByPlayer = new Procedure(
 						food.get("onDroppedByPlayer").getAsJsonObject().get("name").getAsString());
+
+			return item;
 		} catch (Exception e) {
 			LOG.warn("Failed to update food to new format", e);
+			return null;
 		}
-
-		return item;
 	}
 
 	@Override public int getVersionConvertingTo() {
