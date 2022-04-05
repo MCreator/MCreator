@@ -332,10 +332,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
-		subpane2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		subpane2.setOpaque(false);
 
 		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 5,
@@ -395,11 +391,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
-
-		foodSubpane.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.item.food_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		foodProperties.add("Center", PanelUtils.totalCenterInPanel(foodSubpane));
 		foodProperties.setOpaque(false);
