@@ -25,7 +25,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -213,7 +213,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void duplicateSelectedFile() {
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
-			TextureImportDialogs.importTextureGeneral(workspacePanel.getMcreator(), file,
+			TextureImportDialogs.importSingleTexture(workspacePanel.getMcreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
 		}
 	}
@@ -247,8 +247,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			Arrays.stream(TextureType.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
-				workspacePanel.getMcreator().getFolderManager().getTexturesList(section)
-						.forEach(newfm::addElement);
+				workspacePanel.getMcreator().getFolderManager().getTexturesList(section).forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {
 					JList<File> list = mapLists.get(section.getID()).list();

@@ -414,7 +414,7 @@ public class WYSIWYGEditor extends JPanel {
 			importothertexture.setOpaque(false);
 			importothertexture.setMargin(new Insets(0, 0, 0, 0));
 			importothertexture.addActionListener(e -> {
-				TextureImportDialogs.importOtherTextures(mcreator);
+				TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
 				mcreator.getFolderManager().getTexturesList(TextureType.OTHER)

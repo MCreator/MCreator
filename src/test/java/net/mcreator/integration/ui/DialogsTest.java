@@ -29,11 +29,13 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.dialogs.*;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -124,11 +126,15 @@ public class DialogsTest {
 
 	@Test public void testTextureDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importArmor(mcreator));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-				TextureType.BLOCK));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-				TextureType.ITEM));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importOtherTextures(mcreator));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> TextureImportDialogs.importSingleTexture(mcreator, new File(""),
+						L10N.t("workspace.textures.select_texture_type")));
+		for (TextureType type : TextureType.values()) {
+			if (type != TextureType.ARMOR) {
+				UITestUtil.waitUntilWindowIsOpen(mcreator,
+						() -> TextureImportDialogs.importMultipleTextures(mcreator, type));
+			}
+		}
 	}
 
 	@Test public void testToolsDialogs() throws Throwable {
@@ -182,11 +188,9 @@ public class DialogsTest {
 
 	@Test public void testBlockItemTextureSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, TextureType.BLOCK).setVisible(
-						true));
+				() -> new BlockItemTextureSelector(mcreator, TextureType.BLOCK).setVisible(true));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, TextureType.ITEM).setVisible(
-						true));
+				() -> new BlockItemTextureSelector(mcreator, TextureType.ITEM).setVisible(true));
 	}
 
 }

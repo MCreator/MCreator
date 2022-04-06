@@ -135,7 +135,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
-			TextureImportDialogs.importTexturesBlockOrItem(mcreator, type);
+			TextureImportDialogs.importMultipleTextures(mcreator, type);
 			List<File> block1 = mcreator.getFolderManager().getTexturesList(type);
 			model.removeAllElements();
 			block1.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
