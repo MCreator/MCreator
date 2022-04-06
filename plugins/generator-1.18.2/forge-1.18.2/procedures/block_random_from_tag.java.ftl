@@ -1,3 +1,2 @@
 <#include "mcelements.ftl">
-(Registry.BLOCK.getTag(BlockTags.create(${toResourceLocation(input$tag)}))
-    .flatMap(holderSet -> holderSet.getRandomElement(new Random())).map(Holder::value).orElseGet(() -> Blocks.AIR))
+(ForgeRegistries.BLOCKS.tags().getTag(BlockTags.create(${toResourceLocation(input$tag)})).getRandomElement(new Random()).orElseGet(() -> Blocks.AIR))
