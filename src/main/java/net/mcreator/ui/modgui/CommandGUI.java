@@ -70,25 +70,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 		super.finalizeGUI();
 	}
 
-	private void regenerateArgs() {
-		BlocklyToJava blocklyToJava;
-		try {
-			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "args_start", blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(new BlocklyBlockCodeGenerator(externalBlocks,
-							mcreator.getGeneratorStats().getGeneratorCmdArgs())));
-		} catch (TemplateGeneratorException e) {
-			return;
-		}
-
-		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
-
-		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			hasErrors = compileNotesArrayList.stream()
-					.anyMatch(note -> note.type() == BlocklyCompileNote.Type.ERROR);
-		});
-	}
-
 	@Override protected void initGUI() {
 		ComponentUtils.deriveFont(commandName, 16);
 
@@ -101,11 +82,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
 				L10N.label("elementgui.command.permission_level")));
 		enderpanel.add(permissionLevel);
-
-		enderpanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.common.page_properties"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		enderpanel.setOpaque(false);
 
@@ -130,8 +106,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		args.setOpaque(false);
 
 		commandName.setValidator(
@@ -140,11 +116,30 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		page1group.addValidationElement(commandName);
 
-		addPage(PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(enderpanel), args));
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel),
+				PanelUtils.maxMargin(args, 10, true, true, true, true)));
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
 		}
+	}
+
+	private void regenerateArgs() {
+		BlocklyToJava blocklyToJava;
+		try {
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "args_start", blocklyPanel.getXML(), null,
+					new ProceduralBlockCodeGenerator(new BlocklyBlockCodeGenerator(externalBlocks,
+							mcreator.getGeneratorStats().getGeneratorCmdArgs())));
+		} catch (TemplateGeneratorException e) {
+			return;
+		}
+
+		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
+
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			hasErrors = compileNotesArrayList.stream().anyMatch(note -> note.type() == BlocklyCompileNote.Type.ERROR);
+		});
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
