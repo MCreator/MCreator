@@ -1613,11 +1613,11 @@ public class TestWorkspaceDataProvider {
 								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 						entry.price2 = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.sale1 = new MItemBlock(modElement.getWorkspace(),
+						entry.sale = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
-						entry.countSale1 = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.countSale = new int[] { 8, 13, 23, 60 }[valueIndex];
 						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
 						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
 						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];

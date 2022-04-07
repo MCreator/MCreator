@@ -47,7 +47,7 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
                 <#if entry.price2 != "">
                     ${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},
                 </#if>
-                ${mappedMCItemToItemStackCode(entry.sale1, entry.countSale1)}, ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f));
+                ${mappedMCItemToItemStackCode(entry.sale, entry.countSale)}, ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f));
                 </#list>
             }
         </#list>
