@@ -83,7 +83,7 @@ public class JVillagerTradeEntry extends JPanel {
 
 		line1.add(new JEmptyBox(15, 5));
 
-		line1.add(L10N.label("elementgui.villager_trade.sale1"));
+		line1.add(L10N.label("elementgui.villager_trade.sale"));
 		line1.add(sale1);
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countSale1);
