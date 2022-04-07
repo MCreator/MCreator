@@ -79,13 +79,14 @@ class NativeFileDialogs {
 		});
 
 		File selectedFile = chooser.showDialog();
+
 		if (selectedFile == null)
 			return null;
 
 		if (FileDialogs.isWorkspaceFolderInvalid(f, selectedFile))
 			return getWorkspaceDirectorySelectDialog(f, selectedFile.getParentFile());
 
-		return chooser.showDialog();
+		return selectedFile;
 	}
 
 }
