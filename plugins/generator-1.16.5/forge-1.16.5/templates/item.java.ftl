@@ -121,7 +121,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			setRegistryName("${registryname}");
 		}
 
-        <#if data.animation != "eat">
+        <#if (data.animation != "eat" && data.isFood) || (data.animation != "none" && !data.isFood)>
             @Override public UseAction getUseAction(ItemStack itemstack) {
                 return UseAction.${data.animation?upper_case};
             }
@@ -348,7 +348,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
         }
         </#if>
 
-        <#if data.isFood && (hasProcedure(data.onFinishUsingItem) || (data.resultItem?? && !data.resultItem.isEmpty()))>
+        <#if (hasProcedure(data.onFinishUsingItem) || (data.resultItem?? && !data.resultItem.isEmpty()))>
             @Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
         	    ItemStack retval =
         		    <#if data.resultItem?? && !data.resultItem.isEmpty()>
@@ -363,7 +363,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
         			<@procedureOBJToCode data.onFinishUsingItem/>
         		</#if>
 
-        		<#if data.resultItem?? && !data.resultItem.isEmpty()>
+        		<#if data.isFood && data.resultItem?? && !data.resultItem.isEmpty()>
         			if (itemstack.isEmpty()) {
         				return retval;
         			} else {

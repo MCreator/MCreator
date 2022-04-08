@@ -65,7 +65,7 @@ import javax.annotation.Nullable;
 		);
 	}
 
-	<#if data.animation != "eat">
+	<#if (data.animation != "eat" && data.isFood) || (data.animation != "none" && !data.isFood)>
         @Override public UseAnim getUseAnimation(ItemStack itemstack) {
             return UseAnim.${data.animation?upper_case};
         }
@@ -214,7 +214,7 @@ import javax.annotation.Nullable;
         		<@procedureOBJToCode data.onFinishUsingItem/>
         	</#if>
 
-        	<#if data.resultItem?? && !data.resultItem.isEmpty()>
+        	<#if data.isFood && data.resultItem?? && !data.resultItem.isEmpty()>
         		if (itemstack.isEmpty()) {
         			return retval;
         		} else {
