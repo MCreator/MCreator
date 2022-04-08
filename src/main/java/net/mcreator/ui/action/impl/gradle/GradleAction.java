@@ -22,6 +22,7 @@ import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 
@@ -32,7 +33,11 @@ public class GradleAction extends BasicAction {
 	private String prevTooltip;
 
 	public GradleAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		super(actionRegistry, name, listener);
+		this(actionRegistry, name, listener, null);
+	}
+
+	public GradleAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
+		super(actionRegistry, name, listener, accelerator);
 		actionRegistry.getMCreator().getGradleConsole().addGradleStateListener(new GradleStateListener() {
 			@Override public void taskStarted(String taskName) {
 				setEnabled(false);

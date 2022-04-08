@@ -21,13 +21,14 @@ package net.mcreator.ui.action.impl.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 
 import java.awt.event.ActionListener;
 
 public class TextureAction extends BasicAction {
 
-	public TextureAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		super(actionRegistry, name, listener);
+	public TextureAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
+		super(actionRegistry, name, listener, accelerator);
 	}
 
 	@Override public boolean isEnabled() {

@@ -21,6 +21,7 @@ package net.mcreator.ui.action.impl.gradle;
 import net.mcreator.io.FileIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MinecraftOptionsUtils;
 import net.mcreator.util.DesktopUtils;
@@ -28,8 +29,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.Properties;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_ALT;
 
 public class RunServerAction extends GradleAction {
 
@@ -120,7 +124,7 @@ public class RunServerAction extends GradleAction {
 					actionRegistry.getMCreator().getGradleConsole().markReady();
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("run_server_and_client", KeyEvent.VK_S, CTRL_ALT));
 	}
 
 	@Override public boolean isEnabled() {

@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.ResizeCanvasTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
+
 public class ResizeCanvasToolAction extends ToolChangeAction {
 	public ResizeCanvasToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.resizecanvas"),
-				L10N.t("dialog.image_maker.tools.types.resizecanvas_description"), ResizeCanvasTool.class);
+				L10N.t("dialog.image_maker.tools.types.resizecanvas_description"), ResizeCanvasTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.resizecanvas", KeyEvent.VK_R, CTRL_SHIFT));
 		setIcon(UIRES.get("img_editor.resizecanvas"));
 	}
 }

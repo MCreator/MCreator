@@ -34,6 +34,7 @@ import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.action.accelerators.AcceleratorsManager;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
@@ -172,6 +173,8 @@ public final class MCreatorApplication {
 		}
 
 		splashScreen.setProgress(93, "Initiating user session");
+
+		AcceleratorsManager.initAccelerators();
 
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);

@@ -21,15 +21,21 @@ package net.mcreator.ui.action.impl.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
 
 public class ImportSoundAction extends BasicAction {
 
 	public ImportSoundAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.resources.import_sound"),
-				actionEvent -> SoundElementDialog.importSound(actionRegistry.getMCreator()));
+				actionEvent -> SoundElementDialog.importSound(actionRegistry.getMCreator()),
+				new Accelerator.ActionAccelerator("workspace.resources.import_sound", KeyEvent.VK_6, CTRL_SHIFT));
 
 		setIcon(UIRES.get("16px.importsound"));
 	}

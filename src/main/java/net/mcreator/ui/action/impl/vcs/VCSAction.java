@@ -20,6 +20,7 @@ package net.mcreator.ui.action.impl.vcs;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 
 import java.awt.event.ActionListener;
@@ -29,7 +30,11 @@ public class VCSAction extends BasicAction implements VCSStateChangeListener {
 	String prevTooltip;
 
 	VCSAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		super(actionRegistry, name, listener);
+		this(actionRegistry, name, listener, null);
+	}
+
+	VCSAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
+		super(actionRegistry, name, listener, accelerator);
 		setEnabled(isEnabled());
 		setTooltip(name);
 	}

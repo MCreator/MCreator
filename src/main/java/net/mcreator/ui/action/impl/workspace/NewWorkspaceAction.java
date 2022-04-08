@@ -20,9 +20,14 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
 
 public class NewWorkspaceAction extends BasicAction {
 	public NewWorkspaceAction(ActionRegistry actionRegistry) {
@@ -31,7 +36,7 @@ public class NewWorkspaceAction extends BasicAction {
 			if (newWorkspaceDialog.getWorkspaceFile() != null)
 				actionRegistry.getMCreator().getApplication()
 						.openWorkspaceInMCreator(newWorkspaceDialog.getWorkspaceFile());
-		});
+		}, new Accelerator.ActionAccelerator("workspace.new", KeyEvent.VK_N, CTRL_SHIFT));
 		setIcon(UIRES.get("16px.add.gif"));
 	}
 }

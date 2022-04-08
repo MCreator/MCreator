@@ -25,14 +25,18 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.*;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
 
 public class StructureImportActions {
 
@@ -42,7 +46,7 @@ public class StructureImportActions {
 				File[] schs = FileDialogs.getMultiOpenDialog(actionRegistry.getMCreator(), new String[] { ".nbt" });
 				if (schs != null)
 					importStructure(actionRegistry.getMCreator(), schs);
-			});
+			}, new Accelerator.ActionAccelerator("workspace.resources.import_structure", KeyEvent.VK_5, CTRL_SHIFT));
 		}
 
 		@Override public boolean isEnabled() {
@@ -102,7 +106,7 @@ public class StructureImportActions {
 				if (actionRegistry.getMCreator().mcreatorTabs.getCurrentTab()
 						.getContent() instanceof ModElementGUI<?> modElementGUI)
 					modElementGUI.reloadDataLists();
-			});
+			}, new Accelerator.ActionAccelerator("workspace.resources.import_structure_from_minecraft", KeyEvent.VK_4, CTRL_SHIFT));
 		}
 
 		@Override public boolean isEnabled() {

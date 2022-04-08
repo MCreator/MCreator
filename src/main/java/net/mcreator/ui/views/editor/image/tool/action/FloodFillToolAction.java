@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.FloodFillTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
+
 public class FloodFillToolAction extends ToolChangeAction {
 	public FloodFillToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.floodfill"),
-				L10N.t("dialog.image_maker.tools.types.floodfill_description"), FloodFillTool.class);
+				L10N.t("dialog.image_maker.tools.types.floodfill_description"), FloodFillTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.floodfill", KeyEvent.VK_F, CTRL));
 		setIcon(UIRES.get("img_editor.bucket"));
 	}
 }

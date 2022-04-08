@@ -20,11 +20,15 @@ package net.mcreator.ui.ide.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
 
 public class ReformatCodeAndImportsAction extends BasicAction {
 
@@ -40,7 +44,7 @@ public class ReformatCodeAndImportsAction extends BasicAction {
 								L10N.t("action.ide.reformat_and_imports.result"));
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("ide.reformat_and_imports", KeyEvent.VK_W, CTRL));
 		setTooltip(L10N.t("action.ide.reformat_and_imports.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
 				tab.getContent() instanceof CodeEditorView && !((CodeEditorView) tab.getContent()).readOnly));

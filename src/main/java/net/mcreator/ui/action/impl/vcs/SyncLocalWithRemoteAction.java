@@ -21,6 +21,7 @@ package net.mcreator.ui.action.impl.vcs;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
@@ -47,7 +48,10 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Collections;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
 
 public class SyncLocalWithRemoteAction extends VCSAction {
 
@@ -206,7 +210,7 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 
 			if (needsWorkspaceBuildAfter)
 				actionRegistry.buildWorkspace.doAction();
-		});
+		}, new Accelerator.ActionAccelerator("vcs.sync_with_remote_workspace", KeyEvent.VK_K, CTRL));
 		setIcon(UIRES.get("16px.vcspush"));
 	}
 

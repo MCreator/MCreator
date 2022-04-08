@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.ShapeTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
+
 public class ShapeToolAction extends ToolChangeAction {
 	public ShapeToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.shapetool"),
-				L10N.t("dialog.image_maker.tools.types.shapetool_description"), ShapeTool.class);
+				L10N.t("dialog.image_maker.tools.types.shapetool_description"), ShapeTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.shapetool", KeyEvent.VK_A, CTRL));
 		setIcon(UIRES.get("img_editor.shape"));
 	}
 }

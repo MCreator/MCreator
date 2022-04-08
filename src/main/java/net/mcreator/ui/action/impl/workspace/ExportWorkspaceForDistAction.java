@@ -22,6 +22,7 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
@@ -30,12 +31,17 @@ import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_ALT;
 
 public class ExportWorkspaceForDistAction extends GradleAction {
 
 	public ExportWorkspaceForDistAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.workspace.export_mod"), e -> exportImpl(actionRegistry, "build"));
+		super(actionRegistry, L10N.t("action.workspace.export_mod"), e -> exportImpl(actionRegistry, "build"),
+				new Accelerator.ActionAccelerator("workspace.export_mod", KeyEvent.VK_E, CTRL));
 	}
 
 	public static class Deobf extends GradleAction {
@@ -48,7 +54,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 				if (sel == JOptionPane.YES_OPTION) {
 					exportImpl(actionRegistry, "jar");
 				}
-			});
+			}, new Accelerator.ActionAccelerator("workspace.export_mod_deobf", KeyEvent.VK_E, CTRL_ALT));
 		}
 
 		@Override public boolean isEnabled() {

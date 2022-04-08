@@ -20,6 +20,8 @@ package net.mcreator.ui.action;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.AcceleratorsManager;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.action.impl.CheckForUpdatesAction;
 import net.mcreator.ui.action.impl.MinecraftFolderActions;
@@ -32,6 +34,7 @@ import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.TextureAction;
 import net.mcreator.ui.browser.action.*;
+import net.mcreator.ui.dialogs.AcceleratorDialog;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -50,15 +53,17 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.*;
 
 public class ActionRegistry {
 
 	private final List<Action> actionList = new ArrayList<>();
 
 	private final MCreator mcreator;
-	private AcceleratorMap acceleratorMap = null;
 
 	// MCreator website and community related actions
 	public final BasicAction mcreatorWebsite;
@@ -198,7 +203,7 @@ public class ActionRegistry {
 		this.runServer = new RunServerAction(this).setIcon(UIRES.get("16px.runserver"));
 		this.runGradleTask = new RunGradleTaskAction(this);
 		this.buildClean = new GradleAction(this, L10N.t("action.gradle.clean_build"),
-				e -> mcreator.getGradleConsole().exec("clean"));
+				e -> mcreator.getGradleConsole().exec("clean"), new Accelerator.ActionAccelerator("gradle.clean_build", KeyEvent.VK_B, CTRL));
 		this.exportToJAR = new ExportWorkspaceForDistAction(this).setIcon(UIRES.get("16px.exporttojar"));
 		this.exportToDeobfJAR = new ExportWorkspaceForDistAction.Deobf(this);
 		this.workspaceSettings = new WorkspaceSettingsAction(this).setIcon(UIRES.get("16px.wrksett"));
@@ -209,11 +214,14 @@ public class ActionRegistry {
 		this.mcreatorPublish = new VisitURIAction(this, L10N.t("action.publish_modification"),
 				MCreatorApplication.SERVER_DOMAIN + "/node/add/modification/");
 		this.preferences = new BasicAction(this, L10N.t("action.preferences"),
-				e -> new PreferencesDialog(mcreator, null)).setIcon(UIRES.get("settings"));
+				e -> new PreferencesDialog(mcreator, null), new ActionAccelerator("preferences", KeyEvent.VK_P, CTRL_SHIFT))
+				.setIcon(UIRES.get("settings"));
 		this.exitMCreator = new BasicAction(this, L10N.t("action.exit"),
 				e -> mcreator.getApplication().closeApplication());
 		this.aboutMCreator = new AboutAction(this);
 		this.checkForUpdates = new CheckForUpdatesAction(this);
+		this.showShortcuts = new BasicAction(this, L10N.t("action.keyboard_shortcuts"),
+				e -> new AcceleratorDialog(mcreator), new ActionAccelerator("keyboard_shortcuts", KeyEvent.VK_A, CTRL_ALT));
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
@@ -243,23 +251,25 @@ public class ActionRegistry {
 		this.createMCItemTexture = new TextureAction(this, L10N.t("action.create_texture"), actionEvent -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
-		}).setIcon(UIRES.get("16px.newtexture"));
+		}, new Accelerator.ActionAccelerator("create_texture", KeyEvent.VK_9, CTRL_SHIFT)).setIcon(UIRES.get("16px.newtexture"));
 		this.createArmorTexture = new TextureAction(this, L10N.t("action.create_armor_texture"),
-				actionEvent -> new ArmorImageMakerView(mcreator).showView());
+				actionEvent -> new ArmorImageMakerView(mcreator).showView(), null);
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
-				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
+				actionEvent -> new AnimationMakerView(mcreator).showView(), new Accelerator.ActionAccelerator("create_animated_texture",
+				KeyEvent.VK_8, CTRL_SHIFT)).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.BLOCK)).setIcon(
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.BLOCK), null).setIcon(
 				UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM)).setIcon(
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM), null).setIcon(
 				UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		});
+		}, null);
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER)).setIcon(
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER),
+				new Accelerator.ActionAccelerator("import_other_texture", KeyEvent.VK_7, CTRL_SHIFT)).setIcon(
 				UIRES.get("16px.importtexture"));
 		this.importSound = new ImportSoundAction(this);
 		this.importStructure = new StructureImportActions.ImportStructure(this).setIcon(
@@ -274,17 +284,19 @@ public class ActionRegistry {
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
 		this.showConsoleTab = new BasicAction(this, L10N.t("action.show_console"),
-				e -> mcreator.mcreatorTabs.showTab(mcreator.consoleTab));
+				e -> mcreator.mcreatorTabs.showTab(mcreator.consoleTab), new Accelerator.ActionAccelerator("show_console", KeyEvent.VK_C, CTRL_SHIFT));
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
-				e -> mcreator.mcreatorTabs.showTab(mcreator.workspaceTab));
+				e -> mcreator.mcreatorTabs.showTab(mcreator.workspaceTab), new Accelerator.ActionAccelerator("show_workspace", KeyEvent.VK_S, CTRL_SHIFT));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),
-				e -> mcreator.mcreatorTabs.closeAllTabs());
+				e -> mcreator.mcreatorTabs.closeAllTabs(),
+				new Accelerator.ActionAccelerator("close_all_tabs", KeyEvent.VK_F9, 0));
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
-				e -> mcreator.mcreatorTabs.closeTab(mcreator.mcreatorTabs.getCurrentTab()));
+				e -> mcreator.mcreatorTabs.closeTab(mcreator.mcreatorTabs.getCurrentTab()),
+				new Accelerator.ActionAccelerator("close_tab", KeyEvent.VK_F8, 0));
 		this.showWorkspaceBrowser = new BasicAction(this, L10N.t("action.show_workspace_browser"),
-				e -> mcreator.splitPane.setDividerLocation(280));
+				e -> mcreator.splitPane.setDividerLocation(280), new Accelerator.ActionAccelerator("show_workspace_browser", KeyEvent.VK_Y, CTRL_SHIFT));
 		this.hideWorkspaceBrowser = new BasicAction(this, L10N.t("action.hide_workspace_browser"),
-				e -> mcreator.splitPane.setDividerLocation(0));
+				e -> mcreator.splitPane.setDividerLocation(0), new Accelerator.ActionAccelerator("hide_workspace_browser", KeyEvent.VK_A, CTRL_SHIFT));
 		this.openWorkspace = new OpenWorkspaceAction(this);
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);
@@ -302,8 +314,6 @@ public class ActionRegistry {
 		this.openToolPackMaker = ToolPackMakerTool.getAction(this);
 		this.openArmorPackMaker = ArmorPackMakerTool.getAction(this);
 		this.openWoodPackMaker = WoodPackMakerTool.getAction(this);
-		this.showShortcuts = new BasicAction(this, L10N.t("action.keyboard_shortcuts"),
-				e -> AcceleratorDialog.showAcceleratorMapDialog(mcreator, this.acceleratorMap));
 		this.showEntityIDList = new ShowDataListAction.EntityIDs(this);
 		this.showItemBlockList = new ShowDataListAction.ItemBlockList(this);
 		this.showParticleIDList = new ShowDataListAction.ParticeIDList(this);
@@ -338,8 +348,7 @@ public class ActionRegistry {
 		this.imageEditorResizeLayer = new ResizeToolAction(this);
 		this.imageEditorResizeCanvas = new ResizeCanvasToolAction(this);
 
-		this.acceleratorMap = new AcceleratorMap(this);
-		this.acceleratorMap.registerAll();
+		AcceleratorsManager.INSTANCE.loadAccelerators(this, false);
 	}
 
 	void addAction(Action action) {

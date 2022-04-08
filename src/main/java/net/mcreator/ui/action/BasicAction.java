@@ -18,17 +18,29 @@
 
 package net.mcreator.ui.action;
 
+import net.mcreator.ui.action.accelerators.Accelerator;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class BasicAction extends UnregisteredAction {
 
 	protected ActionRegistry actionRegistry;
+	protected Accelerator accelerator;
 
 	public BasicAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
+		this(actionRegistry, name, listener, null);
+	}
+
+	public BasicAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
 		super(name, listener);
 		this.actionRegistry = actionRegistry;
 		this.actionRegistry.addAction(this);
+		this.accelerator = accelerator;
+	}
+
+	public Accelerator getAccelerator() {
+		return accelerator;
 	}
 
 	@Override public BasicAction setIcon(ImageIcon icon) {

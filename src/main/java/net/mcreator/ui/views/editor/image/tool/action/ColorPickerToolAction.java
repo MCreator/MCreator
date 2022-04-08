@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.ColorPickerTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
+
 public class ColorPickerToolAction extends ToolChangeAction {
 	public ColorPickerToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.colorpicker"),
-				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), ColorPickerTool.class);
+				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), ColorPickerTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.colorpicker", KeyEvent.VK_C, CTRL_SHIFT));
 		setIcon(UIRES.get("img_editor.picker"));
 	}
 }

@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.DesaturateTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
+
 public class DesaturateToolAction extends ToolChangeAction {
 	public DesaturateToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.desaturate"),
-				L10N.t("dialog.image_maker.tools.types.desaturate_description"), DesaturateTool.class);
+				L10N.t("dialog.image_maker.tools.types.desaturate_description"), DesaturateTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.desaturate", KeyEvent.VK_D, CTRL_SHIFT));
 		setIcon(UIRES.get("img_editor.desaturate"));
 	}
 }

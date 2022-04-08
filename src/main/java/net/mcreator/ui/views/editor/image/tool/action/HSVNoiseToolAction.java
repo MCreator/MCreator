@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.HSVNoiseTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
+
 public class HSVNoiseToolAction extends ToolChangeAction {
 	public HSVNoiseToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.noise"),
-				L10N.t("dialog.image_maker.tools.types.noise_description"), HSVNoiseTool.class);
+				L10N.t("dialog.image_maker.tools.types.noise_description"), HSVNoiseTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.noise", KeyEvent.VK_N, CTRL));
 		setIcon(UIRES.get("img_editor.noise"));
 	}
 }

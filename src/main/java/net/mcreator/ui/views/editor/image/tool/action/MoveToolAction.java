@@ -19,14 +19,20 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.MoveTool;
 
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
+
 public class MoveToolAction extends ToolChangeAction {
 	public MoveToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.move_layer"),
-				L10N.t("dialog.image_maker.tools.types.move_description"), MoveTool.class);
+				L10N.t("dialog.image_maker.tools.types.move_description"), MoveTool.class,
+				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.move_layer", KeyEvent.VK_M, CTRL));
 		setIcon(UIRES.get("img_editor.move"));
 	}
 }

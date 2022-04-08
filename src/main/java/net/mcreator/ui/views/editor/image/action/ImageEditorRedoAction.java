@@ -20,11 +20,15 @@ package net.mcreator.ui.views.editor.image.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
 
 public class ImageEditorRedoAction extends BasicAction {
 	public ImageEditorRedoAction(ActionRegistry actionRegistry) {
@@ -33,7 +37,7 @@ public class ImageEditorRedoAction extends BasicAction {
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getVersionManager().redo();
 			}
-		});
+		}, new Accelerator.ActionAccelerator("image_editor.redo", KeyEvent.VK_Y, CTRL));
 		setIcon(UIRES.get("img_editor.redo"));
 		setTooltip(L10N.t("action.image_editor.redo.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(

@@ -20,10 +20,14 @@ package net.mcreator.ui.ide.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
 
 public class ShowReplaceAction extends BasicAction {
 
@@ -35,7 +39,7 @@ public class ShowReplaceAction extends BasicAction {
 				codeEditorView.rep.setVisible(true);
 				codeEditorView.disableJumpToMode();
 			}
-		});
+		}, new Accelerator.ActionAccelerator("ide.replace_in_code", KeyEvent.VK_R, CTRL));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}

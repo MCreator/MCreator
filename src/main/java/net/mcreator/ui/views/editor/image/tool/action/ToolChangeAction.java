@@ -20,6 +20,7 @@ package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.tool.tools.AbstractTool;
 
@@ -27,13 +28,13 @@ import javax.swing.*;
 
 public class ToolChangeAction extends BasicAction {
 	public ToolChangeAction(ActionRegistry actionRegistry, String name, String tooltip,
-			Class<? extends AbstractTool> tool) {
+			Class<? extends AbstractTool> tool, Accelerator accelerator) {
 		super(actionRegistry, name, actionEvent -> {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getToolPanel().setToolByClass(tool);
 			}
-		});
+		}, accelerator);
 		setTooltip(tooltip);
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));

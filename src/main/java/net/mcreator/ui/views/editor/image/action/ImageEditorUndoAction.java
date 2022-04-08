@@ -20,11 +20,15 @@ package net.mcreator.ui.views.editor.image.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
 
 public class ImageEditorUndoAction extends BasicAction {
 	public ImageEditorUndoAction(ActionRegistry actionRegistry) {
@@ -33,7 +37,7 @@ public class ImageEditorUndoAction extends BasicAction {
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getVersionManager().undo();
 			}
-		});
+		}, new Accelerator.ActionAccelerator("image_editor.undo", KeyEvent.VK_Z, CTRL));
 		setIcon(UIRES.get("img_editor.undo"));
 		setTooltip(L10N.t("action.image_editor.undo.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(

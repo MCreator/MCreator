@@ -20,10 +20,14 @@ package net.mcreator.ui.views.editor.image.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+
+import static net.mcreator.ui.action.accelerators.Accelerator.CTRL_SHIFT;
 
 public class ImageEditorSaveAsAction extends BasicAction {
 	public ImageEditorSaveAsAction(ActionRegistry actionRegistry) {
@@ -32,7 +36,7 @@ public class ImageEditorSaveAsAction extends BasicAction {
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.saveAs();
 			}
-		});
+		}, new Accelerator.ActionAccelerator("image_editor.save_as", KeyEvent.VK_S, CTRL_SHIFT));
 		setTooltip(L10N.t("action.image_editor.save_as.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
