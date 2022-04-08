@@ -52,6 +52,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CommandGUI extends ModElementGUI<Command> {
 
@@ -143,7 +144,12 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
+		if (!hasErrors)
+			return new AggregatedValidationResult(page1group);
+		else
+			return new AggregatedValidationResult.MULTIFAIL(
+					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
+							.collect(Collectors.toList()));
 	}
 
 	@Override public void openInEditingMode(Command command) {

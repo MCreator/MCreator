@@ -30,14 +30,17 @@ public class CommandArgumentBlockFixer implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Command command = (Command) input;
-		String procedure = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-				.get("onCommandExecuted").getAsJsonObject().get("name").getAsString();
-		if (!procedure.isEmpty())
-			command.argsxml =
-					"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"old_command\"><field name=\"procedure\">"
-							+ procedure + "</field></block></next></block></xml>";
-		else
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+				.get("onCommandExecuted") != null) {
+			String procedure = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("onCommandExecuted").getAsJsonObject().get("name").getAsString();
+			if (!procedure.isEmpty())
+				command.argsxml =
+						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"old_command\"><field name=\"procedure\">"
+								+ procedure + "</field></block></next></block></xml>";
+		} else {
 			command.argsxml = "<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+		}
 		return command;
 	}
 
