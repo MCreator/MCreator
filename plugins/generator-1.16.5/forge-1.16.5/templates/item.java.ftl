@@ -121,7 +121,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			setRegistryName("${registryname}");
 		}
 
-        <#if (data.animation != "eat" && data.isFood) || (data.animation != "none" && !data.isFood)>
+        <#if data.hasAnimation()>
             @Override public UseAction getUseAction(ItemStack itemstack) {
                 return UseAction.${data.animation?upper_case};
             }

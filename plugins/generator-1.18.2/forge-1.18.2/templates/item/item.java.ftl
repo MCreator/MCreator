@@ -65,7 +65,7 @@ import javax.annotation.Nullable;
 		);
 	}
 
-	<#if (data.animation != "eat" && data.isFood) || (data.animation != "none" && !data.isFood)>
+	<#if data.hasAnimation()>
         @Override public UseAnim getUseAnimation(ItemStack itemstack) {
             return UseAnim.${data.animation?upper_case};
         }
