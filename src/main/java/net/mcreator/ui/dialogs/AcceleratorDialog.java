@@ -115,6 +115,8 @@ public class AcceleratorDialog extends MCreatorDialog {
 		if (modifiers > 0) {
 			acceleratorText = InputEvent.getModifiersExText(modifiers);
 			acceleratorText += " + ";
+		} else if (keyStroke.getKeyCode() == KeyEvent.VK_UNDEFINED) {
+			return L10N.t("dialog.accelerators.none");
 		}
 		return acceleratorText + KeyEvent.getKeyText(keyStroke.getKeyCode());
 	}

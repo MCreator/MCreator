@@ -34,16 +34,31 @@ import java.awt.event.*;
  */
 public class JAcceleratorButton extends JButton {
 
-	private final String actionID;
+	private final String acceleratorID;
 	private KeyStroke keyStroke;
 
 	public JAcceleratorButton(String text, BasicAction action) {
 		super(text);
 
-		actionID = action.getAccelerator().getID();
+		acceleratorID = action.getAccelerator().getID();
 		keyStroke = action.getAccelerator().getKeyStroke();
 
-		// We change the color, so the user has a better understanding of the current action
+		// We treat ESCAPE differently as we need to disable its behaviour, so we can use it to not set a keystroke
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+			KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+			if (keyStroke.getModifiers() == 0 && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_UNDEFINED, 0);
+
+				AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().getID(),
+						keyStroke); // We use the cache, so the user can cancel changes.
+				setText(AcceleratorDialog.setButtonText(keyStroke));
+				return JAcceleratorButton.this.isFocusOwner();
+			}
+
+			return false;
+		});
+
+		// We change the color, so the user has a better understanding of the current accelerator
 		addFocusListener(new FocusListener() {
 			@Override public void focusGained(FocusEvent e) {
 				setForeground(PreferencesManager.PREFERENCES.ui.interfaceAccentColor);
@@ -51,13 +66,14 @@ public class JAcceleratorButton extends JButton {
 
 			@Override public void focusLost(FocusEvent e) {
 				setForeground(ThemeLoader.CURRENT_THEME.getColorScheme().getForegroundColor());
+				resetKeyboardActions();
 			}
 		});
 
 		addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (!(e.getModifiers() == 0 && Character.isLetterOrDigit(e.getKeyChar())) && !(
-						e.isShiftDown() && Character.isLetterOrDigit(e.getKeyChar()))) {
+				if (!(e.getModifiers() == 0 && Character.isLetterOrDigit(e.getKeyChar())) && !(e.isShiftDown()
+						&& Character.isLetterOrDigit(e.getKeyChar()))) {
 					keyStroke = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
 
 					AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().getID(),
@@ -85,7 +101,7 @@ public class JAcceleratorButton extends JButton {
 	}
 
 	public String getAcceleratorID() {
-		return actionID;
+		return acceleratorID;
 	}
 
 	public KeyStroke getKeyStroke() {
