@@ -65,7 +65,7 @@ public class JAcceleratorButton extends JButton {
 			}
 
 			@Override public void focusLost(FocusEvent e) {
-				setForeground(ThemeLoader.CURRENT_THEME.getColorScheme().getForegroundColor());
+				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				resetKeyboardActions();
 			}
 		});
@@ -89,13 +89,11 @@ public class JAcceleratorButton extends JButton {
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.isShiftDown() && e.getClickCount() == 2) { // reset to default value
+				if (e.isShiftDown() && e.getClickCount() == 2) // reset to default value
 					AcceleratorsManager.INSTANCE.setInCache(accelerator.reset());
-					setText(AcceleratorDialog.setButtonText(accelerator.getKeyStroke()));
-				} else if (e.isControlDown() && e.getClickCount() == 2) { // reset to previous saved value
+				else if (e.isControlDown() && e.getClickCount() == 2) // reset to previous saved value
 					AcceleratorsManager.INSTANCE.setInCache(accelerator);
-					setText(AcceleratorDialog.setButtonText(accelerator.getKeyStroke()));
-				}
+				setText(AcceleratorDialog.setButtonText(accelerator.getKeyStroke()));
 			}
 		});
 	}
