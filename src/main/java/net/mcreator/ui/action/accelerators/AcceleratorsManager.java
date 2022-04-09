@@ -32,7 +32,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AcceleratorsManager {
@@ -49,6 +51,7 @@ public class AcceleratorsManager {
 	 * The cache is written every time the file is created for the first time and each time the user confirms his changes in {@link net.mcreator.ui.dialogs.AcceleratorDialog}.</p>
 	 */
 	private final Map<String, String> CACHE;
+	public final List<String> SECTIONS;
 
 	public static void initAccelerators() {
 		INSTANCE = new AcceleratorsManager();
@@ -61,6 +64,8 @@ public class AcceleratorsManager {
 		LOG.debug("Loading accelerators...");
 
 		CACHE = new HashMap<>();
+		SECTIONS = new ArrayList<>();
+		SECTIONS.add("misc"); // The default section for the dialog
 
 		try {
 			YamlReader reader = new YamlReader(new FileReader(file));

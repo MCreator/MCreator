@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.action.accelerators;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -37,6 +39,7 @@ public class Accelerator {
 	 * <p>The String used to identify the accelerator when saving and loading them. This value is also used to get the localized name of the action.</p>
 	 */
 	private final String id;
+	private final String section;
 	/**
 	 * <p>This is the default {@link KeyStroke} to use when the value is not found or the user rests the accelerator.</p>
 	 */
@@ -48,12 +51,29 @@ public class Accelerator {
 
 	public Accelerator(String id, KeyStroke keyStroke) {
 		this.id = id;
+
+		String[] strings = StringUtils.remove(id, "action.").split("\\.");
+		if (strings.length > 1) {
+			if (strings[0].equals("image_editor") || strings[1].equals("image_maker"))
+				this.section = "image_maker";
+			else
+				this.section = strings[0];
+		} else {
+			this.section = "misc";
+		}
+		if (!AcceleratorsManager.INSTANCE.SECTIONS.contains(this.section))
+			AcceleratorsManager.INSTANCE.SECTIONS.add(this.section);
+
 		this.defaultKeyStroke = keyStroke;
 		this.keyStroke = keyStroke;
 	}
 
 	public String getID() {
 		return id;
+	}
+
+	public String getSection() {
+		return section;
 	}
 
 	public KeyStroke getKeyStroke() {
