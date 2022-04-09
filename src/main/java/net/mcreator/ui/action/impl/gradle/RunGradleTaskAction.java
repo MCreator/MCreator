@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class RunGradleTaskAction extends GradleAction {
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (ba.getSelectedItem() != null && retval != JOptionPane.CANCEL_OPTION)
 				actionRegistry.getMCreator().getGradleConsole().exec((String) ba.getSelectedItem());
-		});
+		}, new Accelerator.ActionAccelerator("gradle.run_gradle_task"));
 	}
 
 }

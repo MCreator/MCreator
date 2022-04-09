@@ -32,10 +32,6 @@ public class GradleAction extends BasicAction {
 
 	private String prevTooltip;
 
-	public GradleAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		this(actionRegistry, name, listener, null);
-	}
-
 	public GradleAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
 		super(actionRegistry, name, listener, accelerator);
 		actionRegistry.getMCreator().getGradleConsole().addGradleStateListener(new GradleStateListener() {
