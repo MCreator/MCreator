@@ -23,6 +23,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.ElementOrderEditor;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -31,7 +32,8 @@ public class EditTabOrderAction extends BasicAction {
 
 	public EditTabOrderAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.edit_creative_tab_order"),
-				e -> ElementOrderEditor.openElementOrderEditor(actionRegistry.getMCreator()));
+				e -> ElementOrderEditor.openElementOrderEditor(actionRegistry.getMCreator()),
+				new Accelerator.ActionAccelerator("workspace.edit_creative_tab_order"));
 		setIcon(UIRES.get("16px.editorder"));
 	}
 

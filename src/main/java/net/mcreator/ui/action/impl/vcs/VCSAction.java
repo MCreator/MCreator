@@ -29,10 +29,6 @@ public class VCSAction extends BasicAction implements VCSStateChangeListener {
 
 	String prevTooltip;
 
-	VCSAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		this(actionRegistry, name, listener, null);
-	}
-
 	VCSAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
 		super(actionRegistry, name, listener, accelerator);
 		setEnabled(isEnabled());

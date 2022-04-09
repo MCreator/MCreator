@@ -37,6 +37,7 @@ import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
@@ -81,7 +82,7 @@ public class ModelImportActions {
 				File file = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".java" });
 				if (file != null)
 					importJavaModel(actionRegistry.getMCreator(), file);
-			});
+			}, new Accelerator.ActionAccelerator("workspace.resources.import_java_model"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -204,7 +205,7 @@ public class ModelImportActions {
 				File json = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".json" });
 				if (json != null)
 					importJSONModel(actionRegistry.getMCreator(), json);
-			});
+			}, new Accelerator.ActionAccelerator("workspace.resources.import_json_model"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -242,7 +243,7 @@ public class ModelImportActions {
 					if (mtl != null)
 						importOBJModel(actionRegistry.getMCreator(), obj, mtl);
 				}
-			});
+			}, new Accelerator.ActionAccelerator("workspace.resources.import_obj_mtl_model"));
 		}
 
 		@Override public boolean isEnabled() {

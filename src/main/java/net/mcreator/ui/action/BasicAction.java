@@ -28,10 +28,6 @@ public class BasicAction extends UnregisteredAction {
 	protected ActionRegistry actionRegistry;
 	protected Accelerator accelerator;
 
-	public BasicAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		this(actionRegistry, name, listener, null);
-	}
-
 	public BasicAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
 		super(name, listener);
 		this.actionRegistry = actionRegistry;

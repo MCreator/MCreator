@@ -26,6 +26,6 @@ import net.mcreator.ui.init.L10N;
 public class CheckForUpdatesAction extends BasicAction {
 	public CheckForUpdatesAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.check_for_updates"),
-				e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(actionRegistry.getMCreator(), true));
+				e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(actionRegistry.getMCreator(), true), null);
 	}
 }

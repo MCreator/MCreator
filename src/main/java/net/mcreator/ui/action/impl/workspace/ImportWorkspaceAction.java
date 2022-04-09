@@ -20,6 +20,7 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.ShareableZIPManager;
@@ -39,6 +40,6 @@ public class ImportWorkspaceAction extends BasicAction {
 						actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile);
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("workspace.import_from_zip"));
 	}
 }

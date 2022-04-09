@@ -21,6 +21,7 @@ package net.mcreator.ui.browser.action;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -53,7 +54,7 @@ public class NewImageFileAction extends BasicAction {
 					}
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("browser.new_image_file"));
 		setIcon(UIRES.get("laf.image.gif"));
 	}
 

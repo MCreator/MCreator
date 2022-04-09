@@ -217,7 +217,7 @@ public class ActionRegistry {
 				e -> new PreferencesDialog(mcreator, null), new ActionAccelerator("preferences", KeyEvent.VK_P, CTRL_SHIFT))
 				.setIcon(UIRES.get("settings"));
 		this.exitMCreator = new BasicAction(this, L10N.t("action.exit"),
-				e -> mcreator.getApplication().closeApplication());
+				e -> mcreator.getApplication().closeApplication(), new Accelerator.ActionAccelerator("exit"));
 		this.aboutMCreator = new AboutAction(this);
 		this.checkForUpdates = new CheckForUpdatesAction(this);
 		this.showShortcuts = new BasicAction(this, L10N.t("action.keyboard_shortcuts"),
@@ -226,13 +226,16 @@ public class ActionRegistry {
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
-				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit.gif"));
+				e -> mcreator.getProjectBrowser().openSelectedFile(true), new Accelerator.ActionAccelerator("workspace_file_browser.open"))
+				.setIcon(UIRES.get("16px.edit.gif"));
 		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
-				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
+				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop(), new Accelerator.ActionAccelerator("workspace_file_browser.open_desktop"));
 		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.show_in_explorer"),
-				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open.gif"));
+				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop(), new Accelerator.ActionAccelerator("workspace_file_browser.show_in_explorer"))
+				.setIcon(UIRES.get("16px.open.gif"));
 		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
-				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
+				e -> mcreator.getProjectBrowser().deleteSelectedFile(), new Accelerator.ActionAccelerator("workspace_file_browser.remove_file"))
+				.setIcon(UIRES.get("16px.delete.gif"));
 		this.newClass = new NewClassAction(this);
 		this.newJson = new NewJsonFileAction(this);
 		this.newImage = new NewImageFileAction(this);
@@ -258,15 +261,16 @@ public class ActionRegistry {
 				actionEvent -> new AnimationMakerView(mcreator).showView(), new Accelerator.ActionAccelerator("create_animated_texture",
 				KeyEvent.VK_8, CTRL_SHIFT)).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.BLOCK), null).setIcon(
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.BLOCK), new Accelerator.ActionAccelerator("import_block_texture"))
+				.setIcon(
 				UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM), null).setIcon(
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM), new Accelerator.ActionAccelerator("import_item_texture")).setIcon(
 				UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		}, null);
+		}, new Accelerator.ActionAccelerator("import_armor_texture"));
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
 				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER),
 				new Accelerator.ActionAccelerator("import_other_texture", KeyEvent.VK_7, CTRL_SHIFT)).setIcon(
@@ -279,7 +283,8 @@ public class ActionRegistry {
 		this.importJSONModel = new ModelImportActions.JSON(this).setIcon(UIRES.get("16px.importjsonmodel"));
 		this.importOBJModel = new ModelImportActions.OBJ(this).setIcon(UIRES.get("16px.importobjmodel"));
 		this.closeWorkspace = new BasicAction(this, L10N.t("action.workspace.close"),
-				e -> mcreator.closeThisMCreator(mcreator.getApplication().getOpenMCreators().size() <= 1));
+				e -> mcreator.closeThisMCreator(mcreator.getApplication().getOpenMCreators().size() <= 1),
+				new Accelerator.ActionAccelerator("workspace.close"));
 		this.regenerateCode = new RegenerateCodeAction(this);
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
@@ -301,7 +306,7 @@ public class ActionRegistry {
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);
 		this.openWorkspaceFolder = new BasicAction(this, L10N.t("action.open_workspace_folder"),
-				e -> DesktopUtils.openSafe(mcreator.getWorkspaceFolder()));
+				e -> DesktopUtils.openSafe(mcreator.getWorkspaceFolder()), new Accelerator.ActionAccelerator("open_workspace_folder"));
 		this.setupVCS = new SetupVCSAction(this);
 		this.unlinkVCS = new UnlinkVCSAction(this);
 		this.setupVCSOrSettings = new SetupOrSettingsVCSAction(this);

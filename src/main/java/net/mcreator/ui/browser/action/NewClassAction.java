@@ -22,6 +22,7 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
@@ -95,7 +96,7 @@ public class NewClassAction extends BasicAction {
 					}
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("browser.new_class"));
 		setIcon(UIRES.get("16px.class.gif"));
 	}
 

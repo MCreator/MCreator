@@ -23,6 +23,6 @@ import net.mcreator.util.DesktopUtils;
 public class VisitURIAction extends BasicAction {
 
 	public VisitURIAction(ActionRegistry actionRegistry, String name, String url) {
-		super(actionRegistry, name, e -> DesktopUtils.browseSafe(url));
+		super(actionRegistry, name, e -> DesktopUtils.browseSafe(url), null);
 	}
 }

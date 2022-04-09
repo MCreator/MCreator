@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
@@ -49,7 +50,7 @@ public class NewJsonFileAction extends BasicAction {
 					}
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("browser.new_json_file"));
 		setIcon(UIRES.get("16px.json.gif"));
 	}
 

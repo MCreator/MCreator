@@ -21,6 +21,7 @@ package net.mcreator.ui.ide.action;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 
@@ -49,7 +50,7 @@ public class ReloadCodeAction extends BasicAction {
 					}
 				}
 			}
-		});
+		}, new Accelerator.ActionAccelerator("ide.reload_code"));
 		setTooltip(L10N.t("action.ide.reload_code.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));

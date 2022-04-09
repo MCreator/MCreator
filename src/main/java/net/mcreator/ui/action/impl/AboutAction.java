@@ -25,6 +25,7 @@ import net.mcreator.io.OS;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -41,7 +42,7 @@ import java.io.IOException;
 public class AboutAction extends BasicAction {
 
 	public AboutAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.about"), evt -> showDialog(actionRegistry.getMCreator()));
+		super(actionRegistry, L10N.t("action.about"), evt -> showDialog(actionRegistry.getMCreator()), null);
 	}
 
 	public static void showDialog(Window parent) {

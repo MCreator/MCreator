@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.vcs;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.vcs.LocalChangesPanel;
 import org.eclipse.jgit.api.Git;
@@ -40,7 +41,7 @@ public class ShowLocalChangesAction extends VCSAction {
 						L10N.t("dialog.vcs.show_unsynced_changes.title"), JOptionPane.PLAIN_MESSAGE);
 			} catch (GitAPIException ignored) {
 			}
-		});
+		}, new Accelerator.ActionAccelerator("vcs.show_unsynced_changes"));
 	}
 
 }

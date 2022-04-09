@@ -20,6 +20,7 @@ package net.mcreator.ui.action.impl.vcs;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.vcs.WorkspaceVCS;
@@ -34,7 +35,7 @@ public class SetupOrSettingsVCSAction extends BasicAction {
 			} else {
 				actionRegistry.remoteWorkspaceSettings.doAction();
 			}
-		});
+		}, new Accelerator.ActionAccelerator("vcs.setup_settings"));
 		setIcon(UIRES.get("16px.vcs"));
 	}
 

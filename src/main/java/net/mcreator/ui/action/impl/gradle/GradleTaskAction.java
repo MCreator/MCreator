@@ -22,14 +22,15 @@ import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.gradle.GradleConsole;
 
 import java.awt.event.ActionListener;
 
 public class GradleTaskAction extends BasicAction {
 
-	GradleTaskAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
-		super(actionRegistry, name, listener);
+	GradleTaskAction(ActionRegistry actionRegistry, String name, ActionListener listener, Accelerator accelerator) {
+		super(actionRegistry, name, listener, accelerator);
 		actionRegistry.getMCreator().getGradleConsole().addGradleStateListener(new GradleStateListener() {
 			@Override public void taskStarted(String taskName) {
 				setEnabled(true);

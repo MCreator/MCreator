@@ -20,6 +20,7 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.ShareableZIPManager;
@@ -34,7 +35,7 @@ public class ExportWorkspaceToZIPAction extends BasicAction {
 			if (file != null)
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_workspace.title"), file,
 						actionRegistry.getMCreator(), true);
-		});
+		}, new Accelerator.ActionAccelerator("workspace.export_workspace"));
 	}
 
 	public static class WithRunDir extends BasicAction {
@@ -45,7 +46,7 @@ public class ExportWorkspaceToZIPAction extends BasicAction {
 				if (file != null)
 					ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_workspace.title"), file,
 							actionRegistry.getMCreator(), false);
-			});
+			}, new Accelerator.ActionAccelerator("workspace.export_workspace_include_run"));
 		}
 
 	}

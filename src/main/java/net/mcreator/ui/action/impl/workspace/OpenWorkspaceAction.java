@@ -20,6 +20,7 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 
@@ -32,7 +33,7 @@ public class OpenWorkspaceAction extends BasicAction {
 			File workspaceFile = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".mcreator" });
 			if (workspaceFile != null && workspaceFile.getParentFile().isDirectory())
 				actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile);
-		});
+		}, new Accelerator.ActionAccelerator("workspace.open"));
 	}
 
 }

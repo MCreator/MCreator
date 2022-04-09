@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.vcs;
 
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
@@ -46,7 +47,7 @@ public class VCSInfoSettingsAction extends VCSAction {
 				VCSInfo.saveToFile(newInfo,
 						new File(actionRegistry.getMCreator().getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
 			}
-		});
+		}, new Accelerator.ActionAccelerator("vcs.settings"));
 		setIcon(UIRES.get("16px.vcs"));
 	}
 
