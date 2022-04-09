@@ -122,6 +122,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "enchantments"), "enchantments", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "enchantment_types"), "enchantmenttypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "entities"), "entities", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "projectiles"), "projectiles", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "mobspawntypes"), "mobspawntypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "fluids"), "fluids", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "game_modes"), "gamemodes", supportedElements, stats);
