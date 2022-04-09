@@ -21,6 +21,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -28,10 +29,11 @@ import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +42,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -58,17 +61,18 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * <p>A {@link BlocklyEditorToolbar} is the top panel added on every Java {@link BlocklyPanel}.
 	 * It contains buttons like templates, an export and an import template buttons.</p>
 	 *
-	 * @param mcreator     		<p>The {@link MCreator} instance used</p>
-	 * @param blocklyEditorType	<p>Type of the Blockly editor this toolbar will be used on.</p>
-	 * @param blocklyPanel 		<p>The {@link BlocklyPanel} to use for some features</p>
-	 * @param procedureGUI 		<p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param mcreator          <p>The {@link MCreator} instance used</p>
+	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
+	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
+	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
 			ProcedureGUI procedureGUI) {
 		setBorder(null);
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
-				TemplatesLoader.loadTemplates(blocklyEditorType.getExtension(), blocklyEditorType.getExtension()), procedureGUI);
+				TemplatesLoader.loadTemplates(blocklyEditorType.getExtension(), blocklyEditorType.getExtension()),
+				procedureGUI);
 
 		templateLib = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey());
 		templateLib.setPreferredSize(new Dimension(155, 16));
@@ -200,8 +204,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".export_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -216,12 +222,28 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.getExtension() });
 			if (imp != null) {
 				try {
-					blocklyPanel.addBlocksFromXML(ProcedureTemplateIO.importBlocklyXML(imp));
+					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
+					if (procedureGUI != null) {
+						Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
+						List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+
+						for (VariableElement localVariable : localVariables) {
+							if (existingLocalVariables.contains(localVariable))
+								continue; // skip if variable with this name already exists
+
+							blocklyPanel.addLocalVariable(localVariable.getName(),
+									localVariable.getType().getBlocklyVariableType());
+							procedureGUI.localVars.addElement(localVariable);
+						}
+					}
+					blocklyPanel.addBlocksFromXML(procedureXml);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".import_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

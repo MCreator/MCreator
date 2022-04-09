@@ -29,6 +29,7 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -119,10 +120,10 @@ import java.util.stream.Collectors;
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
 	public Sound breakSound;
-	public Sound stepSound;
-	public Sound placeSound;
-	public Sound hitSound;
 	public Sound fallSound;
+	public Sound hitSound;
+	public Sound placeSound;
+	public Sound stepSound;
 
 	public int luminance;
 	public boolean unbreakable;
@@ -174,6 +175,7 @@ import java.util.stream.Collectors;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public List<MItemBlock> blocksToReplace;
+	public String generationShape;
 	public int frequencyPerChunks;
 	public int frequencyOnChunk;
 	public int minGenerateHeight;
@@ -198,6 +200,7 @@ import java.util.stream.Collectors;
 		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
+		this.generationShape = "UNIFORM";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 
@@ -303,13 +306,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getBlockImageIcon(texture).getImage();
+		return getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage();
 	}
 
 	private Image getTextureWithFallback(String textureName) {
 		if (textureName.equals(""))
 			return getMainTexture();
-		return getModElement().getFolderManager().getBlockImageIcon(textureName).getImage();
+		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

@@ -41,6 +41,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -87,6 +88,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
 		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
@@ -121,109 +123,115 @@ public class TestWorkspaceDataProvider {
 			workspace.addVariableElement(sampleVariable1);
 
 			int idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("logic" + (idx++));
-				variable.setValue("true");
-				variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("logic" + (idx++));
+					variable.setValue("true");
+					variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("number" + (idx++));
-				variable.setValue("12");
-				variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("number" + (idx++));
+					variable.setValue("12");
+					variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("string" + (idx++));
-				variable.setValue("test");
-				variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("string" + (idx++));
+					variable.setValue("test");
+					variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("itemstack" + (idx++));
-				variable.setValue("ItemStack.EMPTY");
-				variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("itemstack" + (idx++));
+					variable.setValue("ItemStack.EMPTY");
+					variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("direction" + (idx++));
-				variable.setValue("UP");
-				variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("direction" + (idx++));
+					variable.setValue("UP");
+					variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("blockstate" + (idx++));
-				variable.setValue("UP");
-				variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("blockstate" + (idx++));
+					variable.setValue("UP");
+					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 		}
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
-		if (workspace.getFolderManager().getBlocksTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.BLOCK) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test"));
+					workspace.getFolderManager().getTextureFile("test", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test2"));
+					workspace.getFolderManager().getTextureFile("test2", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test3"));
+					workspace.getFolderManager().getTextureFile("test3", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test4"));
+					workspace.getFolderManager().getTextureFile("test4", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test5"));
+					workspace.getFolderManager().getTextureFile("test5", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test6"));
+					workspace.getFolderManager().getTextureFile("test6", TextureType.BLOCK));
 		}
 
-		if (workspace.getFolderManager().getItemsTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test"));
+					workspace.getFolderManager().getTextureFile("test", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test2"));
+					workspace.getFolderManager().getTextureFile("test2", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test3"));
+					workspace.getFolderManager().getTextureFile("test3", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test4"));
+					workspace.getFolderManager().getTextureFile("test4", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("itest"));
+					workspace.getFolderManager().getTextureFile("itest", TextureType.ITEM));
 
 		}
 
-		if (workspace.getFolderManager().getOtherTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getOtherTextureFile("test"));
+					workspace.getFolderManager().getTextureFile("test", TextureType.OTHER));
 		}
 
-		if (workspace.getFolderManager().getArmorTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
@@ -280,6 +288,8 @@ public class TestWorkspaceDataProvider {
 			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
+			biome.underwaterBlock = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, blocks).getName());
 			biome.vanillaTreeType = getRandomItem(random,
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
@@ -406,6 +416,8 @@ public class TestWorkspaceDataProvider {
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
 			}
 			biome.spawnBiome = !_true;
+			biome.spawnInCaves = _true;
+			biome.spawnBiomeNether = !_true && emptyLists;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
 			Fluid fluid = new Fluid(modElement);
@@ -549,24 +561,27 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
-					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
-							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
-							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				});
+				for (VariableType.Scope scope : VariableType.Scope.values()) {
+					if (scope != VariableType.Scope.LOCAL) {
+						components.add(
+								new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+								"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:itemstack" + idx + ">", 100, 150,
+								"text3 <VAR:itemstack" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:direction" + idx + ">", 100, 150,
+								"text3 <VAR:direction" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+								"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+					}
+				}
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -590,15 +605,11 @@ public class TestWorkspaceDataProvider {
 			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
-			if (!emptyLists)
-				overlay.baseTexture = "test.png";
-			else
-				overlay.baseTexture = "";
-			if (_true) {
+			overlay.baseTexture = emptyLists ? "" : "test.png";
+			if (_true)
 				overlay.overlayTarget = "Ingame";
-			} else {
+			else
 				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataListAsStringArray("screens"));
-			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			GUI gui = new GUI(modElement);
@@ -623,24 +634,27 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
-					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
-							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
-							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				});
+				for (VariableType.Scope scope : VariableType.Scope.values()) {
+					if (scope != VariableType.Scope.LOCAL) {
+						components.add(
+								new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+								"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:itemstack" + idx + ">", 100, 150,
+								"text3 <VAR:itemstack" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:direction" + idx + ">", 100, 150,
+								"text3 <VAR:direction" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+								"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+					}
+				}
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -697,6 +711,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 			livingEntity.mobModelTexture = "test.png";
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
+			livingEntity.transparentModelCondition = new Procedure("condition1");
+			livingEntity.isShakingCondition = new Procedure("condition2");
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.mobModelType = "BUILTIN";
 			livingEntity.spawnEggBaseColor = Color.red;
@@ -762,12 +778,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.deathSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			if (!emptyLists) {
-				livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			} else {
-				livingEntity.stepSound = new Sound(modElement.getWorkspace(), "");
-			}
+			livingEntity.stepSound = new Sound(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.spawnParticles = _true;
 			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
@@ -805,10 +817,8 @@ public class TestWorkspaceDataProvider {
 							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
 				}
 			}
-			// fallback
-			if (livingEntity.aixml == null) {
+			if (livingEntity.aixml == null) // fallback
 				livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
-			}
 			livingEntity.breedable = _true;
 			livingEntity.tameable = _true;
 			livingEntity.breedTriggerItems = new ArrayList<>();
@@ -1309,10 +1319,7 @@ public class TestWorkspaceDataProvider {
 			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
-			if (!emptyLists)
-				block.beaconColorModifier = Color.cyan;
-			else
-				block.beaconColorModifier = null;
+			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
 			block.breakHarvestLevel = 4;
 			block.spawnParticles = _true;
@@ -1370,11 +1377,12 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
+			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 6;
 			block.frequencyOnChunk = 7;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
-			if (emptyLists) {
+			if (!emptyLists) {
 				block.onBlockAdded = new Procedure("procedure1");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
 				block.onTickUpdate = new Procedure("procedure3");
@@ -1591,13 +1599,13 @@ public class TestWorkspaceDataProvider {
 		return null;
 	}
 
-	private static GeneratableElement getToolExample(ModElement modElement, String recipeType, Random random,
+	private static GeneratableElement getToolExample(ModElement modElement, String toolType, Random random,
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
 		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-		tool.toolType = recipeType;
+		tool.toolType = toolType;
 		tool.harvestLevel = 3;
 		tool.efficiency = 6;
 		tool.attackSpeed = 4.8;

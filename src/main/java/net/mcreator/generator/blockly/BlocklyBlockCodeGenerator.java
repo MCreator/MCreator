@@ -175,7 +175,7 @@ public class BlocklyBlockCodeGenerator {
 					}
 				}
 				if (!found) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, 
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.input_empty", advancedInput.name(), type)));
 				}
 			}

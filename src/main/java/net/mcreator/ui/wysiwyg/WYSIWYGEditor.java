@@ -38,6 +38,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
 
 import javax.swing.*;
@@ -413,10 +414,10 @@ public class WYSIWYGEditor extends JPanel {
 			importothertexture.setOpaque(false);
 			importothertexture.setMargin(new Insets(0, 0, 0, 0));
 			importothertexture.addActionListener(e -> {
-				TextureImportDialogs.importOtherTextures(mcreator);
+				TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
-				mcreator.getFolderManager().getOtherTexturesList()
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER)
 						.forEach(el -> overlayBaseTexture.addItem(el.getName()));
 			});
 

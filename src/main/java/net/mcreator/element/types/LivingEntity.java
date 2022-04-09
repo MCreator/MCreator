@@ -59,6 +59,8 @@ import java.util.Locale;
 	public String mobModelType;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
+	public Procedure transparentModelCondition;
+	public Procedure isShakingCondition;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
