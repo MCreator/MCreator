@@ -47,16 +47,15 @@ public class AcceleratorDialog extends MCreatorDialog {
 
 		List<JAcceleratorButton> buttonsList = new ArrayList<>();
 
-		JPanel northPanel = new JPanel(new BorderLayout(20, 20));
-		northPanel.add(L10N.label("dialog.accelerators.description"), "North");
+		List<BasicAction> actions = mcreator.actionRegistry.getActions().stream()
+				.filter(a -> a instanceof BasicAction ba && ba.getAccelerator() != null).map(a -> (BasicAction) a)
+				.toList();
 
-		JComboBox<String> sections = new JComboBox<>(
-				AcceleratorsManager.INSTANCE.SECTIONS.stream().map(s -> L10N.t("dialog.accelerators.section." + s))
-						.toArray(String[]::new));
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
 		// Just an Easter egg because it's nice
 		final String[] str = { "" };
-		sections.addKeyListener(new KeyAdapter() {
+		tabbedPane.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_M)
 					str[0] = "m";
@@ -82,21 +81,6 @@ public class AcceleratorDialog extends MCreatorDialog {
 			}
 		}); // End of the Easter egg
 
-		northPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.accelerators.select_section"), sections),
-				"Center");
-
-		List<BasicAction> actions = mcreator.actionRegistry.getActions().stream()
-				.filter(a -> a instanceof BasicAction ba && ba.getAccelerator() != null).map(a -> (BasicAction) a)
-				.toList();
-
-		CardLayout cl = new CardLayout();
-		JPanel sectionsPanel = new JPanel(cl);
-		sectionsPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("dialog.accelerators.accelerators"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		sections.addActionListener(e -> cl.show(sectionsPanel, (String) sections.getSelectedItem()));
-
 		AcceleratorsManager.INSTANCE.SECTIONS.forEach(sectionName -> {
 			List<JComponent> comps = new ArrayList<>();
 			actions.stream().filter(action -> action.getAccelerator().getSection().equals(sectionName))
@@ -111,10 +95,14 @@ public class AcceleratorDialog extends MCreatorDialog {
 						}
 					});
 
-			sectionsPanel.add(new JScrollPane(PanelUtils.pullElementUp(
-							PanelUtils.gridElements(comps.size() / 2, 2, 5, 5, comps.toArray(new JComponent[0])))),
-					L10N.t("dialog.accelerators.section." + sectionName));
+			tabbedPane.addTab(L10N.t("dialog.accelerators.section." + sectionName), new JScrollPane(
+					PanelUtils.pullElementUp(
+							PanelUtils.gridElements(comps.size() / 2, 2, 5, 5, comps.toArray(new JComponent[0])))));
 		});
+		tabbedPane.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("dialog.accelerators.accelerators"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -147,8 +135,9 @@ public class AcceleratorDialog extends MCreatorDialog {
 		});
 		buttonsPanel.add(cancel);
 
-		add(PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(new JEmptyBox(), northPanel, 5, 5),
-				PanelUtils.centerAndSouthElement(sectionsPanel, buttonsPanel, 20, 20), 20, 20));
+		add(PanelUtils.northAndCenterElement(
+				PanelUtils.northAndCenterElement(new JEmptyBox(), L10N.label("dialog.accelerators.description"), 20,
+						20), PanelUtils.centerAndSouthElement(tabbedPane, buttonsPanel, 20, 20), 20, 20));
 
 		setSize(700, 750);
 		setResizable(true);
