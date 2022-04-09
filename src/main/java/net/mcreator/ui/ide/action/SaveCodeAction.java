@@ -20,7 +20,7 @@ package net.mcreator.ui.ide.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
@@ -44,7 +44,7 @@ public class SaveCodeAction extends BasicAction {
 								L10N.t("action.ide.save.result"));
 				}
 			}
-		}, new Accelerator.ActionAccelerator("ide.save", KeyEvent.VK_S, CTRL));
+		}, new ActionAccelerator("ide.save", KeyEvent.VK_S, CTRL));
 		setTooltip(L10N.t("action.ide.save.tooltip"));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
 				tab.getContent() instanceof CodeEditorView && !((CodeEditorView) tab.getContent()).readOnly));

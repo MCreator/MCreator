@@ -21,7 +21,7 @@ package net.mcreator.ui.action.impl.gradle;
 import net.mcreator.io.FileIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MinecraftOptionsUtils;
 import net.mcreator.util.DesktopUtils;
@@ -124,7 +124,7 @@ public class RunServerAction extends GradleAction {
 					actionRegistry.getMCreator().getGradleConsole().markReady();
 				}
 			}
-		}, new Accelerator.ActionAccelerator("run_server_and_client", KeyEvent.VK_S, CTRL_ALT));
+		}, new ActionAccelerator("run_server_and_client", KeyEvent.VK_S, CTRL_ALT));
 	}
 
 	@Override public boolean isEnabled() {

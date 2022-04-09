@@ -21,7 +21,7 @@ package net.mcreator.ui.action.impl.vcs;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
@@ -165,7 +165,7 @@ public class SyncRemoteToLocalAction extends VCSAction {
 			}
 
 			actionRegistry.getMCreator().setCursor(Cursor.getDefaultCursor());
-		}, new Accelerator.ActionAccelerator("vcs.pull", KeyEvent.VK_T, CTRL));
+		}, new ActionAccelerator("vcs.pull", KeyEvent.VK_T, CTRL));
 		setIcon(UIRES.get("16px.vcspull"));
 	}
 

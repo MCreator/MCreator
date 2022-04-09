@@ -26,7 +26,7 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
@@ -169,7 +169,7 @@ public class InjectTagsTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tag"),
-				e -> open(actionRegistry.getMCreator()), new Accelerator.ActionAccelerator("pack_tools.tag")) {
+				e -> open(actionRegistry.getMCreator()), new ActionAccelerator("pack_tools.tag")) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAG)

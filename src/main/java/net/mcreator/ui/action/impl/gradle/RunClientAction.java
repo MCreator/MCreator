@@ -21,7 +21,7 @@ package net.mcreator.ui.action.impl.gradle;
 import net.mcreator.minecraft.BedrockUtils;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MinecraftOptionsUtils;
 import org.apache.logging.log4j.LogManager;
@@ -61,7 +61,7 @@ public class RunClientAction extends GradleAction {
 				LOG.error(e.getMessage(), e);
 				actionRegistry.getMCreator().getGradleConsole().markReady();
 			}
-		}).start(), new Accelerator.ActionAccelerator("run_client", KeyEvent.VK_C, CTRL_ALT));
+		}).start(), new ActionAccelerator("run_client", KeyEvent.VK_C, CTRL_ALT));
 	}
 
 	@Override public boolean isEnabled() {

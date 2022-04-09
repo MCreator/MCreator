@@ -19,7 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 
 import java.awt.event.KeyEvent;
@@ -31,7 +31,7 @@ public class BuildGradleOnlyAction extends GradleAction {
 	public BuildGradleOnlyAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.gradle.build_gradle_project"),
 				evt -> actionRegistry.getMCreator().getGradleConsole().exec("build"),
-				new Accelerator.ActionAccelerator("gradle.build_gradle_project", KeyEvent.VK_B, CTRL_SHIFT));
+				new ActionAccelerator("gradle.build_gradle_project", KeyEvent.VK_B, CTRL_SHIFT));
 		setTooltip(L10N.t("action.gradle.build_gradle_project.tooltip"));
 	}
 

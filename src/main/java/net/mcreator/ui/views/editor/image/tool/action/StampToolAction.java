@@ -19,7 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.StampTool;
@@ -32,7 +32,7 @@ public class StampToolAction extends ToolChangeAction {
 	public StampToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.stamp"),
 				L10N.t("dialog.image_maker.tools.types.stamp_description"), StampTool.class,
-				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.stamp", KeyEvent.VK_T, CTRL));
+				new ActionAccelerator("dialog.image_maker.tools.types.stamp", KeyEvent.VK_T, CTRL));
 		setIcon(UIRES.get("img_editor.stamp"));
 	}
 }

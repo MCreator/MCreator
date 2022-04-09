@@ -20,7 +20,7 @@ package net.mcreator.ui.action.impl.vcs;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import org.eclipse.jgit.api.Git;
 
@@ -42,7 +42,7 @@ public class UnlinkVCSAction extends VCSAction {
 						.forEach(action -> ((VCSAction) action).vcsStateChanged());
 				actionRegistry.getMCreator().statusBar.reloadVCSStatus();
 			}
-		}, new Accelerator.ActionAccelerator("vcs.unlink"));
+		}, new ActionAccelerator("vcs.unlink"));
 	}
 
 }

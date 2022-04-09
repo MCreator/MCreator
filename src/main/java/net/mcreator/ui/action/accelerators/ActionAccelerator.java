@@ -17,23 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.views.editor.image.tool.action;
+package net.mcreator.ui.action.accelerators;
 
-import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.ActionAccelerator;
-import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.views.editor.image.tool.tools.LineTool;
-
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 
-import static net.mcreator.ui.action.accelerators.Accelerator.CTRL;
+/**
+ * <p>This class is used by the {@link net.mcreator.ui.action.BasicAction} accelerators.</p>
+ */
+public class ActionAccelerator extends Accelerator {
 
-public class LineToolAction extends ToolChangeAction {
-	public LineToolAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.linetool"),
-				L10N.t("dialog.image_maker.tools.types.linetool_description"), LineTool.class,
-				new ActionAccelerator("dialog.image_maker.tools.types.linetool", KeyEvent.VK_L, CTRL));
-		setIcon(UIRES.get("img_editor.line"));
+	/**
+	 * <p>A constructor with no default accelerator</p>
+	 *
+	 * @param id <p>The String used to identify the accelerator when saving and loading them. This value is also used to get the localized name of the action.</p>
+	 */
+	public ActionAccelerator(String id) {
+		this(id, KeyEvent.VK_UNDEFINED, 0);
+	}
+
+	public ActionAccelerator(String id, int keyCode, int modifiers) {
+		super("action." + id, KeyStroke.getKeyStroke(keyCode, modifiers));
 	}
 }

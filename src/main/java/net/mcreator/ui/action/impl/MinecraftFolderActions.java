@@ -22,7 +22,7 @@ import net.mcreator.io.OS;
 import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.DesktopUtils;
 
@@ -42,7 +42,7 @@ public class MinecraftFolderActions {
 							L10N.t("dialog.open_java_edition_dir.fail.message"),
 							L10N.t("dialog.open_java_edition_dir.fail.title"), JOptionPane.WARNING_MESSAGE);
 				}
-			}, new Accelerator.ActionAccelerator("open_java_edition_dir"));
+			}, new ActionAccelerator("open_java_edition_dir"));
 		}
 
 	}
@@ -58,7 +58,7 @@ public class MinecraftFolderActions {
 							L10N.t("dialog.open_bedrock_edition_dir.fail.message"),
 							L10N.t("dialog.open_bedrock_edition_dir.fail.title"), JOptionPane.WARNING_MESSAGE);
 				}
-			}, new Accelerator.ActionAccelerator("open_bedrock_edition_dir"));
+			}, new ActionAccelerator("open_bedrock_edition_dir"));
 		}
 
 		@Override public boolean isEnabled() {

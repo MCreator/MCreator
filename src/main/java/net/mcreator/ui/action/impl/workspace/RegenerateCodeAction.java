@@ -27,7 +27,7 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
@@ -49,7 +49,7 @@ public class RegenerateCodeAction extends GradleAction {
 	public RegenerateCodeAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.regenerate_and_build"),
 				e -> regenerateCode(actionRegistry.getMCreator(), false, true),
-				new Accelerator.ActionAccelerator("workspace.regenerate_and_build"));
+				new ActionAccelerator("workspace.regenerate_and_build"));
 		setIcon(UIRES.get("16px.regencode"));
 	}
 

@@ -20,7 +20,7 @@ package net.mcreator.ui.ide.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 
@@ -39,7 +39,7 @@ public class ShowReplaceAction extends BasicAction {
 				codeEditorView.rep.setVisible(true);
 				codeEditorView.disableJumpToMode();
 			}
-		}, new Accelerator.ActionAccelerator("ide.replace_in_code", KeyEvent.VK_R, CTRL));
+		}, new ActionAccelerator("ide.replace_in_code", KeyEvent.VK_R, CTRL));
 		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}

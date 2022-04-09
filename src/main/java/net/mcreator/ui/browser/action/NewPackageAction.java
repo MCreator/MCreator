@@ -20,7 +20,7 @@ package net.mcreator.ui.browser.action;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
@@ -39,7 +39,7 @@ public class NewPackageAction extends BasicAction {
 						packagein.replace(".", "/")).mkdirs();
 				actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 			}
-		}, new Accelerator.ActionAccelerator("browser.new_package"));
+		}, new ActionAccelerator("browser.new_package"));
 		setIcon(UIRES.get("16px.directory.gif"));
 	}
 

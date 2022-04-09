@@ -20,7 +20,7 @@ package net.mcreator.ui.action.impl.vcs;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.vcs.VCSInfo;
@@ -33,7 +33,7 @@ public class SetupVCSAction extends VCSAction {
 
 	public SetupVCSAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.setup"),
-				e -> setupVCSForWorkspaceIfNotYet(actionRegistry.getMCreator()), new Accelerator.ActionAccelerator("vcs.setup"));
+				e -> setupVCSForWorkspaceIfNotYet(actionRegistry.getMCreator()), new ActionAccelerator("vcs.setup"));
 	}
 
 	@Override public void setEnabled(boolean b) {

@@ -37,11 +37,11 @@ public class JAcceleratorButton extends JButton {
 	private final String acceleratorID;
 	private KeyStroke keyStroke;
 
-	public JAcceleratorButton(String text, BasicAction action) {
+	public JAcceleratorButton(String text, Accelerator accelerator) {
 		super(text);
 
-		acceleratorID = action.getAccelerator().getID();
-		keyStroke = action.getAccelerator().getKeyStroke();
+		acceleratorID = accelerator.getID();
+		keyStroke = accelerator.getKeyStroke();
 
 		// We treat ESCAPE differently as we need to disable its behaviour, so we can use it to not set a keystroke
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
@@ -49,7 +49,7 @@ public class JAcceleratorButton extends JButton {
 			if (keyStroke.getModifiers() == 0 && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_UNDEFINED, 0);
 
-				AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().getID(),
+				AcceleratorsManager.INSTANCE.setInCache(accelerator.getID(),
 						keyStroke); // We use the cache, so the user can cancel changes.
 				setText(AcceleratorDialog.setButtonText(keyStroke));
 				return JAcceleratorButton.this.isFocusOwner();
@@ -76,7 +76,7 @@ public class JAcceleratorButton extends JButton {
 						&& Character.isLetterOrDigit(e.getKeyChar()))) {
 					keyStroke = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
 
-					AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().getID(),
+					AcceleratorsManager.INSTANCE.setInCache(accelerator.getID(),
 							keyStroke); // We use the cache, so the user can cancel changes.
 					setText(AcceleratorDialog.setButtonText(keyStroke));
 					setForeground(ThemeLoader.CURRENT_THEME.getColorScheme().getForegroundColor());
@@ -90,11 +90,11 @@ public class JAcceleratorButton extends JButton {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.isShiftDown() && e.getClickCount() == 2) { // reset to default value
-					AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().reset());
-					setText(AcceleratorDialog.setButtonText(action.getAccelerator().getKeyStroke()));
+					AcceleratorsManager.INSTANCE.setInCache(accelerator.reset());
+					setText(AcceleratorDialog.setButtonText(accelerator.getKeyStroke()));
 				} else if (e.isControlDown() && e.getClickCount() == 2) { // reset to previous saved value
-					AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator());
-					setText(AcceleratorDialog.setButtonText(action.getAccelerator().getKeyStroke()));
+					AcceleratorsManager.INSTANCE.setInCache(accelerator);
+					setText(AcceleratorDialog.setButtonText(accelerator.getKeyStroke()));
 				}
 			}
 		});

@@ -19,7 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
@@ -29,7 +29,7 @@ public class CancelGradleTaskAction extends GradleTaskAction {
 			if (!actionRegistry.getMCreator().getGradleConsole().isGradleSetupTaskRunning()) {
 				actionRegistry.getMCreator().getGradleConsole().cancelTask();
 			}
-		}, new Accelerator.ActionAccelerator("gradle.cancel_task"));
+		}, new ActionAccelerator("gradle.cancel_task"));
 		setIcon(UIRES.get("16px.stop.gif"));
 	}
 }

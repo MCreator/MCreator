@@ -19,7 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.action;
 
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.tool.tools.ResizeTool;
@@ -32,7 +32,7 @@ public class ResizeToolAction extends ToolChangeAction {
 	public ResizeToolAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.resize_layer"),
 				L10N.t("dialog.image_maker.tools.types.resize_description"), ResizeTool.class,
-				new Accelerator.ActionAccelerator("dialog.image_maker.tools.types.resize_layer", KeyEvent.VK_R, CTRL));
+				new ActionAccelerator("dialog.image_maker.tools.types.resize_layer", KeyEvent.VK_R, CTRL));
 		setIcon(UIRES.get("img_editor.resize"));
 	}
 }

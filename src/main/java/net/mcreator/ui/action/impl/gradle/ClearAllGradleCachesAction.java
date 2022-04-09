@@ -23,7 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
@@ -46,7 +46,7 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			if (reply == 0 || reply == 1) {
 				clearAllGradleCaches(actionRegistry.getMCreator(), reply == 1, false);
 			}
-		}, new Accelerator.ActionAccelerator("gradle.clear_caches"));
+		}, new ActionAccelerator("gradle.clear_caches"));
 	}
 
 	public static void clearAllGradleCaches(MCreator mcreator, boolean entireGradleFolder, boolean regenerateCodeFlag) {

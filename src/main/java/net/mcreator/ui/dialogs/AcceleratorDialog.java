@@ -19,17 +19,23 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.element.ModElementType;
+import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.action.accelerators.AcceleratorsManager;
 import net.mcreator.ui.action.accelerators.JAcceleratorButton;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.MCreatorTheme;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,35 @@ public class AcceleratorDialog extends MCreatorDialog {
 		JComboBox<String> sections = new JComboBox<>(
 				AcceleratorsManager.INSTANCE.SECTIONS.stream().map(s -> L10N.t("dialog.accelerators.section." + s))
 						.toArray(String[]::new));
+
+		// Just an Easter egg because it's nice
+		final String[] str = { "" };
+		sections.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_M)
+					str[0] = "m";
+				if (str[0].equals("m") && e.getKeyCode() == KeyEvent.VK_C)
+					str[0] += "c";
+				if (str[0].equals("mc") && e.getKeyCode() == KeyEvent.VK_R) {
+					GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
+					if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
+							!= GeneratorStats.CoverageStatus.NONE) {
+						MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), "MCreator",
+								"Gem based", MCreatorTheme.MAIN_TINT_DEFAULT, 4.84);
+						mcreator.mv.updateMods();
+					}
+				}
+			}
+		}); // End of the Easter egg
+
 		northPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.accelerators.select_section"), sections),
 				"Center");
 
@@ -69,7 +104,8 @@ public class AcceleratorDialog extends MCreatorDialog {
 						KeyStroke keyStroke = action.getAccelerator().getKeyStroke();
 						if (keyStroke != null) {
 							comps.add(new JLabel(action.getName()));
-							JAcceleratorButton button = new JAcceleratorButton(setButtonText(keyStroke), action);
+							JAcceleratorButton button = new JAcceleratorButton(setButtonText(keyStroke),
+									action.getAccelerator());
 							comps.add(button);
 							buttonsList.add(button);
 						}

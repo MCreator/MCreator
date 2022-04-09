@@ -19,7 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
 
@@ -54,7 +54,7 @@ public class ReloadGradleProjectAction extends GradleAction {
 				});
 			}).start();
 			progressDialog.setVisible(true);
-		}, new Accelerator.ActionAccelerator("gradle.reload_project"));
+		}, new ActionAccelerator("gradle.reload_project"));
 	}
 
 }

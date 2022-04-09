@@ -19,7 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.accelerators.Accelerator;
+import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +32,7 @@ public class BuildWorkspaceAction extends GradleAction {
 
 	public BuildWorkspaceAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.gradle.build_workspace"), null,
-				new Accelerator.ActionAccelerator("gradle.build_workspace"));
+				new ActionAccelerator("gradle.build_workspace"));
 		setActionListener(evt -> new Thread(() -> {
 			actionRegistry.getMCreator().getGradleConsole()
 					.markRunning(); // so console gets locked while we generate code already
