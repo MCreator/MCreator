@@ -29,6 +29,7 @@ import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.action.accelerators.AcceleratorsManager;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
@@ -133,6 +134,8 @@ public class TestSetup {
 			generator = generator.replace("/generator.yaml", "");
 			Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
 		}
+
+		AcceleratorsManager.initAccelerators();
 
 		already = true;
 	}

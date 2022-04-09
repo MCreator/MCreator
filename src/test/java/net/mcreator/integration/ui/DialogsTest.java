@@ -115,6 +115,10 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null));
 	}
 
+	@Test public void testAcceleratorsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new AcceleratorDialog(mcreator));
+	}
+
 	@Test public void testMCItemSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> MCItemSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadBlocksAndItems));
