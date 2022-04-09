@@ -23,9 +23,10 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.action.accelerators.AcceleratorsManager;
-import net.mcreator.ui.action.accelerators.JActionButton;
+import net.mcreator.ui.action.accelerators.JAcceleratorButton;
+import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +54,7 @@ public class AcceleratorDialog extends MCreatorDialog {
 			KeyStroke keyStroke = action.getAccelerator().getKeyStroke();
 			if (keyStroke != null) {
 				accelerators.add(new JLabel(action.getName()));
-				JActionButton button = new JActionButton(setButtonText(keyStroke), action);
+				JAcceleratorButton button = new JAcceleratorButton(setButtonText(keyStroke), action);
 				accelerators.add(button);
 			}
 		});
@@ -63,17 +64,22 @@ public class AcceleratorDialog extends MCreatorDialog {
 
 		JButton confirm = new JButton(L10N.t("common.confirmation"));
 		confirm.addActionListener(a -> {
-			AcceleratorsManager.INSTANCE.loadAccelerators(actionRegistry, true);
+			AcceleratorsManager.INSTANCE.loadAccelerators(actionRegistry);
 			AcceleratorDialog.this.setVisible(false);
 		});
 		buttonsPanel.add(confirm);
 
 		JButton resetAll = new JButton(L10N.t("dialog.accelerators.reset_all"));
 		resetAll.addActionListener(a -> {
-			AcceleratorsManager.INSTANCE.resetAll(actionRegistry);
-			// We open a new dialog, so we don't need to change all buttons.
-			setVisible(false);
-			new AcceleratorDialog(mcreator);
+			int n = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(),
+					L10N.t("dialog.accelerators.reset_all.message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (n == JOptionPane.YES_OPTION) {
+				AcceleratorsManager.INSTANCE.setDefaultValues(actionRegistry);
+				// We open a new dialog, so we don't need to iterate every button to change their value
+				setVisible(false);
+				new AcceleratorDialog(mcreator);
+			}
 		});
 		buttonsPanel.add(resetAll);
 
@@ -81,24 +87,21 @@ public class AcceleratorDialog extends MCreatorDialog {
 		cancel.addActionListener(a -> {
 			setVisible(false);
 			for (Component component : accelerators.getComponents()) {
-				if (component instanceof JActionButton button)
+				if (component instanceof JAcceleratorButton button)
 					AcceleratorsManager.INSTANCE.setInCache(button.getAcceleratorID(), button.getKeyStroke());
 			}
 		});
 		buttonsPanel.add(cancel);
-
-		panel.add(L10N.label("dialog.accelerators.description"), "North");
 
 		JScrollPane scrollPane = new JScrollPane(accelerators);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.accelerators.accelerators"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		panel.add(scrollPane, "Center");
 
-		panel.add(buttonsPanel, "South");
-
-		add(panel);
+		add(PanelUtils.northAndCenterElement(
+				PanelUtils.northAndCenterElement(new JEmptyBox(), L10N.label("dialog.accelerators.description"), 5, 5),
+				PanelUtils.centerAndSouthElement(scrollPane, buttonsPanel, 20, 20), 20, 20));
 
 		setSize(600, 650);
 		setResizable(true);

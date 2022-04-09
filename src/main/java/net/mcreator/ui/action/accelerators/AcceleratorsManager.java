@@ -22,7 +22,6 @@ package net.mcreator.ui.action.accelerators;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.esotericsoftware.yamlbeans.YamlWriter;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import org.apache.logging.log4j.LogManager;
@@ -33,12 +32,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("MagicConstant") public class AcceleratorsManager {
+public class AcceleratorsManager {
 
 	private static final Logger LOG = LogManager.getLogger("Accelerator Manager");
 
@@ -46,8 +43,20 @@ import java.util.Map;
 
 	public static AcceleratorsManager INSTANCE;
 
+	/**
+	 * <p>The cache is the {@link Map} where we take values when accelerators are loaded, and where we save into the file.
+	 * Every changed accelerator is set in the cache only, so the user can cancel a change if he did not save yet.
+	 * The cache is written every time the file is created for the first time and each time the user confirms his changes in {@link net.mcreator.ui.dialogs.AcceleratorDialog}.</p>
+	 */
 	private final Map<String, String> CACHE;
 
+	public static void initAccelerators() {
+		INSTANCE = new AcceleratorsManager();
+	}
+
+	/**
+	 * <p>When this constructor is called, accelerators are loaded inside the CACHE map from the file.</p>
+	 */
 	public AcceleratorsManager() {
 		LOG.debug("Loading accelerators...");
 
@@ -55,9 +64,8 @@ import java.util.Map;
 
 		try {
 			YamlReader reader = new YamlReader(new FileReader(file));
-			Map<?, ?> readValues = (Map<?, ?>) reader.read();
-			readValues.forEach((s, s2) -> {
-				if (s instanceof String && s2 instanceof String) // if false default value is used
+			((Map<?, ?>) reader.read()).forEach((s, s2) -> {
+				if (s instanceof String && s2 instanceof String) // if false the default value will be used
 					CACHE.put((String) s, (String) s2);
 			});
 
@@ -72,25 +80,41 @@ import java.util.Map;
 		}
 	}
 
-	public static void initAccelerators() {
-		INSTANCE = new AcceleratorsManager();
-	}
-
+	/**
+	 * <p>This method adds to the cache the provided accelerator. If the cache already contains the accelerator, the value will simply be changed.</p>
+	 *
+	 * @param accelerator <p>The {@link Accelerator} to add in the cache</p>
+	 */
 	public void setInCache(Accelerator accelerator) {
 		setInCache(accelerator.getID(), accelerator.getKeyStroke());
 	}
 
+	/**
+	 * <p>This method adds to the cache the provided {@link KeyStroke} to the ID given.
+	 * If the cache already contains the ID, the value will simply be changed.</p>
+	 *
+	 * @param id  <p>This String is the key added in the cache.</p>
+	 * @param key <p>This {@link KeyStroke} is the value to save.</p>
+	 */
 	public void setInCache(String id, KeyStroke key) {
 		CACHE.put(id, key.toString());
 	}
 
-	public void loadAccelerators(ActionRegistry actionRegistry, boolean save) {
+	/**
+	 * <p>If the cache contains values, each {@link BasicAction} from the {@link ActionRegistry} are iterated to change their {@link Accelerator} for the value inside the cache.
+	 * However, if the cache does not contain the accelerator, its default value is taken and added to the cache.
+	 * In the case the cache is empty (e.g. the file was created during this launches), we set default values to all accelerators.
+	 * Then, accelerators are applied to the actions.</p>
+	 *
+	 * @param actionRegistry <p>This is the {@link ActionRegistry} where we take the {@link BasicAction}s.</p>
+	 */
+	public void loadAccelerators(ActionRegistry actionRegistry) {
 		if (!CACHE.isEmpty()) {
 			actionRegistry.getActions().stream().filter(a -> a instanceof BasicAction ba && ba.getAccelerator() != null)
 					.map(a -> (BasicAction) a).forEach(action -> {
 						try {
-							action.getAccelerator().changeKey(
-									KeyStroke.getKeyStroke(CACHE.get(action.getAccelerator().getID())));
+							action.getAccelerator()
+									.changeKey(KeyStroke.getKeyStroke(CACHE.get(action.getAccelerator().getID())));
 						} catch (NullPointerException e) {
 							// If a key is missing, we add it using its default value
 							setInCache(action.getAccelerator());
@@ -98,24 +122,20 @@ import java.util.Map;
 									+ " did not have a saved value. Default value will be used.");
 						}
 					});
-			if (save)
-				saveValues();
 		} else {
-			resetAll(actionRegistry);
-			saveValues();
+			setDefaultValues(actionRegistry);
 		}
+		// We save values in case a new accelerator has been added
+		saveValues();
 
-		if (save)
-			applyToAllInstances(actionRegistry.getMCreator().getApplication());
-		else
-			applyAccelerators(actionRegistry);
+		applyAccelerators(actionRegistry);
 	}
 
-	private void applyToAllInstances(MCreatorApplication application) {
-		application.getOpenMCreators().stream().map(mcreator -> mcreator.actionRegistry)
-				.forEach(this::applyAccelerators);
-	}
-
+	/**
+	 * <p>Each {@link Accelerator} is applied to their {@link BasicAction}.</p>
+	 *
+	 * @param actionRegistry <p>This is the {@link ActionRegistry} where we take the {@link BasicAction}s.</p>
+	 */
 	private void applyAccelerators(ActionRegistry actionRegistry) {
 		actionRegistry.getActions().stream().filter(a -> a instanceof BasicAction ba && ba.getAccelerator() != null)
 				.forEach(a -> {
@@ -125,7 +145,12 @@ import java.util.Map;
 				});
 	}
 
-	public void resetAll(ActionRegistry actionRegistry) {
+	/**
+	 * <p>Set default values to all accelerators.</p>
+	 *
+	 * @param actionRegistry <p>This is the {@link ActionRegistry} where we take the {@link BasicAction}s.</p>
+	 */
+	public void setDefaultValues(ActionRegistry actionRegistry) {
 		actionRegistry.getActions().stream().filter(a -> a instanceof BasicAction ba && ba.getAccelerator() != null)
 				.forEach(a -> {
 					BasicAction action = (BasicAction) a;
@@ -135,11 +160,18 @@ import java.util.Map;
 		saveValues();
 	}
 
+	/**
+	 * <p>Write the cache inside the file.</p>
+	 */
 	public void saveValues() {
 		try {
+			if (!file.exists()) // Re-create the file if the users delete it while MCreator is opened.
+				file.createNewFile();
+
 			YamlWriter writer = new YamlWriter(new FileWriter(file));
 			writer.write(CACHE);
 			writer.close();
+			LOG.debug("Accelerators have been successfully saved!");
 		} catch (IOException e) {
 			LOG.error("Error when creating the accelerators file.", e);
 		}

@@ -23,30 +23,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+/**
+ * <p>A class used to save the default {@link KeyStroke} and the current one. Each accelerator is linked to a {@link net.mcreator.ui.action.BasicAction}
+ * in its constructor.</p>
+ */
 public class Accelerator {
 
 	public static final int CTRL = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 	public static final int CTRL_SHIFT = CTRL | KeyEvent.SHIFT_DOWN_MASK;
 	public static final int CTRL_ALT = CTRL | KeyEvent.ALT_DOWN_MASK;
 
+	/**
+	 * <p>The String used to identify the accelerator when saving and loading them. This value is also used to get the localized name of the action.</p>
+	 */
 	private final String id;
-	private final Type type;
+	/**
+	 * <p>This is the default {@link KeyStroke} to use when the value is not found or the user rests the accelerator.</p>
+	 */
 	private final KeyStroke defaultKeyStroke;
+	/**
+	 * <p>This is the {@link KeyStroke} used by the code.</p>
+	 */
 	private KeyStroke keyStroke;
 
-	protected Accelerator(String id, Type type, KeyStroke keyStroke) {
-		this.id = type + "." + id;
-		this.type = type;
+	public Accelerator(String id, KeyStroke keyStroke) {
+		this.id = id;
 		this.defaultKeyStroke = keyStroke;
 		this.keyStroke = keyStroke;
 	}
 
 	public String getID() {
 		return id;
-	}
-
-	public Type getType() {
-		return type;
 	}
 
 	public KeyStroke getKeyStroke() {
@@ -57,23 +64,23 @@ public class Accelerator {
 		this.keyStroke = key;
 	}
 
+	/**
+	 * <p>Set the key stroke to its default value</p>
+	 *
+	 * @return <p>The accelerator with the default key stroke</p>
+	 */
 	public Accelerator reset() {
 		this.keyStroke = defaultKeyStroke;
 		return this;
 	}
 
+	/**
+	 * <p>This class is used by the {@link net.mcreator.ui.action.BasicAction} accelerators.</p>
+	 */
 	public static class ActionAccelerator extends Accelerator {
 
 		public ActionAccelerator(String id, int keyCode, int modifiers) {
-			super(id, Type.ACTION, KeyStroke.getKeyStroke(keyCode, modifiers));
-		}
-	}
-
-	public enum Type {
-		ACTION, MOD_ELEMENT;
-
-		@Override public String toString() {
-			return name().toLowerCase();
+			super("action." + id, KeyStroke.getKeyStroke(keyCode, modifiers));
 		}
 	}
 }

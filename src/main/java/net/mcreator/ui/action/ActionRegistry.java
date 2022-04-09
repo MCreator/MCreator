@@ -348,7 +348,7 @@ public class ActionRegistry {
 		this.imageEditorResizeLayer = new ResizeToolAction(this);
 		this.imageEditorResizeCanvas = new ResizeCanvasToolAction(this);
 
-		AcceleratorsManager.INSTANCE.loadAccelerators(this, false);
+		AcceleratorsManager.INSTANCE.loadAccelerators(this);
 	}
 
 	void addAction(Action action) {

@@ -25,14 +25,19 @@ import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.dialogs.AcceleratorDialog;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
-public class JActionButton extends JButton {
+/**
+ * <p>This component is a special {@link JButton} used to listen the keyboard and get the new modifiers and the new key code for an {@link Accelerator}.
+ * Some visual aspects are added to help the user.</p>
+ */
+public class JAcceleratorButton extends JButton {
 
 	private final String actionID;
 	private KeyStroke keyStroke;
 
-	public JActionButton(String text, BasicAction action) {
+	public JAcceleratorButton(String text, BasicAction action) {
 		super(text);
 
 		actionID = action.getAccelerator().getID();
@@ -51,10 +56,18 @@ public class JActionButton extends JButton {
 
 		addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				keyStroke = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
+				if (!(e.getModifiers() == 0 && Character.isLetterOrDigit(e.getKeyChar())) && !(
+						e.isShiftDown() && Character.isLetterOrDigit(e.getKeyChar()))) {
+					keyStroke = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
 
-				AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().getID(), keyStroke); // We use the cache, so the user can cancel changes.
-				setText(AcceleratorDialog.setButtonText(keyStroke));
+					AcceleratorsManager.INSTANCE.setInCache(action.getAccelerator().getID(),
+							keyStroke); // We use the cache, so the user can cancel changes.
+					setText(AcceleratorDialog.setButtonText(keyStroke));
+					setForeground(ThemeLoader.CURRENT_THEME.getColorScheme().getForegroundColor());
+				} else {
+					setText(AcceleratorDialog.setButtonText(KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers())));
+					setForeground(Color.RED);
+				}
 			}
 		});
 
