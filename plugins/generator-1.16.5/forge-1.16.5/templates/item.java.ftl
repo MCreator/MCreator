@@ -121,7 +121,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 			setRegistryName("${registryname}");
 		}
 
-        <#if data.hasAnimation()>
+        <#if data.hasNonDefaultAnimation()>
             @Override public UseAction getUseAction(ItemStack itemstack) {
                 return UseAction.${data.animation?upper_case};
             }

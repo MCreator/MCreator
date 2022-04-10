@@ -65,7 +65,7 @@ import javax.annotation.Nullable;
 		);
 	}
 
-	<#if data.hasAnimation()>
+	<#if data.hasNonDefaultAnimation()>
         @Override public UseAnim getUseAnimation(ItemStack itemstack) {
             return UseAnim.${data.animation?upper_case};
         }

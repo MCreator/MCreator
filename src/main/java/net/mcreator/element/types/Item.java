@@ -148,7 +148,7 @@ import java.util.Map;
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
 
-	public boolean hasAnimation() {
+	public boolean hasNonDefaultAnimation() {
 		return isFood ? !animation.equals("eat") : !animation.equals("none");
 	}
 
