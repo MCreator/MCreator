@@ -37,13 +37,11 @@ public class DiffResultToBaseConflictFinder {
 				// intersect changes in A and B compared to base
 				// such intersections are most likely conflicts, handle them
 				if (local.equals(remote)) { // same object (equals of T should compare by key, not by content)
-					if (local.getChangeType() == remote.getChangeType()
-							&& local.getChangeType() == DiffEntry.ChangeType.DELETE)
+					if (local.changeType() == remote.changeType() && local.changeType() == DiffEntry.ChangeType.DELETE)
 						continue; // if both actions are delete, this is actually not a conflict
 
-					mergeHandlesSet.add(
-							new MergeHandle<>(local.getAffected(), remote.getAffected(), local.getChangeType(),
-									remote.getChangeType()));
+					mergeHandlesSet.add(new MergeHandle<>(local.affected(), remote.affected(), local.changeType(),
+							remote.changeType()));
 				}
 			}
 		}

@@ -23,14 +23,12 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -41,16 +39,26 @@ public final class FileIO {
 
 	private static final Logger LOG = LogManager.getLogger("File System");
 
+	public static void touchFile(File f) {
+		if (!f.getParentFile().isDirectory())
+			f.getParentFile().mkdirs();
+
+		try {
+			f.createNewFile();
+		} catch (Exception e) {
+			LOG.error("Error touching " + e.getMessage(), e);
+		}
+	}
+
 	public static String readFileToString(File f) {
 		try {
 			FileChannel channel = new FileInputStream(f).getChannel();
 			ByteBuffer buffer = ByteBuffer.allocate((int) channel.size());
 			channel.read(buffer);
 			channel.close();
-			return new String(buffer.array());
+			return new String(buffer.array(), StandardCharsets.UTF_8);
 		} catch (Exception e) {
-			LOG.error("Error reading: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -59,15 +67,7 @@ public final class FileIO {
 		return readResourceToString(ClassLoader.getSystemClassLoader(), resource);
 	}
 
-	public static String readResourceToString(String resource, @Nullable Charset charset) {
-		return readResourceToString(ClassLoader.getSystemClassLoader(), resource, charset);
-	}
-
 	public static String readResourceToString(ClassLoader classLoader, String resource) {
-		return readResourceToString(classLoader, resource, null);
-	}
-
-	public static String readResourceToString(ClassLoader classLoader, String resource, @Nullable Charset charset) {
 		if (resource == null)
 			return null;
 
@@ -83,10 +83,9 @@ public final class FileIO {
 					result.write(buffer, 0, length);
 				}
 			}
-			return charset == null ? result.toString() : result.toString(charset);
+			return result.toString(StandardCharsets.UTF_8);
 		} catch (Exception e) {
-			LOG.error("Error resource reading: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error resource reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -106,8 +105,7 @@ public final class FileIO {
 			}
 			return result.toString();
 		} catch (Exception e) {
-			LOG.error("Error resource reading: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error resource reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -116,11 +114,11 @@ public final class FileIO {
 		if (!f.getParentFile().isDirectory())
 			f.getParentFile().mkdirs();
 
-		try (BufferedWriter out = new BufferedWriter(new FileWriter(f))) {
+		try (BufferedWriter out = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing " + e.getMessage(), e);
 		}
 	}
 
@@ -131,21 +129,7 @@ public final class FileIO {
 		try (FileOutputStream out = new FileOutputStream(f)) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage());
-			LOG.error(e.getMessage(), e);
-		}
-	}
-
-	public static void writeUTF8toFile(String c, File f) {
-		if (!f.getParentFile().isDirectory())
-			f.getParentFile().mkdirs();
-
-		try (BufferedWriter out = new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
-			out.write(c);
-		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing " + e.getMessage(), e);
 		}
 	}
 
@@ -156,8 +140,7 @@ public final class FileIO {
 		try {
 			ImageIO.write(image, "png", f);
 		} catch (IOException e) {
-			LOG.error("Error writing image " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error writing image " + e.getMessage(), e);
 		}
 	}
 
@@ -196,8 +179,7 @@ public final class FileIO {
 
 			Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			LOG.error("Error copying file: " + e.getMessage());
-			LOG.error(e.getMessage(), e);
+			LOG.error("Error copying file: " + e.getMessage(), e);
 		}
 	}
 
@@ -245,6 +227,14 @@ public final class FileIO {
 		}
 
 		return false;
+	}
+
+	public static boolean isFileSomewhereInDirectory(File file, File directory) {
+		try {
+			return file.getCanonicalPath().startsWith(directory.getCanonicalPath());
+		} catch (Exception ignored) {
+			return file.getAbsolutePath().startsWith(directory.getAbsolutePath());
+		}
 	}
 
 	public static boolean removeEmptyDirs(File root) {

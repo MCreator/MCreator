@@ -58,19 +58,16 @@ public class ShapeTool extends AbstractModificationTool {
 	@Override public boolean process(ZoomedMouseEvent e) {
 		layer.resetOverlay();
 		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
-		if (layer.in(e.getX(), e.getY())) {
-			Graphics2D graphics2D = layer.getOverlay().createGraphics();
-			graphics2D.setColor(colorSelector.getForegroundColor());
-			if (aliasing.isSelected())
-				graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			if (firstPoint == null)
-				firstPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
-			draw(graphics2D, firstPoint.x, firstPoint.y, e.getX() - layer.getX(), e.getY() - layer.getY());
-			graphics2D.dispose();
-			canvas.getCanvasRenderer().repaint();
-			return true;
-		}
-		return false;
+		Graphics2D graphics2D = layer.getOverlay().createGraphics();
+		graphics2D.setColor(colorSelector.getForegroundColor());
+		if (aliasing.isSelected())
+			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (firstPoint == null)
+			firstPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
+		draw(graphics2D, firstPoint.x, firstPoint.y, e.getX() - layer.getX(), e.getY() - layer.getY());
+		graphics2D.dispose();
+		canvas.getCanvasRenderer().repaint();
+		return true;
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
@@ -90,9 +87,22 @@ public class ShapeTool extends AbstractModificationTool {
 		}
 		switch (shape) {
 		case CIRCLE:
+			if (aliasing.isSelected()) {
+				sizex += 1;
+				sizey += 1;
+			} else {
+				x0 -= 1;
+				y0 -= 1;
+				sizex += 2;
+				sizey += 2;
+			}
 			g.fillOval(x0, y0, sizex, sizey);
 			break;
 		case SQUARE:
+			if (sizex >= 0)
+				sizex += 1;
+			if (sizey >= 0)
+				sizey += 1;
 			g.fillRect(x0, y0, sizex, sizey);
 			break;
 		case RING:

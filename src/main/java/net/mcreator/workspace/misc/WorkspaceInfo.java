@@ -22,10 +22,8 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.element.types.Block;
-import net.mcreator.element.types.GameRule;
-import net.mcreator.element.types.Recipe;
-import net.mcreator.element.types.Tool;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.generator.GeneratorWrapper;
@@ -91,6 +89,14 @@ import java.util.stream.Collectors;
 	public String getUUID() {
 		return UUID.nameUUIDFromBytes(workspace.getWorkspaceSettings().getModID().getBytes(StandardCharsets.UTF_8))
 				.toString();
+	}
+
+	public double random(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextDouble();
 	}
 
 	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
@@ -174,7 +180,7 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.GAMERULE) {
 				if (element.getGeneratableElement() instanceof GameRule gr)
-					if (gr.type.equals(type))
+					if (gr.type.equalsIgnoreCase(type))
 						return true;
 			}
 		return false;
@@ -184,7 +190,7 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.BLOCK) {
 				if (element.getGeneratableElement() instanceof Block block)
-					if (block.destroyTool.equals(tool))
+					if (block.destroyTool.equalsIgnoreCase(tool))
 						return true;
 			}
 		return false;
@@ -194,10 +200,34 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.TOOL) {
 				if (element.getGeneratableElement() instanceof Tool tool)
-					if (tool.toolType.equals(type))
+					if (tool.toolType.equalsIgnoreCase(type))
 						return true;
 			}
 		return false;
+	}
+
+	public boolean hasFluidsOfType(String type) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.FLUID) {
+				if (element.getGeneratableElement() instanceof Fluid fluid)
+					if (fluid.type.equalsIgnoreCase(type))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasBiomesWithStructure(String type) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.BIOME) {
+				if (element.getGeneratableElement() instanceof Biome biome)
+					if (biome.hasStructure(type))
+						return true;
+			}
+		return false;
+	}
+
+	public MItemBlock itemBlock(String itemBlock) {
+		return new MItemBlock(workspace, itemBlock);
 	}
 
 	public Workspace getWorkspace() {

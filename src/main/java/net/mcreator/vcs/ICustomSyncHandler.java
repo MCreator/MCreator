@@ -35,7 +35,7 @@ public interface ICustomSyncHandler {
 	 * @param dryRun  True, if merge should only be tested, but not applied
 	 * @return true, if the merge required user interaction
 	 */
-	boolean handleSync(Git git, boolean hasMergeConflists, List<FileSyncHandle> handles, boolean dryRun)
+	boolean handleSync(Git git, boolean hasMergeConflicts, List<FileSyncHandle> handles, boolean dryRun)
 			throws GitAPIException, IOException, TooNewWorkspaceVerisonException;
 
 }

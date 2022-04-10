@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 
@@ -124,14 +125,14 @@ public class TextureHolder extends VButton {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
 			setToolTipText(texture);
-			if (td.getTextureType() == BlockItemTextureSelector.TextureType.BLOCK)
-				setIcon(new ImageIcon(
-						ImageUtils.resize(td.getMCreator().getFolderManager().getBlockImageIcon(texture).getImage(),
-								this.size)));
+			if (td.getTextureType() == TextureType.BLOCK)
+				setIcon(new ImageIcon(ImageUtils.resize(
+						td.getMCreator().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage(),
+						this.size)));
 			else
-				setIcon(new ImageIcon(
-						ImageUtils.resize(td.getMCreator().getFolderManager().getItemImageIcon(texture).getImage(),
-								this.size)));
+				setIcon(new ImageIcon(ImageUtils.resize(
+						td.getMCreator().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(),
+						this.size)));
 		}
 	}
 
@@ -144,7 +145,7 @@ public class TextureHolder extends VButton {
 	}
 
 	@Override public void setIcon(Icon icon) {
-		if (!xFlip) {
+		if (!xFlip || icon == null) {
 			super.setIcon(icon);
 		} else {
 			super.setIcon(new Icon() {

@@ -38,6 +38,7 @@ import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -69,11 +70,7 @@ public class Generator implements IGenerator, Closeable {
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 
-	private final TemplateGenerator templateGenerator;
-	private final TemplateGenerator procedureGenerator;
-	private final TemplateGenerator triggerGenerator;
-	private final TemplateGenerator aitaskGenerator;
-	private final TemplateGenerator jsonTriggerGenerator;
+	private final Map<String, TemplateGenerator> templateGeneratorMap = new HashMap<>();
 
 	private final MinecraftCodeProvider minecraftCodeProvider;
 
@@ -93,15 +90,6 @@ public class Generator implements IGenerator, Closeable {
 		this.generatorConfiguration = GENERATOR_CACHE.get(generatorName);
 
 		this.baseDataModelProvider = new BaseDataModelProvider(this);
-
-		this.templateGenerator = new TemplateGenerator(generatorConfiguration.getTemplateGeneratorConfiguration(),
-				this);
-		this.procedureGenerator = new TemplateGenerator(generatorConfiguration.getProcedureGeneratorConfiguration(),
-				this);
-		this.triggerGenerator = new TemplateGenerator(generatorConfiguration.getTriggerGeneratorConfiguration(), this);
-		this.jsonTriggerGenerator = new TemplateGenerator(generatorConfiguration.getJSONTriggerGeneratorConfiguration(),
-				this);
-		this.aitaskGenerator = new TemplateGenerator(generatorConfiguration.getAITaskGeneratorConfiguration(), this);
 
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 	}
@@ -123,20 +111,15 @@ public class Generator implements IGenerator, Closeable {
 		return generatorConfiguration;
 	}
 
-	public TemplateGenerator getProcedureGenerator() {
-		return procedureGenerator;
-	}
-
-	public TemplateGenerator getTriggerGenerator() {
-		return triggerGenerator;
-	}
-
-	public TemplateGenerator getAITaskGenerator() {
-		return aitaskGenerator;
-	}
-
-	public TemplateGenerator getJSONTriggerGenerator() {
-		return jsonTriggerGenerator;
+	public TemplateGenerator getTemplateGeneratorFromName(String name) {
+		if (templateGeneratorMap.containsKey(name))
+			return templateGeneratorMap.get(name);
+		else {
+			TemplateGenerator tpl = new TemplateGenerator(generatorConfiguration.getTemplateGenConfigFromName(name),
+					this);
+			templateGeneratorMap.put(name, tpl);
+			return tpl;
+		}
 	}
 
 	public String getGeneratorName() {
@@ -206,7 +189,8 @@ public class Generator implements IGenerator, Closeable {
 					extractVariables(generatorTemplate, dataModel);
 
 					try {
-						String code = templateGenerator.generateBaseFromTemplate(templateFileName, dataModel);
+						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
+								templateFileName, dataModel);
 						return new GeneratorFile(code, generatorTemplate.getFile(),
 								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
 					} catch (TemplateGeneratorException e) {
@@ -279,8 +263,8 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				String code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel,
-						element.getAdditionalTemplateData());
+				String code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
+						templateFileName, dataModel, element.getAdditionalTemplateData());
 
 				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
 						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
@@ -611,7 +595,7 @@ public class Generator implements IGenerator, Closeable {
 				// if this is GUI, we check for generated UI texture file too
 				if (element.getType() == ModElementType.GUI) {
 					File guiTextureFile = workspace.getFolderManager()
-							.getOtherTextureFile(element.getName().toLowerCase(Locale.ENGLISH));
+							.getTextureFile(element.getName().toLowerCase(Locale.ENGLISH), TextureType.OTHER);
 					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))
 						return element;
 				}
@@ -631,7 +615,7 @@ public class Generator implements IGenerator, Closeable {
 				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
 					if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
 						if (!generatorFile.file().isFile())
-							FileIO.writeStringToFile("", generatorFile.file());
+							FileIO.touchFile(generatorFile.file());
 				}
 			});
 		}
@@ -758,10 +742,11 @@ public class Generator implements IGenerator, Closeable {
 							if (model.getType() == Model.Type.JAVA) {
 								String modelCode = FileIO.readFileToString(model.getFile());
 								try {
-									modelCode = templateGenerator.generateFromTemplate(template, new HashMap<>(
-											Map.of("modelname", model.getReadableName(), "model", modelCode,
-													"modelregistryname",
-													RegistryNameFixer.fromCamelCase(model.getReadableName()))));
+									modelCode = getTemplateGeneratorFromName("templates").generateFromTemplate(template,
+											new HashMap<>(
+													Map.of("modelname", model.getReadableName(), "model", modelCode,
+															"modelregistryname",
+															RegistryNameFixer.fromCamelCase(model.getReadableName()))));
 								} catch (TemplateGeneratorException e) {
 									e.printStackTrace();
 								}

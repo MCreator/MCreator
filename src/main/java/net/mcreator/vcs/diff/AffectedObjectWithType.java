@@ -20,23 +20,7 @@ package net.mcreator.vcs.diff;
 
 import org.eclipse.jgit.diff.DiffEntry;
 
-class AffectedObjectWithType<T> {
-
-	private final T affected;
-	private final DiffEntry.ChangeType changeType;
-
-	AffectedObjectWithType(T affected, DiffEntry.ChangeType changeType) {
-		this.affected = affected;
-		this.changeType = changeType;
-	}
-
-	T getAffected() {
-		return affected;
-	}
-
-	DiffEntry.ChangeType getChangeType() {
-		return changeType;
-	}
+record AffectedObjectWithType<T>(T affected, DiffEntry.ChangeType changeType) {
 
 	@Override public boolean equals(Object o) {
 		return o instanceof AffectedObjectWithType && ((AffectedObjectWithType<?>) o).affected.equals(affected);

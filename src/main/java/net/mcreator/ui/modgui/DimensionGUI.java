@@ -46,6 +46,7 @@ import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -118,7 +119,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		onPortalTickUpdate = new ProcedureSelector(this.withEntry("dimension/on_portal_tick_update"), mcreator,
 				L10N.t("elementgui.dimension.event_portal_tick_update"),
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onPlayerEntersDimension = new ProcedureSelector(this.withEntry("dimension/when_player_enters"), mcreator,
 				L10N.t("elementgui.dimension.event_player_enters"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -205,9 +206,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
@@ -428,7 +428,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		modElement.reinit();
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-dimension");
 	}
 

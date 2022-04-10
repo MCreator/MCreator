@@ -24,7 +24,7 @@ import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -39,7 +39,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable {
 
@@ -197,7 +196,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 			String term = workspacePanel.search.getText();
 			filterItems.addAll(items.stream().filter(Objects::nonNull)
 					.filter(item -> item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH))).collect(Collectors.toList()));
+							.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 
 			if (workspacePanel.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(File::getName));

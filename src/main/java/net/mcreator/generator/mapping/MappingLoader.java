@@ -28,10 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -57,11 +54,12 @@ public class MappingLoader {
 					YamlReader reader = new YamlReader(config);
 
 					try {
-						Map<?, ?> mappingsFromFile = new ConcurrentHashMap<>((Map<?, ?>) reader.read());
+						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
+								new LinkedHashMap<>((Map<?, ?>) reader.read()));
 						if (mappings.get(mappingName) == null) {
 							mappings.put(mappingName, mappingsFromFile);
 						} else {
-							Map merged = new ConcurrentHashMap();
+							Map merged = Collections.synchronizedMap(new LinkedHashMap());
 							merged.putAll(mappings.get(mappingName));
 							merged.putAll(mappingsFromFile);
 							mappings.put(mappingName, merged);

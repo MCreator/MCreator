@@ -18,41 +18,6 @@
 
 package net.mcreator.minecraft.api;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Map;
 
-public class ModAPI {
-
-	public final String id;
-	public final String name;
-
-	public Map<String, Implementation> implementations;
-
-	public ModAPI(String id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
-	void setImplementations(Map<String, Implementation> implementations) {
-		this.implementations = implementations;
-	}
-
-	public static class Implementation {
-
-		public final String gradle;
-		@Nullable public final List<String> update_files;
-		public final ModAPI parent;
-		public final boolean requiredWhenEnabled;
-
-		public Implementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
-				boolean requiredWhenEnabled) {
-			this.gradle = gradle;
-			this.update_files = update_files;
-			this.parent = parent;
-			this.requiredWhenEnabled = requiredWhenEnabled;
-		}
-
-	}
-
-}
+public record ModAPI(String id, String name, Map<String, ModAPIImplementation> implementations) {}

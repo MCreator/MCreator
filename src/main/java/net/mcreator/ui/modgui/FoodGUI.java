@@ -42,6 +42,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -96,7 +97,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private final Model normal = new Model.BuiltInModel("Normal");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 
 	public FoodGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -153,7 +154,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		destal.add("Center", ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.food.texture")));
@@ -380,7 +381,7 @@ public class FoodGUI extends ModElementGUI<Food> {
 		return food;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-food");
 	}
 

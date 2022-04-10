@@ -47,39 +47,39 @@ class VCSWorkspaceMergeDialog {
 		allRemote.addActionListener(e -> mergeHandleComponents.forEach(mhc -> mhc.remote.setSelected(true)));
 		merges.add(PanelUtils.westAndEastElement(allLocal, allRemote));
 
-		if (input.getWorkspaceSettingsMergeHandle() != null) {
+		if (input.workspaceSettingsMergeHandle() != null) {
 			merges.add(
 					PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Workspace settings"), 19)));
-			merges.add(new MergeHandleComponent(mergeHandleComponents, input.getWorkspaceSettingsMergeHandle()));
+			merges.add(new MergeHandleComponent(mergeHandleComponents, input.workspaceSettingsMergeHandle()));
 		}
 
-		if (input.getWorkspaceFoldersMergeHandle() != null) {
+		if (input.workspaceFoldersMergeHandle() != null) {
 			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Folder structure"), 19)));
-			merges.add(new MergeHandleComponent(mergeHandleComponents, input.getWorkspaceFoldersMergeHandle()));
+			merges.add(new MergeHandleComponent(mergeHandleComponents, input.workspaceFoldersMergeHandle()));
 		}
 
-		if (input.getConflictingModElements().size() > 0) {
+		if (input.conflictingModElements().size() > 0) {
 			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Mod elements"), 19)));
-			for (MergeHandle<ModElement> modElementMergeHandle : input.getConflictingModElements())
+			for (MergeHandle<ModElement> modElementMergeHandle : input.conflictingModElements())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, modElementMergeHandle));
 		}
 
-		if (input.getConflictingVariableElements().size() > 0) {
+		if (input.conflictingVariableElements().size() > 0) {
 			merges.add(
 					PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Variable elements"), 19)));
-			for (MergeHandle<VariableElement> variableElementMergeHandle : input.getConflictingVariableElements())
+			for (MergeHandle<VariableElement> variableElementMergeHandle : input.conflictingVariableElements())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, variableElementMergeHandle));
 		}
 
-		if (input.getConflictingSoundElements().size() > 0) {
+		if (input.conflictingSoundElements().size() > 0) {
 			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Sound elements"), 19)));
-			for (MergeHandle<SoundElement> soundElementMergeHandle : input.getConflictingSoundElements())
+			for (MergeHandle<SoundElement> soundElementMergeHandle : input.conflictingSoundElements())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, soundElementMergeHandle));
 		}
 
-		if (input.getConflictingLangMaps().size() > 0) {
+		if (input.conflictingLangMaps().size() > 0) {
 			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Language maps"), 19)));
-			for (MergeHandle<String> languageMapMergeHandle : input.getConflictingLangMaps())
+			for (MergeHandle<String> languageMapMergeHandle : input.conflictingLangMaps())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, languageMapMergeHandle));
 		}
 

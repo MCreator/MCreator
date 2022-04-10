@@ -22,6 +22,7 @@ import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
+import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,15 +33,12 @@ import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
-public class MCreatorDropTarget implements DropTargetListener {
+record MCreatorDropTarget(MCreator mcreator) implements DropTargetListener {
 
 	private static final Logger LOG = LogManager.getLogger("DND");
 
-	private final MCreator mcreator;
-
-	MCreatorDropTarget(MCreator mcreator) {
+	MCreatorDropTarget {
 		new DropTarget(mcreator, DnDConstants.ACTION_MOVE, this, true, null);
-		this.mcreator = mcreator;
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
@@ -77,8 +75,8 @@ public class MCreatorDropTarget implements DropTargetListener {
 						} else if (file.getName().endsWith(".mtl")) {
 							ModelImportActions.importOBJModel(mcreator, null, file);
 						} else if (file.getName().endsWith(".png")) {
-							TextureImportDialogs.importTextureGeneral(mcreator, file,
-									"What kind of texture is this file?");
+							TextureImportDialogs.importSingleTexture(mcreator, file,
+									L10N.t("workspace.textures.select_texture_type"));
 						} else if (file.getName().endsWith(".nbt")) {
 							StructureImportActions.importStructure(mcreator, new File[] { file });
 						} else {

@@ -28,11 +28,10 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused") public class GeneratorWrapper {
+@SuppressWarnings({ "unused", "ClassCanBeRecord" }) public class GeneratorWrapper {
 
 	private final Generator generator;
 
@@ -58,6 +57,11 @@ import java.util.stream.Collectors;
 
 	public VariableElement getVariableElementByName(String elementName) {
 		return generator.getWorkspace().getVariableElementByName(elementName);
+	}
+
+	public Collection<String> sortByMappings(Collection<String> input, String mappingTable) {
+		List<?> mappingkeys = new ArrayList<>(generator.getMappings().getMapping(mappingTable).keySet());
+		return new LinkedHashSet<>(input.stream().sorted(Comparator.comparingInt(mappingkeys::indexOf)).toList());
 	}
 
 	public List<Procedure> procedureNamesToObjects(String proceduresString) {
@@ -93,7 +97,7 @@ import java.util.stream.Collectors;
 				"bucket"))
 			return false;
 
-		return this.getRecipeElementType(elementName) == RecipeType.BLOCK;
+		return this.isRecipeTypeBlockOrBucket(elementName);
 	}
 
 	public boolean isRecipeTypeBlockOrBucket(String elementName) {

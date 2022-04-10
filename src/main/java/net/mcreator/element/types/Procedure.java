@@ -129,7 +129,8 @@ public class Procedure extends GeneratableElement {
 
 			String triggerCode = "";
 			if (trigger != null) {
-				TemplateGenerator templateGenerator = getModElement().getGenerator().getTriggerGenerator();
+				TemplateGenerator templateGenerator = getModElement().getGenerator()
+						.getTemplateGeneratorFromName("triggers");
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
 			}
 			additionalData.put("trigger_code", triggerCode);
@@ -140,11 +141,11 @@ public class Procedure extends GeneratableElement {
 			throws TemplateGeneratorException {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 				BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks(),
-				getModElement().getGenerator().getProcedureGenerator(), additionalData);
+				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
 
 		// load blocklytojava with custom generators loaded
 		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.procedurexml,
-				getModElement().getGenerator().getProcedureGenerator(),
+				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 	}

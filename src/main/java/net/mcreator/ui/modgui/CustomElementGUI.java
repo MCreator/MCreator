@@ -29,7 +29,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomElementGUI extends ModElementGUI<CustomElement> {
 
@@ -38,7 +37,7 @@ public class CustomElementGUI extends ModElementGUI<CustomElement> {
 	public CustomElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
-				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+				.map(GeneratorTemplate::getFile).toList();
 
 		File modElementFile = modElementFiles.get(0);
 

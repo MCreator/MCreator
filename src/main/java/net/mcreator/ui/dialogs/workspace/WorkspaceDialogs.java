@@ -22,7 +22,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.JavaConventions;
-import net.mcreator.minecraft.api.ModAPI;
+import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -38,6 +38,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
@@ -303,7 +304,7 @@ public class WorkspaceDialogs {
 
 			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
-				List<File> other = workspace.getFolderManager().getOtherTexturesList();
+				List<File> other = workspace.getFolderManager().getTexturesList(TextureType.OTHER);
 				for (File element : other) {
 					if (element.getName().endsWith(".png"))
 						modPicture.addItem(FilenameUtilsPatched.removeExtension(element.getName()));
@@ -335,7 +336,8 @@ public class WorkspaceDialogs {
 			selectGenerator.addActionListener(e -> {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
-						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
+						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
+						workspace == null);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});
@@ -345,7 +347,7 @@ public class WorkspaceDialogs {
 					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
 									workspace.getGeneratorConfiguration().getGeneratorFlavor() :
-									flavorFilter);
+									flavorFilter, workspace == null);
 					if (gc != null)
 						generator.setSelectedItem(gc);
 				}
@@ -451,14 +453,14 @@ public class WorkspaceDialogs {
 				JPanel apiList = new JPanel();
 				apiList.setLayout(new BoxLayout(apiList, BoxLayout.PAGE_AXIS));
 
-				List<ModAPI.Implementation> apisSupported = ModAPIManager.getModAPIsForGenerator(
+				List<ModAPIImplementation> apisSupported = ModAPIManager.getModAPIsForGenerator(
 						workspace.getGenerator().getGeneratorName());
-				for (ModAPI.Implementation api : apisSupported) {
+				for (ModAPIImplementation api : apisSupported) {
 					JCheckBox apiEnableBox = new JCheckBox();
-					apiEnableBox.setName(api.parent.id);
-					apiEnableBox.setText(api.parent.name);
+					apiEnableBox.setName(api.parent().id());
+					apiEnableBox.setText(api.parent().name());
 
-					if (api.parent.id.equals("mcreator_link")) {
+					if (api.parent().id().equals("mcreator_link")) {
 						apiList.add(PanelUtils.westAndCenterElement(
 								ComponentUtils.wrapWithInfoButton(apiEnableBox, "https://mcreator.net/link"),
 								new JLabel(UIRES.get("16px.link"))));
@@ -466,7 +468,7 @@ public class WorkspaceDialogs {
 						apiList.add(PanelUtils.join(FlowLayout.LEFT, apiEnableBox));
 					}
 
-					apis.put(api.parent.id, apiEnableBox);
+					apis.put(api.parent().id(), apiEnableBox);
 				}
 
 				apiSettings.add("West", apiList);
@@ -537,11 +539,11 @@ public class WorkspaceDialogs {
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
 				if (!workspace.getWorkspaceSettings().requiredMods.isEmpty())
-					requiredMods.setText(String.join(", ", workspace.getWorkspaceSettings().requiredMods).trim());
+					requiredMods.setText(String.join(",", workspace.getWorkspaceSettings().requiredMods).trim());
 				if (!workspace.getWorkspaceSettings().dependencies.isEmpty())
-					dependencies.setText(String.join(", ", workspace.getWorkspaceSettings().dependencies).trim());
+					dependencies.setText(String.join(",", workspace.getWorkspaceSettings().dependencies).trim());
 				if (!workspace.getWorkspaceSettings().dependants.isEmpty())
-					dependants.setText(String.join(", ", workspace.getWorkspaceSettings().dependants).trim());
+					dependants.setText(String.join(",", workspace.getWorkspaceSettings().dependants).trim());
 
 				for (String mcrdep : workspace.getWorkspaceSettings().getMCreatorDependenciesRaw()) {
 					JCheckBox box = apis.get(mcrdep);
@@ -577,13 +579,14 @@ public class WorkspaceDialogs {
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 
 			retVal.setRequiredMods(
-					Arrays.stream(requiredMods.getText().split(",")).filter(text -> !text.trim().equals(""))
+					Arrays.stream(requiredMods.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
 							.collect(Collectors.toSet()));
 			retVal.setDependencies(
-					Arrays.stream(dependencies.getText().split(",")).filter(text -> !text.trim().equals(""))
+					Arrays.stream(dependencies.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
 							.collect(Collectors.toSet()));
-			retVal.setDependants(Arrays.stream(dependants.getText().split(",")).filter(text -> !text.trim().equals(""))
-					.collect(Collectors.toSet()));
+			retVal.setDependants(
+					Arrays.stream(dependants.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
+							.collect(Collectors.toSet()));
 
 			Set<String> mcreatordeps = new HashSet<>();
 			for (JCheckBox box : apis.values()) {

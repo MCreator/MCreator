@@ -40,6 +40,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -121,10 +122,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		importicontexture.setToolTipText(L10N.t("elementgui.potioneffect.import_icon"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 			icon.removeAllItems();
 			icon.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> icon.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> icon.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
@@ -201,7 +202,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 
@@ -244,7 +245,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		return potion;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-potion");
 	}
 

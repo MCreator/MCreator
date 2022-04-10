@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
 
 	public List<String> getInputs() {
 		return inputs != null ?
-				inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::getName).collect(Collectors.toList()) :
+				inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::name).collect(Collectors.toList()) :
 				Collections.emptyList();
 	}
 

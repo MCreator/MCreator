@@ -19,7 +19,6 @@
 package net.mcreator.ui.vcs;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
@@ -46,7 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
+@SuppressWarnings("ClassCanBeRecord") public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 	private final MCreator mcreator;
 
@@ -55,7 +54,7 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 	}
 
 	@Override
-	public boolean handleSync(Git git, boolean hasMergeConflists, List<FileSyncHandle> handles, boolean dryRun)
+	public boolean handleSync(Git git, boolean hasMergeConflicts, List<FileSyncHandle> handles, boolean dryRun)
 			throws GitAPIException, IOException, TooNewWorkspaceVerisonException {
 		boolean required_user_action;
 
@@ -397,10 +396,8 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 						.getGeneratableElement();
 				if (generatableElement != null) {
 					// regenerate this mod element to reduce conflicts number, we prefer to use baseWorkspace for this
-					if (baseWorkspace != null)
-						baseWorkspace.getGenerator().generateElement(generatableElement);
-					else
-						localWorkspace.getGenerator().generateElement(generatableElement);
+					Objects.requireNonNullElse(baseWorkspace, localWorkspace).getGenerator()
+							.generateElement(generatableElement);
 					localWorkspace.getModElementManager().storeModElementPicture(
 							generatableElement); // we regenerate mod element images as we do not have remote images yet
 				}

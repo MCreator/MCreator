@@ -44,7 +44,6 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class WorkspacePanelModels extends JPanel implements IReloadableFilterable {
 
@@ -317,7 +316,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item ->
 					(item.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
 							|| (item.getType().name().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).collect(Collectors.toList()));
+							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
 
 			if (workspacePanel.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(Model::getReadableName));

@@ -19,7 +19,7 @@
 package net.mcreator.gradle;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.minecraft.api.ModAPI;
+import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
@@ -105,10 +105,10 @@ public class GradleUtils {
 			if (workspace.getWorkspaceSettings() != null
 					&& workspace.getWorkspaceSettings().getMCreatorDependencies() != null) {
 				for (String dep : workspace.getWorkspaceSettings().getMCreatorDependencies()) {
-					ModAPI.Implementation implementation = ModAPIManager.getModAPIForNameAndGenerator(dep,
+					ModAPIImplementation implementation = ModAPIManager.getModAPIForNameAndGenerator(dep,
 							workspace.getGenerator().getGeneratorName());
 					if (implementation != null) {
-						mcreatorGradleConfBuilder.append(implementation.gradle).append("\n\n");
+						mcreatorGradleConfBuilder.append(implementation.gradle()).append("\n\n");
 					}
 				}
 			}

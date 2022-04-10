@@ -126,7 +126,7 @@ public class TemplateConditionParser {
 	private static boolean processFTLExpression(Generator generator, String expression) {
 		try {
 			Template t = new Template("INLINE EXPRESSION", new StringReader(expression),
-					generator.getGeneratorConfiguration().getTemplateGeneratorConfiguration().getConfiguration());
+					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
 
 			StringWriter stringWriter = new StringWriter();
 			t.process(generator.getBaseDataModelProvider().provide(), stringWriter);

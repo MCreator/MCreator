@@ -37,7 +37,7 @@ import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
@@ -72,8 +72,8 @@ public class ModelImportActions {
 					JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice_new.message",
 									actionRegistry.getMCreator().getGeneratorConfiguration()
-											.getCompatibleJavaModelKeys().toString().replace("[", "")
-											.replace("]", "").replace("legacy", "mcp-pre-1.17.x")),
+											.getCompatibleJavaModelKeys().toString().replace("[", "").replace("]", "")
+											.replace("legacy", "mcp-pre-1.17.x")),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice.title"),
 							JOptionPane.INFORMATION_MESSAGE);
 				}

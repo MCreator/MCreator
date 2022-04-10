@@ -163,7 +163,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		return tag;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-tag");
 	}
 

@@ -19,11 +19,11 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToAITasks;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
@@ -37,7 +37,8 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.AITasksEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JColor;
@@ -59,6 +60,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -91,6 +93,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private ProcedureSelector particleCondition;
 	private ProcedureSelector spawningCondition;
+	private ProcedureSelector transparentModelCondition;
+	private ProcedureSelector isShakingCondition;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
@@ -172,17 +176,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private static final Model biped = new Model.BuiltInModel("Biped");
 	private static final Model chicken = new Model.BuiltInModel("Chicken");
+	private static final Model cod = new Model.BuiltInModel("Cod");
 	private static final Model cow = new Model.BuiltInModel("Cow");
 	private static final Model creeper = new Model.BuiltInModel("Creeper");
 	private static final Model ghast = new Model.BuiltInModel("Ghast");
+	private static final Model ocelot = new Model.BuiltInModel("Ocelot");
 	private static final Model pig = new Model.BuiltInModel("Pig");
+	private static final Model piglin = new Model.BuiltInModel("Piglin");
+	private static final Model salmon = new Model.BuiltInModel("Salmon");
+	private static final Model silverfish = new Model.BuiltInModel("Silverfish");
 	private static final Model slime = new Model.BuiltInModel("Slime");
 	private static final Model spider = new Model.BuiltInModel("Spider");
 	private static final Model villager = new Model.BuiltInModel("Villager");
-	private static final Model silverfish = new Model.BuiltInModel("Silverfish");
-	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cow, creeper, ghast, pig, slime,
-			spider, villager, silverfish };
-	private final JComboBox<Model> mobModel = new JComboBox<>();
+	private static final Model witch = new Model.BuiltInModel("Witch");
+	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cod, cow, creeper, ghast, ocelot, pig,
+			piglin, salmon, silverfish, slime, spider, villager, witch };
+	private final JComboBox<Model> mobModel = new JComboBox<>(builtinmobmodels);
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
@@ -191,7 +200,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().collect(Collectors.toList()).toArray(new String[0]));
+					"IronGolem").sorted().toArray(String[]::new));
 
 	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
@@ -252,9 +261,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getGeneratorAITasks());
 
-		BlocklyToAITasks blocklyToJava;
+		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToAITasks(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "aitasks_container", blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
@@ -266,7 +275,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -312,6 +321,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
+		transparentModelCondition = new ProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
+				mcreator, L10N.t("elementgui.living_entity.condition_is_model_transparent"),
+				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
+		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.false")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -446,7 +465,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -458,22 +477,30 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
 
+		spo2.add(new JEmptyBox());
+		spo2.add(transparentModelCondition);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(isShakingCondition);
+
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER)
+					.forEach(el -> mobModelTexture.addItem(el.getName()));
 			mobModelGlowTexture.removeAllItems();
 			mobModelGlowTexture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> mobModelGlowTexture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER)
+					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
 				L10N.label("elementgui.living_entity.texture")));
-		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture));
+		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
 				L10N.label("elementgui.living_entity.glow_texture")));
@@ -514,6 +541,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			} else if (chicken.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(0.4);
 				modelHeight.setValue(0.7);
+			} else if (cod.equals(mobModel.getSelectedItem())) {
+				modelWidth.setValue(0.5);
+				modelHeight.setValue(0.3);
 			} else if (cow.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(0.9);
 				modelHeight.setValue(1.4);
@@ -523,9 +553,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			} else if (ghast.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(1.0);
 				modelHeight.setValue(1.0);
+			} else if (ocelot.equals(mobModel.getSelectedItem())) {
+				modelWidth.setValue(0.6);
+				modelHeight.setValue(0.7);
 			} else if (pig.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(0.9);
 				modelHeight.setValue(0.9);
+			} else if (piglin.equals(mobModel.getSelectedItem())) {
+				modelWidth.setValue(0.6);
+				modelHeight.setValue(1.95);
+			} else if (salmon.equals(mobModel.getSelectedItem())) {
+				modelWidth.setValue(0.7);
+				modelHeight.setValue(0.4);
 			} else if (slime.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(1.0);
 				modelHeight.setValue(1.0);
@@ -538,24 +577,27 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			} else if (silverfish.equals(mobModel.getSelectedItem())) {
 				modelWidth.setValue(0.4);
 				modelHeight.setValue(0.3);
+			} else if (witch.equals(mobModel.getSelectedItem())) {
+				modelWidth.setValue(0.6);
+				modelHeight.setValue(1.95);
 			}
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
 				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
-		spo2.add(PanelUtils.join(isBoss, bossBarColor, bossBarType));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, isBoss, bossBarColor, bossBarType));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
 				L10N.label("elementgui.living_entity.label")));
@@ -642,7 +684,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
-		bpb.add(PanelUtils.northAndCenterElement(new AITasksEditorToolbar(mcreator, blocklyPanel), blocklyPanel));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
+				blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
 
@@ -841,13 +886,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
+		transparentModelCondition.refreshListKeepSelected();
+		isShakingCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
@@ -878,7 +925,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Living entity AI builder: " + compileNote.getMessage())
+						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
@@ -893,6 +940,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
+		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
+		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1020,6 +1069,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
 		livingEntity.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
+		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
+		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();
@@ -1110,7 +1161,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		return livingEntity;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
 	}
 

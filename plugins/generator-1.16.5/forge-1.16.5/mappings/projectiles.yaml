@@ -1,0 +1,38 @@
+_default:
+  - SnowballEntity
+  - EntityType.SNOWBALL
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@NAMEItem.ArrowCustomEntity"
+Snowball:
+  - SnowballEntity
+  - EntityType.SNOWBALL
+Egg:
+  - EggEntity
+  - EntityType.EGG
+ExperienceBottle:
+  - ExperienceBottleEntity
+  - EntityType.EXPERIENCE_BOTTLE
+EnderPearl:
+  - EnderPearlEntity
+  - EntityType.ENDER_PEARL
+LlamaSpit:
+  - LlamaSpitEntity
+  - EntityType.LLAMA_SPIT
+Arrow:
+  - ArrowEntity
+  - EntityType.ARROW
+SpectralArrow:
+  - SpectralArrowEntity
+  - EntityType.SPECTRAL_ARROW
+SmallFireball:
+  - SmallFireballEntity
+  - EntityType.SMALL_FIREBALL
+LargeFireball:
+  - FireballEntity
+  - EntityType.FIREBALL
+DragonFireball:
+  - DragonFireballEntity
+  - EntityType.DRAGON_FIREBALL
+WitherSkull:
+  - WitherSkullEntity
+  - EntityType.WITHER_SKULL

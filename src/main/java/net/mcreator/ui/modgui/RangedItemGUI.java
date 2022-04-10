@@ -49,6 +49,7 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -110,7 +111,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private final Model adefault = new Model.BuiltInModel("Default");
-	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>(new Model[] { adefault });
 	private final VComboBox<String> customBulletModelTexture = new SearchableComboBox<>();
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -171,7 +172,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);
@@ -299,10 +300,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.ranged_item.bullet_model_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
-			List<File> textures = mcreator.getFolderManager().getOtherTexturesList();
+			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.OTHER);
 			for (File element : textures)
 				if (element.getName().endsWith(".png"))
 					customBulletModelTexture.addItem(element.getName());
@@ -425,7 +426,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),
@@ -536,7 +537,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		return rangedItem;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-gun");
 	}
 

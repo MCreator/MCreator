@@ -33,6 +33,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -74,10 +75,10 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		importicontexture.setToolTipText(L10N.t("elementgui.painting.import_painting"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importOtherTextures(mcreator);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getOtherTexturesList().forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> texture.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
@@ -109,7 +110,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 
@@ -133,7 +134,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		return painting;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-painting");
 	}
 

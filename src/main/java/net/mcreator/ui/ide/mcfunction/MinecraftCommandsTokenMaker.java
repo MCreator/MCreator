@@ -1052,7 +1052,7 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	/**
 	 * Closes the input stream.
 	 */
-	public final void yyclose() throws java.io.IOException {
+	@Override public final void yyclose() throws java.io.IOException {
 		zzAtEOF = true;            /* indicate end of file */
 		zzEndRead = zzStartRead;  /* invalidate buffer    */
 
@@ -1214,122 +1214,70 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 			zzMarkedPos = zzMarkedPosL;
 
 			switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
-			case 15: {
-				addToken(Token.RESERVED_WORD);
+			case 1 -> addToken(Token.IDENTIFIER);
+			case 2 -> addToken(Token.LITERAL_NUMBER_DECIMAL_INT);
+			case 6 -> addToken(Token.WHITESPACE);
+			case 7 -> addToken(Token.SEPARATOR);
+			case 8 -> addToken(Token.DATA_TYPE);
+			case 9 -> addToken(Token.OPERATOR);
+			case 12 -> addToken(Token.ERROR_NUMBER_FORMAT);
+			case 13 -> addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+			case 14 -> addToken(Token.LITERAL_NUMBER_FLOAT);
+			case 15 -> addToken(Token.RESERVED_WORD);
+			case 16 -> addToken(Token.ERROR_STRING_DOUBLE);
+			case 3 -> {
+				addNullToken();
+				return firstToken;
 			}
-			case 18:
-				break;
-			case 1: {
-				addToken(Token.IDENTIFIER);
+			case 4 -> {
+				addToken(Token.ERROR_STRING_DOUBLE);
+				addNullToken();
+				return firstToken;
 			}
-			case 19:
-				break;
-			case 14: {
-				addToken(Token.LITERAL_NUMBER_FLOAT);
+			case 5 -> {
+				start = zzMarkedPos - 1;
+				yybegin(EOL_COMMENT);
 			}
-			case 20:
-				break;
-			case 13: {
-				addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+			case 10 -> {
 			}
-			case 21:
-				break;
-			case 6: {
-				addToken(Token.WHITESPACE);
+			case 11 -> {
+				addToken(start, zzStartRead - 1, Token.COMMENT_EOL);
+				addNullToken();
+				return firstToken;
 			}
-			case 22:
-				break;
-			case 17: {
+			case 17 -> {
 				int temp = zzStartRead;
 				addToken(start, zzStartRead - 1, Token.COMMENT_EOL);
 				addHyperlinkToken(temp, zzMarkedPos - 1, Token.COMMENT_EOL);
 				start = zzMarkedPos;
 			}
-			case 23:
+			case 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 -> {
 				break;
-			case 12: {
-				addToken(Token.ERROR_NUMBER_FORMAT);
 			}
-			case 24:
-				break;
-			case 8: {
-				addToken(Token.DATA_TYPE);
-			}
-			case 25:
-				break;
-			case 5: {
-				start = zzMarkedPos - 1;
-				yybegin(EOL_COMMENT);
-			}
-			case 26:
-				break;
-			case 9: {
-				addToken(Token.OPERATOR);
-			}
-			case 27:
-				break;
-			case 2: {
-				addToken(Token.LITERAL_NUMBER_DECIMAL_INT);
-			}
-			case 28:
-				break;
-			case 4: {
-				addToken(Token.ERROR_STRING_DOUBLE);
-				addNullToken();
-				return firstToken;
-			}
-			case 29:
-				break;
-			case 3: {
-				addNullToken();
-				return firstToken;
-			}
-			case 30:
-				break;
-			case 11: {
-				addToken(start, zzStartRead - 1, Token.COMMENT_EOL);
-				addNullToken();
-				return firstToken;
-			}
-			case 31:
-				break;
-			case 16: {
-				addToken(Token.ERROR_STRING_DOUBLE);
-			}
-			case 32:
-				break;
-			case 10: {
-			}
-			case 33:
-				break;
-			case 7: {
-				addToken(Token.SEPARATOR);
-			}
-			case 34:
-				break;
-			default:
+			default -> {
 				if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
 					zzAtEOF = true;
 					switch (zzLexicalState) {
-					case EOL_COMMENT: {
+					case YYINITIAL -> {
+						addNullToken();
+						return firstToken;
+					}
+					case EOL_COMMENT -> {
 						addToken(start, zzStartRead - 1, Token.COMMENT_EOL);
 						addNullToken();
 						return firstToken;
 					}
-					case 463:
+					case 463, 464 -> {
 						break;
-					case YYINITIAL: {
-						addNullToken();
-						return firstToken;
 					}
-					case 464:
-						break;
-					default:
+					default -> {
 						return null;
+					}
 					}
 				} else {
 					zzScanError(ZZ_NO_MATCH);
 				}
+			}
 			}
 		}
 	}

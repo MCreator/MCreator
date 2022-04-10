@@ -1096,7 +1096,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 			configuredFeature = feature
 					.withConfiguration(new OreFeatureConfig(CustomRuleTest.INSTANCE, block.getDefaultState(), ${data.frequencyOnChunk}))
-					.range(${data.maxGenerateHeight})
+					<#if data.maxGenerateHeight gt 256>
+					    .range(256)
+					<#elseif data.maxGenerateHeight lt 0>
+					    .range(0)
+					<#else>
+					    .range(${data.maxGenerateHeight})
+					</#if>
 					.square()
 					.func_242731_b(${data.frequencyPerChunks});
 

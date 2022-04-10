@@ -28,7 +28,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -163,7 +163,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				L10N.label("elementgui.structuregen.spawn_height_offset")));
 		params.add(PanelUtils.gridElements(1, 3, 2, 2, spawnOffsetX, spawnHeightOffset, spawnOffsetZ));
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/spawn_world_types"),
 				L10N.label("elementgui.structuregen.spawn_world_types")));
 		params.add(spawnWorldTypes);
 
@@ -249,7 +249,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		return structure;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-structure");
 	}
 

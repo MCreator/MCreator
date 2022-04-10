@@ -48,6 +48,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -265,7 +266,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		SwingUtilities.invokeLater(() -> {
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.getType() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -285,14 +286,14 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.collect(Collectors.toList())), "Default");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (hasErrors)
 			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> L10N.t("elementgui.advancement.trigger") + compileNote.getMessage())
+					.map(compileNote -> L10N.t("elementgui.advancement.trigger", compileNote.message()))
 					.collect(Collectors.toList()));
 
 		return new AggregatedValidationResult(page1group);
@@ -345,7 +346,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		return achievement;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-achievement");
 	}
 

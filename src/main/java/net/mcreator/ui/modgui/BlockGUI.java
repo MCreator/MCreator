@@ -57,6 +57,7 @@ import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -156,10 +157,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
 	private final SoundSelector breakSound = new SoundSelector(mcreator);
-	private final SoundSelector stepSound = new SoundSelector(mcreator);
-	private final SoundSelector placeSound = new SoundSelector(mcreator);
-	private final SoundSelector hitSound = new SoundSelector(mcreator);
 	private final SoundSelector fallSound = new SoundSelector(mcreator);
+	private final SoundSelector hitSound = new SoundSelector(mcreator);
+	private final SoundSelector placeSound = new SoundSelector(mcreator);
+	private final SoundSelector stepSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
@@ -168,8 +169,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, 0, 256, 1));
+	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
+	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, -2032, 2016, 1));
+	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, -2032, 2016, 1));
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
@@ -217,7 +219,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final Model grassBlock = new Model.BuiltInModel("Grass block");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>();
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
+			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
@@ -420,24 +423,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
-		textureTop = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
+		textureTop = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
 
-		textureLeft = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureFront = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureRight = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureBack = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		textureLeft = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureFront = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureRight = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureBack = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 
-		itemTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
-		particleTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
+		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
+		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
@@ -761,21 +756,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.soundtypes.break_sound")));
 		soundProperties.add(breakSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
-				L10N.label("elementgui.common.soundtypes.step_sound")));
-		soundProperties.add(stepSound);
-
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
-				L10N.label("elementgui.common.soundtypes.place_sound")));
-		soundProperties.add(placeSound);
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
+				L10N.label("elementgui.common.soundtypes.fall_sound")));
+		soundProperties.add(fallSound);
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hit_sound"),
 				L10N.label("elementgui.common.soundtypes.hit_sound")));
 		soundProperties.add(hitSound);
 
-		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fall_sound"),
-				L10N.label("elementgui.common.soundtypes.fall_sound")));
-		soundProperties.add(fallSound);
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/place_sound"),
+				L10N.label("elementgui.common.soundtypes.place_sound")));
+		soundProperties.add(placeSound);
+
+		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/step_sound"),
+				L10N.label("elementgui.common.soundtypes.step_sound")));
+		soundProperties.add(stepSound);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
 				L10N.label("elementgui.common.tick_rate")));
@@ -1047,39 +1042,43 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel enderpanel2 = new JPanel(new BorderLayout(30, 15));
 
-		JPanel slip = new JPanel(new GridLayout(7, 2, 20, 2));
+		JPanel genPanel = new JPanel(new GridLayout(8, 2, 20, 2));
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
 				L10N.label("elementgui.block.spawn_world_types")));
-		slip.add(spawnWorldTypes);
+		genPanel.add(spawnWorldTypes);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
-		slip.add(blocksToReplace);
+		genPanel.add(blocksToReplace);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
-		slip.add(restrictionBiomes);
+		genPanel.add(restrictionBiomes);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/generation_shape"),
+				L10N.label("elementgui.block.generation_shape")));
+		genPanel.add(generationShape);
+
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
 				L10N.label("elementgui.block.gen_chunck_count")));
-		slip.add(frequencyPerChunks);
+		genPanel.add(frequencyPerChunks);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"),
 				L10N.label("elementgui.block.gen_group_size")));
-		slip.add(frequencyOnChunk);
+		genPanel.add(frequencyOnChunk);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
 				L10N.label("elementgui.block.gen_min_height")));
-		slip.add(minGenerateHeight);
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
+		genPanel.add(minGenerateHeight);
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
 				L10N.label("elementgui.block.gen_max_height")));
-		slip.add(maxGenerateHeight);
+		genPanel.add(maxGenerateHeight);
 
-		slip.setOpaque(false);
+		genPanel.setOpaque(false);
 
 		enderpanel2.add("West", PanelUtils.totalCenterInPanel(new JLabel(UIRES.get("chunk"))));
-		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(slip,
+		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(genPanel,
 				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), generateCondition), 5, 5)));
 
 		enderpanel2.setOpaque(false);
@@ -1174,20 +1173,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
 		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
+		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
+				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
+		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
 
 		page3group.addValidationElement(breakSound.getVTextField());
-		page3group.addValidationElement(stepSound.getVTextField());
-		page3group.addValidationElement(placeSound.getVTextField());
-		page3group.addValidationElement(hitSound.getVTextField());
 		page3group.addValidationElement(fallSound.getVTextField());
+		page3group.addValidationElement(hitSound.getVTextField());
+		page3group.addValidationElement(placeSound.getVTextField());
+		page3group.addValidationElement(stepSound.getVTextField());
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
@@ -1270,21 +1269,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateSoundType() {
-		if (customSoundType.isSelected()) {
-			breakSound.setEnabled(true);
-			stepSound.setEnabled(true);
-			placeSound.setEnabled(true);
-			hitSound.setEnabled(true);
-			fallSound.setEnabled(true);
-			soundOnStep.setEnabled(false);
-		} else {
-			breakSound.setEnabled(false);
-			stepSound.setEnabled(false);
-			placeSound.setEnabled(false);
-			hitSound.setEnabled(false);
-			fallSound.setEnabled(false);
-			soundOnStep.setEnabled(true);
-		}
+		breakSound.setEnabled(customSoundType.isSelected());
+		fallSound.setEnabled(customSoundType.isSelected());
+		hitSound.setEnabled(customSoundType.isSelected());
+		placeSound.setEnabled(customSoundType.isSelected());
+		stepSound.setEnabled(customSoundType.isSelected());
+		soundOnStep.setEnabled(defaultSoundType.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -1381,6 +1371,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
 		name.setText(block.name);
+		generationShape.setSelectedItem(block.generationShape);
 		maxGenerateHeight.setValue(block.maxGenerateHeight);
 		minGenerateHeight.setValue(block.minGenerateHeight);
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
@@ -1403,12 +1394,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep.getUnmappedValue());
 		breakSound.setSound(block.breakSound);
-		stepSound.setSound(block.stepSound);
-		placeSound.setSound(block.placeSound);
 		fallSound.setSound(block.fallSound);
+		hitSound.setSound(block.hitSound);
+		placeSound.setSound(block.placeSound);
+		stepSound.setSound(block.stepSound);
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
-		hitSound.setSound(block.hitSound);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
 		customDrop.setBlock(block.customDrop);
@@ -1524,10 +1515,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isCustomSoundType = customSoundType.isSelected();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.breakSound = breakSound.getSound();
-		block.stepSound = stepSound.getSound();
-		block.placeSound = placeSound.getSound();
-		block.hitSound = hitSound.getSound();
 		block.fallSound = fallSound.getSound();
+		block.hitSound = hitSound.getSound();
+		block.placeSound = placeSound.getSound();
+		block.stepSound = stepSound.getSound();
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
@@ -1558,6 +1549,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					.map(Integer::parseInt).collect(Collectors.toList());
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.frequencyOnChunk = (int) frequencyOnChunk.getValue();
+		block.generationShape = (String) generationShape.getSelectedItem();
 		block.minGenerateHeight = (int) minGenerateHeight.getValue();
 		block.maxGenerateHeight = (int) maxGenerateHeight.getValue();
 		block.onBlockAdded = onBlockAdded.getSelectedProcedure();
@@ -1633,7 +1625,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		return block;
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-block");
 	}
 

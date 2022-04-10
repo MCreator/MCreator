@@ -5,13 +5,10 @@
     "precipitation": <#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>"rain"<#else>"snow"</#if><#else>"none"</#if>,
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
-    "category": "${data.biomeCategory?replace("THEEND", "THE_END")?lower_case}",
+    "category": "${data.biomeCategory?replace("THEEND", "THE_END")?replace("UNDERGROUND", "NONE")?replace("MOUNTAIN", "NONE")?lower_case}",
 	"surface_builder": "${modid}:${registryname}",
 	"spawn_costs": {},
     "player_spawn_friendly": true,
-	<#if data.parent?? && data.parent.getUnmappedValue() != "No parent">
-	"parent": "${data.parent}",
-	</#if>
     "effects": {
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
@@ -83,15 +80,24 @@
 <#function listStructures>
 	<#assign retval = []>
 	<#if data.spawnWoodlandMansion><#assign retval = retval + ["minecraft:mansion"] /></#if>
-	<#if data.spawnMineshaft><#assign retval = retval + ["minecraft:mineshaft"] /></#if>
+	<#if data.spawnMineshaft><#assign retval = retval + ["mineshaft_mesa"] /></#if>
+	<#if data.spawnMineshaftMesa><#assign retval = retval + ["minecraft:mineshaft"] /></#if>
 	<#if data.spawnStronghold><#assign retval = retval + ["minecraft:stronghold"] /></#if>
 	<#if data.spawnPillagerOutpost><#assign retval = retval + ["minecraft:pillager_outpost"] /></#if>
 	<#if data.spawnShipwreck><#assign retval = retval + ["minecraft:shipwreck"] /></#if>
+	<#if data.spawnShipwreckBeached><#assign retval = retval + ["minecraft:shipwreck_beached"] /></#if>
+	<#if data.spawnSwampHut><#assign retval = retval + ["minecraft:swamp_hut"] /></#if>
 	<#if data.oceanRuinType != "NONE"><#assign retval = retval + ["minecraft:ocean_ruin_${data.oceanRuinType?lower_case}"] /></#if>
 	<#if data.spawnOceanMonument><#assign retval = retval + ["minecraft:monument"] /></#if>
 	<#if data.spawnDesertPyramid><#assign retval = retval + ["minecraft:desert_pyramid"] /></#if>
 	<#if data.spawnJungleTemple><#assign retval = retval + ["minecraft:jungle_pyramid"] /></#if>
 	<#if data.spawnIgloo><#assign retval = retval + ["minecraft:igloo"] /></#if>
+	<#if data.spawnBuriedTreasure><#assign retval = retval + ["minecraft:buried_treasure"] /></#if>
+	<#if data.spawnNetherBridge><#assign retval = retval + ["minecraft:buried_treasure"] /></#if>
+	<#if data.spawnNetherFossil><#assign retval = retval + ["minecraft:buried_treasure"] /></#if>
+	<#if data.spawnBastionRemnant><#assign retval = retval + ["minecraft:buried_treasure"] /></#if>
+	<#if data.spawnEndCity><#assign retval = retval + ["minecraft:buried_treasure"] /></#if>
+	<#if data.spawnRuinedPortal != "NONE"><#assign retval = retval + ["minecraft:ruined_portal_${data.spawnRuinedPortal?lower_case}"] /></#if>
 	<#if data.villageType != "none"><#assign retval = retval + ["minecraft:village_${data.villageType}"] /></#if>
 	<#return retval>
 </#function>

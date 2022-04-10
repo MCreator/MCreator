@@ -59,6 +59,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -98,10 +99,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VTextField bootsName = new VTextField();
 
 	private static final Model defaultModel = new Model.BuiltInModel("Default");
-	private final VComboBox<Model> helmetModel = new SearchableComboBox<>();
-	private final VComboBox<Model> bodyModel = new SearchableComboBox<>();
-	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>();
-	private final VComboBox<Model> bootsModel = new SearchableComboBox<>();
+	private final VComboBox<Model> helmetModel = new SearchableComboBox<>(new Model[] { defaultModel });
+	private final VComboBox<Model> bodyModel = new SearchableComboBox<>(new Model[] { defaultModel });
+	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>(new Model[] { defaultModel });
+	private final VComboBox<Model> bootsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 
 	private final JTextField helmetSpecialInfo = new JTextField(20);
 	private final JTextField bodySpecialInfo = new JTextField(20);
@@ -281,14 +282,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
-		textureBody = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
-		textureLeggings = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
-		textureBoots = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM));
+		textureHelmet = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureBody = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureLeggings = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		textureBoots = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);
@@ -722,22 +719,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bodyModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bootsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getOtherTexturesList().stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
-		List<File> armors = mcreator.getFolderManager().getArmorTexturesList();
+		List<File> armors = mcreator.getFolderManager().getTexturesList(TextureType.ARMOR);
 		List<String> armorPart1s = new ArrayList<>();
 		for (File texture : armors)
 			if (texture.getName().endsWith("_layer_1.png"))
@@ -935,7 +932,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		modElement.reinit();
 	}
 
-	@Override public @Nullable URI getContextURL() throws URISyntaxException {
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-armor");
 	}
 
