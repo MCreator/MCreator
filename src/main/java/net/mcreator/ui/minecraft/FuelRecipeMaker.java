@@ -23,7 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;

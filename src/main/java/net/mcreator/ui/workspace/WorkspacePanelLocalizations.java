@@ -25,7 +25,7 @@ import com.univocity.parsers.csv.CsvWriterSettings;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -306,7 +306,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 						writer.writeRow(langs.getKey(), langs.getValue(), en_us.get(langs.getKey()));
 					writer.close();
 
-					FileIO.writeUTF8toFile("SEP=,\n" + csvResult.toString(StandardCharsets.UTF_8), expFile);
+					FileIO.writeStringToFile("SEP=,\n" + csvResult.toString(StandardCharsets.UTF_8), expFile);
 				}
 			});
 

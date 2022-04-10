@@ -37,6 +37,7 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
@@ -206,7 +207,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = TextureType.getTypes(false);
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
 				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -218,16 +219,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 								L10N.t("dialog.image_maker.texture_name")).validate();
 					}
 				});
-		if (namec != null) {
-			File exportFile;
-			if (n == 0)
-				exportFile = mcreator.getFolderManager().getBlockTextureFile(RegistryNameFixer.fix(namec));
-			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getItemTextureFile(RegistryNameFixer.fix(namec));
-			else if (n == 2)
-				exportFile = mcreator.getFolderManager().getOtherTextureFile(RegistryNameFixer.fix(namec));
-			else
-				return;
+		if (namec != null && n != -1) {
+			File exportFile = mcreator.getFolderManager()
+					.getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
 
 			if (exportFile.isFile())
 				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
