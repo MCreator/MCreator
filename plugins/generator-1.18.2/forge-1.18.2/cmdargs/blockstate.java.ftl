@@ -1,1 +1,1 @@
-.then(Commands.argument("${field$name}", BlockStateArgument.blockState())${statement$args})
+.then(Commands.argument("${field$name}", BlockStateArgument.block())${statement$args})

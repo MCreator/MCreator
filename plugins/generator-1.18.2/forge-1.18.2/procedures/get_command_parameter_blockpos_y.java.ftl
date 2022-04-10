@@ -1,10 +1,10 @@
 (new Object() {
-            public double getX() {
+            public double getY() {
                 try {
-                    return BlockPosArgument.getBlockPos(cmdargs, "${field$param}").getX();
+                    return BlockPosArgument.getLoadedBlockPos(cmdargs, "${field$param}").getY();
                 } catch (CommandSyntaxException e) {
                     e.printStackTrace();
                     return 0;
                 }
             }
-        }.getX())
+        }.getY())
