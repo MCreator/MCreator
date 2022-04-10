@@ -109,7 +109,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 					<#if data.immuneToFire>
 					.isImmuneToFire()
 					</#if>
-					.rarity(Rarity.${datay.rarity})
+					.rarity(Rarity.${data.rarity})
 					<#if data.isFood>
 					.food((new Food.Builder())
 					 	.hunger(${data.nutritionalValue})
