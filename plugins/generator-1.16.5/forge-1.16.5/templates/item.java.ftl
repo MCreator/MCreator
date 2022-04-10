@@ -348,7 +348,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
         }
         </#if>
 
-        <#if (hasProcedure(data.onFinishUsingItem) || (data.eatResultItem?? && !data.eatResultItem.isEmpty()))>
+        <#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
             @Override public ItemStack onItemUseFinish(ItemStack itemstack, World world, LivingEntity entity) {
         	    ItemStack retval =
         		    <#if data.eatResultItem?? && !data.eatResultItem.isEmpty()>
@@ -363,7 +363,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
         			<@procedureOBJToCode data.onFinishUsingItem/>
         		</#if>
 
-        		<#if data.isFood && data.eatResultItem?? && !data.eatResultItem.isEmpty()>
+        		<#if data.hasEatResultItem()>
         			if (itemstack.isEmpty()) {
         				return retval;
         			} else {

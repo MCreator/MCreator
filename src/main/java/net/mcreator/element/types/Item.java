@@ -152,4 +152,7 @@ import java.util.Map;
 		return isFood ? !animation.equals("eat") : !animation.equals("none");
 	}
 
+	public boolean hasEatResultItem() {
+		return isFood && !eatResultItem.isEmpty();
+	}
 }

@@ -199,7 +199,7 @@ import javax.annotation.Nullable;
 	}
     </#if>
 
-    <#if hasProcedure(data.onFinishUsingItem) || (data.eatResultItem?? && !data.eatResultItem.isEmpty())>
+    <#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
         @Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
             ItemStack retval =
         	    <#if data.eatResultItem?? && !data.eatResultItem.isEmpty()>
@@ -214,7 +214,7 @@ import javax.annotation.Nullable;
         		<@procedureOBJToCode data.onFinishUsingItem/>
         	</#if>
 
-        	<#if data.isFood && data.eatResultItem?? && !data.eatResultItem.isEmpty()>
+        	<#if data.hasEatResultItem()>
         		if (itemstack.isEmpty()) {
         			return retval;
         		} else {
