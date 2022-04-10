@@ -109,28 +109,28 @@ import net.minecraft.entity.ai.attributes.Attributes;
 					<#if data.immuneToFire>
 					.isImmuneToFire()
 					</#if>
-					.rarity(Rarity.${data.rarity})
+					.rarity(Rarity.${datay.rarity})
 					<#if data.isFood>
-					    .food((new Food.Builder())
-					            .hunger(${data.nutritionalValue})
-					            .saturation(${data.saturation}f)
-                                <#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
-                                <#if data.isMeat>.meat()</#if>.build())
+					.food((new Food.Builder())
+					 	.hunger(${data.nutritionalValue})
+					 	.saturation(${data.saturation}f)
+                     	<#if data.isAlwaysEdible>.setAlwaysEdible()</#if>
+                     	<#if data.isMeat>.meat()</#if>.build())
                     </#if>
 			);
 			setRegistryName("${registryname}");
 		}
 
         <#if data.hasNonDefaultAnimation()>
-            @Override public UseAction getUseAction(ItemStack itemstack) {
-                return UseAction.${data.animation?upper_case};
-            }
+        @Override public UseAction getUseAction(ItemStack itemstack) {
+            return UseAction.${data.animation?upper_case};
+        }
         </#if>
 
         <#if data.isFood && (data.animation == "drink")>
-        	@Override public net.minecraft.util.SoundEvent getEatSound() {
-                return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
-            }
+        @Override public net.minecraft.util.SoundEvent getEatSound() {
+            return net.minecraft.util.SoundEvents.ENTITY_GENERIC_DRINK;
+        }
         </#if>
 
 		<#if data.stayInGridWhenCrafting>
