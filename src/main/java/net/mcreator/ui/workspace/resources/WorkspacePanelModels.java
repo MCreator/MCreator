@@ -25,7 +25,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
