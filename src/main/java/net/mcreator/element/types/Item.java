@@ -88,7 +88,7 @@ import java.util.Map;
 	public boolean isFood;
 	public int nutritionalValue;
 	public double saturation;
-	public MItemBlock resultItem;
+	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
 	public String animation;

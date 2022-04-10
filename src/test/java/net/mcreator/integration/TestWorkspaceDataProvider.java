@@ -1123,7 +1123,7 @@ public class TestWorkspaceDataProvider {
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
-			item.resultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
+			item.eatResultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
 					"" :
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");

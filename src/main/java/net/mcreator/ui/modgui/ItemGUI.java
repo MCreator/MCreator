@@ -125,7 +125,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
 			new String[] { "eat", "block", "bow", "crossbow", "drink", "none", "spear" });
-	private final MCItemHolder resultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -382,7 +382,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/result_item"),
 				L10N.label("elementgui.item.eating_result")));
-		foodSubpane.add(PanelUtils.centerInPanel(resultItem));
+		foodSubpane.add(PanelUtils.centerInPanel(eatResultItem));
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"),
 				L10N.label("elementgui.item.is_meat")));
@@ -459,13 +459,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 			saturation.setEnabled(true);
 			isMeat.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
-			resultItem.setEnabled(true);
+			eatResultItem.setEnabled(true);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);
 			isMeat.setEnabled(false);
 			isAlwaysEdible.setEnabled(false);
-			resultItem.setEnabled(false);
+			eatResultItem.setEnabled(false);
 		}
 	}
 
@@ -558,7 +558,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
-		resultItem.setBlock(item.resultItem);
+		eatResultItem.setBlock(item.eatResultItem);
 
 		updateDispenseElements();
 		updateGlowElements();
@@ -610,7 +610,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
 		item.animation = (String) animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
-		item.resultItem = resultItem.getBlock();
+		item.eatResultItem = eatResultItem.getBlock();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
