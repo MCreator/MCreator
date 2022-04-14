@@ -37,6 +37,8 @@ public class FileDialogs {
 
 	protected static File prevDir = new File(System.getProperty("user.home"));
 
+	public static boolean DISABLE_NATIVE_DIALOGS = false;
+
 	public static File getOpenDialog(Window f, String[] exp) {
 		return getBasicFileChooserDialog(f, FileChooserType.OPEN, exp);
 	}
@@ -133,7 +135,7 @@ public class FileDialogs {
 	}
 
 	private static boolean useNativeFileChooser() {
-		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser && OS.getOS() == OS.WINDOWS;
+		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser && OS.getOS() == OS.WINDOWS && !DISABLE_NATIVE_DIALOGS;
 	}
 
 }
