@@ -42,7 +42,8 @@ import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
-import net.mcreator.element.converter.fv28.FuelToItemExtensionConverter;
+import net.mcreator.element.converter.fv29.FuelToItemExtensionConverter;
+import net.mcreator.element.converter.fv29.ItemDispenserToItemExtensionConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -73,6 +74,7 @@ public class ConverterRegistry {
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
+		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenserToItemExtensionConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one
