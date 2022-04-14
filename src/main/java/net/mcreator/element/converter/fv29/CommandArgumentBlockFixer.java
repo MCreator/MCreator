@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv28;
+package net.mcreator.element.converter.fv29;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -45,6 +45,6 @@ public class CommandArgumentBlockFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 28;
+		return 29;
 	}
 }
