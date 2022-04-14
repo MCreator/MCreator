@@ -16,49 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-package net.mcreator.element.converter.fv28.screens;
+package net.mcreator.element.converter.fv29.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.Image;
-import net.mcreator.element.types.Overlay;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class OverlayTexturesConverter implements IConverter {
+public class EntityTexturesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Overlay overlay = (Overlay) input;
+		LivingEntity entity = (LivingEntity) input;
 
-		if (overlay.baseTexture != null && !overlay.baseTexture.isEmpty()) {
+		FileIO.copyFile(workspace.getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture), TextureType.OTHER),
+				workspace.getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
+								TextureType.ENTITY));
+
+		if (entity.mobModelGlowTexture != null && !entity.mobModelGlowTexture.isEmpty()) {
 			FileIO.copyFile(workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture), TextureType.OTHER),
-					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture),
-									TextureType.SCREEN));
+					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
+							TextureType.OTHER), workspace.getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
+							TextureType.ENTITY));
 		}
 
-		if (overlay.components != null && !overlay.components.isEmpty()) {
-			for (GUIComponent component : overlay.components) {
-				if (component instanceof Image image) {
-					FileIO.copyFile(workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image), TextureType.OTHER),
-							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image),
-											TextureType.SCREEN));
-				}
-			}
-		}
-
-		return overlay;
+		return entity;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 28;
+		return 29;
 	}
 }

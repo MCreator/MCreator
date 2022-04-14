@@ -17,31 +17,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv28;
+package net.mcreator.element.converter.fv29;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.PotionEffect;
+import net.mcreator.element.types.Particle;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class EffectTextureConverter implements IConverter {
+public class ParticleTextureConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		PotionEffect effect = (PotionEffect) input;
+		Particle effect = (Particle) input;
 
 		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.icon), TextureType.OTHER),
+						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.OTHER),
 				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.icon), TextureType.EFFECT));
+						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.PARTICLE));
 
 		return effect;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 28;
+		return 29;
 	}
 }

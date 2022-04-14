@@ -17,34 +17,48 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv28.screens;
+package net.mcreator.element.converter.fv29.screens;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Achievement;
+import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.Image;
+import net.mcreator.element.types.Overlay;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class AdvancementTextureConverter implements IConverter {
+public class OverlayTexturesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Achievement advancement = (Achievement) input;
+		Overlay overlay = (Overlay) input;
 
-		if (advancement.background != null && !advancement.background.isEmpty()) {
+		if (overlay.baseTexture != null && !overlay.baseTexture.isEmpty()) {
 			FileIO.copyFile(workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background), TextureType.OTHER),
+							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture), TextureType.OTHER),
 					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background),
+							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture),
 									TextureType.SCREEN));
 		}
 
-		return advancement;
+		if (overlay.components != null && !overlay.components.isEmpty()) {
+			for (GUIComponent component : overlay.components) {
+				if (component instanceof Image image) {
+					FileIO.copyFile(workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image), TextureType.OTHER),
+							workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image),
+											TextureType.SCREEN));
+				}
+			}
+		}
+
+		return overlay;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 28;
+		return 29;
 	}
 }

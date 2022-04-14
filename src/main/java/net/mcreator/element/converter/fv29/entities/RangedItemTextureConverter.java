@@ -16,40 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package net.mcreator.element.converter.fv28.entities;
+
+package net.mcreator.element.converter.fv29.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.LivingEntity;
+import net.mcreator.element.types.RangedItem;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class EntityTexturesConverter implements IConverter {
+public class RangedItemTextureConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		LivingEntity entity = (LivingEntity) input;
+		RangedItem item = (RangedItem) input;
 
-		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
-								TextureType.ENTITY));
+		FileIO.copyFile(workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.OTHER),
+				workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.ENTITY));
 
-		if (entity.mobModelGlowTexture != null && !entity.mobModelGlowTexture.isEmpty()) {
-			FileIO.copyFile(workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
-							TextureType.OTHER), workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
-							TextureType.ENTITY));
-		}
-
-		return entity;
+		return item;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 28;
+		return 29;
 	}
 }

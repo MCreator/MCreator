@@ -17,29 +17,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv28.entities;
+package net.mcreator.element.converter.fv29.screens;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.RangedItem;
+import net.mcreator.element.types.Achievement;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class RangedItemTextureConverter implements IConverter {
+public class AdvancementTextureConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		RangedItem item = (RangedItem) input;
+		Achievement advancement = (Achievement) input;
 
-		FileIO.copyFile(workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.OTHER),
-				workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.ENTITY));
+		if (advancement.background != null && !advancement.background.isEmpty()) {
+			FileIO.copyFile(workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background), TextureType.OTHER),
+					workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background),
+									TextureType.SCREEN));
+		}
 
-		return item;
+		return advancement;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 28;
+		return 29;
 	}
 }
