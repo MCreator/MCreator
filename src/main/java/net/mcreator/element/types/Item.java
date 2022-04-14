@@ -78,11 +78,21 @@ import java.util.Map;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
+	public Procedure onFinishUsingItem;
 
 	// Legacy
 	public boolean hasDispenseBehavior;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
+
+	// Food
+	public boolean isFood;
+	public int nutritionalValue;
+	public double saturation;
+	public MItemBlock eatResultItem;
+	public boolean isMeat;
+	public boolean isAlwaysEdible;
+	public String animation;
 
 	private Item() {
 		this(null);
@@ -94,6 +104,8 @@ import java.util.Map;
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+		this.saturation = 0.3f;
+		this.animation = "eat";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -137,4 +149,11 @@ import java.util.Map;
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
 
+	public boolean hasNonDefaultAnimation() {
+		return isFood ? !animation.equals("eat") : !animation.equals("none");
+	}
+
+	public boolean hasEatResultItem() {
+		return isFood && !eatResultItem.isEmpty();
+	}
 }

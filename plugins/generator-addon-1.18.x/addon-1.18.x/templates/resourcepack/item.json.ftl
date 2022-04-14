@@ -11,6 +11,9 @@
     "components": {
       "minecraft:icon": "${registryname}",
       "minecraft:render_offsets": "apple",
+      <#if data.isFood>
+      "minecraft:use_animation": "eat",
+      </#if>
       "minecraft:creative_category": "Items"
     }
   }

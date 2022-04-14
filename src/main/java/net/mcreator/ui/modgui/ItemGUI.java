@@ -102,6 +102,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
+	private ProcedureSelector onFinishUsingItem;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -111,6 +112,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+
+	// Food parameters
+	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
+	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> animation = new JComboBox<>(
+			new String[] { "eat", "block", "bow", "crossbow", "drink", "none", "spear" });
+	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -147,6 +158,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
+				L10N.t("elementgui.item.player_useitem_finish"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -169,6 +183,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
+		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
@@ -231,7 +246,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		pane2.setOpaque(false);
 
-		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 2, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 2, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -287,6 +302,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.recipe_remainder")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.item.item_animation")));
+		subpane2.add(animation);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
 				L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
@@ -300,18 +319,53 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
-		subpane2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		subpane2.setOpaque(false);
 
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
+		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
+		foodSubpane.setOpaque(false);
+
+		isFood.setOpaque(false);
+		isMeat.setOpaque(false);
+		isAlwaysEdible.setOpaque(false);
+		nutritionalValue.setOpaque(false);
+		saturation.setOpaque(false);
+
+		isFood.addActionListener(e -> updateFoodPanel());
+		updateFoodPanel();
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"),
+				L10N.label("elementgui.item.is_food")));
+		foodSubpane.add(isFood);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
+				L10N.label("elementgui.item.nutritional_value")));
+		foodSubpane.add(nutritionalValue);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
+				L10N.label("elementgui.item.saturation")));
+		foodSubpane.add(saturation);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/result_item"),
+				L10N.label("elementgui.item.eating_result")));
+		foodSubpane.add(PanelUtils.centerInPanel(eatResultItem));
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"),
+				L10N.label("elementgui.item.is_meat")));
+		foodSubpane.add(isMeat);
+
+		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
+				L10N.label("elementgui.item.is_edible")));
+		foodSubpane.add(isAlwaysEdible);
+
+		foodProperties.add("Center", PanelUtils.totalCenterInPanel(foodSubpane));
+		foodProperties.setOpaque(false);
+
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(4, 3, 10, 10));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -322,6 +376,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onStoppedUsing);
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
+		events.add(onFinishUsingItem);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
@@ -355,12 +410,29 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+		}
+	}
+
+	private void updateFoodPanel() {
+		if (isFood.isSelected()) {
+			nutritionalValue.setEnabled(true);
+			saturation.setEnabled(true);
+			isMeat.setEnabled(true);
+			isAlwaysEdible.setEnabled(true);
+			eatResultItem.setEnabled(true);
+		} else {
+			nutritionalValue.setEnabled(false);
+			saturation.setEnabled(false);
+			isMeat.setEnabled(false);
+			isAlwaysEdible.setEnabled(false);
+			eatResultItem.setEnabled(false);
 		}
 	}
 
@@ -379,6 +451,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
+		onFinishUsingItem.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
@@ -435,7 +508,17 @@ public class ItemGUI extends ModElementGUI<Item> {
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
+		isFood.setSelected(item.isFood);
+		isMeat.setSelected(item.isMeat);
+		isAlwaysEdible.setSelected(item.isAlwaysEdible);
+		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
+		nutritionalValue.setValue(item.nutritionalValue);
+		saturation.setValue(item.saturation);
+		animation.setSelectedItem(item.animation);
+		eatResultItem.setBlock(item.eatResultItem);
+
 		updateGlowElements();
+		updateFoodPanel();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -473,6 +556,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		item.isFood = isFood.isSelected();
+		item.nutritionalValue = (int) nutritionalValue.getValue();
+		item.saturation = (double) saturation.getValue();
+		item.isMeat = isMeat.isSelected();
+		item.isAlwaysEdible = isAlwaysEdible.isSelected();
+		item.animation = (String) animation.getSelectedItem();
+		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
+		item.eatResultItem = eatResultItem.getBlock();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 

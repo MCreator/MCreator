@@ -79,9 +79,9 @@ package ${package}.world.structure;
 							<#if data.spawnLocation=="Ground">
 								j -= 1;
 							<#elseif data.spawnLocation=="Air">
-								j += random.nextInt(50) + 16;
+								j += random.nextInt(64) + 16;
 							<#elseif data.spawnLocation=="Underground">
-								j = Math.abs(random.nextInt(Math.max(1, j)) - 24);
+								j = MathHelper.nextInt(random, 8, Math.max(j, 9));
 							</#if>
 
 							<#if data.restrictionBlocks?has_content>
