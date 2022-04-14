@@ -54,8 +54,22 @@ import javax.annotation.Nullable;
 				.fireResistant()
 				</#if>
 				.rarity(Rarity.${data.rarity})
+				<#if data.isFood>
+				.food((new FoodProperties.Builder())
+				    .nutrition(${data.nutritionalValue})
+                	.saturationMod(${data.saturation}f)
+                    <#if data.isAlwaysEdible>.alwaysEat()</#if>
+                    <#if data.isMeat>.meat()</#if>
+                    .build())
+                </#if>
 		);
 	}
+
+	<#if data.hasNonDefaultAnimation()>
+    @Override public UseAnim getUseAnimation(ItemStack itemstack) {
+        return UseAnim.${data.animation?upper_case};
+    }
+    </#if>
 
 	<#if data.stayInGridWhenCrafting>
 		@Override public boolean hasCraftingRemainingItem() {
@@ -184,6 +198,37 @@ import javax.annotation.Nullable;
 		return ar;
 	}
     </#if>
+
+    <#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
+        @Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
+            ItemStack retval =
+        	    <#if data.hasEatResultItem()>
+        		    ${mappedMCItemToItemStackCode(data.eatResultItem, 1)};
+        		</#if>
+        	super.finishUsingItem(itemstack, world, entity);
+
+        	<#if hasProcedure(data.onFinishUsingItem)>
+        		double x = entity.getX();
+        	    double y = entity.getY();
+        		double z = entity.getZ();
+        		<@procedureOBJToCode data.onFinishUsingItem/>
+        	</#if>
+
+        	<#if data.hasEatResultItem()>
+        		if (itemstack.isEmpty()) {
+        			return retval;
+        		} else {
+        			if (entity instanceof Player player && !player.getAbilities().instabuild) {
+        				if (!player.getInventory().add(retval))
+        					player.drop(retval, false);
+        			}
+        			return itemstack;
+        		}
+        	<#else>
+        		return retval;
+        	</#if>
+        }
+       </#if>
 
     <@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
