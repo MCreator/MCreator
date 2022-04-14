@@ -202,7 +202,7 @@ import javax.annotation.Nullable;
     <#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
         @Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
             ItemStack retval =
-        	    <#if data.eatResultItem?? && !data.eatResultItem.isEmpty()>
+        	    <#if data.hasEatResultItem()>
         		    ${mappedMCItemToItemStackCode(data.eatResultItem, 1)};
         		</#if>
         	super.finishUsingItem(itemstack, world, entity);
