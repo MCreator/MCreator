@@ -41,6 +41,7 @@ import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
+import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.EffectTextureConverter;
 import net.mcreator.element.converter.fv29.ParticleTextureConverter;
 import net.mcreator.element.converter.fv29.entities.ArmorTexturesConverter;
@@ -88,6 +89,7 @@ public class ConverterRegistry {
 
 	// Converters that convert older mod element type to a newer one
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
+		put("food", new FoodToItemConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
