@@ -485,43 +485,6 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		} else if (ModElementType.FOOD.equals(modElement.getType())) {
-			Food food = new Food(modElement);
-			food.name = modElement.getName();
-			food.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			food.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				food.specialInfo = new ArrayList<>();
-			}
-			food.texture = "test";
-			food.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			food.resultItem = new MItemBlock(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
-			food.stackSize = 32;
-			food.eatingSpeed = 123;
-			food.nutritionalValue = 5;
-			food.saturation = 0.8f;
-			food.forDogs = _true;
-			food.isAlwaysEdible = _true;
-			food.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
-			food.hasGlow = _true;
-			food.onRightClicked = new Procedure("procedure1");
-			food.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
-			food.onEaten = new Procedure("procedure3");
-			food.onEntityHitWith = new Procedure("procedure4");
-			food.onItemInInventoryTick = new Procedure("procedure5");
-			food.onItemInUseTick = new Procedure("procedure6");
-			food.onCrafted = new Procedure("procedure7");
-			food.onEntitySwing = new Procedure("procedure8");
-			food.onDroppedByPlayer = new Procedure("procedure9");
-			food.renderType = 0;
-			food.customModelName = "Normal";
-			return food;
 		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
@@ -1153,6 +1116,17 @@ public class TestWorkspaceDataProvider {
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = "Normal";
+			item.isFood = _true;
+			item.nutritionalValue = 5;
+			item.saturation = 0.8f;
+			item.isMeat = _true;
+			item.isAlwaysEdible = _true;
+			item.animation = getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+			item.eatResultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
+					"" :
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
