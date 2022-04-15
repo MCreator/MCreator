@@ -36,7 +36,6 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedPane {
@@ -44,7 +43,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final ModElementGUI<T> modElementGUI;
 
 	private final Map<File, FileCodeViewer<T>> cache = new HashMap<>();
-	private final Map<GeneratorTemplatesList, JTabbedPane> listPager;
+	private final Map<String, JTabbedPane> listPager = new HashMap<>();
+	private List<GeneratorTemplatesList> templateLists;
 
 	private boolean updateRunning = false;
 	private final ModElementChangedListener codeChangeListener;
@@ -68,23 +68,22 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		// we group list templates inside separate tabs to improve UX
 		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
-		this.listPager = modElementGUI.getModElement().getGenerator()
-				.getModElementListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())
-				.stream().collect(Collectors.toUnmodifiableMap(key -> key, list -> {
-					JTabbedPane listTab = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
-					listTab.addComponentListener(new ComponentAdapter() {
+		(templateLists = modElementGUI.getModElement().getGenerator()
+				.getModElementListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI())).stream()
+				.map(GeneratorTemplatesList::groupName).forEach(listName -> {
+					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
+					listPane.addComponentListener(new ComponentAdapter() {
 						@Override public void componentShown(ComponentEvent e) {
 							super.componentShown(e);
 							reload();
 						}
 					});
 
-					addTab(list.groupName(), enabledListIcon, listTab);
-					setDisabledIconAt(indexOfTab(list.groupName()), disabledListIcon);
-					setEnabledAt(indexOfTab(list.groupName()), false);
-
-					return listTab;
-				}));
+					addTab(listName, enabledListIcon, listPane);
+					setDisabledIconAt(indexOfTab(listName), disabledListIcon);
+					setEnabledAt(indexOfTab(listName), false);
+					listPager.put(listName, listPane);
+				});
 	}
 
 	public void registerUI(JComponent container) {
@@ -98,13 +97,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
-
 					files.sort(
 							Comparator.comparing(e -> FilenameUtils.getExtension(((GeneratorFile) e).file().getName()))
 									.thenComparing(e -> ((GeneratorFile) e).file().getName()));
 
+					List<GeneratorTemplatesList> lists = modElementGUI.getModElement().getGenerator()
+							.getModElementListTemplates(modElementGUI.getModElement(),
+									modElementGUI.getElementFromGUI());
+
 					for (GeneratorFile file : files) {
-						Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+						Optional<GeneratorTemplatesList> ownerListOptional = lists.stream()
 								.filter(e -> e.getCorrespondingListTemplate(file.file(), true) != null).findFirst();
 
 						if (cache.containsKey(file.file())) { // existing file
@@ -112,7 +114,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 								try {
 									if (cache.get(file.file()).update(file)) {
 										if (ownerListOptional.isPresent()) { // file from list
-											JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+											JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
 											int tabid = indexOfComponent(ownerList);
 											if (tabid != -1) {
 												int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
@@ -135,7 +137,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 								try {
 									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
 									if (ownerListOptional.isPresent()) { // file from list
-										JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+										JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
 										ownerList.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
 												fileCodeViewer);
 										if (ownerList.getTabCount() == 1)
@@ -154,10 +156,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					List<File> mapped = files.stream().map(GeneratorFile::file).toList();
 					cache.keySet().stream().toList().forEach(file -> {
 						if (!mapped.contains(file)) { // deleted file
-							Optional<GeneratorTemplatesList> ownerListOptional = listPager.keySet().stream()
+							Optional<GeneratorTemplatesList> ownerListOptional = templateLists.stream()
 									.filter(e -> e.getCorrespondingListTemplate(file, true) != null).findFirst();
 							if (ownerListOptional.isPresent()) { // file from list
-								JTabbedPane ownerList = listPager.get(ownerListOptional.get());
+								JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
 								ownerList.remove(cache.get(file));
 								if (ownerList.getTabCount() == 0)
 									setEnabledAt(indexOfComponent(ownerList), false);
@@ -167,6 +169,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							cache.remove(file);
 						}
 					});
+
+					templateLists = lists;
 
 					// this likely selects first file from cache if currently selected tab is disabled
 					if (!isEnabledAt(getSelectedIndex()) && !cache.isEmpty())

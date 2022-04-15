@@ -41,4 +41,15 @@ public class EntityEntry extends MappableElement {
 		this(owner, name.getName());
 	}
 
+	//TODO: Temporal, used for testing
+	public String getMappedRegistryName() {
+		try {
+			return getUnmappedValue().contains("CUSTOM:") ?
+					mapper.workspace.getModElementByName(getUnmappedValue().replace("CUSTOM:", "")).getRegistryName() :
+					mapper.getMapping(value, 2).replace(":", "");
+		} catch (Exception e) {
+			return value.toLowerCase().substring(value.indexOf(":") + 1);
+		}
+	}
+
 }

@@ -4,9 +4,9 @@ templates:
     name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@[getName()].json"
 
 list_templates:
-  - name: "Entry components"
-    listData: getItems()
+  - name: "Tag elements"
+    listData: getEntities()
     forEach:
       - template: json/tag_element.json.ftl
         writer: json
-        name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@registryname_@[getName()]@elementindex.json"
+        name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@registryname@elementindex_@[element.getMappedRegistryName()].json"

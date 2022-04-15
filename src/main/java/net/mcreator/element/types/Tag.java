@@ -49,8 +49,8 @@ import java.util.Locale;
 	}
 
 	//TODO: Temporal, used for testing
-	public List<MItemBlock> getItems() {
-		return items.stream().toList();
+	public List<EntityEntry> getEntities() {
+		return entities.stream().toList();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

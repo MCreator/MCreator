@@ -43,7 +43,6 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.ModelUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
@@ -641,10 +640,11 @@ public class Generator implements IGenerator, Closeable {
 		List<?> templateLists = (List<?>) map.get("list_templates");
 		if (templateLists != null) {
 			int templateID = 0;
+			int listID = 1;
 			for (Object list : templateLists) {
 				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
 				String groupName = (String) Objects.requireNonNullElse(((Map<?, ?>) list).get("name"),
-						"Templates group");
+						"Group " + listID);
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
@@ -657,7 +657,8 @@ public class Generator implements IGenerator, Closeable {
 					elements = new ArrayList<>(StreamSupport.stream(iterable.spliterator(), false).toList());
 				if (templates != null) {
 					for (Object template : templates) {
-						TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+						String rawname = (String) ((Map<?, ?>) template).get("name");
+
 						Object conditionRaw = ((Map<?, ?>) template).get("condition");
 						if (conditionRaw == null) {
 							conditionRaw = ((Map<?, ?>) template).get("condition_any");

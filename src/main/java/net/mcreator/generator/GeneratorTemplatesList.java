@@ -24,7 +24,6 @@ import net.mcreator.element.GeneratableElement;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * A generator templates list is used for generating several similar templates (called <i>list templates</i>)
@@ -32,12 +31,12 @@ import java.util.function.Supplier;
  *
  * @param groupName The name of this group of templates shown in workspace panel.
  * @param listData  The collection used by workspace to generate given templates.
- * @param element   Supplier of {@link GeneratableElement} used to process tokens in template names.
+ * @param element   The {@link GeneratableElement} used to process tokens in template names.
  * @param templates The map of list templates to be generated for each entry of {@code listData};
  *                  keys are templates themselves, values represent generation conditions of their key template
  *                  for all items on the mentioned collection.
  */
-public record GeneratorTemplatesList(String groupName, List<?> listData, Supplier<GeneratableElement> element,
+public record GeneratorTemplatesList(String groupName, List<?> listData, GeneratableElement element,
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
 	/**
@@ -51,11 +50,11 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Supplie
 		String filePath = generatorFile.getPath();
 		for (GeneratorTemplate listTemplate : templates.keySet()) {
 			for (int i = 0; i < listData.size(); i++) {
-				String templatePath = GeneratorTokens.replaceVariableTokens(listData.get(i),
-						GeneratorTokens.replaceTokens(element.get().getModElement().getWorkspace(),
+				String templatePath = GeneratorTokens.replaceVariableTokens(element, listData.get(i),
+						GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
 								listTemplate.getFile().getPath()
-										.replace("@NAME", element.get().getModElement().getName())
-										.replace("@registryname", element.get().getModElement().getRegistryName())));
+										.replace("@NAME", element.getModElement().getName())
+										.replace("@registryname", element.getModElement().getRegistryName())));
 				String[] pathParts = templatePath.split("@elementindex");
 				if (filePath.startsWith(pathParts[0]) && filePath.endsWith(pathParts[1])) {
 					try { // we check if given file name has list template's index in place of @elementindex
@@ -96,10 +95,10 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Supplie
 	 * @return Path to file generated from given list template with processed tokens.
 	 */
 	public String processTokens(GeneratorTemplate listTemplate, int index) {
-		return GeneratorTokens.replaceVariableTokens(listData.get(index),
-				GeneratorTokens.replaceTokens(element.get().getModElement().getWorkspace(),
-						listTemplate.getFile().getPath().replace("@NAME", element.get().getModElement().getName())
-								.replace("@registryname", element.get().getModElement().getRegistryName())
+		return GeneratorTokens.replaceVariableTokens(element, listData.get(index),
+				GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
+						listTemplate.getFile().getPath().replace("@NAME", element.getModElement().getName())
+								.replace("@registryname", element.getModElement().getRegistryName())
 								.replace("@elementindex", Integer.toString(index))));
 	}
 }
