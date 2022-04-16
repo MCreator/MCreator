@@ -34,6 +34,17 @@ Blockly.Blocks['set_event_result'] = {
     }
 };
 
+Blockly.Blocks['old_command'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.old_command"))
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(160);
+    }
+};
+
 Blockly.Blocks['call_procedure'] = {
     init: function () {
         this.appendDummyInput()
@@ -80,17 +91,6 @@ Blockly.Blocks['args_start'] = {
         this.setNextStatement(true);
         this.setColour(120);
         this.setTooltip(javabridge.t("blockly.block.cmdargs_start.tooltip"));
-    }
-};
-
-Blockly.Blocks['old_command'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.old_command"))
-            .appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf("procedure"))), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(160);
     }
 };
 
