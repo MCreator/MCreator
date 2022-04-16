@@ -50,10 +50,7 @@ import java.util.Locale;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		if (argsxml.contains("<next><block type=\""))
-			return MinecraftImageGenerator.Preview.generateAdvancedCommandPreviewPicture(commandName, argsxml);
-		else
-			return MinecraftImageGenerator.Preview.generateBasicCommandPreviewPicture(commandName);
+		return MinecraftImageGenerator.Preview.generateBasicCommandPreviewPicture(commandName, argsxml);
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

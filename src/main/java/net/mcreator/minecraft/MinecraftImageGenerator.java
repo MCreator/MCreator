@@ -559,7 +559,7 @@ public class MinecraftImageGenerator {
 		 * @param command <p>The command.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateBasicCommandPreviewPicture(String command) {
+		public static BufferedImage generateBasicCommandPreviewPicture(String command, String procedurexml) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setColor(new Color(255, 255, 255, 180));
@@ -569,28 +569,8 @@ public class MinecraftImageGenerator {
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 			graphics2D.setPaint(
 					new GradientPaint(16, 14, new Color(255, 255, 255, 180), 24, 14, new Color(255, 255, 255, 0)));
-			graphics2D.drawString(StringUtils.abbreviateString(command, 4, false).toUpperCase(Locale.ENGLISH), 7, 17);
 
-			graphics2D.dispose();
-			return icon;
-		}
-
-		/**
-		 * <p>This method generates the command image preview when arguments are present.</p>
-		 *
-		 * @param procedurexml XML code used to get blocks.
-		 * @return Returns generated image.
-		 */
-		public static BufferedImage generateAdvancedCommandPreviewPicture(String command, String procedurexml) {
-			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D graphics2D = icon.createGraphics();
-
-			// hacky xml scanning for performance reasons
-			// also this is only used for preview only, so it is fine
-			Color startColor = BlocklyBlockUtil.getBlockColorFromHUE(120);
-
-			Color blockColor = null;
-
+			Color blockColor = Color.white;
 			if (procedurexml.contains("<block type=\"literal")) {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(280);
 			} else if (procedurexml.contains("<block type=\"item")) {
@@ -609,17 +589,7 @@ public class MinecraftImageGenerator {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(230);
 			}
 
-			graphics2D.drawImage(
-					ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false).getImage(),
-					0, 0, null);
-
-			if (blockColor != null) {
-				graphics2D.drawImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_block_base"), blockColor, false)
-								.getImage(), 0, 0, null);
-			} else
-				graphics2D.drawImage(UIRES.get("mod_preview_bases.procedure_block_base").getImage(), 0, 0, null);
-
+			graphics2D.setColor(blockColor);
 			graphics2D.drawString(StringUtils.abbreviateString(command, 4, false).toUpperCase(Locale.ENGLISH), 7, 17);
 
 			graphics2D.dispose();
