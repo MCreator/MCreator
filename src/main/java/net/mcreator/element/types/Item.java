@@ -83,10 +83,20 @@ import java.util.Map;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
+	public Procedure onFinishUsingItem;
 
 	public boolean hasDispenseBehavior;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
+
+	// Food
+	public boolean isFood;
+	public int nutritionalValue;
+	public double saturation;
+	public MItemBlock eatResultItem;
+	public boolean isMeat;
+	public boolean isAlwaysEdible;
+	public String animation;
 
 	public static int encodeModelType(Model.Type modelType) {
 		if (modelType == Model.Type.JSON)
@@ -119,6 +129,8 @@ import java.util.Map;
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+		this.saturation = 0.3f;
+		this.animation = "eat";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -155,6 +167,14 @@ import java.util.Map;
 
 	public boolean hasInventory() {
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
+	}
+
+	public boolean hasNonDefaultAnimation() {
+		return isFood ? !animation.equals("eat") : !animation.equals("none");
+	}
+
+	public boolean hasEatResultItem() {
+		return isFood && !eatResultItem.isEmpty();
 	}
 
 	public static class ModelEntry {

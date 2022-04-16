@@ -18,6 +18,7 @@
 
 package net.mcreator;
 
+import javafx.embed.swing.JFXPanel;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
@@ -32,6 +33,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -70,7 +72,7 @@ public class Launcher {
 
 			version = new MCreatorVersionNumber(conf);
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to read MCreator config", e);
 		}
 
 		LOG.info("Starting MCreator " + version);
@@ -100,6 +102,13 @@ public class Launcher {
 		if ("true".equals(System.getProperty("javafx.embed.singleThread"))) {
 			LOG.warn("Running in javafx.embed.singleThread environment. "
 					+ "This is just a note and should not cause any problems.");
+		}
+
+		// Init JFX Toolkit
+		try {
+			SwingUtilities.invokeAndWait(JFXPanel::new);
+		} catch (InterruptedException | InvocationTargetException e) {
+			LOG.error("Failed to start JFX toolkit", e);
 		}
 
 		WebConsoleListener.registerLogger(LOG);

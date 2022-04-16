@@ -18,6 +18,7 @@
 
 package net.mcreator.integration;
 
+import javafx.embed.swing.JFXPanel;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
@@ -43,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -72,6 +74,13 @@ public class TestSetup {
 		Properties conf = new Properties();
 		conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));
 		Launcher.version = new MCreatorVersionNumber(conf);
+
+		// Init JFX Toolkit
+		try {
+			SwingUtilities.invokeAndWait(JFXPanel::new);
+		} catch (InterruptedException | InvocationTargetException e) {
+			LOG.error("Failed to start JFX toolkit", e);
+		}
 
 		// load plugins
 		// We begin by loading plugins, so every image can be changed

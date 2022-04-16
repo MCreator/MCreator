@@ -31,6 +31,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.dialogs.*;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
@@ -75,6 +76,9 @@ public class DialogsTest {
 
 		// disable webview to avoid issues in headless test environments
 		BlocklyPanel.DISABLE_WEBVIEW = true;
+
+		// disable native file choosers for tests due to threading issues
+		FileDialogs.DISABLE_NATIVE_DIALOGS = true;
 
 		TestSetup.setupIntegrationTestEnvironment();
 
