@@ -68,6 +68,9 @@ public class DialogsTest {
 		// disable webview to avoid issues in headless test environments
 		BlocklyPanel.DISABLE_WEBVIEW = true;
 
+		// disable native file choosers for tests due to threading issues
+		FileDialogs.DISABLE_NATIVE_DIALOGS = true;
+
 		TestSetup.setupIntegrationTestEnvironment();
 
 		// create temporary directory
