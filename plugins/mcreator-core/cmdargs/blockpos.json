@@ -20,7 +20,7 @@
   "mcreator": {
     "toolbox_id": "arg_types",
     "toolbox_init": [
-      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">name</field></block></value>"
+      "<value name=\"name\"><block deletable=\"false\" movable=\"false\" type=\"text\"><field name=\"TEXT\">name</field></block></value>"
     ],
     "inputs": [
       "name"
