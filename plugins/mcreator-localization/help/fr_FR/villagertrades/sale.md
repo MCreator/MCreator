@@ -1,0 +1,1 @@
+L'item que tu obtiens en résultat de l'échange.
