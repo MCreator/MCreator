@@ -1,3 +1,1 @@
-The second item the trade requires.
-
-NOTE: Optional
+The second (optional) item for the trade.

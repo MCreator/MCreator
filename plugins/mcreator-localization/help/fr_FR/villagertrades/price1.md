@@ -1,3 +1,1 @@
-Le premier item que l'échange requiert.
-
-NOTE: Obligatoire
+Le premier item obligatoire pour l'échange.

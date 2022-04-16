@@ -1,3 +1,1 @@
-Le second item que l'échange requiert.
-
-NOTE: Facultatif
+Le second item (facultatif) pour l'échange.

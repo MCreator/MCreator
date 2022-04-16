@@ -1,1 +1,1 @@
-L'item que tu obtiens en résultat de l'échange.
+L'item obtenu comme résultat de l'échange.
