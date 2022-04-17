@@ -26,19 +26,19 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
 
-public class VillagerTradeEntry extends MappableElement {
+public class VillagerProfession extends MappableElement {
 
-	private VillagerTradeEntry() {
+	private VillagerProfession() {
 		super(new NameMapper(null, "villagerprofessions"));
 	}
 
-	public VillagerTradeEntry(@Nonnull Workspace owner, String name) {
+	public VillagerProfession(@Nonnull Workspace owner, String name) {
 		this();
 		mapper.setWorkspace(owner);
 		setValue(name);
 	}
 
-	public VillagerTradeEntry(@Nonnull Workspace owner, DataListEntry name) {
+	public VillagerProfession(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 }

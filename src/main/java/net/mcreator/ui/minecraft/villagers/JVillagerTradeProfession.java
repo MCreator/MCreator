@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.minecraft.villagers;
 
-import net.mcreator.element.parts.VillagerTradeEntry;
+import net.mcreator.element.parts.VillagerProfession;
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -47,7 +47,8 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	public JVillagerTradeProfession(MCreator mcreator, IHelpContext gui, JPanel parent, List<JVillagerTradeProfession> professionList) {
+	public JVillagerTradeProfession(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JVillagerTradeProfession> professionList) {
 		super(mcreator, new BorderLayout(), gui);
 
 		setOpaque(false);
@@ -115,7 +116,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 	public VillagerTrade.CustomTradeEntry getTradeEntry() {
 		VillagerTrade.CustomTradeEntry entry = new VillagerTrade.CustomTradeEntry();
-		entry.tradeEntry = new VillagerTradeEntry(workspace, (String) villager.getSelectedItem());
+		entry.villagerProfession = new VillagerProfession(workspace, (String) villager.getSelectedItem());
 		entry.entries = entryList.stream().map(JVillagerTradeEntry::getEntry).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		if (entry.entries.isEmpty())
@@ -124,7 +125,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void setTradeEntries(VillagerTrade.CustomTradeEntry tradeEntry) {
-		villager.setSelectedItem(tradeEntry.tradeEntry.getUnmappedValue());
+		villager.setSelectedItem(tradeEntry.villagerProfession.getUnmappedValue());
 		if (tradeEntry.entries != null)
 			tradeEntry.entries.forEach(e -> {
 				JVillagerTradeEntry entry = new JVillagerTradeEntry(mcreator, gui, entries, entryList);
