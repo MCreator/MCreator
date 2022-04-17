@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -29,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,10 +83,36 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				zcode = BlocklyToCode.directProcessOutputBlock(master, z);
 			}
 
+			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
+			if (master instanceof BlocklyToJava blocklyToJava
+					&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
+				List<Dependency> dependenciesProvided;
+				if (type.equals("old_command")) {
+					dependenciesProvided = Arrays.asList(Dependency.fromString(
+							"x:number/y:number/z:number/world:world/entity:entity/cmdargs:cmdcontext/cmdparams:map"));
+				} else {
+					dependenciesProvided = Arrays.asList(Dependency.fromString(
+							"x:number/y:number/z:number/world:world/entity:entity/cmdargs:cmdcontext"));
+				}
+
+				StringBuilder missingdeps = new StringBuilder();
+				boolean missingDependencies = false;
+				for (Dependency dependency : dependencies) {
+					if (!dependenciesProvided.contains(dependency)) {
+						missingDependencies = true;
+						missingdeps.append(" ").append(dependency.getName());
+					}
+				}
+				if (missingDependencies) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.call_procedure_missing_deps", missingdeps.toString())));
+				}
+			}
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
-				dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
+				dataModel.put("dependencies", dependencies);
 
 				if (call_at) {
 					dataModel.put("x", xcode);
@@ -95,8 +123,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				if (master instanceof BlocklyToJava blocklyToJava
 						&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
 					if (type.equals("old_command")) {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_old_command.java.ftl", dataModel));
+						master.append(
+								master.getTemplateGenerator().generateFromTemplate("_old_command.java.ftl", dataModel));
 					} else {
 						master.append(master.getTemplateGenerator()
 								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
