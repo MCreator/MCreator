@@ -21,8 +21,10 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
@@ -82,21 +84,33 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
+				dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
+
 				if (call_at) {
 					dataModel.put("x", xcode);
 					dataModel.put("y", ycode);
 					dataModel.put("z", zcode);
-					dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
-					String code = master.getTemplateGenerator()
-							.generateFromTemplate("_call_procedure_at.java.ftl", dataModel);
-					master.append(code);
+				}
+
+				if (master instanceof BlocklyToJava blocklyToJava
+						&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
+					if (type.equals("old_command")) {
+						master.append(master.getTemplateGenerator()
+								.generateFromTemplate("_old_command.java.ftl", dataModel));
+					} else {
+						master.append(master.getTemplateGenerator()
+								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
+					}
 				} else {
-					dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
-					String code = master.getTemplateGenerator().generateFromTemplate(type.equals("call_procedure") ? "_call_procedure.java.ftl" : "_old_command.java.ftl", dataModel);
-					master.append(code);
+					if (type.equals("call_procedure_at")) {
+						master.append(master.getTemplateGenerator()
+								.generateFromTemplate("_call_procedure_at.java.ftl", dataModel));
+					} else {
+						master.append(master.getTemplateGenerator()
+								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
+					}
 				}
 			}
-
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.call_procedure.empty")));
