@@ -24,22 +24,28 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Command;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class CommandArgumentBlockFixer implements IConverter {
+public class CommandParameterBlockFixer implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger("CommandParameterBlockFixer");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Command command = (Command) input;
-		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-				.get("onCommandExecuted") != null) {
+		try {
 			String procedure = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 					.get("onCommandExecuted").getAsJsonObject().get("name").getAsString();
 			if (!procedure.isEmpty())
 				command.argsxml =
 						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"old_command\"><field name=\"procedure\">"
 								+ procedure + "</field></block></next></block></xml>";
-		} else {
+			else
+				throw new Exception("Empty procedure");
+		} catch (Exception e) {
 			command.argsxml = "<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+			LOG.warn("Using empty command parameters setup for command " + input.getModElement().getName());
 		}
 		return command;
 	}
