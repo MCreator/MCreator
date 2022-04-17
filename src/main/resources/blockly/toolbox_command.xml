@@ -22,7 +22,6 @@
     <category name="${t:blockly.category.actions}" colour="250">
         <block type="call_procedure"/>
         <block type="old_command"/>
-        <block type="text"/>
         <custom-actions/>
     </category>
 </xml>
