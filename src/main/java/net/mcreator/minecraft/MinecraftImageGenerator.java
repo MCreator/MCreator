@@ -562,13 +562,10 @@ public class MinecraftImageGenerator {
 		public static BufferedImage generateBasicCommandPreviewPicture(String command, String procedurexml) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
-
-			graphics2D.drawLine(3, 16, 6, 10);
-
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
-			graphics2D.setPaint(
-					new GradientPaint(16, 14, new Color(255, 255, 255, 180), 24, 14, new Color(255, 255, 255, 0)));
+
+			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.drawLine(3, 16, 6, 10);
 
 			Color blockColor = Color.white;
 			if (procedurexml.contains("<block type=\"literal")) {
@@ -589,7 +586,10 @@ public class MinecraftImageGenerator {
 				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(230);
 			}
 
-			graphics2D.setColor(blockColor);
+			graphics2D.setPaint(new GradientPaint(16, 14,
+					new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 180), 24, 14,
+					new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 0)));
+			graphics2D.setColor(new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 180));
 			graphics2D.drawString(StringUtils.abbreviateString(command, 4, false).toUpperCase(Locale.ENGLISH), 7, 17);
 
 			graphics2D.dispose();
