@@ -464,10 +464,10 @@ public class TestWorkspaceDataProvider {
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			fluid.onBlockAdded = new Procedure("procedure1");
+			fluid.onBlockAdded = new Procedure("procedure5");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
-			fluid.onEntityCollides = new Procedure("procedure4");
+			fluid.onEntityCollides = new Procedure("procedure1");
 			fluid.onRandomUpdateEvent = new Procedure("procedure5");
 			fluid.onDestroyedByExplosion = new Procedure("procedure6");
 			fluid.flowCondition = new Procedure("condition1");
@@ -638,20 +638,20 @@ public class TestWorkspaceDataProvider {
 
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
+				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
 				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
 						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
-						new Procedure("procedure1"), new Procedure("procedure2"),
+						new Procedure("procedure10"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
 						new InputSlot(4, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
 								null, null, new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, blocksAndItems).getName())));
 				components.add(
-						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
+						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
 								new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
@@ -1050,13 +1050,13 @@ public class TestWorkspaceDataProvider {
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
-			plant.onNeighbourBlockChanges = new Procedure("procedure1");
+			plant.onNeighbourBlockChanges = new Procedure("procedure7");
 			plant.onTickUpdate = new Procedure("procedure2");
 			plant.onDestroyedByPlayer = new Procedure("procedure3");
 			plant.onDestroyedByExplosion = new Procedure("procedure4");
 			plant.onStartToDestroy = new Procedure("procedure5");
 			plant.onEntityCollides = new Procedure("procedure6");
-			plant.onRightClicked = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure7");
+			plant.onRightClicked = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure1");
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
@@ -1156,8 +1156,8 @@ public class TestWorkspaceDataProvider {
 			rangedItem.bulletIgnitesFire = _true;
 			rangedItem.bulletItemTexture = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.onBulletHitsBlock = new Procedure("procedure1");
-			rangedItem.onBulletHitsPlayer = new Procedure("procedure2");
+			rangedItem.onBulletHitsBlock = new Procedure("procedure2");
+			rangedItem.onBulletHitsPlayer = new Procedure("procedure1");
 			rangedItem.onBulletFlyingTick = new Procedure("procedure3");
 			rangedItem.onRangedItemUsed = new Procedure("procedure4");
 			rangedItem.useCondition = new Procedure("condition1");
@@ -1356,7 +1356,7 @@ public class TestWorkspaceDataProvider {
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
 			if (!emptyLists) {
-				block.onBlockAdded = new Procedure("procedure1");
+				block.onBlockAdded = new Procedure("procedure10");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
 				block.onTickUpdate = new Procedure("procedure3");
 				block.onRandomUpdateEvent = new Procedure("procedure4");
@@ -1365,7 +1365,7 @@ public class TestWorkspaceDataProvider {
 				block.onStartToDestroy = new Procedure("procedure7");
 				block.onEntityCollides = new Procedure("procedure8");
 				block.onBlockPlayedBy = new Procedure("procedure9");
-				block.onRightClicked = _true ? new Procedure("actionresulttype1") : new Procedure("procedure10");
+				block.onRightClicked = _true ? new Procedure("actionresulttype1") : new Procedure("procedure1");
 				block.onRedstoneOn = new Procedure("procedure11");
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
