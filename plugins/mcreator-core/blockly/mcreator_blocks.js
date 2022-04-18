@@ -371,6 +371,7 @@ Blockly.defineBlocksWithJsonArray([
                 "name": "CONSTANT",
                 "options": [
                     ["Random [0,1)", "RANDOM"],
+                    ["Random with std. normal distribution", "NORMAL"],
                     ["\u03c0", "PI"],
                     ["e", "E"],
                     ["\u221e", "INFINITY"],
