@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
@@ -53,12 +54,10 @@ public class GTCommandArgBlocks {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorCmdArgs();
 
 		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks().values()) {
-
 			StringBuilder additionalXML = new StringBuilder();
 
+			// silently skip command argument blocks not supported by this generator
 			if (!generatorBlocks.contains(commandArg.machine_name)) {
-				LOG.warn("[" + generatorName + "] Skipping command argument block that is not defined by generator: "
-						+ commandArg.machine_name);
 				continue;
 			}
 
@@ -68,7 +67,7 @@ public class GTCommandArgBlocks {
 				continue;
 			}
 
-			if (commandArg.getInputs() != null) {
+			if (!commandArg.getInputs().isEmpty()) {
 				boolean templatesDefined = false;
 
 				if (commandArg.toolbox_init != null) {
@@ -121,28 +120,24 @@ public class GTCommandArgBlocks {
 					}
 				}
 
-				try {
-					JsonArray extensions = commandArg.blocklyJSON.getAsJsonObject().get("extensions").getAsJsonArray();
-					for (int i = 0; i < extensions.size(); i++) {
-						String extension = extensions.get(i).getAsString();
-						String suggestedFieldName = extension;
+				JsonArray extensions = commandArg.blocklyJSON.getAsJsonObject().get("extensions").getAsJsonArray();
+				for (int i = 0; i < extensions.size(); i++) {
+					String extension = extensions.get(i).getAsString();
+					String suggestedFieldName = extension;
 
-						// convert to proper field names in some extension cases
-						if ("arg_procedure".equals(extension)) {
-							suggestedFieldName = "procedure";
-						}
+					// convert to proper field names in some extension cases
+					if ("arg_procedure".equals(extension)) {
+						suggestedFieldName = "procedure";
+					}
 
-						if (commandArg.getFields().contains(suggestedFieldName)) {
-							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-									suggestedFieldName);
-							if (values.length > 0 && !values[0].equals("")) {
-								additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-										.append(ListUtils.getRandomItem(random, values)).append("</field>");
-								processed++;
-							}
+					if (commandArg.getFields().contains(suggestedFieldName)) {
+						String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, suggestedFieldName);
+						if (values.length > 0 && !values[0].equals("")) {
+							additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
+									.append(ListUtils.getRandomItem(random, values)).append("</field>");
+							processed++;
 						}
 					}
-				} catch (Exception ignored) {
 				}
 
 				if (processed != commandArg.getFields().size()) {
@@ -153,17 +148,20 @@ public class GTCommandArgBlocks {
 			}
 
 			if (commandArg.getStatements() != null) {
-				commandArg.getStatements().forEach(
-						statement -> additionalXML.append("<statement name=\"").append(statement.name).append("\">")
-								.append("<block type=\"basic_literal\"><field name=\"name\">paramName</field>"
-										+ "<field name=\"command\">null</field></block>").append("</statement>\n"));
+				for (StatementInput statement : commandArg.getStatements()) {
+					additionalXML.append("<statement name=\"").append(statement.name).append("\">")
+							.append("<block type=\"")
+							.append(getRandomItem(random, new String[] { "call_procedure", "old_command" }))
+							.append("\"><field name=\"procedure\">procedure1</field></block>").append("</statement>\n");
+				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestBlock" + commandArg.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestCmdArgBlock" + commandArg.machine_name,
 					ModElementType.COMMAND);
 
 			String testXML = commandArg.toolboxXML;
-			// add additional xml to the block definition
+
+			// add additional xml to the cmd arg block definition
 			testXML = testXML.replace("<block type=\"" + commandArg.machine_name + "\">",
 					"<block type=\"" + commandArg.machine_name + "\">" + additionalXML);
 
