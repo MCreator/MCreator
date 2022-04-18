@@ -64,7 +64,7 @@ public class GTProcedureTriggers {
 					continue;
 			}
 
-			ModElement modElement = new ModElement(workspace, "Test" + externalTrigger.getID(),
+			ModElement modElement = new ModElement(workspace, "TestTrigger" + externalTrigger.getID(),
 					ModElementType.PROCEDURE);
 
 			Procedure procedure = new Procedure(modElement);
