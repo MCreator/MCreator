@@ -101,7 +101,7 @@ public class GTCommandArgBlocks {
 									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
 									processed++;
 									break;
-								case "field_input":
+								case "field_javaname":
 									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
 									processed++;
 									break;
