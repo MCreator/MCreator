@@ -105,7 +105,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				}
 				if (missingDependencies) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.call_procedure_missing_deps", missingdeps.toString())));
+							L10N.t("blockly.errors.call_procedure_missing_deps", procedure.getName(), missingdeps.toString())));
 				}
 			}
 

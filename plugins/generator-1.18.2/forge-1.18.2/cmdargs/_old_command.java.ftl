@@ -12,12 +12,12 @@
 		entity = FakePlayerFactory.getMinecraft(world);
 
 	HashMap<String, String> cmdparams = new HashMap<>();
-    int[] index = { -1 };
-    Arrays.stream(cmdargs.getInput().split("\\s+")).forEach(param -> {
-        if(index[0] >= 0)
-    		cmdparams.put(Integer.toString(index[0]), param);
-    	index[0]++;
-    });
+	int index = -1;
+	for (String param : cmdargs.getInput().split("\\s+")) {
+		if (index >= 0)
+			cmdparams.put(Integer.toString(index), param);
+		index++;
+	}
 
     <@procedureOBJToCode field$procedure/>
     return 0;

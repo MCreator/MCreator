@@ -485,7 +485,7 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		}else if (ModElementType.KEYBIND.equals(modElement.getType())) {
+		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
 			keyBinding.triggerKey = getRandomString(random,
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
