@@ -37,12 +37,13 @@ public class CommandParameterBlockFixer implements IConverter {
 		try {
 			String procedure = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 					.get("onCommandExecuted").getAsJsonObject().get("name").getAsString();
-			if (!procedure.isEmpty())
+			if (!procedure.isEmpty()) {
 				command.argsxml =
 						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"old_command\"><field name=\"procedure\">"
 								+ procedure + "</field></block></next></block></xml>";
-			else
+			} else {
 				throw new Exception("Empty procedure");
+			}
 		} catch (Exception e) {
 			command.argsxml = "<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 			LOG.warn("Using empty command parameters setup for command " + input.getModElement().getName());
