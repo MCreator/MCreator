@@ -79,6 +79,7 @@ public final class JavaKeywordsMap {
 		put("PI", "Math.PI");
 		put("E", "Math.E");
 		put("RANDOM", "Math.random()");
+		put("NORMAL", "(new Random().nextGaussian())");
 		put("INFINITY", "Double.POSITIVE_INFINITY");
 		put("NINFINITY", "Double.NEGATIVE_INFINITY");
 		put("NAN", "Double.NaN");
