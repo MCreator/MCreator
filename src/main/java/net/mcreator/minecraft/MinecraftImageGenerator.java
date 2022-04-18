@@ -554,12 +554,12 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates the basic command image preview.</p>
+		 * <p>This method generates the command image preview.</p>
 		 *
 		 * @param command <p>The command.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateBasicCommandPreviewPicture(String command, String procedurexml) {
+		public static BufferedImage generateCommandPreviewPicture(String command, String procedurexml) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
