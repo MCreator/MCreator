@@ -47,7 +47,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure)));
+						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure.getName())));
 				return;
 			}
 
@@ -88,6 +88,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 					&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
 				List<Dependency> dependenciesProvided;
 				if (type.equals("old_command")) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							L10N.t("blockly.warnings.old_command.note")));
 					dependenciesProvided = Arrays.asList(Dependency.fromString(
 							"x:number/y:number/z:number/world:world/entity:entity/cmdargs:cmdcontext/cmdparams:map"));
 				} else {
