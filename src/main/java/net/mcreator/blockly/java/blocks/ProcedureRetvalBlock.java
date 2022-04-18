@@ -52,7 +52,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure)));
+						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure.getName())));
 				return;
 			}
 

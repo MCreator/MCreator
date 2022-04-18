@@ -129,7 +129,7 @@ public class BlocklyJavascriptTemplates {
 					"message0": "%%1",
 					"args0": [
 						{
-							"type": "field_input",
+							"type": "field_javaname",
 							"name": "NAME",
 							"text": "dependencyName"
 						}
