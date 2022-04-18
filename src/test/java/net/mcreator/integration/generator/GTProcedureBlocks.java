@@ -226,7 +226,7 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestBlock" + procedureBlock.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.machine_name,
 					ModElementType.PROCEDURE);
 
 			String testXML = procedureBlock.toolboxXML;
