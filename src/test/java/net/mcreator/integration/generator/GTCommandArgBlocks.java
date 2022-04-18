@@ -120,22 +120,25 @@ public class GTCommandArgBlocks {
 					}
 				}
 
-				JsonArray extensions = commandArg.blocklyJSON.getAsJsonObject().get("extensions").getAsJsonArray();
-				for (int i = 0; i < extensions.size(); i++) {
-					String extension = extensions.get(i).getAsString();
-					String suggestedFieldName = extension;
+				if (commandArg.blocklyJSON.getAsJsonObject().get("extensions") != null) {
+					JsonArray extensions = commandArg.blocklyJSON.getAsJsonObject().get("extensions").getAsJsonArray();
+					for (int i = 0; i < extensions.size(); i++) {
+						String extension = extensions.get(i).getAsString();
+						String suggestedFieldName = extension;
 
-					// convert to proper field names in some extension cases
-					if ("arg_procedure".equals(extension)) {
-						suggestedFieldName = "procedure";
-					}
+						// convert to proper field names in some extension cases
+						if ("arg_procedure".equals(extension)) {
+							suggestedFieldName = "procedure";
+						}
 
-					if (commandArg.getFields().contains(suggestedFieldName)) {
-						String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, suggestedFieldName);
-						if (values.length > 0 && !values[0].equals("")) {
-							additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-									.append(ListUtils.getRandomItem(random, values)).append("</field>");
-							processed++;
+						if (commandArg.getFields().contains(suggestedFieldName)) {
+							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
+									suggestedFieldName);
+							if (values.length > 0 && !values[0].equals("")) {
+								additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
+										.append(ListUtils.getRandomItem(random, values)).append("</field>");
+								processed++;
+							}
 						}
 					}
 				}

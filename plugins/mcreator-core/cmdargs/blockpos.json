@@ -1,7 +1,7 @@
 {
   "args0": [
     {
-      "type": "input_value",
+      "type": "field_javaname",
       "name": "name",
       "check": "String"
     },
@@ -19,10 +19,7 @@
   "colour": 90,
   "mcreator": {
     "toolbox_id": "arg_types",
-    "toolbox_init": [
-      "<value name=\"name\"><block deletable=\"false\" movable=\"false\" type=\"text\"><field name=\"TEXT\">name</field></block></value>"
-    ],
-    "inputs": [
+    "fields": [
       "name"
     ],
     "statements": [
