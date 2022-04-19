@@ -68,3 +68,4 @@ available at https://account.mojang.com/documents/minecraft_eula.`
 ## Notice
 
 NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.
+---------------------------------------------
