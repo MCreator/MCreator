@@ -1,0 +1,1 @@
+Le bloc de profession pour la profession. Ce bloc est nécessaire pour qu'un villageois ait la profession.

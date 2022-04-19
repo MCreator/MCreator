@@ -90,15 +90,15 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/name"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/name"),
 				L10N.label("elementgui.villagerprofession.name")));
 		subpanel.add(name);
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/point_of_interest"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/point_of_interest"),
 				L10N.label("elementgui.villagerprofession.point_of_interest")));
 		subpanel.add(PanelUtils.centerInPanel(pointOfInterest));
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/action_sound"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/action_sound"),
 				L10N.label("elementgui.villagerprofession.action_sound")));
 		subpanel.add(actionSound);
 
@@ -115,7 +115,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 					.forEach(el -> professionTextureFile.addItem(el.getName()));
 		});
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/profession_texture"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/profession_texture"),
 				L10N.label("elementgui.villagerprofession.profession_texture")));
 		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture));
 
