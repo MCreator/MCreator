@@ -105,6 +105,11 @@ public class WorkspaceFolderManager {
 		return structures;
 	}
 
+	public File getVillagerProfessionTextureFileForName(String villagerProfessionTextureName) {
+		return new File(getTexturesFolder(TextureType.OTHER),
+				"entity/villager/profession/" + villagerProfessionTextureName + ".png");
+	}
+
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
 		return new File[] { new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_1.png"),
 				new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_2.png") };

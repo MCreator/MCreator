@@ -27,8 +27,10 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
@@ -50,9 +52,10 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
@@ -74,11 +77,11 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override protected void initGUI() {
 		professionTextureFile.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		professionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		JPanel panel2 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
-		ComponentUtils.deriveFont(professionTextureFile, 16);
 
 		JPanel subpanel = new JPanel(new GridLayout(4, 2, 0, 2));
 		subpanel.setOpaque(false);
@@ -99,11 +102,22 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				L10N.label("elementgui.villagerprofession.action_sound")));
 		subpanel.add(actionSound);
 
+		professionTextureFile.addActionListener(e -> updateProfessionTexturePreview());
+
+		JButton importProfessionTexture = new JButton(UIRES.get("18px.add"));
+		importProfessionTexture.setToolTipText(L10N.t("elementgui.villagerprofession.import_profession_texture"));
+		importProfessionTexture.setOpaque(false);
+		importProfessionTexture.addActionListener(e -> {
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			professionTextureFile.removeAllItems();
+			professionTextureFile.addItem("");
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER)
+					.forEach(el -> professionTextureFile.addItem(el.getName()));
+		});
+
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/profession_texture"),
 				L10N.label("elementgui.villagerprofession.profession_texture")));
-		subpanel.add(professionTextureFile);
-
-		professionTextureFile.addActionListener(e -> updateProfessionTexturePreview());
+		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(pointOfInterest);
@@ -145,18 +159,23 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	private void updateProfessionTexturePreview() {
 		File professionTexture = mcreator.getFolderManager()
-				.getTextureFile(professionTextureFile.getSelectedItem(), TextureType.OTHER);
+				.getVillagerProfessionTextureFileForName(professionTextureFile.getSelectedItem());
 		if (professionTexture.isFile()) {
-			ImageIcon bg = new ImageIcon(ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), fact, fact));
+			ImageIcon bg = new ImageIcon(
+					ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), fact, fact));
 			clo.setIcon(ImageUtils.drawOver(bg));
 		}
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		List<File> others = mcreator.getFolderManager().getTexturesList(TextureType.OTHER);
+		List<String> othersParts = new ArrayList<>();
+		for (File texture : others)
+			if (texture.getName().endsWith(".png"))
+				othersParts.add(texture.getName().replace(".png", ""));
+		ComboBoxUtil.updateComboBoxContents(professionTextureFile,
+				ListUtils.merge(Collections.singleton(""), othersParts));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -170,6 +189,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		professionTextureFile.setSelectedItem(profession.professionTextureFile);
+
+		updateProfessionTexturePreview();
 	}
 
 	@Override public VillagerProfession getElementFromGUI() {
