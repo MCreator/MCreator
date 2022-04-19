@@ -82,6 +82,20 @@ public class ImageUtils {
 		return new ImageIcon(resizedImage);
 	}
 
+	public static ImageIcon drawOver(ImageIcon i) {
+		Image original = i.getImage();
+
+		int x = original.getWidth(null);
+		int y = original.getHeight(null);
+
+		BufferedImage resizedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(original, 0, 0, x, y, null);
+		g.dispose();
+
+		return new ImageIcon(resizedImage);
+	}
+
 	public static ImageIcon drawOver(ImageIcon i, ImageIcon wh, int xp, int yp, int w, int h) {
 		Image original = i.getImage();
 		Image over = wh.getImage();
