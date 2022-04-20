@@ -52,8 +52,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		ContainerHelper.loadAllItems(compound, this.stacks);
 
 		<#if data.hasEnergyStorage>
-		if(compound.get("energyStorage") instanceof CompoundTag compoundTag)
-			energyStorage.deserializeNBT(compoundTag);
+		if(compound.get("energyStorage") instanceof IntTag intTag)
+			energyStorage.deserializeNBT(intTag);
 		</#if>
 
 		<#if data.isFluidTank>
@@ -84,10 +84,6 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 	@Override public CompoundTag getUpdateTag() {
 		return this.saveWithFullMetadata();
-	}
-
-	@Override public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		this.load(pkt.getTag());
 	}
 
 	@Override public int getContainerSize() {
