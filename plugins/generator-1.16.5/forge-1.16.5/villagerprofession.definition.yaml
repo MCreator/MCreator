@@ -1,0 +1,8 @@
+templates:
+  - template: villagerprofessions.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEProfession.java"
+
+localizationkeys:
+  - key: entity.minecraft.villager.@modid.@registryname
+    mapto: displayName

@@ -1,4 +1,11 @@
+templates:
+  - template: villagerprofessions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEProfession.java"
+
 global_templates:
   - template: elementinits/villagerprofessions.java.ftl
-    writer: java
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameProfession.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
+
+localizationkeys:
+  - key: entity.minecraft.villager.@modid.@registryname
+    mapto: displayName

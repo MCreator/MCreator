@@ -29,39 +29,29 @@
 -->
 
 <#-- @formatter:off -->
+<#include "mcitems.ftl">
 
-/*
-*    MCreator note: This file will be REGENERATED on each build.
-*/
-
-package ${package}.init;
+package ${package}.village;
 
 import net.minecraft.sounds.SoundEvent;
-import javax.annotation.Nullable;
 
-public class ${JavaModName}VillagerProfessions extends VillagerProfession {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Profession {
 
-    private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PoiType.class, "m_27367_", PoiType.class);
-    private final List<Supplier<SoundEvent>> soundEventSuppliers;
+    public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
+    public static final RegistryObject<PoiType> ${data.name}_POI = POI.register("${data.id}", () -> new PoiType("${data.id}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1));
+    public static final RegistryObject<VillagerProfession> ${data.name} = registerProfession("${data.id}", ${name}Profession.${data.name}_POI);
 
-    @SafeVarargs
-    public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
-        super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
-        this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
+    @SuppressWarnings("SameParameterValue")
+    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType) {
+        return PROFESSIONS.register(name, () -> new ${JavaModName}VillagerProfessions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), () -> new SoundEvent(new ResourceLocation("${data.actionSound}"))));
     }
 
-    @Nullable
-    @Override
-    public SoundEvent getWorkSound() {
-        int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
-        return soundEventSuppliers.get(n).get();
+    private static Set<BlockState> getAllStates(Block block) {
+        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
 
-    public static void fixup(PoiType poiType) {
-        try {
-            blockStatesInjector.invoke(null, poiType);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+    @SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> ${JavaModName}VillagerProfessions.fixup(${name}Profession.${data.name}_POI.get()));
     }
 }

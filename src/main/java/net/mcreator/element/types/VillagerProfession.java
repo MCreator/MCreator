@@ -31,7 +31,9 @@ import java.io.File;
 
 public class VillagerProfession extends GeneratableElement {
 
+	public String id;
 	public String name;
+	public String displayName;
 
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
@@ -49,7 +51,7 @@ public class VillagerProfession extends GeneratableElement {
 		File originalTextureFileLocation = getModElement().getFolderManager()
 				.getTextureFile(FilenameUtilsPatched.removeExtension(professionTextureFile), TextureType.OTHER);
 		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-				"entity/villager/profession/" + name.toLowerCase() + ".png");
+				"entity/villager/profession/" + displayName.toLowerCase() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 	}
 }

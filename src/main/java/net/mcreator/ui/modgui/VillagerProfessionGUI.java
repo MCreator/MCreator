@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -86,7 +87,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		JPanel subpanel = new JPanel(new GridLayout(4, 2, 0, 2));
 		subpanel.setOpaque(false);
 
-		name.setEditable(true);
+		name.setEnabled(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -152,8 +153,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		addPage(L10N.t("elementgui.common.page_properties"), panel);
 
-		if (isEditingMode()) {
-			name.setEnabled(false);
+		if (!isEditingMode()) {
+			name.setText(modElement.getName().toUpperCase(Locale.ROOT));
 		}
 	}
 
@@ -185,21 +186,29 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	}
 
 	@Override public void openInEditingMode(VillagerProfession profession) {
-		name.setText(profession.name.toUpperCase(Locale.ENGLISH));
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		professionTextureFile.setSelectedItem(profession.professionTextureFile);
+
+		name.setText(modElement.getName().toUpperCase(Locale.ROOT));
 
 		updateProfessionTexturePreview();
 	}
 
 	@Override public VillagerProfession getElementFromGUI() {
 		VillagerProfession profession = new VillagerProfession(modElement);
-		profession.name = name.getText();
+		profession.id = name.getText().toLowerCase(Locale.ROOT);
+		profession.name = modElement.getName().toUpperCase(Locale.ROOT);
+		profession.displayName = StringUtils.uppercaseFirstLetter(name.getText().toLowerCase(Locale.ROOT));
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.professionTextureFile = professionTextureFile.getSelectedItem();
 		return profession;
+	}
+
+	@Override protected void beforeGeneratableElementGenerated() {
+		super.beforeGeneratableElementGenerated();
+		modElement.setRegistryName(StringUtils.lowercaseFirstLetter(modElement.getName()));
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
