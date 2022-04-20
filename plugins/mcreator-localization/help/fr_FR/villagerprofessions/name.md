@@ -1,1 +1,1 @@
-Le nom de la nouvelle profession.
+Le nom de cette profession de villageois.

@@ -1,1 +1,1 @@
-The name of the new profession.
+The name of this villager profession.
