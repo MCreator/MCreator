@@ -1568,6 +1568,17 @@ public class TestWorkspaceDataProvider {
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return gamerule;
+		} else if (ModElementType.VILLAGERPROFESSION.equals(modElement.getType())) {
+			VillagerProfession profession = new VillagerProfession(modElement);
+			profession.id = modElement.getName().toLowerCase(Locale.ROOT);
+			profession.name = modElement.getName().toUpperCase(Locale.ROOT);
+			profession.displayName = StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT));
+			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
+			profession.actionSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			profession.professionTextureFile = "test.png";
+			return profession;
 		}
 		return null;
 	}
