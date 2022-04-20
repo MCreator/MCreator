@@ -31,6 +31,10 @@ public class VillagerTrade extends GeneratableElement {
 
 	public List<CustomTradeEntry> tradeEntries;
 
+	private VillagerTrade() {
+		this(null);
+	}
+
 	public VillagerTrade(ModElement element) {
 		super(element);
 		tradeEntries = new ArrayList<>();
@@ -42,15 +46,20 @@ public class VillagerTrade extends GeneratableElement {
 		public List<Entry> entries;
 
 		public static class Entry {
+
 			public MItemBlock price1;
 			public int countPrice1;
+
 			public MItemBlock price2;
 			public int countPrice2;
+
 			public MItemBlock sale;
 			public int countSale;
+
 			public int level;
 			public int maxTrades;
 			public int xp;
+			
 			public double priceMultiplier;
 
 			public Entry() {
