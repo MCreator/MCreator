@@ -59,7 +59,7 @@ public class VillagerTrade extends GeneratableElement {
 			public int level;
 			public int maxTrades;
 			public int xp;
-			
+
 			public double priceMultiplier;
 
 			public Entry() {
