@@ -197,8 +197,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public VillagerProfession getElementFromGUI() {
 		VillagerProfession profession = new VillagerProfession(modElement);
-		profession.id = name.getText().toLowerCase(Locale.ROOT);
-		profession.name = modElement.getName().toUpperCase(Locale.ROOT);
 		profession.displayName = StringUtils.uppercaseFirstLetter(name.getText().toLowerCase(Locale.ROOT));
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();

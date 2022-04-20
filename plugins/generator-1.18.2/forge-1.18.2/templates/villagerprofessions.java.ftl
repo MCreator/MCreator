@@ -39,8 +39,8 @@ import net.minecraft.sounds.SoundEvent;
 
     public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
     public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
-    public static final RegistryObject<PoiType> ${data.name}_POI = POI.register("${data.id}", () -> new PoiType("${data.id}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1));
-    public static final RegistryObject<VillagerProfession> ${data.name} = registerProfession("${data.id}", ${name}Profession.${data.name}_POI);
+    public static final RegistryObject<PoiType> ${data.displayName?upper_case}_POI = POI.register("${data.displayName?lower_case}", () -> new PoiType("${data.displayName?lower_case}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1));
+    public static final RegistryObject<VillagerProfession> ${data.displayName?upper_case} = registerProfession("${data.displayName?lower_case}", ${name}Profession.${data.displayName?upper_case}_POI);
 
     @SuppressWarnings("SameParameterValue")
     private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType) {
@@ -52,6 +52,6 @@ import net.minecraft.sounds.SoundEvent;
     }
 
     @SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> ${JavaModName}VillagerProfessions.fixup(${name}Profession.${data.name}_POI.get()));
+        event.enqueueWork(() -> ${JavaModName}VillagerProfessions.fixup(${name}Profession.${data.displayName?upper_case}_POI.get()));
     }
 }

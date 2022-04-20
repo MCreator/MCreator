@@ -31,8 +31,6 @@ import java.io.File;
 
 public class VillagerProfession extends GeneratableElement {
 
-	public String id;
-	public String name;
 	public String displayName;
 
 	public MItemBlock pointOfInterest;

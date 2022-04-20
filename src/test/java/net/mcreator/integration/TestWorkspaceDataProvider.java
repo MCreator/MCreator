@@ -1570,8 +1570,6 @@ public class TestWorkspaceDataProvider {
 			return gamerule;
 		} else if (ModElementType.VILLAGERPROFESSION.equals(modElement.getType())) {
 			VillagerProfession profession = new VillagerProfession(modElement);
-			profession.id = modElement.getName().toLowerCase(Locale.ROOT);
-			profession.name = modElement.getName().toUpperCase(Locale.ROOT);
 			profession.displayName = StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT));
 			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
