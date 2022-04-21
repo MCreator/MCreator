@@ -63,13 +63,6 @@ public class VillagerTrade extends GeneratableElement {
 			public double priceMultiplier;
 
 			public Entry() {
-				this.countPrice1 = 1;
-				this.countPrice2 = 1;
-				this.countSale = 1;
-				this.level = 1;
-				this.maxTrades = 10;
-				this.xp = 10;
-				this.priceMultiplier = 0.05;
 			}
 		}
 	}
