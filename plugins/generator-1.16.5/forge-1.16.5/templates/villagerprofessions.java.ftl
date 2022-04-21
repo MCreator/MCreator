@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "mcitems.ftl">
 
 package ${package}.world;
 
@@ -37,25 +38,25 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Profession {
 
-    public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
+    public static final DeferredRegister<PointOfInterestType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, "${modid}");
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, "${modid}");
     public static final RegistryObject<PointOfInterestType> ${data.displayName?upper_case}_POI = POI.register("${data.displayName?lower_case}", () -> new PointOfInterestType("${data.displayName?lower_case}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1));
     public static final RegistryObject<VillagerProfession> ${data.displayName?upper_case} = registerProfession("${data.displayName?lower_case}", ${name}Profession.${data.displayName?upper_case}_POI);
 
     @SuppressWarnings("SameParameterValue")
     private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PointOfInterestType> poiType) {
-        return PROFESSIONS.register(name, () -> new ${JavaModName}VillagerProfessions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), () -> new SoundEvent(new ResourceLocation("${data.actionSound}"))));
+        return PROFESSIONS.register(name, () -> new ${JavaModName}VillagerProfessions("${modid}" + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), () -> new SoundEvent(new ResourceLocation("${data.actionSound}"))));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
-        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
+        return ImmutableSet.copyOf(block.getStateContainer().getValidStates());
     }
 
     @SubscribeEvent public static void init(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> ${JavaModName}VillagerProfessions.fixup(${name}Profession.${data.displayName?upper_case}_POI.get()));
     }
 
-    public class ${JavaModName}VillagerProfessions extends VillagerProfession {
+    public static class ${JavaModName}VillagerProfessions extends VillagerProfession {
 
         private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
         private final List<Supplier<SoundEvent>> soundEventSuppliers;
@@ -68,7 +69,7 @@ import javax.annotation.Nullable;
 
         @Nullable
         @Override
-        public SoundEvent getWorkSound() {
+        public SoundEvent getSound() {
             int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
             return soundEventSuppliers.get(n).get();
         }
