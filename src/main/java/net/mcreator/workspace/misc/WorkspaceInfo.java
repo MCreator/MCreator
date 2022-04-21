@@ -92,15 +92,11 @@ import java.util.stream.Collectors;
 	}
 
 	public double random(String seed) {
-		return random(seed, 0);
-	}
-
-	public double random(String seed, long offset) {
 		long hash = 0;
 		for (char c : seed.toCharArray()) {
 			hash = 31L * hash + c;
 		}
-		return new Random(hash + offset).nextDouble();
+		return new Random(hash).nextDouble();
 	}
 
 	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
