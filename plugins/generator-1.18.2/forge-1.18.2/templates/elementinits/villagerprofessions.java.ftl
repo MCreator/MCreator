@@ -61,7 +61,7 @@ public class ${JavaModName}VillagerProfessions extends VillagerProfession {
         try {
             blockStatesInjector.invoke(null, poiType);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            ${JavaModName}.LOGGER.catching(e);
         }
     }
 }
