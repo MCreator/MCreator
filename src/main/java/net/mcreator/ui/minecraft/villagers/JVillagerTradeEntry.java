@@ -117,9 +117,6 @@ public class JVillagerTradeEntry extends JPanel {
 		parent.repaint();
 	}
 
-	public void reloadDataLists() {
-	}
-
 	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
 		if (!price1.containsItem())
 			return null;

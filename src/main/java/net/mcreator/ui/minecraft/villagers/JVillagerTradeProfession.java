@@ -23,10 +23,12 @@ import net.mcreator.element.parts.VillagerProfession;
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.workspace.Workspace;
 
@@ -39,7 +41,8 @@ import java.util.stream.Collectors;
 
 public class JVillagerTradeProfession extends JEntriesList {
 
-	private final JComboBox<String> villager = new JComboBox<>();
+	private final DataListComboBox villagerProffesion = new DataListComboBox(mcreator,
+			ElementUtil.loadAllVillagerProfessions());
 
 	private final List<JVillagerTradeEntry> entryList = new ArrayList<>();
 
@@ -53,6 +56,8 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		setOpaque(false);
 
+		villagerProffesion.setRenderer(new JComboBox<>().getRenderer());
+
 		this.workspace = mcreator.getWorkspace();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
@@ -60,15 +65,13 @@ public class JVillagerTradeProfession extends JEntriesList {
 		parent.add(container);
 		professionList.add(this);
 
-		ElementUtil.loadAllVillagerProfessions(workspace).forEach(e -> villager.addItem(e.getName()));
-
 		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
 
 		topbar.add(L10N.label("elementgui.villager_trade.profession"));
-		topbar.add(villager);
+		topbar.add(villagerProffesion);
 
 		topbar.add(Box.createHorizontalGlue());
 
@@ -107,7 +110,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void reloadDataLists() {
-		entryList.forEach(JVillagerTradeEntry::reloadDataLists);
+		ComboBoxUtil.updateComboBoxContents(villagerProffesion, ElementUtil.loadAllVillagerProfessions());
 	}
 
 	public void addInitialEntry() {
@@ -116,7 +119,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 	public VillagerTrade.CustomTradeEntry getTradeEntry() {
 		VillagerTrade.CustomTradeEntry entry = new VillagerTrade.CustomTradeEntry();
-		entry.villagerProfession = new VillagerProfession(workspace, (String) villager.getSelectedItem());
+		entry.villagerProfession = new VillagerProfession(workspace, villagerProffesion.getSelectedItem());
 		entry.entries = entryList.stream().map(JVillagerTradeEntry::getEntry).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		if (entry.entries.isEmpty())
@@ -125,7 +128,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void setTradeEntries(VillagerTrade.CustomTradeEntry tradeEntry) {
-		villager.setSelectedItem(tradeEntry.villagerProfession.getUnmappedValue());
+		villagerProffesion.setSelectedItem(tradeEntry.villagerProfession);
 		if (tradeEntry.entries != null)
 			tradeEntry.entries.forEach(e -> {
 				JVillagerTradeEntry entry = new JVillagerTradeEntry(mcreator, gui, entries, entryList);

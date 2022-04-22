@@ -179,7 +179,7 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
+	public static List<DataListEntry> loadAllVillagerProfessions() {
 		return DataListLoader.loadDataList("villagerprofessions");
 	}
 
