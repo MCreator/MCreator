@@ -38,11 +38,11 @@ public class JVillagerTradeEntry extends JPanel {
 
 	private final MCItemHolder price1;
 	private final MCItemHolder price2;
-	private final MCItemHolder sale;
+	private final MCItemHolder offer;
 
 	private final JSpinner countPrice1 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-	private final JSpinner countSale = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+	private final JSpinner countOffer = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 
 	private final JComboBox<String> level = new JComboBox<>(
 			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" });
@@ -58,7 +58,7 @@ public class JVillagerTradeEntry extends JPanel {
 
 		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		price2 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-		sale = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		offer = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 
@@ -85,9 +85,9 @@ public class JVillagerTradeEntry extends JPanel {
 		line1.add(new JEmptyBox(15, 5));
 
 		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/sale"), L10N.label("elementgui.villager_trade.sale")));
-		line1.add(sale);
+		line1.add(offer);
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
-		line1.add(countSale);
+		line1.add(countOffer);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.villager_trade.remove_entry"));
@@ -120,7 +120,7 @@ public class JVillagerTradeEntry extends JPanel {
 	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
 		if (!price1.containsItem())
 			return null;
-		if (!sale.containsItem())
+		if (!offer.containsItem())
 			return null;
 
 		VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
@@ -128,8 +128,8 @@ public class JVillagerTradeEntry extends JPanel {
 		entry.countPrice1 = (int) countPrice1.getValue();
 		entry.price2 = price2.getBlock();
 		entry.countPrice2 = (int) countPrice2.getValue();
-		entry.sale = sale.getBlock();
-		entry.countSale = (int) countSale.getValue();
+		entry.offer = offer.getBlock();
+		entry.countOffer = (int) countOffer.getValue();
 		entry.level = level.getSelectedIndex() + 1;
 		entry.maxTrades = (int) maxTrades.getValue();
 		entry.xp = (int) xp.getValue();
@@ -142,8 +142,8 @@ public class JVillagerTradeEntry extends JPanel {
 		countPrice1.setValue(e.countPrice1);
 		price2.setBlock(e.price2);
 		countPrice2.setValue(e.countPrice2);
-		sale.setBlock(e.sale);
-		countSale.setValue(e.countSale);
+		offer.setBlock(e.offer);
+		countOffer.setValue(e.countOffer);
 		level.setSelectedIndex(e.level - 1);
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);

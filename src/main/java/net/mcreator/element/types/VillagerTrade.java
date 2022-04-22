@@ -53,8 +53,8 @@ public class VillagerTrade extends GeneratableElement {
 			public MItemBlock price2;
 			public int countPrice2;
 
-			public MItemBlock sale;
-			public int countSale;
+			public MItemBlock offer;
+			public int countOffer;
 
 			public int level;
 			public int maxTrades;

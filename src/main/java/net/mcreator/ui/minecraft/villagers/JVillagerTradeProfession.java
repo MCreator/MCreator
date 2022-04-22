@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 
 public class JVillagerTradeProfession extends JEntriesList {
 
-	private final DataListComboBox villagerProffesion = new DataListComboBox(mcreator,
+	private final DataListComboBox villagerProfession = new DataListComboBox(mcreator,
 			ElementUtil.loadAllVillagerProfessions());
 
 	private final List<JVillagerTradeEntry> entryList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		setOpaque(false);
 
-		villagerProffesion.setRenderer(new JComboBox<>().getRenderer());
+		villagerProfession.setRenderer(new JComboBox<>().getRenderer());
 
 		this.workspace = mcreator.getWorkspace();
 
@@ -71,7 +71,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 		topbar.setOpaque(false);
 
 		topbar.add(L10N.label("elementgui.villager_trade.profession"));
-		topbar.add(villagerProffesion);
+		topbar.add(villagerProfession);
 
 		topbar.add(Box.createHorizontalGlue());
 
@@ -110,7 +110,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(villagerProffesion, ElementUtil.loadAllVillagerProfessions());
+		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions());
 	}
 
 	public void addInitialEntry() {
@@ -119,7 +119,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 	public VillagerTrade.CustomTradeEntry getTradeEntry() {
 		VillagerTrade.CustomTradeEntry entry = new VillagerTrade.CustomTradeEntry();
-		entry.villagerProfession = new VillagerProfession(workspace, villagerProffesion.getSelectedItem());
+		entry.villagerProfession = new VillagerProfession(workspace, villagerProfession.getSelectedItem());
 		entry.entries = entryList.stream().map(JVillagerTradeEntry::getEntry).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		if (entry.entries.isEmpty())
@@ -128,7 +128,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void setTradeEntries(VillagerTrade.CustomTradeEntry tradeEntry) {
-		villagerProffesion.setSelectedItem(tradeEntry.villagerProfession);
+		villagerProfession.setSelectedItem(tradeEntry.villagerProfession);
 		if (tradeEntry.entries != null)
 			tradeEntry.entries.forEach(e -> {
 				JVillagerTradeEntry entry = new JVillagerTradeEntry(mcreator, gui, entries, entryList);
