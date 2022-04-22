@@ -6,7 +6,7 @@ This parameter controls the temperature of the biome.
 * Values between 0.15 and 1.5 make the biome rain
 * Values larger than 1.5 will make the biome dry (disable rain, deserts for example)
 
-This parameter also controls placement of the biomes. 
+This parameter also controls placement of the biomes.
 Biomes with similar temperature will generate closer together.
 
 Biomes with the same temperature will compete for the same spot in the world when generating.
