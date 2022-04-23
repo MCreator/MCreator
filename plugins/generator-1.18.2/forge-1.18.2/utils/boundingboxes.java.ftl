@@ -60,36 +60,36 @@
 <#macro makeCuboid box facing pitchType>
     <#if facing == "south">
         <#if pitchType == "floor">
-            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(16 - box.my, 16 - box.My)},
-                ${max(16 - box.mx, 16 - box.Mx)}, ${max(16 - box.mz, 16 - box.Mz)}, ${max(16 - box.my, 16 - box.My)})
-        <#elseif pitchType == "ceiling">
-            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.mz, box.Mz)}, ${min(box.my, box.My)},
-                ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.mz, box.Mz)}, ${max(box.my, box.My)})
-        <#elseif pitchType == "wall">
             box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.my, box.My)}, ${min(16 - box.mz, 16 - box.Mz)},
                 ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.my, box.My)}, ${max(16 - box.mz, 16 - box.Mz)})
+        <#elseif pitchType == "ceiling">
+            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(16 - box.my, 16 - box.My)}, ${min(box.mz, box.Mz)},
+                ${max(16 - box.mx, 16 - box.Mx)}, ${max(16 - box.my, 16 - box.My)}, ${max(box.mz, box.Mz)})
+        <#elseif pitchType == "wall">
+            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.mz, box.Mz)}, ${min(box.my, box.My)},
+                ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.mz, box.Mz)}, ${max(box.my, box.My)})
         </#if>
     <#elseif facing == "east">
         <#if pitchType == "floor">
-            box(${min(16 - box.my, 16 - box.My)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(box.mx, box.Mx)},
-                ${max(16 - box.my, 16 - box.My)}, ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.mx, box.Mx)})
-        <#elseif pitchType == "ceiling">
-            box(${min(box.my, box.My)}, ${min(box.mz, box.Mz)}, ${min(box.mx, box.Mx)},
-                ${max(box.my, box.My)}, ${max(box.mz, box.Mz)}, ${max(box.mx, box.Mx)})
-        <#elseif pitchType == "wall">
             box(${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)}, ${min(box.mx, box.Mx)},
                 ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)}, ${max(box.mx, box.Mx)})
+        <#elseif pitchType == "ceiling">
+            box(${min(box.mz, box.Mz)}, ${min(16 - box.my, 16 - box.My)}, ${min(box.mx, box.Mx)},
+                ${max(box.mz, box.Mz)}, ${max(16 - box.my, 16 - box.My)}, ${max(box.mx, box.Mx)})
+        <#elseif pitchType == "wall">
+            box(${min(box.my, box.My)}, ${min(box.mz, box.Mz)}, ${min(box.mx, box.Mx)},
+                ${max(box.my, box.My)}, ${max(box.mz, box.Mz)}, ${max(box.mx, box.Mx)})
         </#if>
     <#elseif facing == "west">
         <#if pitchType == "floor">
-            box(${min(box.my, box.My)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(16 - box.mx, 16 - box.Mx)},
-                ${max(box.my, box.My)}, ${max(16 - box.mz, 16 - box.Mz)}, ${max(16 - box.mx, 16 - box.Mx)})
-        <#elseif pitchType == "ceiling">
-            box(${min(16 - box.my, 16 - box.My)}, ${min(box.mz, box.Mz)}, ${min(16 - box.mx, 16 - box.Mx)},
-                ${max(16 - box.my, 16 - box.My)}, ${max(box.mz, box.Mz)}, ${max(16 - box.mx, 16 - box.Mx)})
-        <#elseif pitchType == "wall">
             box(${min(box.mz, box.Mz)}, ${min(box.my, box.My)}, ${min(16 - box.mx, 16 - box.Mx)},
                 ${max(box.mz, box.Mz)}, ${max(box.my, box.My)}, ${max(16 - box.mx, 16 - box.Mx)})
+        <#elseif pitchType == "ceiling">
+            box(${min(16 - box.mz, 16 - box.Mz)}, ${min(16 - box.my, 16 - box.My)}, ${min(16 - box.mx, 16 - box.Mx)},
+                ${max(16 - box.mz, 16 - box.Mz)}, ${max(16 - box.my, 16 - box.My)}, ${max(16 - box.mx, 16 - box.Mx)})
+        <#elseif pitchType == "wall">
+            box(${min(16 - box.my, 16 - box.My)}, ${min(box.mz, box.Mz)}, ${min(16 - box.mx, 16 - box.Mx)},
+                ${max(16 - box.my, 16 - box.My)}, ${max(box.mz, box.Mz)}, ${max(16 - box.mx, 16 - box.Mx)})
         </#if>
     <#elseif facing == "up">
         box(${min(box.mx, box.Mx)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)},
@@ -102,14 +102,14 @@
             ${max(box.my, box.My)}, ${max(box.mz, box.Mz)}, ${max(box.mx, box.Mx)})
     <#else>
         <#if pitchType == "floor">
-            box(${min(box.mx, box.Mx)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)},
-                ${max(box.mx, box.Mx)}, ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)})
-        <#elseif pitchType == "ceiling">
-            box(${min(box.mx, box.Mx)}, ${min(box.mz, box.Mz)}, ${min(16 - box.my, 16 - box.My)},
-                ${max(box.mx, box.Mx)}, ${max(box.mz, box.Mz)}, ${max(16 - box.my, 16 - box.My)})
-        <#elseif pitchType == "wall">
             box(${min(box.mx, box.Mx)}, ${min(box.my, box.My)}, ${min(box.mz, box.Mz)},
                 ${max(box.mx, box.Mx)}, ${max(box.my, box.My)}, ${max(box.mz, box.Mz)})
+        <#elseif pitchType == "ceiling">
+            box(${min(box.mx, box.Mx)}, ${min(16 - box.my, 16 - box.My)}, ${min(16 - box.mz, 16 - box.Mz)},
+                ${max(box.mx, box.Mx)}, ${max(16 - box.my, 16 - box.My)}, ${max(16 - box.mz, 16 - box.Mz)})
+        <#elseif pitchType == "wall">
+            box(${min(box.mx, box.Mx)}, ${min(box.mz, box.Mz)}, ${min(16 - box.my, 16 - box.My)},
+                ${max(box.mx, box.Mx)}, ${max(box.mz, box.Mz)}, ${max(16 - box.my, 16 - box.My)})
         </#if>
     </#if>
 </#macro>

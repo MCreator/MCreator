@@ -152,19 +152,19 @@ public class ${name}Block extends
 
 	    <#if data.rotationMode != 0 || data.isWaterloggable>
 	    this.registerDefaultState(this.stateDefinition.any()
-	                            <#if data.rotationMode == 1 || data.rotationMode == 3>
-	                            .setValue(FACING, Direction.NORTH)
-	                                <#if data.enablePitch>
-	                                .setValue(FACE, AttachFace.WALL)
-	                                </#if>
-	                            <#elseif data.rotationMode == 2 || data.rotationMode == 4>
-	                            .setValue(FACING, Direction.NORTH)
-	                            <#elseif data.rotationMode == 5>
-	                            .setValue(AXIS, Direction.Axis.Y)
-	                            </#if>
-	                            <#if data.isWaterloggable>
-	                            .setValue(WATERLOGGED, false)
-	                            </#if>
+	                             <#if data.rotationMode == 1 || data.rotationMode == 3>
+	                             .setValue(FACING, Direction.NORTH)
+	                                 <#if data.enablePitch>
+	                                 .setValue(FACE, AttachFace.WALL)
+	                                 </#if>
+	                             <#elseif data.rotationMode == 2 || data.rotationMode == 4>
+	                             .setValue(FACING, Direction.NORTH)
+	                             <#elseif data.rotationMode == 5>
+	                             .setValue(AXIS, Direction.Axis.Y)
+	                             </#if>
+	                             <#if data.isWaterloggable>
+	                             .setValue(WATERLOGGED, false)
+	                             </#if>
 	    );
 		</#if>
 	}
@@ -184,7 +184,7 @@ public class ${name}Block extends
 		super.appendHoverText(itemstack, world, list, flag);
 		<#list data.specialInfo as entry>
 		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
+	    </#list>
 	}
 	</#if>
 

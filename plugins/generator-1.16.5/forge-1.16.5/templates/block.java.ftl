@@ -72,8 +72,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	@Override public void initElements() {
 		elements.blocks.add(() -> new CustomBlock());
 		elements.items.add(() -> new BlockItem(block, new Item.Properties()
-		                            .group(${data.creativeTab})
-		                            ).setRegistryName(block.getRegistryName()));
+		                             .group(${data.creativeTab})
+		                             ).setRegistryName(block.getRegistryName()));
 	}
 
 	<#if data.hasInventory>
@@ -158,9 +158,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				Block
 			</#if>
 			<#if data.isWaterloggable>
-				implements IWaterLoggable
-			</#if>
-	{
+            implements IWaterLoggable
+            </#if> {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -171,7 +170,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
 		<#elseif data.rotationMode == 5>
 		public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
-		</#if>
+        </#if>
         <#if data.isWaterloggable>
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         </#if>
@@ -241,19 +240,19 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
             <#if data.rotationMode != 0 || data.isWaterloggable>
             this.setDefaultState(this.stateContainer.getBaseState()
-                                    <#if data.rotationMode == 1 || data.rotationMode == 3>
-                                    .with(FACING, Direction.NORTH)
-                                        <#if data.enablePitch>
-                                        .with(FACE, AttachFace.WALL)
-                                        </#if>
-                                    <#elseif data.rotationMode == 2 || data.rotationMode == 4>
-                                    .with(FACING, Direction.NORTH)
-                                    <#elseif data.rotationMode == 5>
-                                    .with(AXIS, Direction.Axis.Y)
-                                    </#if>
-                                    <#if data.isWaterloggable>
-                                    .with(WATERLOGGED, false)
-                                    </#if>
+                                     <#if data.rotationMode == 1 || data.rotationMode == 3>
+                                     .with(FACING, Direction.NORTH)
+                                         <#if data.enablePitch>
+                                         .with(FACE, AttachFace.WALL)
+                                         </#if>
+                                     <#elseif data.rotationMode == 2 || data.rotationMode == 4>
+                                     .with(FACING, Direction.NORTH)
+                                     <#elseif data.rotationMode == 5>
+                                     .with(AXIS, Direction.Axis.Y)
+                                     </#if>
+                                     <#if data.isWaterloggable>
+                                     .with(WATERLOGGED, false)
+                                     </#if>
             );
 			</#if>
 
@@ -366,13 +365,13 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		<#if data.rotationMode != 0>
 			<#if data.rotationMode != 5>
 			public BlockState rotate(BlockState state, Rotation rot) {
-				return state.with(FACING, rot.rotate(state.get(FACING)));
-			}
+      			return state.with(FACING, rot.rotate(state.get(FACING)));
+   			}
 
-			public BlockState mirror(BlockState state, Mirror mirrorIn) {
-				return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-			}
-			<#else>
+   			public BlockState mirror(BlockState state, Mirror mirrorIn) {
+      			return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+   			}
+   			<#else>
 			@Override public BlockState rotate(BlockState state, Rotation rot) {
 				if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
 					if ((Direction.Axis) state.get(AXIS) == Direction.Axis.X) {
@@ -438,7 +437,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                     </#if>;
 			</#if>
 		}
-		</#if>
+        </#if>
 
 		<#if hasProcedure(data.placingCondition)>
 		@Override public boolean isValidPosition(BlockState blockstate, IWorldReader worldIn, BlockPos pos) {

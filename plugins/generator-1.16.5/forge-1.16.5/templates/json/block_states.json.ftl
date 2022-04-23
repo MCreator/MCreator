@@ -3,56 +3,56 @@
 {
   "variants": {
     "face=floor,facing=north": {
-      "model": "${modid}:block/${registryname}",
-      "x": 270
+      "model": "${modid}:block/${registryname}"
     },
     "face=floor,facing=east": {
       "model": "${modid}:block/${registryname}",
-      "x": 270,
       "y": 90
     },
     "face=floor,facing=south": {
       "model": "${modid}:block/${registryname}",
-      "x": 270,
       "y": 180
     },
     "face=floor,facing=west": {
       "model": "${modid}:block/${registryname}",
-      "x": 270,
       "y": 270
     },
     "face=wall,facing=north": {
-      "model": "${modid}:block/${registryname}"
+      "model": "${modid}:block/${registryname}",
+      "x": 90
     },
     "face=wall,facing=east": {
       "model": "${modid}:block/${registryname}",
+      "x": 90,
       "y": 90
     },
     "face=wall,facing=south": {
       "model": "${modid}:block/${registryname}",
+      "x": 90,
       "y": 180
     },
     "face=wall,facing=west": {
       "model": "${modid}:block/${registryname}",
+      "x": 90,
       "y": 270
     },
     "face=ceiling,facing=north": {
       "model": "${modid}:block/${registryname}",
-      "x": 90
+      "x": 180
     },
     "face=ceiling,facing=east": {
       "model": "${modid}:block/${registryname}",
-      "x": 90,
+      "x": 180,
       "y": 90
     },
     "face=ceiling,facing=south": {
       "model": "${modid}:block/${registryname}",
-      "x": 90,
+      "x": 180,
       "y": 180
     },
     "face=ceiling,facing=west": {
       "model": "${modid}:block/${registryname}",
-      "x": 90,
+      "x": 180,
       "y": 270
     }
   }
