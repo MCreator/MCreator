@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.VillagerProfession;
+import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class VillagerTrade extends GeneratableElement {
 
 	public static class CustomTradeEntry {
 
-		public VillagerProfession villagerProfession;
+		public ProfessionEntry villagerProfession;
 		public List<Entry> entries;
 
 		public static class Entry {

@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.minecraft.villagers;
 
-import net.mcreator.element.parts.VillagerProfession;
+import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -119,7 +119,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 	public VillagerTrade.CustomTradeEntry getTradeEntry() {
 		VillagerTrade.CustomTradeEntry entry = new VillagerTrade.CustomTradeEntry();
-		entry.villagerProfession = new VillagerProfession(workspace, villagerProfession.getSelectedItem());
+		entry.villagerProfession = new ProfessionEntry(workspace, villagerProfession.getSelectedItem());
 		entry.entries = entryList.stream().map(JVillagerTradeEntry::getEntry).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		if (entry.entries.isEmpty())
