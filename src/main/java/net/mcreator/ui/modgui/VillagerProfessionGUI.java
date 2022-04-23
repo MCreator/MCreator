@@ -92,21 +92,21 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		ComponentUtils.deriveFont(name, 16);
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/name"),
-				L10N.label("elementgui.villagerprofession.name")));
+				L10N.label("elementgui.villager_profession.name")));
 		subpanel.add(name);
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/point_of_interest"),
-				L10N.label("elementgui.villagerprofession.point_of_interest")));
+				L10N.label("elementgui.villager_profession.point_of_interest")));
 		subpanel.add(PanelUtils.centerInPanel(pointOfInterest));
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/action_sound"),
-				L10N.label("elementgui.villagerprofession.action_sound")));
+				L10N.label("elementgui.villager_profession.action_sound")));
 		subpanel.add(actionSound);
 
 		professionTextureFile.addActionListener(e -> updateProfessionTexturePreview());
 
 		JButton importProfessionTexture = new JButton(UIRES.get("18px.add"));
-		importProfessionTexture.setToolTipText(L10N.t("elementgui.villagerprofession.import_profession_texture"));
+		importProfessionTexture.setToolTipText(L10N.t("elementgui.villager_profession.import_profession_texture"));
 		importProfessionTexture.setOpaque(false);
 		importProfessionTexture.addActionListener(e -> {
 			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
@@ -117,7 +117,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		});
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/profession_texture"),
-				L10N.label("elementgui.villagerprofession.profession_texture")));
+				L10N.label("elementgui.villager_profession.profession_texture")));
 		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture));
 
 		page1group.addValidationElement(name);
@@ -125,7 +125,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		page1group.addValidationElement(actionSound.getVTextField());
 		page1group.addValidationElement(professionTextureFile);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.villagerprofession.profession_needs_name")));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.villager_profession.profession_needs_name")));
 		name.enableRealtimeValidation();
 		pointOfInterest.setValidator(new MCItemHolderValidator(pointOfInterest));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
@@ -133,7 +133,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		professionTextureFile.setValidator(() -> {
 			if (professionTextureFile.getSelectedItem() == null || professionTextureFile.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.villagerprofession.profession_needs_texture"));
+						L10N.t("elementgui.villager_profession.profession_needs_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
