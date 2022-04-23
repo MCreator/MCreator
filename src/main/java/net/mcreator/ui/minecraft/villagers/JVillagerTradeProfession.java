@@ -57,7 +57,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		setOpaque(false);
 
-		villagerProfession = new DataListComboBox(mcreator, ElementUtil.loadAllVillagerProfessions(workspace));
+		villagerProfession = new DataListComboBox(mcreator, ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace()));
 		villagerProfession.setRenderer(new JComboBox<>().getRenderer());
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
@@ -110,7 +110,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions(workspace));
+		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace()));
 	}
 
 	public void addInitialEntry() {

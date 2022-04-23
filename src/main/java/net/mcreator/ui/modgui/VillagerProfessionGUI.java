@@ -50,7 +50,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
@@ -167,14 +166,9 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		List<File> professionFiles = mcreator.getFolderManager().getTexturesList(TextureType.VILLAGER_PROFESSION)
-				.stream().toList();
-		professionFiles.forEach(texture -> {
-			if (texture.getName().endsWith(".png"))
-				texture.getName().replace(".png", "");
-		});
-		ComboBoxUtil.updateComboBoxContents(professionTextureFile,
-				ListUtils.merge(Collections.singleton(""), professionFiles.stream().map(File::getName).toList()));
+		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getTexturesList(TextureType.VILLAGER_PROFESSION).stream().map(File::getName)
+						.toList()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
