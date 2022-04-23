@@ -179,8 +179,10 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> loadAllVillagerProfessions() {
-		return DataListLoader.loadDataList("villagerprofessions");
+	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.VILLAGERPROFESSION);
+		retval.addAll(DataListLoader.loadDataList("villagerprofessions"));
+		return retval;
 	}
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
