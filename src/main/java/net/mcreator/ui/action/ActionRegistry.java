@@ -130,6 +130,7 @@ public class ActionRegistry {
 	public final BasicAction importBlockTexture;
 	public final BasicAction importItemTexture;
 	public final BasicAction importArmorTexture;
+	public final BasicAction importProfessionTexture;
 	public final BasicAction importOtherTexture;
 	public final BasicAction importSound;
 	public final BasicAction importStructure;
@@ -256,6 +257,10 @@ public class ActionRegistry {
 				UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
+			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+		});
+		this.importProfessionTexture = new TextureAction(this, L10N.t("action.import_villager_profession_texture"), actionEvent -> {
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.VILLAGER_PROFESSION);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),

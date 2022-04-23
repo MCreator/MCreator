@@ -27,6 +27,7 @@ other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+villager_profession_textures_dir: "@MODASSETSROOT/textures/entity/villager/profession"
 
 base_templates:
   - template: modbase/mod.java.ftl

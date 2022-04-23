@@ -157,6 +157,7 @@ public class MainMenuBar extends JMenuBar {
 		resources.add(mcreator.actionRegistry.importBlockTexture);
 		resources.add(mcreator.actionRegistry.importItemTexture);
 		resources.add(mcreator.actionRegistry.importArmorTexture);
+		resources.add(mcreator.actionRegistry.importProfessionTexture);
 		resources.add(mcreator.actionRegistry.importOtherTexture);
 		resources.addSeparator();
 		resources.add(mcreator.actionRegistry.importSound);
