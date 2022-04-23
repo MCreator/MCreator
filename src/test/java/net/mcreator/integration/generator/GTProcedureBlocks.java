@@ -131,6 +131,7 @@ public class GTProcedureBlocks {
 									processed++;
 									break;
 								case "field_input":
+								case "field_javaname":
 									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
 									processed++;
 									break;
