@@ -41,7 +41,11 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
         Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
 
         <#list data.tradeEntries as tradeEntry>
+            <#if tradeEntry.villagerProfession?starts_with("VillagerProfession.")>
             if (event.getType() == ${tradeEntry.villagerProfession}) {
+            <#else>
+            if (event.getType() == ${tradeEntry.villagerProfession}.get()) {
+            </#if>
                 <#list tradeEntry.entries as entry>
                 trades.get(${entry.level}).add(new BasicTrade(${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
                 <#if !entry.price2.isEmpty()>
