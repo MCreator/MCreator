@@ -206,10 +206,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override protected void beforeGeneratableElementGenerated() {
 		super.beforeGeneratableElementGenerated();
-		modElement.setRegistryName(StringUtils.lowercaseFirstLetter(modElement.getName()));
-	}
-
-	@Override public @Nullable URI contextURL() throws URISyntaxException {
-		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-villager-profession");
+		modElement.setRegistryName(modElement.getName().toLowerCase(Locale.ROOT));
 	}
 }
