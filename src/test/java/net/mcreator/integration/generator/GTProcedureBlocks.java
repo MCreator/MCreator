@@ -131,6 +131,7 @@ public class GTProcedureBlocks {
 									processed++;
 									break;
 								case "field_input":
+								case "field_javaname":
 									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
 									processed++;
 									break;
@@ -226,7 +227,7 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestBlock" + procedureBlock.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.machine_name,
 					ModElementType.PROCEDURE);
 
 			String testXML = procedureBlock.toolboxXML;

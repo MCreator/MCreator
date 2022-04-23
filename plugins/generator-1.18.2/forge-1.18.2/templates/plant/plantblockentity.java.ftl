@@ -37,10 +37,6 @@ public class ${name}BlockEntity extends BlockEntity {
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), pos, state);
 	}
 
-	@Override public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		this.load(pkt.getTag());
-	}
-
 	@Override public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
