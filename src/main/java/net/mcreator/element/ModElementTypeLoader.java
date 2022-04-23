@@ -110,6 +110,8 @@ public class ModElementTypeLoader {
 				new ModElementType<>("tool", 't', BaseType.ITEM, RecipeType.ITEM, ToolGUI::new, Tool.class));
 		ModElementType.VILLAGERPROFESSION = register(
 				new ModElementType<>("villagerprofession", null, BaseType.OTHER, RecipeType.NONE, VillagerProfessionGUI::new, VillagerProfession.class));
+		ModElementType.VILLAGERTRADE = register(
+				new ModElementType<>("villagertrade", null, BaseType.OTHER, RecipeType.NONE, VillagerTradeGUI::new, VillagerTrade.class));
 
 		// Unregistered type used to mask legacy removed mod element types
 		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER, RecipeType.NONE,

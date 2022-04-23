@@ -163,6 +163,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 	public static ModElementType<?> VILLAGERPROFESSION;
+	public static ModElementType<?> VILLAGERTRADE;
 
 	public static ModElementType<?> UNKNOWN;
 
