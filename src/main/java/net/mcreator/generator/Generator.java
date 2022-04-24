@@ -291,7 +291,7 @@ public class Generator implements IGenerator, Closeable {
 							String code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
 									listData.get(i), i, element, templateName, dataModel);
 
-							File templateFile = new File(generatorTemplatesList.processTokens(generatorTemplate, i));
+							File templateFile = generatorTemplatesList.processTokens(generatorTemplate, i);
 
 							GeneratorFile generatorFile = new GeneratorFile(code, templateFile,
 									(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
@@ -378,7 +378,7 @@ public class Generator implements IGenerator, Closeable {
 				.forEach(el -> {
 					for (int i = 0; i < el.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : el.templates().keySet())
-							new File(el.processTokens(generatorTemplate, i)).delete();
+							el.processTokens(generatorTemplate, i).delete();
 					}
 				});
 

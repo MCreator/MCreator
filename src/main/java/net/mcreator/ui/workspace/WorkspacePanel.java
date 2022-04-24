@@ -1289,8 +1289,8 @@ import java.util.stream.Collectors;
 							for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
 								if (fileList.templates().get(modElementListFile).get(i)) {
 									listFilesFound++;
-									String filePath = fileList.processTokens(modElementListFile, i);
-									listItem.add(newModElementTemplateItem(new File(filePath)));
+									File indexedFile = fileList.processTokens(modElementListFile, i);
+									listItem.add(newModElementTemplateItem(indexedFile));
 								}
 							}
 						}

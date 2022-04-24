@@ -45,7 +45,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -563,13 +562,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we delete mod element list templates (if any) to prevent outdated mod files from being present
 		// in case size of a list have changed
 		if (editingMode) {
-			Objects.requireNonNull(modElement.getWorkspace().getGenerator().getModElementListTemplates(modElement))
-					.forEach(el -> {
-						for (int i = 0; i < el.listData().size(); i++) {
-							for (GeneratorTemplate generatorTemplate : el.templates().keySet())
-								new File(el.processTokens(generatorTemplate, i)).delete();
-						}
-					});
+			Objects.requireNonNull(modElement.getGenerator().getModElementListTemplates(modElement)).forEach(el -> {
+				for (int i = 0; i < el.listData().size(); i++) {
+					for (GeneratorTemplate generatorTemplate : el.templates().keySet())
+						el.processTokens(generatorTemplate, i).delete();
+				}
+			});
 		}
 	}
 
