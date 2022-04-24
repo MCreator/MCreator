@@ -1,1 +1,1 @@
-(cmdparams.containsKey("${field$paramid}") ? cmdparams.get("${field$paramid}").toString() : "")
+(command.containsKey("${field$paramid}") ? command.get("${field$paramid}").toString() : "")

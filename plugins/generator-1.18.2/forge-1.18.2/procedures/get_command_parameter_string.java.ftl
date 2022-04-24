@@ -4,7 +4,7 @@
 (new Object() {
             public String getMessage() {
                 try {
-                    return MessageArgument.getMessage(cmdargs, "${field$param}").getString();
+                    return MessageArgument.getMessage(arguments, "${field$param}").getString();
                 } catch (CommandSyntaxException e) {
                     e.printStackTrace();
                     return "";

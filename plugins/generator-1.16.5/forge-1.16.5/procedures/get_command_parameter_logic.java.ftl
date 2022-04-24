@@ -1,1 +1,1 @@
-(BoolArgumentType.getBool(cmdargs, "${field$param}"))
+(BoolArgumentType.getBool(arguments, "${field$param}"))

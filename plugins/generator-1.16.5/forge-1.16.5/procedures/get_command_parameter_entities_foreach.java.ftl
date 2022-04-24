@@ -1,5 +1,5 @@
 try {
-	EntityArgument.getEntitiesAllowingNone(cmdargs, "${field$param}").forEach(entityiterator -> {
+	EntityArgument.getEntitiesAllowingNone(arguments, "${field$param}").forEach(entityiterator -> {
 		${statement$foreach}
 	});
 } catch (CommandSyntaxException e) {

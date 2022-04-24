@@ -1,1 +1,1 @@
-(BlockStateArgument.getBlockState(cmdargs, "${field$param}").getState().getBlock())
+(BlockStateArgument.getBlockState(arguments, "${field$param}").getState().getBlock())

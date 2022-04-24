@@ -1,1 +1,1 @@
-(DoubleArgumentType.getDouble(cmdargs, "${field$param}"))
+(DoubleArgumentType.getDouble(arguments, "${field$param}"))

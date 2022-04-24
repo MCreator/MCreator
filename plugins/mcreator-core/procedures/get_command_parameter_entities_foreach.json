@@ -40,7 +40,7 @@
     ],
     "dependencies": [
       {
-        "name": "cmdargs",
+        "name": "arguments",
         "type": "cmdcontext"
       }
     ]

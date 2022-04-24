@@ -5,7 +5,13 @@
 			double i = entity.getPosX();
 			double j = entity.getPosY();
 			double k = entity.getPosZ();
-			String command=event.getParseResults().getReader().getString();
+			HashMap<String, String> command = new HashMap<>();
+            int index = -1;
+            for (String param : event.getParseResults().getReader().getString().split("\\s+")) {
+            	if (index >= 0)
+            		command.put(Integer.toString(index), param);
+            	index++;
+            }
 		    CommandContext<CommandSource> ctx = event.getParseResults().getContext().build(event.getParseResults().getReader().getString());
 			Map<String, Object> dependencies = new HashMap<>();
 			dependencies.put("x",i);

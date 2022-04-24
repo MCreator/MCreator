@@ -22,7 +22,7 @@
     },
     {
       "name": "command",
-      "type": "string"
+      "type": "map"
     },
     {
       "name": "arguments",
