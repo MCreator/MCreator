@@ -1,0 +1,1 @@
+Le bloc utilisé comme bloc de travail par les villageois de cette profession.

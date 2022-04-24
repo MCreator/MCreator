@@ -22,7 +22,12 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.io.FileIO;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+
+import java.io.File;
 
 public class VillagerProfession extends GeneratableElement {
 
@@ -34,5 +39,13 @@ public class VillagerProfession extends GeneratableElement {
 
 	public VillagerProfession(ModElement element) {
 		super(element);
+	}
+
+	@Override public void finalizeModElementGeneration() {
+		File originalTextureFileLocation = getModElement().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(professionTextureFile), TextureType.OTHER);
+		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+				"entity/villager/profession/" + displayName.toLowerCase() + ".png");
+		FileIO.moveFile(originalTextureFileLocation, newLocation);
 	}
 }

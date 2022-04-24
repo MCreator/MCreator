@@ -1,1 +1,0 @@
-Le son que le villageois fait lorsqu'il travaille sur son bloc de profession.

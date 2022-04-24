@@ -1,1 +1,0 @@
-The profession block needed by a villager to have this profession.

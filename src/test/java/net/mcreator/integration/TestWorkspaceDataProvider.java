@@ -33,7 +33,6 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.*;
-import net.mcreator.element.types.VillagerProfession;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
@@ -236,11 +235,6 @@ public class TestWorkspaceDataProvider {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
-		}
-
-		if (workspace.getFolderManager().getTexturesFolder(TextureType.VILLAGER_PROFESSION) != null) {
-			File villagerTexture = workspace.getFolderManager().getVillagerProfessionTextureFileForName("test");
-			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), villagerTexture);
 		}
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {

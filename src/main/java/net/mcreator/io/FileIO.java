@@ -183,6 +183,20 @@ public final class FileIO {
 		}
 	}
 
+	public static void moveFile(File from, File to) {
+		if (from.isDirectory())
+			LOG.fatal("Trying to copy folder as a file: " + from);
+
+		try {
+			if (!to.getParentFile().isDirectory())
+				to.getParentFile().mkdirs();
+
+			Files.move(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			LOG.error("Error copying file: " + e.getMessage(), e);
+		}
+	}
+
 	public static boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
 			String[] children = dir.list();

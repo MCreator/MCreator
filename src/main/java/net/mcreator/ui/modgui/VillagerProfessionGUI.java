@@ -59,8 +59,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
 
-	private final int fact = 64 * 5;
-
 	private final JLabel clo = new JLabel();
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -74,7 +72,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		professionTextureFile.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
 		professionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-		JPanel panel2 = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -85,15 +83,15 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/name"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/name"),
 				L10N.label("elementgui.villager_profession.name")));
 		subpanel.add(name);
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/point_of_interest"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/point_of_interest"),
 				L10N.label("elementgui.villager_profession.point_of_interest")));
 		subpanel.add(PanelUtils.centerInPanel(pointOfInterest));
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/action_sound"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/action_sound"),
 				L10N.label("elementgui.villager_profession.action_sound")));
 		subpanel.add(actionSound);
 
@@ -103,16 +101,16 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		importProfessionTexture.setToolTipText(L10N.t("elementgui.villager_profession.import_profession_texture"));
 		importProfessionTexture.setOpaque(false);
 		importProfessionTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.VILLAGER_PROFESSION);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
 			professionTextureFile.removeAllItems();
 			professionTextureFile.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.VILLAGER_PROFESSION)
+			mcreator.getFolderManager().getTexturesList(TextureType.OTHER)
 					.forEach(el -> professionTextureFile.addItem(el.getName()));
 		});
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofessions/profession_texture"),
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/profession_texture"),
 				L10N.label("elementgui.villager_profession.profession_texture")));
-		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture, 0, 0));
+		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(pointOfInterest);
@@ -131,21 +129,21 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return Validator.ValidationResult.PASSED;
 		});
 
-		panel2.add(PanelUtils.totalCenterInPanel(subpanel));
-		panel2.setOpaque(false);
+		panel.add(PanelUtils.totalCenterInPanel(subpanel));
+		panel.setOpaque(false);
 
-		clo.setPreferredSize(new Dimension(fact, fact));
+		clo.setPreferredSize(new Dimension(320, 320));
 
 		JPanel clop = new JPanel();
 		clop.setOpaque(false);
 		clop.add(clo);
 
-		JPanel panel = new JPanel(new BorderLayout(35, 35));
-		panel.add("Center", panel2);
-		panel.add("South", clop);
-		panel.setOpaque(false);
+		JPanel mainPanel = new JPanel(new BorderLayout(35, 35));
+		mainPanel.add("Center", panel);
+		mainPanel.add("South", clop);
+		mainPanel.setOpaque(false);
 
-		addPage(L10N.t("elementgui.common.page_properties"), panel);
+		addPage(L10N.t("elementgui.common.page_properties"), mainPanel);
 
 		if (!isEditingMode()) {
 			name.setText(modElement.getName().toUpperCase(Locale.ROOT));
@@ -156,19 +154,19 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		if (professionTextureFile.getSelectedItem() == null)
 			return;
 		File professionTexture = mcreator.getFolderManager()
-				.getVillagerProfessionTextureFileForName(professionTextureFile.getSelectedItem());
+				.getTextureFile("entity/villager/profession/" + professionTextureFile.getSelectedItem(),
+						TextureType.OTHER);
 		if (!professionTexture.isFile())
 			return;
 		ImageIcon bg = new ImageIcon(
-				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), fact, fact));
+				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320));
 		clo.setIcon(ImageUtils.drawOver(bg));
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.VILLAGER_PROFESSION).stream().map(File::getName)
-						.toList()));
+				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName).toList()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

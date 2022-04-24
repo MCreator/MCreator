@@ -1,0 +1,1 @@
+The block used as working block by the villagers of this profession.

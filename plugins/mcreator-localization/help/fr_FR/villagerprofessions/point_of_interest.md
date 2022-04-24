@@ -1,1 +1,0 @@
-Le bloc de profession dont un villageois a besoin pour exercer cette profession.
