@@ -21,8 +21,8 @@
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
-        "min_y": 0,
-        "height": 256,
+        "min_y": -64,
+        "height": 384,
         "size_horizontal": 1,
         "size_vertical": 2,
         "sampling": {

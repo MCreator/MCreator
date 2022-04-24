@@ -32,7 +32,6 @@ import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.TextureAction;
 import net.mcreator.ui.browser.action.*;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -250,17 +249,17 @@ public class ActionRegistry {
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
 				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureAction(this, L10N.t("action.import_block_texture"),
-				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-						TextureType.BLOCK)).setIcon(UIRES.get("16px.importblock"));
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.BLOCK)).setIcon(
+				UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureAction(this, L10N.t("action.import_item_texture"),
-				actionEvent -> TextureImportDialogs.importTexturesBlockOrItem(mcreator,
-						TextureType.ITEM)).setIcon(UIRES.get("16px.importitem"));
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM)).setIcon(
+				UIRES.get("16px.importitem"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
 		});
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
-				actionEvent -> TextureImportDialogs.importOtherTextures(mcreator)).setIcon(
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER)).setIcon(
 				UIRES.get("16px.importtexture"));
 		this.importSound = new ImportSoundAction(this);
 		this.importStructure = new StructureImportActions.ImportStructure(this).setIcon(

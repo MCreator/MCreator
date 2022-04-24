@@ -92,7 +92,15 @@ public class ModElementManager {
 
 		String importJSON = FileIO.readFileToString(genFile);
 
-		return fromJSONtoGeneratableElement(importJSON, element);
+		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
+		if (generatableElement != null) {
+			if (generatableElement.wasConversionApplied())
+				storeModElement(generatableElement);
+
+			cache.put(element, generatableElement);
+		}
+
+		return generatableElement;
 	}
 
 	public String generatableElementToJSON(GeneratableElement element) {

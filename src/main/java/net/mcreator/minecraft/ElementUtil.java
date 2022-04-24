@@ -36,6 +36,15 @@ import java.util.stream.Collectors;
 public class ElementUtil {
 
 	/**
+	 * Provides a predicate to check the type of data list entries
+	 * @param type The type that the entry has to match
+	 * @return A predicate that checks if the type matches the parameter
+	 */
+	public static Predicate<DataListEntry> typeMatches(String type) {
+		return e -> e.getType().equals(type);
+	}
+
+	/**
 	 * Loads all mod elements and all Minecraft elements (blocks and items), including elements
 	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
 	 *
@@ -103,11 +112,11 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
-				.forEach(modElement -> elements.addAll(modElement.getMCItems()
-						.stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
+				.forEach(modElement -> elements.addAll(
+						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.filter(e -> e.getType().equals("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
+						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
 						.toList());
 		return elements;
 	}
@@ -119,7 +128,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
-		List<DataListEntry> tabs = getCustomElementsOfType(workspace, BaseType.TAB);
+		List<DataListEntry> tabs = getCustomElementsOfType(workspace, ModElementType.TAB);
 		tabs.addAll(DataListLoader.loadDataList("tabs"));
 		return tabs;
 	}
@@ -132,7 +141,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENCHANTMENT);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.ENCHANTMENT);
 		retval.addAll(DataListLoader.loadDataList("enchantments"));
 		return retval;
 	}
@@ -153,21 +162,25 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.PARTICLE);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PARTICLE);
 		retval.addAll(DataListLoader.loadDataList("particles"));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTIONEFFECT);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTIONEFFECT);
 		retval.addAll(DataListLoader.loadDataList("effects"));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.POTION);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTION);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
+	}
+
+	public static List<DataListEntry> loadAllVillagerProfessions() {
+		return DataListLoader.loadDataList("villagerprofessions");
 	}
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
@@ -178,7 +191,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
+				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
 		return retval;
 	}
 
@@ -190,7 +203,7 @@ public class ElementUtil {
 		});
 
 		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(e -> e.getType().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
+				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
 		return retval;
 	}
 
@@ -225,6 +238,21 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("stepsounds");
 	}
 
+	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.RANGEDITEM);
+
+		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
+		return retval;
+	}
+
+	public static List<DataListEntry> loadThrowableProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("throwable")).toList();
+	}
+
+	public static List<DataListEntry> loadFireballProjectiles() {
+		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("fireball")).toList();
+	}
+
 	public static String[] loadAllDimensions(Workspace workspace) {
 		ArrayList<String> dimensions = new ArrayList<>();
 		dimensions.add("Surface");
@@ -232,7 +260,7 @@ public class ElementUtil {
 		dimensions.add("End");
 
 		for (ModElement mu : workspace.getModElements())
-			if (mu.getType().getBaseType() == BaseType.DIMENSION)
+			if (mu.getType() == ModElementType.DIMENSION)
 				dimensions.add("CUSTOM:" + mu.getName());
 
 		return dimensions.toArray(new String[0]);
@@ -277,7 +305,7 @@ public class ElementUtil {
 	 * <p>Returns an array with the names of procedures that return the given variable type</p>
 	 *
 	 * @param workspace <p>The current workspace</p>
-	 * @param type <p>The {@link VariableType} that the procedures must return</p>
+	 * @param type      <p>The {@link VariableType} that the procedures must return</p>
 	 * @return <p>An array of strings containing the names of the procedures</p>
 	 */
 	public static String[] getProceduresOfType(Workspace workspace, VariableType type) {

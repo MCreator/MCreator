@@ -1,3 +1,9 @@
+Blockly.Extensions.register('small_text_tip',
+    function () {
+        this.appendDummyInput().appendField(
+            new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
+    });
+
 Blockly.Extensions.register('biome_dictionary_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
@@ -38,7 +44,7 @@ Blockly.Extensions.register('plant_type_list_provider',
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
-        Blockly.blocks.loops.loopTypes.add(this.type);
+        Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
 // marks in the xml if the block is attached to a block/item input, for proper mapping
@@ -115,10 +121,25 @@ Blockly.Extensions.register('gui_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("gui"))), 'guiname');
     });
 
-Blockly.Extensions.register('rangeditem_list_provider',
+Blockly.Extensions.register('rangeditem_list_provider', // name is rangeditem for legacy reasons, is actually arrow list
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("rangeditem"))), 'rangeditem');
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("rangeditem"),
+                javabridge.getReadableListOf("rangeditem"))), 'rangeditem');
+    });
+
+Blockly.Extensions.register('throwableprojectile_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("throwableprojectile"),
+                javabridge.getReadableListOf("throwableprojectile"))), 'throwableprojectile');
+    });
+
+Blockly.Extensions.register('fireballprojectile_list_provider',
+    function () {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("fireballprojectile"),
+                javabridge.getReadableListOf("fireballprojectile"))), 'fireballprojectile');
     });
 
 Blockly.Extensions.register('dimension_list_provider',

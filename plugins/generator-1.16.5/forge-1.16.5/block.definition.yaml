@@ -365,3 +365,5 @@ templates:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
+
+field_exclusions: [ generationShape ]
