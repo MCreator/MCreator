@@ -350,7 +350,6 @@ public class TestWorkspaceDataProvider {
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
-			biome.biomeType = getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
 			biome.biomeCategory = getRandomItem(random,
 					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
@@ -1562,6 +1561,39 @@ public class TestWorkspaceDataProvider {
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return gamerule;
+		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
+			VillagerTrade villagerTrade = new VillagerTrade(modElement);
+			villagerTrade.tradeEntries = new ArrayList<>();
+			if (!emptyLists) {
+				int tradeEntries = random.nextInt(10) + 1;
+				for (int i = 0; i < tradeEntries; i++) {
+					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
+					trade.villagerProfession = new VillagerProfession(modElement.getWorkspace(),
+							getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions()));
+					trade.entries = new ArrayList<>();
+
+					int entries = random.nextInt(10) + 1;
+					for (int j = 0; j < entries; j++) {
+						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						entry.price1 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ? getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() : "");
+						entry.offer = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
+						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
+						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
+						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
+						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
+						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+
+						trade.entries.add(entry);
+					}
+					villagerTrade.tradeEntries.add(trade);
+				}
+			}
+			return villagerTrade;
 		}
 		return null;
 	}

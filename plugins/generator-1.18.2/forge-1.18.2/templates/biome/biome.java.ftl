@@ -37,37 +37,19 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-<#function type2temperature type>
-<#if type == "WARM">
-	<#return "0, 0.55f">
-<#elseif type == "DESERT">
-	<#return "0.55f, 1">
-<#elseif type == "COOL">
-	<#return "-0.45f, 0">
-<#elseif type == "ICY">
-	<#return "-1, -0.45f">
-<#else>
-	<#return "0, 0">
-</#if>
+<#function temperature2temperature temperature biomeWeight>
+    <#assign base = ((temperature + 1) / 3) * 2 - 1>
+    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
 </#function>
 
-<#function type2humidity type>
-	<#if type == "WARM">
-		<#return "-0.5f, 1">
-	<#elseif type == "DESERT">
-		<#return "-1, 0">
-	<#elseif type == "COOL">
-		<#return "-0.5f, 1">
-	<#elseif type == "ICY">
-		<#return "-0.5f, 1">
-	<#else>
-		<#return "0, 0">
-	</#if>
+<#function rainingPossibility2humidity rainingPossibility biomeWeight>
+    <#assign base = (rainingPossibility * 2) - 1>
+    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
 </#function>
 
 <#function baseHeight2continentalness baseHeight biomeWeight>
 	<#-- continentalness (low: oceans, high: inlands) -->
-	<#assign base = baseHeight / 10.0>
+	<#assign base = (baseHeight + 5) / 10.0>
 	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
 </#function>
 
@@ -83,7 +65,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 </#function>
 
 <#function normalizeWeight biomeWeight>
-    <#return (biomeWeight / 40.0)>
+    <#return (biomeWeight / 70.0)>
 </#function>
 
 <#function normalizeWeightUnderground biomeWeight>
@@ -94,8 +76,8 @@ public class ${name}Biome {
 
 	<#if data.spawnBiome || data.spawnBiomeNether>
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-	    Climate.Parameter.span(${type2temperature(data.biomeType)}),
-	    Climate.Parameter.span(${type2humidity(data.biomeType)}),
+	    Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight))}),
 	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight))}),
 	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight))}),
 	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
