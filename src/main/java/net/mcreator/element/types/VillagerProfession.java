@@ -46,6 +46,6 @@ public class VillagerProfession extends GeneratableElement {
 				.getTextureFile(FilenameUtilsPatched.removeExtension(professionTextureFile), TextureType.OTHER);
 		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
 				"entity/villager/profession/" + displayName.toLowerCase() + ".png");
-		FileIO.moveFile(originalTextureFileLocation, newLocation);
+		FileIO.copyFile(originalTextureFileLocation, newLocation);
 	}
 }
