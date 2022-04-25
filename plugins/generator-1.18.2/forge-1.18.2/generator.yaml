@@ -56,7 +56,7 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
-      - ${w.hasElementsOfType('dimension') || w.hasElementsOfType('biome')}
+      - ${w.hasElementsOfType('dimension') || w.hasElementsOfType('biome')} || ${w.hasElementsOfType('villagerprofession')}
       - ${w.hasToolsOfType('Fishing rod')}
 
 sources_setup_tasks:

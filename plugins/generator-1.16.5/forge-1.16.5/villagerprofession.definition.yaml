@@ -1,7 +1,11 @@
 templates:
   - template: villagerprofessions.java.ftl
-    writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEProfession.java"
+  - template: profession.mcmeta.ftl
+    writer: json
+    condition: enableHat
+    deleteWhenConditionFalse: true
+    name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
 
 localizationkeys:
   - key: entity.minecraft.villager.@modid.@registryname

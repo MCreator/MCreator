@@ -1,0 +1,1 @@
+Defines the type of hat that villagers with this profession have.

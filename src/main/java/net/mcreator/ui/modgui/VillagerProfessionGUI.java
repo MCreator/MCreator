@@ -51,12 +51,14 @@ import java.awt.*;
 import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Objects;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	private final VTextField name = new VTextField(30);
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
+	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
 
 	private final JLabel clo = new JLabel();
@@ -75,8 +77,9 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		JPanel panel = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
+		ComponentUtils.deriveFont(hat, 16);
 
-		JPanel subpanel = new JPanel(new GridLayout(4, 2, 0, 2));
+		JPanel subpanel = new JPanel(new GridLayout(5, 2, 0, 2));
 		subpanel.setOpaque(false);
 
 		name.setEnabled(false);
@@ -94,6 +97,10 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/action_sound"),
 				L10N.label("elementgui.villager_profession.action_sound")));
 		subpanel.add(actionSound);
+
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/hat"),
+				L10N.label("elementgui.villager_profession.hat")));
+		subpanel.add(hat);
 
 		professionTextureFile.addActionListener(e -> updateProfessionTexturePreview());
 
@@ -175,6 +182,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	@Override public void openInEditingMode(VillagerProfession profession) {
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
+		hat.setSelectedItem(profession.hat);
 		professionTextureFile.setSelectedItem(profession.professionTextureFile);
 
 		name.setText(modElement.getName().toUpperCase(Locale.ROOT));
@@ -187,6 +195,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		profession.displayName = StringUtils.uppercaseFirstLetter(name.getText().toLowerCase(Locale.ROOT));
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
+		profession.hat = (String) hat.getSelectedItem();
+		profession.enableHat = !Objects.equals(hat.getSelectedItem(), "None");
 		profession.professionTextureFile = professionTextureFile.getSelectedItem();
 		return profession;
 	}

@@ -1,0 +1,1 @@
+Définit le type de chapeau qu'ont les villageois avec cette profession.
