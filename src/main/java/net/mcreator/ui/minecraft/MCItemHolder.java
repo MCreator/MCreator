@@ -63,7 +63,6 @@ public class MCItemHolder extends JButton implements IValidable {
 		bs = new MCItemSelectorDialog(mcreator, blocksConsumer, supportTags, hasPotions);
 		bs.setItemSelectedListener(e -> {
 			MCItem bsa = bs.getSelectedMCItem();
-			bs.dispose();
 			if (bsa != null) {
 				setIcon(new ImageIcon(ImageUtils.resize(bsa.icon.getImage(), 25)));
 				this.block = bsa.getName();

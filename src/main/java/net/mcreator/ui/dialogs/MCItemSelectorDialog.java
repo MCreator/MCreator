@@ -61,9 +61,9 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			@Override public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
 					setVisible(false);
+					dispose();
 					if (itemSelectedListener != null)
 						itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
-					dispose();
 				}
 			}
 		});
@@ -74,9 +74,9 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		JButton useSelectedButton = L10N.button("dialog.item_selector.use_selected");
 		useSelectedButton.addActionListener(e -> {
 			setVisible(false);
+			dispose();
 			if (itemSelectedListener != null)
 				itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
-			dispose();
 		});
 
 		if (supportTags) {
@@ -112,9 +112,9 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 							list.setSelectedValue(mcItem, true);
 
 							setVisible(false);
+							dispose();
 							if (itemSelectedListener != null)
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
-							dispose();
 						}
 					} else {
 						JOptionPane.showMessageDialog(this,
