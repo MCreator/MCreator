@@ -38,22 +38,22 @@
     },
     "face=ceiling,facing=north": {
       "model": "${modid}:block/${registryname}",
-      "x": 180
+      "x": 180,
+      "y": 180
     },
     "face=ceiling,facing=east": {
       "model": "${modid}:block/${registryname}",
       "x": 180,
-      "y": 90
+      "y": 270
     },
     "face=ceiling,facing=south": {
       "model": "${modid}:block/${registryname}",
-      "x": 180,
-      "y": 180
+      "x": 180
     },
     "face=ceiling,facing=west": {
       "model": "${modid}:block/${registryname}",
       "x": 180,
-      "y": 270
+      "y": 90
     }
   }
 }

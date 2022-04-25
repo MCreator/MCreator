@@ -261,9 +261,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.blockBase?has_content && data.blockBase == "Fence">
 		@Override public boolean canConnect(BlockState state, boolean checkattach, Direction face) {
-        	boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
-        	boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
-        	return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
+    	  boolean flag = state.getBlock() instanceof FenceBlock && state.getMaterial() == this.material;
+    	  boolean flag1 = state.getBlock() instanceof FenceGateBlock && FenceGateBlock.isParallel(state, face);
+    	  return !cannotAttach(state.getBlock()) && checkattach || flag || flag1;
    		}
    		<#elseif data.blockBase?has_content && data.blockBase == "Wall">
 		private static final VoxelShape CENTER_POLE_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
@@ -402,11 +402,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return this.getDefaultState()
 			        <#if data.rotationMode == 1>
 			            <#if data.enablePitch>
-			            .with(FACE, faceForDirection(context.getNearestLookingDirection().getOpposite()))
+			            .with(FACE, faceForDirection(context.getNearestLookingDirection()))
 			            </#if>
-			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+			        .with(FACING, context.getPlacementHorizontalFacing())
 			        <#elseif data.rotationMode == 2>
-			        .with(FACING, context.getNearestLookingDirection().getOpposite())
+			        .with(FACING, context.getNearestLookingDirection())
                     <#elseif data.rotationMode == 4>
 			        .with(FACING, context.getFace())
                     <#elseif data.rotationMode == 5>
@@ -419,7 +419,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             if (context.getFace().getAxis() == Direction.Axis.Y)
                 return this.getDefaultState()
                         <#if data.enablePitch>
-                            .with(FACE, context.getFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+                            .with(FACE, context.getFace() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
                             .with(FACING, context.getPlacementHorizontalFacing())
                         <#else>
                             .with(FACING, Direction.NORTH)
@@ -431,7 +431,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
                     <#if data.enablePitch>
                         .with(FACE, AttachFace.WALL)
                     </#if>
-                    .with(FACING, context.getFace().getOpposite())
+                    .with(FACING, context.getFace())
                     <#if data.isWaterloggable>
                     .with(WATERLOGGED, flag)
                     </#if>;

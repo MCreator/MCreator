@@ -287,11 +287,11 @@ public class ${name}Block extends
 		return this.defaultBlockState()
 		        <#if data.rotationMode == 1>
 		            <#if data.enablePitch>
-		            .setValue(FACE, faceForDirection(context.getNearestLookingDirection().getOpposite()))
+		            .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
 		            </#if>
-		        .setValue(FACING, context.getHorizontalDirection().getOpposite())
+		        .setValue(FACING, context.getHorizontalDirection())
 		        <#elseif data.rotationMode == 2>
-		        .setValue(FACING, context.getNearestLookingDirection().getOpposite())
+		        .setValue(FACING, context.getNearestLookingDirection())
 	            <#elseif data.rotationMode == 4>
 		        .setValue(FACING, context.getClickedFace())
 	            <#elseif data.rotationMode == 5>
@@ -304,7 +304,7 @@ public class ${name}Block extends
 	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
 	        return this.defaultBlockState()
 	                <#if data.enablePitch>
-	                    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+	                    .setValue(FACE, context.getClickedFace() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
 	                    .setValue(FACING, context.getHorizontalDirection())
 	                <#else>
 	                    .setValue(FACING, Direction.NORTH)
@@ -316,7 +316,7 @@ public class ${name}Block extends
 	            <#if data.enablePitch>
 	                .setValue(FACE, AttachFace.WALL)
 	            </#if>
-	            .setValue(FACING, context.getClickedFace().getOpposite())
+	            .setValue(FACING, context.getClickedFace())
 	            <#if data.isWaterloggable>
 	            .setValue(WATERLOGGED, flag)
 	            </#if>;
