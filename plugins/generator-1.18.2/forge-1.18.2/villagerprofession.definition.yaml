@@ -1,7 +1,3 @@
-templates:
-  - template: villagerprofessions.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEProfession.java"
-
 global_templates:
   - template: elementinits/villagerprofessions.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
