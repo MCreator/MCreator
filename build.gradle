@@ -95,7 +95,7 @@ dependencies {
     win64 group: 'org.openjfx', name: 'javafx-controls', version: '18', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-graphics', version: '18', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-media', version: '18', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-web', version: '18', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.1', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-swing', version: '18', classifier: 'win'
 
     mac64 group: 'org.openjfx', name: 'javafx-base', version: '18', classifier: 'mac'
