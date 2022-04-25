@@ -475,7 +475,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 
-		@Override public int getWeakPower(BlockState blockstate, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		@Override public int getWeakPower(BlockState blockstate, IBlockReader blockAccess, BlockPos pos, Direction direction) {
 			<#if hasProcedure(data.emittedRedstonePower)>
 				int x = pos.getX();
 				int y = pos.getY();
