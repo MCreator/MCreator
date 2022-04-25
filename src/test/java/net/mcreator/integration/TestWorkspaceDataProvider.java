@@ -1571,7 +1571,7 @@ public class TestWorkspaceDataProvider {
 			VillagerProfession profession = new VillagerProfession(modElement);
 			profession.displayName = StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT));
 			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocks).getName());
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			profession.professionTextureFile = "test.png";
