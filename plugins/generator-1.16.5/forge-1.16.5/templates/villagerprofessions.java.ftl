@@ -36,33 +36,39 @@ package ${package}.world;
 import net.minecraft.util.SoundEvent;
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Profession {
+@${JavaModName}Elements.ModElement.Tag
+public class ${name}Profession extends ${JavaModName}Elements.ModElement {
 
-    public static final DeferredRegister<PointOfInterestType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, "${modid}");
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, "${modid}");
-    public static final RegistryObject<PointOfInterestType> ${data.displayName?upper_case}_POI = POI.register("${data.displayName?lower_case}", () -> new PointOfInterestType("${data.displayName?lower_case}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1));
-    public static final RegistryObject<VillagerProfession> ${data.displayName?upper_case} = registerProfession("${data.displayName?lower_case}", ${name}Profession.${data.displayName?upper_case}_POI);
+    @ObjectHolder("${modid}:${registryname}")
+    public static PointOfInterestType pointOfInterest = null;
 
-    @SuppressWarnings("SameParameterValue")
-    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PointOfInterestType> poiType) {
-        return PROFESSIONS.register(name, () -> new ${JavaModName}VillagerProfessions("${modid}" + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), () -> new SoundEvent(new ResourceLocation("${data.actionSound}"))));
+    @ObjectHolder("${modid}:${registryname}")
+    public static final VillagerProfession profession = null;
+
+    public ${name}Profession(${JavaModName}Elements instance) {
+        super(instance, ${data.getModElement().getSortID()});
+    }
+
+    @SubscribeEvent public static void registerPointOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
+        pointOfInterest = new PointOfInterestType("${data.displayName?lower_case}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1);
+        event.getRegistry().register(pointOfInterest);
+    }
+
+    @SubscribeEvent public static void registerProfession(RegistryEvent.Register<VillagerProfession> event) {
+        event.getRegistry().register(new ProfessionCustom("${modid}" + ":" + "${data.displayName?lower_case}", pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), () -> new SoundEvent(new ResourceLocation("${data.actionSound}"))));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
         return ImmutableSet.copyOf(block.getStateContainer().getValidStates());
     }
 
-    @SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> ${JavaModName}VillagerProfessions.fixup(${name}Profession.${data.displayName?upper_case}_POI.get()));
-    }
-
-    public static class ${JavaModName}VillagerProfessions extends VillagerProfession {
+    public static class ProfessionCustom extends VillagerProfession {
 
         private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
         private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
         @SafeVarargs
-        public ${JavaModName}VillagerProfessions(String name, PointOfInterestType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        public ProfessionCustom(String name, PointOfInterestType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
             super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
             this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
         }
@@ -72,14 +78,6 @@ import javax.annotation.Nullable;
         public SoundEvent getSound() {
             int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
             return soundEventSuppliers.get(n).get();
-        }
-
-        public static void fixup(PointOfInterestType poiType) {
-            try {
-                blockStatesInjector.invoke(null, poiType);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                ${JavaModName}.LOGGER.catching(e);
-            }
         }
     }
 }
