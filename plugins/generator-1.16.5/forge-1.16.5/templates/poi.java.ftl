@@ -29,36 +29,23 @@
 -->
 
 <#-- @formatter:off -->
+<#include "mcitems.ftl">
 
 package ${package}.world;
 
-import net.minecraft.util.SoundEvent;
-import javax.annotation.Nullable;
-
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Profession {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}POI {
 
     @ObjectHolder("${modid}:${registryname}")
-    public static final VillagerProfession profession = null;
+    public static final PointOfInterestType pointOfInterest = null;
 
-    @SubscribeEvent public static void registerProfession(RegistryEvent.Register<VillagerProfession> event) {
-        event.getRegistry().register(new ProfessionCustom());
+    @SubscribeEvent public static void registerPointOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
+        event.getRegistry().register(new POICustom());
     }
 
-    public static class ProfessionCustom extends VillagerProfession {
-
-        private final List<Supplier<SoundEvent>> soundEventSuppliers;
-
-        public ProfessionCustom() {
-            super("${modid}" + ":" + "${data.displayName?lower_case}", ${name}POI.pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
+    public static class POICustom extends PointOfInterestType {
+        public POICustom() {
+            super("${data.displayName?lower_case}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1);
             setRegistryName("${registryname}");
-            this.soundEventSuppliers = Arrays.asList(() -> new SoundEvent(new ResourceLocation("${data.actionSound}")));
-        }
-
-        @Nullable
-        @Override
-        public SoundEvent getSound() {
-            int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
-            return soundEventSuppliers.get(n).get();
         }
     }
 }

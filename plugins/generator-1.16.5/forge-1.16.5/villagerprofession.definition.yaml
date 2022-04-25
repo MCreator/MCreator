@@ -1,4 +1,6 @@
 templates:
+  - template: poi.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEPOI.java"
   - template: villagerprofessions.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEProfession.java"
   - template: profession.mcmeta.ftl
