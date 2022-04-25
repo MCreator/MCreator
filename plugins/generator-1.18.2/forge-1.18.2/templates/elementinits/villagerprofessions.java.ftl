@@ -46,7 +46,6 @@ import javax.annotation.Nullable;
     public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
     public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
-    private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PoiType.class, "m_27367_", PoiType.class);
     private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
     <#list villagerprofessions as villagerprofession>

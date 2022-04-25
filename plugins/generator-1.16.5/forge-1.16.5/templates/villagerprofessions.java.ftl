@@ -64,7 +64,6 @@ public class ${name}Profession extends ${JavaModName}Elements.ModElement {
 
     public static class ProfessionCustom extends VillagerProfession {
 
-        private static final Method blockStatesInjector = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
         private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
         @SafeVarargs
