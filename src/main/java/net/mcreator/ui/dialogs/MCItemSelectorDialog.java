@@ -63,6 +63,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 					setVisible(false);
 					if (itemSelectedListener != null)
 						itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
+					dispose();
 				}
 			}
 		});
@@ -75,6 +76,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			setVisible(false);
 			if (itemSelectedListener != null)
 				itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
+			dispose();
 		});
 
 		if (supportTags) {
@@ -112,6 +114,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 							setVisible(false);
 							if (itemSelectedListener != null)
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
+							dispose();
 						}
 					} else {
 						JOptionPane.showMessageDialog(this,
