@@ -37,19 +37,30 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
 
-    @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-        Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
-
-        <#list data.tradeEntries as tradeEntry>
-            if (event.getType() == ${tradeEntry.villagerProfession}) {
+    <#list data.tradeEntries as tradeEntry>
+        <#if tradeEntry.villagerProfession == "WanderingTrader">
+            @SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
                 <#list tradeEntry.entries as entry>
-                trades.get(${entry.level}).add(new BasicTrade(${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
-                <#if !entry.price2.isEmpty()>
-                    ${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},
-                </#if>
-                ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)}, ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f));
+                    event.getGenericTrades().add(new BasicTrade(${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
+                    <#if !entry.price2.isEmpty()>
+                        ${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},
+                    </#if>
+                    ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)}, ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f));
                 </#list>
             }
-        </#list>
-    }
+        <#else>
+            @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
+                Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
+                if (event.getType() == ${tradeEntry.villagerProfession}) {
+                    <#list tradeEntry.entries as entry>
+                        trades.get(${entry.level}).add(new BasicTrade(${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
+                        <#if !entry.price2.isEmpty()>
+                            ${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},
+                        </#if>
+                        ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)}, ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f));
+                    </#list>
+                }
+            }
+        </#if>
+    </#list>
 }
