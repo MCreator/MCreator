@@ -39,11 +39,14 @@
 package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
+import javax.annotation.Nullable;
 
-public class ${JavaModName}VillagerProfessions {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions extends VillagerProfession {
 
     public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
     public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
+
+    private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
     <#list villagerprofessions as villagerprofession>
         public static final RegistryObject<PoiType> ${villagerprofession.displayName?upper_case}_POI = POI.register("${villagerprofession.displayName?lower_case}", () -> new PoiType("${villagerprofession.displayName?lower_case}", getAllStates(${mappedBlockToBlock(villagerprofession.pointOfInterest)}), 1, 1));
@@ -52,11 +55,24 @@ public class ${JavaModName}VillagerProfessions {
 
     @SuppressWarnings("SameParameterValue")
     private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent>... soundEventSuppliers) {
-        return PROFESSIONS.register(name, () -> new ${JavaModName}Professions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
+        return PROFESSIONS.register(name, () -> new ${JavaModName}VillagerProfessions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
+    }
+
+    @SafeVarargs
+    public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
+        this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getWorkSound() {
+        int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
+        return soundEventSuppliers.get(n).get();
     }
 }
 <#-- @formatter:on -->
