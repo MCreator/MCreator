@@ -30,8 +30,6 @@
 
 <#-- @formatter:off -->
 
-<#include "../mcitems.ftl">
-
 /*
 *    MCreator note: This file will be REGENERATED on each build.
 */
@@ -39,24 +37,23 @@
 package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
+import javax.annotation.Nullable;
 
-public class ${JavaModName}VillagerProfessions {
+public class ${JavaModName}Professions extends VillagerProfession {
 
-    public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
+    private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
-    <#list villagerprofessions as villagerprofession>
-        public static final RegistryObject<PoiType> ${villagerprofession.displayName?upper_case}_POI = POI.register("${villagerprofession.displayName?lower_case}", () -> new PoiType("${villagerprofession.displayName?lower_case}", getAllStates(${mappedBlockToBlock(villagerprofession.pointOfInterest)}), 1, 1));
-        public static final RegistryObject<VillagerProfession> ${villagerprofession.displayName?upper_case} = registerProfession("${villagerprofession.displayName?lower_case}", ${villagerprofession.displayName?upper_case}_POI, () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}")));
-    </#list>
-
-    @SuppressWarnings("SameParameterValue")
-    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent>... soundEventSuppliers) {
-        return PROFESSIONS.register(name, () -> new ${JavaModName}Professions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
+    @SafeVarargs
+    public ${JavaModName}Professions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
+        this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
     }
 
-    private static Set<BlockState> getAllStates(Block block) {
-        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
+    @Nullable
+    @Override
+    public SoundEvent getWorkSound() {
+        int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
+        return soundEventSuppliers.get(n).get();
     }
 }
 <#-- @formatter:on -->
