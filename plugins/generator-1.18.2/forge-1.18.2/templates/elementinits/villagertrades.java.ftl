@@ -41,10 +41,10 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${JavaModName}Trades {
 
-    <#list villagertrades as trade>
-        <#list trade.tradeEntries as tradeEntry>
-            <#if tradeEntry.villagerProfession == "WanderingTrader">
-                @SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
+    @SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
+        <#list villagertrades as trade>
+            <#list trade.tradeEntries as tradeEntry>
+                <#if tradeEntry.villagerProfession == "WanderingTrader">
                     <#list tradeEntry.entries as entry>
                         event.getGenericTrades().add(
                         new BasicItemListing(
@@ -54,10 +54,16 @@ import net.minecraft.world.entity.npc.VillagerTrades;
                         ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f
                         ));
                     </#list>
-                }
-            <#else>
-                @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-                    Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+                </#if>
+            </#list>
+        </#list>
+    }
+
+    @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
+        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+        <#list villagertrades as trade>
+            <#list trade.tradeEntries as tradeEntry>
+                <#if tradeEntry.villagerProfession != "WanderingTrader">
                     if (event.getType() == ${tradeEntry.villagerProfession}) {
                     <#list tradeEntry.entries as entry>
                         trades.get(${entry.level}).add(
@@ -69,8 +75,8 @@ import net.minecraft.world.entity.npc.VillagerTrades;
                         ));
                     </#list>
                     }
-                }
-            </#if>
+                </#if>
+            </#list>
         </#list>
-    </#list>
+    }
 }
