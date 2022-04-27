@@ -1593,14 +1593,11 @@ public class TestWorkspaceDataProvider {
 					int entries = random.nextInt(10) + 1;
 					for (int j = 0; j < entries; j++) {
 						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
-						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
-								getRandomMCItem(random,
-										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
-								"");
-						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price1 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ? getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() : "");
+						entry.offer = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
