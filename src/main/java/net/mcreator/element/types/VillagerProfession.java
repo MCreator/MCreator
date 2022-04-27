@@ -25,7 +25,6 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.io.File;
@@ -41,9 +40,6 @@ public class VillagerProfession extends GeneratableElement {
 
 	public VillagerProfession(ModElement element) {
 		super(element);
-		this.displayName = StringUtils.uppercaseFirstLetter(element.getRegistryName());
-		this.hat = "None";
-		this.enableHat = false;
 	}
 
 	@Override public void finalizeModElementGeneration() {

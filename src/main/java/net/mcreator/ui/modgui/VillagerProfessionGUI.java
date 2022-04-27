@@ -51,7 +51,6 @@ import java.awt.*;
 import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
@@ -191,6 +190,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public VillagerProfession getElementFromGUI() {
 		VillagerProfession profession = new VillagerProfession(modElement);
+		profession.displayName = StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT));
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();
