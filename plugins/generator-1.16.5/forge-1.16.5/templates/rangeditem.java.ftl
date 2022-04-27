@@ -188,7 +188,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			<#if !data.bulletItemTexture.isEmpty()>
 			return ${mappedMCItemToItemStackCode(data.bulletItemTexture, 1)};
 			<#else>
-			return null;
+			return ItemStack.EMPTY;
 			</#if>
 		}
 
@@ -196,7 +196,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			<#if !data.ammoItem.isEmpty()>
 			return ${mappedMCItemToItemStackCode(data.ammoItem, 1)};
 			<#else>
-			return null;
+			return ItemStack.EMPTY;
 			</#if>
 		}
 
