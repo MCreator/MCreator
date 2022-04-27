@@ -37,6 +37,8 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${name}Trade {
 
+    <#assign wanderingTrade = data.hasWanderingTrade()>
+    <#if wanderingTrade>
     @SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
         <#list data.tradeEntries as tradeEntry>
         <#if tradeEntry.villagerProfession == "WanderingTrader">
@@ -50,7 +52,10 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
         </#if>
         </#list>
     }
+    </#if>
 
+    <#assign villagerTrade = data.hasNormalTrade()>
+    <#if villagerTrade>
     @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
         <#list data.tradeEntries as tradeEntry>
@@ -67,4 +72,5 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
         </#if>
         </#list>
     }
+    </#if>
 }

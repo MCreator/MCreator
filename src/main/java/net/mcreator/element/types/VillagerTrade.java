@@ -63,4 +63,18 @@ public class VillagerTrade extends GeneratableElement {
 			public double priceMultiplier;
 		}
 	}
+
+	public boolean hasWanderingTrade() {
+		for (CustomTradeEntry tradeEntry : tradeEntries) {
+			if ("WanderingTrader".equals(tradeEntry.villagerProfession.getUnmappedValue())) return true;
+		}
+		return false;
+	}
+
+	public boolean hasNormalTrade() {
+		for (CustomTradeEntry tradeEntry : tradeEntries) {
+			if (!"WanderingTrader".equals(tradeEntry.villagerProfession.getUnmappedValue())) return true;
+		}
+		return false;
+	}
 }
