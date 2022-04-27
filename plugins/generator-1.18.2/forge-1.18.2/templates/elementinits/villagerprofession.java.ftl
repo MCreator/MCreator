@@ -30,35 +30,30 @@
 
 <#-- @formatter:off -->
 
-package ${package}.world;
+/*
+*    MCreator note: This file will be REGENERATED on each build.
+*/
 
-import net.minecraft.util.SoundEvent;
+package ${package}.village;
+
+import net.minecraft.sounds.SoundEvent;
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}Profession {
+public class ${JavaModName}VillagerProfession extends VillagerProfession {
 
-    @ObjectHolder("${modid}:${registryname}")
-    public static final VillagerProfession profession = null;
+    private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
-    @SubscribeEvent public static void registerProfession(RegistryEvent.Register<VillagerProfession> event) {
-        event.getRegistry().register(new ProfessionCustom());
+    @SafeVarargs
+    public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
+        this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
     }
 
-    public static class ProfessionCustom extends VillagerProfession {
-
-        private final List<Supplier<SoundEvent>> soundEventSuppliers;
-
-        public ProfessionCustom() {
-            super("${modid}" + ":" + "${registryname}", ${name}POI.pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
-            setRegistryName("${registryname}");
-            this.soundEventSuppliers = Arrays.asList(() -> new SoundEvent(new ResourceLocation("${data.actionSound}")));
-        }
-
-        @Nullable
-        @Override
-        public SoundEvent getSound() {
-            int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
-            return soundEventSuppliers.get(n).get();
-        }
+    @Nullable
+    @Override
+    public SoundEvent getWorkSound() {
+        int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
+        return soundEventSuppliers.get(n).get();
     }
 }
+<#-- @formatter:on -->

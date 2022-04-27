@@ -6,8 +6,10 @@ templates:
     name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
 
 global_templates:
+  - template: elementinits/villagerprofession.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/village/@JavaModNameVillagerProfession.java"
   - template: elementinits/villagerprofessions.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameProfessions.java"
 
 localizationkeys:
   - key: entity.minecraft.villager.@modid.@registryname

@@ -44,7 +44,7 @@ package ${package}.world;
 
     public static class POICustom extends PointOfInterestType {
         public POICustom() {
-            super("${data.displayName?lower_case}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1);
+            super("${registryname}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1);
             setRegistryName("${registryname}");
         }
     }

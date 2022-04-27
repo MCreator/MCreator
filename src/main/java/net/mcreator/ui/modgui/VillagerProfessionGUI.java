@@ -180,19 +180,17 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	}
 
 	@Override public void openInEditingMode(VillagerProfession profession) {
+		name.setText(modElement.getName().toUpperCase(Locale.ROOT));
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		hat.setSelectedItem(profession.hat);
 		professionTextureFile.setSelectedItem(profession.professionTextureFile);
-
-		name.setText(modElement.getName().toUpperCase(Locale.ROOT));
 
 		updateProfessionTexturePreview();
 	}
 
 	@Override public VillagerProfession getElementFromGUI() {
 		VillagerProfession profession = new VillagerProfession(modElement);
-		profession.displayName = StringUtils.uppercaseFirstLetter(name.getText().toLowerCase(Locale.ROOT));
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();
