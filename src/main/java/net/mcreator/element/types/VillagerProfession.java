@@ -41,8 +41,9 @@ public class VillagerProfession extends GeneratableElement {
 
 	public VillagerProfession(ModElement element) {
 		super(element);
-		this.hat = "None";
 		this.displayName = StringUtils.uppercaseFirstLetter(element.getRegistryName());
+		this.hat = "None";
+		this.enableHat = false;
 	}
 
 	@Override public void finalizeModElementGeneration() {
