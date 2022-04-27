@@ -46,8 +46,8 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>
-			${JavaModName}VillagerProfessions.POI.register(bus);
-			${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);
+			${JavaModName}Professions.POI.register(bus);
+			${JavaModName}Professions.PROFESSIONS.register(bus);
 		</#if>
 	}
 
