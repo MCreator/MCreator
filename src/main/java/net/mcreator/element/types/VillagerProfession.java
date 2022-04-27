@@ -40,6 +40,7 @@ public class VillagerProfession extends GeneratableElement {
 
 	public VillagerProfession(ModElement element) {
 		super(element);
+		this.hat = "None";
 	}
 
 	@Override public void finalizeModElementGeneration() {

@@ -194,7 +194,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();
-		profession.enableHat = hat.getSelectedItem() != "None";
+		profession.enableHat = !"None".equals(hat.getSelectedItem());
 		profession.professionTextureFile = professionTextureFile.getSelectedItem();
 		return profession;
 	}
