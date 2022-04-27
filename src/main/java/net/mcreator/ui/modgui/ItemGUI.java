@@ -460,6 +460,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			isMeat.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
 			eatResultItem.setEnabled(true);
+			useDuration.setValue(32);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);
