@@ -1077,7 +1077,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			item.stackSize = 52;
 			item.enchantability = 3;
-			item.useDuration = 8;
+			item.useDuration = _true ? 32 : 8; // 32 when _true because the item is a food
 			item.toolType = 1.4;
 			item.damageCount = 4;
 			item.destroyAnyBlock = _true;
