@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 
-package ${package}.world;
+package ${package}.village;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}POI {
 

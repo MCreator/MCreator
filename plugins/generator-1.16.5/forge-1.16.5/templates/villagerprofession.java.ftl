@@ -30,7 +30,7 @@
 
 <#-- @formatter:off -->
 
-package ${package}.world;
+package ${package}.village;
 
 import net.minecraft.util.SoundEvent;
 import javax.annotation.Nullable;
