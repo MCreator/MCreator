@@ -1,8 +1,8 @@
 templates:
   - template: poi.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEPOI.java"
-  - template: villagerprofessions.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/@NAMEProfession.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEPOI.java"
+  - template: villagerprofession.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEProfession.java"
   - template: profession.mcmeta.ftl
     writer: json
     condition: enableHat
