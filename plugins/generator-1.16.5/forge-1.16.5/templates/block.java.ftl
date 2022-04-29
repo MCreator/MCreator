@@ -385,7 +385,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			</#if>
 
 		<#if data.rotationMode == 1 && data.enablePitch>
-		public AttachFace faceForDirection(Direction direction) {
+		private AttachFace faceForDirection(Direction direction) {
 			if (direction.getAxis() == Direction.Axis.Y)
 				return direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR;
 			else
@@ -402,7 +402,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return this.getDefaultState()
 			        <#if data.rotationMode == 1>
 			            <#if data.enablePitch>
-			            .with(FACE, faceForDirection(context.getNearestLookingDirection().getOpposite()))
+			            .with(FACE, faceForDirection(context.getNearestLookingDirection()))
 			            </#if>
 			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
 			        <#elseif data.rotationMode == 2>

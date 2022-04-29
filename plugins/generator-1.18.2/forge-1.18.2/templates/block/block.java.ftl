@@ -270,7 +270,7 @@ public class ${name}Block extends
 		</#if>
 
 	<#if data.rotationMode == 1 && data.enablePitch>
-	public AttachFace faceForDirection(Direction direction) {
+	private AttachFace faceForDirection(Direction direction) {
 		if (direction.getAxis() == Direction.Axis.Y)
 			return direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR;
 		else
@@ -287,7 +287,7 @@ public class ${name}Block extends
 		return this.defaultBlockState()
 		        <#if data.rotationMode == 1>
 		            <#if data.enablePitch>
-		            .setValue(FACE, faceForDirection(context.getNearestLookingDirection().getOpposite()))
+		            .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
 		            </#if>
 		        .setValue(FACING, context.getHorizontalDirection().getOpposite())
 		        <#elseif data.rotationMode == 2>
