@@ -827,13 +827,12 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
-			dimension.biomesInDimension.add(
-					new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			if (!emptyLists) {
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
+				dimension.biomesInDimension.addAll(
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			} else {
 				dimension.biomesInDimension.add(
 						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			}
@@ -1593,11 +1592,14 @@ public class TestWorkspaceDataProvider {
 					int entries = random.nextInt(10) + 1;
 					for (int j = 0; j < entries; j++) {
 						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
-						entry.price1 = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ? getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() : "");
-						entry.offer = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
+								getRandomMCItem(random,
+										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
+								"");
+						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];

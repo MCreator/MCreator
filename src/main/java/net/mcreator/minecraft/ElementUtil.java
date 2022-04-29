@@ -37,6 +37,7 @@ public class ElementUtil {
 
 	/**
 	 * Provides a predicate to check the type of data list entries
+	 *
 	 * @param type The type that the entry has to match
 	 * @return A predicate that checks if the type matches the parameter
 	 */
@@ -116,8 +117,7 @@ public class ElementUtil {
 						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
-						.toList());
+						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).toList());
 		return elements;
 	}
 

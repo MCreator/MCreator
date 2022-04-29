@@ -52,7 +52,7 @@
       "surface_rule": {
          "type": "minecraft:sequence",
          "sequence": [
-           <#list data.biomesInDimension as biome>
+           <#list w.filterBrokenReferences(data.biomesInDimension) as biome>
              <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
                <@sb.defaultAny biome ge.groundBlock ge.undergroundBlock ge.getUnderwaterBlock()/>

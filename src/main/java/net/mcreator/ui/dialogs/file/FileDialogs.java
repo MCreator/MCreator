@@ -135,7 +135,8 @@ public class FileDialogs {
 	}
 
 	private static boolean useNativeFileChooser() {
-		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser && OS.getOS() == OS.WINDOWS && !DISABLE_NATIVE_DIALOGS;
+		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser && OS.getOS() == OS.WINDOWS
+				&& !DISABLE_NATIVE_DIALOGS;
 	}
 
 }

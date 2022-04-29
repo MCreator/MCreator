@@ -23,11 +23,11 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import org.w3c.dom.Element;
 
-public class ImediateSourceEntityDependencyBlock implements IBlockGenerator {
+public class ImmediateSourceEntityDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("imediatesourceentity");
-		master.addDependency(new Dependency("imediatesourceentity", "entity"));
+		master.append("immediatesourceentity");
+		master.addDependency(new Dependency("immediatesourceentity", "entity"));
 	}
 
 	@Override public String[] getSupportedBlocks() {
