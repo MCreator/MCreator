@@ -1,3 +1,9 @@
+Blockly.Extensions.register('small_text_tip',
+    function () {
+        this.appendDummyInput().appendField(
+            new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
+    });
+
 Blockly.Extensions.register('biome_dictionary_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
