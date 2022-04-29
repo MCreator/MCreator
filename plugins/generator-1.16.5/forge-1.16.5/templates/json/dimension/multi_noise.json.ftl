@@ -32,7 +32,7 @@
       ]
     },
     "biomes": [
-      <#list data.biomesInDimension as biome>
+      <#list w.filterBrokenReferences(data.biomesInDimension) as biome>
         {
           "biome": "${biome}",
           "parameters": {

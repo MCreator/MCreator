@@ -18,6 +18,8 @@
 
 package net.mcreator.generator.template;
 
+import com.google.gson.Gson;
+
 import java.awt.*;
 
 @SuppressWarnings("unused") public class TemplateHelper {
@@ -34,6 +36,10 @@ import java.awt.*;
 
 	public String colorToHexString(Color color) {
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+	}
+
+	public String obj2str(Object object) {
+		return new Gson().toJson(object);
 	}
 
 }
