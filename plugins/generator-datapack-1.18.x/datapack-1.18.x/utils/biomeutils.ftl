@@ -21,7 +21,7 @@
 </#function>
 
 <#function registryname2weirdness registryname biomeWeight, float_sfx="">
-    <#assign base = (w.random(registryname) * 2) - 1>
+    <#assign base = (thelper.random(registryname) * 2) - 1>
     <#return (base - biomeWeight)?string + float_sfx + ", " + (base + biomeWeight)?string + float_sfx>
 </#function>
 
