@@ -52,7 +52,8 @@ public class ${name}Feature extends LakeFeature {
 				RarityFilter.onAverageOnceEvery(${data.frequencyOnChunks}),
 				InSquarePlacement.spread(),
 				PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-				EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), 32)
+				EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), 32),
+				BiomeFilter.biome()
 		));
 		return FEATURE;
 	}
