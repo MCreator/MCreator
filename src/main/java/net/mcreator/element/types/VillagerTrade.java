@@ -64,13 +64,13 @@ public class VillagerTrade extends GeneratableElement {
 		}
 	}
 
-	public boolean hasVillagerTrade(boolean isNormal) {
+	public boolean hasVillagerTrade(boolean wandering) {
 		for (CustomTradeEntry tradeEntry : tradeEntries) {
-			if (!isNormal && "WanderingTrader".equals(tradeEntry.villagerProfession.getUnmappedValue()))
+			if (!wandering && "WanderingTrader".equals(tradeEntry.villagerProfession.getUnmappedValue()))
 				return true;
-			if (isNormal && !"WanderingTrader".equals(tradeEntry.villagerProfession.getUnmappedValue()))
+			if (wandering && !"WanderingTrader".equals(tradeEntry.villagerProfession.getUnmappedValue()))
 				return true;
 		}
-		return isNormal;
+		return false;
 	}
 }
