@@ -41,7 +41,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${JavaModName}Trades {
 
-    <#if trade.hasWanderingTrade()>
+    <#if w.hasVillagerTrade(false)>
     @SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
         <#list villagertrades as trade>
             <#list trade.tradeEntries as tradeEntry>
@@ -61,15 +61,14 @@ import net.minecraft.world.entity.npc.VillagerTrades;
     }
     </#if>
 
-    <#if trade.hasNormalTrade()>
+    <#if w.hasVillagerTrade(true)>
     @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
         <#list villagertrades as trade>
             <#list trade.tradeEntries as tradeEntry>
                 <#if tradeEntry.villagerProfession != "WanderingTrader">
                     if (event.getType() == ${tradeEntry.villagerProfession}) {
                     <#list tradeEntry.entries as entry>
-                        trades.get(${entry.level}).add(
+                        event.getTrades().get(${entry.level}).add(
                         new BasicItemListing(
                         ${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
                         <#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
