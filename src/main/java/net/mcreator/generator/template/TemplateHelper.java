@@ -21,6 +21,7 @@ package net.mcreator.generator.template;
 import com.google.gson.Gson;
 
 import java.awt.*;
+import java.util.Random;
 
 @SuppressWarnings("unused") public class TemplateHelper {
 
@@ -32,6 +33,22 @@ import java.awt.*;
 
 		int idx = (int) Math.round(((val - min) / (max - min)) * (values.length - 1));
 		return values[idx];
+	}
+
+	public double random(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextDouble();
+	}
+
+	public long randomlong(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextLong();
 	}
 
 	public String colorToHexString(Color color) {

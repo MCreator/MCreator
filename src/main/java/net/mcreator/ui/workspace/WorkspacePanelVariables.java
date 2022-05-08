@@ -42,13 +42,17 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 	private final WorkspacePanel workspacePanel;
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
+
+	private volatile boolean storingEdits = false;
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(new BorderLayout(0, 5));
@@ -61,6 +65,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
+				if (storingEdits)
+					return false;
+
 				if (!getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.STRING.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())
@@ -265,9 +272,16 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		// save values on table edit, do it in another thread
 		elements.getModel().addTableModelListener(e -> new Thread(() -> {
 			if (e.getType() == TableModelEvent.UPDATE) {
+				if (storingEdits)
+					return;
+
+				storingEdits = true;
+				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
 				Workspace workspace = workspacePanel.getMcreator().getWorkspace();
 
-				for (VariableElement variableElement : workspace.getVariableElements())
+				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
+				for (VariableElement variableElement : todelete)
 					workspace.removeVariableElement(variableElement);
 
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
@@ -281,6 +295,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						workspace.addVariableElement(element);
 					}
 				}
+
+				elements.setCursor(Cursor.getDefaultCursor());
+				storingEdits = false;
 			}
 		}).start());
 
