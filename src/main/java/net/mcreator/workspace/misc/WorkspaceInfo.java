@@ -182,7 +182,7 @@ import java.util.stream.Collectors;
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.VILLAGERTRADE) {
 				if (element.getGeneratableElement() instanceof VillagerTrade vt)
-					if (vt.hasVillagerTrade(wandering))
+					if (vt.hasVillagerTrades(wandering))
 						return true;
 			}
 		return false;
