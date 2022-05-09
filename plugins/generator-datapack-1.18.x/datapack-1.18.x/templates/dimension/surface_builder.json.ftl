@@ -9,7 +9,7 @@
   <#elseif biome == "crimson_forest">
     <@vanillaSB biome w.itemBlock("Blocks.CRIMSON_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHER_WART_BLOCK") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("desert") || biome?contains("beaches")>
-    <@vanillaSB biome w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
+    <@vanillaSB biome w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("end")>
     <@vanillaSB biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("mushroom_field")>
