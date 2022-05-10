@@ -155,6 +155,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private DimensionListField spawnWorldTypes;
 	private BiomeListField restrictionBiomes;
 	private final JSpinner patchSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JCheckBox generateAtAnyHeight = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page3group = new ValidationGroup();
 
@@ -641,8 +642,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events2.add(onRandomUpdateEvent);
 		events2.add(new JLabel(""));
 
-		JPanel spawning = new JPanel(new GridLayout(4, 2, 5, 2));
+		JPanel spawning = new JPanel(new GridLayout(5, 2, 5, 2));
 		spawning.setOpaque(false);
+		generateAtAnyHeight.setOpaque(false);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
 				L10N.label("elementgui.plant.gen_chunk_count")));
@@ -651,6 +653,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/patch_size"),
 				L10N.label("elementgui.plant.patch_size")));
 		spawning.add(patchSize);
+
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/generate_at_any_height"),
+				L10N.label("elementgui.plant.generate_at_any_height")));
+		spawning.add(generateAtAnyHeight);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
 				L10N.label("elementgui.plant.spawn_world_types")));
@@ -832,6 +838,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		jumpFactor.setValue(plant.jumpFactor);
 		speedFactor.setValue(plant.speedFactor);
 		patchSize.setValue(plant.patchSize);
+		generateAtAnyHeight.setSelected(plant.generateAtAnyHeight);
 
 		specialInfo.setText(
 				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -949,6 +956,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();
+		plant.generateAtAnyHeight = generateAtAnyHeight.isSelected();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = (String) colorOnMap.getSelectedItem();
