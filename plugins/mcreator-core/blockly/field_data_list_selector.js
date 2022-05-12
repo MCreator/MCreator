@@ -18,13 +18,7 @@ function FieldDataListSelector(type) {
 
     // Initialize the label with a rectangle surrounding the text
     entryField.initView = function () {
-        let rect = Blockly.utils.dom.createSvgElement('rect',
-            {
-                'class': 'blocklyFlyoutButtonShadow',
-                'rx': 2, 'ry': 2, 'y': 0, 'x': 1
-            },
-            this.fieldGroup_);
-
+        this.createBorderRect_();
         this.createTextElement_();
 
         if (workspace.getRenderer().name === "thrasos") {
@@ -38,21 +32,13 @@ function FieldDataListSelector(type) {
         if (this.class_)
             Blockly.utils.dom.addClass(this.textElement_, this.class_);
 
-        rect.setAttribute('width', 93);
-        rect.setAttribute('height', 15);
-        this.rect = rect; // This is so we can update its shape
+        if (this.textElement_)
+            this.borderRect_.setAttribute('width', Blockly.utils.dom.getTextWidth(this.textElement_) + 8);
+        else
+            this.borderRect_.setAttribute('width', 93);
+        this.borderRect_.setAttribute('height', 15);
 
         this.lastClickTime = -1;
-    };
-
-    // Updates the shape of the field and of the rectangle surrounding the text
-    entryField.updateSize_ = function () {
-        this.size_.height = 14;
-        if (this.textElement_)
-            this.size_.width = Blockly.utils.dom.getTextWidth(this.textElement_) + 12;
-        else
-            this.size_.width = 93;
-        this.rect.setAttribute('width', Blockly.utils.dom.getTextWidth(this.textElement_) + 8);
     };
 
     // Function to handle clicking
@@ -98,7 +84,7 @@ function FieldDataListSelector(type) {
     };
 
     // Returns the readable text
-    entryField.getText = function () {
+    entryField.getText_ = function () {
         if (entry && entry.split(',').length === 2) {
             return entry.split(',')[1];
         }
