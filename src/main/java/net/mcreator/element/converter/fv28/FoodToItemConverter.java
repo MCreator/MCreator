@@ -49,13 +49,15 @@ public class FoodToItemConverter implements IConverter {
 			item.name = food.get("name").getAsString();
 			item.texture = food.get("texture").getAsString();
 			item.renderType = food.get("renderType").getAsInt();
-			item.customModelName = food.get("customModelName").getAsString();
+			if (food.get("customModelName") != null)
+				item.customModelName = food.get("customModelName").getAsString();
 			item.creativeTab = new TabEntry(workspace,
 					food.get("creativeTab").getAsJsonObject().get("value").getAsString());
 			item.rarity = food.get("rarity").getAsString();
 			List<String> specialInfo = new ArrayList<>();
-			food.getAsJsonArray("specialInfo").iterator()
-					.forEachRemaining(element -> specialInfo.add(element.getAsString()));
+			if (food.get("specialInfo") != null)
+				food.getAsJsonArray("specialInfo").iterator()
+						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
 			item.specialInfo = specialInfo;
 			item.stackSize = food.get("stackSize").getAsInt();
 			item.isFood = true;
@@ -64,8 +66,9 @@ public class FoodToItemConverter implements IConverter {
 			item.isAlwaysEdible = food.get("isAlwaysEdible").getAsBoolean();
 			item.isMeat = food.get("forDogs").getAsBoolean();
 			item.useDuration = food.get("eatingSpeed").getAsInt();
-			item.eatResultItem = new MItemBlock(workspace,
-					food.get("resultItem").getAsJsonObject().get("value").getAsString());
+			if (food.get("resultItem") != null)
+				item.eatResultItem = new MItemBlock(workspace,
+						food.get("resultItem").getAsJsonObject().get("value").getAsString());
 			item.animation = food.get("animation").getAsString();
 			item.hasGlow = food.get("hasGlow").getAsBoolean();
 			if (food.get("glowCondition") != null)

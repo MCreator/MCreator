@@ -1032,6 +1032,7 @@ public class TestWorkspaceDataProvider {
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.patchSize = 46;
+			plant.generateAtAnyHeight = _true;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;

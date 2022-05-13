@@ -112,6 +112,7 @@ import java.util.stream.Collectors;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	public int patchSize;
+	public boolean generateAtAnyHeight;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourBlockChanges;
