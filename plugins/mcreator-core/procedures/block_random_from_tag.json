@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "tag",
+      "check": "String"
+    }
+  ],
+  "output": "MCItemBlock",
+  "colour": 60,
+  "mcreator": {
+    "toolbox_id": "blockdata",
+    "toolbox_init": [
+      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">minecraft:logs</field></block></value>"
+    ],
+    "inputs": [
+      "tag"
+    ]
+  }
+}

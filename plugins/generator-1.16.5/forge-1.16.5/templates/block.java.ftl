@@ -173,51 +173,55 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
         </#if>
 
 		<#macro blockProperties>
+			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+			Block.Properties.create(Material.${data.material}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+			<#else>
 			Block.Properties.create(Material.${data.material})
-				<#if data.isCustomSoundType>
-					.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
-					() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
-					() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
-					() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
-					() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
-				<#else>
-					.sound(SoundType.${data.soundOnStep})
-				</#if>
-				<#if data.unbreakable>
-					.hardnessAndResistance(-1, 3600000)
-				<#else>
-					.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
-				</#if>
-					.setLightLevel(s -> ${data.luminance})
-				<#if data.destroyTool != "Not specified">
-					.harvestLevel(${data.breakHarvestLevel})
-					.harvestTool(ToolType.${data.destroyTool?upper_case})
-					.setRequiresTool()
-				</#if>
-				<#if data.isNotColidable>
-					.doesNotBlockMovement()
-				</#if>
-				<#if data.slipperiness != 0.6>
-					.slipperiness(${data.slipperiness}f)
-				</#if>
-				<#if data.speedFactor != 1.0>
-					.speedFactor(${data.speedFactor}f)
-				</#if>
-				<#if data.jumpFactor != 1.0>
-					.jumpFactor(${data.jumpFactor}f)
-				</#if>
-				<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
-					.notSolid()
-				</#if>
-				<#if data.tickRandomly>
-					.tickRandomly()
-				</#if>
-				<#if data.emissiveRendering>
-					.setNeedsPostProcessing((bs, br, bp) -> true).setEmmisiveRendering((bs, br, bp) -> true)
-				</#if>
-				<#if data.hasTransparency>
-					.setOpaque((bs, br, bp) -> false)
-				</#if>
+			</#if>
+			<#if data.isCustomSoundType>
+				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+				() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+			<#else>
+				.sound(SoundType.${data.soundOnStep})
+			</#if>
+			<#if data.unbreakable>
+				.hardnessAndResistance(-1, 3600000)
+			<#else>
+				.hardnessAndResistance(${data.hardness}f, ${data.resistance}f)
+			</#if>
+				.setLightLevel(s -> ${data.luminance})
+			<#if data.destroyTool != "Not specified">
+				.harvestLevel(${data.breakHarvestLevel})
+				.harvestTool(ToolType.${data.destroyTool?upper_case})
+				.setRequiresTool()
+			</#if>
+			<#if data.isNotColidable>
+				.doesNotBlockMovement()
+			</#if>
+			<#if data.slipperiness != 0.6>
+				.slipperiness(${data.slipperiness}f)
+			</#if>
+			<#if data.speedFactor != 1.0>
+				.speedFactor(${data.speedFactor}f)
+			</#if>
+			<#if data.jumpFactor != 1.0>
+				.jumpFactor(${data.jumpFactor}f)
+			</#if>
+			<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+				.notSolid()
+			</#if>
+			<#if data.tickRandomly>
+				.tickRandomly()
+			</#if>
+			<#if data.emissiveRendering>
+				.setNeedsPostProcessing((bs, br, bp) -> true).setEmmisiveRendering((bs, br, bp) -> true)
+			</#if>
+			<#if data.hasTransparency>
+				.setOpaque((bs, br, bp) -> false)
+			</#if>
 		</#macro>
 
 		public CustomBlock() {
@@ -475,7 +479,7 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			return true;
 		}
 
-		@Override public int getWeakPower(BlockState blockstate, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		@Override public int getWeakPower(BlockState blockstate, IBlockReader blockAccess, BlockPos pos, Direction direction) {
 			<#if hasProcedure(data.emittedRedstonePower)>
 				int x = pos.getX();
 				int y = pos.getY();

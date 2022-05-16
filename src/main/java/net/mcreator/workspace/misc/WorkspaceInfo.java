@@ -91,14 +91,6 @@ import java.util.stream.Collectors;
 				.toString();
 	}
 
-	public double random(String seed) {
-		long hash = 0;
-		for (char c : seed.toCharArray()) {
-			hash = 31L * hash + c;
-		}
-		return new Random(hash).nextDouble();
-	}
-
 	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
 		if (input == null)
 			return Collections.emptySet();

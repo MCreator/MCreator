@@ -1,0 +1,14 @@
+_default: VillagerProfession.ARMORER
+ARMORER: VillagerProfession.ARMORER
+BUTCHER: VillagerProfession.BUTCHER
+CARTOGRAPHER: VillagerProfession.CARTOGRAPHER
+CLERIC: VillagerProfession.CLERIC
+FARMER: VillagerProfession.FARMER
+FISHERMAN: VillagerProfession.FISHERMAN
+FLETCHER: VillagerProfession.FLETCHER
+LEATHERWORKER: VillagerProfession.LEATHERWORKER
+LIBRARIAN: VillagerProfession.LIBRARIAN
+MASON: VillagerProfession.MASON
+SHEPHERD: VillagerProfession.SHEPHERD
+TOOLSMITH: VillagerProfession.TOOLSMITH
+WEAPONSMITH: VillagerProfession.WEAPONSMITH
