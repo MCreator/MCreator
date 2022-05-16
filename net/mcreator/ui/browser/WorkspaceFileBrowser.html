@@ -89,6 +89,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">WorkspaceFileBrowser</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></span></div>
+<div class="block">Workspace file browser is used in a workspace window by the user to view source files of the project contained in
+ the workspace and also observe source code of external libraries used by that project.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -127,7 +129,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTree.html" title="class or interface in javax.swing" class="external-link">JTree</a></code></div>
+<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTree.html" title="class or interface in javax.swing" class="external-link">JTree</a></code></div>
 <div class="col-second even-row-color"><code><a href="#tree" class="member-name-link">tree</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -151,7 +153,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator)" class="member-name-link">WorkspaceFileBrowser</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The sole constructor.</div>
+</div>
 </div>
 </section>
 </li>
@@ -167,8 +171,31 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadTree()" class="member-name-link">reloadTree</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteSelectedFile()" class="member-name-link">deleteSelectedFile</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">If a file is selected, attempts to remove it from the file system.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openSelectedFile(boolean)" class="member-name-link">openSelectedFile</a><wbr>(boolean&nbsp;forceExpansion)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">If a file is selected, opens this file in built-in code editor if its type is supported, otherwise calls the
+ program assigned to that file type.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openSelectedFileInDesktop()" class="member-name-link">openSelectedFileInDesktop</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">If a file is selected, opens this file using the program assigned to that file type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadTree()" class="member-name-link">reloadTree</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Reloads all the project files.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showSelectedFileInDesktop()" class="member-name-link">showSelectedFileInDesktop</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">If a file is selected, opens that file's parent folder via OS native file explorer and highlights the file.</div>
+</div>
 </div>
 </div>
 </div>
@@ -201,7 +228,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="tree">
 <h3>tree</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTree.html" title="class or interface in javax.swing" class="external-link">JTree</a></span>&nbsp;<span class="element-name">tree</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTree.html" title="class or interface in javax.swing" class="external-link">JTree</a></span>&nbsp;<span class="element-name">tree</span></div>
 </section>
 </li>
 </ul>
@@ -216,6 +243,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator)">
 <h3>WorkspaceFileBrowser</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">WorkspaceFileBrowser</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</span></div>
+<div class="block">The sole constructor.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mcreator</code> - Workspace window that is the future owner of this browser instance.</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -230,6 +262,41 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="reloadTree()">
 <h3>reloadTree</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadTree</span>()</div>
+<div class="block">Reloads all the project files.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="openSelectedFile(boolean)">
+<h3>openSelectedFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">openSelectedFile</span><wbr><span class="parameters">(boolean&nbsp;forceExpansion)</span></div>
+<div class="block">If a file is selected, opens this file in built-in code editor if its type is supported, otherwise calls the
+ program assigned to that file type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>forceExpansion</code> - If selected node represents a directory and is expanded, value of <i><code>true</code></i>
+                       will keep it open and value of <i><code>false</code></i> will let it collapse.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="openSelectedFileInDesktop()">
+<h3>openSelectedFileInDesktop</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">openSelectedFileInDesktop</span>()</div>
+<div class="block">If a file is selected, opens this file using the program assigned to that file type.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="showSelectedFileInDesktop()">
+<h3>showSelectedFileInDesktop</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">showSelectedFileInDesktop</span>()</div>
+<div class="block">If a file is selected, opens that file's parent folder via OS native file explorer and highlights the file.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteSelectedFile()">
+<h3>deleteSelectedFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteSelectedFile</span>()</div>
+<div class="block">If a file is selected, attempts to remove it from the file system.</div>
 </section>
 </li>
 </ul>

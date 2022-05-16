@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="boundingboxes/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft.boundingboxes">JBoundingBoxList</a></code>, <code><a href="loottable/JLootTablePool.html" title="class in net.mcreator.ui.minecraft.loottable">JLootTablePool</a></code>, <code><a href="loottable/JLootTablePoolsList.html" title="class in net.mcreator.ui.minecraft.loottable">JLootTablePoolsList</a></code>, <code><a href="potions/JPotionList.html" title="class in net.mcreator.ui.minecraft.potions">JPotionList</a></code>, <code><a href="spawntypes/JSpawnEntriesList.html" title="class in net.mcreator.ui.minecraft.spawntypes">JSpawnEntriesList</a></code></dd>
+<dd><code><a href="boundingboxes/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft.boundingboxes">JBoundingBoxList</a></code>, <code><a href="loottable/JLootTablePool.html" title="class in net.mcreator.ui.minecraft.loottable">JLootTablePool</a></code>, <code><a href="loottable/JLootTablePoolsList.html" title="class in net.mcreator.ui.minecraft.loottable">JLootTablePoolsList</a></code>, <code><a href="potions/JPotionList.html" title="class in net.mcreator.ui.minecraft.potions">JPotionList</a></code>, <code><a href="spawntypes/JSpawnEntriesList.html" title="class in net.mcreator.ui.minecraft.spawntypes">JSpawnEntriesList</a></code>, <code><a href="villagers/JVillagerTradeProfession.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeProfession</a></code>, <code><a href="villagers/JVillagerTradeProfessionsList.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeProfessionsList</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">JEntriesList</span>
@@ -178,11 +178,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerEntryUI(javax.swing.JComponent)" class="member-name-link">registerEntryUI</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&nbsp;entry)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEntryRegisterListener(java.util.function.Consumer)" class="member-name-link">addEntryRegisterListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&gt;&nbsp;entryListener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEntryCreationListener(java.util.function.Consumer)" class="member-name-link">setEntryCreationListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&gt;&nbsp;entryListener)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerEntryUI(javax.swing.JComponent)" class="member-name-link">registerEntryUI</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&nbsp;entry)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -256,9 +256,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setEntryCreationListener(java.util.function.Consumer)">
-<h3>setEntryCreationListener</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEntryCreationListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&gt;&nbsp;entryListener)</span></div>
+<section class="detail" id="addEntryRegisterListener(java.util.function.Consumer)">
+<h3>addEntryRegisterListener</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addEntryRegisterListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a>&gt;&nbsp;entryListener)</span></div>
 </section>
 </li>
 <li>

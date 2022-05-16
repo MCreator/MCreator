@@ -23,6 +23,9 @@ net.mcreator.element.converter.fv22
 net.mcreator.element.converter.fv23
 net.mcreator.element.converter.fv24
 net.mcreator.element.converter.fv25
+net.mcreator.element.converter.fv26
+net.mcreator.element.converter.fv27
+net.mcreator.element.converter.fv28
 net.mcreator.element.converter.fv4
 net.mcreator.element.converter.fv5
 net.mcreator.element.converter.fv6
@@ -65,10 +68,12 @@ net.mcreator.ui.blockly
 net.mcreator.ui.browser
 net.mcreator.ui.browser.action
 net.mcreator.ui.component
+net.mcreator.ui.component.filebrowser
 net.mcreator.ui.component.tree
 net.mcreator.ui.component.util
 net.mcreator.ui.component.zoompane
 net.mcreator.ui.dialogs
+net.mcreator.ui.dialogs.file
 net.mcreator.ui.dialogs.imageeditor
 net.mcreator.ui.dialogs.preferences
 net.mcreator.ui.dialogs.tools
@@ -91,6 +96,7 @@ net.mcreator.ui.minecraft.loottable
 net.mcreator.ui.minecraft.potions
 net.mcreator.ui.minecraft.recipemakers
 net.mcreator.ui.minecraft.spawntypes
+net.mcreator.ui.minecraft.villagers
 net.mcreator.ui.modgui
 net.mcreator.ui.modgui.codeviewer
 net.mcreator.ui.procedure
