@@ -163,7 +163,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				.getVillagerProfessionTextureFileForName(professionTextureFile.getSelectedItem());
 		ImageIcon bg = new ImageIcon(
 				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320));
-		clo.setIcon(ImageUtils.drawOver(bg));
+		clo.setIcon(ImageUtils.drawOver(bg, null));
 	}
 
 	@Override public void reloadDataLists() {

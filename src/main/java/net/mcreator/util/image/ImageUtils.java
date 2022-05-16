@@ -18,6 +18,7 @@
 
 package net.mcreator.util.image;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -66,23 +67,7 @@ public class ImageUtils {
 		return luminance / (float) pixelCount;
 	}
 
-	public static ImageIcon drawOver(ImageIcon i, ImageIcon wh) {
-		Image original = i.getImage();
-		Image over = wh.getImage();
-
-		int x = original.getWidth(null);
-		int y = original.getHeight(null);
-
-		BufferedImage resizedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(original, 0, 0, x, y, null);
-		g.drawImage(over, 0, 0, x, y, null);
-		g.dispose();
-
-		return new ImageIcon(resizedImage);
-	}
-
-	public static ImageIcon drawOver(ImageIcon i) {
+	public static ImageIcon drawOver(ImageIcon i, @Nullable ImageIcon wh) {
 		Image original = i.getImage();
 
 		int x = original.getWidth(null);
@@ -91,6 +76,8 @@ public class ImageUtils {
 		BufferedImage resizedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(original, 0, 0, x, y, null);
+		if (wh != null)
+			g.drawImage(wh.getImage(), 0, 0, x, y, null);
 		g.dispose();
 
 		return new ImageIcon(resizedImage);

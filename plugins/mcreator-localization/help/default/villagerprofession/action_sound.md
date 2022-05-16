@@ -1,1 +1,1 @@
-Villager sound when he uses his profession block.
+Villager sound when they use their profession block.
