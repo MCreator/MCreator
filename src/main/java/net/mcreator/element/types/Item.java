@@ -80,11 +80,6 @@ import java.util.Map;
 	public Procedure onDroppedByPlayer;
 	public Procedure onFinishUsingItem;
 
-	// Legacy
-	public boolean hasDispenseBehavior;
-	public Procedure dispenseSuccessCondition;
-	public Procedure dispenseResultItemstack;
-
 	// Food
 	public boolean isFood;
 	public int nutritionalValue;

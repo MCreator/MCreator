@@ -20,38 +20,54 @@
 package net.mcreator.element.converter.fv29;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.Item;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.types.ItemExtension;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ItemDispenserToItemExtensionConverter implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger(ItemDispenserToItemExtensionConverter.class);
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Item item = (Item) input;
-		if (item.hasDispenseBehavior) {
-			ItemExtension itemExtension = new ItemExtension(
-					new ModElement(workspace, input.getModElement().getName() + "Extension",
-							ModElementType.ITEMEXTENSION));
+		try {
+			JsonObject item = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+			if (item.get("hasDispenseBehavior") != null && item.get("hasDispenseBehavior").getAsBoolean()) {
+				ItemExtension itemExtension = new ItemExtension(
+						new ModElement(workspace, input.getModElement().getName() + "Extension",
+								ModElementType.ITEMEXTENSION));
 
-			itemExtension.item = new MItemBlock(workspace, "CUSTOM:" + input.getModElement().getName());
-			itemExtension.hasDispenseBehavior = item.hasDispenseBehavior;
-			itemExtension.dispenseSuccessCondition = item.dispenseSuccessCondition;
-			itemExtension.dispenseResultItemstack = item.dispenseResultItemstack;
+				itemExtension.item = new MItemBlock(workspace, "CUSTOM:" + input.getModElement().getName());
+				itemExtension.hasDispenseBehavior = item.get("hasDispenseBehavior").getAsBoolean();
+				if (item.get("dispenseSuccessCondition") != null)
+					itemExtension.dispenseSuccessCondition = new Procedure(
+							item.get("dispenseSuccessCondition").getAsJsonObject().get("name").getAsString());
+				if (item.get("dispenseResultItemstack") != null)
+					itemExtension.dispenseResultItemstack = new Procedure(
+							item.get("dispenseResultItemstack").getAsJsonObject().get("name").getAsString());
 
-			itemExtension.getModElement().setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-			workspace.getModElementManager().storeModElementPicture(itemExtension);
-			workspace.addModElement(itemExtension.getModElement());
-			workspace.getGenerator().generateElement(itemExtension);
-			workspace.getModElementManager().storeModElement(itemExtension);
+				itemExtension.getModElement()
+						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+				workspace.getModElementManager().storeModElementPicture(itemExtension);
+				workspace.addModElement(itemExtension.getModElement());
+				workspace.getGenerator().generateElement(itemExtension);
+				workspace.getModElementManager().storeModElement(itemExtension);
+
+				return itemExtension;
+			}
+		} catch (Exception e) {
+			LOG.warn("Failed to update item to new format", e);
 		}
-
-		return item;
+		return null;
 	}
 
 	@Override public int getVersionConvertingTo() {
