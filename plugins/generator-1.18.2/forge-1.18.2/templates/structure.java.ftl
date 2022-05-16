@@ -43,7 +43,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
 		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, FeatureConfiguration.NONE);
-		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(BiomeFilter.biome()));
+		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of());
 		return FEATURE;
 	}
 
