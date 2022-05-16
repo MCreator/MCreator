@@ -69,10 +69,14 @@ public class ${name}Feature extends RandomPatchFeature {
 			RarityFilter.onAverageOnceEvery(32),
 			</#if>
 			InSquarePlacement.spread(),
+			<#if data.generateAtAnyHeight>
+				PlacementUtils.FULL_RANGE
+			<#else>
 			PlacementUtils.HEIGHTMAP<#if
 				(data.plantType == "normal" && data.staticPlantGenerationType == "Grass") ||
 				(data.plantType == "double" && data.doublePlantGenerationType == "Grass") ||
-				data.plantType == "growapable">_WORLD_SURFACE</#if>,
+				data.plantType == "growapable">_WORLD_SURFACE</#if>
+			</#if>,
 			 BiomeFilter.biome()
 		));
 		return FEATURE;
