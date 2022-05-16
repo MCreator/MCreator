@@ -2,7 +2,7 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "command",
+      "name": "cmdparams",
       "check": "String"
     },
     {
@@ -22,7 +22,7 @@
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
-      "command",
+      "cmdparams",
       "entity"
     ]
   }

@@ -17,7 +17,7 @@
 				"z": "entity.getZ()",
 				"world": "entity.level",
 				"entity": "entity",
-				"command": "command",
+				"cmdparams": "cmdparams",
 				"arguments": "event.getParseResults().getContext().build(event.getParseResults().getReader().getString())",
 				"event": "event"
 				}/>

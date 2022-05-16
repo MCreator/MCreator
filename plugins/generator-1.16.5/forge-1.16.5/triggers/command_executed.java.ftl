@@ -19,7 +19,7 @@
 			dependencies.put("z",k);
 			dependencies.put("world",entity.world);
 			dependencies.put("entity",entity);
-			dependencies.put("command",command);
+			dependencies.put("cmdparams",command);
 		    dependencies.put("cmdcontext", ctx);
 			dependencies.put("event",event);
 			executeProcedure(dependencies);
