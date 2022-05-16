@@ -29,6 +29,6 @@ public class AdvancedInput extends DependencyProviderInput {
 
 	@Override public String name() {
 		return this.name;
-	}
+	}public String toString() {return name;}
 
 }

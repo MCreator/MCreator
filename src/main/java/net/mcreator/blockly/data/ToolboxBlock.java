@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "MismatchedQueryAndUpdateOfCollection" }) public class ToolboxBlock {
 	String toolbox_id;
@@ -35,6 +34,9 @@ import java.util.stream.Collectors;
 	@Nullable private List<String> fields;
 	@Nullable private List<IInput> inputs;
 	@Nullable private List<StatementInput> statements;
+	@Nullable private List<IInput> repeating_inputs;
+	@Nullable private List<StatementInput> repeating_statements;
+
 	@Nullable private List<Dependency> dependencies;
 	@Nullable private List<String> warnings;
 	@Nullable private List<String> required_apis;
@@ -54,19 +56,34 @@ import java.util.stream.Collectors;
 
 	public List<String> getInputs() {
 		return inputs != null ?
-				inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::name).collect(Collectors.toList()) :
+				inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::name).toList() :
 				Collections.emptyList();
 	}
 
 	public List<AdvancedInput> getAdvancedInputs() {
 		return inputs != null ?
-				inputs.stream().filter(e -> e instanceof AdvancedInput).map(e -> (AdvancedInput) e)
-						.collect(Collectors.toList()) :
+				inputs.stream().filter(e -> e instanceof AdvancedInput).map(e -> (AdvancedInput) e).toList() :
 				Collections.emptyList();
 	}
 
 	@Nullable public List<StatementInput> getStatements() {
 		return statements;
+	}
+
+	public List<String> getRepeatingInputs() {
+		return repeating_inputs != null ?
+				repeating_inputs.stream().filter(e -> e instanceof NamedInput).map(IInput::name).toList() :
+				Collections.emptyList();
+	}
+
+	public List<AdvancedInput> getRepeatingAdvancedInputs() {
+		return repeating_inputs != null ?
+				repeating_inputs.stream().filter(e -> e instanceof AdvancedInput).map(e -> (AdvancedInput) e).toList() :
+				Collections.emptyList();
+	}
+
+	@Nullable public List<StatementInput> getRepeatingStatements() {
+		return repeating_statements;
 	}
 
 	@Nullable public List<Dependency> getDependencies() {

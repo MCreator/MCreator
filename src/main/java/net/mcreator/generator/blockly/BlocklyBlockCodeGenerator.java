@@ -21,6 +21,7 @@ package net.mcreator.generator.blockly;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.AdvancedInput;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BlocklyBlockCodeGenerator {
 
@@ -145,7 +147,7 @@ public class BlocklyBlockCodeGenerator {
 
 		// next we check for advanced inputs if they exist, we process them and add to data model
 		if (!toolboxBlock.getAdvancedInputs().isEmpty()) {
-			for (var advancedInput : toolboxBlock.getAdvancedInputs()) {
+			for (AdvancedInput advancedInput : toolboxBlock.getAdvancedInputs()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name")
@@ -217,6 +219,156 @@ public class BlocklyBlockCodeGenerator {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("blockly.warnings.statement_input_empty", statementInput.name, type)));
 				}
+			}
+		}
+
+		var LOG = org.apache.logging.log4j.LogManager.getLogger("WeAreHere");
+		LOG.error(elements);
+		// next we check for input groups if they are defined, we process them and add to data model
+		if (!toolboxBlock.getRepeatingInputs().isEmpty()) {
+			LOG.debug("Generating repeating inputs " + toolboxBlock.getRepeatingInputs() + " on block " + type);
+			for (String inputName : toolboxBlock.getRepeatingInputs()) {
+				LOG.debug(inputName);
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name").startsWith(inputName)
+								&& e.getAttribute("name").substring(inputName.length()).replaceAll("\\d", "")
+								.equals("")).collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					LOG.debug("Elements match!");
+					if (matchingElements.containsKey(inputName + idx)) {
+						LOG.debug(inputName + idx + " is present");
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
+								matchingElements.remove(inputName + idx));
+						processedElements.put(idx, generatedCode);
+					} else {
+						LOG.debug(inputName + idx + " is absent");
+						processedElements.put(idx, null); // we add null at this index to not shift other elements
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.input_empty", inputName + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("input_list$" + inputName,
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+				LOG.debug(java.util.Arrays.asList((String[]) dataModel.get("input_list$" + inputName)));
+			}
+		}
+
+		// next we check for advanced input groups if they are defined, we process them and add to data model
+		if (!toolboxBlock.getRepeatingAdvancedInputs().isEmpty()) {
+			LOG.info("Generating repeating advanced inputs " + toolboxBlock.getRepeatingAdvancedInputs() + " on block " + type);
+			for (AdvancedInput advancedInput : toolboxBlock.getRepeatingAdvancedInputs()) {
+				LOG.info(advancedInput.name());
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
+								.startsWith(advancedInput.name()) && e.getAttribute("name")
+								.substring(advancedInput.name().length()).replaceAll("\\d", "").equals(""))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					LOG.info("Elements match!");
+					if (matchingElements.containsKey(advancedInput.name() + idx)) {
+						LOG.info(advancedInput.name() + idx + " is present");
+						// check if nesting statement block that already provides any dependency with
+						// a same name, to avoid compile errors due to variable redefinitions
+						if (advancedInput.provides != null) {
+							for (Dependency dependency : advancedInput.provides) {
+								if (master.checkIfDepProviderInputsProvide(dependency)) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.duplicate_dependencies_provided",
+													advancedInput.name() + idx)));
+									return; // no need to do further processing, this needs to be resolved first by the user
+								}
+							}
+						}
+
+						AdvancedInput input = new AdvancedInput(advancedInput.name() + idx);
+						input.provides = advancedInput.provides;
+
+						master.pushDepProviderInputStack(input);
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
+								matchingElements.remove(advancedInput.name() + idx));
+						master.popDepProviderInputStack();
+
+						processedElements.put(idx, generatedCode);
+					} else {
+						LOG.info(advancedInput.name() + idx + " is absent");
+						processedElements.put(idx, null); // we add null at this index to not shift other elements
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.input_empty", advancedInput.name() + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("input_list$" + advancedInput.name(),
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+				LOG.info(java.util.Arrays.asList((String[]) dataModel.get("input_list$" + advancedInput.name())));
+			}
+		}
+
+		// next we check for statement input groups if they are defined, we process them and add to data model
+		if (toolboxBlock.getRepeatingStatements() != null) {
+			LOG.warn("Generating repeating statement inputs " + toolboxBlock.getRepeatingStatements() + " on block " + type);
+			for (StatementInput statementInput : toolboxBlock.getRepeatingStatements()) {
+				LOG.warn(statementInput.name);
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> {
+							LOG.trace(e.getNodeName());
+							LOG.trace(e.getNodeName().equals("statement"));
+							LOG.trace(e.getAttribute("name").startsWith(statementInput.name));
+							LOG.trace(e.getAttribute("name").startsWith(statementInput.name) ?
+									e.getAttribute("name").substring(statementInput.name.length()).replaceAll("\\d", "").equals("") :
+									e.getAttribute("name"));
+							return e.getNodeName().equals("statement") && e.getAttribute("name").startsWith(statementInput.name) && e.getAttribute("name")
+									.substring(statementInput.name.length()).replaceAll("\\d", "").equals("");
+						}).collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				LOG.warn(matchingElements);
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					LOG.warn("Elements match!");
+					if (matchingElements.containsKey(statementInput.name + idx)) {
+						LOG.warn(statementInput.name + idx + " is present");
+						// check if nesting statement block that already provides any dependency with
+						// a same name, to avoid compile errors due to variable redefinitions
+						if (statementInput.provides != null) {
+							for (Dependency dependency : statementInput.provides) {
+								if (master.checkIfDepProviderInputsProvide(dependency)) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.duplicate_dependencies_provided.statement",
+													statementInput.name + idx)));
+									return; // no need to do further processing, this needs to be resolved first by the user
+								}
+							}
+						}
+
+						StatementInput input = new StatementInput(statementInput.name + idx);
+						input.provides = statementInput.provides;
+						input.disable_local_variables = statementInput.disable_local_variables;
+
+						LOG.warn(matchingElements.get(statementInput.name + idx).getTextContent());
+						master.pushDepProviderInputStack(input);
+						String generatedCode = BlocklyToCode.directProcessStatementBlock(master,
+								matchingElements.remove(statementInput.name + idx));
+						master.popDepProviderInputStack();
+
+						processedElements.put(idx, generatedCode);
+					} else {
+						LOG.warn(statementInput.name + idx + " is absent");
+						processedElements.put(idx, "");
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+								L10N.t("blockly.warnings.statement_input_empty", statementInput.name + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("statement_list$" + statementInput.name,
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+				LOG.warn(java.util.Arrays.asList((String[]) dataModel.get("statement_list$" + statementInput.name)));
 			}
 		}
 
