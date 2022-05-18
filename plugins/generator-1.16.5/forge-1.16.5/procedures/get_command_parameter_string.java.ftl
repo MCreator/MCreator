@@ -1,5 +1,5 @@
 <#if field$type == "string">
-(StringArgumentType.getString(cmdargs, "${field$param}"))
+(StringArgumentType.getString(arguments, "${field$param}"))
 <#elseif field$type == "message">
 (new Object() {
             public String getMessage() {

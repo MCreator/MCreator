@@ -13,7 +13,7 @@
 			dependencies.put("world",entity.world);
 			dependencies.put("entity",entity);
 			dependencies.put("command",event.getParseResults().getReader().getString());
-		    dependencies.put("cmdcontext", ctx);
+		    dependencies.put("arguments", ctx);
 			dependencies.put("event",event);
 			executeProcedure(dependencies);
 		}
