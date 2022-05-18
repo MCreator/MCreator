@@ -134,16 +134,16 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		onBulletHitsBlock = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_block"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_block"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 		onBulletHitsPlayer = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_player"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_player"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity"));
 		onBulletHitsEntity = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_entity"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_entity"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity"));
 		onBulletFlyingTick = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_flying_tick"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_flying_tick"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("rangeditem/when_used"), mcreator,
 				L10N.t("elementgui.ranged_item.event_on_use"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));

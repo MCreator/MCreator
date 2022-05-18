@@ -153,6 +153,6 @@ import java.util.Map;
 	}
 
 	public boolean hasEatResultItem() {
-		return isFood && !eatResultItem.isEmpty();
+		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
 }

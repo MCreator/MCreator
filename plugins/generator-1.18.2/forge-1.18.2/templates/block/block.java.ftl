@@ -70,66 +70,66 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro blockProperties>
-	<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		BlockBehaviour.Properties.of(Material.${data.material},MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
-	<#else>
-		BlockBehaviour.Properties.of(Material.${data.material})
-	</#if>
-			<#if data.isCustomSoundType>
-				.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
-				() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
-				() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
-				() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
-				() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
-			<#else>
-				.sound(SoundType.${data.soundOnStep})
-			</#if>
-			<#if data.unbreakable>
-				.strength(-1, 3600000)
-			<#elseif (data.hardness == 0) && (data.resistance == 0)>
-				.instabreak()
-			<#elseif data.hardness == data.resistance>
-				.strength(${data.hardness}f)
-			<#else>
-				.strength(${data.hardness}f, ${data.resistance}f)
-			</#if>
-			<#if data.luminance != 0>
-				.lightLevel(s -> ${data.luminance})
-			</#if>
-			<#if data.destroyTool != "Not specified">
-				.requiresCorrectToolForDrops()
-			</#if>
-			<#if data.isNotColidable>
-				.noCollission()
-			</#if>
-			<#if data.slipperiness != 0.6>
-				.friction(${data.slipperiness}f)
-			</#if>
-			<#if data.speedFactor != 1.0>
-				.speedFactor(${data.speedFactor}f)
-			</#if>
-			<#if data.jumpFactor != 1.0>
-				.jumpFactor(${data.jumpFactor}f)
-			</#if>
-			<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
-				.noOcclusion()
-			</#if>
-			<#if data.tickRandomly>
-				.randomTicks()
-			</#if>
-			<#if data.emissiveRendering>
-				.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
-			</#if>
-			<#if data.hasTransparency>
-				.isRedstoneConductor((bs, br, bp) -> false)
-			</#if>
-			<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
-					|| (data.blockBase?has_content && data.blockBase == "Stairs")>
-				.dynamicShape()
-			</#if>
-			<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-				.noDrops()
-			</#if>
+		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
+			BlockBehaviour.Properties.of(Material.${data.material}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#else>
+			BlockBehaviour.Properties.of(Material.${data.material})
+		</#if>
+		<#if data.isCustomSoundType>
+			.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
+			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
+			() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
+			() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
+			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+		<#else>
+			.sound(SoundType.${data.soundOnStep})
+		</#if>
+		<#if data.unbreakable>
+			.strength(-1, 3600000)
+		<#elseif (data.hardness == 0) && (data.resistance == 0)>
+			.instabreak()
+		<#elseif data.hardness == data.resistance>
+			.strength(${data.hardness}f)
+		<#else>
+			.strength(${data.hardness}f, ${data.resistance}f)
+		</#if>
+		<#if data.luminance != 0>
+			.lightLevel(s -> ${data.luminance})
+		</#if>
+		<#if data.destroyTool != "Not specified">
+			.requiresCorrectToolForDrops()
+		</#if>
+		<#if data.isNotColidable>
+			.noCollission()
+		</#if>
+		<#if data.slipperiness != 0.6>
+			.friction(${data.slipperiness}f)
+		</#if>
+		<#if data.speedFactor != 1.0>
+			.speedFactor(${data.speedFactor}f)
+		</#if>
+		<#if data.jumpFactor != 1.0>
+			.jumpFactor(${data.jumpFactor}f)
+		</#if>
+		<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+			.noOcclusion()
+		</#if>
+		<#if data.tickRandomly>
+			.randomTicks()
+		</#if>
+		<#if data.emissiveRendering>
+			.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
+		</#if>
+		<#if data.hasTransparency>
+			.isRedstoneConductor((bs, br, bp) -> false)
+		</#if>
+		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
+				|| (data.blockBase?has_content && data.blockBase == "Stairs")>
+			.dynamicShape()
+		</#if>
+		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
+			.noDrops()
+		</#if>
 	</#macro>
 
 	public ${name}Block() {
@@ -359,7 +359,7 @@ public class ${name}Block extends
 		return true;
 	}
 
-	@Override public int getSignal(BlockState blockstate, BlockGetter blockAccess, BlockPos pos, Direction side) {
+	@Override public int getSignal(BlockState blockstate, BlockGetter blockAccess, BlockPos pos, Direction direction) {
 		<#if hasProcedure(data.emittedRedstonePower)>
 			int x = pos.getX();
 			int y = pos.getY();

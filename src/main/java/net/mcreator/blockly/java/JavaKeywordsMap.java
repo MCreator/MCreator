@@ -40,7 +40,7 @@ public final class JavaKeywordsMap {
 		put("ADD", "+");
 		put("MINUS", "-");
 		put("MULTIPLY", "*");
-		put("DIVIDE", "/");
+		put("DIVIDE", "/ "); // The space prevents accidental inline comments from int/float markers
 		put("MOD", "%");
 		put("BAND", "&");
 		put("BOR", "|");
@@ -79,6 +79,7 @@ public final class JavaKeywordsMap {
 		put("PI", "Math.PI");
 		put("E", "Math.E");
 		put("RANDOM", "Math.random()");
+		put("NORMAL", "(new Random().nextGaussian())");
 		put("INFINITY", "Double.POSITIVE_INFINITY");
 		put("NINFINITY", "Double.NEGATIVE_INFINITY");
 		put("NAN", "Double.NaN");

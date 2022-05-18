@@ -1,7 +1,7 @@
 {
   "args0": [
     {
-      "type": "field_input",
+      "type": "field_javaname",
       "name": "textfield",
       "text": "textFieldName"
     },
