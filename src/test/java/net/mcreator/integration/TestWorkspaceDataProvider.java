@@ -1600,7 +1600,7 @@ public class TestWorkspaceDataProvider {
 						trade.entries.add(entry);
 					}
 					VillagerTrade.CustomTradeEntry wanderingTrade = new VillagerTrade.CustomTradeEntry();
-					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(), "WanderingTrader");
+					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(), "WANDERING_TRADER");
 					wanderingTrade.entries = new ArrayList<>();
 
 					int wanderingEntries = random.nextInt(10) + 1;
