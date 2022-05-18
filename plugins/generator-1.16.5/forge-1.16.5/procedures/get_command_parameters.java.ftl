@@ -1,9 +1,9 @@
 (new Object(){
 	public String getText(){
-		String param=(String)command.get("${field$paramid}");
+		String param=(String)cmdparams.get("${field$paramid}");
 		if(param!=null){
-		    return param;
+		return param;
 		}
-	    return"";
-	}
-}.getText())
+		return"";
+		}
+		}.getText())
