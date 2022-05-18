@@ -89,7 +89,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
-		} else if (type == ModElementType.ITEMEXTENSION || type == ModElementType.TAB) {
+		} else if (type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), random, false, false, 2));
