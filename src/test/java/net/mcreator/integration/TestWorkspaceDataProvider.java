@@ -1126,7 +1126,7 @@ public class TestWorkspaceDataProvider {
 			itemExtension.enableFuel = !emptyLists;
 			itemExtension.fuelPower = new NumberProcedure(emptyLists ? null : "number1", 1600);
 			itemExtension.fuelSuccessCondition = !emptyLists ? null : new Procedure("condition1");
-			itemExtension.layerChance = new double[] { 0.3d, 0.5d, 1d}[valueIndex];
+			itemExtension.layerChance = new double[] {0d, 0.3d, 0.5d, 1d}[valueIndex];
 			itemExtension.hasDispenseBehavior = _true;
 			itemExtension.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
 			itemExtension.dispenseResultItemstack = !_true ? null :
