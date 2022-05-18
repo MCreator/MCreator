@@ -48,6 +48,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
@@ -161,9 +162,12 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return;
 		File professionTexture = mcreator.getFolderManager()
 				.getTextureFile(professionTextureFile.getSelectedItem(), TextureType.OTHER);
-		ImageIcon bg = new ImageIcon(
-				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320));
-		clo.setIcon(ImageUtils.drawOver(bg, null));
+		Image image = ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320);
+		BufferedImage bg = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2D = bg.createGraphics();
+		graphics2D.drawImage(image, 0, 0, image.getWidth(null), image.getHeight(null), null);
+		graphics2D.dispose();
+		clo.setIcon(new ImageIcon(bg));
 	}
 
 	@Override public void reloadDataLists() {
