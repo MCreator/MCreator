@@ -23,7 +23,10 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
@@ -47,6 +50,6 @@ public class ItemExtension extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateFuelPreviewPicture(getModElement().getWorkspace(), item);
+		return ImageUtils.toBufferedImage(MCItem.getBlockIconBasedOnName(getModElement().getWorkspace(), item.getUnmappedValue()).getImage());
 	}
 }
