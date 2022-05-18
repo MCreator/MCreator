@@ -160,7 +160,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		if (professionTextureFile.getSelectedItem() == null)
 			return;
 		File professionTexture = mcreator.getFolderManager()
-				.getVillagerProfessionTextureFileForName(professionTextureFile.getSelectedItem());
+				.getTextureFile(professionTextureFile.getSelectedItem(), TextureType.OTHER);
 		ImageIcon bg = new ImageIcon(
 				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320));
 		clo.setIcon(ImageUtils.drawOver(bg, null));
