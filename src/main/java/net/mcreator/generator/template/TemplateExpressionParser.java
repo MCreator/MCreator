@@ -110,14 +110,10 @@ public class TemplateExpressionParser {
 		try {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
-			dataModel.put("retVal", retVal);
-			if (dataHolder != null)
-				dataModel.put("data", dataHolder);
+			dataModel.put("_retVal", retVal);
+			dataModel.put("data", dataHolder);
 
-			String expr = !checkStartsWithAnyKey(expression, dataModel) && dataHolder != null ?
-					"data." + expression : // by default, dataHolder is used to process the expression
-					expression;
-			Template t = new Template("INLINE EXPRESSION", new StringReader("${retVal.set(" + expr + ")}"),
+			Template t = new Template("INLINE EXPRESSION", new StringReader("${_retVal.set(" + expression + ")}"),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
 			t.process(dataModel, new StringWriter());
 
@@ -126,14 +122,6 @@ public class TemplateExpressionParser {
 			LOG.error("Failed to parse FTL expression: " + expression, e);
 			return null;
 		}
-	}
-
-	private static boolean checkStartsWithAnyKey(String expression, Map<String, Object> dataModel) {
-		for (String key : dataModel.keySet()) {
-			if (expression.startsWith(key + ".") || expression.startsWith(key + "?"))
-				return true;
-		}
-		return false;
 	}
 
 	public enum Operator {
