@@ -25,6 +25,7 @@ import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -47,9 +48,5 @@ public class ItemExtension extends GeneratableElement {
 
 	public ItemExtension(ModElement element) {
 		super(element);
-	}
-
-	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.toBufferedImage(MCItem.getBlockIconBasedOnName(getModElement().getWorkspace(), item.getUnmappedValue()).getImage());
 	}
 }
