@@ -3,13 +3,6 @@
 	@SubscribeEvent public static void onCommand(CommandEvent event) {
 		Entity entity = event.getParseResults().getContext().getSource().getEntity();
 		if (entity != null) {
-	    HashMap<String, String> command = new HashMap<>();
-	    int index = -1;
-	    for (String param : event.getParseResults().getReader().getString().split("\\s+")) {
-	    	if (index >= 0)
-	    		command.put(Integer.toString(index), param);
-	    	index++;
-	    }
 			<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "entity.getX()",
@@ -17,7 +10,7 @@
 				"z": "entity.getZ()",
 				"world": "entity.level",
 				"entity": "entity",
-				"command": "command",
+				"command": "event.getParseResults().getReader().getString()",
 				"arguments": "event.getParseResults().getContext().build(event.getParseResults().getReader().getString())",
 				"event": "event"
 				}/>
