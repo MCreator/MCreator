@@ -337,7 +337,7 @@ public class WorkspaceDialogs {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
 						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
-						workspace == null);
+						workspace == null, workspace);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});
@@ -347,7 +347,7 @@ public class WorkspaceDialogs {
 					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
 									workspace.getGeneratorConfiguration().getGeneratorFlavor() :
-									flavorFilter, workspace == null);
+									flavorFilter, workspace == null, workspace);
 					if (gc != null)
 						generator.setSelectedItem(gc);
 				}

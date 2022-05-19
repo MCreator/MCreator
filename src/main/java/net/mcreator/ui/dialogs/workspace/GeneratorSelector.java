@@ -29,6 +29,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.workspace.ShareableZIPManager;
+import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -36,6 +38,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Map;
 
@@ -43,8 +46,18 @@ public class GeneratorSelector {
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
 
+	/**
+	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
+	 *
+	 * @param parent <p>The window to attach the dialog</p>
+	 * @param current <p>The current generator settings used</p>
+	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
+	 * @param newWorkspace <p>Indicate if we need to use features specific to existing workspaces or not</p>
+	 * @param workspace <p>The workspace to backup</p>
+	 * @return <p>The {@link GeneratorConfiguration} to use</p>
+	 */
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace) {
+			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace, Workspace workspace) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
@@ -59,6 +72,9 @@ public class GeneratorSelector {
 			GeneratorStats stats = generatorConfiguration.getGeneratorStats();
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
+				generator.addItem(generatorConfiguration);
+			} else if (((currentFlavor == GeneratorFlavor.FORGE && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC) ||
+					(currentFlavor == GeneratorFlavor.FABRIC && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -191,7 +207,24 @@ public class GeneratorSelector {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
-			return (GeneratorConfiguration) generator.getSelectedItem();
+			if (workspace != null) {
+				if ((currentFlavor == GeneratorFlavor.FORGE
+						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FABRIC) ||
+						(currentFlavor == GeneratorFlavor.FABRIC &&
+								((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FORGE)) {
+					int confirmval = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.generator_selector.confirm"),
+							L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+					if (confirmval == JOptionPane.OK_OPTION) {
+						ShareableZIPManager.exportZIP("Workspace backup",
+								new File(workspace.getFolderManager().getWorkspaceCacheDir(),
+										"FullBackup" + workspace.getMCreatorVersion() + ".zip"), workspace.getWorkspaceFolder(), parent, true);
+						return (GeneratorConfiguration) generator.getSelectedItem();
+					}
+				}
+			} else {
+				return (GeneratorConfiguration) generator.getSelectedItem();
+			}
 		}
 		return null;
 	}
