@@ -1124,13 +1124,12 @@ public class TestWorkspaceDataProvider {
 			itemExtension.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
-			itemExtension.fuelPower = new NumberProcedure(emptyLists ? null : "number1", 1600);
-			itemExtension.fuelSuccessCondition = !emptyLists ? null : new Procedure("condition1");
+			itemExtension.fuelPower = new NumberProcedure(_true ? "number1" : null, 1600);
+			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.layerChance = new double[] {0d, 0.3d, 0.5d, 1d}[valueIndex];
-			itemExtension.hasDispenseBehavior = _true;
-			itemExtension.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
-			itemExtension.dispenseResultItemstack = !_true ? null :
-					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
+			itemExtension.hasDispenseBehavior = emptyLists;
+			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
+			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
 			return itemExtension;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
