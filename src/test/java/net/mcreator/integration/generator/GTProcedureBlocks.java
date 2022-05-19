@@ -142,6 +142,19 @@ public class GTProcedureBlocks {
 											.append(opt.get(1).getAsString()).append("</field>");
 									processed++;
 									break;
+								case "field_data_list_selector":
+									String type = arg.get("datalist").getAsString();
+									if (type.equals("enchantment"))
+										type = "enhancement";
+									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
+									if (values.length > 0 && !values[0].equals("")) {
+										String value = type.equals("entity") ?
+												"EntityZombie" : ListUtils.getRandomItem(random, values);
+										additionalXML.append("<field name=\"").append(field).append("\">")
+												.append(value).append("</field>");
+										processed++;
+									}
+									break;
 								}
 								break;
 							}
