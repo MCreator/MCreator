@@ -162,10 +162,10 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return;
 		File professionTexture = mcreator.getFolderManager()
 				.getTextureFile(professionTextureFile.getSelectedItem(), TextureType.OTHER);
-		Image image = ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320);
-		BufferedImage bg = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bg = new BufferedImage(320, 320, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2D = bg.createGraphics();
-		graphics2D.drawImage(image, 0, 0, image.getWidth(null), image.getHeight(null), null);
+		graphics2D.drawImage(ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320),
+				0, 0, 320, 320, null);
 		graphics2D.dispose();
 		clo.setIcon(new ImageIcon(bg));
 	}
