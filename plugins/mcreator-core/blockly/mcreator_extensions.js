@@ -105,11 +105,6 @@ Blockly.Extensions.registerMutator('variable_entity_input',
         }
     });
 
-Blockly.Extensions.register('biome_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('biome'), 'biome');
-    });
-
 Blockly.Extensions.register('entity_list_provider',
     function () {
         this.appendDummyInput().appendField(new FieldDataListSelector('entity'), 'entity');
@@ -158,11 +153,6 @@ Blockly.Extensions.register('gamerulesnumber_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesnumber"))), 'gamerulesnumber');
-    });
-
-Blockly.Extensions.register('enhancement_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector("enchantment"), 'enhancement');
     });
 
 Blockly.Extensions.register('schematic_list_provider',
