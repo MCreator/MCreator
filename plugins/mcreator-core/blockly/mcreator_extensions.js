@@ -148,11 +148,6 @@ Blockly.Extensions.register('dimension_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension"))), 'dimension');
     });
 
-Blockly.Extensions.register('achievement_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('achievement'), 'achievement');
-    });
-
 Blockly.Extensions.register('effect_list_provider',
     function () {
         this.appendDummyInput().appendField(new FieldDataListSelector('effect'), 'potion'); // field name is potion for legacy reasons
