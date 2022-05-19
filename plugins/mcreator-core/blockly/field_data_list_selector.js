@@ -9,7 +9,6 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         this.entry = FieldDataListSelector.getDefaultEntry();
 
         this.EDITABLE = true;
-        this.SERIALIZABLE = true;
     }
 
     // The default entry is ",No entry selected". Since the value is an empty string, the procedure editor will show a compile error
@@ -19,7 +18,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
 
     // Create the field from the json definition
     static fromJson(options) {
-        return new FieldDataListSelector(options['datalist']);
+        return new FieldDataListSelector(Blockly.utils.parsing.replaceMessageReferences(options['datalist']));
     }
 
     // Initialize the field with a rectangle surrounding the text
