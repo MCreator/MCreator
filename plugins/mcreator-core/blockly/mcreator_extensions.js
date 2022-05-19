@@ -165,17 +165,6 @@ Blockly.Extensions.register('enhancement_list_provider',
         this.appendDummyInput().appendField(new FieldDataListSelector("enchantment"), 'enhancement');
     });
 
-Blockly.Extensions.register('sound_list_provider',
-    function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
-            .appendField(new FieldDataListSelector('sound'), 'sound');
-    });
-
-Blockly.Extensions.register('particle_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('particle'), 'particle');
-    });
-
 Blockly.Extensions.register('schematic_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
