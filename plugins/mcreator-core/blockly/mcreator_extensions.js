@@ -105,11 +105,6 @@ Blockly.Extensions.registerMutator('variable_entity_input',
         }
     });
 
-Blockly.Extensions.register('entity_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('entity'), 'entity');
-    });
-
 Blockly.Extensions.register('gui_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
