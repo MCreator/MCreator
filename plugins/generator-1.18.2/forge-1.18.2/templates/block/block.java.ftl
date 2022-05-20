@@ -245,38 +245,6 @@ public class ${name}Block extends
 			</#if>
 			builder.add(${props?join(", ")});
 	}
-	</#if>
-
-	<#if data.rotationMode != 0>
-		<#if data.rotationMode != 5>
-		public BlockState rotate(BlockState state, Rotation rot) {
-			return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-		}
-
-		public BlockState mirror(BlockState state, Mirror mirrorIn) {
-			return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
-		}
-		<#else>
-		@Override public BlockState rotate(BlockState state, Rotation rot) {
-			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-				if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.X) {
-					return state.setValue(AXIS, Direction.Axis.Z);
-				} else if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.Z) {
-					return state.setValue(AXIS, Direction.Axis.X);
-				}
-			}
-			return state;
-		}
-		</#if>
-
-	<#if data.rotationMode == 1 && data.enablePitch>
-	private AttachFace faceForDirection(Direction direction) {
-		if (direction.getAxis() == Direction.Axis.Y)
-			return direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR;
-		else
-			return AttachFace.WALL;
-	}
-	</#if>
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -322,6 +290,38 @@ public class ${name}Block extends
 	            </#if>;
 		</#if>
 	}
+	</#if>
+
+	<#if data.rotationMode != 0>
+		<#if data.rotationMode != 5>
+		public BlockState rotate(BlockState state, Rotation rot) {
+			return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+		}
+
+		public BlockState mirror(BlockState state, Mirror mirrorIn) {
+			return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+		}
+		<#else>
+		@Override public BlockState rotate(BlockState state, Rotation rot) {
+			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
+				if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.X) {
+					return state.setValue(AXIS, Direction.Axis.Z);
+				} else if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.Z) {
+					return state.setValue(AXIS, Direction.Axis.X);
+				}
+			}
+			return state;
+		}
+		</#if>
+
+		<#if data.rotationMode == 1 && data.enablePitch>
+		private AttachFace faceForDirection(Direction direction) {
+			if (direction.getAxis() == Direction.Axis.Y)
+				return direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR;
+			else
+				return AttachFace.WALL;
+		}
+		</#if>
 	</#if>
 
 	<#if hasProcedure(data.placingCondition)>
