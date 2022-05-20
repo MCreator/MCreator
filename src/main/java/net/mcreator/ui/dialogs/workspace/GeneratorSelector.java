@@ -73,8 +73,8 @@ public class GeneratorSelector {
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
 				generator.addItem(generatorConfiguration);
-			} else if (((currentFlavor == GeneratorFlavor.FORGE && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC) ||
-					(currentFlavor == GeneratorFlavor.FABRIC && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)) && !newWorkspace) {
+			} else if ((currentFlavor == GeneratorFlavor.FORGE && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
+					currentFlavor == GeneratorFlavor.FABRIC && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -208,10 +208,10 @@ public class GeneratorSelector {
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
 			if (workspace != null) {
-				if ((currentFlavor == GeneratorFlavor.FORGE
-						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FABRIC) ||
-						(currentFlavor == GeneratorFlavor.FABRIC &&
-								((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FORGE)) {
+				if (currentFlavor == GeneratorFlavor.FORGE
+						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
+						currentFlavor == GeneratorFlavor.FABRIC &&
+								((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FORGE) {
 					int confirmval = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.generator_selector.confirm"),
 							L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
