@@ -58,8 +58,8 @@ import java.util.*;
 
 public class TestWorkspaceDataProvider {
 
-	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
-		return new ModElement(workspace, "Example" + type.getRegistryName() + sufix, type);
+	private static ModElement me(Workspace workspace, ModElementType<?> type, String suffix) {
+		return new ModElement(workspace, "Example" + type.getRegistryName() + suffix, type);
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
@@ -1240,6 +1240,7 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+			block.enablePitch = !_true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
