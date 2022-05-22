@@ -1,4 +1,4 @@
-<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing pitchType="wall">
+<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing pitchType="floor">
     return <#if negativeBoxes?size != 0>VoxelShapes.combineAndSimplify(</#if>
     VoxelShapes.or(
     <#list positiveBoxes as box>
