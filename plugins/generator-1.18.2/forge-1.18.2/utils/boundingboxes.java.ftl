@@ -1,4 +1,4 @@
-<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing pitchType="wall">
+<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing pitchType="floor">
     return <#if negativeBoxes?size != 0>Shapes.join(</#if>
     <@mergeBoxes positiveBoxes, facing, pitchType/>
     <#if negativeBoxes?size != 0>
