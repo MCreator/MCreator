@@ -41,24 +41,45 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE) public class ${JavaModName}Trades {
 
-    @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
-        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-
+    <#if w.hasVillagerTrades(true)>
+    @SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
         <#list villagertrades as trade>
             <#list trade.tradeEntries as tradeEntry>
-                if (event.getType() == ${tradeEntry.villagerProfession}<#if !tradeEntry.villagerProfession?starts_with("VillagerProfession.")>.get()</#if>) {
-                <#list tradeEntry.entries as entry>
-                    trades.get(${entry.level}).add(
-					    new BasicItemListing(
-                            ${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
-                            <#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
-                            ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)},
-                            ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f
-                        )
-                    );
-                </#list>
-                }
+                <#if tradeEntry.villagerProfession == "WanderingTrader">
+                    <#list tradeEntry.entries as entry>
+                        event.getGenericTrades().add(
+                        new BasicItemListing(
+                        ${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
+                        <#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
+                        ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)},
+                        ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f
+                        ));
+                    </#list>
+                </#if>
             </#list>
         </#list>
     }
+    </#if>
+
+    <#if w.hasVillagerTrades(false)>
+    @SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
+        <#list villagertrades as trade>
+            <#list trade.tradeEntries as tradeEntry>
+                <#if tradeEntry.villagerProfession != "WanderingTrader">
+                    if (event.getType() == ${tradeEntry.villagerProfession}<#if !tradeEntry.villagerProfession?starts_with("VillagerProfession.")>.get()</#if>) {
+                    <#list tradeEntry.entries as entry>
+                        event.getTrades().get(${entry.level}).add(
+                        new BasicItemListing(
+                        ${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
+                        <#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
+                        ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)},
+                        ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f
+                        ));
+                    </#list>
+                    }
+                </#if>
+            </#list>
+        </#list>
+    }
+    </#if>
 }
