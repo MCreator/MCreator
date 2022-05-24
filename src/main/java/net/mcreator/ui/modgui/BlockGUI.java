@@ -207,6 +207,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from block face",
 					"<html>D/U/N/S/W/E rotation<br><small>Rotation from block face",
 					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
+	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
@@ -319,8 +320,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
-				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -549,7 +550,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
 
-		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel rent = new JPanel(new GridLayout(4, 2, 0, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
@@ -559,6 +560,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.rotation_mode")));
 		rent.add(rotationMode);
 
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enable_pitch"),
+				L10N.label("elementgui.block.enable_pitch")));
+		rent.add(enablePitch);
+
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
 				L10N.label("elementgui.block.is_waterloggable")));
 		rent.add(isWaterloggable);
@@ -566,6 +571,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.setPreferredSize(new Dimension(320, 42));
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+
+		enablePitch.setOpaque(false);
+		enablePitch.setEnabled(false);
+		rotationMode.addActionListener(e -> {
+			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
+			if (!enablePitch.isEnabled())
+				enablePitch.setSelected(false);
+		});
 
 		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
@@ -622,9 +635,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		if (!isEditingMode()) { // Add first bounding box
+		if (!isEditingMode()) // add first bounding box
 			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
-		}
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
@@ -1344,6 +1356,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setTextureFromTextureName(block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
+		enablePitch.setSelected(block.enablePitch);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1488,6 +1501,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isItemTinted = isItemTinted.isSelected();
 		block.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
+		block.enablePitch = enablePitch.isSelected();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();

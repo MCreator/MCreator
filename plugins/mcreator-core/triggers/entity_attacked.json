@@ -29,7 +29,7 @@
       "type": "number"
     },
     {
-      "name": "imediatesourceentity",
+      "name": "immediatesourceentity",
       "type": "entity"
     }
   ],

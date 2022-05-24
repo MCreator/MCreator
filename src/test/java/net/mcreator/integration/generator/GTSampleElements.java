@@ -47,8 +47,8 @@ public class GTSampleElements {
 					me.putMetadata("dependencies", Arrays.asList(
 							Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")));
 				} else if (i < 13) {
-					me.putMetadata("dependencies", Arrays.asList(
-							Dependency.fromString("x:number/y:number/z:number/world:world")));
+					me.putMetadata("dependencies",
+							Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 				} else {
 					me.putMetadata("dependencies", Collections.emptyList());
 				}

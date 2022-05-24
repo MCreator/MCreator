@@ -1312,7 +1312,7 @@ public class MinecraftImageGenerator {
 				blockColor = Dependency.getColor("itemstack");
 			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies.contains(
 					new Dependency("sourceentity", "")) || dependencies.contains(
-					new Dependency("imediatesourceentity", ""))) {
+					new Dependency("immediatesourceentity", ""))) {
 				blockColor = Dependency.getColor("entity");
 			} else if (dependencies.contains(new Dependency("world", ""))) {
 				blockColor = Dependency.getColor("world");

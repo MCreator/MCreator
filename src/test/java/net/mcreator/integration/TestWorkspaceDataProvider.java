@@ -58,8 +58,8 @@ import java.util.*;
 
 public class TestWorkspaceDataProvider {
 
-	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
-		return new ModElement(workspace, "Example" + type.getRegistryName() + sufix, type);
+	private static ModElement me(Workspace workspace, ModElementType<?> type, String suffix) {
+		return new ModElement(workspace, "Example" + type.getRegistryName() + suffix, type);
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
@@ -821,13 +821,12 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
-			dimension.biomesInDimension.add(
-					new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			if (!emptyLists) {
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
+				dimension.biomesInDimension.addAll(
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			} else {
 				dimension.biomesInDimension.add(
 						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			}
@@ -1027,6 +1026,7 @@ public class TestWorkspaceDataProvider {
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.patchSize = 46;
+			plant.generateAtAnyHeight = _true;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
@@ -1234,6 +1234,7 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+			block.enablePitch = !_true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
@@ -1575,11 +1576,14 @@ public class TestWorkspaceDataProvider {
 					int entries = random.nextInt(10) + 1;
 					for (int j = 0; j < entries; j++) {
 						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
-						entry.price1 = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ? getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() : "");
-						entry.offer = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
+								getRandomMCItem(random,
+										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
+								"");
+						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
