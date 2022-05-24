@@ -163,6 +163,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 
 		<#if data.rotationMode == 1 || data.rotationMode == 3>
 		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+			<#if data.enablePitch>
+			public static final EnumProperty<AttachFace> FACE = HorizontalFaceBlock.FACE;
+			</#if>
 		<#elseif data.rotationMode == 2 || data.rotationMode == 4>
 		public static final DirectionProperty FACING = DirectionalBlock.FACING;
 		<#elseif data.rotationMode == 5>
@@ -243,6 +246,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
             this.setDefaultState(this.stateContainer.getBaseState()
                                      <#if data.rotationMode == 1 || data.rotationMode == 3>
                                      .with(FACING, Direction.NORTH)
+                                         <#if data.enablePitch>
+                                         .with(FACE, AttachFace.WALL)
+                                         </#if>
                                      <#elseif data.rotationMode == 2 || data.rotationMode == 4>
                                      .with(FACING, Direction.NORTH)
                                      <#elseif data.rotationMode == 5>
@@ -337,26 +343,75 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				return VoxelShapes.empty();
 			<#else>
 				<#if !data.disableOffset>Vector3d offset = state.getOffset(world, pos);</#if>
-				<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode/>
+				<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode data.enablePitch/>
+			</#if>
+		}
+		</#if>
+
+		<#if data.rotationMode != 0 || data.isWaterloggable>
+		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+			<#assign props = []>
+			<#if data.rotationMode == 5>
+				<#assign props += ["AXIS"]>
+			<#elseif data.rotationMode != 0>
+				<#assign props += ["FACING"]>
+				<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
+					<#assign props += ["FACE"]>
+				</#if>
+			</#if>
+			<#if data.isWaterloggable>
+				<#assign props += ["WATERLOGGED"]>
+			</#if>
+			builder.add(${props?join(", ")});
+   		}
+
+		@Override
+		public BlockState getStateForPlacement(BlockItemUseContext context) {
+			<#if data.isWaterloggable>
+			boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
+			</#if>
+			<#if data.rotationMode != 3>
+			return this.getDefaultState()
+			        <#if data.rotationMode == 1>
+			            <#if data.enablePitch>
+			            .with(FACE, faceForDirection(context.getNearestLookingDirection()))
+			            </#if>
+			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+			        <#elseif data.rotationMode == 2>
+			        .with(FACING, context.getNearestLookingDirection().getOpposite())
+                    <#elseif data.rotationMode == 4>
+			        .with(FACING, context.getFace())
+                    <#elseif data.rotationMode == 5>
+                    .with(AXIS, context.getFace().getAxis())
+			        </#if>
+			        <#if data.isWaterloggable>
+			        .with(WATERLOGGED, flag)
+			        </#if>;
+			<#elseif data.rotationMode == 3>
+            if (context.getFace().getAxis() == Direction.Axis.Y)
+                return this.getDefaultState()
+                        <#if data.enablePitch>
+                            .with(FACE, context.getFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+                            .with(FACING, context.getPlacementHorizontalFacing())
+                        <#else>
+                            .with(FACING, Direction.NORTH)
+                        </#if>
+                        <#if data.isWaterloggable>
+                        .with(WATERLOGGED, flag)
+                        </#if>;
+            return this.getDefaultState()
+                    <#if data.enablePitch>
+                        .with(FACE, AttachFace.WALL)
+                    </#if>
+                    .with(FACING, context.getFace())
+                    <#if data.isWaterloggable>
+                    .with(WATERLOGGED, flag)
+                    </#if>;
 			</#if>
 		}
 		</#if>
 
 		<#if data.rotationMode != 0>
-		@Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-			<#if data.isWaterloggable>
-				<#if data.rotationMode == 5>
-	  			builder.add(AXIS, WATERLOGGED);
-	  			<#else>
-	  			builder.add(FACING, WATERLOGGED);
-	  			</#if>
-	  		<#elseif data.rotationMode == 5>
-	  			builder.add(AXIS);
-	  		<#else>
-	  			builder.add(FACING);
-	  		</#if>
-   		}
-
 			<#if data.rotationMode != 5>
 			public BlockState rotate(BlockState state, Rotation rot) {
       			return state.with(FACING, rot.rotate(state.get(FACING)));
@@ -378,45 +433,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			}
 			</#if>
 
-		@Override
-		public BlockState getStateForPlacement(BlockItemUseContext context) {
-		    <#if data.rotationMode == 4>
-		    Direction facing = context.getFace();
-		    </#if>
-		    <#if data.rotationMode == 5>
-		    Direction.Axis axis = context.getFace().getAxis();
-            </#if>
-            <#if data.isWaterloggable>
-            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-            </#if>;
-			<#if data.rotationMode != 3>
-			return this.getDefaultState()
-			        <#if data.rotationMode == 1>
-			        .with(FACING, context.getPlacementHorizontalFacing().getOpposite())
-			        <#elseif data.rotationMode == 2>
-			        .with(FACING, context.getNearestLookingDirection().getOpposite())
-                    <#elseif data.rotationMode == 4>
-			        .with(FACING, facing)
-                    <#elseif data.rotationMode == 5>
-                    .with(AXIS, axis)
-			        </#if>
-			        <#if data.isWaterloggable>
-			        .with(WATERLOGGED, flag)
-			        </#if>
-			<#elseif data.rotationMode == 3>
-            if (context.getFace() == Direction.UP || context.getFace() == Direction.DOWN)
-                return this.getDefaultState()
-                        .with(FACING, Direction.NORTH)
-                        <#if data.isWaterloggable>
-                        .with(WATERLOGGED, flag)
-                        </#if>;
-            return this.getDefaultState()
-                    .with(FACING, context.getFace())
-                    <#if data.isWaterloggable>
-                    .with(WATERLOGGED, flag)
-                    </#if>
-			</#if>;
-		}
+			<#if data.rotationMode == 1 && data.enablePitch>
+			private AttachFace faceForDirection(Direction direction) {
+				if (direction.getAxis() == Direction.Axis.Y)
+					return direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR;
+				else
+					return AttachFace.WALL;
+			}
+			</#if>
         </#if>
 
 		<#if hasProcedure(data.placingCondition)>
@@ -433,17 +457,6 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
         <#if data.isWaterloggable>
-            <#if data.rotationMode == 0>
-            @Override
-            public BlockState getStateForPlacement(BlockItemUseContext context) {
-            boolean flag = context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-                return this.getDefaultState().with(WATERLOGGED, flag);
-            }
-            @Override protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-                builder.add(WATERLOGGED);
-            }
-            </#if>
-
         @Override public FluidState getFluidState(BlockState state) {
             return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
         }
