@@ -159,7 +159,7 @@ import javax.annotation.Nullable;
     @Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, world, list, flag);
     	<#list data.specialInfo as entry>
-    	list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+    	list.add(new TranslatableComponent("${JavaConventions.escapeStringForJava(entry)}"));
 		</#list>
 	}
 	</#if>

@@ -218,7 +218,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
 			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			list.add(new TranslationTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
             </#list>
 		}
         </#if>
