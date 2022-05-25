@@ -57,6 +57,7 @@ import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -168,8 +169,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, 0, 256, 1));
+	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
+	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, -2032, 2016, 1));
+	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, -2032, 2016, 1));
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
@@ -205,6 +207,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from block face",
 					"<html>D/U/N/S/W/E rotation<br><small>Rotation from block face",
 					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
+	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
@@ -317,8 +320,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
-				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -421,24 +424,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
-		textureTop = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK)).flipOnX();
+		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
+		textureTop = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
 
-		textureLeft = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureFront = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureRight = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
-		textureBack = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK));
+		textureLeft = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureFront = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureRight = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureBack = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
 
-		itemTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.ITEM), 32);
-		particleTexture = new TextureHolder(
-				new BlockItemTextureSelector(mcreator, BlockItemTextureSelector.TextureType.BLOCK), 32);
+		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
+		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
@@ -555,7 +550,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
 
-		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel rent = new JPanel(new GridLayout(4, 2, 0, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
@@ -565,6 +560,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.rotation_mode")));
 		rent.add(rotationMode);
 
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enable_pitch"),
+				L10N.label("elementgui.block.enable_pitch")));
+		rent.add(enablePitch);
+
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
 				L10N.label("elementgui.block.is_waterloggable")));
 		rent.add(isWaterloggable);
@@ -572,6 +571,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.setPreferredSize(new Dimension(320, 42));
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+
+		enablePitch.setOpaque(false);
+		enablePitch.setEnabled(false);
+		rotationMode.addActionListener(e -> {
+			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
+			if (!enablePitch.isEnabled())
+				enablePitch.setSelected(false);
+		});
 
 		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
@@ -628,9 +635,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		if (!isEditingMode()) { // Add first bounding box
+		if (!isEditingMode()) // add first bounding box
 			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
-		}
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
@@ -1048,39 +1054,43 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel enderpanel2 = new JPanel(new BorderLayout(30, 15));
 
-		JPanel slip = new JPanel(new GridLayout(7, 2, 20, 2));
+		JPanel genPanel = new JPanel(new GridLayout(8, 2, 20, 2));
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
 				L10N.label("elementgui.block.spawn_world_types")));
-		slip.add(spawnWorldTypes);
+		genPanel.add(spawnWorldTypes);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
-		slip.add(blocksToReplace);
+		genPanel.add(blocksToReplace);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
-		slip.add(restrictionBiomes);
+		genPanel.add(restrictionBiomes);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/generation_shape"),
+				L10N.label("elementgui.block.generation_shape")));
+		genPanel.add(generationShape);
+
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),
 				L10N.label("elementgui.block.gen_chunck_count")));
-		slip.add(frequencyPerChunks);
+		genPanel.add(frequencyPerChunks);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_group_size"),
 				L10N.label("elementgui.block.gen_group_size")));
-		slip.add(frequencyOnChunk);
+		genPanel.add(frequencyOnChunk);
 
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
 				L10N.label("elementgui.block.gen_min_height")));
-		slip.add(minGenerateHeight);
-		slip.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
+		genPanel.add(minGenerateHeight);
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
 				L10N.label("elementgui.block.gen_max_height")));
-		slip.add(maxGenerateHeight);
+		genPanel.add(maxGenerateHeight);
 
-		slip.setOpaque(false);
+		genPanel.setOpaque(false);
 
 		enderpanel2.add("West", PanelUtils.totalCenterInPanel(new JLabel(UIRES.get("chunk"))));
-		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(slip,
+		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(genPanel,
 				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), generateCondition), 5, 5)));
 
 		enderpanel2.setOpaque(false);
@@ -1346,6 +1356,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setTextureFromTextureName(block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
+		enablePitch.setSelected(block.enablePitch);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1373,6 +1384,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
 		name.setText(block.name);
+		generationShape.setSelectedItem(block.generationShape);
 		maxGenerateHeight.setValue(block.maxGenerateHeight);
 		minGenerateHeight.setValue(block.minGenerateHeight);
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
@@ -1489,6 +1501,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isItemTinted = isItemTinted.isSelected();
 		block.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
+		block.enablePitch = enablePitch.isSelected();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
@@ -1550,6 +1563,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					.map(Integer::parseInt).collect(Collectors.toList());
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.frequencyOnChunk = (int) frequencyOnChunk.getValue();
+		block.generationShape = (String) generationShape.getSelectedItem();
 		block.minGenerateHeight = (int) minGenerateHeight.getValue();
 		block.maxGenerateHeight = (int) maxGenerateHeight.getValue();
 		block.onBlockAdded = onBlockAdded.getSelectedProcedure();

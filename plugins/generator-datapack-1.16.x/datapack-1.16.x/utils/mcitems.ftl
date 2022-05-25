@@ -35,7 +35,7 @@
             <#if !mapped.contains(":")>
                 <#assign mapped = "minecraft:" + mapped />
             </#if>
-            <#assign propertymap = fp.file("utils/defaultstates.json")?eval/>
+            <#assign propertymap = fp.file("utils/defaultstates.json")?eval_json/>
             <#if propertymap[mapped]?has_content>
                 <#assign retval='{ "Name": "' + mapped + '", "Properties" : {'/>
                 <#list propertymap[mapped] as property>

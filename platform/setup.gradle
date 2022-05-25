@@ -1,8 +1,8 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.1+12/windows/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.1+12/linux/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_mac_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.1+12/mac/x64/jdk/hotspot/normal/adoptopenjdk'
+def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.3+7/windows/x64/jdk/hotspot/normal/adoptopenjdk'
+def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.3+7/linux/x64/jdk/hotspot/normal/adoptopenjdk'
+def jdk17_mac_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.3+7/mac/x64/jdk/hotspot/normal/adoptopenjdk'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.05/nsis-3.05.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
@@ -22,8 +22,8 @@ task downloadJDKWin64(type: DefaultTask, group: 'setup') {
             copy { from zipTree('build/tmp/jdk17_win_64') into file('jdk/jdk17_win_64/') }
             delete 'build/tmp/jdk17_win_64'
 
-            copy { from file('jdk/jdk17_win_64/jdk-17.0.1+12') into file('jdk/jdk17_win_64/') }
-            delete 'jdk/jdk17_win_64/jdk-17.0.1+12'
+            copy { from file('jdk/jdk17_win_64/jdk-17.0.3+7') into file('jdk/jdk17_win_64/') }
+            delete 'jdk/jdk17_win_64/jdk-17.0.3+7'
         }
     }
 }
@@ -41,8 +41,8 @@ task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_linux_64')) into file('jdk/jdk17_linux_64/') }
             delete 'build/tmp/jdk17_linux_64'
 
-            copy { from file('jdk/jdk17_linux_64/jdk-17.0.1+12') into file('jdk/jdk17_linux_64/') }
-            delete 'jdk/jdk17_linux_64/jdk-17.0.1+12'
+            copy { from file('jdk/jdk17_linux_64/jdk-17.0.3+7') into file('jdk/jdk17_linux_64/') }
+            delete 'jdk/jdk17_linux_64/jdk-17.0.3+7'
         }
     }
 }
@@ -60,8 +60,8 @@ task downloadJDKMac64(type: DefaultTask, group: 'setup') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_64')) into file('jdk/jdk17_mac_64/') }
             delete 'build/tmp/jdk17_mac_64'
 
-            copy { from file('jdk/jdk17_mac_64/jdk-17.0.1+12/') into file('jdk/jdk17_mac_64/') }
-            delete 'jdk/jdk17_mac_64/jdk-17.0.1+12/'
+            copy { from file('jdk/jdk17_mac_64/jdk-17.0.3+7/') into file('jdk/jdk17_mac_64/') }
+            delete 'jdk/jdk17_mac_64/jdk-17.0.3+7/'
         }
     }
 }

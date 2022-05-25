@@ -26,6 +26,7 @@ import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -35,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -81,17 +83,9 @@ public class WorkspaceGeneratorSetup {
 		moveFilesToAnotherDir(workspace.getFolderManager().getSoundsDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "sounds_dir"));
 
-		moveFilesToAnotherDir(workspace.getFolderManager().getBlocksTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "block_textures_dir"));
-
-		moveFilesToAnotherDir(workspace.getFolderManager().getItemsTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "item_textures_dir"));
-
-		moveFilesToAnotherDir(workspace.getFolderManager().getArmorTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "armor_textures_dir"));
-
-		moveFilesToAnotherDir(workspace.getFolderManager().getOtherTexturesDir(),
-				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "other_textures_dir"));
+		Arrays.stream(TextureType.values()).forEach(
+				category -> moveFilesToAnotherDir(workspace.getFolderManager().getTexturesFolder(category),
+						GeneratorUtils.getSpecificRoot(workspace, newGenerator, category.getID() + "_textures_dir")));
 
 		moveFilesToAnotherDir(workspace.getGenerator().getSourceRoot(),
 				GeneratorUtils.getSourceRoot(workspace, newGenerator));

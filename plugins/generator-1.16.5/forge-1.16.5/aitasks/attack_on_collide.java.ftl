@@ -5,6 +5,6 @@ this.goalSelector.addGoal(${customBlockIndex+1}, new MeleeAttackGoal(this, ${fie
 		return (double) (4.0 + entity.getWidth() * entity.getWidth());
     }
 
-    <@conditionCode field$condition/>
+    <@conditionCode field$condition false/>
 
 });

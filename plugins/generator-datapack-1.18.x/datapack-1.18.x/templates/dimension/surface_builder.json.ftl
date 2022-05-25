@@ -2,18 +2,14 @@
 <#include "../mcitems.ftl">
 
 <#macro vanilla biome>
-  <#if biome?contains("frozen_ocean") || biome?contains("frozen_river")>
-    <@vanillaSB biome w.itemBlock("Blocks.ICE") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
-  <#elseif biome?contains("ocean") || biome?contains("ocean")>
-    <@vanillaSB biome w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.WATER") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
-  <#elseif biome?contains("badlands")>
+  <#if biome?contains("badlands")>
     <@vanillaSB biome w.itemBlock("Blocks.SAND#1") w.itemBlock("Blocks.STAINED_HARDENED_CLAY") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "basalt_deltas">
     <@vanillaSB biome w.itemBlock("Blocks.BLACKSTONE") w.itemBlock("Blocks.BASALT") w.itemBlock("Blocks.MAGMA") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "crimson_forest">
     <@vanillaSB biome w.itemBlock("Blocks.CRIMSON_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHER_WART_BLOCK") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("desert") || biome?contains("beaches")>
-    <@vanillaSB biome w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.SAND") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
+    <@vanillaSB biome w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("end")>
     <@vanillaSB biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("mushroom_field")>

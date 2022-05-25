@@ -25,6 +25,7 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
@@ -1191,7 +1192,7 @@ public class MinecraftImageGenerator {
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
 					workspace.getFolderManager()
-							.getOtherTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture))
+							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.OTHER)
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(
@@ -1290,7 +1291,7 @@ public class MinecraftImageGenerator {
 				blockColor = Dependency.getColor("itemstack");
 			} else if (dependencies.contains(new Dependency("entity", "")) || dependencies.contains(
 					new Dependency("sourceentity", "")) || dependencies.contains(
-					new Dependency("imediatesourceentity", ""))) {
+					new Dependency("immediatesourceentity", ""))) {
 				blockColor = Dependency.getColor("entity");
 			} else if (dependencies.contains(new Dependency("world", ""))) {
 				blockColor = Dependency.getColor("world");

@@ -64,10 +64,12 @@ import java.util.Locale;
 	public double temperature;
 	public double baseHeight;
 	public double heightVariation;
-	public String biomeType;
 
 	public boolean spawnBiome;
 	public boolean spawnBiomeNether;
+
+	public boolean spawnInCaves;
+
 	public int biomeWeight;
 	public List<String> biomeDictionaryTypes;
 

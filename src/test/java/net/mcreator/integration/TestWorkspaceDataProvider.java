@@ -41,6 +41,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -57,8 +58,8 @@ import java.util.*;
 
 public class TestWorkspaceDataProvider {
 
-	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
-		return new ModElement(workspace, "Example" + type.getRegistryName() + sufix, type);
+	private static ModElement me(Workspace workspace, ModElementType<?> type, String suffix) {
+		return new ModElement(workspace, "Example" + type.getRegistryName() + suffix, type);
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
@@ -122,109 +123,115 @@ public class TestWorkspaceDataProvider {
 			workspace.addVariableElement(sampleVariable1);
 
 			int idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("logic" + (idx++));
-				variable.setValue("true");
-				variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("logic" + (idx++));
+					variable.setValue("true");
+					variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("number" + (idx++));
-				variable.setValue("12");
-				variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("number" + (idx++));
+					variable.setValue("12");
+					variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("string" + (idx++));
-				variable.setValue("test");
-				variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("string" + (idx++));
+					variable.setValue("test");
+					variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("itemstack" + (idx++));
-				variable.setValue("ItemStack.EMPTY");
-				variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("itemstack" + (idx++));
+					variable.setValue("ItemStack.EMPTY");
+					variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("direction" + (idx++));
-				variable.setValue("UP");
-				variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("direction" + (idx++));
+					variable.setValue("UP");
+					variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 
 			idx = 0;
-			for (VariableType.Scope scope : Arrays.stream(VariableType.Scope.values())
-					.filter(e -> e != VariableType.Scope.LOCAL).toList()) {
-				VariableElement variable = new VariableElement();
-				variable.setName("blockstate" + (idx++));
-				variable.setValue("UP");
-				variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
-				variable.setScope(scope);
-				workspace.addVariableElement(variable);
+			for (VariableType.Scope scope : VariableType.Scope.values()) {
+				if (scope != VariableType.Scope.LOCAL) {
+					VariableElement variable = new VariableElement();
+					variable.setName("blockstate" + (idx++));
+					variable.setValue("UP");
+					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
+					variable.setScope(scope);
+					workspace.addVariableElement(variable);
+				}
 			}
 		}
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
-		if (workspace.getFolderManager().getBlocksTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.BLOCK) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test"));
+					workspace.getFolderManager().getTextureFile("test", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test2"));
+					workspace.getFolderManager().getTextureFile("test2", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test3"));
+					workspace.getFolderManager().getTextureFile("test3", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test4"));
+					workspace.getFolderManager().getTextureFile("test4", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test5"));
+					workspace.getFolderManager().getTextureFile("test5", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getBlockTextureFile("test6"));
+					workspace.getFolderManager().getTextureFile("test6", TextureType.BLOCK));
 		}
 
-		if (workspace.getFolderManager().getItemsTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test"));
+					workspace.getFolderManager().getTextureFile("test", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test2"));
+					workspace.getFolderManager().getTextureFile("test2", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test3"));
+					workspace.getFolderManager().getTextureFile("test3", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("test4"));
+					workspace.getFolderManager().getTextureFile("test4", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getItemTextureFile("itest"));
+					workspace.getFolderManager().getTextureFile("itest", TextureType.ITEM));
 
 		}
 
-		if (workspace.getFolderManager().getOtherTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getOtherTextureFile("test"));
+					workspace.getFolderManager().getTextureFile("test", TextureType.OTHER));
 		}
 
-		if (workspace.getFolderManager().getArmorTexturesDir() != null) {
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
@@ -343,7 +350,6 @@ public class TestWorkspaceDataProvider {
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
-			biome.biomeType = getRandomItem(random, new String[] { "WARM", "DESERT", "COOL", "ICY" });
 			biome.biomeCategory = getRandomItem(random,
 					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
@@ -409,6 +415,7 @@ public class TestWorkspaceDataProvider {
 				biome.treeFruits = new MItemBlock(modElement.getWorkspace(), "");
 			}
 			biome.spawnBiome = !_true;
+			biome.spawnInCaves = _true;
 			biome.spawnBiomeNether = !_true && emptyLists;
 			return biome;
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
@@ -456,10 +463,10 @@ public class TestWorkspaceDataProvider {
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			fluid.onBlockAdded = new Procedure("procedure1");
+			fluid.onBlockAdded = new Procedure("procedure5");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
-			fluid.onEntityCollides = new Procedure("procedure4");
+			fluid.onEntityCollides = new Procedure("procedure1");
 			fluid.onRandomUpdateEvent = new Procedure("procedure5");
 			fluid.onDestroyedByExplosion = new Procedure("procedure6");
 			fluid.flowCondition = new Procedure("condition1");
@@ -477,43 +484,6 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		} else if (ModElementType.FOOD.equals(modElement.getType())) {
-			Food food = new Food(modElement);
-			food.name = modElement.getName();
-			food.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			food.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				food.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				food.specialInfo = new ArrayList<>();
-			}
-			food.texture = "test";
-			food.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			food.resultItem = new MItemBlock(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
-			food.stackSize = 32;
-			food.eatingSpeed = 123;
-			food.nutritionalValue = 5;
-			food.saturation = 0.8f;
-			food.forDogs = _true;
-			food.isAlwaysEdible = _true;
-			food.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
-			food.hasGlow = _true;
-			food.onRightClicked = new Procedure("procedure1");
-			food.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
-			food.onEaten = new Procedure("procedure3");
-			food.onEntityHitWith = new Procedure("procedure4");
-			food.onItemInInventoryTick = new Procedure("procedure5");
-			food.onItemInUseTick = new Procedure("procedure6");
-			food.onCrafted = new Procedure("procedure7");
-			food.onEntitySwing = new Procedure("procedure8");
-			food.onDroppedByPlayer = new Procedure("procedure9");
-			food.renderType = 0;
-			food.customModelName = "Normal";
-			return food;
 		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
@@ -553,24 +523,27 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
-					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
-							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
-							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				});
+				for (VariableType.Scope scope : VariableType.Scope.values()) {
+					if (scope != VariableType.Scope.LOCAL) {
+						components.add(
+								new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+								"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:itemstack" + idx + ">", 100, 150,
+								"text3 <VAR:itemstack" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:direction" + idx + ">", 100, 150,
+								"text3 <VAR:direction" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+								"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+					}
+				}
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -594,15 +567,11 @@ public class TestWorkspaceDataProvider {
 			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
-			if (!emptyLists)
-				overlay.baseTexture = "test.png";
-			else
-				overlay.baseTexture = "";
-			if (_true) {
+			overlay.baseTexture = emptyLists ? "" : "test.png";
+			if (_true)
 				overlay.overlayTarget = "Ingame";
-			} else {
+			else
 				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataListAsStringArray("screens"));
-			}
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			GUI gui = new GUI(modElement);
@@ -627,24 +596,27 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition1")));
 
 				int idx = 0;
-				Arrays.stream(VariableType.Scope.values()).filter(e -> e != VariableType.Scope.LOCAL).forEach(e -> {
-					components.add(new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
-							Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
-							"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:itemstack" + idx + ">", 100, 150, "text3 <VAR:itemstack" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(
-							new Label("text3 <VAR:direction" + idx + ">", 100, 150, "text3 <VAR:direction" + idx + ">",
-									Color.black, new Procedure("condition1")));
-					components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
-							"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
-				});
+				for (VariableType.Scope scope : VariableType.Scope.values()) {
+					if (scope != VariableType.Scope.LOCAL) {
+						components.add(
+								new Label("text3 <VAR:logic" + idx + ">", 100, 150, "text3 <VAR:logic" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:string" + idx + ">", 100, 150, "text3 <VAR:string" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(
+								new Label("text3 <VAR:number" + idx + ">", 100, 150, "text3 <VAR:number" + idx + ">",
+										Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:integer:number" + idx + ">", 100, 150,
+								"text3 <VAR:integer:number" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:itemstack" + idx + ">", 100, 150,
+								"text3 <VAR:itemstack" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:direction" + idx + ">", 100, 150,
+								"text3 <VAR:direction" + idx + ">", Color.black, new Procedure("condition1")));
+						components.add(new Label("text3 <VAR:blockstate" + idx + ">", 100, 150,
+								"text3 <VAR:blockstate" + idx + ">", Color.black, new Procedure("condition1")));
+					}
+				}
 
 				components.add(new Label("<ENBT:number:tagName>", 100, 150, "<ENBT:number:tagName>", Color.black,
 						new Procedure("condition1")));
@@ -665,20 +637,20 @@ public class TestWorkspaceDataProvider {
 
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure1"), null));
+				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
 				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
 						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
-						new Procedure("procedure1"), new Procedure("procedure2"),
+						new Procedure("procedure10"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
 						new InputSlot(4, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
 								null, null, new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, blocksAndItems).getName())));
 				components.add(
-						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure1"),
+						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
 								new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
@@ -767,12 +739,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.deathSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			if (!emptyLists) {
-				livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			} else {
-				livingEntity.stepSound = new Sound(modElement.getWorkspace(), "");
-			}
+			livingEntity.stepSound = new Sound(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.spawnParticles = _true;
 			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
@@ -810,10 +778,8 @@ public class TestWorkspaceDataProvider {
 							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
 				}
 			}
-			// fallback
-			if (livingEntity.aixml == null) {
+			if (livingEntity.aixml == null) // fallback
 				livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
-			}
 			livingEntity.breedable = _true;
 			livingEntity.tameable = _true;
 			livingEntity.breedTriggerItems = new ArrayList<>();
@@ -861,13 +827,12 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
-			dimension.biomesInDimension.add(
-					new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			if (!emptyLists) {
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
+				dimension.biomesInDimension.addAll(
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			} else {
 				dimension.biomesInDimension.add(
 						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			}
@@ -1067,6 +1032,7 @@ public class TestWorkspaceDataProvider {
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.patchSize = 46;
+			plant.generateAtAnyHeight = _true;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
@@ -1083,13 +1049,13 @@ public class TestWorkspaceDataProvider {
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
-			plant.onNeighbourBlockChanges = new Procedure("procedure1");
+			plant.onNeighbourBlockChanges = new Procedure("procedure7");
 			plant.onTickUpdate = new Procedure("procedure2");
 			plant.onDestroyedByPlayer = new Procedure("procedure3");
 			plant.onDestroyedByExplosion = new Procedure("procedure4");
 			plant.onStartToDestroy = new Procedure("procedure5");
 			plant.onEntityCollides = new Procedure("procedure6");
-			plant.onRightClicked = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure7");
+			plant.onRightClicked = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure1");
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
@@ -1149,6 +1115,17 @@ public class TestWorkspaceDataProvider {
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = "Normal";
+			item.isFood = _true;
+			item.nutritionalValue = 5;
+			item.saturation = 0.8f;
+			item.isMeat = _true;
+			item.isAlwaysEdible = _true;
+			item.animation = getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+			item.eatResultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
+					"" :
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
@@ -1178,8 +1155,8 @@ public class TestWorkspaceDataProvider {
 			rangedItem.bulletIgnitesFire = _true;
 			rangedItem.bulletItemTexture = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.onBulletHitsBlock = new Procedure("procedure1");
-			rangedItem.onBulletHitsPlayer = new Procedure("procedure2");
+			rangedItem.onBulletHitsBlock = new Procedure("procedure2");
+			rangedItem.onBulletHitsPlayer = new Procedure("procedure1");
 			rangedItem.onBulletFlyingTick = new Procedure("procedure3");
 			rangedItem.onRangedItemUsed = new Procedure("procedure4");
 			rangedItem.useCondition = new Procedure("condition1");
@@ -1263,6 +1240,7 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+			block.enablePitch = !_true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
@@ -1314,10 +1292,7 @@ public class TestWorkspaceDataProvider {
 			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
-			if (!emptyLists)
-				block.beaconColorModifier = Color.cyan;
-			else
-				block.beaconColorModifier = null;
+			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
 			block.breakHarvestLevel = 4;
 			block.spawnParticles = _true;
@@ -1375,12 +1350,13 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
+			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 6;
 			block.frequencyOnChunk = 7;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
-			if (emptyLists) {
-				block.onBlockAdded = new Procedure("procedure1");
+			if (!emptyLists) {
+				block.onBlockAdded = new Procedure("procedure10");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
 				block.onTickUpdate = new Procedure("procedure3");
 				block.onRandomUpdateEvent = new Procedure("procedure4");
@@ -1389,7 +1365,7 @@ public class TestWorkspaceDataProvider {
 				block.onStartToDestroy = new Procedure("procedure7");
 				block.onEntityCollides = new Procedure("procedure8");
 				block.onBlockPlayedBy = new Procedure("procedure9");
-				block.onRightClicked = _true ? new Procedure("actionresulttype1") : new Procedure("procedure10");
+				block.onRightClicked = _true ? new Procedure("actionresulttype1") : new Procedure("procedure1");
 				block.onRedstoneOn = new Procedure("procedure11");
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
@@ -1592,6 +1568,68 @@ public class TestWorkspaceDataProvider {
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return gamerule;
+		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
+			VillagerTrade villagerTrade = new VillagerTrade(modElement);
+			villagerTrade.tradeEntries = new ArrayList<>();
+			if (!emptyLists) {
+				int tradeEntries = random.nextInt(10) + 1;
+				for (int i = 0; i < tradeEntries; i++) {
+					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
+					trade.villagerProfession = new VillagerProfession(modElement.getWorkspace(),
+							getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions()));
+					trade.entries = new ArrayList<>();
+
+					int entries = random.nextInt(10) + 1;
+					for (int j = 0; j < entries; j++) {
+						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
+								getRandomMCItem(random,
+										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
+								"");
+						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
+						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
+						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
+						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
+						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
+						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+
+						trade.entries.add(entry);
+					}
+					VillagerTrade.CustomTradeEntry wanderingTrade = new VillagerTrade.CustomTradeEntry();
+					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(), "WANDERING_TRADER");
+					wanderingTrade.entries = new ArrayList<>();
+
+					int wanderingEntries = random.nextInt(10) + 1;
+					for (int j = 0; j < wanderingEntries; j++) {
+						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
+								getRandomMCItem(random,
+										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
+								"");
+						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
+						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
+						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
+						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
+						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
+						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+
+						wanderingTrade.entries.add(entry);
+					}
+					villagerTrade.tradeEntries.add(trade);
+					villagerTrade.tradeEntries.add(wanderingTrade);
+				}
+			}
+			return villagerTrade;
 		}
 		return null;
 	}

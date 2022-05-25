@@ -52,6 +52,7 @@ public class PreferencesData {
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })
 		public String textAntialiasingType = "on";
 		@PreferencesEntry public boolean usemacOSMenuBar = true;
+		@PreferencesEntry public boolean useNativeFileChooser = OS.getOS() == OS.WINDOWS;
 		@PreferencesEntry public boolean expandSectionsByDefault = false;
 		@PreferencesEntry public boolean use2DAcceleration = false;
 		@PreferencesEntry public boolean autoreloadTabs = true;
@@ -63,6 +64,7 @@ public class PreferencesData {
 	public static class NotificationSettings {
 
 		@PreferencesEntry public boolean openWhatsNextPage = true;
+		@PreferencesEntry public boolean snapshotMessage = true;
 		@PreferencesEntry public boolean checkAndNotifyForUpdates = true;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
 		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;

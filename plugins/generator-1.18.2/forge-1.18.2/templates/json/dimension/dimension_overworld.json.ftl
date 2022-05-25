@@ -6,7 +6,7 @@
   "type": "${modid}:${registryname}",
   "generator": {
     "type": "minecraft:noise",
-    "seed": 0,
+    "seed": ${thelper.randomlong(registryname)},
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
@@ -21,8 +21,8 @@
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
-        "min_y": 0,
-        "height": 256,
+        "min_y": -64,
+        "height": 384,
         "size_horizontal": 1,
         "size_vertical": 2,
         "sampling": {
@@ -66,7 +66,7 @@
                }
              }
            },
-           <#list data.biomesInDimension as biome>
+           <#list w.filterBrokenReferences(data.biomesInDimension) as biome>
              <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
                <@sb.default biome ge.groundBlock ge.undergroundBlock ge.getUnderwaterBlock()/>

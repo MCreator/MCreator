@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
@@ -33,7 +34,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -76,6 +76,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
 
 	private final JCheckBox spawnBiome = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnInCaves = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBiomeNether = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnStronghold = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnMineshaft = L10N.checkbox("elementgui.common.enable");
@@ -128,7 +129,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
-	private final JComboBox<String> biomeType = new JComboBox<>(new String[] { "WARM", "DESERT", "COOL", "ICY" });
 
 	private final JComboBox<String> biomeCategory = new JComboBox<>(
 			new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA", "ICY", "THEEND",
@@ -158,8 +158,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeFruits = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-
-		biomeType.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(customTrees);
@@ -301,18 +299,31 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.generate_overworld")));
 		spawnproperties.add(spawnBiome);
 
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
+				L10N.label("elementgui.biome.generate_overworld_caves")));
+		spawnproperties.add(spawnInCaves);
+
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
 				L10N.label("elementgui.biome.generate_nether")));
 		spawnproperties.add(spawnBiomeNether);
 
 		spawnBiome.setSelected(true);
 		spawnBiome.setOpaque(false);
+		spawnInCaves.setOpaque(false);
 
 		spawnBiomeNether.setOpaque(false);
 
 		spawnproperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"), L10N.label("elementgui.biome.weight")));
 		spawnproperties.add(biomeWeight);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/base_height"),
+				L10N.label("elementgui.biome.height")));
+		spawnproperties.add(baseHeight);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/height_variation"),
+				L10N.label("elementgui.biome.height_variation")));
+		spawnproperties.add(heightVariation);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/temperature"),
 				L10N.label("elementgui.biome.temperature")));
@@ -322,10 +333,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.raining_possibility")));
 		spawnproperties.add(rainingPossibility);
 
-		spawnproperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("biome/type"), L10N.label("elementgui.biome.type")));
-		spawnproperties.add(biomeType);
-
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/category"),
 				L10N.label("elementgui.biome.category")));
 		spawnproperties.add(biomeCategory);
@@ -333,14 +340,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
 				L10N.label("elementgui.biome.dictionnary")));
 		spawnproperties.add(biomeDictionaryTypes);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/base_height"),
-				L10N.label("elementgui.biome.height")));
-		spawnproperties.add(baseHeight);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/height_variation"),
-				L10N.label("elementgui.biome.height_variation")));
-		spawnproperties.add(heightVariation);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
@@ -652,6 +651,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		// if we are in editing mode, changes affecting dimensions using biome may be made
 		if (isEditingMode()) {
 			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+				if (element.getType() != ModElementType.DIMENSION)
+					continue;
+
 				// if this mod element is not locked and has procedures, we try to update dependencies
 				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {
@@ -713,6 +715,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		heightVariation.setValue(biome.heightVariation);
 		spawnBiome.setSelected(biome.spawnBiome);
 		spawnBiomeNether.setSelected(biome.spawnBiomeNether);
+		spawnInCaves.setSelected(biome.spawnInCaves);
 		spawnStronghold.setSelected(biome.spawnStronghold);
 		spawnMineshaft.setSelected(biome.spawnMineshaft);
 		spawnMineshaftMesa.setSelected(biome.spawnMineshaftMesa);
@@ -738,7 +741,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
 		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
 		biomeWeight.setValue(biome.biomeWeight);
-		biomeType.setSelectedItem(biome.biomeType);
 		biomeCategory.setSelectedItem(biome.biomeCategory);
 		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
 		defaultFeatures.setListElements(biome.defaultFeatures);
@@ -789,7 +791,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.heightVariation = (double) heightVariation.getValue();
 		biome.temperature = (double) temperature.getValue();
 		biome.biomeWeight = (int) biomeWeight.getValue();
-		biome.biomeType = (String) biomeType.getSelectedItem();
 		biome.biomeCategory = (String) biomeCategory.getSelectedItem();
 		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
 		biome.defaultFeatures = defaultFeatures.getListElements();
@@ -802,6 +803,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.treeFruits = treeFruits.getBlock();
 		biome.spawnBiome = spawnBiome.isSelected();
 		biome.spawnBiomeNether = spawnBiomeNether.isSelected();
+		biome.spawnInCaves = spawnInCaves.isSelected();
 		biome.spawnMineshaft = spawnMineshaft.isSelected();
 		biome.spawnMineshaftMesa = spawnMineshaftMesa.isSelected();
 		biome.spawnStronghold = spawnStronghold.isSelected();
