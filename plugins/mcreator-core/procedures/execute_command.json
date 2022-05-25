@@ -2,7 +2,7 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "cmdparams",
+      "name": "command",
       "check": "String"
     },
     {
@@ -34,7 +34,7 @@
       "<value name=\"z\"><block type=\"coord_z\"></block></value>"
     ],
     "inputs": [
-      "cmdparams",
+      "command",
       "x",
       "y",
       "z"
