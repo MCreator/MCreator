@@ -47,11 +47,10 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	 * @return Corresponding list template in case of success, or {@code null} otherwise.
 	 */
 	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
-		String filePath = generatorFile.getPath();
 		for (GeneratorTemplate listTemplate : templates.keySet()) {
 			for (int i = 0; i < listData.size(); i++) {
-				if (filePath.equals(processTokens(listTemplate, i).getPath())) {
-					try { // we check if given file name has list template's index in place of @elementindex
+				if (processTokens(listTemplate, i).getPath().equals(generatorFile.getPath())) {
+					try {
 						if (ignoreConditions || templates.get(listTemplate).get(i))
 							return listTemplate;
 					} catch (IndexOutOfBoundsException | NumberFormatException ignored) {

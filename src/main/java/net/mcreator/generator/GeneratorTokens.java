@@ -85,14 +85,16 @@ public class GeneratorTokens {
 			while (m.find()) {
 				String match = m.group(1);
 				Object value = null;
-				if (listItem != null && match.startsWith("element.")) {
-					try {
-						String ref = match.substring(8);
-						value = match.contains("()") ?
-								listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
-								listItem.getClass().getField(ref.trim()).get(listItem);
-					} catch (Exception e) {
-						LOG.warn("Failed to load token value " + match, e);
+				if (match.startsWith("element.")) {
+					if (listItem != null) {
+						try {
+							String ref = match.substring(8);
+							value = match.contains("()") ?
+									listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
+									listItem.getClass().getField(ref.trim()).get(listItem);
+						} catch (Exception e) {
+							LOG.warn("Failed to load token value " + match, e);
+						}
 					}
 				} else if (element != null) {
 					try {

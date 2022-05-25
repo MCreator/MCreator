@@ -3,7 +3,7 @@
   "id": "${registryname}",
   "index": ${elementindex},
   "name": "${name}",
-  "type": "${owner.getModElement().getType()}",
+  "type": "${parent.getModElement().getType()}",
   "value": "${element.getUnmappedValue()}"
 }
 <#-- @formatter:on -->

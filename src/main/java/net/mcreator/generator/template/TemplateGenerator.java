@@ -69,7 +69,7 @@ public class TemplateGenerator {
 
 		dataModel.put("element", item);
 		dataModel.put("elementindex", itemIndex);
-		dataModel.put("owner", element);
+		dataModel.put("parent", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
 		dataModel.put("name", element.getModElement().getName());
 
