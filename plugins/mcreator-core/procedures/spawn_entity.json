@@ -14,10 +14,12 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "entity",
+      "datalist": "entity"
     }
-  ],
-  "extensions": [
-    "entity_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,
