@@ -9,8 +9,8 @@
     <#if enablePitch>
         switch (state.getValue(FACE)) {
             case FLOOR -> <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
-            case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
             case WALL -> <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
+            case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
         };
     <#else>
         <@makeBoundingBox positiveBoxes negativeBoxes facing/>;
