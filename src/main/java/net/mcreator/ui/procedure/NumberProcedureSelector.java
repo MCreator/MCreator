@@ -201,7 +201,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXXX", null));
 
 		if (fixedValue != null)
-			fixedValue.setPreferredSize(new Dimension(50, 0));
+			fixedValue.setPreferredSize(new Dimension(75, 0));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
