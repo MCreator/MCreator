@@ -80,7 +80,7 @@ package ${package}.item.extension;
             @SubscribeEvent
             public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
 		        ItemStack itemstack = event.getItemStack();
-                if(event.getItemStack().getItem() == ${mappedMCItemToItem(data.item)})
+                if(itemstack.getItem() == ${mappedMCItemToItem(data.item)})
                     <#if hasProcedure(data.fuelSuccessCondition)>if (<@procedureOBJToConditionCode data.fuelSuccessCondition/>)</#if>
                         <#if hasProcedure(data.fuelPower)>
                             event.setBurnTime((int) <@procedureOBJToNumberCode data.fuelPower/>);
