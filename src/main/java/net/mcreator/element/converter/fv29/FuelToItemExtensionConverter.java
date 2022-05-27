@@ -48,7 +48,7 @@ public class FuelToItemExtensionConverter implements IConverter {
 			itemExtension.enableFuel = true;
 			itemExtension.fuelPower = new NumberProcedure(null, fuel.get("power").getAsInt());
 		} catch (Exception e) {
-			LOG.warn("Failed to update food to new format", e);
+			LOG.warn("Failed to update fuel to new format", e);
 		}
 
 		return itemExtension;
