@@ -61,13 +61,11 @@ public class ItemDispenserToItemExtensionConverter implements IConverter {
 				workspace.addModElement(itemExtension.getModElement());
 				workspace.getGenerator().generateElement(itemExtension);
 				workspace.getModElementManager().storeModElement(itemExtension);
-
-				return itemExtension;
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to update item to new format", e);
 		}
-		return null;
+		return input;
 	}
 
 	@Override public int getVersionConvertingTo() {
