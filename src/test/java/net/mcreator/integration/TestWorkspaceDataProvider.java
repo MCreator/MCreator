@@ -837,6 +837,9 @@ public class TestWorkspaceDataProvider {
 						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			}
 			dimension.airColor = Color.cyan;
+			dimension.logicalHeight = 1024;
+			dimension.minHeight = -1024;
+			dimension.height = 2048;
 			dimension.canRespawnHere = _true;
 			dimension.hasFog = _true;
 			dimension.hasSkyLight = !_true;
