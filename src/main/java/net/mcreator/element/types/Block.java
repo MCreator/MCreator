@@ -245,6 +245,10 @@ import java.util.stream.Collectors;
 		return tickRate > 0 && !tickRandomly;
 	}
 
+	public boolean shouldDisableOffset() {
+		return disableOffset || offsetType.equals("NONE");
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)

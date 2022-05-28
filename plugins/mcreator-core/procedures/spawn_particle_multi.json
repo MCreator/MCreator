@@ -39,10 +39,12 @@
       "type": "input_value",
       "name": "count",
       "check": "Number"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "particle",
+      "datalist": "particle"
     }
-  ],
-  "extensions": [
-    "particle_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,
