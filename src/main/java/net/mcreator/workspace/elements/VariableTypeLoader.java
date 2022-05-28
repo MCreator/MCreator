@@ -62,12 +62,12 @@ public class VariableTypeLoader {
 
 			//We begin by creating the extensions needed for other blocks
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.variableListExtension(variableType));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureListExtensions(variableType));
 
 			//Then, we create the blocks related to variables
 			if (variableType.isNullable()) {
 				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.nullableGetVariableBlock(variableType));
-				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.nullableProcedureReturnValueBlock(variableType));
+				variableBlocklyJSBuilder.append(
+						BlocklyJavascriptTemplates.nullableProcedureReturnValueBlock(variableType));
 			} else {
 				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.getVariableBlock(variableType));
 				variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureReturnValueBlock(variableType));
@@ -78,14 +78,14 @@ public class VariableTypeLoader {
 
 			//We check the type of the variable, if it is a global var, we instantiate it with this variable.
 			switch (variableType.getName()) {
-				case "logic" -> BuiltInTypes.LOGIC = variableType;
-				case "number" -> BuiltInTypes.NUMBER = variableType;
-				case "string" -> BuiltInTypes.STRING = variableType;
-				case "direction" -> BuiltInTypes.DIRECTION = variableType;
-				case "itemstack" -> BuiltInTypes.ITEMSTACK = variableType;
-				case "blockstate" -> BuiltInTypes.BLOCKSTATE = variableType;
-				case "actionresulttype" -> BuiltInTypes.ACTIONRESULTTYPE = variableType;
-				case "entity" -> BuiltInTypes.ENTITY = variableType;
+			case "logic" -> BuiltInTypes.LOGIC = variableType;
+			case "number" -> BuiltInTypes.NUMBER = variableType;
+			case "string" -> BuiltInTypes.STRING = variableType;
+			case "direction" -> BuiltInTypes.DIRECTION = variableType;
+			case "itemstack" -> BuiltInTypes.ITEMSTACK = variableType;
+			case "blockstate" -> BuiltInTypes.BLOCKSTATE = variableType;
+			case "actionresulttype" -> BuiltInTypes.ACTIONRESULTTYPE = variableType;
+			case "entity" -> BuiltInTypes.ENTITY = variableType;
 			}
 		}
 

@@ -20,7 +20,7 @@
       },
       "minecraft:surface_parameters": {
         "sea_floor_depth": ${(-12.5 * data.baseHeight + 25)?round},
-        "sea_floor_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
+        "sea_floor_material": ${mappedMCItemToIngameItemName(data.getUnderwaterBlock())?replace("\"item\":", "")},
         "top_material": ${mappedMCItemToIngameItemName(data.groundBlock)?replace("\"item\":", "")},
         "mid_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
         "foundation_material": "minecraft:stone",
@@ -29,9 +29,9 @@
       "minecraft:overworld_generation_rules": {
         <#if data.spawnBiome>
             "generate_for_climates": [
-              <#if data.biomeType == "COOL" || data.biomeType == "ICY">
+              <#if (data.temperature < 0)>
               [ "cold", ${(data.biomeWeight / 10)?round} ]
-              <#elseif data.biomeType == "DESERT">
+              <#elseif (data.temperature >= 0 && data.temperature < 1)>
               [ "medium", ${(data.biomeWeight / 10)?round} ]
               <#else>
               [ "warm", ${(data.biomeWeight / 10)?round} ]

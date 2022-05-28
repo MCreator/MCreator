@@ -38,25 +38,11 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Particles {
 
-	private static final Map<ParticleType<?>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>> REGISTRY = new HashMap<>();
-
-	<#list particles as particle>
-	public static final SimpleParticleType ${particle.getModElement().getRegistryNameUpper()} = register(
-			new SimpleParticleType(${particle.alwaysShow}).setRegistryName("${particle.getModElement().getRegistryName()}"),
-			${particle.getModElement().getName()}Particle::provider);
-	</#list>
-
-	private static SimpleParticleType register(ParticleType<?> particle, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
-		REGISTRY.put(particle, provider);
-		return (SimpleParticleType) particle;
-	}
-
-	@SubscribeEvent public static void registerParticleTypes(RegistryEvent.Register<ParticleType<?>> event) {
-		event.getRegistry().registerAll(REGISTRY.keySet().toArray(new ParticleType[0]));
-	}
-
 	@SubscribeEvent public static void registerParticles(ParticleFactoryRegisterEvent event) {
-		REGISTRY.forEach((particle, provider) -> Minecraft.getInstance().particleEngine.register((SimpleParticleType) particle, spriteSet -> provider.apply(spriteSet)));
+		<#list particles as particle>
+		Minecraft.getInstance().particleEngine.register((SimpleParticleType) ${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(),
+					${particle.getModElement().getName()}Particle::provider);
+		</#list>
 	}
 
 }

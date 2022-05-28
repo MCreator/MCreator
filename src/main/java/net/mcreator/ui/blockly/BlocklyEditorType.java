@@ -21,8 +21,7 @@ package net.mcreator.ui.blockly;
 
 public enum BlocklyEditorType {
 
-	PROCEDURE("procedures", "ptpl", "event_trigger"),
-	AI_TASK("ai_setup", "aitpl", "aitasks_container");
+	PROCEDURE("procedures", "ptpl", "event_trigger"), AI_TASK("ai_setup", "aitpl", "aitasks_container");
 
 	private final String translationKey;
 	private final String extension;

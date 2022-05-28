@@ -52,7 +52,7 @@ public class SoundSelector extends JPanel {
 		setOpaque(false);
 		bt.addActionListener(event -> {
 			String s = StringSelectorDialog.openSelectorDialog(mcreator, ElementUtil::getAllSounds,
-					L10N.t("dialog.selector.sound_title"), L10N.t("dialog.selector.sound_message"));
+					L10N.t("dialog.selector.sound.title"), L10N.t("dialog.selector.sound.message"));
 			if (s != null)
 				setSound(s);
 		});

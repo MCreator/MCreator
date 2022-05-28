@@ -596,9 +596,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		if (!hasErrors && !hasDependencyErrors)
 			return new AggregatedValidationResult.PASS();
 		else if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
-							.collect(Collectors.toList()));
+			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
+					.filter(note -> note.type() == BlocklyCompileNote.Type.ERROR).map(BlocklyCompileNote::message)
+					.collect(Collectors.toList()));
 		else
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));

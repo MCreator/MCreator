@@ -40,6 +40,8 @@ import net.mcreator.element.converter.fv23.PotionToEffectConverter;
 import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
 import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
 import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
+import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
+import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -58,7 +60,8 @@ public class ConverterRegistry {
 		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
-				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover()));
+				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
+				new ProcedureShootArrowFixer()));
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
@@ -73,6 +76,7 @@ public class ConverterRegistry {
 
 	// Converters that convert older mod element type to a newer one
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
+		put("food", new FoodToItemConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

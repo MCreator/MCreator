@@ -140,7 +140,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;
 	public static ModElementType<?> FLUID;
-	public static ModElementType<?> FOOD;
 	public static ModElementType<?> FUEL;
 	public static ModElementType<?> FUNCTION;
 	public static ModElementType<?> GAMERULE;
@@ -163,6 +162,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
+	public static ModElementType<?> VILLAGERTRADE;
 
 	public static ModElementType<?> UNKNOWN;
 

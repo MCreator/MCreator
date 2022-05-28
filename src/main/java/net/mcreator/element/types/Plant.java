@@ -26,6 +26,7 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -111,6 +112,7 @@ import java.util.stream.Collectors;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	public int patchSize;
+	public boolean generateAtAnyHeight;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourBlockChanges;
@@ -173,7 +175,8 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getBlockImageIcon(texture).getImage(), 32);
+		return ImageUtils.resizeAndCrop(
+				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage(), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {

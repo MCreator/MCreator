@@ -39,11 +39,13 @@ import java.util.List;
 
 public abstract class GeneratableElement {
 
+	public static final int formatVersion = 28;
+
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
 	private transient ModElement element;
 
-	public static final transient int formatVersion = 26;
+	private transient boolean conversionApplied = false;
 
 	public GeneratableElement(ModElement element) {
 		if (element != null)
@@ -79,6 +81,10 @@ public abstract class GeneratableElement {
 	 */
 	public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return null;
+	}
+
+	public boolean wasConversionApplied() {
+		return conversionApplied;
 	}
 
 	public static class GSONAdapter
@@ -132,6 +138,7 @@ public abstract class GeneratableElement {
 											+ converter.getVersionConvertingTo());
 									generatableElement[0] = converter.convert(this.workspace, generatableElement[0],
 											jsonElement);
+									generatableElement[0].conversionApplied = true;
 								});
 					}
 				}
@@ -144,11 +151,13 @@ public abstract class GeneratableElement {
 						LOG.debug("Converting mod element " + this.lastModElement.getName() + " of type " + newType
 								+ " to potential alternative.");
 
-						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement), jsonElement);
+						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement),
+								jsonElement);
 						if (result != null) {
 							workspace.removeModElement(this.lastModElement);
 
-							result.getModElement().setParentFolder(FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
+							result.getModElement()
+									.setParentFolder(FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
 							workspace.getModElementManager().storeModElementPicture(result);
 							workspace.addModElement(result.getModElement());
 							workspace.getGenerator().generateElement(result);

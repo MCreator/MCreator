@@ -28,10 +28,11 @@ import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.FileDialogs;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
@@ -335,7 +336,7 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	protected void use() {
-		Object[] options = { "Block", "Item", "Other" };
+		Object[] options = TextureType.getTypes(false);
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.animation_maker.kind_of_texture"),
 				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -344,14 +345,8 @@ public class AnimationMakerView extends ViewBase {
 
 		String namec = JOptionPane.showInputDialog(L10N.t("dialog.animation_maker.enter_texture_name"));
 		if (namec != null) {
-			File exportFile;
 			namec = RegistryNameFixer.fix(namec);
-			if (n == 0)
-				exportFile = mcreator.getFolderManager().getBlockTextureFile(namec);
-			else if (n == 1)
-				exportFile = mcreator.getFolderManager().getItemTextureFile(namec);
-			else
-				exportFile = mcreator.getFolderManager().getOtherTextureFile(namec);
+			File exportFile = mcreator.getFolderManager().getTextureFile(namec, TextureType.getTextureType(n, false));
 
 			if (exportFile.isFile()) {
 				JOptionPane.showMessageDialog(mcreator,

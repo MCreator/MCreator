@@ -26,6 +26,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -77,10 +78,20 @@ import java.util.Map;
 	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
+	public Procedure onFinishUsingItem;
 
 	public boolean hasDispenseBehavior;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
+
+	// Food
+	public boolean isFood;
+	public int nutritionalValue;
+	public double saturation;
+	public MItemBlock eatResultItem;
+	public boolean isMeat;
+	public boolean isAlwaysEdible;
+	public String animation;
 
 	private Item() {
 		this(null);
@@ -92,10 +103,13 @@ import java.util.Map;
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+		this.saturation = 0.3f;
+		this.animation = "eat";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getModElement().getFolderManager().getItemImageIcon(texture).getImage(), 32);
+		return ImageUtils.resizeAndCrop(
+				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
 	}
 
 	@Override public Model getItemModel() {
@@ -134,4 +148,11 @@ import java.util.Map;
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
 
+	public boolean hasNonDefaultAnimation() {
+		return isFood ? !animation.equals("eat") : !animation.equals("none");
+	}
+
+	public boolean hasEatResultItem() {
+		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
+	}
 }

@@ -2,9 +2,13 @@ name: Build and test
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - "feature/*"
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - "feature/*"
 
 jobs:
   build:
@@ -15,7 +19,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          java-version: '17.0.1'
+          java-version: '17.0.3'
           distribution: 'adopt'
       - name: Cache Gradle Packages
         uses: actions/cache@v2

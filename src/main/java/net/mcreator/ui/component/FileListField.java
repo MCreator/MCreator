@@ -19,7 +19,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.dialogs.FileDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 
 import java.io.File;
 import java.util.Arrays;

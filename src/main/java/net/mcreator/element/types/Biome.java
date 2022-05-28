@@ -41,6 +41,7 @@ import java.util.Locale;
 
 	public MItemBlock groundBlock;
 	public MItemBlock undergroundBlock;
+	public MItemBlock underwaterBlock;
 
 	public Color airColor;
 	public Color grassColor;
@@ -63,10 +64,12 @@ import java.util.Locale;
 	public double temperature;
 	public double baseHeight;
 	public double heightVariation;
-	public String biomeType;
 
 	public boolean spawnBiome;
 	public boolean spawnBiomeNether;
+
+	public boolean spawnInCaves;
+
 	public int biomeWeight;
 	public List<String> biomeDictionaryTypes;
 
@@ -140,16 +143,6 @@ import java.util.Locale;
 		defaultFeatures = new ArrayList<>();
 	}
 
-	public static class SpawnEntry {
-
-		public EntityEntry entity;
-		public int minGroup;
-		public int maxGroup;
-		public int weight;
-		public String spawnType;
-
-	}
-
 	public boolean hasFruits() {
 		return !treeFruits.isEmpty();
 	}
@@ -195,9 +188,26 @@ import java.util.Locale;
 		};
 	}
 
+	public MItemBlock getUnderwaterBlock() {
+		if (underwaterBlock == null || underwaterBlock.isEmpty())
+			return undergroundBlock;
+
+		return underwaterBlock;
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor,
 				grassColor, waterColor, groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
+	}
+
+	public static class SpawnEntry {
+
+		public EntityEntry entity;
+		public int minGroup;
+		public int maxGroup;
+		public int weight;
+		public String spawnType;
+
 	}
 
 }
