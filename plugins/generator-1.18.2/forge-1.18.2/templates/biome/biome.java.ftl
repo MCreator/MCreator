@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#include "../biomeutils.ftl">
 
 package ${package}.world.biome;
 
@@ -37,51 +38,16 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-<#function temperature2temperature temperature biomeWeight>
-    <#assign base = ((temperature + 1) / 3) * 2 - 1>
-    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function rainingPossibility2humidity rainingPossibility biomeWeight>
-    <#assign base = (rainingPossibility * 2) - 1>
-    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function baseHeight2continentalness baseHeight biomeWeight>
-	<#-- continentalness (low: oceans, high: inlands) -->
-	<#assign base = (baseHeight + 5) / 10.0>
-	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function heightVariation2erosion heightVariation biomeWeight>
-	<#-- erosion (high: flat terrain) -->
-	<#assign base = 2 - heightVariation - 1>
-	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function registryname2weirdness registryname biomeWeight>
-    <#assign base = (w.random(registryname) * 2) - 1>
-    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function normalizeWeight biomeWeight>
-    <#return (biomeWeight / 70.0)>
-</#function>
-
-<#function normalizeWeightUnderground biomeWeight>
-    <#return (biomeWeight / 10.0)>
-</#function>
-
 public class ${name}Biome {
 
 	<#if data.spawnBiome || data.spawnBiomeNether>
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-	    Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight))}),
-	    Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight))}),
-	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight))}),
-	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight), "f")}),
+	    Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
+	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
+	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
 	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
 	    0 <#-- offset -->
 	);
 	</#if>
@@ -90,10 +56,10 @@ public class ${name}Biome {
 	public static final Climate.ParameterPoint PARAMETER_POINT_UNDERGROUND = new Climate.ParameterPoint(
 			Climate.Parameter.span(-1, 1),
 			Climate.Parameter.span(-1, 1),
-			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight))}),
-			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight))}),
+			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight), "f")}),
+			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight), "f")}),
 			Climate.Parameter.span(0.2f, 0.9f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight))}),
+			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight), "f")}),
 			0 <#-- offset -->
 	);
     </#if>

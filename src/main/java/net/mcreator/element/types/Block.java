@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	public String customModelName;
 	public int rotationMode;
+	public boolean enablePitch;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
@@ -242,6 +243,10 @@ import java.util.stream.Collectors;
 
 	public boolean shouldScheduleTick() {
 		return tickRate > 0 && !tickRandomly;
+	}
+
+	public boolean shouldDisableOffset() {
+		return disableOffset || offsetType.equals("NONE");
 	}
 
 	@Override public Model getItemModel() {

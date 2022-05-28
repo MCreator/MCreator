@@ -368,8 +368,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		isFood.addActionListener(e -> updateFoodPanel());
 		updateFoodPanel();
 
-		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"),
-				L10N.label("elementgui.item.is_food")));
+		foodSubpane.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
 		foodSubpane.add(isFood);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
@@ -384,8 +384,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.eating_result")));
 		foodSubpane.add(PanelUtils.centerInPanel(eatResultItem));
 
-		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"),
-				L10N.label("elementgui.item.is_meat")));
+		foodSubpane.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"), L10N.label("elementgui.item.is_meat")));
 		foodSubpane.add(isMeat);
 
 		foodSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
@@ -460,6 +460,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 			isMeat.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
 			eatResultItem.setEnabled(true);
+			if ((int) useDuration.getValue() <= 0)
+				useDuration.setValue(32);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);
