@@ -92,7 +92,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			return Shapes.empty();
 		<#else>
 			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
-			<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
 		</#if>
 	}
 	</#if>

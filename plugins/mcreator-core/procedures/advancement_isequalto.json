@@ -1,6 +1,10 @@
 {
-  "extensions": [
-    "achievement_list_provider"
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "achievement",
+      "datalist": "achievement"
+    }
   ],
   "inputsInline": true,
   "output": "Boolean",

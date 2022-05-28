@@ -33,5 +33,6 @@
       "type": "entity"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }
