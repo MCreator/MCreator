@@ -24,6 +24,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -49,15 +50,14 @@ public class GeneratorSelector {
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
 	 *
-	 * @param parent <p>The window to attach the dialog</p>
+	 * @param parent <p>The  window to attach the dialog</p>
 	 * @param current <p>The current generator settings used</p>
 	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
-	 * @param newWorkspace <p>Indicate if we need to use features specific to existing workspaces or not</p>
-	 * @param workspace <p>The workspace to backup</p>
+	 * @param workspace <p>The workspace to backup. If null is passed, some actions will not be executed.</p>
 	 * @return <p>The {@link GeneratorConfiguration} to use</p>
 	 */
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace, Workspace workspace) {
+			@Nullable GeneratorFlavor currentFlavor, @Nullable Workspace workspace) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
@@ -74,7 +74,7 @@ public class GeneratorSelector {
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
 				generator.addItem(generatorConfiguration);
 			} else if ((currentFlavor == GeneratorFlavor.FORGE && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
-					currentFlavor == GeneratorFlavor.FABRIC && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
+					currentFlavor == GeneratorFlavor.FABRIC && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && workspace != null) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -191,7 +191,7 @@ public class GeneratorSelector {
 
 			@Override public void actionPerformed(ActionEvent e) {
 				if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration) {
-					if (!Launcher.version.isDevelopment() && !newWorkspace && generatorConfiguration != current
+					if (!Launcher.version.isDevelopment() && workspace != null && generatorConfiguration != current
 							&& generatorConfiguration.getGeneratorStats().getStatus() == GeneratorStats.Status.DEV) {
 						generator.setSelectedItem(oldItem);
 						JOptionPane.showMessageDialog(parent, L10N.t("dialog.generator_selector.dev_gen_message"),
@@ -207,7 +207,7 @@ public class GeneratorSelector {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
-			if (workspace != null) {
+			if (workspace != null && parent.getParent() instanceof MCreator mcreator) {
 				if (currentFlavor == GeneratorFlavor.FORGE
 						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
 						currentFlavor == GeneratorFlavor.FABRIC &&
@@ -218,7 +218,7 @@ public class GeneratorSelector {
 					if (confirmval == JOptionPane.OK_OPTION) {
 						ShareableZIPManager.exportZIP("Workspace backup",
 								new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-										"FullBackup" + workspace.getMCreatorVersion() + ".zip"), workspace.getWorkspaceFolder(), parent, true);
+										"FullBackup" + workspace.getMCreatorVersion() + ".zip"), mcreator, true);
 						return (GeneratorConfiguration) generator.getSelectedItem();
 					}
 				}

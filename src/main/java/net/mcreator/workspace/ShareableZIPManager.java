@@ -102,22 +102,18 @@ public class ShareableZIPManager {
 	}
 
 	public static void exportZIP(String title, File file, MCreator mcreator, boolean excludeRunDir) {
-		exportZIP(title, file, mcreator.getWorkspaceFolder(), mcreator, excludeRunDir);
-	}
-
-	public static void exportZIP(String title, File file, File workspaceFolder, Window parent, boolean excludeRunDir) {
-		ProgressDialog dial = new ProgressDialog(parent, title);
+		ProgressDialog dial = new ProgressDialog(mcreator, title);
 		Thread t = new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit("Compressing workspace");
 			dial.addProgress(p1);
 
 			try {
 				if (excludeRunDir) {
-					ZipIO.zipDir(workspaceFolder.getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
+					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
 							".mcreator/", "build/", "gradle/", "run/", "#build.gradle", "#gradlew", "#gradlew.bat",
 							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
 				} else {
-					ZipIO.zipDir(workspaceFolder.getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
+					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
 							".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew", "#gradlew.bat",
 							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
 				}
