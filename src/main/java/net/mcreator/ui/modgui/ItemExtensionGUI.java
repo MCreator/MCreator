@@ -75,7 +75,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		enableFuelComp.setOpaque(false);
 
 		fuelPower = new NumberProcedureSelector(null, mcreator,
-				new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1)),
+				new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1)), 75,
 				Dependency.fromString("itemstack:itemstack"));
 
 		JComponent fuelPowerComponent = PanelUtils.westAndCenterElement(
