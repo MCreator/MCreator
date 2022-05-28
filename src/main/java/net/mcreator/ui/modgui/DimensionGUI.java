@@ -68,6 +68,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private MCItemHolder mainFillerBlock;
 	private MCItemHolder fluidBlock;
 
+	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(-64, -2032, 2016, 16));
+	private final JSpinner height = new JSpinner(new SpinnerNumberModel(384, 0, 4064, 16));
+	private final JSpinner logicalHeight = new JSpinner(new SpinnerNumberModel(256, 0, 2032, 1));
+
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.dimension.can_player_respawn");
 	private final JCheckBox hasFog = L10N.checkbox("elementgui.dimension.has_fog");
 	private final JCheckBox isDark = L10N.checkbox("elementgui.dimension.is_dark");
@@ -154,7 +158,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel proper2 = new JPanel(new GridLayout(8, 2, 3, 3));
+		JPanel proper2 = new JPanel(new GridLayout(11, 2, 3, 3));
 		proper2.setOpaque(false);
 
 		airColor.setOpaque(false);
@@ -184,6 +188,18 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
 				L10N.label("elementgui.dimension.sleep_result")));
 		proper2.add(sleepResult);
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/min_height"),
+				L10N.label("elementgui.dimension.min_height")));
+		proper2.add(minHeight);
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/height"),
+				L10N.label("elementgui.dimension.height")));
+		proper2.add(height);
+
+		proper2.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/logical_height"),
+				L10N.label("elementgui.dimension.logical_height")));
+		proper2.add(logicalHeight);
 
 		proper2.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/imitate_overworld"), imitateOverworldBehaviour));
@@ -350,10 +366,15 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
+		if (page == 0) {
+			if ((int) minHeight.getValue() % 16 != 0 || (int) height.getValue() % 16 != 0)
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.dimension.error_invalid_height_values"));
+			else if ((int) logicalHeight.getValue() > (int) height.getValue())
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.dimension.error_logical_bigger_height"));
 			return new AggregatedValidationResult(page2group);
-		else if (page == 1)
+		} else if (page == 1) {
 			return new AggregatedValidationResult(page1group);
+		}
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -371,6 +392,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
+		minHeight.setValue(dimension.minHeight);
+		height.setValue(dimension.height);
+		logicalHeight.setValue(dimension.logicalHeight);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
 		hasFog.setSelected(dimension.hasFog);
 		isDark.setSelected(dimension.isDark);
@@ -400,6 +424,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.airColor = airColor.getColor();
 		dimension.canRespawnHere = canRespawnHere.isSelected();
 		dimension.hasFog = hasFog.isSelected();
+		dimension.minHeight = (int) minHeight.getValue();
+		dimension.height = (int) height.getValue();
+		dimension.logicalHeight = (int) logicalHeight.getValue();
 		dimension.isDark = isDark.isSelected();
 		dimension.imitateOverworldBehaviour = imitateOverworldBehaviour.isSelected();
 		dimension.hasSkyLight = hasSkyLight.isSelected();

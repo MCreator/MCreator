@@ -41,6 +41,8 @@ templates:
     condition: enablePortal
     deleteWhenConditionFalse: true
 
+field_exclusions: [minHeight, height]
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: igniterName

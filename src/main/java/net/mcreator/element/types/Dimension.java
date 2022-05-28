@@ -46,6 +46,9 @@ import java.util.List;
 	public MItemBlock fluidBlock;
 
 	public Color airColor;
+	public int minHeight;
+	public int height;
+	public int logicalHeight;
 	public boolean canRespawnHere;
 	public boolean hasFog;
 	public boolean isDark;
