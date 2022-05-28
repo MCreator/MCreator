@@ -25,10 +25,12 @@
       "src": "./res/null.png",
       "width": 8,
       "height": 24
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "entity",
+      "datalist": "entity"
     }
-  ],
-  "extensions": [
-    "entity_list_provider"
   ],
   "inputsInline": true,
   "output": "Entity",

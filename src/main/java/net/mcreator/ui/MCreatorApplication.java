@@ -201,7 +201,7 @@ public final class MCreatorApplication {
 
 		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
-		if (Launcher.version.isSnapshot()) {
+		if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
 			JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
 					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 		}
