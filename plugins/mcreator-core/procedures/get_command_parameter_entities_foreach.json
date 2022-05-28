@@ -20,7 +20,7 @@
   "nextStatement": null,
   "colour": 195,
   "mcreator": {
-    "toolbox_id": "advanced",
+    "toolbox_id": "commands",
     "toolbox_init": [
       "<value name=\"_placeholder\"><block deletable=\"false\" movable=\"false\" enabled=\"false\" type=\"entity_iterator\"></block></value>"
     ],

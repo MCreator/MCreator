@@ -9,7 +9,7 @@
   "output": "Entity",
   "colour": 195,
   "mcreator": {
-    "toolbox_id": "advanced",
+    "toolbox_id": "commands",
     "fields": [
       "param"
     ],
