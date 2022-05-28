@@ -3,8 +3,9 @@ To get the maximal height, you need to add the minimum height to this number.
 
 This value needs to be a multiple of 16.
 
-NOTE: Only available in Minecraft 1.18.x and higher
-
+**Vanilla values:**
 - **Overworld**: 384
 - **Nether**: 256
 - **The End**: 256
+
+NOTE: Only available in Minecraft 1.18.x and higher

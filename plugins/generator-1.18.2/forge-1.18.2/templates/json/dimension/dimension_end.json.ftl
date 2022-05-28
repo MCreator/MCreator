@@ -21,8 +21,8 @@
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
-        "min_y": 0,
-        "height": 128,
+        "min_y": ${data.minHeight},
+        "height": ${data.height},
         "size_horizontal": 2,
         "size_vertical": 1,
         "island_noise_override": true,
