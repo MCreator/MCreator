@@ -148,8 +148,7 @@ public class GTProcedureBlocks {
 										type = "enhancement";
 									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
 									if (values.length > 0 && !values[0].equals("")) {
-										String value = type.equals("entity") ?
-												"EntityZombie" : ListUtils.getRandomItem(random, values);
+										String value = ListUtils.getRandomItem(random, values);
 										additionalXML.append("<field name=\"").append(field).append("\">")
 												.append(value).append("</field>");
 										processed++;
