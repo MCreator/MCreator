@@ -55,11 +55,16 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
 			Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, providedDependencies);
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 50, providedDependencies);
+	}
+
+	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
+			int width, Dependency... providedDependencies) {
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width, providedDependencies);
 	}
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
-			@Nullable JSpinner fixedValue, Dependency... providedDependencies) {
+			@Nullable JSpinner fixedValue, int width, Dependency... providedDependencies) {
 		super(mcreator, VariableTypeLoader.BuiltInTypes.NUMBER, providedDependencies);
 
 		this.fixedValue = fixedValue;
@@ -201,7 +206,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXXX", null));
 
 		if (fixedValue != null)
-			fixedValue.setPreferredSize(new Dimension(75, 0));
+			fixedValue.setPreferredSize(new Dimension(width, 0));
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
