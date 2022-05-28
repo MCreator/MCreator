@@ -375,7 +375,7 @@ public class Generator implements IGenerator, Closeable {
 
 		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null))
 				.forEach(template -> template.getFile().delete());
-		Objects.requireNonNull(getModElementListTemplates(element, true, element.getGeneratableElement()))
+		Objects.requireNonNull(getModElementListTemplates(element, true, null))
 				.forEach(el -> {
 					for (int i = 0; i < el.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : el.templates().keySet())
@@ -401,20 +401,21 @@ public class Generator implements IGenerator, Closeable {
 
 		List<?> templates = generatorConfiguration.getBaseTemplates();
 		for (Object template : templates) {
-			String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
-
-			Object conditionRaw = ((Map<?, ?>) template).get("condition");
 			TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+			Object conditionRaw = ((Map<?, ?>) template).get("condition");
 			if (conditionRaw == null) {
 				conditionRaw = ((Map<?, ?>) template).get("condition_any");
 				operator = TemplateExpressionParser.Operator.OR;
 			}
 
+			String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
+
 			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 					workspace.getWorkspaceInfo(), operator)) {
 				if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-					if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
+					if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 						new File(name).delete(); // if template is skipped, we delete its potential file
+					}
 				continue;
 			}
 
@@ -439,8 +440,9 @@ public class Generator implements IGenerator, Closeable {
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
 				for (GeneratorTemplate template : globalTemplatesList) {
-					if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
+					if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
 						template.getFile().delete();
+					}
 				}
 			}
 		}
@@ -467,8 +469,9 @@ public class Generator implements IGenerator, Closeable {
 			if (!baseTypeListMap.containsKey(baseType) || baseTypeListMap.get(baseType).isEmpty()) {
 				if (performFSTasks) { // if no elements of this type are present, delete the base type template for that type
 					for (GeneratorTemplate template : globalTemplatesList) {
-						if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
+						if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
 							template.getFile().delete();
+						}
 					}
 				}
 			} else {
@@ -501,8 +504,8 @@ public class Generator implements IGenerator, Closeable {
 			for (Object template : templates) {
 				String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
 
-				Object conditionRaw = ((Map<?, ?>) template).get("condition");
 				TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+				Object conditionRaw = ((Map<?, ?>) template).get("condition");
 				if (conditionRaw == null) {
 					conditionRaw = ((Map<?, ?>) template).get("condition_any");
 					operator = TemplateExpressionParser.Operator.OR;
@@ -511,8 +514,9 @@ public class Generator implements IGenerator, Closeable {
 				if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 						workspace.getWorkspaceInfo(), operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-						if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
+						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file
+						}
 					continue;
 				}
 
@@ -555,8 +559,8 @@ public class Generator implements IGenerator, Closeable {
 			for (Object template : templates) {
 				String rawname = (String) ((Map<?, ?>) template).get("name");
 
-				Object conditionRaw = ((Map<?, ?>) template).get("condition");
 				TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+				Object conditionRaw = ((Map<?, ?>) template).get("condition");
 				if (conditionRaw == null) {
 					conditionRaw = ((Map<?, ?>) template).get("condition_any");
 					operator = TemplateExpressionParser.Operator.OR;
@@ -579,8 +583,9 @@ public class Generator implements IGenerator, Closeable {
 				if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
 						operator)) {
 					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-						if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
+						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 							new File(name).delete(); // if template is skipped, we delete its potential file
+						}
 					continue;
 				}
 
@@ -660,8 +665,8 @@ public class Generator implements IGenerator, Closeable {
 					for (Object template : templates) {
 						String rawname = (String) ((Map<?, ?>) template).get("name");
 
-						Object conditionRaw = ((Map<?, ?>) template).get("condition");
 						TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+						Object conditionRaw = ((Map<?, ?>) template).get("condition");
 						if (conditionRaw == null) {
 							conditionRaw = ((Map<?, ?>) template).get("condition_any");
 							operator = TemplateExpressionParser.Operator.OR;
@@ -678,8 +683,9 @@ public class Generator implements IGenerator, Closeable {
 													rawname.replace("@NAME", element.getName())
 															.replace("@registryname", element.getRegistryName())
 															.replace("@elementindex", Integer.toString(i))));
-									if (workspace.getFolderManager().isFileInWorkspace(new File(name)))
+									if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 										new File(name).delete(); //if template is skipped, we delete its potential file
+									}
 								}
 							} else {
 								conditionChecks.add(i, true);
