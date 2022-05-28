@@ -100,7 +100,7 @@ package ${package}.gui.overlay;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), ${translateTokens(JavaConventions.escapeStringForJava(component.text))},
 									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
