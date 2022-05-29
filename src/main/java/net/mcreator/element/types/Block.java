@@ -88,6 +88,7 @@ import java.util.stream.Collectors;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public boolean useLootTableForDrops;
+	public boolean requiresCorrectTool;
 
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;

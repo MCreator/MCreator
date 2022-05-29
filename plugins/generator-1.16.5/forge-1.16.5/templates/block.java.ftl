@@ -199,6 +199,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.destroyTool != "Not specified">
 				.harvestLevel(${data.breakHarvestLevel})
 				.harvestTool(ToolType.${data.destroyTool?upper_case})
+			</#if>
+			<#if data.requiresCorrectTool>
 				.setRequiresTool()
 			</#if>
 			<#if data.isNotColidable>

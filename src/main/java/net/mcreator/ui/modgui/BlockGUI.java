@@ -212,6 +212,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
+	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.block.spawn_particles");
 
@@ -641,7 +642,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
@@ -650,6 +651,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tickRandomly.setOpaque(false);
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
+		requiresCorrectTool.setOpaque(false);
 
 		selp3.setOpaque(false);
 		advancedProperties.setOpaque(false);
@@ -743,6 +745,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
 				L10N.label("elementgui.block.harvest_level")));
 		selp3.add(breakHarvestLevel);
+
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/requires_correct_tool"),
+				L10N.label("elementgui.block.requires_correct_tool")));
+		selp3.add(requiresCorrectTool);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
@@ -1415,6 +1421,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customSoundType.setSelected(block.isCustomSoundType);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
+		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
 		isNotColidable.setSelected(block.isNotColidable);
@@ -1511,6 +1518,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.tickRandomly = tickRandomly.isSelected();
 		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		block.destroyTool = (String) destroyTool.getSelectedItem();
+		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
 		block.plantsGrowOn = plantsGrowOn.isSelected();
