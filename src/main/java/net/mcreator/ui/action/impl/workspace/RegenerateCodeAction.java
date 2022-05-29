@@ -74,14 +74,14 @@ public class RegenerateCodeAction extends GradleAction {
 				mcreator.getGenerator().getModElementListTemplates(mod).forEach(list -> {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-							if (list.templates().get(generatorTemplate).get(i))
+							if (list.templates().get(generatorTemplate).get(i)
+									&& list.forIndex(generatorTemplate, i) != null)
 								templates.add(list.forIndex(generatorTemplate, i));
 						}
 					}
 				});
 
-				List<File> modElementFiles = templates.stream().filter(Objects::nonNull).map(GeneratorTemplate::getFile)
-						.toList();
+				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();
 				toBePreserved.addAll(modElementFiles); // we don't delete mod element files in next step
 				if (!mod.isCodeLocked()) // but we do in this step, if the code is not locked
 					modElementFiles.forEach(File::delete);

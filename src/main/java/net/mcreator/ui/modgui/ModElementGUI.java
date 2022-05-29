@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
@@ -564,7 +563,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (editingMode) {
 			Objects.requireNonNull(modElement.getGenerator().getModElementListTemplates(modElement)).forEach(el -> {
 				for (int i = 0; i < el.listData().size(); i++) {
-					for (GeneratorTemplate generatorTemplate : el.templates().keySet())
+					for (var generatorTemplate : el.templates().keySet())
 						el.processTokens(generatorTemplate, i).delete();
 				}
 			});
@@ -578,10 +577,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected boolean allowCodePreview() {
-		GE generatable = getElementFromGUI();
-		return !modElement.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(modElement, generatable)
-				.isEmpty() || !modElement.getWorkspace().getGenerator()
-				.getModElementListTemplates(modElement, generatable).isEmpty();
+		return !modElement.getWorkspace().getGenerator()
+				.getModElementGeneratorTemplatesList(modElement, getElementFromGUI()).isEmpty()
+				|| !modElement.getWorkspace().getGenerator().getModElementListTemplates(modElement, getElementFromGUI())
+				.isEmpty();
 	}
 
 	public void reloadDataLists() {

@@ -78,7 +78,8 @@ public class GTModElements {
 				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-							if (list.templates().get(generatorTemplate).get(i))
+							if (list.templates().get(generatorTemplate).get(i)
+									&& list.forIndex(generatorTemplate, i) != null)
 								modElementFiles.add(list.processTokens(generatorTemplate, i));
 						}
 					}
@@ -115,7 +116,8 @@ public class GTModElements {
 				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
 					for (int i = 0; i < list.listData().size(); i++) {
 						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-							if (list.templates().get(generatorTemplate).get(i))
+							if (list.templates().get(generatorTemplate).get(i)
+									&& list.forIndex(generatorTemplate, i) != null)
 								modElementFiles.add(list.processTokens(generatorTemplate, i));
 						}
 					}

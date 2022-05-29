@@ -1166,7 +1166,8 @@ import java.util.stream.Collectors;
 							mcreator.getGenerator().getModElementListTemplates(mu).forEach(list -> {
 								for (int i = 0; i < list.listData().size(); i++) {
 									for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-										if (list.templates().get(generatorTemplate).get(i))
+										if (list.templates().get(generatorTemplate).get(i)
+												&& list.forIndex(generatorTemplate, i) != null)
 											originalFiles.add(list.forIndex(generatorTemplate, i));
 									}
 								}
@@ -1174,10 +1175,11 @@ import java.util.stream.Collectors;
 
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(duplicateModElement);
-							mcreator.getGenerator().getModElementListTemplates(mu).forEach(list -> {
+							mcreator.getGenerator().getModElementListTemplates(duplicateModElement).forEach(list -> {
 								for (int i = 0; i < list.listData().size(); i++) {
 									for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-										if (list.templates().get(generatorTemplate).get(i))
+										if (list.templates().get(generatorTemplate).get(i)
+												&& list.forIndex(generatorTemplate, i) != null)
 											duplicateFiles.add(list.forIndex(generatorTemplate, i));
 									}
 								}

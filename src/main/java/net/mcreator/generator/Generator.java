@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class Generator implements IGenerator, Closeable {
@@ -198,7 +199,7 @@ public class Generator implements IGenerator, Closeable {
 					}
 
 					return null;
-				}).filter(Objects::nonNull).toList();
+				}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		if (performFSTasks) {
 			generateFiles(generatorFiles, formatAndOrganiseImports);
@@ -279,7 +280,7 @@ public class Generator implements IGenerator, Closeable {
 				performFSTasks, element);
 		if (generatorListTemplates != null) {
 			for (GeneratorTemplatesList generatorTemplatesList : generatorListTemplates) {
-				List<?> listData = generatorTemplatesList.listData().stream().toList();
+				List<?> listData = generatorTemplatesList.listData();
 				for (GeneratorTemplate generatorTemplate : generatorTemplatesList.templates().keySet()) {
 					for (int i = 0; i < listData.size(); i++) {
 						if (generatorTemplatesList.templates().get(generatorTemplate).get(i)) {
@@ -432,7 +433,7 @@ public class Generator implements IGenerator, Closeable {
 
 			List<GeneratableElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type).stream()
 					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-					.toList();
+					.collect(Collectors.toList());
 
 			if (!elementsList.isEmpty()) {
 				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s", elementsList));
@@ -478,7 +479,8 @@ public class Generator implements IGenerator, Closeable {
 				globalTemplatesList.forEach(
 						e -> e.addDataModelEntry(baseType.getPluralName().toLowerCase(Locale.ENGLISH),
 								baseTypeListMap.get(baseType).stream()
-										.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID())).toList()));
+										.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID()))
+										.collect(Collectors.toList())));
 
 				files.addAll(globalTemplatesList);
 			}
@@ -660,7 +662,7 @@ public class Generator implements IGenerator, Closeable {
 				else if (listData instanceof Collection<?> collection)
 					elements = new ArrayList<>(collection);
 				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-					elements = new ArrayList<>(StreamSupport.stream(iterable.spliterator(), false).toList());
+					elements = StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
 				if (templates != null) {
 					for (Object template : templates) {
 						String rawname = (String) ((Map<?, ?>) template).get("name");
@@ -744,7 +746,7 @@ public class Generator implements IGenerator, Closeable {
 
 			try {
 				List<File> modElementFiles = getModElementGeneratorTemplatesList(element).stream()
-						.map(GeneratorTemplate::getFile).toList();
+						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				if (FileIO.isFileOnFileList(modElementFiles, file))
 					return element;
 
