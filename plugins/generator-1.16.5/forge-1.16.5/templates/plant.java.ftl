@@ -671,6 +671,17 @@ import net.minecraft.util.SoundEvent;
 		}
         </#if>
 
+		<#if hasProcedure(data.onEntityWalksOn)>
+		@Override public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+			super.onEntityWalk(world, pos, entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			BlockState blockstate = world.getBlockState(pos);
+			<@procedureOBJToCode data.onEntityWalksOn/>
+		}
+        </#if>
+
 		<#if data.hasTileEntity>
 		@Override public boolean hasTileEntity(BlockState state) {
 			return true;

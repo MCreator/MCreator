@@ -125,6 +125,7 @@ import java.util.stream.Collectors;
 	public Procedure onEntityCollides;
 	public Procedure onBlockPlacedBy;
 	public Procedure onRightClicked;
+	public Procedure onEntityWalksOn;
 
 	private Plant() {
 		this(null);

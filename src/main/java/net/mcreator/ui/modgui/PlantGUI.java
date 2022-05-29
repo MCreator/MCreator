@@ -149,6 +149,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onEntityCollides;
 	private ProcedureSelector onBlockPlacedBy;
 	private ProcedureSelector onRightClicked;
+	private ProcedureSelector onEntityWalksOn;
 
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
@@ -208,6 +209,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.event_on_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number")).makeReturnValueOptional();
+		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
+				L10N.t("elementgui.block.event_on_entity_walks_on"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -646,6 +650,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events2.add(onEntityCollides);
 		events2.add(onBlockPlacedBy);
 		events2.add(onRandomUpdateEvent);
+		events2.add(onEntityWalksOn);
 		events2.add(new JLabel(""));
 
 		JPanel spawning = new JPanel(new GridLayout(5, 2, 5, 2));
@@ -758,6 +763,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityCollides.refreshListKeepSelected();
 		onBlockPlacedBy.refreshListKeepSelected();
 		onRightClicked.refreshListKeepSelected();
+		onEntityWalksOn.refreshListKeepSelected();
 
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
@@ -831,6 +837,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityCollides.setSelectedProcedure(plant.onEntityCollides);
 		onBlockPlacedBy.setSelectedProcedure(plant.onBlockPlacedBy);
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
+		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
@@ -960,6 +967,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onEntityCollides = onEntityCollides.getSelectedProcedure();
 		plant.onBlockPlacedBy = onBlockPlacedBy.getSelectedProcedure();
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
+		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();

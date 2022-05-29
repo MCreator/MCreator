@@ -293,6 +293,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockRightClicked data.onRightClicked/>
 
+	<@onEntityWalksOn data.onEntityWalksOn/>
+
 	<#if data.hasTileEntity>
 	@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ${name}BlockEntity(pos, state);
