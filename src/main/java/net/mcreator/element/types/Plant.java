@@ -126,6 +126,7 @@ import java.util.stream.Collectors;
 	public Procedure onBlockPlacedBy;
 	public Procedure onRightClicked;
 	public Procedure onEntityWalksOn;
+	public Procedure onHitByProjectile;
 
 	private Plant() {
 		this(null);

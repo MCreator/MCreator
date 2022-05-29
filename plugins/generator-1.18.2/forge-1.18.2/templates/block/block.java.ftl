@@ -544,6 +544,8 @@ public class ${name}Block extends
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
+	<@onHitByProjectile data.onHitByProjectile/>
+
 	<@onBlockPlacedBy data.onBlockPlayedBy/>
 
 	<#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>

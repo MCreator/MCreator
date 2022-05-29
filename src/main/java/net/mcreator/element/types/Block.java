@@ -173,6 +173,7 @@ import java.util.stream.Collectors;
 	public Procedure onBlockPlayedBy;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
+	public Procedure onHitByProjectile;
 
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;

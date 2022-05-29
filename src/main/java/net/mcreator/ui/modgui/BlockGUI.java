@@ -107,6 +107,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onRedstoneOn;
 	private ProcedureSelector onRedstoneOff;
+	private ProcedureSelector onHitByProjectile;
 
 	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
@@ -314,6 +315,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff = new ProcedureSelector(this.withEntry("block/on_redstone_off"), mcreator,
 				L10N.t("elementgui.block.event_on_redstone_off"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -896,6 +901,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events2.add(onStartToDestroy);
 		events2.add(onEntityCollides);
 		events2.add(onEntityWalksOn);
+		events2.add(onHitByProjectile);
 		events2.add(onBlockPlayedBy);
 		events2.add(onRedstoneOn);
 		events2.add(onRedstoneOff);
@@ -1310,6 +1316,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.refreshListKeepSelected();
 		onRedstoneOn.refreshListKeepSelected();
 		onRedstoneOff.refreshListKeepSelected();
+		onHitByProjectile.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1389,6 +1396,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.setSelectedProcedure(block.onRightClicked);
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
+		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
 		maxGenerateHeight.setValue(block.maxGenerateHeight);
@@ -1587,6 +1595,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRightClicked = onRightClicked.getSelectedProcedure();
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
+		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		block.texture = texture.getID();
 		block.itemTexture = itemTexture.getID();
 		block.particleTexture = particleTexture.getID();
