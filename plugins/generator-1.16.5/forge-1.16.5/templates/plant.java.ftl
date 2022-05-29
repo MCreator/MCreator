@@ -325,7 +325,11 @@ import net.minecraft.util.SoundEvent;
 					<#if data.plantType == "growapable" || data.forceTicking>
 					.tickRandomly()
 					</#if>
+					<#if data.isSolid>
+					.notSolid().setOpaque((bs, br, bp) -> false)
+					<#else>
 					.doesNotBlockMovement()
+					</#if>
 					<#if data.isCustomSoundType>
 						.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 						() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),

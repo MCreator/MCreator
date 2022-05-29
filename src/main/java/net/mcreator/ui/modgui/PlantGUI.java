@@ -92,6 +92,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox forceTicking = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasTileEntity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isSolid = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(18);
 
@@ -319,6 +320,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		doubleType.setOpaque(false);
 
 		emissiveRendering.setOpaque(false);
+		isSolid.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 
@@ -444,7 +446,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -504,6 +506,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
+				L10N.label("elementgui.plant.is_solid")));
+		selp.add(isSolid);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -571,8 +577,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		});
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(selp, selp2),
-						PanelUtils.pullElementUp(soundProperties))));
+				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+						PanelUtils.centerAndSouthElement(selp2, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
@@ -810,6 +816,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hasTileEntity.setSelected(plant.hasTileEntity);
 		frequencyOnChunks.setValue(plant.frequencyOnChunks);
 		emissiveRendering.setSelected(plant.emissiveRendering);
+		isSolid.setSelected(plant.isSolid);
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
@@ -971,6 +978,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
+		plant.isSolid = isSolid.isSelected();
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();

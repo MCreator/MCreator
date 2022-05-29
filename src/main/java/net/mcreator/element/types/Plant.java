@@ -76,6 +76,7 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public int luminance;
 	public boolean unbreakable;
+	public boolean isSolid;
 
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
