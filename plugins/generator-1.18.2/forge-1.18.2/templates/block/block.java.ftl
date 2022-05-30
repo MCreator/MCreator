@@ -223,8 +223,8 @@ public class ${name}Block extends
 		<#if data.isBoundingBoxEmpty()>
 			return Shapes.empty();
 		<#else>
-			<#if !data.disableOffset>Vec3 offset = state.getOffset(world, pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode data.enablePitch/>
+			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(world, pos);</#if>
+			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
 		</#if>
 	}
 	</#if>
@@ -304,9 +304,9 @@ public class ${name}Block extends
 		<#else>
 		@Override public BlockState rotate(BlockState state, Rotation rot) {
 			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-				if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.X) {
+				if (state.getValue(AXIS) == Direction.Axis.X) {
 					return state.setValue(AXIS, Direction.Axis.Z);
-				} else if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.Z) {
+				} else if (state.getValue(AXIS) == Direction.Axis.Z) {
 					return state.setValue(AXIS, Direction.Axis.X);
 				}
 			}

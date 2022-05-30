@@ -130,6 +130,9 @@ public class BlocklyJavascriptBridge {
 			case "entity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
+			case "spawnableEntity" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
@@ -399,7 +402,7 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
 		String datalist;
 		switch (type) {
-		case "entity" -> datalist = "entities";
+		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		default -> {
 			return "";
