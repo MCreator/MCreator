@@ -409,12 +409,12 @@ public class WYSIWYGEditor extends JPanel {
 					L10N.label("elementgui.gui.rendering_priority")));
 			ovst2.add(priority);
 
-			JButton importothertexture = new JButton(UIRES.get("18px.add"));
-			importothertexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
-			importothertexture.setOpaque(false);
-			importothertexture.setMargin(new Insets(0, 0, 0, 0));
-			importothertexture.addActionListener(e -> {
-				TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			JButton importScreenTexture = new JButton(UIRES.get("18px.add"));
+			importScreenTexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
+			importScreenTexture.setOpaque(false);
+			importScreenTexture.setMargin(new Insets(0, 0, 0, 0));
+			importScreenTexture.addActionListener(e -> {
+				TextureImportDialogs.importMultipleTextures(mcreator, TextureType.SCREEN);
 				overlayBaseTexture.removeAllItems();
 				overlayBaseTexture.addItem("");
 				mcreator.getFolderManager().getTexturesList(TextureType.SCREEN)
@@ -423,7 +423,7 @@ public class WYSIWYGEditor extends JPanel {
 
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
 					L10N.label("elementgui.gui.overlay_base_texture")));
-			ovst2.add(PanelUtils.centerAndEastElement(overlayBaseTexture, importothertexture));
+			ovst2.add(PanelUtils.centerAndEastElement(overlayBaseTexture, importScreenTexture));
 
 			ovst.add(ovst2);
 			ovst.add(new JEmptyBox(2, 2));

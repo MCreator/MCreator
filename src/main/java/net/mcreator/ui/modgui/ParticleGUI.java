@@ -106,7 +106,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.particle.texture.import_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.PARTICLE);
 			texture.removeAllItems();
 			texture.addItem("");
 			mcreator.getFolderManager().getTexturesList(TextureType.PARTICLE).forEach(el -> texture.addItem(el.getName()));

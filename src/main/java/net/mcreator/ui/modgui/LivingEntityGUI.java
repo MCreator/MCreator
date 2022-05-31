@@ -487,7 +487,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
 			mobModelTexture.removeAllItems();
 			mobModelTexture.addItem("");
 			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
