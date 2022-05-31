@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", DoubleArgumentType.doubleArg(${field$min}))<#if statement$args??>${statement$args}</#if>)

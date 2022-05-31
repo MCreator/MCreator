@@ -6,24 +6,6 @@
       "text": "name"
     },
     {
-      "type": "field_dropdown",
-      "name": "type",
-      "options": [
-        [
-          "default",
-          "default"
-        ],
-        [
-          "min",
-          "min"
-        ],
-        [
-          "both",
-          "both"
-        ]
-      ]
-    },
-    {
       "type": "field_number",
       "name": "min",
       "value": -10000
@@ -49,7 +31,6 @@
     "toolbox_id": "arg_types",
     "fields": [
       "name",
-      "type",
       "min",
       "max"
     ],
