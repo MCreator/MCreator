@@ -1,1 +1,1 @@
-(ItemArgument.getItem(arguments, "${field$param}").getItem())
+/*@ItemStack*/(ItemArgument.getItem(arguments, "${field$param}").getItem())
