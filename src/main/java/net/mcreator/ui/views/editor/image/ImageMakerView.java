@@ -28,8 +28,6 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
@@ -210,31 +208,27 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		Image image = canvasRenderer.render();
 
 		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
+		VTextField name = new VTextField(20);
+		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
 
 		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
-		typeDialog.setSize(250, 125);
+		typeDialog.setSize(550, 150);
 		typeDialog.setLocationRelativeTo(null);
 
-		JPanel panel = new JPanel(new GridLayout(3, 1));
+		JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
 
-		panel.add(PanelUtils.totalCenterInPanel(new JLabel(L10N.t("dialog.image_maker.texture_type.message"))));
-		panel.add(PanelUtils.totalCenterInPanel(types));
+		panel.add(L10N.label("dialog.image_maker.texture_type.message"));
+		panel.add(types);
+		panel.add(L10N.label("dialog.image_maker.enter_name"));
+		panel.add(name);
 
 		JButton ok = new JButton(L10N.t("dialog.image_maker.texture_type.select"));
 		ok.addActionListener(e -> {
 			typeDialog.setVisible(false);
 			TextureType textureType = (TextureType) types.getSelectedItem();
 
-			String namec = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"),
-					L10N.t("dialog.image_maker.image_name"), null, new OptionPaneValidatior() {
-
-						@Override public ValidationResult validate(JComponent component) {
-							return new RegistryNameValidator((VTextField) component,
-									L10N.t("dialog.image_maker.texture_name")).validate();
-						}
-					});
-			if (namec != null && textureType != null) {
-				File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(namec), textureType);
+			if (name.getText() != null && !name.getText().isEmpty() && textureType != null) {
+				File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(name.getText()), textureType);
 
 				if (exportFile.isFile())
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
@@ -247,9 +241,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			}
 		});
 
-		panel.add(PanelUtils.totalCenterInPanel(ok));
-
-		typeDialog.add(panel);
+		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel), PanelUtils.totalCenterInPanel(ok)));
 		typeDialog.setVisible(true);
 	}
 
