@@ -34,7 +34,7 @@ public class ArmorTexturesConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Armor armor = (Armor) input;
 
-		if (armor.helmetModelTexture != null && !armor.helmetModelTexture.isEmpty()) {
+		if (armor.helmetModelTexture != null && !armor.helmetModelTexture.equals("From armor")) {
 			FileIO.copyFile(workspace.getFolderManager()
 							.getTextureFile(FilenameUtilsPatched.removeExtension(armor.helmetModelTexture), TextureType.OTHER),
 					workspace.getFolderManager()
@@ -42,7 +42,7 @@ public class ArmorTexturesConverter implements IConverter {
 									TextureType.ENTITY));
 		}
 
-		if (armor.bodyModelTexture != null && !armor.bodyModelTexture.isEmpty()) {
+		if (armor.bodyModelTexture != null && !armor.bodyModelTexture.equals("From armor")) {
 			FileIO.copyFile(workspace.getFolderManager()
 							.getTextureFile(FilenameUtilsPatched.removeExtension(armor.bodyModelTexture), TextureType.OTHER),
 					workspace.getFolderManager()
@@ -50,7 +50,7 @@ public class ArmorTexturesConverter implements IConverter {
 									TextureType.ENTITY));
 		}
 
-		if (armor.leggingsModelTexture != null && !armor.leggingsModelTexture.isEmpty()) {
+		if (armor.leggingsModelTexture != null && !armor.leggingsModelTexture.equals("From armor")) {
 			FileIO.copyFile(workspace.getFolderManager()
 					.getTextureFile(FilenameUtilsPatched.removeExtension(armor.leggingsModelTexture),
 							TextureType.OTHER), workspace.getFolderManager()
@@ -58,7 +58,7 @@ public class ArmorTexturesConverter implements IConverter {
 							TextureType.ENTITY));
 		}
 
-		if (armor.bootsModelTexture != null && !armor.bootsModelTexture.isEmpty()) {
+		if (armor.bootsModelTexture != null && !armor.bootsModelTexture.equals("From armor")) {
 			FileIO.copyFile(workspace.getFolderManager()
 							.getTextureFile(FilenameUtilsPatched.removeExtension(armor.bootsModelTexture), TextureType.OTHER),
 					workspace.getFolderManager()
