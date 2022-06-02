@@ -8,12 +8,12 @@
     {
       "type": "field_number",
       "name": "min",
-      "value": -10000
+      "value": 0
     },
     {
       "type": "field_number",
       "name": "max",
-      "value": 10000
+      "value": 64
     },
     {
       "type": "input_dummy"
