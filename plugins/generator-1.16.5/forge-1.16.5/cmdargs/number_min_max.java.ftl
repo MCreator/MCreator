@@ -1,1 +1,1 @@
-.then(Commands.argument("${field$name}", DoubleArgumentType.doubleArg(${field$min}, ${field$max}))<#if statement$args??>${statement$args}</#if>)
+.then(Commands.argument("${field$name}", DoubleArgumentType.doubleArg(${field$min}, ${field$max}))${statement$args})

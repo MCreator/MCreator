@@ -1,7 +1,7 @@
 try {
     for (Entity entityiterator : EntityArgument.getEntities(arguments, "${field$param}")) {
-		${statement$foreach}
-	}
+	    ${statement$foreach}
+    }
 } catch (CommandSyntaxException e) {
 	e.printStackTrace();
 }

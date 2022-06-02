@@ -1,1 +1,1 @@
-.then(Commands.literal("${field$name}")<#if statement$args??>${statement$args}</#if>)
+.then(Commands.literal("${field$name}")${statement$args})
