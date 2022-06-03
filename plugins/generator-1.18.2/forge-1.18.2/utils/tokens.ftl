@@ -1,13 +1,3 @@
-<#function toTextComponent textToRender>
-    <#if textToRender?starts_with("<t:") && textToRender?ends_with(">")>
-        <#assign keyCandidate = textToRender.substring(3, textToRender.length() - 1)>
-        <#if keyCandidate.replaceAll("[A-Za-z0-9._]*", "") == "">
-            <#return "new TranslatableComponent(\"" + keyCandidate + "\")">
-        </#if>
-    </#if>
-    <#return "new TextComponent(\"" + textToRender + "\")">
-</#function>
-
 <#function translateTokens source>
     <#if source?starts_with("<t:") && source?ends_with(">")>
         <#assign keyCandidate = source.substring(3, source.length() - 1)>
@@ -84,7 +74,7 @@
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:text:", "").replace(">", "").toString()) + "\"))>">
         <#elseif token.toString()?starts_with("<t:")> <#-- special handle for invalid translation tokens -->
-            <#assign sourceNew += "\\\\<" + token.substring(1, token.length() - 1) + "\\\\>">
+            <#assign sourceNew += "<(new TranslatableComponent(\"" + token.replace("<t:", "").replace(">", "").toString() + "\").getString())>">
         <#else>
             <#assign sourceNew += token>
         </#if>

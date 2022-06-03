@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -38,7 +39,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
 		super(editor.mcreator, label);
-		setSize(560, 180);
+		setSize(560, 210);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		JComboBox<String> name = new JComboBox<>(new String[] { "Label text", "Text is <TextFieldName:text>",
@@ -53,6 +54,21 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 				name.addItem("<VAR:integer:" + var2.getName() + ">");
 		}
 
+		JButton i18nKey = L10N.button("dialog.gui.label_text.add_translation_key");
+		i18nKey.addActionListener(arg01 -> {
+			int caret = ((JTextField) name.getEditor().getEditorComponent()).getCaretPosition();
+			String text = name.getEditor().getItem().toString();
+			String key = StringSelectorDialog.openSelectorDialog(editor.mcreator,
+					w -> w.getLanguageMap().get("en_us").keySet().toArray(String[]::new),
+					L10N.t("dialog.gui.label_text.add_translation_key.title"),
+					L10N.t("dialog.gui.label_text.add_translation_key.message"));
+			if (key != null) {
+				name.getEditor().setItem(text.substring(0, caret) + "<t:" + key + ">" + text.substring(caret));
+				((JTextField) name.getEditor().getEditorComponent()).setCaretPosition(caret + key.length() + 4);
+				name.requestFocus();
+			}
+		});
+
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.label_event_display_condition"), ProcedureSelector.Side.CLIENT, false,
@@ -62,7 +78,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), name));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.label_text"), name));
+		options.add(PanelUtils.centerAndEastElement(new JLabel(), i18nKey));
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
 		setTitle(L10N.t("dialog.gui.label_component_title"));

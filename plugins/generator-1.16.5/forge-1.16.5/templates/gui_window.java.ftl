@@ -163,7 +163,7 @@ import ${package}.${JavaModName};
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
 				${component.name} = new TextFieldWidget(this.font, this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, ${toTextComponent(component.placeholder)})
+				${component.width}, ${component.height}, new TranslationTextComponent("gui.${registryname}.${component.name}"))
 				<#if component.placeholder?has_content>
 				{
 					{
@@ -194,7 +194,7 @@ import ${package}.${JavaModName};
                 this.children.add(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, ${toTextComponent(component.text)}, e -> {
+					${component.width}, ${component.height}, new TranslationTextComponent("gui.${registryname}.${component.name}"), e -> {
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
 							${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);
@@ -212,7 +212,7 @@ import ${package}.${JavaModName};
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.name} = new CheckboxButton(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-            	    150, 20, ${toTextComponent(component.text)}, <#if hasProcedure(component.isCheckedProcedure)>
+            	    150, 20, new TranslationTextComponent("gui.${registryname}.${component.name}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 ${name}Gui.guistate.put("checkbox:${component.name}", ${component.name});
                 this.addButton(${component.name});

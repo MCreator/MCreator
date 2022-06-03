@@ -3,3 +3,14 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/gui/@NAMEGui.java"
   - template: gui_window.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/gui/@NAMEGuiWindow.java"
+
+localizationkeys:
+  - fromlist: getComponentsOfType('textfield')
+    key: gui.@registryname.@[name]
+    mapto: placeholder
+  - fromlist: getComponentsOfType('button')
+    key: gui.@registryname.@[name]
+    mapto: text
+  - fromlist: getComponentsOfType('checkbox')
+    key: gui.@registryname.@[name]
+    mapto: text

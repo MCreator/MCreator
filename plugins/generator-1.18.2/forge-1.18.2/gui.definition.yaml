@@ -17,3 +17,14 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameMenus.java"
   - template: elementinits/screens.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameScreens.java"
+
+localizationkeys:
+  - fromlist: getComponentsOfType('textfield')
+    key: gui.@registryname.@[name]
+    mapto: placeholder
+  - fromlist: getComponentsOfType('button')
+    key: gui.@registryname.@[name]
+    mapto: text
+  - fromlist: getComponentsOfType('checkbox')
+    key: gui.@registryname.@[name]
+    mapto: text
