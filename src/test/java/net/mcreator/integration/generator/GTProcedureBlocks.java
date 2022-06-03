@@ -52,6 +52,7 @@ public class GTProcedureBlocks {
 
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorProcedures();
 
+		nextBlock:
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
 			StringBuilder additionalXML = new StringBuilder();
@@ -68,47 +69,24 @@ public class GTProcedureBlocks {
 			}
 
 			if (!procedureBlock.getInputs().isEmpty()) {
-				boolean templatesDefined = true;
-
 				if (procedureBlock.toolbox_init != null) {
 					for (String input : procedureBlock.getInputs()) {
-						boolean match = false;
-						for (String toolboxtemplate : procedureBlock.toolbox_init) {
-							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
+						if (procedureBlock.toolbox_init.stream()
+								.noneMatch(e -> e.contains("<value name=\"" + input + "\">"))) {
+							LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
+									+ procedureBlock.machine_name);
+							continue nextBlock;
 						}
 					}
-				} else {
-					templatesDefined = false;
-				}
-
-				if (!templatesDefined) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
-							+ procedureBlock.machine_name);
-					continue;
 				}
 			}
 
 			if (procedureBlock.getRequiredAPIs() != null) {
-				boolean skip = false;
-
 				for (String required_api : procedureBlock.getRequiredAPIs()) {
 					if (!workspace.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
-						skip = true;
-						break;
+						// We skip API specific blocks without any warnings as we do not intend to test them anyway
+						continue nextBlock;
 					}
-				}
-
-				if (skip) {
-					// We skip API specific blocks without any warnings logged as we do not intend to test them anyway
-					continue;
 				}
 			}
 
@@ -122,39 +100,39 @@ public class GTProcedureBlocks {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
-								case "field_checkbox":
+								case "field_checkbox" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
 									processed++;
-									break;
-								case "field_number":
+								}
+								case "field_number" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
 									processed++;
-									break;
-								case "field_input":
-								case "field_javaname":
+								}
+								case "field_input", "field_javaname" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
 									processed++;
-									break;
-								case "field_dropdown":
+								}
+								case "field_dropdown" -> {
 									JsonArray opts = arg.get("options").getAsJsonArray();
 									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
 									additionalXML.append("<field name=\"").append(field).append("\">")
 											.append(opt.get(1).getAsString()).append("</field>");
 									processed++;
-									break;
-								case "field_data_list_selector":
+								}
+								case "field_data_list_selector" -> {
 									String type = arg.get("datalist").getAsString();
 									if (type.equals("enchantment"))
 										type = "enhancement";
 									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
 									if (values.length > 0 && !values[0].equals("")) {
 										String value = type.equals("entity") ?
-												"EntityZombie" : ListUtils.getRandomItem(random, values);
-										additionalXML.append("<field name=\"").append(field).append("\">")
-												.append(value).append("</field>");
+												"EntityZombie" :
+												ListUtils.getRandomItem(random, values);
+										additionalXML.append("<field name=\"").append(field).append("\">").append(value)
+												.append("</field>");
 										processed++;
 									}
-									break;
+								}
 								}
 								break;
 							}
@@ -254,7 +232,7 @@ public class GTProcedureBlocks {
 			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>",
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
 
-			// replace common itemstack blocks with blocks that contain logic variable
+			// replace common itemstack blocks with blocks that contain itemstack variable
 			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
 					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
