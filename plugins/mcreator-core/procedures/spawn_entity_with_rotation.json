@@ -28,7 +28,7 @@
     {
       "type": "field_data_list_selector",
       "name": "entity",
-      "datalist": "entity"
+      "datalist": "spawnableEntity"
     }
   ],
   "inputsInline": true,
