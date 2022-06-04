@@ -178,6 +178,16 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
+	public boolean hasVillagerTrades(boolean wandering) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.VILLAGERTRADE) {
+				if (element.getGeneratableElement() instanceof VillagerTrade vt)
+					if (vt.hasVillagerTrades(wandering))
+						return true;
+			}
+		return false;
+	}
+
 	public boolean hasBlocksMineableWith(String tool) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.BLOCK) {
