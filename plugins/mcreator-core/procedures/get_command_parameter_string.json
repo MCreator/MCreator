@@ -4,20 +4,6 @@
       "type": "field_input",
       "name": "param",
       "text": "name"
-    },
-    {
-      "type": "field_dropdown",
-      "name": "type",
-      "options": [
-        [
-          "String",
-          "string"
-        ],
-        [
-          "Message",
-          "message"
-        ]
-      ]
     }
   ],
   "output": "String",
@@ -25,8 +11,7 @@
   "mcreator": {
     "toolbox_id": "commands",
     "fields": [
-      "param",
-      "type"
+      "param"
     ],
     "dependencies": [
       {
