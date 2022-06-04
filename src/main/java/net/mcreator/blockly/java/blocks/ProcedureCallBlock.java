@@ -91,10 +91,10 @@ public class ProcedureCallBlock implements IBlockGenerator {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("blockly.warnings.old_command.note")));
 					dependenciesProvided = Arrays.asList(Dependency.fromString(
-							"x:number/y:number/z:number/world:world/entity:entity/cmdargs:cmdcontext/cmdparams:map"));
+							"x:number/y:number/z:number/world:world/entity:entity/arguments:cmdcontext/cmdparams:map"));
 				} else {
 					dependenciesProvided = Arrays.asList(Dependency.fromString(
-							"x:number/y:number/z:number/world:world/entity:entity/cmdargs:cmdcontext"));
+							"x:number/y:number/z:number/world:world/entity:entity/arguments:cmdcontext"));
 				}
 
 				StringBuilder missingdeps = new StringBuilder();

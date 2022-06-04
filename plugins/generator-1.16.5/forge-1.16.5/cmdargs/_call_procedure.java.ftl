@@ -1,12 +1,12 @@
 <#include "procedures.java.ftl">
-.executes(cmdargs -> {
-	ServerWorld world = cmdargs.getSource().getWorld();
+.executes(arguments -> {
+	ServerWorld world = arguments.getSource().getWorld();
 
-	double x = cmdargs.getSource().getPos().getX();
-	double y = cmdargs.getSource().getPos().getY();
-	double z = cmdargs.getSource().getPos().getZ();
+	double x = arguments.getSource().getPos().getX();
+	double y = arguments.getSource().getPos().getY();
+	double z = arguments.getSource().getPos().getZ();
 
-	Entity entity = cmdargs.getSource().getEntity();
+	Entity entity = arguments.getSource().getEntity();
 	Direction direction = Objects.requireNonNull(entity).getHorizontalFacing();
 	if (entity == null)
 		entity = FakePlayerFactory.getMinecraft(world);
