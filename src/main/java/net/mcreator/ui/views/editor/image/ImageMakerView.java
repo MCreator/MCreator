@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.MCreatorDialog;
@@ -210,6 +211,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
 		VTextField name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
+		name.enableRealtimeValidation();
 
 		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
 		typeDialog.setSize(550, 150);
@@ -241,7 +243,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			}
 		});
 
-		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel), PanelUtils.totalCenterInPanel(ok)));
+		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel),
+				PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(ok), new JEmptyBox(10, 10))));
 		typeDialog.setVisible(true);
 	}
 
