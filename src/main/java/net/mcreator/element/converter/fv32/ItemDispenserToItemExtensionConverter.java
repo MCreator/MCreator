@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv29;
+package net.mcreator.element.converter.fv32;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -69,6 +69,6 @@ public class ItemDispenserToItemExtensionConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 29;
+		return 32;
 	}
 }
