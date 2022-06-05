@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv29;
+package net.mcreator.element.converter.fv30;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -37,6 +37,6 @@ public class BlockRequiresCorrectToolConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 29;
+		return 30;
 	}
 }
