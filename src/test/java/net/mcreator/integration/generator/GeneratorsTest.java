@@ -18,6 +18,7 @@
 
 package net.mcreator.integration.generator;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
@@ -141,6 +142,9 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing procedure blocks");
 				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
 
+				LOG.info("[" + generator + "] ----- Testing command argument blocks");
+				GTCommandArgBlocks.runTest(LOG, generator, random, workspace);
+
 				LOG.info("[" + generator + "] ----- Testing feature blocks");
 				GTFeatureBlocks.runTest(LOG, generator, random, workspace);
 
@@ -154,6 +158,7 @@ public class GeneratorsTest {
 
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
 				GTBuild.runTest(LOG, generator, workspace);
+
 			});
 		});
 	}

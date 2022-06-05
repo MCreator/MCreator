@@ -24,6 +24,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.ReturnBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
@@ -43,7 +44,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 
 	public BlocklyToProcedure(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, "event_trigger", sourceXML, templateGenerator, externalGenerators);
+		super(workspace, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
 	@Override public void preBlocksPlacement(Document doc, Element startBlock) {

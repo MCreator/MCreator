@@ -18,12 +18,19 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement {
 
@@ -31,7 +38,7 @@ import java.awt.image.BufferedImage;
 
 	public String permissionLevel;
 
-	public Procedure onCommandExecuted;
+	public String argsxml;
 
 	private Command() {
 		this(null);
@@ -44,7 +51,23 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName);
+		return MinecraftImageGenerator.Preview.generateCommandPreviewPicture(commandName, argsxml);
+	}
+
+	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
+		return additionalData -> {
+			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
+					BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
+					additionalData).setTemplateExtension(
+					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
+							.toLowerCase(Locale.ENGLISH));
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), BlocklyEditorType.COMMAND_ARG,
+					this.argsxml, this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+
+			additionalData.put("argscode", blocklyToJava.getGeneratedCode());
+		};
 	}
 
 }

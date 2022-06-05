@@ -484,12 +484,6 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
-			Command command = new Command(modElement);
-			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
-			command.onCommandExecuted = new Procedure("procedure2");
-			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
 			keyBinding.triggerKey = getRandomString(random,
