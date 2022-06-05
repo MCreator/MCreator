@@ -44,7 +44,7 @@ import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
 import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
-import net.mcreator.element.converter.fv32.ItemDispenserToItemExtensionConverter;
+import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -76,7 +76,7 @@ public class ConverterRegistry {
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
-		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenserToItemExtensionConverter()));
+		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

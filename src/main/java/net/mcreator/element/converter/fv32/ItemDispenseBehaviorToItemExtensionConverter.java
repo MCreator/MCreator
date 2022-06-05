@@ -33,9 +33,9 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ItemDispenserToItemExtensionConverter implements IConverter {
+public class ItemDispenseBehaviorToItemExtensionConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(ItemDispenserToItemExtensionConverter.class);
+	private static final Logger LOG = LogManager.getLogger(ItemDispenseBehaviorToItemExtensionConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {

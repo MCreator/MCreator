@@ -32,6 +32,8 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -45,16 +47,17 @@ import java.net.URISyntaxException;
 public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	private final MCItemHolder item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	// Fuel
 	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
-	private NumberProcedureSelector fuelPower;
-	// Compostable
-	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
-	// Dispenser behaviour
-	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector fuelSuccessCondition;
+	private NumberProcedureSelector fuelPower;
+
+	private final JSpinner layerChance = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
+
+	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector dispenseSuccessCondition;
 	private ProcedureSelector dispenseResultItemstack;
+
+	private final ValidationGroup pageGroup = new ValidationGroup();
 
 	public ItemExtensionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -134,16 +137,20 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		dispenserBehaviourPanel.setOpaque(false);
 
-		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(
-						HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/item"),
-								L10N.label("elementgui.item_extension.item")), PanelUtils.centerInPanel(item)),
-				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel,
-								PanelUtils.northAndCenterElement(new JEmptyBox(5, 5), compostPanel)),
-						dispenserBehaviourPanel))));
+
+		JPanel itemPanel = PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/item"),
+				L10N.label("elementgui.item_extension.item")), PanelUtils.centerInPanel(item));
+		item.setValidator(new MCItemHolderValidator(item));
+		pageGroup.addValidationElement(item);
+
+		JComponent properties = PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(fuelPanel,
+				PanelUtils.northAndCenterElement(new JEmptyBox(5, 5), compostPanel)), dispenserBehaviourPanel);
+
+		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(itemPanel, properties)));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
+		return new AggregatedValidationResult(pageGroup);
 	}
 
 	@Override public void reloadDataLists() {
@@ -192,6 +199,6 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
-		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-game-item-extension");
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-item-extension");
 	}
 }
