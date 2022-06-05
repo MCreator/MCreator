@@ -17,31 +17,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv29;
+package net.mcreator.element.converter.fv30.screens;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Particle;
+import net.mcreator.element.types.Achievement;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class ParticleTextureConverter implements IConverter {
+public class AdvancementTextureConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Particle effect = (Particle) input;
+		Achievement advancement = (Achievement) input;
 
-		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.PARTICLE));
+		if (advancement.background != null && !advancement.background.isEmpty()) {
+			FileIO.copyFile(workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background), TextureType.OTHER),
+					workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background),
+									TextureType.SCREEN));
+		}
 
-		return effect;
+		return advancement;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 29;
+		return 30;
 	}
 }

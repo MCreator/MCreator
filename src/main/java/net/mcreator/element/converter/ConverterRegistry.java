@@ -43,14 +43,14 @@ import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
-import net.mcreator.element.converter.fv29.EffectTextureConverter;
-import net.mcreator.element.converter.fv29.ParticleTextureConverter;
-import net.mcreator.element.converter.fv29.entities.ArmorTexturesConverter;
-import net.mcreator.element.converter.fv29.entities.EntityTexturesConverter;
-import net.mcreator.element.converter.fv29.entities.RangedItemTextureConverter;
-import net.mcreator.element.converter.fv29.screens.AdvancementTextureConverter;
-import net.mcreator.element.converter.fv29.screens.GUITexturesConverter;
-import net.mcreator.element.converter.fv29.screens.OverlayTexturesConverter;
+import net.mcreator.element.converter.fv30.EffectTextureConverter;
+import net.mcreator.element.converter.fv30.ParticleTextureConverter;
+import net.mcreator.element.converter.fv30.entities.ArmorTexturesConverter;
+import net.mcreator.element.converter.fv30.entities.EntityTexturesConverter;
+import net.mcreator.element.converter.fv30.entities.RangedItemTextureConverter;
+import net.mcreator.element.converter.fv30.screens.AdvancementTextureConverter;
+import net.mcreator.element.converter.fv30.screens.GUITexturesConverter;
+import net.mcreator.element.converter.fv30.screens.OverlayTexturesConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -74,6 +74,7 @@ public class ConverterRegistry {
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
+		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
@@ -84,7 +85,6 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
 				new ProcedureShootArrowFixer()));
-		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 	}};
