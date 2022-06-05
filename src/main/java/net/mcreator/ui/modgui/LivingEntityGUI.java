@@ -263,7 +263,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), "aitasks_container", blocklyPanel.getXML(), null,
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), BlocklyEditorType.AI_TASK, blocklyPanel.getXML(), null,
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
