@@ -11,6 +11,7 @@
 				"world": "entity.level",
 				"entity": "entity",
 				"command": "event.getParseResults().getReader().getString()",
+				"arguments": "event.getParseResults().getContext().build(event.getParseResults().getReader().getString())",
 				"event": "event"
 				}/>
 			</#compress></#assign>

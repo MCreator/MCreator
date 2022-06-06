@@ -357,7 +357,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
 				entry1.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry1.minGroup = 10;
 				entry1.maxGroup = 134;
 				entry1.weight = 13;
@@ -366,7 +366,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
 				entry2.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry2.minGroup = 23;
 				entry2.maxGroup = 145;
 				entry2.weight = 11;
@@ -375,7 +375,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
 				entry3.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry3.minGroup = 23;
 				entry3.maxGroup = 145;
 				entry3.weight = 11;
@@ -384,7 +384,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
 				entry4.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry4.minGroup = 23;
 				entry4.maxGroup = 145;
 				entry4.weight = 11;
@@ -484,12 +484,6 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
-			Command command = new Command(modElement);
-			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
-			command.onCommandExecuted = new Procedure("procedure2");
-			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
 			keyBinding.triggerKey = getRandomString(random,

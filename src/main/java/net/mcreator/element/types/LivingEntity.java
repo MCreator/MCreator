@@ -32,6 +32,7 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -214,7 +215,7 @@ import java.util.Locale;
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), "aitasks_container",
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), BlocklyEditorType.AI_TASK,
 					this.aixml, this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
