@@ -119,8 +119,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToJava</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;firstBlockName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToJava</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../../ui/blockly/BlocklyEditorType.html" title="enum class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceXML,
  <a href="../../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
  <a href="../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</code></div>
@@ -139,14 +139,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postBlocksPlacement(org.w3c.dom.Document)" class="member-name-link">postBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../ui/blockly/BlocklyEditorType.html" title="enum class in net.mcreator.ui.blockly">BlocklyEditorType</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEditorType()" class="member-name-link">getEditorType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postBlocksPlacement(org.w3c.dom.Document)" class="member-name-link">postBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method contains the code needing to be executed after blocks are placed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preBlocksPlacement(org.w3c.dom.Document)" class="member-name-link">preBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preBlocksPlacement(org.w3c.dom.Document)" class="member-name-link">preBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method contains the code needing to be executed before blocks are placed.</div>
 </div>
 </div>
@@ -196,10 +199,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.workspace.Workspace,net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)">
 <h3>BlocklyToJava</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BlocklyToJava</span><wbr><span class="parameters">(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;firstBlockName,
+ <a href="../../ui/blockly/BlocklyEditorType.html" title="enum class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceXML,
  <a href="../../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
  <a href="../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</span>
@@ -207,7 +210,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>workspace</code> - <p>The <a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace"><code>Workspace</code></a> executing the code</p></dd>
-<dd><code>firstBlockName</code> - <p>The name of the start block</p></dd>
+<dd><code>blocklyEditorType</code> - <p>Blockly editor type</p></dd>
 <dd><code>sourceXML</code> - <p>The XML code used by Blockly</p></dd>
 <dd><code>templateGenerator</code> - <p>The folder location in each <a href="../../generator/Generator.html" title="class in net.mcreator.generator"><code>Generator</code></a> containing the code template files<p></dd>
 <dt>Throws:</dt>
@@ -243,6 +246,12 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>doc</code> - Blockly XML document</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEditorType()">
+<h3>getEditorType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../ui/blockly/BlocklyEditorType.html" title="enum class in net.mcreator.ui.blockly">BlocklyEditorType</a></span>&nbsp;<span class="element-name">getEditorType</span>()</div>
 </section>
 </li>
 </ul>
