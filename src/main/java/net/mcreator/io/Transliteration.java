@@ -27,7 +27,7 @@ public class Transliteration {
 	/**
 	 * This method transliterates string if required. If not, source String is returned. It uses Junidecode library, but strips failed transliterated characters away.
 	 *
-	 * @param source Soruce string
+	 * @param source Source string
 	 * @return Transliterated string or original if transliteration is not required
 	 */
 	@Nonnull public static String transliterateString(@Nonnull String source) {

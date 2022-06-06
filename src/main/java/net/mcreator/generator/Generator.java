@@ -282,27 +282,56 @@ public class Generator implements IGenerator, Closeable {
 			List<?> localizationkeys = (List<?>) map.get("localizationkeys");
 			if (localizationkeys != null) {
 				for (Object template : localizationkeys) {
-					String key = (String) ((Map<?, ?>) template).get("key");
+					String keytpl = (String) ((Map<?, ?>) template).get("key");
 					String mapto = (String) ((Map<?, ?>) template).get("mapto");
-					key = GeneratorTokens.replaceTokens(workspace,
-							key.replace("@NAME", element.getModElement().getName())
-									.replace("@modid", workspace.getWorkspaceSettings().getModID())
-									.replace("@registryname", element.getModElement().getRegistryName()));
-					try {
-						String value = (String) element.getClass().getField(mapto.trim()).get(element);
+					Object fromlist = TemplateExpressionParser.processFTLExpression(this,
+							(String) ((Map<?, ?>) template).get("fromlist"), element);
+					if (fromlist instanceof Collection<?>) {
+						for (Object entry : (Collection<?>) fromlist) {
+							String key = GeneratorTokens.replaceVariableTokens(entry,
+									GeneratorTokens.replaceTokens(workspace,
+											keytpl.replace("@NAME", element.getModElement().getName())
+													.replace("@modid", workspace.getWorkspaceSettings().getModID())
+													.replace("@registryname",
+															element.getModElement().getRegistryName())));
+							try {
+								String value = (String) entry.getClass().getField(mapto.trim()).get(entry);
 
-						String suffix = (String) ((Map<?, ?>) template).get("suffix");
-						if (suffix != null)
-							value += suffix;
+								String suffix = (String) ((Map<?, ?>) template).get("suffix");
+								if (suffix != null)
+									value += suffix;
 
-						String prefix = (String) ((Map<?, ?>) template).get("prefix");
-						if (prefix != null)
-							value = prefix + value;
+								String prefix = (String) ((Map<?, ?>) template).get("prefix");
+								if (prefix != null)
+									value = prefix + value;
 
-						workspace.setLocalization(key, value);
-					} catch (IllegalAccessException | NoSuchFieldException e) {
-						LOG.error(e.getMessage(), e);
-						LOG.error("[" + generatorName + "] " + e.getMessage());
+								workspace.setLocalization(key, value);
+							} catch (IllegalAccessException | NoSuchFieldException e) {
+								LOG.error(e.getMessage(), e);
+								LOG.error("[" + generatorName + "] " + e.getMessage());
+							}
+						}
+					} else {
+						String key = GeneratorTokens.replaceTokens(workspace,
+								keytpl.replace("@NAME", element.getModElement().getName())
+										.replace("@modid", workspace.getWorkspaceSettings().getModID())
+										.replace("@registryname", element.getModElement().getRegistryName()));
+						try {
+							String value = (String) element.getClass().getField(mapto.trim()).get(element);
+
+							String suffix = (String) ((Map<?, ?>) template).get("suffix");
+							if (suffix != null)
+								value += suffix;
+
+							String prefix = (String) ((Map<?, ?>) template).get("prefix");
+							if (prefix != null)
+								value = prefix + value;
+
+							workspace.setLocalization(key, value);
+						} catch (IllegalAccessException | NoSuchFieldException e) {
+							LOG.error(e.getMessage(), e);
+							LOG.error("[" + generatorName + "] " + e.getMessage());
+						}
 					}
 				}
 			}
@@ -349,10 +378,23 @@ public class Generator implements IGenerator, Closeable {
 		List<?> localizationkeys = (List<?>) map.get("localizationkeys");
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
-				String key = (String) ((Map<?, ?>) template).get("key");
-				key = GeneratorTokens.replaceTokens(workspace,
-						key.replace("@NAME", element.getName()).replace("@registryname", element.getRegistryName()));
-				workspace.removeLocalizationEntryByKey(key);
+				String keytpl = (String) ((Map<?, ?>) template).get("key");
+				Object fromlist = TemplateExpressionParser.processFTLExpression(this,
+						(String) ((Map<?, ?>) template).get("fromlist"), element);
+				if (fromlist instanceof Collection<?>) {
+					for (Object entry : (Collection<?>) fromlist) {
+						String key = GeneratorTokens.replaceVariableTokens(entry,
+								GeneratorTokens.replaceTokens(workspace, keytpl.replace("@NAME", element.getName())
+										.replace("@modid", workspace.getWorkspaceSettings().getModID())
+										.replace("@registryname", element.getRegistryName())));
+						workspace.removeLocalizationEntryByKey(key);
+					}
+				} else {
+					String key = GeneratorTokens.replaceTokens(workspace, keytpl.replace("@NAME", element.getName())
+							.replace("@modid", workspace.getWorkspaceSettings().getModID())
+							.replace("@registryname", element.getRegistryName()));
+					workspace.removeLocalizationEntryByKey(key);
+				}
 			}
 		}
 	}

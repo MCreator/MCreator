@@ -20,11 +20,11 @@ global_templates:
 
 localizationkeys:
   - fromlist: getComponentsOfType('textfield')
-    key: gui.@registryname.@[name]
+    key: gui.@modid.@registryname.@[name]
     mapto: placeholder
   - fromlist: getComponentsOfType('button')
-    key: gui.@registryname.@[name]
+    key: gui.@modid.@registryname.@[name]
     mapto: text
   - fromlist: getComponentsOfType('checkbox')
-    key: gui.@registryname.@[name]
+    key: gui.@modid.@registryname.@[name]
     mapto: text

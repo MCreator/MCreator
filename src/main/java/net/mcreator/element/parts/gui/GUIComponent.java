@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
 			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
 	public static List<GUIComponent> filterComponentsByType(List<GUIComponent> components, String type) {
-		return components.stream().filter(GUIComponent.typeMappings.get(type)::isInstance).toList();
+		return components.stream().filter(typeMappings.get(type)::isInstance).toList();
 	}
 
 	GUIComponent() {
