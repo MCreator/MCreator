@@ -5,12 +5,12 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/gui/@NAMEGuiWindow.java"
 
 localizationkeys:
-  - fromlist: getComponentsOfType('textfield')
+  - fromlist: data.getComponentsOfType('textfield')
     key: gui.@modid.@registryname.@[name]
     mapto: placeholder
-  - fromlist: getComponentsOfType('button')
+  - fromlist: data.getComponentsOfType('button')
     key: gui.@modid.@registryname.@[name]
     mapto: text
-  - fromlist: getComponentsOfType('checkbox')
+  - fromlist: data.getComponentsOfType('checkbox')
     key: gui.@modid.@registryname.@[name]
     mapto: text

@@ -43,7 +43,7 @@ public class GUIButtonNameFixer implements IConverter {
 		for (GUIComponent component : gui.components) {
 			if (component instanceof Button) {
 				String name = RegistryNameFixer.fromCamelCase(Transliteration.transliterateString(
-						((Button) component).text.replace(" ", "_").replaceAll("[^A-Za-z0-9._]*", "")));
+						((Button) component).text.replace(" ", "_").replaceAll("[^A-Za-z0-9_$]*", "")));
 				if (!usedNames.contains(name)) {
 					component.name = name;
 				} else { // if output name is already taken, we pick another one

@@ -59,7 +59,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 			int caret = ((JTextField) name.getEditor().getEditorComponent()).getCaretPosition();
 			String text = name.getEditor().getItem().toString();
 			String key = StringSelectorDialog.openSelectorDialog(editor.mcreator,
-					w -> w.getLanguageMap().get("en_us").keySet().toArray(String[]::new),
+					w -> w.getLanguageMap().get("en_us").keySet().stream().sorted().toArray(String[]::new),
 					L10N.t("dialog.gui.label_text.add_translation_key.title"),
 					L10N.t("dialog.gui.label_text.add_translation_key.message"));
 			if (key != null) {
