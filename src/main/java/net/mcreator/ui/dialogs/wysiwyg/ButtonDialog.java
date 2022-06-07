@@ -107,8 +107,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
 			setVisible(false);
-			String text = nameField.getText();
-			if (text != null && !text.equals("")) {
+			String text = Transliteration.transliterateString(nameField.getText());
+			if (!text.equals("")) {
 				if (button == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(fieldText.getText(), WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth + 25, 20);

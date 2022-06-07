@@ -27,7 +27,6 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.IMachineNamedComponent;
 import net.mcreator.element.types.GUI;
 import net.mcreator.io.Transliteration;
-import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.Workspace;
 
 import java.util.Set;
@@ -42,8 +41,8 @@ public class GUIButtonNameFixer implements IConverter {
 				.map(e -> e.name).collect(Collectors.toSet());
 		for (GUIComponent component : gui.components) {
 			if (component instanceof Button) {
-				String name = RegistryNameFixer.fromCamelCase(Transliteration.transliterateString(
-						((Button) component).text.replace(" ", "_").replaceAll("[^A-Za-z0-9_$]*", "")));
+				String name = Transliteration.transliterateString(
+						((Button) component).text.replaceAll("[^A-Za-z0-9_$]*", ""));
 				if (!usedNames.contains(name)) {
 					component.name = name;
 				} else { // if output name is already taken, we pick another one
