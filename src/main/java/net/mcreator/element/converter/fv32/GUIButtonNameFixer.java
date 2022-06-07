@@ -33,7 +33,7 @@ import net.mcreator.workspace.Workspace;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GUIComponentNameFixer implements IConverter {
+public class GUIButtonNameFixer implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -44,10 +44,14 @@ public class GUIComponentNameFixer implements IConverter {
 			if (component instanceof Button) {
 				String name = RegistryNameFixer.fromCamelCase(Transliteration.transliterateString(
 						((Button) component).text.replace(" ", "_").replaceAll("[^A-Za-z0-9._]*", "")));
-				int i = 1;
-				while (usedNames.contains(name + i)) // if output name is taken, we pick another one
-					i++;
-				component.name = name + i;
+				if (!usedNames.contains(name)) {
+					component.name = name;
+				} else { // if output name is already taken, we pick another one
+					int i = 1;
+					while (usedNames.contains(name + i))
+						i++;
+					component.name = name + i;
+				}
 				usedNames.add(component.name);
 			}
 		}
