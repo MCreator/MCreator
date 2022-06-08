@@ -33,6 +33,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -57,6 +58,9 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	private final List<Plugin> plugins;
+
+	private final List<JavaPlugin> javaPlugins;
+
 	private final List<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
@@ -68,6 +72,9 @@ public class PluginLoader extends URLClassLoader {
 		super(new URL[] {}, null);
 
 		this.plugins = new ArrayList<>();
+
+		this.javaPlugins = new ArrayList<>();
+
 		this.pluginUpdates = new ArrayList<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
@@ -99,9 +106,20 @@ public class PluginLoader extends URLClassLoader {
 					addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
 				}
 
+				if (plugin.getJavaPlugin() != null) { // todo: if allowed in preferences
+					try {
+						Class<?> clazz = Class.forName(plugin.getJavaPlugin());
+						Constructor<?> ctor = clazz.getConstructor(Plugin.class);
+						JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
+						javaPlugins.add(javaPlugin);
+					} catch (Exception e) {
+						LOG.error("Failed load Java plugin " + plugin.getID(), e);
+					}
+				}
+
 				plugin.loaded = true;
 			} catch (MalformedURLException e) {
-				LOG.error("Failed to add plugin to the loader", e);
+				LOG.error("Failed to add plugin " + plugin.getID() + " to the loader", e);
 			}
 		}
 
@@ -146,6 +164,13 @@ public class PluginLoader extends URLClassLoader {
 	 */
 	public List<Plugin> getPlugins() {
 		return plugins;
+	}
+
+	/**
+	 * @return <p> A {@link List} of all loaded Java plugins.</p>
+	 */
+	public List<JavaPlugin> getJavaPlugins() {
+		return javaPlugins;
 	}
 
 	/**

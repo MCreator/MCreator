@@ -21,6 +21,7 @@ package net.mcreator.plugin;
 import net.mcreator.Launcher;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
 /**
@@ -39,6 +40,8 @@ public class Plugin implements Comparable<Plugin> {
 	private long maxversion = -1;
 
 	private PluginInfo info;
+
+	@Nullable private String javaplugin;
 
 	public File getFile() {
 		return file;
@@ -129,6 +132,10 @@ public class Plugin implements Comparable<Plugin> {
 		}
 
 		return info.getVersion();
+	}
+
+	@Nullable public String getJavaPlugin() {
+		return javaplugin;
 	}
 
 	@Override public String toString() {
