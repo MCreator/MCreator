@@ -657,6 +657,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
 		requiresCorrectTool.setOpaque(false);
+		destroyTool.addActionListener(e -> updateRequiresCorrectTool());
 
 		selp3.setOpaque(false);
 		advancedProperties.setOpaque(false);
@@ -1299,6 +1300,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		placeSound.setEnabled(customSoundType.isSelected());
 		stepSound.setEnabled(customSoundType.isSelected());
 		soundOnStep.setEnabled(defaultSoundType.isSelected());
+	}
+
+	private void updateRequiresCorrectTool() {
+		if (!isEditingMode() && "pickaxe".equals(destroyTool.getSelectedItem())) {
+			requiresCorrectTool.setSelected(true);
+		}
 	}
 
 	@Override public void reloadDataLists() {
