@@ -1,0 +1,1 @@
+If this option is selected, entities won't be able to move through the plant.

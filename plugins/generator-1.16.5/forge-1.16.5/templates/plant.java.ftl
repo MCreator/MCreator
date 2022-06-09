@@ -325,7 +325,11 @@ import net.minecraft.util.SoundEvent;
 					<#if data.plantType == "growapable" || data.forceTicking>
 					.tickRandomly()
 					</#if>
+					<#if data.isSolid>
+					.notSolid().setOpaque((bs, br, bp) -> false)
+					<#else>
 					.doesNotBlockMovement()
+					</#if>
 					<#if data.isCustomSoundType>
 						.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 						() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
@@ -666,6 +670,31 @@ import net.minecraft.util.SoundEvent;
 			</#if>
 		}
         </#if>
+
+		<#if hasProcedure(data.onEntityWalksOn)>
+		@Override public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+			super.onEntityWalk(world, pos, entity);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			BlockState blockstate = world.getBlockState(pos);
+			<@procedureOBJToCode data.onEntityWalksOn/>
+		}
+        </#if>
+
+		<#if hasProcedure(data.onHitByProjectile)>
+		@Override public void onProjectileCollision(World world, BlockState blockstate, BlockRayTraceResult hit, ProjectileEntity entity) {
+			BlockPos pos = hit.getPos();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			double hitX = hit.getHitVec().x;
+			double hitY = hit.getHitVec().y;
+			double hitZ = hit.getHitVec().z;
+			Direction direction = hit.getFace();
+			<@procedureOBJToCode data.onHitByProjectile/>
+		}
+		</#if>
 
 		<#if data.hasTileEntity>
 		@Override public boolean hasTileEntity(BlockState state) {
