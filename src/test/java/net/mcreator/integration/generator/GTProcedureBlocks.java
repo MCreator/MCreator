@@ -96,6 +96,51 @@ public class GTProcedureBlocks {
 				}
 			}
 
+			if (!procedureBlock.getRepeatingInputs().isEmpty()) {
+				boolean templatesDefined = true;
+
+				if (procedureBlock.toolbox_init != null) {
+					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+					for (String input : procedureBlock.getRepeatingInputs()) {
+						boolean allFound = true;
+						try {
+							for (int i = 0; i < args0.size(); i++) {
+								boolean match = false;
+								String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+								if (name.startsWith(input) && name.substring(input.length()).replaceAll("\\d", "")
+										.equals("")) {
+									for (String toolboxtemplate : procedureBlock.toolbox_init) {
+										if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
+											match = true;
+											break;
+										}
+									}
+								}
+
+								if (!match) {
+									allFound = false;
+									break;
+								}
+							}
+						} catch (Exception ignored) {
+						}
+
+						if (!allFound) {
+							templatesDefined = false;
+							break;
+						}
+					}
+				} else {
+					templatesDefined = false;
+				}
+
+				if (!templatesDefined) {
+					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
+							+ procedureBlock.machine_name);
+					continue;
+				}
+			}
+
 			if (procedureBlock.getRequiredAPIs() != null) {
 				boolean skip = false;
 
@@ -224,6 +269,25 @@ public class GTProcedureBlocks {
 							.append("<block type=\"text_print\"><value name=\"TEXT\"><block type=\"math_number\">"
 									+ "<field name=\"NUM\">123.456</field></block></value></block>")
 							.append("</statement>\n");
+				}
+			}
+
+			if (procedureBlock.getRepeatingStatements() != null) {
+				try {
+					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+					for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
+						for (int i = 0; i < args0.size(); i++) {
+							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+							if (name.startsWith(statement.name) && name.substring(statement.name.length())
+									.replaceAll("\\d", "").equals("")) {
+								additionalXML.append("<statement name=\"").append(name).append("\">")
+										.append("<block type=\"text_print\"><value name=\"TEXT\">"
+												+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
+										.append("</block></value></block></statement>\n");
+							}
+						}
+					}
+				} catch (Exception ignored) {
 				}
 			}
 
