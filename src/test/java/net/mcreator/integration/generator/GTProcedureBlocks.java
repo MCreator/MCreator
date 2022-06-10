@@ -115,11 +115,11 @@ public class GTProcedureBlocks {
 											break;
 										}
 									}
-								}
 
-								if (!match) {
-									allFound = false;
-									break;
+									if (!match) {
+										allFound = false;
+										break;
+									}
 								}
 							}
 						} catch (Exception ignored) {
