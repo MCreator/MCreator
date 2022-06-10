@@ -24,11 +24,15 @@
       "type": "input_value",
       "name": "pitch",
       "check": "Number"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "sound",
+      "datalist": "sound"
     }
   ],
   "extensions": [
-    "sound_category_list_provider",
-    "sound_list_provider"
+    "sound_category_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,

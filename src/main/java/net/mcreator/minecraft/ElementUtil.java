@@ -42,7 +42,7 @@ public class ElementUtil {
 	 * @return A predicate that checks if the type matches the parameter
 	 */
 	public static Predicate<DataListEntry> typeMatches(String type) {
-		return e -> e.getType().equals(type);
+		return e -> type.equals(e.getType());
 	}
 
 	/**
@@ -157,6 +157,20 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
 		retval.addAll(DataListLoader.loadDataList("entities"));
+		Collections.sort(retval);
+		return retval;
+	}
+
+	/**
+	 * Returns all the spawnable entities, which include custom living entities and entities marked as "spawnable"
+	 * in the data lists
+	 *
+	 * @param workspace The workspace from which to gather the entities
+	 * @return All entities that can be spawned
+	 */
+	public static List<DataListEntry> loadAllSpawnableEntities(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
+		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
 		Collections.sort(retval);
 		return retval;
 	}

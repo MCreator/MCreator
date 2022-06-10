@@ -247,6 +247,7 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 
 		@Override public void tick() {
 			super.tick();
+
 			double x = this.getPosX();
 			double y = this.getPosY();
 			double z = this.getPosZ();
@@ -254,10 +255,9 @@ public class ${name}Item extends ${JavaModName}Elements.ModElement{
 			Entity entity = this.func_234616_v_();
 			Entity immediatesourceentity = this;
 			<@procedureOBJToCode data.onBulletFlyingTick/>
-			if (this.inGround) {
-			    <@procedureOBJToCode data.onBulletHitsBlock/>
+
+			if (this.inGround)
 				this.remove();
-			}
 		}
 
 	}

@@ -357,7 +357,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
 				entry1.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry1.minGroup = 10;
 				entry1.maxGroup = 134;
 				entry1.weight = 13;
@@ -366,7 +366,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
 				entry2.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry2.minGroup = 23;
 				entry2.maxGroup = 145;
 				entry2.weight = 11;
@@ -375,7 +375,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
 				entry3.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry3.minGroup = 23;
 				entry3.maxGroup = 145;
 				entry3.weight = 11;
@@ -384,7 +384,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
 				entry4.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry4.minGroup = 23;
 				entry4.maxGroup = 145;
 				entry4.weight = 11;
@@ -484,12 +484,6 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
-			Command command = new Command(modElement);
-			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
-			command.onCommandExecuted = new Procedure("procedure2");
-			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
 			keyBinding.triggerKey = getRandomString(random,
@@ -1000,6 +994,7 @@ public class TestWorkspaceDataProvider {
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
+			plant.isSolid = _true;
 			plant.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -1059,6 +1054,8 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
+			plant.onEntityWalksOn = new Procedure("procedure11");
+			plant.onHitByProjectile = new Procedure("procedure12");
 			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
@@ -1245,6 +1242,7 @@ public class TestWorkspaceDataProvider {
 			block.resistance = 3.1;
 			block.hasGravity = _true;
 			block.useLootTableForDrops = !_true;
+			block.requiresCorrectTool = _true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			block.destroyTool = getRandomItem(random,
@@ -1369,6 +1367,7 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOn = new Procedure("procedure11");
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
+				block.onHitByProjectile = new Procedure("procedure14");
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");

@@ -99,7 +99,7 @@ public class ${name}Block extends
 		<#if data.luminance != 0>
 			.lightLevel(s -> ${data.luminance})
 		</#if>
-		<#if data.destroyTool != "Not specified">
+		<#if data.requiresCorrectTool>
 			.requiresCorrectToolForDrops()
 		</#if>
 		<#if data.isNotColidable>
@@ -223,8 +223,8 @@ public class ${name}Block extends
 		<#if data.isBoundingBoxEmpty()>
 			return Shapes.empty();
 		<#else>
-			<#if !data.disableOffset>Vec3 offset = state.getOffset(world, pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset data.rotationMode data.enablePitch/>
+			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(world, pos);</#if>
+			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
 		</#if>
 	}
 	</#if>
@@ -304,9 +304,9 @@ public class ${name}Block extends
 		<#else>
 		@Override public BlockState rotate(BlockState state, Rotation rot) {
 			if(rot == Rotation.CLOCKWISE_90 || rot == Rotation.COUNTERCLOCKWISE_90) {
-				if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.X) {
+				if (state.getValue(AXIS) == Direction.Axis.X) {
 					return state.setValue(AXIS, Direction.Axis.Z);
-				} else if ((Direction.Axis) state.getValue(AXIS) == Direction.Axis.Z) {
+				} else if (state.getValue(AXIS) == Direction.Axis.Z) {
 					return state.setValue(AXIS, Direction.Axis.X);
 				}
 			}
@@ -441,7 +441,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.destroyTool != "Not specified">
+	<#if data.requiresCorrectTool>
 	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
 		if(player.getInventory().getSelected().getItem() instanceof TieredItem tieredItem)
 			return tieredItem.getTier().getLevel() >= ${data.breakHarvestLevel};
@@ -543,6 +543,8 @@ public class ${name}Block extends
 	<@onEntityCollides data.onEntityCollides/>
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onHitByProjectile data.onHitByProjectile/>
 
 	<@onBlockPlacedBy data.onBlockPlayedBy/>
 
