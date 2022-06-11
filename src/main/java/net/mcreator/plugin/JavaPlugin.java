@@ -20,6 +20,7 @@
 package net.mcreator.plugin;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 
 public abstract class JavaPlugin {
 
@@ -29,5 +30,16 @@ public abstract class JavaPlugin {
 		this.plugin = plugin;
 	}
 
-	public abstract void newMCreator(MCreator mcreator);
+	public void eventNewMCreator(MCreator mcreator) {
+
+	}
+
+	public void eventPluginsLoaded(MCreatorApplication mcreatorApplication) {
+
+	}
+
+	public void eventWorkspaceBuildStarted(MCreator mcreator) {
+
+	}
+
 }

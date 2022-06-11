@@ -90,6 +90,8 @@ public final class MCreatorApplication {
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
 
+		PluginLoader.INSTANCE.getJavaPlugins().forEach(plugin -> plugin.eventPluginsLoaded(this));
+
 		splashScreen.setProgress(10, "Loading UI Themes");
 
 		// We load UI themes now as theme plugins are loaded at this point
