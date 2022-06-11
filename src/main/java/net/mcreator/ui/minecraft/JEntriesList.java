@@ -35,6 +35,7 @@ public abstract class JEntriesList extends JPanel {
 	protected final IHelpContext gui;
 
 	private final List<Consumer<JComponent>> entryListeners = new ArrayList<>();
+	private boolean updateRunning = false;
 
 	protected final JButton add = new JButton(UIRES.get("16px.add.gif"));
 
@@ -49,7 +50,18 @@ public abstract class JEntriesList extends JPanel {
 	}
 
 	protected void registerEntryUI(JComponent entry) {
-		entryListeners.forEach(l -> l.accept(entry));
+		for (Consumer<JComponent> l : entryListeners) {
+			if (!updateRunning) {
+				updateRunning = true;
+				new Thread(() -> {
+					try {
+						SwingUtilities.invokeAndWait(() -> l.accept(entry));
+					} catch (Exception ignored) {
+					}
+					updateRunning = false;
+				}).start();
+			}
+		}
 	}
 
 }
