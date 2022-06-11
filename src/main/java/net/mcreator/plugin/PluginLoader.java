@@ -70,7 +70,7 @@ public class PluginLoader extends URLClassLoader {
 	 * <p>The core of the detection and loading</p>
 	 */
 	public PluginLoader() {
-		super(new URL[] {}, null);
+		super(new URL[] {}, Thread.currentThread().getContextClassLoader());
 
 		this.plugins = new ArrayList<>();
 
@@ -112,7 +112,7 @@ public class PluginLoader extends URLClassLoader {
 
 				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins && plugin.getJavaPlugin() != null) {
 					try {
-						Class<?> clazz = Class.forName(plugin.getJavaPlugin());
+						Class<?> clazz = loadClass(plugin.getJavaPlugin());
 						Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 						JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 						javaPlugins.add(javaPlugin);
