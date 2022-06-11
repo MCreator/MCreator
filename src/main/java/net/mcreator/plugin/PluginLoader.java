@@ -24,6 +24,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,7 +107,7 @@ public class PluginLoader extends URLClassLoader {
 					addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
 				}
 
-				if (plugin.getJavaPlugin() != null) { // todo: if allowed in preferences
+				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins && plugin.getJavaPlugin() != null) {
 					try {
 						Class<?> clazz = Class.forName(plugin.getJavaPlugin());
 						Constructor<?> ctor = clazz.getConstructor(Plugin.class);
