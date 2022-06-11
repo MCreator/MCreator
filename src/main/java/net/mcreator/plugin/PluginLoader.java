@@ -84,6 +84,9 @@ public class PluginLoader extends URLClassLoader {
 		pluginsLoadList.addAll(listPluginsFromFolder(new File("./plugins/"), true));
 		pluginsLoadList.addAll(listPluginsFromFolder(UserFolderManager.getFileFromUserFolder("plugins"), false));
 
+		if (System.getenv("MCREATOR_PLUGINS_FOLDER") != null)
+			pluginsLoadList.addAll(listPluginsFromFolder(new File(System.getenv("MCREATOR_PLUGINS_FOLDER")), false));
+
 		Collections.sort(pluginsLoadList);
 
 		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).toList();
@@ -182,6 +185,8 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
+		LOG.debug("Loading plugins from: " + folder);
+
 		List<Plugin> loadList = new ArrayList<>();
 
 		File[] pluginFiles = folder.listFiles();
