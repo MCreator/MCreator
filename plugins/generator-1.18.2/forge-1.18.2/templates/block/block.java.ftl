@@ -187,7 +187,8 @@ public class ${name}Block extends
 			list.add(new TextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 		<#else>
 			<#list data.specialInformation as entry>
-			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			List<String> entries = ${thelper.splitString(entry)};
+			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entries)}"));
 			</#list>
 		</#if>
 	}

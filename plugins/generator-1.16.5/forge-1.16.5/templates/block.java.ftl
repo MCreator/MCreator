@@ -308,7 +308,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				list.add(new StringTextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 			<#else>
 				<#list data.specialInformation as entry>
-				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				List<String> entries = ${thelper.splitString(entry)};
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entries)}"));
 				</#list>
 			</#if>
 		}

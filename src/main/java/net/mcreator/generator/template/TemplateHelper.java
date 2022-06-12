@@ -19,8 +19,10 @@
 package net.mcreator.generator.template;
 
 import com.google.gson.Gson;
+import net.mcreator.util.StringUtils;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("unused") public class TemplateHelper {
@@ -57,6 +59,10 @@ import java.util.Random;
 
 	public String obj2str(Object object) {
 		return new Gson().toJson(object);
+	}
+
+	public List<String> splitString(String specialString) {
+		return StringUtils.splitCommaSeparatedStringListWithEscapes(specialString);
 	}
 
 }
