@@ -35,7 +35,6 @@ import org.reflections.util.ConfigurationBuilder;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -59,10 +58,9 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	private final List<Plugin> plugins;
+	private final List<PluginUpdateInfo> pluginUpdates;
 
 	private final List<JavaPlugin> javaPlugins;
-
-	private final List<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
 
@@ -70,13 +68,13 @@ public class PluginLoader extends URLClassLoader {
 	 * <p>The core of the detection and loading</p>
 	 */
 	public PluginLoader() {
-		super(new URL[] {}, Thread.currentThread().getContextClassLoader());
+		super(new URL[] {}, null);
 
 		this.plugins = new ArrayList<>();
-
 		this.javaPlugins = new ArrayList<>();
-
 		this.pluginUpdates = new ArrayList<>();
+
+		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {}, Thread.currentThread().getContextClassLoader());
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -104,26 +102,20 @@ public class PluginLoader extends URLClassLoader {
 			try {
 				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + ", weight: "
 						+ plugin.getWeight());
-				if (plugin.getFile().isDirectory()) {
-					addURL(plugin.getFile().toURI().toURL());
-				} else {
-					addURL(new URL("jar:file:" + plugin.getFile().getAbsolutePath() + "!/"));
-				}
+				addURL(plugin.toURL());
 
 				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins && plugin.getJavaPlugin() != null) {
-					try {
-						Class<?> clazz = loadClass(plugin.getJavaPlugin());
-						Constructor<?> ctor = clazz.getConstructor(Plugin.class);
-						JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
-						javaPlugins.add(javaPlugin);
-					} catch (Exception e) {
-						LOG.error("Failed load Java plugin " + plugin.getID(), e);
-					}
+					javaPluginCL.addURL(plugin.toURL());
+
+					Class<?> clazz = javaPluginCL.loadClass(plugin.getJavaPlugin());
+					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
+					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
+					javaPlugins.add(javaPlugin);
 				}
 
 				plugin.loaded = true;
-			} catch (MalformedURLException e) {
-				LOG.error("Failed to add plugin " + plugin.getID() + " to the loader", e);
+			} catch (Exception e) {
+				LOG.error("Failed to load plugin " + plugin.getID(), e);
 			}
 		}
 
