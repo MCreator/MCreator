@@ -186,7 +186,7 @@ public class ${name}Block extends
 			Level world = (Level) getter;
 			list.add(new TextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 		<#else>
-			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation) as entry>
+			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedValue()) as entry>
 			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
 			</#list>
 		</#if>
