@@ -307,9 +307,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				World world = (World) reader;
 				list.add(new StringTextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 			<#else>
-				<#list data.specialInformation as entry>
-				List<String> entries = ${thelper.splitString(entry)};
-				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entries)}"));
+				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation) as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
 				</#list>
 			</#if>
 		}

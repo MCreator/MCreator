@@ -61,7 +61,7 @@ import java.util.Random;
 		return new Gson().toJson(object);
 	}
 
-	public List<String> splitString(String specialString) {
+	public List<String> splitCommaSeparatedStringListWithEscapes(String specialString) {
 		return StringUtils.splitCommaSeparatedStringListWithEscapes(specialString);
 	}
 
