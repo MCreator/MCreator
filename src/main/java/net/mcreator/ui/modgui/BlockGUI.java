@@ -50,6 +50,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.TextProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -109,6 +110,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 	private ProcedureSelector onHitByProjectile;
 
+	private TextProcedureSelector specialInformation;
 	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
@@ -241,8 +243,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final VTextField outSlotIDs = new VTextField(18);
 	private final VTextField inSlotIDs = new VTextField(18);
 
-	private final JTextField specialInfo = new JTextField(25);
-
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
@@ -316,9 +316,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_redstone_off"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
-				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
+
+		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+				Dependency.fromString("itemstack:itemstack/world:world"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -519,11 +521,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		ComponentUtils.deriveFont(specialInfo, 16);
-
 		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.block.special_information_tip")));
-		txblock3.add(specialInfo);
+		txblock3.add(specialInformation);
 
 		sbbp2.add("Center", topnbot);
 
@@ -1325,6 +1325,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		particleCondition.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
@@ -1413,6 +1414,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		spawnParticles.setSelected(block.spawnParticles);
 		particleToSpawn.setSelectedItem(block.particleToSpawn);
 		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
+		specialInformation.setSelectedProcedure(block.specialInformation);
 		particleCondition.setSelectedProcedure(block.particleCondition);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
 		generateCondition.setSelectedProcedure(block.generateCondition);
@@ -1491,9 +1493,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		disableOffset.setSelected(block.disableOffset);
 		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
 
-		specialInfo.setText(
-				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-
 		refreshFiledsTileEntity();
 		refreshRedstoneEmitted();
 
@@ -1564,6 +1563,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.particleSpawningShape = (String) particleSpawningShape.getSelectedItem();
 		block.particleSpawningRadious = (double) particleSpawningRadious.getValue();
 		block.particleAmount = (int) particleAmount.getValue();
+		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.particleCondition = particleCondition.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.generateCondition = generateCondition.getSelectedProcedure();
@@ -1638,8 +1638,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
-
-		block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = (String) blockBase.getSelectedItem();

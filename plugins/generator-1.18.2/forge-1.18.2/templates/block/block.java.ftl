@@ -179,12 +179,17 @@ public class ${name}Block extends
    	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-	    </#list>
+	<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
+	@Override public void appendHoverText(ItemStack itemstack, BlockGetter getter, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, getter, list, flag);
+		<#if hasProcedure(data.specialInformation)>
+			Level world = (Level) getter;
+			list.add(new TextComponent(<@procedureOBJToTextCode data.specialInformation/>));
+		<#else>
+			<#list data.specialInformation as entry>
+			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		</#if>
 	}
 	</#if>
 

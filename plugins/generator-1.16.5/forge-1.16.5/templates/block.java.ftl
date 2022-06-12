@@ -300,12 +300,17 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		}
 		</#if>
 
-		<#if data.specialInfo?has_content>
-		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader world, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+		<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader reader, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, reader, list, flag);
+			<#if hasProcedure(data.specialInformation)>
+				World world = (World) reader;
+				list.add(new StringTextComponent(<@procedureOBJToTextCode data.specialInformation/>));
+			<#else>
+				<#list data.specialInfo as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
         </#if>
 

@@ -47,6 +47,14 @@
     </#if>
 </#macro>
 
+<#macro procedureOBJToTextCode object="">
+    <#if hasProcedure(object)>
+        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+    <#else>
+        ""
+    </#if>
+</#macro>
+
 <#macro procedureOBJToItemstackCode object="">
     <#if hasProcedure(object)>
         /*@ItemStack*/ <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />

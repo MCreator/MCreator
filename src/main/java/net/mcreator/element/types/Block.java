@@ -77,7 +77,7 @@ import java.util.stream.Collectors;
 	public List<BoxEntry> boundingBoxes;
 
 	public String name;
-	public List<String> specialInfo;
+	public TextProcedure specialInformation;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
