@@ -25,10 +25,14 @@ import java.lang.reflect.Type;
 
 public class TextProcedure extends Procedure {
 
-	private final String fixedText;
+	private String fixedText;
 
 	public TextProcedure(String name, String fixedText) {
 		super(name);
+		this.fixedText = fixedText;
+	}
+
+	public void setFixedText(String fixedText) {
 		this.fixedText = fixedText;
 	}
 
