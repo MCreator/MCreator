@@ -321,7 +321,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
-				Dependency.fromString("itemstack:itemstack/world:world"));
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,

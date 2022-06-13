@@ -180,10 +180,14 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter getter, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, getter, list, flag);
+	@Override public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, blockGetter, list, flag);
 		<#if hasProcedure(data.specialInformation)>
-			Level world = (Level) getter;
+			ClientPlayer entity = itemstack.getEntityRepresentation();
+			int x = entity.getX();
+			int y = entity.getY();
+			int z = entity.getZ();
+			Level world = (Level) blockGetter;
 			list.add(new TextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 		<#else>
 			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>

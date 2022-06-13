@@ -301,10 +301,14 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		</#if>
 
 		<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
-		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader reader, List<ITextComponent> list, ITooltipFlag flag) {
-			super.addInformation(itemstack, reader, list, flag);
+		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader blockReader, List<ITextComponent> list, ITooltipFlag flag) {
+			super.addInformation(itemstack, blockReader, list, flag);
 			<#if hasProcedure(data.specialInformation)>
-				World world = (World) reader;
+				ClientPlayerEntity entity = (ClientPlayerEntity) itemstack.getAttachedEntity();
+				int x = entity.getPosX();
+				int y = entity.getPosY();
+				int z = entity.getPosZ();
+				World world = (World) blockReader;
 				list.add(new StringTextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 			<#else>
 				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
