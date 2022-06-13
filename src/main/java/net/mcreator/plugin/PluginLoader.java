@@ -165,7 +165,7 @@ public class PluginLoader extends URLClassLoader {
 	/**
 	 * @return <p> A {@link List} of all loaded Java plugins.</p>
 	 */
-	public List<JavaPlugin> getJavaPlugins() {
+	protected List<JavaPlugin> getJavaPlugins() {
 		return javaPlugins;
 	}
 

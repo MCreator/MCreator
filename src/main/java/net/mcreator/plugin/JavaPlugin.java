@@ -19,27 +19,42 @@
 
 package net.mcreator.plugin;
 
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.MCreatorApplication;
-
+/**
+ * Extend this object to define custom plugin.
+ *
+ * A fully qualified name to this class name needs to be specified as "javaplugin" field in plugin.json file
+ *
+ */
 public abstract class JavaPlugin {
 
-	private final Plugin plugin;
+	protected final Plugin plugin;
 
+	private final EventMap listeners = new EventMap();
+
+	// Called by reflection
 	public JavaPlugin(Plugin plugin) {
 		this.plugin = plugin;
 	}
 
-	public void eventNewMCreator(MCreator mcreator) {
-
+	/**
+	 * @return Definition of the plugin this Java plugin belongs to
+	 */
+	public Plugin getPlugin() {
+		return plugin;
 	}
 
-	public void eventPluginsLoaded(MCreatorApplication mcreatorApplication) {
-
+	/**
+	 * Call this method to add new event listener to the plugin
+	 *
+	 * @param eventType Class of the event type
+	 * @param listener Listener for the given event
+	 */
+	public <T extends MCREvent> void addListener(Class<T> eventType, MCREventListener<T> listener) {
+		listeners.addEvent(eventType, listener);
 	}
 
-	public void eventWorkspaceBuildStarted(MCreator mcreator) {
-
+	protected EventMap getListeners() {
+		return listeners;
 	}
 
 }

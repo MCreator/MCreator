@@ -25,7 +25,9 @@ import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
@@ -269,7 +271,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		add("North", toolBar);
 		add("Center", splitPane);
 
-		PluginLoader.INSTANCE.getJavaPlugins().forEach(plugin -> plugin.eventNewMCreator(this));
+		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
 
 	@Override public void setVisible(boolean b) {

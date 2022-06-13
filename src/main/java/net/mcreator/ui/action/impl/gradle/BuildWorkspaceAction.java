@@ -18,7 +18,8 @@
 
 package net.mcreator.ui.action.impl.gradle;
 
-import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
@@ -38,8 +39,7 @@ public class BuildWorkspaceAction extends GradleAction {
 			try {
 				actionRegistry.getMCreator().getGenerator().generateBase();
 
-				PluginLoader.INSTANCE.getJavaPlugins()
-						.forEach(plugin -> plugin.eventWorkspaceBuildStarted(actionRegistry.getMCreator()));
+				MCREvent.event(new WorkspaceBuildStartedEvent(actionRegistry.getMCreator()));
 
 				SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole().exec("build"));
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
