@@ -61,10 +61,13 @@ public interface ModElementChangedListener
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
 				registerUI(entriesList);
-				entriesList.addEntryRegisterListener(c -> {
-					registerUI(c);
+				entriesList.addEntryRegisterListener(c -> new Thread(() -> {
+					try {
+						SwingUtilities.invokeAndWait(() -> registerUI(c));
+					} catch (Exception ignored) {
+					}
 					modElementChanged();
-				});
+				}).start());
 				component.addMouseListener(this);
 			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
