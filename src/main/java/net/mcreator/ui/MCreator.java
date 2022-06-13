@@ -417,7 +417,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return actionRegistry;
 	}
 
-	public MCreatorTabs getMcreatorTabs() {
+	public MCreatorTabs getMCreatorTabs() {
 		return mcreatorTabs;
 	}
 
