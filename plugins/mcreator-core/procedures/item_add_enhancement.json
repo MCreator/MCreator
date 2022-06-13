@@ -9,10 +9,12 @@
       "type": "input_value",
       "name": "item",
       "check": "MCItem"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "enhancement",
+      "datalist": "enchantment"
     }
-  ],
-  "extensions": [
-    "enhancement_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,

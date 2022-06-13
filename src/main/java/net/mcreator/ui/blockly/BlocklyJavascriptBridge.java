@@ -21,7 +21,6 @@ package net.mcreator.ui.blockly;
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
@@ -130,6 +129,9 @@ public class BlocklyJavascriptBridge {
 		String retval = switch (type) {
 			case "entity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
+			case "spawnableEntity" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
@@ -331,7 +333,8 @@ public class BlocklyJavascriptBridge {
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
 		case "rangeditem":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "throwableprojectile":
 			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "fireballprojectile":
@@ -377,10 +380,10 @@ public class BlocklyJavascriptBridge {
 					.toArray(String[]::new);
 			case "rangeditem" -> ElementUtil.loadArrowProjectiles(workspace).stream()
 					.map(DataListEntry::getReadableName).toArray(String[]::new);
-			case "fireballprojectile" -> ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
-			case "throwableprojectile" -> ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
+			case "fireballprojectile" -> ElementUtil.loadFireballProjectiles().stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "throwableprojectile" -> ElementUtil.loadThrowableProjectiles().stream()
+					.map(DataListEntry::getReadableName).toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
 		};
 	}
@@ -399,7 +402,7 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
 		String datalist;
 		switch (type) {
-		case "entity" -> datalist = "entities";
+		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		default -> {
 			return "";

@@ -1,0 +1,1 @@
+﻿This procedure determines whether to initially check this box or not when the GUI is opened.

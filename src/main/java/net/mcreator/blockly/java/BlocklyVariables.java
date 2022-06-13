@@ -76,15 +76,17 @@ public record BlocklyVariables(BlocklyToJava generator) {
 		Set<VariableElement> retval = new HashSet<>();
 		for (VariableType elementType : VariableTypeLoader.INSTANCE.getAllVariableTypes()) {
 			Matcher m = Pattern.compile("<block type=\"(?:variables_set_" + elementType.getName() + "|variables_get_"
-							+ elementType.getName() + ")\">(?:<mutation.*?\"/>)?<field name=\"VAR\">local:(.*?)</field>")
+							+ elementType.getName() + ")\">(?:<mutation.*?\"/>)?<field name=\"VAR\">(.*?)</field>")
 					.matcher(xml);
 
 			try {
 				while (m.find()) {
-					VariableElement element = new VariableElement();
-					element.setName(m.group(1));
-					element.setType(elementType);
-					retval.add(element);
+					if (m.group(1).startsWith("local:")) {
+						VariableElement element = new VariableElement();
+						element.setName(m.group(1).replaceFirst("local:", ""));
+						element.setType(elementType);
+						retval.add(element);
+					}
 				}
 			} catch (Exception ignored) {
 			}

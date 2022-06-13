@@ -110,7 +110,7 @@ public class ModElementUITest {
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
 		// generate some "dummy" procedures for dropdowns to work
-		for (int i = 1; i <= 13; i++) {
+		for (int i = 1; i <= 14; i++) {
 			workspace.addModElement(
 					new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
 							new ArrayList<String>()));

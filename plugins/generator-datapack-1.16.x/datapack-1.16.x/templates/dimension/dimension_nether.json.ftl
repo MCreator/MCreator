@@ -5,7 +5,7 @@
   "type": "${modid}:${registryname}",
   "generator": {
     "type": "minecraft:noise",
-    "seed": 0,
+    "seed": ${thelper.randomlong(registryname)},
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",

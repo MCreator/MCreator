@@ -26,6 +26,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.*;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -44,16 +45,20 @@ public class BlocklyToJava extends BlocklyToCode {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
 	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 
+	private final BlocklyEditorType editorType;
+
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
-	 * @param firstBlockName    <p>The name of the start block</p>
+	 * @param blocklyEditorType <p>Blockly editor type</p>
 	 * @param sourceXML         <p>The XML code used by Blockly</p>
 	 * @param templateGenerator <p>The folder location in each {@link net.mcreator.generator.Generator} containing the code template files<p>
 	 */
-	public BlocklyToJava(Workspace workspace, String firstBlockName, String sourceXML,
+	public BlocklyToJava(Workspace workspace, BlocklyEditorType blocklyEditorType, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, templateGenerator, externalGenerators);
+
+		this.editorType = blocklyEditorType;
 
 		addJavaBlocks();
 
@@ -63,7 +68,7 @@ public class BlocklyToJava extends BlocklyToCode {
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, firstBlockName);
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
 
 				// if there is no start block, we return empty string
 				if (start_block == null)
@@ -148,7 +153,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new EventOrTargetEntityDependencyBlock());
 		blockGenerators.add(new SourceEntityDependencyBlock());
 		blockGenerators.add(new EntityIteratorDependencyBlock());
-		blockGenerators.add(new ImediateSourceEntityDependencyBlock());
+		blockGenerators.add(new ImmediateSourceEntityDependencyBlock());
 		blockGenerators.add(new DirectionDependencyBlock());
 		blockGenerators.add(new DirectionConstantBlock());
 		blockGenerators.add(new NullBlock());
@@ -158,5 +163,9 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
+	}
+
+	public BlocklyEditorType getEditorType() {
+		return editorType;
 	}
 }
