@@ -304,11 +304,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 		@Override @OnlyIn(Dist.CLIENT) public void addInformation(ItemStack itemstack, IBlockReader blockReader, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, blockReader, list, flag);
 			<#if hasProcedure(data.specialInformation)>
-				ClientPlayerEntity entity = (ClientPlayerEntity) itemstack.getAttachedEntity();
-				int x = entity.getPosX();
-				int y = entity.getPosY();
-				int z = entity.getPosZ();
+				PlayerEntity entity = itemstack.getAttachedEntity();
 				World world = (World) blockReader;
+				double x = entity.getPosX();
+				double y = entity.getPosY();
+				double z = entity.getPosZ();
 				list.add(new StringTextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 			<#else>
 				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
