@@ -34,6 +34,7 @@ import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
+import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
@@ -155,6 +156,8 @@ public final class MCreatorApplication {
 
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();
+
+		MCREvent.event(new PreGeneratorsLoadingEvent(this));
 
 		splashScreen.setProgress(70, "Loading generators");
 
