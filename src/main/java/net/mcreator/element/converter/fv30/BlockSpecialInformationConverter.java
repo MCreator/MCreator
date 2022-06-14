@@ -28,6 +28,7 @@ import net.mcreator.workspace.Workspace;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BlockSpecialInformationConverter implements IConverter {
 
@@ -40,14 +41,9 @@ public class BlockSpecialInformationConverter implements IConverter {
 		if (oldBlock.get("specialInfo") != null)
 			oldBlock.getAsJsonArray("specialInfo").iterator()
 					.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
-		StringBuilder stringBuilder = new StringBuilder("");
-		specialInfo.iterator().forEachRemaining(element -> stringBuilder.append(element).append(","));
 
-		String specialInformation = stringBuilder.toString();
-		if (specialInformation.length() > 0)
-			specialInformation = specialInformation.substring(0, specialInformation.length() - 1);
-
-		block.specialInformation.setFixedText(specialInformation);
+		block.specialInformation.setFixedText(
+				specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		return block;
 	}
 

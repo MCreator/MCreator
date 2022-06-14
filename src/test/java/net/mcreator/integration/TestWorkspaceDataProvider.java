@@ -1380,7 +1380,8 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
-			block.specialInformation = new TextProcedure(emptyLists ? null : "text1", "Random desc");
+			block.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
 			block.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;

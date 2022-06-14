@@ -96,7 +96,7 @@ public class GTSampleElements {
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-						"<block type=\"return_text\"><value name=\"return\">"
+						"<block type=\"return_string\"><value name=\"return\">"
 								+ "<block type=\"text\"><field name=\"TEXT\">Message</field></block>"
 								+ "</value></block>");
 				assertTrue(workspace.getGenerator().generateElement(procedure));

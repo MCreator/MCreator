@@ -183,11 +183,11 @@ public class ${name}Block extends
 	@Override public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, blockGetter, list, flag);
 		<#if hasProcedure(data.specialInformation)>
-			Player entity = itemstack.getEntityRepresentation();
+			Entity entity = itemstack.getEntityRepresentation();
 			Level world = (Level) blockGetter;
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
+			double x = entity != null ? entity.getX() : 0.0;
+			double y = entity != null ? entity.getY() : 0.0;
+			double z = entity != null ? entity.getZ() : 0.0;
 			list.add(new TextComponent(<@procedureOBJToTextCode data.specialInformation/>));
 		<#else>
 			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
