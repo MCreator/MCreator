@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
-import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.IMachineNamedComponent;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.io.Transliteration;
@@ -27,11 +26,13 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 
 public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
@@ -43,20 +44,12 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
+		Validator validator = new UniqueNameValidator(nameField, "Text field machine name",
+				e -> Transliteration.transliterateString(e.getText()),
+				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
+						.map(e -> e.name), Collections.emptyList(), new JavaMemberNameValidator(nameField, false));
+		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
-		Validator validator = new JavaMemberNameValidator(nameField, false);
-		nameField.setValidator(() -> {
-			String textname = Transliteration.transliterateString(nameField.getText());
-			for (int i = 0; i < editor.list.getModel().getSize(); i++) {
-				GUIComponent component = editor.list.getModel().getElementAt(i);
-				if (textField != null && component.name.equals(textField.name)) // skip current element if edit mode
-					continue;
-				if (component instanceof IMachineNamedComponent && component.name.equals(textname))
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							L10N.t("common.name_already_exists"));
-			}
-			return validator.validate();
-		});
 		JTextField deft = new JTextField(20);
 		deft.setPreferredSize(new Dimension(200, 28));
 		JPanel options = new JPanel();
