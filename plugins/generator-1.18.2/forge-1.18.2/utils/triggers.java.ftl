@@ -425,3 +425,22 @@
 }
 	</#if>
 </#macro>
+
+<#macro onHitByProjectile procedure="">
+	<#if hasProcedure(procedure)>
+@Override public void onProjectileHit(Level world, BlockState blockstate, BlockHitResult hit, Projectile entity) {
+	<@procedureCode procedure, {
+	"x": "hit.getBlockPos().getX()",
+	"y": "hit.getBlockPos().getY()",
+	"z": "hit.getBlockPos().getZ()",
+	"world": "world",
+	"blockstate": "blockstate",
+	"entity": "entity",
+	"direction": "hit.getDirection()",
+	"hitX": "hit.getLocation().x()",
+	"hitY": "hit.getLocation().y()",
+	"hitZ": "hit.getLocation().z()"
+	}/>
+}
+	</#if>
+</#macro>
