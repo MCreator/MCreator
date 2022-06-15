@@ -22,6 +22,9 @@ package net.mcreator.plugin.events.ui;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.modgui.ModElementGUI;
 
+/**
+ * <p>These events are triggered at different states of a {@link ModElementGUI} loading.</p>
+ */
 public class ModElementGUIEvent extends TabEvents {
 
 	private final ModElementGUI<?> modElementGUI;

@@ -169,8 +169,8 @@ public class MCreatorTabs {
 		tab.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton() == MouseEvent.BUTTON2 && !tab.ghost && tab.closeable) {
-					closeTab(tab);
 					MCREvent.event(new TabEvents.CloseTabEvent(tab));
+					closeTab(tab);
 				} else {
 					showTab(tab);
 					MCREvent.event(new TabEvents.ShowTabEvent(tab));
