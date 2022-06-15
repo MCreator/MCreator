@@ -21,7 +21,9 @@ package net.mcreator.themes;
 
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ThemeLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
@@ -69,6 +71,7 @@ public class ThemeLoader {
 						UIRES.getImageFromResourceID("themes/" + theme.getID() + "/icon.png").getImage(), 64)));
 
 			THEMES.add(theme);
+			MCREvent.event(new ThemeLoadedEvent(theme));
 		}
 
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);

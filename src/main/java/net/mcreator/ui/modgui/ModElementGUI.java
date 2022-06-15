@@ -20,6 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.ui.ModElementGUIEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
@@ -105,6 +107,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	@Override public ViewBase showView() {
+		MCREvent.event(new ModElementGUIEvent.Post(this.tabIn, this));
 		this.tabIn = new MCreatorTabs.Tab(this, modElement);
 
 		// reload data lists in a background thread
@@ -128,6 +131,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.mcreatorTabs.addTab(this.tabIn);
 			return this;
 		}
+		MCREvent.event(new ModElementGUIEvent.Post(existing, this));
 		return (ViewBase) existing.getContent();
 	}
 

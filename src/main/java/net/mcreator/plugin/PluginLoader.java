@@ -24,6 +24,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.plugin.events.PluginLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
@@ -243,6 +244,7 @@ public class PluginLoader extends URLClassLoader {
 			return null;
 		}
 
+		MCREvent.event(new PluginLoadedEvent(plugin));
 		return plugin;
 	}
 
