@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -39,11 +39,22 @@ public class UniqueNameValidator implements Validator {
 	private final String name;
 	private final JTextField holder;
 
-	private final Function<JTextField, String> uniqueNameGetter;
+	private final Function<String, String> uniqueNameGetter;
 	private final Supplier<Stream<String>> otherNames;
 	private final List<String> forbiddenNames;
 
 	private final Validator extraValidator;
+
+	/**
+	 * @param holder         The element to add this validator to.
+	 * @param name           The text used to describe the purpose of the {@code holder}.
+	 * @param otherNames     Supplier of names of other elements in the same list. Those must all be unique names.
+	 * @param extraValidator The main validator for the {@code holder}.
+	 */
+	public UniqueNameValidator(VTextField holder, String name, Supplier<Stream<String>> otherNames,
+			Validator extraValidator) {
+		this(holder, name, e -> e, otherNames, Collections.emptyList(), extraValidator);
+	}
 
 	/**
 	 * @param holder         The element to add this validator to.
@@ -54,18 +65,30 @@ public class UniqueNameValidator implements Validator {
 	 */
 	public UniqueNameValidator(VTextField holder, String name, Supplier<Stream<String>> otherNames,
 			List<String> forbiddenNames, Validator extraValidator) {
-		this(holder, name, JTextComponent::getText, otherNames, forbiddenNames, extraValidator);
+		this(holder, name, e -> e, otherNames, forbiddenNames, extraValidator);
 	}
 
 	/**
 	 * @param holder           The element to add this validator to.
 	 * @param name             The text used to describe the purpose of the {@code holder}.
-	 * @param uniqueNameGetter The function to get unique name from the {@code holder}.
+	 * @param uniqueNameGetter The function to get unique name from the {@code holder}'s text.
+	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
+	 * @param extraValidator   The main validator for the {@code holder}.
+	 */
+	public UniqueNameValidator(VTextField holder, String name, Function<String, String> uniqueNameGetter,
+			Supplier<Stream<String>> otherNames, Validator extraValidator) {
+		this(holder, name, uniqueNameGetter, otherNames, Collections.emptyList(), extraValidator);
+	}
+
+	/**
+	 * @param holder           The element to add this validator to.
+	 * @param name             The text used to describe the purpose of the {@code holder}.
+	 * @param uniqueNameGetter The function to get unique name from the {@code holder}'s text.
 	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
 	 * @param forbiddenNames   List of strings that must not be used as a name, e.g. names of built-in properties.
 	 * @param extraValidator   The main validator for the {@code holder}.
 	 */
-	public UniqueNameValidator(VTextField holder, String name, Function<JTextField, String> uniqueNameGetter,
+	public UniqueNameValidator(VTextField holder, String name, Function<String, String> uniqueNameGetter,
 			Supplier<Stream<String>> otherNames, List<String> forbiddenNames, Validator extraValidator) {
 		this.name = name;
 		this.holder = holder;
@@ -95,7 +118,7 @@ public class UniqueNameValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		String uniqueName = uniqueNameGetter.apply(holder);
+		String uniqueName = uniqueNameGetter.apply(holder.getText());
 		if (uniqueName == null || uniqueName.equals(""))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
 		if (otherNames.get().filter(uniqueName::equals).count() > 1 || forbiddenNames.contains(uniqueName))

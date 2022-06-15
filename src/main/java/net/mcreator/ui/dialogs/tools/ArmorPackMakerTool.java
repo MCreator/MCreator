@@ -24,6 +24,7 @@ import net.mcreator.element.types.Armor;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
@@ -36,7 +37,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.views.ArmorImageMakerView;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -95,7 +97,11 @@ public class ArmorPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
+		Validator validator = new UniqueNameValidator(name, L10N.t("dialog.tools.armor_pack_name_validator"),
+				JavaConventions::convertToValidClassName,
+				() -> mcreator.getWorkspace().getModElements().stream().map(ModElement::getName),
+				new JavaMemberNameValidator(name, true));
+		name.setValidator(validator);
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.armor_pack_create");

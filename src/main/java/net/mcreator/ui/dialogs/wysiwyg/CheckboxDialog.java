@@ -36,7 +36,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collections;
 
 public class CheckboxDialog extends AbstractWYSIWYGDialog {
 
@@ -52,10 +51,10 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
-		Validator validator = new UniqueNameValidator(nameField, "Checkbox machine name",
-				e -> Transliteration.transliterateString(e.getText()),
+		Validator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.checkbox_name_validator"),
+				Transliteration::transliterateString,
 				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
-						.map(e -> e.name), Collections.emptyList(), new JavaMemberNameValidator(nameField, false));
+						.map(e -> e.name), new JavaMemberNameValidator(nameField, false));
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
 		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_name"), nameField));

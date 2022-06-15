@@ -49,7 +49,8 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
@@ -1135,8 +1136,11 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(),
-										(VTextField) component).validate();
+								return new UniqueNameValidator((VTextField) component,
+										L10N.t("common.mod_element_name"), JavaConventions::convertToValidClassName,
+										() -> mcreator.getWorkspace().getModElements().stream()
+												.map(ModElement::getName),
+										new JavaMemberNameValidator((VTextField) component, true)).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
