@@ -31,7 +31,9 @@ import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
@@ -89,6 +91,8 @@ public final class MCreatorApplication {
 
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
+
+		MCREvent.event(new ApplicationLoadedEvent(this));
 
 		splashScreen.setProgress(10, "Loading UI Themes");
 
