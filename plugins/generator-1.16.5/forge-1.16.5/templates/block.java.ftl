@@ -199,6 +199,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.destroyTool != "Not specified">
 				.harvestLevel(${data.breakHarvestLevel})
 				.harvestTool(ToolType.${data.destroyTool?upper_case})
+			</#if>
+			<#if data.requiresCorrectTool>
 				.setRequiresTool()
 			</#if>
 			<#if data.isNotColidable>
@@ -727,6 +729,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<@procedureOBJToCode data.onEntityWalksOn/>
 		}
         </#if>
+
+		<#if hasProcedure(data.onHitByProjectile)>
+		@Override public void onProjectileCollision(World world, BlockState blockstate, BlockRayTraceResult hit, ProjectileEntity entity) {
+			BlockPos pos = hit.getPos();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			double hitX = hit.getHitVec().x;
+			double hitY = hit.getHitVec().y;
+			double hitZ = hit.getHitVec().z;
+			Direction direction = hit.getFace();
+			<@procedureOBJToCode data.onHitByProjectile/>
+		}
+		</#if>
 
         <#if hasProcedure(data.onBlockPlayedBy)>
 		@Override
