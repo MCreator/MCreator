@@ -25,6 +25,9 @@ import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
@@ -77,6 +80,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	public MCreatorTabs.Tab workspaceTab;
 	public MCreatorTabs.Tab consoleTab;
 
+	private final MainMenuBar menuBar;
+	private final MainToolBar toolBar;
+
 	private final MCreatorApplication application;
 
 	public final JSplitPane splitPane;
@@ -118,8 +124,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		new MCreatorDropTarget(this);
 
-		MainMenuBar menuBar = new MainMenuBar(this);
-		MainToolBar toolBar = new MainToolBar(this);
+		this.menuBar = new MainMenuBar(this);
+		this.toolBar = new MainToolBar(this);
 
 		setTitle(WindowTitleHelper.getWindowTitle(this));
 
@@ -264,6 +270,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		add("South", statusBar);
 		add("North", toolBar);
 		add("Center", splitPane);
+
+		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
 
 	@Override public void setVisible(boolean b) {
@@ -405,6 +413,22 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (workspace != null)
 			return workspace.getFileManager().getWorkspaceFile().hashCode();
 		return Long.valueOf(windowUID).hashCode();
+	}
+
+	public ActionRegistry getActionRegistry() {
+		return actionRegistry;
+	}
+
+	public MCreatorTabs getMCreatorTabs() {
+		return mcreatorTabs;
+	}
+
+	public MainMenuBar getMainMenuBar() {
+		return menuBar;
+	}
+
+	public MainToolBar getToolBar() {
+		return toolBar;
 	}
 
 }
