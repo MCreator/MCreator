@@ -26,11 +26,11 @@ import net.mcreator.ui.MCreatorTabs;
  * <p>Events for different actions of a {@link MCreatorTabs.Tab} component.
  * All events are triggered BEFORE the action is executed.</p>
  */
-public class TabEvents extends MCREvent {
+public class TabEvent extends MCREvent {
 
 	private final MCreatorTabs.Tab tab;
 
-	public TabEvents(MCreatorTabs.Tab tab) {
+	public TabEvent(MCreatorTabs.Tab tab) {
 		this.tab = tab;
 	}
 
@@ -41,7 +41,7 @@ public class TabEvents extends MCREvent {
 	/**
 	 * <p>Triggered when a {@link MCreatorTabs.Tab} is added to the UI.</p>
 	 */
-	public static class AddTabEvent extends TabEvents {
+	public static class AddTabEvent extends TabEvent {
 
 		public AddTabEvent(MCreatorTabs.Tab tab) {
 			super(tab);
@@ -51,7 +51,7 @@ public class TabEvents extends MCREvent {
 	/**
 	 * <p>Triggered BEFORE the {@link MCreatorTabs.Tab} is closed by the user.</p>
 	 */
-	public static class CloseTabEvent extends TabEvents {
+	public static class CloseTabEvent extends TabEvent {
 
 		public CloseTabEvent(MCreatorTabs.Tab tab) {
 			super(tab);
@@ -62,7 +62,7 @@ public class TabEvents extends MCREvent {
 	 * <p>Triggered when the user clicks on a {@link MCreatorTabs.Tab} and is shown.
 	 * This event is not triggered when the {@link MCreatorTabs.Tab} is added.</p>
 	 */
-	public static class ShowTabEvent extends TabEvents {
+	public static class ShowTabEvent extends TabEvent {
 
 		public ShowTabEvent(MCreatorTabs.Tab tab) {
 			super(tab);

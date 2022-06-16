@@ -19,7 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.ui.TabEvents;
+import net.mcreator.plugin.events.ui.TabEvent;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -169,16 +169,16 @@ public class MCreatorTabs {
 		tab.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton() == MouseEvent.BUTTON2 && !tab.ghost && tab.closeable) {
-					MCREvent.event(new TabEvents.CloseTabEvent(tab));
+					MCREvent.event(new TabEvent.CloseTabEvent(tab));
 					closeTab(tab);
 				} else {
-					MCREvent.event(new TabEvents.ShowTabEvent(tab));
+					MCREvent.event(new TabEvent.ShowTabEvent(tab));
 					showTab(tab);
 				}
 			}
 		});
 
-		MCREvent.event(new TabEvents.AddTabEvent(tab));
+		MCREvent.event(new TabEvent.AddTabEvent(tab));
 		container.add(tab.content, tab.identifier.toString());
 		showTab(tab);
 

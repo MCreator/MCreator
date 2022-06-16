@@ -25,7 +25,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 /**
  * <p>These events are triggered at different states of a {@link ModElementGUI} loading.</p>
  */
-public class ModElementGUIEvent extends TabEvents {
+public class ModElementGUIEvent extends TabEvent {
 
 	private final ModElementGUI<?> modElementGUI;
 
@@ -38,12 +38,22 @@ public class ModElementGUIEvent extends TabEvents {
 		return modElementGUI;
 	}
 
+	/**
+	 * When a {@link ModElementGUI} is about to start loading, MCreator triggers this event.
+	 * The event is triggered BEFORE any component or code is executed on the {@link net.mcreator.ui.MCreatorTabs.Tab}
+	 * of the mod element.
+	 */
 	public static class Pre extends ModElementGUIEvent {
 		public Pre(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
 			super(tab, modElementGUI);
 		}
 	}
 
+	/**
+	 * When a {@link ModElementGUI} finishes to load, MCreator triggers this event.
+	 * The event is triggered AFTER all components or code is executed on the {@link net.mcreator.ui.MCreatorTabs.Tab}
+	 * of the mod element.
+	 */
 	public static class Post extends ModElementGUIEvent {
 		public Post(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
 			super(tab, modElementGUI);
