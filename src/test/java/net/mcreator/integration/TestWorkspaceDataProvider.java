@@ -898,10 +898,14 @@ public class TestWorkspaceDataProvider {
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
-			armor.helmetSpecialInformation = new TextProcedure(emptyLists ? null : "text2", "info 1, info 2, test \\, is this, another one");
-			armor.bodySpecialInformation = new TextProcedure(emptyLists ? null : "text3", "info 1, info 2, test \\, is this, another one");
-			armor.leggingsSpecialInformation = new TextProcedure(emptyLists ? null : "text4", "info 1, info 2, test \\, is this, another one");
-			armor.bootsSpecialInformation = new TextProcedure(emptyLists ? null : "text5", "info 1, info 2, test \\, is this, another one");
+			armor.helmetSpecialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
+			armor.bodySpecialInformation = new TextProcedure(emptyLists ? null : "text2",
+					"info 1, info 2, test \\, is this, another one");
+			armor.leggingsSpecialInformation = new TextProcedure(emptyLists ? null : "text3",
+					"info 1, info 2, test \\, is this, another one");
+			armor.bootsSpecialInformation = new TextProcedure(emptyLists ? null : "text4",
+					"info 1, info 2, test \\, is this, another one");
 			armor.helmetImmuneToFire = _true;
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
