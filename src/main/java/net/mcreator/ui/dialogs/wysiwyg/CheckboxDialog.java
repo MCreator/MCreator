@@ -51,10 +51,11 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
-		Validator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.checkbox_name_validator"),
+		UniqueNameValidator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.checkbox_name_validator"),
 				Transliteration::transliterateString,
 				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
 						.map(e -> e.name), new JavaMemberNameValidator(nameField, false));
+		validator.setIsPresentOnList(checkbox != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
 		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_name"), nameField));

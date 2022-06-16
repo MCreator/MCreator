@@ -54,10 +54,12 @@ public class NewModElementDialog {
 								regNameString == null || regNameString.equals("") ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
-						return new UniqueNameValidator((VTextField) component, L10N.t("common.mod_element_name"),
-								JavaConventions::convertToValidClassName,
+						UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
+								L10N.t("common.mod_element_name"), JavaConventions::convertToValidClassName,
 								() -> mcreator.getWorkspace().getModElements().stream().map(ModElement::getName),
-								new JavaMemberNameValidator((VTextField) component, true)).validate();
+								new JavaMemberNameValidator((VTextField) component, true));
+						validator.setIsPresentOnList(false);
+						return validator.validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
 				UIManager.getString("OptionPane.cancelButtonText"), null, regName);

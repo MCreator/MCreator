@@ -43,12 +43,14 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
-		Validator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.textfield_name_validator"),
+		UniqueNameValidator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.textfield_name_validator"),
 				Transliteration::transliterateString,
 				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
 						.map(e -> e.name), new JavaMemberNameValidator(nameField, false));
+		validator.setIsPresentOnList(textField != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
+
 		JTextField deft = new JTextField(20);
 		deft.setPreferredSize(new Dimension(200, 28));
 		JPanel options = new JPanel();

@@ -97,10 +97,11 @@ public class ArmorPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_power_factor"));
 		props.add(power);
 
-		Validator validator = new UniqueNameValidator(name, L10N.t("dialog.tools.armor_pack_name_validator"),
+		UniqueNameValidator validator = new UniqueNameValidator(name, L10N.t("dialog.tools.armor_pack_name_validator"),
 				JavaConventions::convertToValidClassName,
 				() -> mcreator.getWorkspace().getModElements().stream().map(ModElement::getName),
 				new JavaMemberNameValidator(name, true));
+		validator.setIsPresentOnList(false);
 		name.setValidator(validator);
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));

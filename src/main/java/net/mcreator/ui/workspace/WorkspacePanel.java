@@ -1136,11 +1136,13 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
-								return new UniqueNameValidator((VTextField) component,
+								UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
 										L10N.t("common.mod_element_name"), JavaConventions::convertToValidClassName,
 										() -> mcreator.getWorkspace().getModElements().stream()
 												.map(ModElement::getName),
-										new JavaMemberNameValidator((VTextField) component, true)).validate();
+										new JavaMemberNameValidator((VTextField) component, true));
+								validator.setIsPresentOnList(false);
+								return validator.validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {

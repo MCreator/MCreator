@@ -41,6 +41,7 @@ public class UniqueNameValidator implements Validator {
 
 	private final Function<String, String> uniqueNameGetter;
 	private final Supplier<Stream<String>> otherNames;
+	private boolean isPresentOnList;
 	private final List<String> forbiddenNames;
 
 	private final Validator extraValidator;
@@ -94,8 +95,16 @@ public class UniqueNameValidator implements Validator {
 		this.holder = holder;
 		this.uniqueNameGetter = uniqueNameGetter;
 		this.otherNames = otherNames;
+		this.isPresentOnList = true;
 		this.forbiddenNames = forbiddenNames;
 		this.extraValidator = extraValidator;
+	}
+
+	/**
+	 * @param isPresentOnList Whether the validated name is present on {@link UniqueNameValidator#otherNames} list.
+	 */
+	public void setIsPresentOnList(boolean isPresentOnList) {
+		this.isPresentOnList = isPresentOnList;
 	}
 
 	/**
@@ -121,7 +130,8 @@ public class UniqueNameValidator implements Validator {
 		String uniqueName = uniqueNameGetter.apply(holder.getText());
 		if (uniqueName == null || uniqueName.equals(""))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
-		if (otherNames.get().filter(uniqueName::equals).count() > 1 || forbiddenNames.contains(uniqueName))
+		if (otherNames.get().filter(uniqueName::equals).count() > (isPresentOnList ? 1 : 0) || forbiddenNames.contains(
+				uniqueName))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate", name));
 
 		return extraValidator.validate();
