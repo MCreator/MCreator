@@ -80,7 +80,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
-	private final JColor airColor = new JColor(mcreator, true);
+	private final JColor airColor = new JColor(mcreator, true, false);
 
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 

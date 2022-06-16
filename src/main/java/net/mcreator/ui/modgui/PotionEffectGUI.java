@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final VTextField effectName = new VTextField(20);
-	private final JColor color = new JColor(mcreator);
+	private final JColor color = new JColor(mcreator, false, true);
 	private final VComboBox<String> icon = new SearchableComboBox<>();
 
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");

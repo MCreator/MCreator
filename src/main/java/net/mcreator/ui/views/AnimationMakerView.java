@@ -399,7 +399,7 @@ public class AnimationMakerView extends ViewBase {
 		JComboBox<ResourcePointer> types = new JComboBox<>();
 		templatesSorted.forEach(types::addItem);
 
-		JColor colors = new JColor(mcreator);
+		JColor colors = new JColor(mcreator, false, true);
 		JCheckBox cbox = new JCheckBox();
 		ActionListener al = event -> {
 			try {
@@ -461,7 +461,7 @@ public class AnimationMakerView extends ViewBase {
 						getFont().deriveFont(12.0f), Color.gray));
 
 		JButton selectFile = new JButton("...");
-		JColor colors = new JColor(mcreator);
+		JColor colors = new JColor(mcreator, false, true);
 		JCheckBox cbox = new JCheckBox();
 		JCheckBox cbox2 = new JCheckBox();
 

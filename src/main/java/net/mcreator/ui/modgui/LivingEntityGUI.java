@@ -171,8 +171,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JTextField mobLabel = new JTextField();
 
 	private final JCheckBox spawnInDungeons = L10N.checkbox("elementgui.living_entity.spawn_dungeons");
-	private final JColor spawnEggBaseColor = new JColor(mcreator);
-	private final JColor spawnEggDotColor = new JColor(mcreator);
+	private final JColor spawnEggBaseColor = new JColor(mcreator, false, true);
+	private final JColor spawnEggDotColor = new JColor(mcreator, false, true);
 
 	private static final Model biped = new Model.BuiltInModel("Biped");
 	private static final Model chicken = new Model.BuiltInModel("Chicken");

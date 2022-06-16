@@ -22,6 +22,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,14 +41,6 @@ public class JColor extends JPanel {
 	private final boolean allowTransparency;
 
 	private JDialog dialog = null;
-
-	public JColor(Window window) {
-		this(window, false);
-	}
-
-	public JColor(Window window, boolean allowNullColor) {
-		this(window, allowNullColor, true);
-	}
 
 	public JColor(Window window, boolean allowNullColor, boolean allowTransparency) {
 		setLayout(new BorderLayout(2, 0));
@@ -85,6 +78,9 @@ public class JColor extends JPanel {
 		} else {
 			add("East", bt1);
 		}
+
+		for (AbstractColorChooserPanel panel : colorChooser.getChooserPanels())
+			panel.setColorTransparencySelectionEnabled(allowTransparency);
 
 		setOpaque(false);
 	}

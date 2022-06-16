@@ -45,7 +45,7 @@ public class RecolorDialog extends MCreatorDialog {
 
 		JPanel colorSettings = new JPanel();
 		colorSettings.setLayout(new BoxLayout(colorSettings, BoxLayout.X_AXIS));
-		JColor colorChooser = new JColor(window);
+		JColor colorChooser = new JColor(window, false, true);
 		colorChooser.setColor(colorSelector.getForegroundColor());
 		colorSettings.add(L10N.label("dialog.imageeditor.color"));
 		colorSettings.add(Box.createRigidArea(new Dimension(25, 0)));
