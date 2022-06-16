@@ -34,6 +34,7 @@ import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
+import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
@@ -157,6 +158,8 @@ public final class MCreatorApplication {
 		TiledImageCache.loadAndTileImages();
 
 		splashScreen.setProgress(70, "Loading generators");
+
+		MCREvent.event(new PreGeneratorsLoadingEvent(this));
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);

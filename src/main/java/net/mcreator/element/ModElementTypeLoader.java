@@ -117,7 +117,7 @@ public class ModElementTypeLoader {
 				(mc, me, e) -> null, GeneratableElement.Unknown.class);
 	}
 
-	private static ModElementType<?> register(ModElementType<?> elementType) {
+	public static ModElementType<?> register(ModElementType<?> elementType) {
 		REGISTRY.add(elementType);
 		return elementType;
 	}
