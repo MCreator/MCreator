@@ -990,6 +990,8 @@ import java.util.stream.Collectors;
 			PreferencesManager.PREFERENCES.hidden.workspaceSortType = PreferencesData.WorkspaceSortType.CREATED;
 		}
 
+		PreferencesManager.PREFERENCES.hidden.workspaceSortAscending = !desc.isSelected();
+
 		refilterElements();
 	}
 
