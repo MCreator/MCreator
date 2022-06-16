@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FoodToItemConverter implements IConverter {
 
@@ -58,7 +59,8 @@ public class FoodToItemConverter implements IConverter {
 			if (food.get("specialInfo") != null)
 				food.getAsJsonArray("specialInfo").iterator()
 						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
-			item.specialInfo = specialInfo;
+			item.specialInformation.setFixedText(
+					specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 			item.stackSize = food.get("stackSize").getAsInt();
 			item.isFood = true;
 			item.nutritionalValue = food.get("nutritionalValue").getAsInt();

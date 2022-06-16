@@ -64,7 +64,7 @@ import java.util.List;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;
-	public List<String> specialInfo;
+	public TextProcedure specialInformation;
 
 	public double resistance;
 	public int luminance;
@@ -99,7 +99,6 @@ import java.util.List;
 		this.tintType = "No tint";
 
 		this.rarity = "COMMON";
-		this.specialInfo = new ArrayList<>();
 
 		this.flowRate = 5;
 		this.slopeFindDistance = 4;

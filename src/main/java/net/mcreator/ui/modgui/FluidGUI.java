@@ -36,6 +36,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.TextProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -54,7 +55,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
@@ -83,7 +83,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
-	private final JTextField specialInfo = new JTextField(20);
+	private TextProcedureSelector specialInformation;
 
 	private final JCheckBox isGas = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
@@ -149,6 +149,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
+		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				"Additional generation condition", VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
@@ -185,7 +188,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
-		ComponentUtils.deriveFont(specialInfo, 16);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -259,7 +261,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.fluid.special_information")));
-		bucketProperties.add(specialInfo);
+		bucketProperties.add(specialInformation);
 
 		generateBucket.setSelected(true);
 
@@ -269,7 +271,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			creativeTab.setEnabled(generateBucket.isSelected());
 			emptySound.setEnabled(generateBucket.isSelected());
 			rarity.setEnabled(generateBucket.isSelected());
-			specialInfo.setEnabled(generateBucket.isSelected());
+			specialInformation.setEnabled(generateBucket.isSelected());
 		});
 
 		bucketProperties.setBorder(BorderFactory.createTitledBorder(
@@ -465,6 +467,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		flowCondition.refreshListKeepSelected();
 		beforeReplacingBlock.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
@@ -504,8 +507,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureBucket.setTextureFromTextureName(fluid.textureBucket);
 		emptySound.setSound(fluid.emptySound);
 		rarity.setSelectedItem(fluid.rarity);
-		specialInfo.setText(
-				fluid.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		resistance.setValue(fluid.resistance);
 		luminance.setValue(fluid.luminance);
 		lightOpacity.setValue(fluid.lightOpacity);
@@ -525,6 +526,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
 		lakeRarity.setValue(fluid.frequencyOnChunks);
+		specialInformation.setSelectedProcedure(fluid.specialInformation);
 		generateCondition.setSelectedProcedure(fluid.generateCondition);
 		restrictionBiomes.setListElements(fluid.restrictionBiomes);
 		if (fluid.creativeTab != null)
@@ -535,7 +537,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		creativeTab.setEnabled(generateBucket.isSelected());
 		emptySound.setEnabled(generateBucket.isSelected());
 		rarity.setEnabled(generateBucket.isSelected());
-		specialInfo.setEnabled(generateBucket.isSelected());
+		specialInformation.setEnabled(generateBucket.isSelected());
 	}
 
 	@Override public Fluid getElementFromGUI() {
@@ -561,7 +563,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.textureBucket = textureBucket.getID();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
-		fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		fluid.resistance = (double) resistance.getValue();
 		fluid.luminance = (int) luminance.getValue();
 		fluid.lightOpacity = (int) lightOpacity.getValue();
@@ -581,6 +582,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
 		fluid.restrictionBiomes = restrictionBiomes.getListElements();
+		fluid.specialInformation = specialInformation.getSelectedProcedure();
 		fluid.generateCondition = generateCondition.getSelectedProcedure();
 		fluid.frequencyOnChunks = (int) lakeRarity.getValue();
 		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());

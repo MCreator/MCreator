@@ -43,9 +43,7 @@ import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
-import net.mcreator.element.converter.fv30.ArmorSpecialInformationConverter;
-import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
-import net.mcreator.element.converter.fv30.BlockSpecialInformationConverter;
+import net.mcreator.element.converter.fv30.*;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -75,10 +73,12 @@ public class ConverterRegistry {
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer(),
+				new FluidSpecialInformationConverter()));
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 		put(ModElementType.ARMOR, Collections.singletonList(new ArmorSpecialInformationConverter()));
+		put(ModElementType.ITEM, Collections.singletonList(new ItemSpecialInformationConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

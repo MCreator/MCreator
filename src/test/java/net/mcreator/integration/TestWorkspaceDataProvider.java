@@ -448,13 +448,8 @@ public class TestWorkspaceDataProvider {
 					new Sound(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			fluid.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				fluid.specialInfo = new ArrayList<>();
-			}
+			fluid.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
@@ -1096,12 +1091,8 @@ public class TestWorkspaceDataProvider {
 			item.dispenseResultItemstack = !_true ?
 					null :
 					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
-			if (!emptyLists) {
-				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				item.specialInfo = new ArrayList<>();
-			}
+			item.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = "Normal";

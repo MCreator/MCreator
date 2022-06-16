@@ -214,12 +214,20 @@ import net.minecraft.entity.ai.attributes.Attributes;
 		}
         </#if>
 
-		<#if data.specialInfo?has_content>
+		<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
 		@Override public void addInformation(ItemStack itemstack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 			super.addInformation(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
+			<#if hasProcedure(data.specialInformation)>
+				Entity entity = itemstack.getAttachedEntity();
+				double x = entity != null ? entity.getPosX() : 0.0;
+				double y = entity != null ? entity.getPosY() : 0.0;
+				double z = entity != null ? entity.getPosZ() : 0.0;
+				list.add(new StringTextComponent(<@procedureOBJToTextCode data.specialInformation/>));
+			<#else>
+				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
+				list.add(new StringTextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
         </#if>
 
