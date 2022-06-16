@@ -112,11 +112,6 @@ import java.util.Set;
 		this.bodyModelName = "Default";
 		this.leggingsModelName = "Default";
 		this.bootsModelName = "Default";
-
-		this.helmetSpecialInformation.setFixedText("");
-		this.bodySpecialInformation.setFixedText("");
-		this.leggingsSpecialInformation.setFixedText("");
-		this.bootsSpecialInformation.setFixedText("");
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
