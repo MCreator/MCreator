@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,10 +40,11 @@ public class ShareableZIPManager {
 	public static File importZIP(File file, File workspaceDir, Window window) {
 		AtomicReference<File> retval = new AtomicReference<>();
 
-		ProgressDialog dial = new ProgressDialog(window, "Workspace import from ZIP");
+		ProgressDialog dial = new ProgressDialog(window, L10N.t("dialog.workspace.import_from_zip.importing"));
 
 		Thread t = new Thread(() -> {
-			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit("Extracting workspace");
+			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+					L10N.t("dialog.workspace.import_from_zip.extracting"));
 			dial.addProgress(p1);
 
 			ZipIO.unzip(file.getAbsolutePath(), workspaceDir.getAbsolutePath());
@@ -56,16 +58,16 @@ public class ShareableZIPManager {
 				p1.err();
 				dial.refreshDisplay();
 
-				JOptionPane.showMessageDialog(window, "<html>The file you ary trying to import is not<br>"
-								+ "a valid shareable MCreator ZIP workspace file.", "Invalid workspace",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(window, L10N.t("dialog.workspace.import_from_zip.failed_message"),
+						L10N.t("dialog.workspace.import_from_zip.failed_title"), JOptionPane.ERROR_MESSAGE);
 
 				dial.hideAll();
 
 				return;
 			}
 
-			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Generating mod element thumbnails");
+			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+					L10N.t("dialog.workspace.import_from_zip.thumbnails"));
 			dial.addProgress(p2);
 
 			try {
@@ -104,7 +106,8 @@ public class ShareableZIPManager {
 	public static void exportZIP(String title, File file, MCreator mcreator, boolean excludeRunDir) {
 		ProgressDialog dial = new ProgressDialog(mcreator, title);
 		Thread t = new Thread(() -> {
-			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit("Compressing workspace");
+			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+					L10N.t("dialog.workspace.export_workspace.compressing"));
 			dial.addProgress(p1);
 
 			try {
