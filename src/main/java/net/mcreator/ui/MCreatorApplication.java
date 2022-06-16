@@ -157,9 +157,9 @@ public final class MCreatorApplication {
 		splashScreen.setProgress(60, "Preloading resources");
 		TiledImageCache.loadAndTileImages();
 
-		MCREvent.event(new PreGeneratorsLoadingEvent(this));
-
 		splashScreen.setProgress(70, "Loading generators");
+
+		MCREvent.event(new PreGeneratorsLoadingEvent(this));
 
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
