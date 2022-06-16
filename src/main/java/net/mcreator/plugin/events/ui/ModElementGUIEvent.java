@@ -43,8 +43,8 @@ public class ModElementGUIEvent extends TabEvent {
 	 * The event is triggered BEFORE any component or code is executed on the {@link net.mcreator.ui.MCreatorTabs.Tab}
 	 * of the mod element.
 	 */
-	public static class Pre extends ModElementGUIEvent {
-		public Pre(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
+	public static class BeforeLoading extends ModElementGUIEvent {
+		public BeforeLoading(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
 			super(tab, modElementGUI);
 		}
 	}
@@ -54,8 +54,8 @@ public class ModElementGUIEvent extends TabEvent {
 	 * The event is triggered AFTER all components or code is executed on the {@link net.mcreator.ui.MCreatorTabs.Tab}
 	 * of the mod element.
 	 */
-	public static class Post extends ModElementGUIEvent {
-		public Post(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
+	public static class AfterLoading extends ModElementGUIEvent {
+		public AfterLoading(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
 			super(tab, modElementGUI);
 		}
 	}

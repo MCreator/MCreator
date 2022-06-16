@@ -107,7 +107,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	@Override public ViewBase showView() {
-		MCREvent.event(new ModElementGUIEvent.Pre(this.tabIn, this));
+		MCREvent.event(new ModElementGUIEvent.BeforeLoading(this.tabIn, this));
 		this.tabIn = new MCreatorTabs.Tab(this, modElement);
 
 		// reload data lists in a background thread
@@ -131,7 +131,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.mcreatorTabs.addTab(this.tabIn);
 			return this;
 		}
-		MCREvent.event(new ModElementGUIEvent.Post(existing, this));
+		MCREvent.event(new ModElementGUIEvent.AfterLoading(existing, this));
 		return (ViewBase) existing.getContent();
 	}
 
