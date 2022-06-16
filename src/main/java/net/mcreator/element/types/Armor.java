@@ -19,10 +19,8 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
@@ -62,10 +60,10 @@ import java.util.Set;
 	public String leggingsName;
 	public String bootsName;
 
-	public List<String> helmetSpecialInfo;
-	public List<String> bodySpecialInfo;
-	public List<String> leggingsSpecialInfo;
-	public List<String> bootsSpecialInfo;
+	public TextProcedure helmetSpecialInformation;
+	public TextProcedure bodySpecialInformation;
+	public TextProcedure leggingsSpecialInformation;
+	public TextProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
 	public String helmetModelPart;
@@ -115,10 +113,10 @@ import java.util.Set;
 		this.leggingsModelName = "Default";
 		this.bootsModelName = "Default";
 
-		this.helmetSpecialInfo = new ArrayList<>();
-		this.bodySpecialInfo = new ArrayList<>();
-		this.leggingsSpecialInfo = new ArrayList<>();
-		this.bootsSpecialInfo = new ArrayList<>();
+		this.helmetSpecialInformation.setFixedText("");
+		this.bodySpecialInformation.setFixedText("");
+		this.leggingsSpecialInformation.setFixedText("");
+		this.bootsSpecialInformation.setFixedText("");
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

@@ -249,6 +249,10 @@ public class TextProcedureSelector extends AbstractProcedureSelector {
 		updateDepsList(true);
 	}
 
+	public String getFixedText() {
+		return (fixedText != null) && (fixedText.getText() != null) ? fixedText.getText() : "";
+	}
+
 	@Override public TextProcedure getSelectedProcedure() {
 		String value = "";
 

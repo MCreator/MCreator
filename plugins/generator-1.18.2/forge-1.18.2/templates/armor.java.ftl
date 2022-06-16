@@ -116,12 +116,20 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.helmetSpecialInfo?has_content>
+		<#if data.helmetSpecialInformation?has_content || hasProcedure(data.helmetSpecialInformation)>
 		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.helmetSpecialInfo as entry>
-			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
+			super.appendHoverText(itemstack, world, list, flag);
+			<#if hasProcedure(data.helmetSpecialInformation)>
+				Entity entity = itemstack.getEntityRepresentation();
+				double x = entity != null ? entity.getX() : 0.0;
+				double y = entity != null ? entity.getY() : 0.0;
+				double z = entity != null ? entity.getZ() : 0.0;
+				list.add(new TextComponent(<@procedureOBJToTextCode data.helmetSpecialInformation/>));
+			<#else>
+				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.helmetSpecialInformation.getFixedText()) as entry>
+				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
 		</#if>
 
@@ -166,12 +174,20 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.bodySpecialInfo?has_content>
+		<#if data.bodySpecialInformation?has_content || hasProcedure(data.bodySpecialInformation)>
 		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.bodySpecialInfo as entry>
-			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
+			super.appendHoverText(itemstack, world, list, flag);
+			<#if hasProcedure(data.bodySpecialInformation)>
+				Entity entity = itemstack.getEntityRepresentation();
+				double x = entity != null ? entity.getX() : 0.0;
+				double y = entity != null ? entity.getY() : 0.0;
+				double z = entity != null ? entity.getZ() : 0.0;
+				list.add(new TextComponent(<@procedureOBJToTextCode data.bodySpecialInformation/>));
+			<#else>
+				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.bodySpecialInformation.getFixedText()) as entry>
+				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
 		</#if>
 
@@ -216,12 +232,20 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.leggingsSpecialInfo?has_content>
+		<#if data.leggingsSpecialInformation?has_content || hasProcedure(data.leggingsSpecialInformation)>
 		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.leggingsSpecialInfo as entry>
-			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
+			super.appendHoverText(itemstack, world, list, flag);
+			<#if hasProcedure(data.leggingsSpecialInformation)>
+				Entity entity = itemstack.getEntityRepresentation();
+				double x = entity != null ? entity.getX() : 0.0;
+				double y = entity != null ? entity.getY() : 0.0;
+				double z = entity != null ? entity.getZ() : 0.0;
+				list.add(new TextComponent(<@procedureOBJToTextCode data.leggingsSpecialInformation/>));
+			<#else>
+				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.leggingsSpecialInformation.getFixedText()) as entry>
+				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
 		</#if>
 
@@ -266,12 +290,20 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.bootsSpecialInfo?has_content>
+		<#if data.bootsSpecialInformation?has_content || hasProcedure(data.bootsSpecialInformation)>
 		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.bootsSpecialInfo as entry>
-			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
+			super.appendHoverText(itemstack, world, list, flag);
+			<#if hasProcedure(data.bootsSpecialInformation)>
+				Entity entity = itemstack.getEntityRepresentation();
+				double x = entity != null ? entity.getX() : 0.0;
+				double y = entity != null ? entity.getY() : 0.0;
+				double z = entity != null ? entity.getZ() : 0.0;
+				list.add(new TextComponent(<@procedureOBJToTextCode data.bootsSpecialInformation/>));
+			<#else>
+				<#list thelper.splitCommaSeparatedStringListWithEscapes(data.bootsSpecialInformation.getFixedText()) as entry>
+				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				</#list>
+			</#if>
 		}
 		</#if>
 
