@@ -169,16 +169,16 @@ public class MCreatorTabs {
 		tab.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton() == MouseEvent.BUTTON2 && !tab.ghost && tab.closeable) {
-					MCREvent.event(new TabEvent.CloseTabEvent(tab));
+					MCREvent.event(new TabEvent.Closed(tab));
 					closeTab(tab);
 				} else {
-					MCREvent.event(new TabEvent.ShowTabEvent(tab));
+					MCREvent.event(new TabEvent.Shown(tab));
 					showTab(tab);
 				}
 			}
 		});
 
-		MCREvent.event(new TabEvent.AddTabEvent(tab));
+		MCREvent.event(new TabEvent.Added(tab));
 		container.add(tab.content, tab.identifier.toString());
 		showTab(tab);
 

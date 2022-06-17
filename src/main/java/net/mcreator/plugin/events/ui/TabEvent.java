@@ -41,9 +41,9 @@ public class TabEvent extends MCREvent {
 	/**
 	 * <p>Triggered when a {@link MCreatorTabs.Tab} is added to the UI.</p>
 	 */
-	public static class AddTabEvent extends TabEvent {
+	public static class Added extends TabEvent {
 
-		public AddTabEvent(MCreatorTabs.Tab tab) {
+		public Added(MCreatorTabs.Tab tab) {
 			super(tab);
 		}
 	}
@@ -51,9 +51,9 @@ public class TabEvent extends MCREvent {
 	/**
 	 * <p>Triggered BEFORE the {@link MCreatorTabs.Tab} is closed by the user.</p>
 	 */
-	public static class CloseTabEvent extends TabEvent {
+	public static class Closed extends TabEvent {
 
-		public CloseTabEvent(MCreatorTabs.Tab tab) {
+		public Closed(MCreatorTabs.Tab tab) {
 			super(tab);
 		}
 	}
@@ -62,9 +62,9 @@ public class TabEvent extends MCREvent {
 	 * <p>Triggered when the user clicks on a {@link MCreatorTabs.Tab} and is shown.
 	 * This event is not triggered when the {@link MCreatorTabs.Tab} is added.</p>
 	 */
-	public static class ShowTabEvent extends TabEvent {
+	public static class Shown extends TabEvent {
 
-		public ShowTabEvent(MCreatorTabs.Tab tab) {
+		public Shown(MCreatorTabs.Tab tab) {
 			super(tab);
 		}
 	}
