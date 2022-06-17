@@ -195,7 +195,7 @@ public class ArmorImageMakerView extends ViewBase {
 	}
 
 	@Override public String getViewName() {
-		return "Armor texture maker";
+		return L10N.t("tab.armor_image_maker");
 	}
 
 }
