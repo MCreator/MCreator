@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv30.entities;
+package net.mcreator.element.converter.fv31.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -69,6 +69,6 @@ public class ArmorTexturesConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 30;
+		return 31;
 	}
 }

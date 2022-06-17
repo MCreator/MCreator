@@ -17,34 +17,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv30.screens;
+package net.mcreator.element.converter.fv31.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Achievement;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class AdvancementTextureConverter implements IConverter {
+public class EntityTexturesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Achievement advancement = (Achievement) input;
+		LivingEntity entity = (LivingEntity) input;
 
-		if (advancement.background != null && !advancement.background.isEmpty()) {
+		FileIO.copyFile(workspace.getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture), TextureType.OTHER),
+				workspace.getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
+								TextureType.ENTITY));
+
+		if (entity.mobModelGlowTexture != null && !entity.mobModelGlowTexture.isEmpty()) {
 			FileIO.copyFile(workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background), TextureType.OTHER),
-					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background),
-									TextureType.SCREEN));
+					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
+							TextureType.OTHER), workspace.getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
+							TextureType.ENTITY));
 		}
 
-		return advancement;
+		return entity;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 30;
+		return 31;
 	}
 }

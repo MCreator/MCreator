@@ -17,44 +17,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv30.screens;
+package net.mcreator.element.converter.fv31.entities;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.Image;
-import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.RangedItem;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class GUITexturesConverter implements IConverter {
+public class RangedItemTextureConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GUI gui = (GUI) input;
+		RangedItem item = (RangedItem) input;
 
-		FileIO.copyFile(
-				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER),
-				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.SCREEN));
+		FileIO.copyFile(workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.OTHER),
+				workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.ENTITY));
 
-		if (gui.components != null && !gui.components.isEmpty()) {
-			for (GUIComponent component : gui.components) {
-				if (component instanceof Image image) {
-					FileIO.copyFile(workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image), TextureType.OTHER),
-							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image),
-											TextureType.SCREEN));
-				}
-			}
-		}
-
-		return gui;
+		return item;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 30;
+		return 31;
 	}
 }
