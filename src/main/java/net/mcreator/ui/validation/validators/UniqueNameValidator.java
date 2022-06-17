@@ -101,10 +101,14 @@ public class UniqueNameValidator implements Validator {
 	}
 
 	/**
-	 * @param isPresentOnList Whether the validated name is present on {@link UniqueNameValidator#otherNames} list.
+	 * Use this method to define if the validated name is present on {@link UniqueNameValidator#otherNames} list.
+	 *
+	 * @param isPresentOnList Whether the validated name is present on {@code otherNames} list.
+	 * @return This validator instance with {@code isPresentOnList} parameter set to passed value.
 	 */
-	public void setIsPresentOnList(boolean isPresentOnList) {
+	public UniqueNameValidator setIsPresentOnList(boolean isPresentOnList) {
 		this.isPresentOnList = isPresentOnList;
+		return this;
 	}
 
 	/**
@@ -114,7 +118,7 @@ public class UniqueNameValidator implements Validator {
 	 */
 	public UniqueNameValidator wrapValidator(Validator extraValidator) {
 		return new UniqueNameValidator((VTextField) holder, name, uniqueNameGetter, otherNames, forbiddenNames,
-				extraValidator);
+				extraValidator).setIsPresentOnList(isPresentOnList);
 	}
 
 	/**
