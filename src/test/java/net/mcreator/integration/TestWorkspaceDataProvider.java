@@ -983,13 +983,8 @@ public class TestWorkspaceDataProvider {
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
 			plant.isSolid = _true;
-			plant.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				plant.specialInfo = new ArrayList<>();
-			}
+			plant.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
@@ -1471,12 +1466,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				musicDisc.specialInfo = new ArrayList<>();
-			}
+			musicDisc.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
 			musicDisc.texture = "itest";
 			return musicDisc;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {

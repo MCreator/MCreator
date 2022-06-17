@@ -70,7 +70,7 @@ import java.util.stream.Collectors;
 	public List<BoxEntry> boundingBoxes;
 
 	public String name;
-	public List<String> specialInfo;
+	public TextProcedure specialInformation;
 	public TabEntry creativeTab;
 	public double hardness;
 	public double resistance;
@@ -157,7 +157,6 @@ import java.util.stream.Collectors;
 		this.doublePlantGenerationType = "Flower";
 		this.patchSize = 64;
 
-		this.specialInfo = new ArrayList<>();
 		this.boundingBoxes = new ArrayList<>();
 	}
 

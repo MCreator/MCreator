@@ -40,6 +40,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.TextProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -96,7 +97,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final VTextField name = new VTextField(18);
 
-	private final JTextField specialInfo = new JTextField(20);
+	private TextProcedureSelector specialInformation;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
@@ -218,6 +219,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
+		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
@@ -231,7 +235,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
-		ComponentUtils.deriveFont(specialInfo, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 		ComponentUtils.deriveFont(growapableSpawnType, 16);
 		ComponentUtils.deriveFont(doublePlantGenerationType, 16);
@@ -264,7 +267,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.plant.special_information_tip")));
-		tintPanel.add(specialInfo);
+		tintPanel.add(specialInformation);
 
 		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
 		rent.setOpaque(false);
@@ -771,6 +774,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityWalksOn.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
@@ -845,6 +849,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
 		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
+		specialInformation.setSelectedProcedure(plant.specialInformation);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
@@ -861,8 +866,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		patchSize.setValue(plant.patchSize);
 		generateAtAnyHeight.setSelected(plant.generateAtAnyHeight);
 
-		specialInfo.setText(
-				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		placingCondition.setSelectedProcedure(plant.placingCondition);
 		generateCondition.setSelectedProcedure(plant.generateCondition);
 
@@ -976,6 +979,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
 		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
+		plant.specialInformation = specialInformation.getSelectedProcedure();
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();
@@ -990,7 +994,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.speedFactor = (double) speedFactor.getValue();
 		plant.jumpFactor = (double) jumpFactor.getValue();
-		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();

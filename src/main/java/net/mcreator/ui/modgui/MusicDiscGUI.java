@@ -35,6 +35,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.TextProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -50,13 +51,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.stream.Collectors;
 
 public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private TextureHolder texture;
 
-	private final JTextField specialInfo = new JTextField(20);
+	private TextProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
@@ -110,6 +110,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
+		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
 
 		texture.setOpaque(false);
@@ -117,7 +120,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 
-		ComponentUtils.deriveFont(specialInfo, 16);
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
@@ -148,7 +150,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.music_disc.disc_description_tip")));
-		subpane2.add(specialInfo);
+		subpane2.add(specialInformation);
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
@@ -211,6 +213,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onItemInUseTick.refreshListKeepSelected();
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
+		specialInformation.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -226,8 +229,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		name.setText(musicDisc.name);
 		description.setText(musicDisc.description);
 		texture.setTextureFromTextureName(musicDisc.texture);
-		specialInfo.setText(
-				musicDisc.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		onRightClickedInAir.setSelectedProcedure(musicDisc.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(musicDisc.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(musicDisc.onCrafted);
@@ -236,6 +237,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onItemInUseTick.setSelectedProcedure(musicDisc.onItemInUseTick);
 		onStoppedUsing.setSelectedProcedure(musicDisc.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(musicDisc.onEntitySwing);
+		specialInformation.setSelectedProcedure(musicDisc.specialInformation);
 		creativeTab.setSelectedItem(musicDisc.creativeTab);
 		hasGlow.setSelected(musicDisc.hasGlow);
 		music.setSound(musicDisc.music);
@@ -255,7 +257,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		musicDisc.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		musicDisc.onEntitySwing = onEntitySwing.getSelectedProcedure();
-		musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
+		musicDisc.specialInformation = specialInformation.getSelectedProcedure();
 		musicDisc.texture = texture.getID();
 		musicDisc.music = music.getSound();
 		return musicDisc;

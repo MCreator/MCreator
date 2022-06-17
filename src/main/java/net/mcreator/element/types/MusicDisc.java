@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -29,7 +30,6 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement {
 
@@ -38,7 +38,7 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 	public String description;
 	public TabEntry creativeTab;
 	public Sound music;
-	public List<String> specialInfo;
+	public TextProcedure specialInformation;
 	public boolean hasGlow;
 
 	public Procedure onRightClickedInAir;

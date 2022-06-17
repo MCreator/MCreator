@@ -70,7 +70,7 @@ public class ConverterRegistry {
 		put(ModElementType.BLOCK,
 				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new BlockSpecialInformationConverter()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.PLANT, Arrays.asList(new PlantLuminanceFixer(), new PlantSpecialInformationConverter()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer(),
@@ -79,6 +79,7 @@ public class ConverterRegistry {
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 		put(ModElementType.ARMOR, Collections.singletonList(new ArmorSpecialInformationConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new ItemSpecialInformationConverter()));
+		put(ModElementType.MUSICDISC, Collections.singletonList(new MusicDiscSpecialInformationConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one
