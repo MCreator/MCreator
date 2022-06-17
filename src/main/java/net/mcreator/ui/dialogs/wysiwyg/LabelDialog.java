@@ -67,7 +67,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 		setTitle(L10N.t("dialog.gui.label_component_title"));
 
-		final JColor cola = new JColor(editor.mcreator, false, true);
+		final JColor cola = new JColor(editor.mcreator, false, false);
 
 		if (editor.renderBgLayer.isSelected()) {
 			cola.setColor(new Color(60, 60, 60));
