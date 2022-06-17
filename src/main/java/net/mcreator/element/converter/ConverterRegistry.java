@@ -43,6 +43,7 @@ import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
+import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
 import net.mcreator.element.converter.fv30.EffectTextureConverter;
 import net.mcreator.element.converter.fv30.ParticleTextureConverter;
 import net.mcreator.element.converter.fv30.entities.ArmorTexturesConverter;
@@ -68,6 +69,10 @@ public class ConverterRegistry {
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.BLOCK,
+				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
+						new BlockRequiresCorrectToolConverter()));
+		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
+		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));

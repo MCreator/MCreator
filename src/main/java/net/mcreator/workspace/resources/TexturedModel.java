@@ -21,6 +21,7 @@ package net.mcreator.workspace.resources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.init.L10N;
 
 import java.io.File;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class TexturedModel extends Model {
 	}
 
 	@Override public String toString() {
-		return "<html>" + readableName + "<br><small>Texture mapping: " + textureMapping.name;
+		return L10N.t("workspace.3dmodel.description", readableName, textureMapping.name);
 	}
 
 	@Override public String getReadableName() {

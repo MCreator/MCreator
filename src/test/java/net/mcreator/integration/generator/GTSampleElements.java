@@ -41,7 +41,7 @@ public class GTSampleElements {
 		// add sample procedures (used by test mod elements) if supported
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				!= GeneratorStats.CoverageStatus.NONE) {
-			for (int i = 1; i <= 13; i++) {
+			for (int i = 1; i <= 14; i++) {
 				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE);
 				if (i == 1) {
 					me.putMetadata("dependencies", Arrays.asList(
