@@ -20,10 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Procedure;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -32,7 +30,6 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +41,7 @@ import java.util.Map;
 	public String texture;
 	public String customModelName;
 	public String name;
-	public List<String> specialInfo;
+	public TextProcedure specialInformation;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public MItemBlock ammoItem;
@@ -83,8 +80,6 @@ import java.util.Map;
 
 		this.stackSize = 1;
 		this.animation = "bow";
-
-		this.specialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

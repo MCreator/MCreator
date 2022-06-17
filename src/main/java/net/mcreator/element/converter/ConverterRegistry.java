@@ -80,6 +80,8 @@ public class ConverterRegistry {
 		put(ModElementType.ARMOR, Collections.singletonList(new ArmorSpecialInformationConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new ItemSpecialInformationConverter()));
 		put(ModElementType.MUSICDISC, Collections.singletonList(new MusicDiscSpecialInformationConverter()));
+		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemSpecialInformationConverter()));
+		put(ModElementType.TOOL, Collections.singletonList(new ToolSpecialInformationConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

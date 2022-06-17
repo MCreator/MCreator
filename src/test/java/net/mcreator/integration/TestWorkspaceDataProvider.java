@@ -1110,13 +1110,8 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				rangedItem.specialInfo = new ArrayList<>();
-			}
+			rangedItem.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+					"info 1, info 2, test \\, is this, another one");
 			rangedItem.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			rangedItem.shootConstantly = _true;
@@ -1621,13 +1616,8 @@ public class TestWorkspaceDataProvider {
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
-		tool.specialInfo = new ArrayList<>();
-		if (!emptyLists) {
-			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-					"info 1, info 2, test \\, is this, another one");
-		} else {
-			tool.specialInfo = new ArrayList<>();
-		}
+		tool.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+				"info 1, info 2, test \\, is this, another one");
 		if (!emptyLists) {
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
