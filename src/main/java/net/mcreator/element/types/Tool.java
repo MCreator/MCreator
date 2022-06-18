@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Tool extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, ISpecialInfo {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, ISpecialInformationHolder {
 
 	public int renderType;
 	public String texture;

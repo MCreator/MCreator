@@ -34,7 +34,7 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, ISpecialInfo {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, ISpecialInformationHolder {
 
 	public int renderType;
 	public String texture;

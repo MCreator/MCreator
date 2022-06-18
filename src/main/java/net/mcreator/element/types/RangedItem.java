@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
-		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture, ISpecialInfo {
+		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture,
+		ISpecialInformationHolder {
 
 	public int renderType;
 	public String texture;

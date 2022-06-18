@@ -23,14 +23,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.interfaces.ISpecialInfo;
+import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.workspace.Workspace;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpecialInformationConverter<T extends ISpecialInfo> implements IConverter {
+public class SpecialInformationConverter<T extends ISpecialInformationHolder> implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {

@@ -24,7 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.ISpecialInfo;
+import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement, ISpecialInfo {
+		implements IBlock, ITabContainedElement, ISpecialInformationHolder {
 
 	public String name;
 	public String bucketName;

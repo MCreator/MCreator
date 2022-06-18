@@ -24,7 +24,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextProcedure;
 import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.ISpecialInfo;
+import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -32,7 +32,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 
-public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement, ISpecialInfo {
+public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement, ISpecialInformationHolder {
 
 	public String texture;
 	public String name;

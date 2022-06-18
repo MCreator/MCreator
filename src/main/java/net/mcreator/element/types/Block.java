@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, ISpecialInfo {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, ISpecialInformationHolder {
 
 	public String texture;
 	public String textureTop;

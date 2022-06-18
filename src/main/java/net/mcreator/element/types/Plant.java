@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, ISpecialInfo {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, ISpecialInformationHolder {
 
 	public int renderType;
 	public String texture;
