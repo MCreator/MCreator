@@ -61,15 +61,13 @@ public interface ModElementChangedListener
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
 				registerUI(entriesList);
-				entriesList.addEntryRegisterListener(c -> new Thread(() -> {
-					try {
-						SwingUtilities.invokeAndWait(() -> registerUI(c));
-					} catch (Exception ignored) {
-					}
+				entriesList.addEntryRegisterListener(c -> {
+					registerUI(c);
 					modElementChanged();
-				}).start());
+				});
 				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button) {
+			} else if (component instanceof AbstractButton button && !"AddEntryButton".equals(
+					button.getName())) { // this check resolves conflicts with JEntriesLists, letting their entries trigger the listener
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner spinner) {
 				spinner.addChangeListener(this);
