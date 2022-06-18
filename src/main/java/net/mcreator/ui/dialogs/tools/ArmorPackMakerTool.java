@@ -62,7 +62,7 @@ public class ArmorPackMakerTool {
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
 		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator);
+		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 

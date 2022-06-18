@@ -128,7 +128,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
 
-	private final JColor beaconColorModifier = new JColor(mcreator, true);
+	private final JColor beaconColorModifier = new JColor(mcreator, true, false);
 
 	private final JCheckBox hasGravity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
