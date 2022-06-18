@@ -17,37 +17,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv30;
+package net.mcreator.element.converter.fv31;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Tool;
+import net.mcreator.element.types.interfaces.ISpecialInfo;
 import net.mcreator.workspace.Workspace;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ToolSpecialInformationConverter implements IConverter {
+public class SpecialInformationConverter<T extends ISpecialInfo> implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Tool tool = (Tool) input;
-		JsonObject oldTool = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+		T object = (T) input;
+		JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 		List<String> specialInfo = new ArrayList<>();
-		if (oldTool.get("specialInfo") != null)
-			oldTool.getAsJsonArray("specialInfo").iterator()
+		if (oldObject.get("specialInfo") != null)
+			oldObject.getAsJsonArray("specialInfo").iterator()
 					.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
 
-		tool.specialInformation.setFixedText(
+		object.getSpecialInformation().setFixedText(
 				specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		return tool;
+		return (GeneratableElement) object;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 30;
+		return 31;
 	}
 }

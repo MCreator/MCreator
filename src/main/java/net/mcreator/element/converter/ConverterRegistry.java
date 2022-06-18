@@ -43,13 +43,16 @@ import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
-import net.mcreator.element.converter.fv30.*;
+import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
+import net.mcreator.element.converter.fv31.ArmorSpecialInformationConverter;
+import net.mcreator.element.converter.fv31.SpecialInformationConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
 import net.mcreator.element.converter.fv7.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.fv8.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
+import net.mcreator.element.types.*;
 
 import java.util.*;
 
@@ -69,19 +72,19 @@ public class ConverterRegistry {
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 		put(ModElementType.BLOCK,
 				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
-						new BlockRequiresCorrectToolConverter(), new BlockSpecialInformationConverter()));
-		put(ModElementType.PLANT, Arrays.asList(new PlantLuminanceFixer(), new PlantSpecialInformationConverter()));
+						new BlockRequiresCorrectToolConverter(), new SpecialInformationConverter<Block>()));
+		put(ModElementType.PLANT, Arrays.asList(new PlantLuminanceFixer(), new SpecialInformationConverter<Plant>()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer(),
-				new FluidSpecialInformationConverter()));
+				new SpecialInformationConverter<Fluid>()));
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
 		put(ModElementType.ARMOR, Collections.singletonList(new ArmorSpecialInformationConverter()));
-		put(ModElementType.ITEM, Collections.singletonList(new ItemSpecialInformationConverter()));
-		put(ModElementType.MUSICDISC, Collections.singletonList(new MusicDiscSpecialInformationConverter()));
-		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemSpecialInformationConverter()));
-		put(ModElementType.TOOL, Collections.singletonList(new ToolSpecialInformationConverter()));
+		put(ModElementType.ITEM, Collections.singletonList(new SpecialInformationConverter<Item>()));
+		put(ModElementType.MUSICDISC, Collections.singletonList(new SpecialInformationConverter<MusicDisc>()));
+		put(ModElementType.RANGEDITEM, Collections.singletonList(new SpecialInformationConverter<RangedItem>()));
+		put(ModElementType.TOOL, Collections.singletonList(new SpecialInformationConverter<Tool>()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.ISpecialInfo;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -34,7 +35,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
+@SuppressWarnings("unused") public class Fluid extends GeneratableElement
+		implements IBlock, ITabContainedElement, ISpecialInfo {
 
 	public String name;
 	public String bucketName;
@@ -153,6 +155,10 @@ import java.util.List;
 			baseTypes.add(BaseType.FEATURE);
 
 		return baseTypes;
+	}
+
+	@Override public TextProcedure getSpecialInformation() {
+		return specialInformation;
 	}
 
 }
