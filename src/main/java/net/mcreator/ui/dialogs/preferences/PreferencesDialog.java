@@ -284,7 +284,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Color.class)) {
-			JColor box = new JColor(parent);
+			JColor box = new JColor(parent, false, false);
 			if (entry.visualWidth() != -1)
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setColor((Color) value);
