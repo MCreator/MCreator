@@ -187,6 +187,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 												.map(ModElement::getName),
 										new JavaMemberNameValidator((VTextField) component, true));
 								validator.setIsPresentOnList(false);
+								validator.setIgnoreCase(true);
 								return validator.validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),

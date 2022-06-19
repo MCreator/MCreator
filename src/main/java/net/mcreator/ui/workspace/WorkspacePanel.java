@@ -1142,6 +1142,7 @@ import java.util.stream.Collectors;
 												.map(ModElement::getName),
 										new JavaMemberNameValidator((VTextField) component, true));
 								validator.setIsPresentOnList(false);
+								validator.setIgnoreCase(true);
 								return validator.validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));

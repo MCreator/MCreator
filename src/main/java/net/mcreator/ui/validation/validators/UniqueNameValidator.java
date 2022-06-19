@@ -27,6 +27,7 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -42,6 +43,7 @@ public class UniqueNameValidator implements Validator {
 	private final Function<String, String> uniqueNameGetter;
 	private final Supplier<Stream<String>> otherNames;
 	private boolean isPresentOnList;
+	private boolean ignoreCase;
 	private final List<String> forbiddenNames;
 
 	private final Validator extraValidator;
@@ -96,6 +98,7 @@ public class UniqueNameValidator implements Validator {
 		this.uniqueNameGetter = uniqueNameGetter;
 		this.otherNames = otherNames;
 		this.isPresentOnList = true;
+		this.ignoreCase = false;
 		this.forbiddenNames = forbiddenNames;
 		this.extraValidator = extraValidator;
 	}
@@ -112,13 +115,25 @@ public class UniqueNameValidator implements Validator {
 	}
 
 	/**
+	 * Use this method to define if case of validated name doesn't have to match case of
+	 * {@link UniqueNameValidator#otherNames}.
+	 *
+	 * @param ignoreCase Whether case of validated name doesn't have to match case of {@code otherNames}.
+	 * @return This validator instance with {@code ignoreCase} parameter set to passed value.
+	 */
+	public UniqueNameValidator setIgnoreCase(boolean ignoreCase) {
+		this.ignoreCase = ignoreCase;
+		return this;
+	}
+
+	/**
 	 * Returns a copy of this UniqueNameValidator with main validator changed to the passed one.
 	 *
 	 * @param extraValidator The new main validator for the validated element.
 	 */
 	public UniqueNameValidator wrapValidator(Validator extraValidator) {
 		return new UniqueNameValidator((VTextField) holder, name, uniqueNameGetter, otherNames, forbiddenNames,
-				extraValidator).setIsPresentOnList(isPresentOnList);
+				extraValidator).setIsPresentOnList(isPresentOnList).setIgnoreCase(ignoreCase);
 	}
 
 	/**
@@ -130,12 +145,16 @@ public class UniqueNameValidator implements Validator {
 		return extraValidator;
 	}
 
+	private Predicate<String> textCheck(String name) {
+		return ignoreCase ? name::equalsIgnoreCase : name::equals;
+	}
+
 	@Override public ValidationResult validate() {
 		String uniqueName = uniqueNameGetter.apply(holder.getText());
 		if (uniqueName == null || uniqueName.equals(""))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
-		if (otherNames.get().filter(uniqueName::equals).count() > (isPresentOnList ? 1 : 0) || forbiddenNames.contains(
-				uniqueName))
+		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList ? 1 : 0)
+				|| forbiddenNames.contains(uniqueName))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate"));
 
 		return extraValidator.validate();

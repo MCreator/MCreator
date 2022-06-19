@@ -102,6 +102,7 @@ public class ArmorPackMakerTool {
 				() -> mcreator.getWorkspace().getModElements().stream().map(ModElement::getName),
 				new JavaMemberNameValidator(name, true));
 		validator.setIsPresentOnList(false);
+		validator.setIgnoreCase(true);
 		name.setValidator(validator);
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
