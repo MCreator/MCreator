@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+<#include "textures.ftl">
 
 package ${package}.block;
 
@@ -77,8 +78,9 @@ import net.minecraftforge.common.property.Properties;
 
 	@Override public void initElements() {
 		fluidproperties = new ForgeFlowingFluid.Properties(() -> still, () -> flowing,
-				<#if data.extendsFluidAttributes()>Custom</#if>FluidAttributes
-				.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
+				<#if data.extendsFluidAttributes()>Custom</#if>FluidAttributes.builder(
+				new ResourceLocation("${mappedSingleTexture(data.textureStill, "blocks", modid)}"),
+				new ResourceLocation("${mappedSingleTexture(data.textureFlowing, "blocks", modid)}"))
 					.luminosity(${data.luminosity})
 					.density(${data.density})
 					.viscosity(${data.viscosity})

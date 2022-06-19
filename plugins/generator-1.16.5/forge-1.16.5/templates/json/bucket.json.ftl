@@ -1,8 +1,9 @@
+<#include "../textures.ftl">
 <#if data.textureBucket?has_content>
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "${modid}:items/${data.textureBucket}"
+    "layer0": "${mappedSingleTexture(data.textureBucket, "items", modid)}"
   }
 }
 <#else>

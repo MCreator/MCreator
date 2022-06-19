@@ -1,6 +1,7 @@
+<#include "../textures.ftl">
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "${modid}:items/${data.texture}"
+        "layer0": "${mappedSingleTexture(data.texture, "items", modid)}"
     }
 }
