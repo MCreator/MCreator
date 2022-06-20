@@ -66,7 +66,8 @@ public interface ModElementChangedListener
 					modElementChanged();
 				});
 				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button) {
+			} else if (component instanceof AbstractButton button && !"AddEntryButton".equals(
+					button.getName())) { // this check resolves conflicts with JEntriesLists, letting their entries trigger the listener
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner spinner) {
 				spinner.addChangeListener(this);
