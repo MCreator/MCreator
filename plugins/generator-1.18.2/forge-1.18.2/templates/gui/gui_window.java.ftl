@@ -211,7 +211,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.name} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-						150, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+						20, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 guistate.put("checkbox:${component.name}", ${component.name});
                 this.addRenderableWidget(${component.name});
