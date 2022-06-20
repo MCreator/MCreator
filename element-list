@@ -57,6 +57,8 @@ net.mcreator.java
 net.mcreator.minecraft
 net.mcreator.minecraft.api
 net.mcreator.plugin
+net.mcreator.plugin.events
+net.mcreator.plugin.events.ui
 net.mcreator.preferences
 net.mcreator.themes
 net.mcreator.ui
