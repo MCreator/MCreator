@@ -1,4 +1,5 @@
 <#-- @formatter:off -->
+<#include "../textures.ftl">
 {
     "parent": "block/block",
     "display": {
@@ -15,8 +16,8 @@
     },
     "ambientocclusion": false,
     "textures": {
-        "end_rod": "${modid}:blocks/${data.texture}",
-        "particle": "${modid}:blocks/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+        "end_rod": "${mappedSingleTexture(data.texture, "blocks", modid)}",
+        "particle": "${mappedElseTexture(data.particleTexture, data.texture, "blocks", modid)}"
     },
     "elements": [
         {
