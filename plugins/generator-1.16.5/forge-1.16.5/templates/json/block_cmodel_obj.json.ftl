@@ -11,7 +11,7 @@
           ,
           "textures": {
           <#list data.getTextureMap().entrySet() as texture>
-                "#${texture.getKeu()}": "${mappedSingleTexture(texture.getValue, "blocks", modid)}"<#if texture?has_next>,</#if>
+                "#${texture.getKey()}": "${mappedSingleTexture(texture.getValue, "blocks", modid)}"<#if texture?has_next>,</#if>
           </#list>
           }
       </#if>
