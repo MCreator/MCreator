@@ -19,9 +19,12 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -134,6 +137,26 @@ public class UniqueNameValidator implements Validator {
 	public UniqueNameValidator wrapValidator(Validator extraValidator) {
 		return new UniqueNameValidator((VTextField) holder, name, uniqueNameGetter, otherNames, forbiddenNames,
 				extraValidator).setIsPresentOnList(isPresentOnList).setIgnoreCase(ignoreCase);
+	}
+
+	/**
+	 * Creates an instance of unique name validator to validate new mod element's name (formerly known as a
+	 * separate class called <i>{@code ModElementNameValidator}</i>).
+	 *
+	 * @param workspace The workspace to check for mod elements with the same name.
+	 * @param textField The text field to be validated.
+	 * @param name      The text used to describe the purpose of the {@code textField}.
+	 * @return An unique name validator to validate new mod element's name.
+	 */
+	public static UniqueNameValidator createModElementNameValidator(Workspace workspace, VTextField textField,
+			String name) {
+		UniqueNameValidator validator = new UniqueNameValidator(textField, name,
+				JavaConventions::convertToValidClassName,
+				() -> workspace.getModElements().stream().map(ModElement::getName),
+				new JavaMemberNameValidator(textField, true));
+		validator.setIsPresentOnList(false);
+		validator.setIgnoreCase(true);
+		return validator;
 	}
 
 	/**

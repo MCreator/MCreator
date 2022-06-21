@@ -36,7 +36,6 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -181,14 +180,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 						L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
 							@Override public ValidationResult validate(JComponent component) {
-								UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
-										L10N.t("common.mod_element_name"), JavaConventions::convertToValidClassName,
-										() -> mcreator.getWorkspace().getModElements().stream()
-												.map(ModElement::getName),
-										new JavaMemberNameValidator((VTextField) component, true));
-								validator.setIsPresentOnList(false);
-								validator.setIgnoreCase(true);
-								return validator.validate();
+								return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
+										(VTextField) component, L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),
 						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);

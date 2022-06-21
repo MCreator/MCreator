@@ -29,7 +29,6 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -54,13 +53,8 @@ public class NewModElementDialog {
 								regNameString == null || regNameString.equals("") ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
-						UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
-								L10N.t("common.mod_element_name"), JavaConventions::convertToValidClassName,
-								() -> mcreator.getWorkspace().getModElements().stream().map(ModElement::getName),
-								new JavaMemberNameValidator((VTextField) component, true));
-						validator.setIsPresentOnList(false);
-						validator.setIgnoreCase(true);
-						return validator.validate();
+						return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
+								(VTextField) component, L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
 				UIManager.getString("OptionPane.cancelButtonText"), null, regName);

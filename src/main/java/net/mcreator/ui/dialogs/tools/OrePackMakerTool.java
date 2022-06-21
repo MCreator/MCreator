@@ -29,7 +29,6 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
-import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
@@ -42,7 +41,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -91,13 +89,8 @@ public class OrePackMakerTool {
 		props.add(L10N.label("dialog.tools.ore_pack_power_factor"));
 		props.add(power);
 
-		UniqueNameValidator validator = new UniqueNameValidator(name, L10N.t("dialog.tools.ore_pack_name_validator"),
-				JavaConventions::convertToValidClassName,
-				() -> mcreator.getWorkspace().getModElements().stream().map(ModElement::getName),
-				new JavaMemberNameValidator(name, true));
-		validator.setIsPresentOnList(false);
-		validator.setIgnoreCase(true);
-		name.setValidator(validator);
+		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+				L10N.t("dialog.tools.ore_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.ore_pack_create");
