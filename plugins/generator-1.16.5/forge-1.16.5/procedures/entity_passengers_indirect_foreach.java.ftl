@@ -1,6 +1,3 @@
-{
-	List<? extends Entity> _passengers = new ArrayList<>(${input$entity}.getRecursivePassengers());
-	for (Entity entityiterator : _passengers) {
-		${statement$foreach}
-	}
+for (Entity entityiterator : new ArrayList<>(${input$entity}.getRecursivePassengers())) {
+	${statement$foreach}
 }
