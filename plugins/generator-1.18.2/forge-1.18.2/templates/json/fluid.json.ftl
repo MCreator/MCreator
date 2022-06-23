@@ -1,5 +1,6 @@
+<#include "../textures.ftl">
 {
   "textures": {
-    "particle": "${modid}:blocks/${data.textureStill}"
+    "particle": "${mappedSingleTexture(data.textureStill, "blocks", modid)}"
   }
 }

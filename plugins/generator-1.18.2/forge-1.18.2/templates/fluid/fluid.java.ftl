@@ -29,6 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
+<#include "../textures.ftl">
 
 package ${package}.fluid;
 
@@ -37,8 +38,9 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
 			${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
 			${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()},
-			<#if data.extendsFluidAttributes()>${name}</#if>FluidAttributes
-			.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
+			<#if data.extendsFluidAttributes()>${name}</#if>FluidAttributes.builder(
+			new ResourceLocation("${mappedSingleTexture(data.textureStill, "blocks", modid)}"),
+			new ResourceLocation("${mappedSingleTexture(data.textureFlowing, "blocks", modid)}"))
 			<#if data.luminosity != 0>.luminosity(${data.luminosity})</#if>
 			<#if data.density != 1000>.density(${data.density})</#if>
 			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>

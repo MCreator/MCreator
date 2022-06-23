@@ -1,12 +1,9 @@
 <#-- @formatter:off -->
+<#include "../textures.ftl">
 {
     "parent": "item/handheld",
     "textures": {
-        <#if data.itemTexture?has_content>
-        "layer0": "${modid}:items/${data.itemTexture}"
-        <#else>
-        "layer0": "${modid}:blocks/${data.texture}"
-        </#if>
+        "layer0": "${mappedElseFileTexture(data.itemTexture, data.texture, "items", "blocks", modid)}"
     }
 }
 <#-- @formatter:on -->

@@ -1,12 +1,13 @@
+<#include "../textures.ftl">
 {
   "parent": "block/cube",
   "textures": {
-  "down": "${modid}:blocks/${data.texture}",
-  "up": "${modid}:blocks/${data.textureTop?has_content?then(data.textureTop, data.texture)}",
-  "north": "${modid}:blocks/${data.textureFront?has_content?then(data.textureFront, data.texture)}",
-  "east": "${modid}:blocks/${data.textureLeft?has_content?then(data.textureLeft, data.texture)}",
-  "south": "${modid}:blocks/${data.textureBack?has_content?then(data.textureBack, data.texture)}",
-  "west": "${modid}:blocks/${data.textureRight?has_content?then(data.textureRight, data.texture)}",
-  "particle": "${modid}:blocks/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+  "down": "${mappedSingleTexture(data.texture, "blocks", modid)}",
+  "up": "${mappedElseTexture(data.textureTop, data.texture, "blocks", modid)}",
+  "north": "${mappedElseTexture(data.textureFront, data.texture, "blocks", modid)}",
+  "east": "${mappedElseTexture(data.textureLeft, data.texture, "blocks", modid)}",
+  "south": "${mappedElseTexture(data.textureBack, data.texture, "blocks", modid)}",
+  "west": "${mappedElseTexture(data.textureRight, data.texture, "blocks", modid)}",
+  "particle": "${mappedElseTexture(data.particleTexture, data.texture, "blocks", modid)}"
   }
 }
