@@ -242,9 +242,11 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				refreshTab();
 			}
 		});
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(ok);
+		buttonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel),
-				PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(ok), new JEmptyBox(10, 10))));
+		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel), PanelUtils.totalCenterInPanel(buttonsPanel)));
 		typeDialog.setVisible(true);
 	}
 
