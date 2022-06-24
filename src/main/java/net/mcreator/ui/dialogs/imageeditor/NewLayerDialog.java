@@ -64,7 +64,7 @@ public class NewLayerDialog extends MCreatorDialog {
 
 		//Filler settings
 		JPanel colorSettings = new JPanel(new GridLayout(1, 2, 5, 5));
-		JColor colorChoser = new JColor(window);
+		JColor colorChoser = new JColor(window, false, true);
 		colorSettings.add(L10N.label("dialog.imageeditor.base_color"));
 		colorSettings.add(colorChoser);
 

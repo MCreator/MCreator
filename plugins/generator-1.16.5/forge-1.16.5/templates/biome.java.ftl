@@ -223,7 +223,7 @@ import java.util.HashMap;
 							Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(
 								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.getDefaultState()")}),
 								new SimpleBlockStateProvider(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.getDefaultState()")}),
-								new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(13, 17)),
+								new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0), FeatureSpread.func_242252_a(0), FeatureSpread.func_242253_a(13, 4)),
 								new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
 								new TwoLayerFeature(1, 1, 2)))
 								<#if (data.treeVines?has_content && !data.treeVines.isEmpty()) || (data.treeFruits?has_content && !data.treeFruits.isEmpty())>

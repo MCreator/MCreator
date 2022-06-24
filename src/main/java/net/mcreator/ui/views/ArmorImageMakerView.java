@@ -53,7 +53,7 @@ public class ArmorImageMakerView extends ViewBase {
 	public ArmorImageMakerView(final MCreator fra) {
 		super(fra);
 
-		col = new JColor(fra);
+		col = new JColor(fra, false, true);
 
 		str.setSelectedItem("Standard");
 		col.setOpaque(false);
@@ -195,7 +195,7 @@ public class ArmorImageMakerView extends ViewBase {
 	}
 
 	@Override public String getViewName() {
-		return "Armor texture maker";
+		return L10N.t("tab.armor_image_maker");
 	}
 
 }

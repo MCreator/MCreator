@@ -36,7 +36,11 @@ public abstract class JEntriesList extends JPanel {
 
 	private final List<Consumer<JComponent>> entryListeners = new ArrayList<>();
 
-	protected final JButton add = new JButton(UIRES.get("16px.add.gif"));
+	protected final JButton add = new JButton(UIRES.get("16px.add.gif")) {
+		@Override public String getName() {
+			return "AddEntryButton";
+		}
+	};
 
 	public JEntriesList(MCreator mcreator, LayoutManager layout, IHelpContext gui) {
 		super(layout);
