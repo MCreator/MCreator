@@ -51,7 +51,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if data.plantType == "growapable" || data.forceTicking>
 		.randomTicks()
 		</#if>
-		.noCollission()
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
@@ -82,6 +81,14 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
 		.noDrops()
+		</#if>
+		<#if data.isSolid>
+		.noOcclusion()
+			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
+			.dynamicShape()
+			</#if>
+		<#else>
+		.noCollission()
 		</#if>
 		);
 	}
@@ -287,6 +294,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	<@onBlockPlacedBy data.onBlockPlacedBy/>
 
 	<@onBlockRightClicked data.onRightClicked/>
+
+	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onHitByProjectile data.onHitByProjectile/>
 
 	<#if data.hasTileEntity>
 	@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -107,6 +107,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onRedstoneOn;
 	private ProcedureSelector onRedstoneOff;
+	private ProcedureSelector onHitByProjectile;
 
 	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
@@ -125,7 +126,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
 
-	private final JColor beaconColorModifier = new JColor(mcreator, true);
+	private final JColor beaconColorModifier = new JColor(mcreator, true, false);
 
 	private final JCheckBox hasGravity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
@@ -212,6 +213,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
+	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.block.spawn_particles");
 
@@ -313,6 +315,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff = new ProcedureSelector(this.withEntry("block/on_redstone_off"), mcreator,
 				L10N.t("elementgui.block.event_on_redstone_off"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -641,7 +647,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
@@ -650,6 +656,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tickRandomly.setOpaque(false);
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
+		requiresCorrectTool.setOpaque(false);
+		destroyTool.addActionListener(e -> updateRequiresCorrectTool());
 
 		selp3.setOpaque(false);
 		advancedProperties.setOpaque(false);
@@ -743,6 +751,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
 				L10N.label("elementgui.block.harvest_level")));
 		selp3.add(breakHarvestLevel);
+
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/requires_correct_tool"),
+				L10N.label("elementgui.block.requires_correct_tool")));
+		selp3.add(requiresCorrectTool);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
@@ -890,6 +902,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events2.add(onStartToDestroy);
 		events2.add(onEntityCollides);
 		events2.add(onEntityWalksOn);
+		events2.add(onHitByProjectile);
 		events2.add(onBlockPlayedBy);
 		events2.add(onRedstoneOn);
 		events2.add(onRedstoneOff);
@@ -1289,6 +1302,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		soundOnStep.setEnabled(defaultSoundType.isSelected());
 	}
 
+	private void updateRequiresCorrectTool() {
+		if (!isEditingMode() && "pickaxe".equals(destroyTool.getSelectedItem())) {
+			requiresCorrectTool.setSelected(true);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1304,6 +1323,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.refreshListKeepSelected();
 		onRedstoneOn.refreshListKeepSelected();
 		onRedstoneOff.refreshListKeepSelected();
+		onHitByProjectile.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1383,6 +1403,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.setSelectedProcedure(block.onRightClicked);
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
+		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
 		maxGenerateHeight.setValue(block.maxGenerateHeight);
@@ -1415,6 +1436,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customSoundType.setSelected(block.isCustomSoundType);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
+		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
 		isNotColidable.setSelected(block.isNotColidable);
@@ -1511,6 +1533,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.tickRandomly = tickRandomly.isSelected();
 		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		block.destroyTool = (String) destroyTool.getSelectedItem();
+		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
 		block.plantsGrowOn = plantsGrowOn.isSelected();
@@ -1579,6 +1602,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRightClicked = onRightClicked.getSelectedProcedure();
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
+		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		block.texture = texture.getID();
 		block.itemTexture = itemTexture.getID();
 		block.particleTexture = particleTexture.getID();

@@ -70,7 +70,7 @@ public class OrePackMakerTool {
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
 		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator);
+		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
@@ -195,6 +195,7 @@ public class OrePackMakerTool {
 		oreBlock.resistance = 5.0 * Math.pow(factor, 0.8);
 		oreBlock.destroyTool = "pickaxe";
 		oreBlock.breakHarvestLevel = (int) Math.round(2 * factor);
+		oreBlock.requiresCorrectTool = true;
 		oreBlock.spawnWorldTypes = Collections.singletonList("Surface");
 		oreBlock.minGenerateHeight = 1;
 		oreBlock.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
@@ -223,6 +224,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.texture = oreBlockTextureName;
 		oreBlockBlock.destroyTool = "pickaxe";
 		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
+		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
 
 		oreBlockBlock.getModElement().setParentFolder(folder);

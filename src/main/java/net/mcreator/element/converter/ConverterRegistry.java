@@ -43,6 +43,7 @@ import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
+import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -67,7 +68,8 @@ public class ConverterRegistry {
 				new BiomeFrozenTopLayerConverter()));
 		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 		put(ModElementType.BLOCK,
-				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer()));
+				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
+						new BlockRequiresCorrectToolConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
