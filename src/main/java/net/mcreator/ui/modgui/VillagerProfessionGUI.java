@@ -48,7 +48,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
@@ -61,7 +60,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
 
-	private final JLabel clo = new JLabel();
+	private final JLabel texturePreview = new JLabel();
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public VillagerProfessionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -73,8 +72,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	@Override protected void initGUI() {
 		professionTextureFile.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
 		professionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-
-		JPanel panel = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(hat, 16);
@@ -136,21 +133,12 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return Validator.ValidationResult.PASSED;
 		});
 
-		panel.add(PanelUtils.totalCenterInPanel(subpanel));
-		panel.setOpaque(false);
-
-		clo.setPreferredSize(new Dimension(320, 320));
-
-		JPanel clop = new JPanel();
-		clop.setOpaque(false);
-		clop.add(clo);
-
-		JPanel mainPanel = new JPanel(new BorderLayout(35, 35));
-		mainPanel.add("Center", panel);
-		mainPanel.add("South", clop);
+		JPanel mainPanel = new JPanel(new BorderLayout(0, 50));
+		mainPanel.add("North", subpanel);
+		mainPanel.add("Center", PanelUtils.centerInPanel(texturePreview));
 		mainPanel.setOpaque(false);
 
-		addPage(L10N.t("elementgui.common.page_properties"), mainPanel);
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(mainPanel));
 
 		if (!isEditingMode()) {
 			name.setText(modElement.getName().toUpperCase(Locale.ROOT));
@@ -160,14 +148,12 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private void updateProfessionTexturePreview() {
 		if (professionTextureFile.getSelectedItem() == null)
 			return;
+
 		File professionTexture = mcreator.getFolderManager()
-				.getTextureFile(professionTextureFile.getSelectedItem(), TextureType.OTHER);
-		BufferedImage bg = new BufferedImage(320, 320, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics2D = bg.createGraphics();
-		graphics2D.drawImage(ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320),
-				0, 0, 320, 320, null);
-		graphics2D.dispose();
-		clo.setIcon(new ImageIcon(bg));
+				.getTextureFile(professionTextureFile.getSelectedItem().replace(".png", ""), TextureType.OTHER);
+
+		texturePreview.setIcon(new ImageIcon(
+				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320)));
 	}
 
 	@Override public void reloadDataLists() {
