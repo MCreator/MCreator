@@ -5,7 +5,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEProfession.java"
   - template: profession.mcmeta.ftl
     writer: json
-    condition: isHatEnabled
+    condition: isHatEnabled()
     deleteWhenConditionFalse: true
     name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
 
