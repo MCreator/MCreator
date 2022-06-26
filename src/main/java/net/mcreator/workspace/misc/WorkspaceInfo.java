@@ -188,6 +188,15 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
+	public boolean isHatEnabled() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.VILLAGERPROFESSION)
+				if (element.getGeneratableElement() instanceof VillagerProfession vp)
+					if (vp.isHatEnabled())
+						return true;
+		return false;
+	}
+
 	public boolean hasBlocksMineableWith(String tool) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.BLOCK) {

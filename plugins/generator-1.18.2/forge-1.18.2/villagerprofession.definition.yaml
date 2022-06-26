@@ -1,7 +1,7 @@
 templates:
   - template: profession.mcmeta.ftl
     writer: json
-    condition: enableHat
+    condition: isHatEnabled
     deleteWhenConditionFalse: true
     name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
 

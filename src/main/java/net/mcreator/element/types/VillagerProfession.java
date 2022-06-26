@@ -35,12 +35,15 @@ public class VillagerProfession extends GeneratableElement {
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
 	public String hat;
-	public boolean enableHat;
 	public String professionTextureFile;
 
 	public VillagerProfession(ModElement element) {
 		super(element);
 		this.hat = "None";
+	}
+
+	public boolean isHatEnabled() {
+		return !"None".equals(this.hat);
 	}
 
 	@Override public void finalizeModElementGeneration() {
