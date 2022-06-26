@@ -87,8 +87,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				L10N.label("elementgui.villager_profession.name")));
 		subpanel.add(name);
 
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/point_of_interest"),
-				L10N.label("elementgui.villager_profession.point_of_interest")));
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/profession_block"),
+				L10N.label("elementgui.villager_profession.profession_block")));
 		subpanel.add(PanelUtils.centerInPanel(pointOfInterest));
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/action_sound"),
