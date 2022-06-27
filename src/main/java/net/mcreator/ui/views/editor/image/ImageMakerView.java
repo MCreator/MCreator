@@ -224,7 +224,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		panel.add(L10N.label("dialog.image_maker.enter_name"));
 		panel.add(name);
 
-		JButton ok = new JButton(L10N.t("dialog.image_maker.texture_type.select"));
+		JButton ok = L10N.button("dialog.image_maker.save");
 		ok.addActionListener(e -> {
 			typeDialog.setVisible(false);
 			TextureType textureType = (TextureType) types.getSelectedItem();
@@ -242,8 +242,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				refreshTab();
 			}
 		});
+		JButton cancel = L10N.button("common.cancel");
+		cancel.addActionListener(e -> typeDialog.dispose());
+
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(ok);
+		buttonsPanel.add(cancel);
 		buttonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel), PanelUtils.totalCenterInPanel(buttonsPanel)));
