@@ -214,15 +214,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		name.enableRealtimeValidation();
 
 		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
-		typeDialog.setSize(550, 150);
-		typeDialog.setLocationRelativeTo(null);
 
 		JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
 
-		panel.add(L10N.label("dialog.image_maker.texture_type.message"));
-		panel.add(types);
 		panel.add(L10N.label("dialog.image_maker.enter_name"));
 		panel.add(name);
+		panel.add(L10N.label("dialog.image_maker.texture_type.message"));
+		panel.add(types);
 
 		JButton ok = L10N.button("dialog.image_maker.save");
 		ok.addActionListener(e -> {
@@ -251,6 +249,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		buttonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel), PanelUtils.totalCenterInPanel(buttonsPanel)));
+
+		typeDialog.setSize(550, 150);
+		typeDialog.setLocationRelativeTo(null);
 		typeDialog.setVisible(true);
 	}
 
