@@ -5,7 +5,7 @@ templates:
 
 list_templates:
   - name: "Tag elements"
-    listData: getEntities()
+    listData: data.getEntities()
     forEach:
       - template: json/tag_element.json.ftl
         writer: json
