@@ -17,41 +17,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv31.screens;
+package net.mcreator.element.converter.fv31;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.Image;
-import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.Achievement;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class GUITexturesConverter implements IConverter {
+public class AdvancementTextureConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GUI gui = (GUI) input;
+		Achievement advancement = (Achievement) input;
 
-		FileIO.copyFile(
-				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER),
-				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.SCREEN));
-
-		if (gui.components != null && !gui.components.isEmpty()) {
-			for (GUIComponent component : gui.components) {
-				if (component instanceof Image image) {
-					FileIO.copyFile(workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image), TextureType.OTHER),
-							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image),
-											TextureType.SCREEN));
-				}
-			}
+		if (advancement.background != null && !advancement.background.isEmpty()) {
+			FileIO.copyFile(workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background), TextureType.OTHER),
+					workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background),
+									TextureType.SCREEN));
 		}
 
-		return gui;
+		return advancement;
 	}
 
 	@Override public int getVersionConvertingTo() {

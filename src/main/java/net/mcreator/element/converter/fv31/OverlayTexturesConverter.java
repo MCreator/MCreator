@@ -17,37 +17,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv31.entities;
+package net.mcreator.element.converter.fv31;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.LivingEntity;
+import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.Image;
+import net.mcreator.element.types.Overlay;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
-public class EntityTexturesConverter implements IConverter {
+public class OverlayTexturesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		LivingEntity entity = (LivingEntity) input;
+		Overlay overlay = (Overlay) input;
 
-		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
-								TextureType.ENTITY));
-
-		if (entity.mobModelGlowTexture != null && !entity.mobModelGlowTexture.isEmpty()) {
+		if (overlay.baseTexture != null && !overlay.baseTexture.isEmpty()) {
 			FileIO.copyFile(workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
-							TextureType.OTHER), workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
-							TextureType.ENTITY));
+							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture), TextureType.OTHER),
+					workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(overlay.baseTexture),
+									TextureType.SCREEN));
 		}
 
-		return entity;
+		if (overlay.components != null && !overlay.components.isEmpty()) {
+			for (GUIComponent component : overlay.components) {
+				if (component instanceof Image image) {
+					FileIO.copyFile(workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image), TextureType.OTHER),
+							workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(image.image),
+											TextureType.SCREEN));
+				}
+			}
+		}
+
+		return overlay;
 	}
 
 	@Override public int getVersionConvertingTo() {
