@@ -25,17 +25,27 @@ import java.util.List;
 
 public class TableUtil {
 
+	public static boolean isEditingCell(JTable table, int row, int column) {
+		return table.isEditing() && table.getEditingRow() == row && table.getEditingColumn() == column;
+	}
+
 	public static List<String> getRowContents(JTable table, int row) {
 		List<String> retVal = new ArrayList<>();
-		for (int i = 0; i < table.getColumnCount(); i++)
-			retVal.add(table.getValueAt(row, i).toString());
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			retVal.add(isEditingCell(table, row, i) ?
+					table.getCellEditor().getCellEditorValue().toString() :
+					table.getValueAt(row, i).toString());
+		}
 		return retVal;
 	}
 
 	public static List<String> getColumnContents(JTable table, int column) {
 		List<String> retVal = new ArrayList<>();
-		for (int i = 0; i < table.getRowCount(); i++)
-			retVal.add(table.getValueAt(i, column).toString());
+		for (int i = 0; i < table.getRowCount(); i++) {
+			retVal.add(isEditingCell(table, i, column) ?
+					table.getCellEditor().getCellEditorValue().toString() :
+					table.getValueAt(i, column).toString());
+		}
 		return retVal;
 	}
 

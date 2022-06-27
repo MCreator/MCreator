@@ -103,7 +103,7 @@ public class UniqueNameValidator implements Validator {
 		this.isPresentOnList = true;
 		this.ignoreCase = false;
 		this.forbiddenNames = forbiddenNames;
-		this.extraValidator = extraValidator;
+		this.extraValidator = extraValidator != null ? extraValidator : () -> ValidationResult.PASSED;
 	}
 
 	/**
