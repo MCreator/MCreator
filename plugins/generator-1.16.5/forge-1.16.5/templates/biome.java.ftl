@@ -352,11 +352,7 @@ import java.util.HashMap;
 				<#list data.spawnEntries as spawnEntry>
 					<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
 					<#if entity != "null">
-						<#if !entity.toString().contains(".CustomEntity")>
 						mobSpawnInfo.withSpawner(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnInfo.Spawners(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-						<#else>
-						mobSpawnInfo.withSpawner(${generator.map(spawnEntry.spawnType, "mobspawntypes")}, new MobSpawnInfo.Spawners(${entity.toString().replace(".CustomEntity", "")}.entity, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-						</#if>
 					</#if>
 				</#list>
 
