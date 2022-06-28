@@ -295,18 +295,11 @@ public class ${name}Biome {
 
         MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder();
         <#list data.spawnEntries as spawnEntry>
-            <#if !spawnEntry.entity.getUnmappedValue().contains("CUSTOM:")>
-                <#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
-                <#if entity != "null">
-                mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-		    	    new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-                </#if>
-            <#else>
-            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-                new MobSpawnSettings.SpawnerData(
-                    ${JavaModName}Entities.${generator.getRegistryNameForModElement(spawnEntry.entity.getUnmappedValue()?replace("CUSTOM:", ""))?upper_case}.get(),
-                    ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-            </#if>
+			<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
+			<#if entity != "null">
+			mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+				new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+			</#if>
         </#list>
 
         return new Biome.BiomeBuilder()
