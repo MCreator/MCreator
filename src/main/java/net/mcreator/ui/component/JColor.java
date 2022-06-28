@@ -22,6 +22,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,14 +38,11 @@ public class JColor extends JPanel {
 	private final JButton bt1 = new JButton("...");
 
 	private final boolean allowNullColor;
+	private final boolean allowTransparency;
 
 	private JDialog dialog = null;
 
-	public JColor(Window window) {
-		this(window, false);
-	}
-
-	public JColor(Window window, boolean allowNullColor) {
+	public JColor(Window window, boolean allowNullColor, boolean allowTransparency) {
 		setLayout(new BorderLayout(2, 0));
 		fl1.setText("255,255,255");
 		fl1.setBackground(Color.white);
@@ -68,6 +66,7 @@ public class JColor extends JPanel {
 		});
 
 		this.allowNullColor = allowNullColor;
+		this.allowTransparency = allowTransparency;
 
 		if (allowNullColor) {
 			setColor(null);
@@ -79,6 +78,9 @@ public class JColor extends JPanel {
 		} else {
 			add("East", bt1);
 		}
+
+		for (AbstractColorChooserPanel panel : colorChooser.getChooserPanels())
+			panel.setColorTransparencySelectionEnabled(allowTransparency);
 
 		setOpaque(false);
 	}
@@ -97,7 +99,7 @@ public class JColor extends JPanel {
 		if (c == null && !allowNullColor)
 			c = Color.white;
 
-		currentColor = c;
+		currentColor = allowTransparency || c == null ? c : new Color(c.getRGB(), false);
 
 		if (currentColor == null) {
 			fl1.setOpaque(false);

@@ -19,10 +19,10 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 175,
+  "colour": 195,
   "mcreator": {
     "group": "scoreboard",
-    "toolbox_id": "playermanagement",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",
       "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",

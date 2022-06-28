@@ -17,11 +17,7 @@
           </#list>
       <#elseif data.type == "Entities">
           <#list w.filterBrokenReferences(data.entities) as value>
-            <#if value.getUnmappedValue().startsWith("CUSTOM:")>
-                "${generator.getResourceLocationForModElement(value.getUnmappedValue()?replace("CUSTOM:", ""))}"
-            <#else>
-                "${generator.map(value.getUnmappedValue(), "entities", 2)}"
-            </#if>
+            "${generator.map(value.getUnmappedValue(), "entities", 2)}"
             <#if value?has_next>,</#if>
           </#list>
       </#if>
