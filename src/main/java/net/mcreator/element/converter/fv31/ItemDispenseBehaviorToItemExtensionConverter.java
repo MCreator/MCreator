@@ -58,7 +58,7 @@ public class ItemDispenseBehaviorToItemExtensionConverter implements IConverter 
 						if (item.get("dispenseResultItemstack") != null)
 							itemExtension.dispenseResultItemstack = new Procedure(
 									item.get("dispenseResultItemstack").getAsJsonObject().get("name").getAsString());
-						return itemExtension;
+						return input;
 					}
 				}
 
