@@ -33,8 +33,13 @@ public class RangedItemTextureConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		RangedItem item = (RangedItem) input;
 
-		FileIO.copyFile(workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.OTHER),
-				workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture), TextureType.ENTITY));
+		if (item.customBulletModelTexture != null && !item.customBulletModelTexture.isEmpty()) {
+			FileIO.copyFile(workspace.getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture),
+							TextureType.OTHER), workspace.getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture),
+							TextureType.ENTITY));
+		}
 
 		return item;
 	}
