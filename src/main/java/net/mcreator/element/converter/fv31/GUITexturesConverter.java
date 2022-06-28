@@ -39,6 +39,9 @@ public class GUITexturesConverter implements IConverter {
 				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER),
 				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.SCREEN));
 
+		// It is very unlikely GUI texture is used for something else than a screen
+		workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER).delete();
+
 		if (gui.components != null && !gui.components.isEmpty()) {
 			for (GUIComponent component : gui.components) {
 				if (component instanceof Image image) {
