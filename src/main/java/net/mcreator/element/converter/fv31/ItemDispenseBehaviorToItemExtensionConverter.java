@@ -25,6 +25,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.types.ItemExtension;
 import net.mcreator.workspace.Workspace;
@@ -42,7 +43,26 @@ public class ItemDispenseBehaviorToItemExtensionConverter implements IConverter 
 		try {
 			JsonObject item = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 			if (item.get("hasDispenseBehavior") != null && item.get("hasDispenseBehavior").getAsBoolean()) {
-				ItemExtension itemExtension = new ItemExtension(
+				ItemExtension itemExtension;
+
+				for (ModElement me : workspace.getModElements().stream()
+						.filter(me -> me.getType() == ModElementType.ITEMEXTENSION).toList()) {
+					itemExtension = (ItemExtension) me.getGeneratableElement();
+					if (itemExtension != null && itemExtension.item.equals(
+							new MItemBlock(workspace, item.get("name").getAsString()))) {
+						itemExtension.hasDispenseBehavior = true;
+
+						if (item.get("dispenseSuccessCondition") != null)
+							itemExtension.dispenseSuccessCondition = new Procedure(
+									item.get("dispenseSuccessCondition").getAsJsonObject().get("name").getAsString());
+						if (item.get("dispenseResultItemstack") != null)
+							itemExtension.dispenseResultItemstack = new Procedure(
+									item.get("dispenseResultItemstack").getAsJsonObject().get("name").getAsString());
+						return itemExtension;
+					}
+				}
+
+				itemExtension = new ItemExtension(
 						new ModElement(workspace, input.getModElement().getName() + "Extension",
 								ModElementType.ITEMEXTENSION));
 

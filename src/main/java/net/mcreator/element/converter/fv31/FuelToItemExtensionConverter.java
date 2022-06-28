@@ -40,7 +40,20 @@ public class FuelToItemExtensionConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		JsonObject fuel = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-		ItemExtension itemExtension = new ItemExtension(
+		ItemExtension itemExtension;
+
+		for (ModElement me : workspace.getModElements().stream()
+				.filter(me -> me.getType() == ModElementType.ITEMEXTENSION).toList()) {
+			itemExtension = (ItemExtension) me.getGeneratableElement();
+			if (itemExtension != null && itemExtension.item.equals(
+					new MItemBlock(workspace, fuel.get("block").getAsJsonObject().get("value").getAsString()))) {
+				itemExtension.enableFuel = true;
+				itemExtension.fuelPower = new NumberProcedure(null, fuel.get("power").getAsInt());
+				return itemExtension;
+			}
+		}
+
+		itemExtension = new ItemExtension(
 				new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEMEXTENSION));
 		try {
 			itemExtension.item = new MItemBlock(workspace,
