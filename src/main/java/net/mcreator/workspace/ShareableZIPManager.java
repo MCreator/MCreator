@@ -67,7 +67,7 @@ public class ShareableZIPManager {
 			}
 
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
-					L10N.t("dialog.workspace.import_from_zip.thumbnails"));
+					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgress(p2);
 
 			try {
@@ -78,10 +78,14 @@ public class ShareableZIPManager {
 				int i = 0;
 				for (ModElement mod : workspace.getModElements()) {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
-					workspace.getModElementManager().storeModElementPicture(
-							generatableElement); // save custom mod element picture if it has one
-					workspace.addModElement(mod); // add mod element to workspace again, so the icons get reloaded
-					mod.reinit(); // we reinit the mod to load new icons etc.
+
+					if (generatableElement != null) {
+						workspace.getModElementManager().storeModElementPicture(
+								generatableElement); // save custom mod element picture if it has one
+						workspace.addModElement(mod); // add mod element to workspace again, so the icons get reloaded
+						mod.reinit(); // we reinit the mod to load new icons etc.
+					}
+
 					i++;
 					p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
 					dial.refreshDisplay();
