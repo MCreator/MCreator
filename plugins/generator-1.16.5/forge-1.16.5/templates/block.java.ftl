@@ -115,6 +115,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					FoliageColors.getBirch() : BiomeColors.getFoliageColor(world, pos);
 				<#elseif data.tintType == "Foliage_Spruce">
 					FoliageColors.getSpruce() : BiomeColors.getFoliageColor(world, pos);
+				<#elseif data.tintType == "Foliage_Biome">
+					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 				<#elseif data.tintType == "Water">
 					BiomeColors.getWaterColor(world, pos) : -1;
 				<#elseif data.tintType == "Sky">
@@ -140,6 +142,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						return FoliageColors.getBirch();
 					<#elseif data.tintType == "Foliage_Spruce">
 						return FoliageColors.getSpruce();
+					<#elseif data.tintType == "Foliage_Biome">
+						return FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						return 3694022;
 					<#elseif data.tintType == "Sky">

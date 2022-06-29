@@ -664,6 +664,8 @@ public class ${name}Block extends
 						FoliageColor.getBirch() : BiomeColors.getAverageFoliageColor(world, pos);
 					<#elseif data.tintType == "Foliage_Spurce">
 						FoliageColor.getSpruce() : BiomeColors.getAverageFoliageColor(world, pos);
+					<#elseif data.tintType == "Foliage_Biome">
+						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos) : -1;
 					<#elseif data.tintType == "Sky">
@@ -687,6 +689,8 @@ public class ${name}Block extends
 					return FoliageColors.getBirch();
 				<#elseif data.tintType == "Foliage_Spruce">
 					return FoliageColors.getSpruce();
+				<#elseif data.tintType == "Foliage_Biome">
+					return FoliageColors.getDefault();
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">
