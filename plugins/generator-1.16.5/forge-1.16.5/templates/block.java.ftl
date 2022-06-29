@@ -136,6 +136,10 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						return GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
 						return FoliageColors.getDefault();
+					<#elseif data.tintType == "Foliage_Brich">
+						return FoliageColors.getBrich();
+					<#elseif data.tintType == "Foliage_Spruce">
+						return FoliageColors.getSpruce();
 					<#elseif data.tintType == "Water">
 						return 3694022;
 					<#elseif data.tintType == "Sky">
