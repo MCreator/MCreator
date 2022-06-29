@@ -111,11 +111,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					FoliageColors.getDefault() : BiomeColors.getFoliageColor(world, pos);
-				<#elseif data.tintType == "Foliage Birch">
+				<#elseif data.tintType == "Foliage birch">
 					FoliageColors.getBirch() : BiomeColors.getFoliageColor(world, pos);
-				<#elseif data.tintType == "Foliage Spruce">
+				<#elseif data.tintType == "Foliage spruce">
 					FoliageColors.getSpruce() : BiomeColors.getFoliageColor(world, pos);
-				<#elseif data.tintType == "Foliage Biome">
+				<#elseif data.tintType == "Foliage biome">
 					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
 				<#elseif data.tintType == "Water">
 					BiomeColors.getWaterColor(world, pos) : -1;
@@ -138,11 +138,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						return GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
 						return FoliageColors.getDefault();
-					<#elseif data.tintType == "Foliage Birch">
+					<#elseif data.tintType == "Foliage birch">
 						return FoliageColors.getBirch();
-					<#elseif data.tintType == "Foliage Spruce">
+					<#elseif data.tintType == "Foliage spruce">
 						return FoliageColors.getSpruce();
-					<#elseif data.tintType == "Foliage Biome">
+					<#elseif data.tintType == "Foliage biome">
 						return FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						return 3694022;
