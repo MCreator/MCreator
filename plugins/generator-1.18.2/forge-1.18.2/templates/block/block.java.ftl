@@ -683,8 +683,8 @@ public class ${name}Block extends
 					return GrassColor.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
 					return FoliageColors.getDefault();
-				<#elseif data.tintType == "Foliage_Brich">
-					return FoliageColors.getBrich();
+				<#elseif data.tintType == "Foliage_Birch">
+					return FoliageColors.getBirch();
 				<#elseif data.tintType == "Foliage_Spruce">
 					return FoliageColors.getSpruce();
 				<#elseif data.tintType == "Water">
