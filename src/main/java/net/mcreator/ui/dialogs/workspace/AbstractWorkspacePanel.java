@@ -50,7 +50,7 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 	public AbstractWorkspacePanel(Window parent) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		workspaceDialogPanel = new WorkspaceDialogs.WorkspaceDialogPanel(parent, null);
+		workspaceDialogPanel = new WorkspaceDialogs.WorkspaceDialogPanel(parent, null, null);
 
 		workspaceDialogPanel.modID.getDocument().addDocumentListener(new DocumentListener() {
 			@Override public void insertUpdate(DocumentEvent documentEvent) {

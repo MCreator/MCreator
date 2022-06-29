@@ -47,17 +47,22 @@ public class GeneratorSelector {
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
 
+	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
+			@Nullable GeneratorFlavor currentFlavor) {
+		return getGeneratorSelector(parent, current, currentFlavor, null);
+	}
+
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
 	 *
-	 * @param parent <p>The  window to attach the dialog</p>
-	 * @param current <p>The current generator settings used</p>
+	 * @param parent        <p>The  window to attach the dialog</p>
+	 * @param current       <p>The current generator settings used</p>
 	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
-	 * @param workspace <p>The workspace to backup. If null is passed, some actions will not be executed.</p>
+	 * @param mcreator      <p>The {@link MCreator} instance to use, notably when making the backup of the {@link Workspace}. If null is passed, some actions will not be executed.</p>
 	 * @return <p>The {@link GeneratorConfiguration} to use</p>
 	 */
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor, @Nullable Workspace workspace) {
+			@Nullable GeneratorFlavor currentFlavor, @Nullable MCreator mcreator) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
@@ -73,8 +78,10 @@ public class GeneratorSelector {
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
 				generator.addItem(generatorConfiguration);
-			} else if ((currentFlavor == GeneratorFlavor.FORGE && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
-					currentFlavor == GeneratorFlavor.FABRIC && generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && workspace != null) {
+			} else if ((currentFlavor == GeneratorFlavor.FORGE
+					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC
+					|| currentFlavor == GeneratorFlavor.FABRIC
+					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && mcreator != null) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -192,7 +199,7 @@ public class GeneratorSelector {
 
 			@Override public void actionPerformed(ActionEvent e) {
 				if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration) {
-					if (!Launcher.version.isDevelopment() && workspace != null && generatorConfiguration != current
+					if (!Launcher.version.isDevelopment() && mcreator != null && generatorConfiguration != current
 							&& generatorConfiguration.getGeneratorStats().getStatus() == GeneratorStats.Status.DEV) {
 						generator.setSelectedItem(oldItem);
 						JOptionPane.showMessageDialog(parent, L10N.t("dialog.generator_selector.dev_gen_message"),
@@ -208,18 +215,21 @@ public class GeneratorSelector {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
-			if (workspace != null && parent.getParent() instanceof MCreator mcreator) {
+			if (mcreator != null) {
 				if (currentFlavor == GeneratorFlavor.FORGE
-						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
-						currentFlavor == GeneratorFlavor.FABRIC &&
-								((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor() == GeneratorFlavor.FORGE) {
+						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
+						== GeneratorFlavor.FABRIC || currentFlavor == GeneratorFlavor.FABRIC
+						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
+						== GeneratorFlavor.FORGE) {
 					int confirmval = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.generator_selector.confirm"),
-							L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+							L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.WARNING_MESSAGE);
 
 					if (confirmval == JOptionPane.OK_OPTION) {
 						ShareableZIPManager.exportZIP("Workspace backup",
-								new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-										"FullBackup" + workspace.getMCreatorVersion() + ".zip"), mcreator, true);
+								new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
+										"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator,
+								true);
 						return (GeneratorConfiguration) generator.getSelectedItem();
 					}
 				}

@@ -408,7 +408,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 							"Unsupported generator", JOptionPane.WARNING_MESSAGE);
 					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
 							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-									currentFlavor), currentFlavor, retval);
+									currentFlavor), currentFlavor);
 					if (generatorConfiguration != null) {
 						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
