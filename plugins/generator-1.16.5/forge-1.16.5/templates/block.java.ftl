@@ -110,7 +110,11 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				<#if data.tintType == "Grass">
 					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage">
-					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+					FoliageColors.getDefault() : BiomeColors.getFoliageColor(world, pos);
+				<#elseif data.tintType == "Foliage_Birch">
+					FoliageColors.getBirch() : BiomeColors.getFoliageColor(world, pos);
+				<#elseif data.tintType == "Foliage_Spruce">
+					FoliageColors.getSpruce() : BiomeColors.getFoliageColor(world, pos);
 				<#elseif data.tintType == "Water">
 					BiomeColors.getWaterColor(world, pos) : -1;
 				<#elseif data.tintType == "Sky">
