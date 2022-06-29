@@ -51,6 +51,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
@@ -71,7 +72,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	}
 
 	@Override protected void initGUI() {
-		professionTextureFile.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		professionTextureFile.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 		professionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		ComponentUtils.deriveFont(name, 16);
@@ -109,10 +111,10 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		importProfessionTexture.setToolTipText(L10N.t("elementgui.villager_profession.import_profession_texture"));
 		importProfessionTexture.setOpaque(false);
 		importProfessionTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
 			professionTextureFile.removeAllItems();
 			professionTextureFile.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.OTHER)
+			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
 					.forEach(el -> professionTextureFile.addItem(el.getName()));
 		});
 
@@ -128,7 +130,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.villager_profession.profession_needs_name")));
 		name.enableRealtimeValidation();
-		displayName.setValidator(new TextFieldValidator(displayName, L10N.t("elementgui.villager_profession.profession_needs_display_name")));
+		displayName.setValidator(new TextFieldValidator(displayName,
+				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
 		displayName.enableRealtimeValidation();
 		pointOfInterest.setValidator(new MCItemHolderValidator(pointOfInterest));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
@@ -158,7 +161,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return;
 
 		File professionTexture = mcreator.getFolderManager()
-				.getTextureFile(professionTextureFile.getSelectedItem().replace(".png", ""), TextureType.OTHER);
+				.getTextureFile(professionTextureFile.getSelectedItem().replace(".png", ""), TextureType.ENTITY);
 
 		texturePreview.setIcon(new ImageIcon(
 				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320)));
@@ -167,7 +170,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName).toList()));
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
+						.collect(Collectors.toList())), "");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

@@ -49,9 +49,9 @@ public class VillagerProfession extends GeneratableElement {
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(professionTextureFile), TextureType.OTHER);
-		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-				"entity/villager/profession/" + getModElement().getRegistryName() + ".png");
+				.getTextureFile(FilenameUtilsPatched.removeExtension(professionTextureFile), TextureType.ENTITY);
+		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.ENTITY),
+				"villager/profession/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 	}
 }
