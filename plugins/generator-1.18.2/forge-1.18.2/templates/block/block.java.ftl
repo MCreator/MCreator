@@ -655,17 +655,18 @@ public class ${name}Block extends
 	<#if data.tintType != "No tint">
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
+					<#if data.tintType == "Default foliage">
+					return FoliageColor.getDefaultColor();
+					<#elseif data.tintType == "Foliage birch">
+					return FoliageColor.getBirchColor();
+					<#elseif data.tintType == "Foliage spruce">
+					return FoliageColor.getEvergreenColor();
+					<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
 						BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
-						FoliageColor.getDefaultColor() : BiomeColors.getAverageFoliageColor(world, pos);
-					<#elseif data.tintType == "Foliage birch">
-						FoliageColor.getBirch() : BiomeColors.getAverageFoliageColor(world, pos);
-					<#elseif data.tintType == "Foliage spurce">
-						FoliageColor.getSpruce() : BiomeColors.getAverageFoliageColor(world, pos);
-					<#elseif data.tintType == "Foliage biome">
-						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+						BiomeColors.getAverageFoliageColor(world, pos) : FoliageColor.getDefaultColor();
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos) : -1;
 					<#elseif data.tintType == "Sky">
@@ -675,6 +676,7 @@ public class ${name}Block extends
 					<#else>
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
+					</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 
@@ -683,14 +685,12 @@ public class ${name}Block extends
 			event.getItemColors().register((stack, index) -> {
 				<#if data.tintType == "Grass">
 					return GrassColor.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage">
-					return FoliageColors.getDefault();
+				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
+					return FoliageColor.getDefaultColor();
 				<#elseif data.tintType == "Foliage birch">
-					return FoliageColors.getBirch();
+					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Foliage spruce">
-					return FoliageColors.getSpruce();
-				<#elseif data.tintType == "Foliage biome">
-					return FoliageColors.getDefault();
+					return FoliageColor.getEvergreenColor();
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">
