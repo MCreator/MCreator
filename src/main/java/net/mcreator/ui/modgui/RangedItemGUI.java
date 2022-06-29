@@ -161,7 +161,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-		customBulletModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		customBulletModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		bulletModel.setPreferredSize(new Dimension(400, 42));
 		bulletModel.setRenderer(new ModelComboBoxRenderer());
@@ -300,10 +300,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.ranged_item.bullet_model_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
-			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.OTHER);
+			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.ENTITY);
 			for (File element : textures)
 				if (element.getName().endsWith(".png"))
 					customBulletModelTexture.addItem(element.getName());
@@ -426,7 +426,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),

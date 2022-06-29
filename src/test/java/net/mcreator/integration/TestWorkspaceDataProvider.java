@@ -231,6 +231,26 @@ public class TestWorkspaceDataProvider {
 					workspace.getFolderManager().getTextureFile("test", TextureType.OTHER));
 		}
 
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.ENTITY) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.ENTITY));
+		}
+
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.EFFECT) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.EFFECT));
+		}
+
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.PARTICLE) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.PARTICLE));
+		}
+
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.SCREEN) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.SCREEN));
+		}
+
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
