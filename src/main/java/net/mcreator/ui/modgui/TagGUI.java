@@ -27,7 +27,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.EntityListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -52,7 +52,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 	private MCItemListField blocks;
 
 	private ModElementListField functions;
-	private EntityListField entities;
+	private SpawnableEntityListField entities;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -69,7 +69,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
-		entities = new EntityListField(mcreator);
+		entities = new SpawnableEntityListField(mcreator);
 
 		name.setValidator(new TagsNameValidator<>(name, false));
 		name.enableRealtimeValidation();
