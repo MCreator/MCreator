@@ -11,6 +11,7 @@ source_root: "@WORKSPACEROOT/src/main/"
 res_root: "@SRCROOT"
 mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
 
 # specific resource folders
 structures_dir: "@MODDATAROOT/structures"
