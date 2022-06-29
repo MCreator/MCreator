@@ -89,6 +89,13 @@ import net.minecraft.util.SoundEvent;
 	private static class BlockColorRegisterHandler {
 		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
+				<#if data.tintType == "Default foliage">
+				return FoliageColors.getDefault();
+				<#elseif data.tintType == "Birch foliage">
+				return FoliageColors.getBirch();
+				<#elseif data.tintType == "Spruce foliage">
+				return FoliageColors.getSpruce();
+				<#else>
 				return world != null && pos != null ?
 				<#if data.tintType == "Grass">
 					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
@@ -103,6 +110,7 @@ import net.minecraft.util.SoundEvent;
 				<#else>
 					Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
 				</#if>
+				</#if>
 			}, block);
 		}
 	}
@@ -113,7 +121,7 @@ import net.minecraft.util.SoundEvent;
 				event.getItemColors().register((stack, index) -> {
 					<#if data.tintType == "Grass">
 						return GrassColors.get(0.5D, 1.0D);
-					<#elseif data.tintType == "Foliage">
+					<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 						return FoliageColors.getDefault();
 					<#elseif data.tintType == "Water">
 						return 3694022;
