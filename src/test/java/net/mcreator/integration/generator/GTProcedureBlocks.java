@@ -67,11 +67,11 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (!procedureBlock.getInputs().isEmpty()) {
+			if (!procedureBlock.getAllInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
-					for (String input : procedureBlock.getInputs()) {
+					for (String input : procedureBlock.getAllInputs()) {
 						boolean match = false;
 						for (String toolboxtemplate : procedureBlock.toolbox_init) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {

@@ -1051,8 +1051,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 						PanelUtils.westAndEastElement(energyStorage,
 								PanelUtils.northAndCenterElement(fluidTank, new JEmptyBox())), 10, 10)));
 
-		hasInventory.addActionListener(e -> refreshFiledsTileEntity());
-		refreshFiledsTileEntity();
+		hasInventory.addActionListener(e -> refreshFieldsTileEntity());
+		refreshFieldsTileEntity();
 
 		props.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -1230,7 +1230,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 	}
 
-	private void refreshFiledsTileEntity() {
+	private void refreshFieldsTileEntity() {
 		inventorySize.setEnabled(hasInventory.isSelected());
 		inventoryStackSize.setEnabled(hasInventory.isSelected());
 		inventoryDropWhenDestroyed.setEnabled(hasInventory.isSelected());
@@ -1494,7 +1494,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
-		refreshFiledsTileEntity();
+		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
