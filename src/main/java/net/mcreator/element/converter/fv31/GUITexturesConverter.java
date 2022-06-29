@@ -35,12 +35,17 @@ public class GUITexturesConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		GUI gui = (GUI) input;
 
-		FileIO.copyFile(
-				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER),
-				workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.SCREEN));
+		if (workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER)
+				.isFile()) {
+			FileIO.copyFile(workspace.getFolderManager()
+							.getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER),
+					workspace.getFolderManager()
+							.getTextureFile(gui.getModElement().getRegistryName(), TextureType.SCREEN));
 
-		// It is very unlikely GUI texture is used for something else than a screen
-		workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER).delete();
+			// It is very unlikely GUI texture is used for something else than a screen
+			workspace.getFolderManager().getTextureFile(gui.getModElement().getRegistryName(), TextureType.OTHER)
+					.delete();
+		}
 
 		if (gui.components != null && !gui.components.isEmpty()) {
 			for (GUIComponent component : gui.components) {
