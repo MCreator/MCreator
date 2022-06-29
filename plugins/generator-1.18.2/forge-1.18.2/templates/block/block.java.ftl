@@ -659,7 +659,11 @@ public class ${name}Block extends
 					<#if data.tintType == "Grass">
 						BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
-						BiomeColors.getAverageFoliageColor(world, pos) : FoliageColor.getDefaultColor();
+						FoliageColor.getDefaultColor() : BiomeColors.getAverageFoliageColor(world, pos);
+					<#elseif data.tintType == "Foliage_Birch">
+						FoliageColor.getBirch() : BiomeColors.getAverageFoliageColor(world, pos);
+					<#elseif data.tintType == "Foliage_Spurce">
+						FoliageColor.getSpruce() : BiomeColors.getAverageFoliageColor(world, pos);
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos) : -1;
 					<#elseif data.tintType == "Sky">
