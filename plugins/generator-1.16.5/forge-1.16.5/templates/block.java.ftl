@@ -108,9 +108,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			event.getBlockColors().register((bs, world, pos, index) -> {
 				<#if data.tintType == "Default foliage">
                 return FoliageColors.getDefault();
-				<#elseif data.tintType == "Foliage birch">
+				<#elseif data.tintType == "Birch foliage">
 				return FoliageColors.getBirch();
-				<#elseif data.tintType == "Foliage spruce">
+				<#elseif data.tintType == "Spruce foliage">
 				return FoliageColors.getSpruce();
 				<#else>
 				return world != null && pos != null ?
@@ -140,9 +140,9 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 						return GrassColors.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 						return FoliageColors.getDefault();
-					<#elseif data.tintType == "Foliage birch">
+					<#elseif data.tintType == "Birch foliage">
 						return FoliageColors.getBirch();
-					<#elseif data.tintType == "Foliage spruce">
+					<#elseif data.tintType == "Spruce foliage">
 						return FoliageColors.getSpruce();
 					<#elseif data.tintType == "Water">
 						return 3694022;

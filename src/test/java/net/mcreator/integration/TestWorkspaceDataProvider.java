@@ -1408,7 +1408,7 @@ public class TestWorkspaceDataProvider {
 				block.specialInfo = new ArrayList<>();
 			}
 			block.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Foliage birch", "Foliage spruce", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];

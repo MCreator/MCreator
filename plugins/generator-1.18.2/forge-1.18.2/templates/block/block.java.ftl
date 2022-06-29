@@ -657,9 +657,9 @@ public class ${name}Block extends
 			event.getBlockColors().register((bs, world, pos, index) -> {
 					<#if data.tintType == "Default foliage">
 					return FoliageColor.getDefaultColor();
-					<#elseif data.tintType == "Foliage birch">
+					<#elseif data.tintType == "Birch foliage">
 					return FoliageColor.getBirchColor();
-					<#elseif data.tintType == "Foliage spruce">
+					<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
 					<#else>
 					return world != null && pos != null ?
@@ -687,9 +687,9 @@ public class ${name}Block extends
 					return GrassColor.get(0.5D, 1.0D);
 				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 					return FoliageColor.getDefaultColor();
-				<#elseif data.tintType == "Foliage birch">
+				<#elseif data.tintType == "Birch foliage">
 					return FoliageColor.getBirchColor();
-				<#elseif data.tintType == "Foliage spruce">
+				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
 				<#elseif data.tintType == "Water">
 					return 3694022;
