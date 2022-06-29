@@ -54,7 +54,8 @@ public class FoodToItemConverter implements IConverter {
 				item.customModelName = food.get("customModelName").getAsString();
 			item.creativeTab = new TabEntry(workspace,
 					food.get("creativeTab").getAsJsonObject().get("value").getAsString());
-			item.rarity = food.get("rarity").getAsString();
+			if (food.get("rarity") != null)
+				item.rarity = food.get("rarity").getAsString();
 			List<String> specialInfo = new ArrayList<>();
 			if (food.get("specialInfo") != null)
 				food.getAsJsonArray("specialInfo").iterator()

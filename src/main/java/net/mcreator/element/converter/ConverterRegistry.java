@@ -44,8 +44,7 @@ import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
 import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
-import net.mcreator.element.converter.fv31.ArmorSpecialInformationConverter;
-import net.mcreator.element.converter.fv31.SpecialInformationConverter;
+import net.mcreator.element.converter.fv31.*;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -59,17 +58,10 @@ import java.util.*;
 public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
-		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ADVANCEMENT, Collections.singletonList(new AchievementFixer()));
-		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter()));
-		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
-				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
-				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
-				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
-				new ProcedureShootArrowFixer()));
+		put(ModElementType.ADVANCEMENT, Arrays.asList(new AchievementFixer(), new AdvancementTextureConverter()));
+		put(ModElementType.ARMOR, Arrays.asList(new ArmorTexturesConverter(), new ArmorSpecialInformationConverter()));
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter()));
-		put(ModElementType.OVERLAY, Collections.singletonList(new OverlayCoordinateConverter()));
 		put(ModElementType.BLOCK,
 				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new SpecialInformationConverter<Block>()));
@@ -79,11 +71,23 @@ public class ConverterRegistry {
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer(),
 				new SpecialInformationConverter<Fluid>()));
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
+		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
+		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
+		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
+		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
+		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
-		put(ModElementType.ARMOR, Collections.singletonList(new ArmorSpecialInformationConverter()));
+		put(ModElementType.POTIONEFFECT, Collections.singletonList(new EffectTextureConverter()));
+		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
+				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
+				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
+				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
+				new ProcedureShootArrowFixer()));
+		put(ModElementType.RANGEDITEM, Arrays.asList(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
+		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new SpecialInformationConverter<Item>()));
 		put(ModElementType.MUSICDISC, Collections.singletonList(new SpecialInformationConverter<MusicDisc>()));
-		put(ModElementType.RANGEDITEM, Collections.singletonList(new SpecialInformationConverter<RangedItem>()));
 		put(ModElementType.TOOL, Collections.singletonList(new SpecialInformationConverter<Tool>()));
 	}};
 
