@@ -655,13 +655,13 @@ public class ${name}Block extends
 	<#if data.tintType != "No tint">
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
-					<#if data.tintType == "Default foliage">
+				<#if data.tintType == "Default foliage">
 					return FoliageColor.getDefaultColor();
-					<#elseif data.tintType == "Birch foliage">
+				<#elseif data.tintType == "Birch foliage">
 					return FoliageColor.getBirchColor();
-					<#elseif data.tintType == "Spruce foliage">
+				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
-					<#else>
+				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
 						BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
@@ -676,7 +676,7 @@ public class ${name}Block extends
 					<#else>
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
-					</#if>
+				</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 

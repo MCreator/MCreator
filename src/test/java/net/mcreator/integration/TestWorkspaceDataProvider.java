@@ -451,7 +451,8 @@ public class TestWorkspaceDataProvider {
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
