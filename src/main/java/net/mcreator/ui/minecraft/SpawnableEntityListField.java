@@ -27,14 +27,14 @@ import net.mcreator.ui.init.L10N;
 
 import java.util.List;
 
-public class EntityListField extends JItemListField<EntityEntry> {
+public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 
-	public EntityListField(MCreator mcreator) {
+	public SpawnableEntityListField(MCreator mcreator) {
 		super(mcreator);
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllEntities,
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllSpawnableEntities,
 						L10N.t("dialog.list_field.entity_title"), L10N.t("dialog.list_field.entity_message")).stream()
 				.map(e -> new EntityEntry(mcreator.getWorkspace(), e)).toList();
 	}
