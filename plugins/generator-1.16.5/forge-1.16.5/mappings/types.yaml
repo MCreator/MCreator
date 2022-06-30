@@ -11,3 +11,4 @@ map: HashMap
 advancement: Advancement
 dimensiontype: RegistryKey<World>
 actionresulttype: ActionResultType
+cmdcontext: CommandContext<CommandSource>

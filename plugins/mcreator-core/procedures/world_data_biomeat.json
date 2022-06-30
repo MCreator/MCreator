@@ -14,10 +14,12 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "biome",
+      "datalist": "biome"
     }
-  ],
-  "extensions": [
-    "biome_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",

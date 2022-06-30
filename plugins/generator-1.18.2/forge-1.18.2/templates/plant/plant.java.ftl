@@ -51,7 +51,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if data.plantType == "growapable" || data.forceTicking>
 		.randomTicks()
 		</#if>
-		.noCollission()
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
 			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
@@ -83,6 +82,14 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
 		.noDrops()
 		</#if>
+		<#if data.isSolid>
+		.noOcclusion()
+			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
+			.dynamicShape()
+			</#if>
+		<#else>
+		.noCollission()
+		</#if>
 		);
 	}
 
@@ -92,7 +99,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			return Shapes.empty();
 		<#else>
 			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
-			<@makeBoundingBox data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset "north"/>
+			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
 		</#if>
 	}
 	</#if>
@@ -288,6 +295,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockRightClicked data.onRightClicked/>
 
+	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onHitByProjectile data.onHitByProjectile/>
+
 	<#if data.hasTileEntity>
 	@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ${name}BlockEntity(pos, state);
@@ -307,6 +318,13 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	<#if data.tintType != "No tint">
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
+				<#if data.tintType == "Default foliage">
+					return FoliageColor.getDefaultColor();
+				<#elseif data.tintType == "Birch foliage">
+					return FoliageColor.getBirchColor();
+				<#elseif data.tintType == "Spruce foliage">
+					return FoliageColor.getEvergreenColor();
+				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
 						BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
@@ -321,6 +339,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 					<#else>
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
+				</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
 
@@ -329,8 +348,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			event.getItemColors().register((stack, index) -> {
 				<#if data.tintType == "Grass">
 					return GrassColor.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage">
+				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 					return FoliageColor.getDefaultColor();
+				<#elseif data.tintType == "Birch foliage">
+					return FoliageColor.getBirchColor();
+				<#elseif data.tintType == "Spruce foliage">
+					return FoliageColor.getEvergreenColor();
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">

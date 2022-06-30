@@ -42,7 +42,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog {
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
 		super(editor.mcreator, slot);
 		setModal(true);
-		setSize(850, 360);
+		setSize(850, 370);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
@@ -73,7 +73,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog {
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
 
-		JColor color = new JColor(editor.mcreator);
+		JColor color = new JColor(editor.mcreator, false, false);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
 
 		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItems);

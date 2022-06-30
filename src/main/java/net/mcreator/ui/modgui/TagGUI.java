@@ -27,11 +27,12 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.EntityListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.validators.NamespaceValidator;
 import net.mcreator.ui.validation.validators.TagsNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -44,14 +45,14 @@ import java.util.Objects;
 
 public class TagGUI extends ModElementGUI<Tag> {
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "forge", "minecraft", "mod" });
+	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
 	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Entities", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
 
 	private ModElementListField functions;
-	private EntityListField entities;
+	private SpawnableEntityListField entities;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -68,10 +69,13 @@ public class TagGUI extends ModElementGUI<Tag> {
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
-		entities = new EntityListField(mcreator);
+		entities = new SpawnableEntityListField(mcreator);
 
 		name.setValidator(new TagsNameValidator<>(name, false));
 		name.enableRealtimeValidation();
+
+		namespace.setValidator(new NamespaceValidator<>(namespace));
+		namespace.enableRealtimeValidation();
 
 		name.addItem("tag");
 		name.addItem("category/tag");
@@ -133,7 +137,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(name);
+		return new AggregatedValidationResult(name, namespace);
 	}
 
 	@Override public void openInEditingMode(Tag tag) {

@@ -102,6 +102,7 @@
                 <block type="coord_z"/>
             </value>
         </block>
+        <block type="entity_none"/>
         <block type="java_code"/>
         <block type="java_code_get"/>
         <custom-advanced/>

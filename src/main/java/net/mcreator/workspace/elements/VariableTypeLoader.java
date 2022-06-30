@@ -62,7 +62,6 @@ public class VariableTypeLoader {
 
 			//We begin by creating the extensions needed for other blocks
 			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.variableListExtension(variableType));
-			variableBlocklyJSBuilder.append(BlocklyJavascriptTemplates.procedureListExtensions(variableType));
 
 			//Then, we create the blocks related to variables
 			if (variableType.isNullable()) {

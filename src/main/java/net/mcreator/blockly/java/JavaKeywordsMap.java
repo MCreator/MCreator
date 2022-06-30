@@ -40,7 +40,7 @@ public final class JavaKeywordsMap {
 		put("ADD", "+");
 		put("MINUS", "-");
 		put("MULTIPLY", "*");
-		put("DIVIDE", "/");
+		put("DIVIDE", "/ "); // The space prevents accidental inline comments from int/float markers
 		put("MOD", "%");
 		put("BAND", "&");
 		put("BOR", "|");

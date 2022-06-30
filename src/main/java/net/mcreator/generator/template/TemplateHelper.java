@@ -18,7 +18,10 @@
 
 package net.mcreator.generator.template;
 
+import com.google.gson.Gson;
+
 import java.awt.*;
+import java.util.Random;
 
 @SuppressWarnings("unused") public class TemplateHelper {
 
@@ -32,8 +35,28 @@ import java.awt.*;
 		return values[idx];
 	}
 
+	public double random(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextDouble();
+	}
+
+	public long randomlong(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextLong();
+	}
+
 	public String colorToHexString(Color color) {
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+	}
+
+	public String obj2str(Object object) {
+		return new Gson().toJson(object);
 	}
 
 }

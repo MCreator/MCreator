@@ -6,6 +6,11 @@
     width: 7px;
 }
 
+.blocklyScrollbarBackground {
+    opacity: 255;
+    fill: transparent;
+}
+
 body {
     margin: 0;
     padding: 0;

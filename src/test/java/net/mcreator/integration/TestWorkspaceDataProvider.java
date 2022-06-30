@@ -58,8 +58,8 @@ import java.util.*;
 
 public class TestWorkspaceDataProvider {
 
-	private static ModElement me(Workspace workspace, ModElementType<?> type, String sufix) {
-		return new ModElement(workspace, "Example" + type.getRegistryName() + sufix, type);
+	private static ModElement me(Workspace workspace, ModElementType<?> type, String suffix) {
+		return new ModElement(workspace, "Example" + type.getRegistryName() + suffix, type);
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
@@ -231,6 +231,26 @@ public class TestWorkspaceDataProvider {
 					workspace.getFolderManager().getTextureFile("test", TextureType.OTHER));
 		}
 
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.ENTITY) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.ENTITY));
+		}
+
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.EFFECT) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.EFFECT));
+		}
+
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.PARTICLE) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.PARTICLE));
+		}
+
+		if (workspace.getFolderManager().getTexturesFolder(TextureType.SCREEN) != null) {
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test", TextureType.SCREEN));
+		}
+
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
@@ -357,7 +377,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
 				entry1.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry1.minGroup = 10;
 				entry1.maxGroup = 134;
 				entry1.weight = 13;
@@ -366,7 +386,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
 				entry2.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry2.minGroup = 23;
 				entry2.maxGroup = 145;
 				entry2.weight = 11;
@@ -375,7 +395,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
 				entry3.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry3.minGroup = 23;
 				entry3.maxGroup = 145;
 				entry3.weight = 11;
@@ -384,7 +404,7 @@ public class TestWorkspaceDataProvider {
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
 				entry4.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllEntities(modElement.getWorkspace())));
+						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry4.minGroup = 23;
 				entry4.maxGroup = 145;
 				entry4.weight = 11;
@@ -431,7 +451,8 @@ public class TestWorkspaceDataProvider {
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
@@ -484,12 +505,6 @@ public class TestWorkspaceDataProvider {
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
-		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
-			Command command = new Command(modElement);
-			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
-			command.onCommandExecuted = new Procedure("procedure2");
-			return command;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
 			keyBinding.triggerKey = getRandomString(random,
@@ -827,13 +842,12 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
-			dimension.biomesInDimension.add(
-					new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			if (!emptyLists) {
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
-				dimension.biomesInDimension.add(
-						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
+				dimension.biomesInDimension.addAll(
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			} else {
 				dimension.biomesInDimension.add(
 						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
 			}
@@ -1001,6 +1015,7 @@ public class TestWorkspaceDataProvider {
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
+			plant.isSolid = _true;
 			plant.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -1033,6 +1048,7 @@ public class TestWorkspaceDataProvider {
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 13;
 			plant.patchSize = 46;
+			plant.generateAtAnyHeight = _true;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
@@ -1059,10 +1075,12 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockAdded = new Procedure("procedure8");
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
+			plant.onEntityWalksOn = new Procedure("procedure11");
+			plant.onHitByProjectile = new Procedure("procedure12");
 			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -1240,10 +1258,12 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
+			block.enablePitch = !_true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
 			block.useLootTableForDrops = !_true;
+			block.requiresCorrectTool = _true;
 			block.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			block.destroyTool = getRandomItem(random,
@@ -1368,6 +1388,7 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOn = new Procedure("procedure11");
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
+				block.onHitByProjectile = new Procedure("procedure14");
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.particleCondition = new Procedure("condition4");
@@ -1388,7 +1409,7 @@ public class TestWorkspaceDataProvider {
 				block.specialInfo = new ArrayList<>();
 			}
 			block.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
@@ -1581,11 +1602,14 @@ public class TestWorkspaceDataProvider {
 					int entries = random.nextInt(10) + 1;
 					for (int j = 0; j < entries; j++) {
 						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
-						entry.price1 = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ? getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() : "");
-						entry.offer = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
+								getRandomMCItem(random,
+										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
+								"");
+						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
@@ -1596,7 +1620,33 @@ public class TestWorkspaceDataProvider {
 
 						trade.entries.add(entry);
 					}
+					VillagerTrade.CustomTradeEntry wanderingTrade = new VillagerTrade.CustomTradeEntry();
+					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(), "WANDERING_TRADER");
+					wanderingTrade.entries = new ArrayList<>();
+
+					int wanderingEntries = random.nextInt(10) + 1;
+					for (int j = 0; j < wanderingEntries; j++) {
+						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
+								getRandomMCItem(random,
+										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
+								"");
+						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
+						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
+						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
+						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
+						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
+						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+
+						wanderingTrade.entries.add(entry);
+					}
 					villagerTrade.tradeEntries.add(trade);
+					villagerTrade.tradeEntries.add(wanderingTrade);
 				}
 			}
 			return villagerTrade;

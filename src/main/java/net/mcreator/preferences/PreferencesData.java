@@ -64,6 +64,7 @@ public class PreferencesData {
 	public static class NotificationSettings {
 
 		@PreferencesEntry public boolean openWhatsNextPage = true;
+		@PreferencesEntry public boolean snapshotMessage = true;
 		@PreferencesEntry public boolean checkAndNotifyForUpdates = true;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
 		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
@@ -135,6 +136,7 @@ public class PreferencesData {
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public File java_home = null;
 		public String uiTheme = "default_dark";
+		public boolean enableJavaPlugins = false;
 	}
 
 	public enum WorkspaceSortType {

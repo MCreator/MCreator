@@ -1,55 +1,86 @@
-<#macro makeBoundingBox positiveBoxes negativeBoxes noOffset facing>
-    return <#if negativeBoxes?size != 0>Shapes.join(</#if>
-    <@mergeBoxes positiveBoxes, facing/>
+<#macro makeBoundingBox positiveBoxes negativeBoxes facing pitchType="floor">
+    <#if negativeBoxes?size != 0>Shapes.join(</#if>
+    <@mergeBoxes positiveBoxes, facing, pitchType/>
     <#if negativeBoxes?size != 0>
-    , <@mergeBoxes negativeBoxes, facing/>, BooleanOp.ONLY_FIRST)</#if>
-    <#if !noOffset>.move(offset.x, offset.y, offset.z)</#if>;
+    , <@mergeBoxes negativeBoxes, facing, pitchType/>, BooleanOp.ONLY_FIRST)</#if>
 </#macro>
 
-<#macro boundingBoxWithRotation positiveBoxes negativeBoxes noOffset rotationMode>
-    <#if rotationMode == 0>
-        <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
-    <#elseif rotationMode != 5>
-        switch ((Direction) state.getValue(FACING)) {
-            case SOUTH:
-            default:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "south"/>
-            case NORTH:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "north"/>
-            case EAST:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "east"/>
-            case WEST:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "west"/>
-            <#if rotationMode == 2 || rotationMode == 4>
-                case UP:
-                    <@makeBoundingBox positiveBoxes negativeBoxes noOffset "up"/>
-                case DOWN:
-                    <@makeBoundingBox positiveBoxes negativeBoxes noOffset "down"/>
-            </#if>
-        }
+<#macro checkPitchSupport positiveBoxes negativeBoxes facing enablePitch>
+    <#if enablePitch>
+        switch (state.getValue(FACE)) {
+            case FLOOR -> <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
+            case WALL -> <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
+            case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
+        };
     <#else>
-        switch ((Direction.Axis) state.getValue(AXIS)) {
-            case X:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "x"/>
-            case Y:
-            default:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "y"/>
-            case Z:
-                <@makeBoundingBox positiveBoxes negativeBoxes noOffset "z"/>
-        }
+        <@makeBoundingBox positiveBoxes negativeBoxes facing/>;
     </#if>
 </#macro>
 
-<#macro makeCuboid box facing>
+<#macro boundingBoxWithRotation positiveBoxes negativeBoxes noOffset rotationMode enablePitch=false>
+    <#compress>
+    <#if rotationMode == 0>
+        return <@makeBoundingBox positiveBoxes negativeBoxes "north"/><#if !noOffset>.move(offset.x, offset.y, offset.z)</#if>;
+    <#else>
+        return <#if !noOffset>(</#if>
+        <#if rotationMode != 5>
+            <#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
+            switch (state.getValue(FACING)) {
+                default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
+                case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
+                case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
+                case WEST -> <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
+                <#if rotationMode == 2 || rotationMode == 4>
+                    case UP -> <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
+                    case DOWN -> <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
+                </#if>
+            }
+        <#else>
+            switch (state.getValue(AXIS)) {
+                case X -> <@makeBoundingBox positiveBoxes negativeBoxes "x"/>;
+                case Y -> <@makeBoundingBox positiveBoxes negativeBoxes "y"/>;
+                case Z -> <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
+            }
+        </#if>
+        <#if !noOffset>).move(offset.x, offset.y, offset.z)</#if>;
+    </#if>
+    </#compress>
+</#macro>
+
+<#macro makeCuboid box facing pitchType>
     <#if facing == "south">
-        box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.my, box.My)}, ${min(16 - box.mz, 16 - box.Mz)},
-            ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.my, box.My)}, ${max(16 - box.mz, 16 - box.Mz)})
+        <#if pitchType == "floor">
+            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.my, box.My)}, ${min(16 - box.mz, 16 - box.Mz)},
+                ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.my, box.My)}, ${max(16 - box.mz, 16 - box.Mz)})
+        <#elseif pitchType == "ceiling">
+            box(${min(box.mx, box.Mx)}, ${min(16 - box.my, 16 - box.My)}, ${min(16 - box.mz, 16 - box.Mz)},
+                ${max(box.mx, box.Mx)}, ${max(16 - box.my, 16 - box.My)}, ${max(16 - box.mz, 16 - box.Mz)})
+        <#elseif pitchType == "wall">
+            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(box.mz, box.Mz)}, ${min(box.my, box.My)},
+                ${max(16 - box.mx, 16 - box.Mx)}, ${max(box.mz, box.Mz)}, ${max(box.my, box.My)})
+        </#if>
     <#elseif facing == "east">
-        box(${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)}, ${min(box.mx, box.Mx)},
-            ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)}, ${max(box.mx, box.Mx)})
+        <#if pitchType == "floor">
+            box(${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)}, ${min(box.mx, box.Mx)},
+                ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)}, ${max(box.mx, box.Mx)})
+        <#elseif pitchType == "ceiling">
+            box(${min(16 - box.mz, 16 - box.Mz)}, ${min(16 - box.my, 16 - box.My)}, ${min(16 - box.mx, 16 - box.Mx)},
+                ${max(16 - box.mz, 16 - box.Mz)}, ${max(16 - box.my, 16 - box.My)}, ${max(16 - box.mx, 16 - box.Mx)})
+        <#elseif pitchType == "wall">
+            box(${min(box.my, box.My)}, ${min(box.mz, box.Mz)}, ${min(box.mx, box.Mx)},
+                ${max(box.my, box.My)}, ${max(box.mz, box.Mz)}, ${max(box.mx, box.Mx)})
+        </#if>
     <#elseif facing == "west">
-        box(${min(box.mz, box.Mz)}, ${min(box.my, box.My)}, ${min(16 - box.mx, 16 - box.Mx)},
-            ${max(box.mz, box.Mz)}, ${max(box.my, box.My)}, ${max(16 - box.mx, 16 - box.Mx)})
+        <#if pitchType == "floor">
+            box(${min(box.mz, box.Mz)}, ${min(box.my, box.My)}, ${min(16 - box.mx, 16 - box.Mx)},
+                ${max(box.mz, box.Mz)}, ${max(box.my, box.My)}, ${max(16 - box.mx, 16 - box.Mx)})
+        <#elseif pitchType == "ceiling">
+            box(${min(box.mz, box.Mz)}, ${min(16 - box.my, 16 - box.My)}, ${min(box.mx, box.Mx)},
+                ${max(box.mz, box.Mz)}, ${max(16 - box.my, 16 - box.My)}, ${max(box.mx, box.Mx)})
+        <#elseif pitchType == "wall">
+            box(${min(16 - box.my, 16 - box.My)}, ${min(box.mz, box.Mz)}, ${min(16 - box.mx, 16 - box.Mx)},
+                ${max(16 - box.my, 16 - box.My)}, ${max(box.mz, box.Mz)}, ${max(16 - box.mx, 16 - box.Mx)})
+        </#if>
     <#elseif facing == "up">
         box(${min(box.mx, box.Mx)}, ${min(16 - box.mz, 16 - box.Mz)}, ${min(box.my, box.My)},
             ${max(box.mx, box.Mx)}, ${max(16 - box.mz, 16 - box.Mz)}, ${max(box.my, box.My)})
@@ -60,8 +91,16 @@
         box(${min(box.my, box.My)}, ${min(box.mz, box.Mz)}, ${min(box.mx, box.Mx)},
             ${max(box.my, box.My)}, ${max(box.mz, box.Mz)}, ${max(box.mx, box.Mx)})
     <#else>
-        box(${min(box.mx, box.Mx)}, ${min(box.my, box.My)}, ${min(box.mz, box.Mz)},
-            ${max(box.mx, box.Mx)}, ${max(box.my, box.My)}, ${max(box.mz, box.Mz)})
+        <#if pitchType == "floor">
+            box(${min(box.mx, box.Mx)}, ${min(box.my, box.My)}, ${min(box.mz, box.Mz)},
+                ${max(box.mx, box.Mx)}, ${max(box.my, box.My)}, ${max(box.mz, box.Mz)})
+        <#elseif pitchType == "ceiling">
+            box(${min(16 - box.mx, 16 - box.Mx)}, ${min(16 - box.my, 16 - box.My)}, ${min(box.mz, box.Mz)},
+                ${max(16 - box.mx, 16 - box.Mx)}, ${max(16 - box.my, 16 - box.My)}, ${max(box.mz, box.Mz)})
+        <#elseif pitchType == "wall">
+            box(${min(box.mx, box.Mx)}, ${min(box.mz, box.Mz)}, ${min(16 - box.my, 16 - box.My)},
+                ${max(box.mx, box.Mx)}, ${max(box.mz, box.Mz)}, ${max(16 - box.my, 16 - box.My)})
+        </#if>
     </#if>
 </#macro>
 
@@ -73,11 +112,11 @@
     <#return (a > b)?then(a, b)>
 </#function>
 
-<#macro mergeBoxes boxes facing>
+<#macro mergeBoxes boxes facing pitchType>
 <#if boxes?size == 1>
-    <@makeCuboid boxes.get(0) facing/>
+    <@makeCuboid boxes.get(0) facing pitchType/>
 <#else>
     Shapes.or(<#list boxes as box>
-        <@makeCuboid box facing/><#sep>,</#list>)
+        <@makeCuboid box facing pitchType/><#sep>,</#list>)
 </#if>
 </#macro>

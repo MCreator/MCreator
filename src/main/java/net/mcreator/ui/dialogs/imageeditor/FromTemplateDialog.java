@@ -88,9 +88,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 		templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
 
-		col1 = new JColor(window);
-		col2 = new JColor(window);
-		col4 = new JColor(window);
+		col1 = new JColor(window, false, true);
+		col2 = new JColor(window, false, true);
+		col4 = new JColor(window, false, true);
 
 		JPanel settings = new JPanel(new BorderLayout());
 		JPanel controls = new JPanel(new BorderLayout());

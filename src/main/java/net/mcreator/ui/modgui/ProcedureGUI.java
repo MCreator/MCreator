@@ -24,6 +24,7 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.types.Command;
 import net.mcreator.element.types.GUI;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -596,9 +597,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		if (!hasErrors && !hasDependencyErrors)
 			return new AggregatedValidationResult.PASS();
 		else if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
-							.collect(Collectors.toList()));
+			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
+					.filter(note -> note.type() == BlocklyCompileNote.Type.ERROR).map(BlocklyCompileNote::message)
+					.collect(Collectors.toList()));
 		else
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
@@ -618,9 +619,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {
 					GeneratableElement generatableElement = element.getGeneratableElement();
-					if (generatableElement instanceof GUI) {
+					if (generatableElement instanceof GUI gui) {
 						boolean procedureUsedByGUI = false;
-						for (GUIComponent component : ((GUI) generatableElement).components) {
+						for (GUIComponent component : gui.components) {
 							if (Procedure.isElementUsingProcedure(component, modElement.getName())) {
 								procedureUsedByGUI = true;
 								break;
@@ -630,6 +631,16 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
+							mcreator.getGenerator().generateElement(generatableElement);
+						}
+					} else if (generatableElement instanceof Command command) {
+						if (command.argsxml != null && command.argsxml.contains(
+								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
+							mcreator.getGenerator().generateElement(generatableElement);
+						}
+					} else if (generatableElement instanceof net.mcreator.element.types.Procedure procedure) {
+						if (procedure.procedurexml != null && procedure.procedurexml.contains(
+								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
 							mcreator.getGenerator().generateElement(generatableElement);
 						}
 					}

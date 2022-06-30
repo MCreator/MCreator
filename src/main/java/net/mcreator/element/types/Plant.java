@@ -76,6 +76,7 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public int luminance;
 	public boolean unbreakable;
+	public boolean isSolid;
 
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
@@ -112,6 +113,7 @@ import java.util.stream.Collectors;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	public int patchSize;
+	public boolean generateAtAnyHeight;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourBlockChanges;
@@ -123,6 +125,8 @@ import java.util.stream.Collectors;
 	public Procedure onEntityCollides;
 	public Procedure onBlockPlacedBy;
 	public Procedure onRightClicked;
+	public Procedure onEntityWalksOn;
+	public Procedure onHitByProjectile;
 
 	private Plant() {
 		this(null);

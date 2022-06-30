@@ -51,7 +51,8 @@ public class JVillagerTradeEntry extends JPanel {
 	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
 	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 0.01));
 
-	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JVillagerTradeEntry> entryList) {
+	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JVillagerTradeEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
@@ -70,21 +71,24 @@ public class JVillagerTradeEntry extends JPanel {
 		JPanel line1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line1.setOpaque(false);
 
-		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price1"), L10N.label("elementgui.villager_trade.price1")));
+		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price1"),
+				L10N.label("elementgui.villager_trade.price1")));
 		line1.add(price1);
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countPrice1);
 
 		line1.add(new JEmptyBox(15, 5));
 
-		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price2"), L10N.label("elementgui.villager_trade.price2")));
+		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price2"),
+				L10N.label("elementgui.villager_trade.price2")));
 		line1.add(price2);
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countPrice2);
 
 		line1.add(new JEmptyBox(15, 5));
 
-		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/sale"), L10N.label("elementgui.villager_trade.sale")));
+		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/sale"),
+				L10N.label("elementgui.villager_trade.sale")));
 		line1.add(offer);
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countOffer);
@@ -101,13 +105,17 @@ public class JVillagerTradeEntry extends JPanel {
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line2.setOpaque(false);
 
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/level"), L10N.label("elementgui.villager_trade.level")));
+		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/level"),
+				L10N.label("elementgui.villager_trade.level")));
 		line2.add(level);
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/max_trades"), L10N.label("elementgui.villager_trade.max_trades")));
+		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/max_trades"),
+				L10N.label("elementgui.villager_trade.max_trades")));
 		line2.add(maxTrades);
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/xp"), L10N.label("elementgui.villager_trade.xp")));
+		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/xp"),
+				L10N.label("elementgui.villager_trade.xp")));
 		line2.add(xp);
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price_multiplier"), L10N.label("elementgui.villager_trade.price_multiplier")));
+		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price_multiplier"),
+				L10N.label("elementgui.villager_trade.price_multiplier")));
 		line2.add(priceMultiplier);
 
 		add(PanelUtils.centerAndEastElement(line1, PanelUtils.join(remove)));

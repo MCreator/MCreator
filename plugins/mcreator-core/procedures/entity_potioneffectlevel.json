@@ -4,12 +4,14 @@
       "type": "input_value",
       "name": "entity",
       "check": "Entity"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "potion",
+      "datalist": "effect"
     }
   ],
   "inputsInline": true,
-  "extensions": [
-    "effect_list_provider"
-  ],
   "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {

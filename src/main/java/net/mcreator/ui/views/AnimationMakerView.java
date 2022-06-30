@@ -28,8 +28,8 @@ import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -252,10 +252,11 @@ public class AnimationMakerView extends ViewBase {
 		add2.addActionListener(event -> {
 			File frame = FileDialogs.getOpenDialog(fra, new String[] { ".gif" });
 			if (frame != null) {
-				ProgressDialog dial = new ProgressDialog(fra, "GIF import");
+				ProgressDialog dial = new ProgressDialog(fra, L10N.t("dialog.animation_maker.gif_importing"));
 				Thread t = new Thread(() -> {
 					try {
-						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit("Reading GIF");
+						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+								L10N.t("dialog.animation_maker.gif_reading"));
 						dial.addProgress(p1);
 						BufferedImage[] frames = GifUtil.readAnimatedGif(frame);
 						if (frames.length > 0)
@@ -269,7 +270,8 @@ public class AnimationMakerView extends ViewBase {
 						}
 						dial.refreshDisplay();
 						int frameCount = frames.length;
-						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit("Processing GIF");
+						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+								L10N.t("dialog.animation_maker.gif_processing"));
 						dial.addProgress(p2);
 						for (int i = 0; i < frameCount; i++) {
 							int finalI = i;
@@ -399,7 +401,7 @@ public class AnimationMakerView extends ViewBase {
 		JComboBox<ResourcePointer> types = new JComboBox<>();
 		templatesSorted.forEach(types::addItem);
 
-		JColor colors = new JColor(mcreator);
+		JColor colors = new JColor(mcreator, false, true);
 		JCheckBox cbox = new JCheckBox();
 		ActionListener al = event -> {
 			try {
@@ -430,8 +432,9 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(cbox);
 
 		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_template"),
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
-				"Add") == 0) {
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { L10N.t("common.add"), UIManager.getString("OptionPane.cancelButtonText") },
+				L10N.t("common.add")) == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils.convert(
 						ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()),
@@ -461,7 +464,7 @@ public class AnimationMakerView extends ViewBase {
 						getFont().deriveFont(12.0f), Color.gray));
 
 		JButton selectFile = new JButton("...");
-		JColor colors = new JColor(mcreator);
+		JColor colors = new JColor(mcreator, false, true);
 		JCheckBox cbox = new JCheckBox();
 		JCheckBox cbox2 = new JCheckBox();
 
@@ -622,7 +625,7 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	@Override public String getViewName() {
-		return "Animation maker";
+		return L10N.t("tab.animation_maker");
 	}
 
 }

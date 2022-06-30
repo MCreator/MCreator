@@ -35,13 +35,6 @@ public class BlocklyJavascriptTemplates {
 				});""".formatted(variableType.getName(), variableType.getBlocklyVariableType());
 	}
 
-	public static String procedureListExtensions(VariableType variableType) {
-		return """
-				Blockly.Extensions.register('procedure_retval_%s',function () {
-					this.appendDummyInput().appendField(new FieldDataListSelector("procedure_retval_%s"), 'procedure');
-				});""".formatted(variableType.getName(), variableType.getName());
-	}
-
 	public static String getVariableBlock(VariableType variableType) {
 		return """
 				Blockly.defineBlocksWithJsonArray([{
@@ -144,9 +137,13 @@ public class BlocklyJavascriptTemplates {
 		return """
 				Blockly.defineBlocksWithJsonArray([{
 					"type": "procedure_retval_%s",
-					"message0": "%s",
-					"extensions": [
-						"procedure_retval_%s"
+					"message0": "%s %%1",
+					"args0": [
+						{
+							"type": "field_data_list_selector",
+							"name": "procedure",
+							"datalist": "procedure_retval_%s"
+						}
 					],
 					"output": "%s",
 					"inputsInline": true,
@@ -160,17 +157,19 @@ public class BlocklyJavascriptTemplates {
 		return """
 				Blockly.defineBlocksWithJsonArray([{
 					"type": "procedure_retval_%s",
-					"message0": "%%1 %s",
+					"message0": "%%1 %s %%2",
 					"args0": [
 						{
 							"type": "field_image",
 							"src": "./res/null.png",
 							"width": 8,
 							"height": 24
+						},
+						{
+							"type": "field_data_list_selector",
+							"name": "procedure",
+							"datalist": "procedure_retval_%s"
 						}
-					],
-					"extensions": [
-						"procedure_retval_%s"
 					],
 					"output": "%s",
 					"inputsInline": true,
