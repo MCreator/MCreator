@@ -22,21 +22,33 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TextTrimBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 
 		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			master.append("(");
-			master.processOutputBlockWithoutParentheses(element);
-			master.append(").trim()");
+			String elementcode = BlocklyToCode.directProcessOutputBlock(master, element);
+			if (master.getTemplateGenerator() != null) {
+				if (master.getTemplateGenerator().hasTemplate("_trim.java.ftl")) {
+					Map<String, Object> dataModel = new HashMap<>();
+					dataModel.put("value", elementcode);
+					master.append(master.getTemplateGenerator().generateFromTemplate("_trim.java.ftl", dataModel));
+				} else {
+					master.append("(");
+					master.processOutputBlockWithoutParentheses(element);
+					master.append(").trim()");
+				}
+			}
 		} else {
-			master.append("null");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.empty_text_trim_block")));
 		}
