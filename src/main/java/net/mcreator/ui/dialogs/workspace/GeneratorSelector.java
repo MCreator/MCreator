@@ -49,20 +49,25 @@ public class GeneratorSelector {
 
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
 			@Nullable GeneratorFlavor currentFlavor) {
-		return getGeneratorSelector(parent, current, currentFlavor, null);
+		return getGeneratorSelector(parent, null, current, currentFlavor);
+	}
+
+	public static GeneratorConfiguration getGeneratorSelector(MCreator mcreator, @Nullable GeneratorConfiguration current,
+			@Nullable GeneratorFlavor currentFlavor) {
+		return getGeneratorSelector(mcreator, mcreator, current, currentFlavor);
 	}
 
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
 	 *
 	 * @param parent        <p>The  window to attach the dialog</p>
+	 * @param mcreator      <p>The {@link MCreator} instance to use, notably when making the backup of the {@link Workspace}. If null is passed, some actions will not be executed.</p>
 	 * @param current       <p>The current generator settings used</p>
 	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
-	 * @param mcreator      <p>The {@link MCreator} instance to use, notably when making the backup of the {@link Workspace}. If null is passed, some actions will not be executed.</p>
 	 * @return <p>The {@link GeneratorConfiguration} to use</p>
 	 */
-	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor, @Nullable MCreator mcreator) {
+	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable MCreator mcreator, @Nullable GeneratorConfiguration current,
+			@Nullable GeneratorFlavor currentFlavor) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();

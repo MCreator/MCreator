@@ -334,19 +334,17 @@ public class WorkspaceDialogs {
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
 			selectGenerator.addActionListener(e -> {
-				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
-						(GeneratorConfiguration) generator.getSelectedItem(),
-						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter, mcreator);
+				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(mcreator, (GeneratorConfiguration) generator.getSelectedItem(),
+						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
 				if (gc != null)
 					generator.setSelectedItem(gc);
 			});
 
 			generator.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
-					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
+					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(mcreator,
 							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
-									workspace.getGeneratorConfiguration().getGeneratorFlavor() :
-									flavorFilter, mcreator);
+									workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
 					if (gc != null)
 						generator.setSelectedItem(gc);
 				}
