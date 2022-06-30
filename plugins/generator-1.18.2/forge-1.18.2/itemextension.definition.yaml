@@ -3,7 +3,7 @@ templates:
     writer:  java
     conditon: hasDispenseBehavior
     deleteWhenConditionFalse: true
-    name: "@SRCROOT/@BASEPACKAGEPATH/item/extension/@JavaModNameItemExtension.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/extension/@NAMEItemExtension.java"
 
 global_templates:
   - template: elementinits/fuels.java.ftl
