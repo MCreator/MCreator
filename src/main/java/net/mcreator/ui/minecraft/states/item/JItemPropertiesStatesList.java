@@ -31,8 +31,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.validators.PropertyNameValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -163,9 +163,11 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
 				propertyId);
 
-		pe.name.setValidator(new PropertyNameValidator(pe.name, "Property name",
+		UniqueNameValidator validator = new UniqueNameValidator(pe.name,
+				L10N.t("elementgui.item.custom_property.name_validator"),
 				() -> propertiesList.stream().map(e -> e.name.getText()), builtinPropertyNames,
-				new RegistryNameValidator(pe.name, "Property name")));
+				new RegistryNameValidator(pe.name, L10N.t("elementgui.item.custom_property.name_validator")));
+		pe.name.setValidator(validator);
 		pe.name.enableRealtimeValidation();
 		pe.name.getDocument().addDocumentListener(new DocumentListener() {
 			@Override public void insertUpdate(DocumentEvent e) {
