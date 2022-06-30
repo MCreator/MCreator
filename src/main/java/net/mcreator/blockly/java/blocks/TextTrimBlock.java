@@ -45,7 +45,7 @@ public class TextTrimBlock implements IBlockGenerator {
 				} else {
 					master.append("(");
 					master.processOutputBlockWithoutParentheses(element);
-					master.append(").trim()");
+					master.append(").strip()");
 				}
 			}
 		} else {
