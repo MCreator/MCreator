@@ -44,14 +44,7 @@ import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
 import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
-import net.mcreator.element.converter.fv31.EffectTextureConverter;
-import net.mcreator.element.converter.fv31.ParticleTextureConverter;
-import net.mcreator.element.converter.fv31.ArmorTexturesConverter;
-import net.mcreator.element.converter.fv31.EntityTexturesConverter;
-import net.mcreator.element.converter.fv31.RangedItemTextureConverter;
-import net.mcreator.element.converter.fv31.AdvancementTextureConverter;
-import net.mcreator.element.converter.fv31.GUITexturesConverter;
-import net.mcreator.element.converter.fv31.OverlayTexturesConverter;
+import net.mcreator.element.converter.fv31.*;
 import net.mcreator.element.converter.fv32.GUIButtonNameFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
@@ -72,14 +65,13 @@ public class ConverterRegistry {
 		put(ModElementType.BLOCK,
 				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
 		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
-		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
-				new GUIButtonNameFixer()));
+		put(ModElementType.GUI,
+				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
+						new GUIButtonNameFixer()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
