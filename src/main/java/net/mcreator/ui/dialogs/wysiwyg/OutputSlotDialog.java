@@ -40,7 +40,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
 		super(editor.mcreator, slot);
 		setModal(true);
-		setSize(850, 310);
+		setSize(850, 340);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
@@ -78,7 +78,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 
 		dropItemsWhenNotBound.setSelected(true);
 
-		final JColor color = new JColor(editor.mcreator);
+		final JColor color = new JColor(editor.mcreator, false, false);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),

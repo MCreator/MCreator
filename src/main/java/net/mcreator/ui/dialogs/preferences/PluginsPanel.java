@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -52,8 +53,7 @@ class PluginsPanel {
 		sectionPanel.add("North", L10N.label("dialog.preferences.manage_plugins"));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
-		JToolBar opts = new JToolBar();
-		opts.setFloatable(false);
+		JPanel opts = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		JButton add = L10N.button("dialog.preferences.load_plugins");
 		add.setIcon(UIRES.get("16px.add.gif"));
@@ -85,10 +85,17 @@ class PluginsPanel {
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
+		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
+		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins);
+
+		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins = box.isSelected());
+
 		openPluginFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(plugins), 5, 5));
+		sectionPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(opts, box, 10, 10),
+				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.plugins_list"),
+						new JScrollPane(plugins), 3, 3), 10, 10));
 
 		preferencesDialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_plugins"));
 	}

@@ -95,7 +95,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		alwaysShow.setOpaque(false);
 		animate.setOpaque(false);
 
-		texture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		texture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.PARTICLE));
 		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		ComponentUtils.deriveFont(texture, 16);
 
@@ -106,10 +106,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.particle.texture.import_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.PARTICLE);
 			texture.removeAllItems();
 			texture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> texture.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.PARTICLE).forEach(el -> texture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
@@ -181,7 +181,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.PARTICLE).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		additionalExpiryCondition.refreshListKeepSelected();
