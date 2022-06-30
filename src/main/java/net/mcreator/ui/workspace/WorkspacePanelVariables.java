@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
+import net.mcreator.ui.component.util.TableUtil;
 import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -32,6 +33,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
@@ -119,17 +121,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					Validator validator = new JavaMemberNameValidator(name, false);
-					name.setValidator(() -> {
-						String textname = Transliteration.transliterateString(name.getText());
-						for (int i = 0; i < elements.getRowCount(); i++) {
-							String nameinrow = (String) elements.getValueAt(i, 0);
-							if (i != row && textname.equals(nameinrow))
-								return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-										L10N.t("common.name_already_exists"));
-						}
-						return validator.validate();
-					});
+					UniqueNameValidator validator = new UniqueNameValidator(name,
+							L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+							() -> TableUtil.getColumnContents(elements, 0).stream(),
+							new JavaMemberNameValidator(name, false));
+					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
 							return name.getValidationStatus().getValidationResultType()
@@ -233,14 +229,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMcreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false);
-							String textname = Transliteration.transliterateString(((VTextField) component).getText());
-							for (int i = 0; i < elements.getRowCount(); i++) {
-								String nameinrow = (String) elements.getValueAt(i, 0);
-								if (textname.equals(nameinrow))
-									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-											L10N.t("common.name_already_exists"));
-							}
+							UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
+									L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+									() -> TableUtil.getColumnContents(elements, 0).stream(),
+									new JavaMemberNameValidator((VTextField) component, false));
+							validator.setIsPresentOnList(false);
 							return validator.validate();
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
