@@ -25,10 +25,9 @@ import javax.annotation.Nonnull;
 public class Transliteration {
 
 	/**
-	 * This method transliterates string if required. If not, source String is returned. It uses Junidecode library,
-	 * but strips failed transliterated characters away.
+	 * This method transliterates string if required. If not, source String is returned. It uses Junidecode library, but strips failed transliterated characters away.
 	 *
-	 * @param source Source string
+	 * @param source Soruce string
 	 * @return Transliterated string or original if transliteration is not required
 	 */
 	@Nonnull public static String transliterateString(@Nonnull String source) {
