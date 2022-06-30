@@ -36,11 +36,11 @@ package ${package}.item.extension;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
 
-	<#if data.hasDispenseBehavior || data.layerChance gt 0>
+	<#if data.hasDispenseBehavior || data.compostLayerChance gt 0>
 		@SubscribeEvent
 		public void init(FMLCommonSetupEvent event) {
-		    <#if data.layerChance gt 0>
-		        ComposterBlock.CHANCES.put(${mappedMCItemToItem(data.item)}, ${data.layerChance}f);
+		    <#if data.compostLayerChance gt 0>
+		        ComposterBlock.CHANCES.put(${mappedMCItemToItem(data.item)}, ${data.compostLayerChance}f);
 		    </#if>
 
 		    <#if data.hasDispenseBehavior>

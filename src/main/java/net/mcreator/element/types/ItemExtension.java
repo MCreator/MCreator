@@ -37,7 +37,7 @@ public class ItemExtension extends GeneratableElement {
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
 
-	public double layerChance;
+	public double compostLayerChance;
 
 	public ItemExtension(ModElement element) {
 		super(element);
