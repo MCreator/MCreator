@@ -96,7 +96,7 @@ package ${package}.client.gui;
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${data.baseTexture}"));
+					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
 					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), 0, 0, 0, 0, w, h, w, h);
 				</#if>
 
@@ -113,7 +113,7 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
-						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${component.image}"));
+						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
 						Minecraft.getInstance().gui.blit(event.${stackMethodName}(), posX + ${x}, posY + ${y}, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});

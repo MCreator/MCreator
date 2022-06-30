@@ -103,14 +103,14 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#if data.mobModelGlowTexture?has_content>
 		this.addLayer(new EyesLayer<${name}Entity, ${model}>(this) {
 			@Override public RenderType renderType() {
-				return RenderType.eyes(new ResourceLocation("${modid}:textures/${data.mobModelGlowTexture}"));
+				return RenderType.eyes(new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}"));
 			}
 		});
 		</#if>
 	}
 
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
-		return new ResourceLocation("${modid}:textures/${data.mobModelTexture}"); 
+		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
 
     <#if hasProcedure(data.transparentModelCondition)>
