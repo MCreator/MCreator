@@ -34,7 +34,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -114,11 +113,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder treeBranch;
 	private MCItemHolder treeFruits;
 
-	private final JColor airColor = new JColor(mcreator, true);
-	private final JColor grassColor = new JColor(mcreator, true);
-	private final JColor foliageColor = new JColor(mcreator, true);
-	private final JColor waterColor = new JColor(mcreator, true);
-	private final JColor waterFogColor = new JColor(mcreator, true);
+	private final JColor airColor = new JColor(mcreator, true, false);
+	private final JColor grassColor = new JColor(mcreator, true, false);
+	private final JColor foliageColor = new JColor(mcreator, true, false);
+	private final JColor waterColor = new JColor(mcreator, true, false);
+	private final JColor waterFogColor = new JColor(mcreator, true, false);
 
 	private final SoundSelector ambientSound = new SoundSelector(mcreator);
 	private final SoundSelector moodSound = new SoundSelector(mcreator);

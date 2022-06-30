@@ -134,16 +134,16 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		onBulletHitsBlock = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_block"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_block"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 		onBulletHitsPlayer = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_player"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_player"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity"));
 		onBulletHitsEntity = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_entity"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_hits_entity"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity"));
 		onBulletFlyingTick = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_flying_tick"), mcreator,
 				L10N.t("elementgui.ranged_item.event_bullet_flying_tick"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/imediatesourceentity:entity"));
+				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("rangeditem/when_used"), mcreator,
 				L10N.t("elementgui.ranged_item.event_on_use"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -161,7 +161,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-		customBulletModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		customBulletModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		bulletModel.setPreferredSize(new Dimension(400, 42));
 		bulletModel.setRenderer(new ModelComboBoxRenderer());
@@ -300,10 +300,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		importmobtexture.setToolTipText(L10N.t("elementgui.ranged_item.bullet_model_tooltip"));
 		importmobtexture.setOpaque(false);
 		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
 			customBulletModelTexture.removeAllItems();
 			customBulletModelTexture.addItem("");
-			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.OTHER);
+			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.ENTITY);
 			for (File element : textures)
 				if (element.getName().endsWith(".png"))
 					customBulletModelTexture.addItem(element.getName());
@@ -426,7 +426,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		glowCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),

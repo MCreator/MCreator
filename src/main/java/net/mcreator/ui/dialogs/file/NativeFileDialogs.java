@@ -46,7 +46,7 @@ class NativeFileDialogs {
 		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(null, () -> {
 			FileChooser ch = new FileChooser();
 
-			if(prevDir != null && prevDir.isDirectory())
+			if (prevDir != null && prevDir.isDirectory())
 				ch.setInitialDirectory(prevDir);
 
 			if (filters != null) {
@@ -79,7 +79,7 @@ class NativeFileDialogs {
 			ch.setTitle(L10N.t("dialog.file.select_directory_title"));
 
 			File initialDir = file == null ? WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot() : file;
-			if(initialDir != null && initialDir.isDirectory())
+			if (initialDir != null && initialDir.isDirectory())
 				ch.setInitialDirectory(initialDir);
 			return ch;
 		});

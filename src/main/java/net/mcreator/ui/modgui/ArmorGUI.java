@@ -203,10 +203,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			return null;
 		}));
 
-		helmetModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
-		bodyModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
-		leggingsModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
-		bootsModelTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		helmetModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		bodyModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		leggingsModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		bootsModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
@@ -719,19 +719,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bodyModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(leggingsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		ComboBoxUtil.updateComboBoxContents(bootsModelTexture, ListUtils.merge(Collections.singleton("From armor"),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
 		List<File> armors = mcreator.getFolderManager().getTexturesList(TextureType.ARMOR);
