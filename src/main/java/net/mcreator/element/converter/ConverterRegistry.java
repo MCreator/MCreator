@@ -52,6 +52,8 @@ import net.mcreator.element.converter.fv31.RangedItemTextureConverter;
 import net.mcreator.element.converter.fv31.AdvancementTextureConverter;
 import net.mcreator.element.converter.fv31.GUITexturesConverter;
 import net.mcreator.element.converter.fv31.OverlayTexturesConverter;
+import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
+import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -91,11 +93,13 @@ public class ConverterRegistry {
 				new ProcedureShootArrowFixer()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
+		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
 		put("food", new FoodToItemConverter());
+		put("fuel", new FuelToItemExtensionConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

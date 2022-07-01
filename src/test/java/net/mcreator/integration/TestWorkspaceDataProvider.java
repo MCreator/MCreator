@@ -89,7 +89,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
-		} else if (type == ModElementType.FUEL || type == ModElementType.TAB) {
+		} else if (type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
@@ -297,11 +297,6 @@ public class TestWorkspaceDataProvider {
 			achievement.triggerxml = "<xml><block type=\"tick\" x=\"40\" y=\"80\"><next>"
 					+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
 			return achievement;
-		} else if (ModElementType.FUEL.equals(modElement.getType())) {
-			Fuel fuel = new Fuel(modElement);
-			fuel.power = new int[] { 0, 100, 1000, 4000 }[valueIndex];
-			fuel.block = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
-			return fuel;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
@@ -451,7 +446,8 @@ public class TestWorkspaceDataProvider {
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
@@ -1079,7 +1075,7 @@ public class TestWorkspaceDataProvider {
 			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -1118,11 +1114,7 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
-			item.hasDispenseBehavior = _true;
-			item.dispenseSuccessCondition = (!_true && !emptyLists) ? null : new Procedure("condition1");
-			item.dispenseResultItemstack = !_true ?
-					null :
-					(emptyLists ? new Procedure("itemstack1") : new Procedure("procedure11"));
+
 			if (!emptyLists) {
 				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
 						"info 1, info 2, test \\, is this, another one");
@@ -1144,6 +1136,18 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
+		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())){
+			ItemExtension itemExtension = new ItemExtension(modElement);
+			itemExtension.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+
+			itemExtension.enableFuel = !emptyLists;
+			itemExtension.fuelPower = new NumberProcedure(_true ? "number1" : null, 1600);
+			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
+			itemExtension.compostLayerChance = new double[] {0d, 0.3d, 0.5d, 1d}[valueIndex];
+			itemExtension.hasDispenseBehavior = emptyLists;
+			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
+			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
+			return itemExtension;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
 			rangedItem.name = modElement.getName();
@@ -1408,7 +1412,7 @@ public class TestWorkspaceDataProvider {
 				block.specialInfo = new ArrayList<>();
 			}
 			block.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];

@@ -237,6 +237,26 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
+	public boolean hasFuels() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.ITEMEXTENSION) {
+				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
+					if (itemExtension.enableFuel)
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasCompostableItems() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.ITEMEXTENSION) {
+				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
+					if (itemExtension.compostLayerChance > 0)
+						return true;
+			}
+		return false;
+	}
+
 	public MItemBlock itemBlock(String itemBlock) {
 		return new MItemBlock(workspace, itemBlock);
 	}

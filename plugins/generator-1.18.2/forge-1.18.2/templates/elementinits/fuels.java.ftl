@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 
 <#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -42,9 +43,17 @@ package ${package}.init;
 
 	@SubscribeEvent
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-		<#list fuels as fuel>
-		<#if fuel?index == 0>if<#else>else if</#if>(event.getItemStack().getItem() == ${mappedMCItemToItem(fuel.block)})
-			event.setBurnTime(${fuel.power});
+		ItemStack itemstack = event.getItemStack();
+		<#list itemextensions as extension>
+            <#if extension.enableFuel>
+                if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)})
+                    <#if hasProcedure(extension.fuelSuccessCondition)>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
+                        <#if hasProcedure(extension.fuelPower)>
+                            event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
+                        <#else>
+                            event.setBurnTime(${extension.fuelPower.getFixedValue()});
+                        </#if>
+            </#if>
 		</#list>
 	}
 

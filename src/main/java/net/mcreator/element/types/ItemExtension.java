@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,22 +21,25 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.element.parts.NumberProcedure;
+import net.mcreator.element.parts.Procedure;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.awt.image.BufferedImage;
+public class ItemExtension extends GeneratableElement {
 
-public class Fuel extends GeneratableElement {
+	public MItemBlock item;
 
-	public int power;
-	public MItemBlock block;
+	public boolean enableFuel;
+	public NumberProcedure fuelPower;
+	public Procedure fuelSuccessCondition;
 
-	public Fuel(ModElement element) {
+	public boolean hasDispenseBehavior;
+	public Procedure dispenseSuccessCondition;
+	public Procedure dispenseResultItemstack;
+
+	public double compostLayerChance;
+
+	public ItemExtension(ModElement element) {
 		super(element);
 	}
-
-	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateFuelPreviewPicture(getModElement().getWorkspace(), block);
-	}
-
 }

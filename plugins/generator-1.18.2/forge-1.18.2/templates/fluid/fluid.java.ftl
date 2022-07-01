@@ -51,8 +51,12 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			<#if data.isFluidTinted()>
 			.color(<#if data.tintType == "Grass">
 				-6506636
-				<#elseif data.tintType == "Foliage">
+				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 				-12012264
+				<#elseif data.tintType == "Birch foliage">
+				-8345771
+				<#elseif data.tintType == "Spruce foliage">
+				-10380959
 				<#elseif data.tintType == "Water">
 				-13083194
 				<#elseif data.tintType == "Sky">
