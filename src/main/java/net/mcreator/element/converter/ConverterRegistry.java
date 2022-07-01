@@ -44,7 +44,18 @@ import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
 import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
-import net.mcreator.element.converter.fv31.*;
+import net.mcreator.element.converter.fv31.EffectTextureConverter;
+import net.mcreator.element.converter.fv31.ParticleTextureConverter;
+import net.mcreator.element.converter.fv31.ArmorTexturesConverter;
+import net.mcreator.element.converter.fv31.EntityTexturesConverter;
+import net.mcreator.element.converter.fv31.RangedItemTextureConverter;
+import net.mcreator.element.converter.fv31.AdvancementTextureConverter;
+import net.mcreator.element.converter.fv31.GUITexturesConverter;
+import net.mcreator.element.converter.fv31.OverlayTexturesConverter;
+import net.mcreator.element.converter.fv32.ArmorSpecialInformationConverter;
+import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
+import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
+import net.mcreator.element.converter.fv32.SpecialInformationConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -86,7 +97,7 @@ public class ConverterRegistry {
 				new ProcedureShootArrowFixer()));
 		put(ModElementType.RANGEDITEM, Arrays.asList(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ITEM, Collections.singletonList(new SpecialInformationConverter<Item>()));
+		put(ModElementType.ITEM, Arrays.asList(new ItemDispenseBehaviorToItemExtensionConverter(), new SpecialInformationConverter<Item>()));
 		put(ModElementType.MUSICDISC, Collections.singletonList(new SpecialInformationConverter<MusicDisc>()));
 		put(ModElementType.TOOL, Collections.singletonList(new SpecialInformationConverter<Tool>()));
 	}};
@@ -94,6 +105,7 @@ public class ConverterRegistry {
 	// Converters that convert older mod element type to a newer one
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
 		put("food", new FoodToItemConverter());
+		put("fuel", new FuelToItemExtensionConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
