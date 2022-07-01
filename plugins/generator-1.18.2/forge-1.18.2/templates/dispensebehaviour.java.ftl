@@ -30,33 +30,39 @@
 
 <#-- @formatter:off -->
 
-<#include "../mcitems.ftl">
-<#include "../procedures.java.ftl">
+<#include "mcitems.ftl">
+<#include "procedures.java.ftl">
 
-/*
- *    MCreator note: This file will be REGENERATED on each build.
- */
+package ${package}.item.extension;
 
-package ${package}.init;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
+    	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+    		event.enqueueWork(() -> DispenserBlock.registerBehavior(${mappedMCItemToItem(data.item)}, new OptionalDispenseItemBehavior() {
+    			public ItemStack execute(BlockSource blockSource, ItemStack stack) {
+    				ItemStack itemstack = stack.copy();
+    				Level world = blockSource.getLevel();
+    				Direction direction = blockSource.getBlockState().getValue(DispenserBlock.FACING);
+    				int x = blockSource.getPos().getX();
+    				int y = blockSource.getPos().getY();
+    				int z = blockSource.getPos().getZ();
 
-@Mod.EventBusSubscriber public class ${JavaModName}Fuels {
+    				this.setSuccess(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
 
-	@SubscribeEvent
-	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-		ItemStack itemstack = event.getItemStack();
-		<#list itemextensions as extension>
-            <#if extension.enableFuel>
-                if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)})
-                    <#if hasProcedure(extension.fuelSuccessCondition)>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
-                        <#if hasProcedure(extension.fuelPower)>
-                            event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
-                        <#else>
-                            event.setBurnTime(${extension.fuelPower.getFixedValue()});
-                        </#if>
-            </#if>
-		</#list>
-	}
+    				<#if hasProcedure(data.dispenseResultItemstack)>
+    					boolean success = this.isSuccess();
+    					<#if hasReturnValueOf(data.dispenseResultItemstack, "itemstack")>
 
+    						return <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
+    					<#else>
+    						<@procedureOBJToCode data.dispenseResultItemstack/>
+    						if(success) itemstack.shrink(1);
+    						return itemstack;
+    					</#if>
+    				<#else>
+    					if(this.isSuccess()) itemstack.shrink(1);
+    					return itemstack;
+    				</#if>
+    			}
+    		}));
+    	}
 }
-
-<#-- @formatter:on -->
