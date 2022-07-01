@@ -93,8 +93,12 @@ import net.minecraftforge.common.property.Properties;
 					<#if data.isFluidTinted()>
 					.color(<#if data.tintType == "Grass">
 						-6506636
-						<#elseif data.tintType == "Foliage">
+						<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 						-12012264
+						<#elseif data.tintType == "Birch foliage">
+						-8345771
+						<#elseif data.tintType == "Spruce foliage">
+						-10380959
 						<#elseif data.tintType == "Water">
 						-13083194
 						<#elseif data.tintType == "Sky">
@@ -343,6 +347,12 @@ import net.minecraftforge.common.property.Properties;
 				BiomeColors.getGrassColor(world, pos)
 			<#elseif data.tintType == "Foliage">
 				BiomeColors.getFoliageColor(world, pos)
+			<#elseif data.tintType == "Default foliage">
+				FoliageColors.getDefault()
+			<#elseif data.tintType == "Birch foliage">
+				FoliageColors.getBirch()
+			<#elseif data.tintType == "Spruce foliage">
+				FoliageColors.getSpruce()
 			<#elseif data.tintType == "Water">
 				BiomeColors.getWaterColor(world, pos)
 			<#elseif data.tintType == "Sky">
