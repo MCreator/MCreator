@@ -55,7 +55,7 @@ public class JSpawnListEntry extends JPanel {
 		parent.add(container);
 		entryList.add(this);
 
-		ElementUtil.loadAllEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
+		ElementUtil.loadAllSpawnableEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
 
 		add(L10N.label("dialog.spawn_list_entry.entity"));
 		add(entityType);

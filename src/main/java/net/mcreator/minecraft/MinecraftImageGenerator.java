@@ -558,21 +558,42 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates command images.</p>
+		 * <p>This method generates the command image preview.</p>
 		 *
 		 * @param command <p>The command.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateCommandPreviewPicture(String command) {
+		public static BufferedImage generateCommandPreviewPicture(String command, String procedurexml) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 
+			graphics2D.setColor(new Color(255, 255, 255, 180));
 			graphics2D.drawLine(3, 16, 6, 10);
 
-			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
-			graphics2D.setPaint(
-					new GradientPaint(16, 14, new Color(255, 255, 255, 180), 24, 14, new Color(255, 255, 255, 0)));
+			Color blockColor = Color.white;
+			if (procedurexml.contains("<block type=\"literal")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(280);
+			} else if (procedurexml.contains("<block type=\"item")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+			} else if (procedurexml.contains("<block type=\"blockstate")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (procedurexml.contains("<block type=\"blockpos")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (procedurexml.contains("<block type=\"entity")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(195);
+			} else if (procedurexml.contains("<block type=\"string")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(170);
+			} else if (procedurexml.contains("<block type=\"logic")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(210);
+			} else if (procedurexml.contains("<block type=\"double")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(230);
+			}
+
+			graphics2D.setPaint(new GradientPaint(16, 14,
+					new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 180), 24, 14,
+					new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 0)));
+			graphics2D.setColor(new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 180));
 			graphics2D.drawString(StringUtils.abbreviateString(command, 4, false).toUpperCase(Locale.ENGLISH), 7, 17);
 
 			graphics2D.dispose();
@@ -1196,7 +1217,7 @@ public class MinecraftImageGenerator {
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
 					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.OTHER)
+							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.ENTITY)
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(

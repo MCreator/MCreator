@@ -88,6 +88,7 @@ import java.util.stream.Collectors;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public boolean useLootTableForDrops;
+	public boolean requiresCorrectTool;
 
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
@@ -172,6 +173,7 @@ import java.util.stream.Collectors;
 	public Procedure onBlockPlayedBy;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
+	public Procedure onHitByProjectile;
 
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;

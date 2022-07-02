@@ -92,6 +92,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox forceTicking = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasTileEntity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isSolid = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(18);
 
@@ -133,7 +134,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
 
 	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
+			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private MCItemListField canBePlacedOn;
@@ -148,6 +149,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onEntityCollides;
 	private ProcedureSelector onBlockPlacedBy;
 	private ProcedureSelector onRightClicked;
+	private ProcedureSelector onEntityWalksOn;
+	private ProcedureSelector onHitByProjectile;
 
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
@@ -207,6 +210,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.event_on_right_clicked"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number")).makeReturnValueOptional();
+		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
+				L10N.t("elementgui.block.event_on_entity_walks_on"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -319,6 +329,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		doubleType.setOpaque(false);
 
 		emissiveRendering.setOpaque(false);
+		isSolid.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 
@@ -444,7 +455,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -504,6 +515,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
+				L10N.label("elementgui.plant.is_solid")));
+		selp.add(isSolid);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -571,8 +586,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		});
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(selp, selp2),
-						PanelUtils.pullElementUp(soundProperties))));
+				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+						PanelUtils.centerAndSouthElement(selp2, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
@@ -640,7 +655,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events2.add(onEntityCollides);
 		events2.add(onBlockPlacedBy);
 		events2.add(onRandomUpdateEvent);
-		events2.add(new JLabel(""));
+		events2.add(onEntityWalksOn);
+		events2.add(onHitByProjectile);
 
 		JPanel spawning = new JPanel(new GridLayout(5, 2, 5, 2));
 		spawning.setOpaque(false);
@@ -752,6 +768,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityCollides.refreshListKeepSelected();
 		onBlockPlacedBy.refreshListKeepSelected();
 		onRightClicked.refreshListKeepSelected();
+		onEntityWalksOn.refreshListKeepSelected();
+		onHitByProjectile.refreshListKeepSelected();
 
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
@@ -810,6 +828,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hasTileEntity.setSelected(plant.hasTileEntity);
 		frequencyOnChunks.setValue(plant.frequencyOnChunks);
 		emissiveRendering.setSelected(plant.emissiveRendering);
+		isSolid.setSelected(plant.isSolid);
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
@@ -824,6 +843,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityCollides.setSelectedProcedure(plant.onEntityCollides);
 		onBlockPlacedBy.setSelectedProcedure(plant.onBlockPlacedBy);
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
+		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
+		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
@@ -953,6 +974,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onEntityCollides = onEntityCollides.getSelectedProcedure();
 		plant.onBlockPlacedBy = onBlockPlacedBy.getSelectedProcedure();
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
+		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
+		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();
@@ -971,6 +994,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
+		plant.isSolid = isSolid.isSelected();
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();

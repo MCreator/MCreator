@@ -67,11 +67,11 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (!procedureBlock.getInputs().isEmpty()) {
+			if (!procedureBlock.getAllInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
-					for (String input : procedureBlock.getInputs()) {
+					for (String input : procedureBlock.getAllInputs()) {
 						boolean match = false;
 						for (String toolboxtemplate : procedureBlock.toolbox_init) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
@@ -148,8 +148,7 @@ public class GTProcedureBlocks {
 										type = "enhancement";
 									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
 									if (values.length > 0 && !values[0].equals("")) {
-										String value = type.equals("entity") ?
-												"EntityZombie" : ListUtils.getRandomItem(random, values);
+										String value = ListUtils.getRandomItem(random, values);
 										additionalXML.append("<field name=\"").append(field).append("\">")
 												.append(value).append("</field>");
 										processed++;

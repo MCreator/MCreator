@@ -106,19 +106,27 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 	private static class BlockColorRegisterHandler {
 		@OnlyIn(Dist.CLIENT) @SubscribeEvent public void blockColorLoad(ColorHandlerEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
-				return world != null && pos != null ?
-				<#if data.tintType == "Grass">
-					BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage">
-					BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
-				<#elseif data.tintType == "Water">
-					BiomeColors.getWaterColor(world, pos) : -1;
-				<#elseif data.tintType == "Sky">
-					Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
-				<#elseif data.tintType == "Fog">
-					Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
+				<#if data.tintType == "Default foliage">
+					return FoliageColors.getDefault();
+				<#elseif data.tintType == "Birch foliage">
+					return FoliageColors.getBirch();
+				<#elseif data.tintType == "Spruce foliage">
+					return FoliageColors.getSpruce();
 				<#else>
-					Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
+					return world != null && pos != null ?
+					<#if data.tintType == "Grass">
+						BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+					<#elseif data.tintType == "Foliage">
+						BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefault();
+					<#elseif data.tintType == "Water">
+						BiomeColors.getWaterColor(world, pos) : -1;
+					<#elseif data.tintType == "Sky">
+						Minecraft.getInstance().world.getBiome(pos).getSkyColor() : 8562943;
+					<#elseif data.tintType == "Fog">
+						Minecraft.getInstance().world.getBiome(pos).getFogColor() : 12638463;
+					<#else>
+						Minecraft.getInstance().world.getBiome(pos).getWaterFogColor() : 329011;
+					</#if>
 				</#if>
 			}, block);
 		}
@@ -130,8 +138,12 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 				event.getItemColors().register((stack, index) -> {
 					<#if data.tintType == "Grass">
 						return GrassColors.get(0.5D, 1.0D);
-					<#elseif data.tintType == "Foliage">
+					<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 						return FoliageColors.getDefault();
+					<#elseif data.tintType == "Birch foliage">
+						return FoliageColors.getBirch();
+					<#elseif data.tintType == "Spruce foliage">
+						return FoliageColors.getSpruce();
 					<#elseif data.tintType == "Water">
 						return 3694022;
 					<#elseif data.tintType == "Sky">
@@ -199,6 +211,8 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<#if data.destroyTool != "Not specified">
 				.harvestLevel(${data.breakHarvestLevel})
 				.harvestTool(ToolType.${data.destroyTool?upper_case})
+			</#if>
+			<#if data.requiresCorrectTool>
 				.setRequiresTool()
 			</#if>
 			<#if data.isNotColidable>
@@ -727,6 +741,20 @@ public class ${name}Block extends ${JavaModName}Elements.ModElement {
 			<@procedureOBJToCode data.onEntityWalksOn/>
 		}
         </#if>
+
+		<#if hasProcedure(data.onHitByProjectile)>
+		@Override public void onProjectileCollision(World world, BlockState blockstate, BlockRayTraceResult hit, ProjectileEntity entity) {
+			BlockPos pos = hit.getPos();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			double hitX = hit.getHitVec().x;
+			double hitY = hit.getHitVec().y;
+			double hitZ = hit.getHitVec().z;
+			Direction direction = hit.getFace();
+			<@procedureOBJToCode data.onHitByProjectile/>
+		}
+		</#if>
 
         <#if hasProcedure(data.onBlockPlayedBy)>
 		@Override
