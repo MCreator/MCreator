@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "min",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "max",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "math",
+    "toolbox_init": [
+      "<value name=\"min\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"max\"><block type=\"math_number\"><field name=\"NUM\">10</field></block></value>"
+    ],
+    "inputs": [
+      "min",
+      "max"
+    ]
+  }
+}

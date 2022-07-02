@@ -107,6 +107,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onRedstoneOn;
 	private ProcedureSelector onRedstoneOff;
+	private ProcedureSelector onHitByProjectile;
 
 	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
@@ -125,7 +126,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
 
-	private final JColor beaconColorModifier = new JColor(mcreator, true);
+	private final JColor beaconColorModifier = new JColor(mcreator, true, false);
 
 	private final JCheckBox hasGravity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
@@ -135,7 +136,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
+			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -207,10 +208,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from block face",
 					"<html>D/U/N/S/W/E rotation<br><small>Rotation from block face",
 					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
+	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
+	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.block.spawn_particles");
 
@@ -312,6 +315,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff = new ProcedureSelector(this.withEntry("block/on_redstone_off"), mcreator,
 				L10N.t("elementgui.block.event_on_redstone_off"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -319,8 +326,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
-				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)),
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -549,7 +556,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
 
-		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel rent = new JPanel(new GridLayout(4, 2, 0, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
@@ -559,6 +566,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.rotation_mode")));
 		rent.add(rotationMode);
 
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enable_pitch"),
+				L10N.label("elementgui.block.enable_pitch")));
+		rent.add(enablePitch);
+
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
 				L10N.label("elementgui.block.is_waterloggable")));
 		rent.add(isWaterloggable);
@@ -566,6 +577,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.setPreferredSize(new Dimension(320, 42));
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+
+		enablePitch.setOpaque(false);
+		enablePitch.setEnabled(false);
+		rotationMode.addActionListener(e -> {
+			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
+			if (!enablePitch.isEnabled())
+				enablePitch.setSelected(false);
+		});
 
 		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		tintPanel.setOpaque(false);
@@ -622,14 +641,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		if (!isEditingMode()) { // Add first bounding box
+		if (!isEditingMode()) // add first bounding box
 			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
-		}
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
 		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
@@ -638,6 +656,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tickRandomly.setOpaque(false);
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
+		requiresCorrectTool.setOpaque(false);
+		destroyTool.addActionListener(e -> updateRequiresCorrectTool());
 
 		selp3.setOpaque(false);
 		advancedProperties.setOpaque(false);
@@ -731,6 +751,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
 				L10N.label("elementgui.block.harvest_level")));
 		selp3.add(breakHarvestLevel);
+
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/requires_correct_tool"),
+				L10N.label("elementgui.block.requires_correct_tool")));
+		selp3.add(requiresCorrectTool);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
@@ -878,6 +902,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events2.add(onStartToDestroy);
 		events2.add(onEntityCollides);
 		events2.add(onEntityWalksOn);
+		events2.add(onHitByProjectile);
 		events2.add(onBlockPlayedBy);
 		events2.add(onRedstoneOn);
 		events2.add(onRedstoneOff);
@@ -1026,8 +1051,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 						PanelUtils.westAndEastElement(energyStorage,
 								PanelUtils.northAndCenterElement(fluidTank, new JEmptyBox())), 10, 10)));
 
-		hasInventory.addActionListener(e -> refreshFiledsTileEntity());
-		refreshFiledsTileEntity();
+		hasInventory.addActionListener(e -> refreshFieldsTileEntity());
+		refreshFieldsTileEntity();
 
 		props.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -1205,7 +1230,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 	}
 
-	private void refreshFiledsTileEntity() {
+	private void refreshFieldsTileEntity() {
 		inventorySize.setEnabled(hasInventory.isSelected());
 		inventoryStackSize.setEnabled(hasInventory.isSelected());
 		inventoryDropWhenDestroyed.setEnabled(hasInventory.isSelected());
@@ -1277,6 +1302,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		soundOnStep.setEnabled(defaultSoundType.isSelected());
 	}
 
+	private void updateRequiresCorrectTool() {
+		if (!isEditingMode() && "pickaxe".equals(destroyTool.getSelectedItem())) {
+			requiresCorrectTool.setSelected(true);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1292,6 +1323,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.refreshListKeepSelected();
 		onRedstoneOn.refreshListKeepSelected();
 		onRedstoneOff.refreshListKeepSelected();
+		onHitByProjectile.refreshListKeepSelected();
 
 		particleCondition.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1344,6 +1376,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setTextureFromTextureName(block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
+		enablePitch.setSelected(block.enablePitch);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1370,6 +1403,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.setSelectedProcedure(block.onRightClicked);
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
+		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
 		maxGenerateHeight.setValue(block.maxGenerateHeight);
@@ -1402,6 +1436,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		customSoundType.setSelected(block.isCustomSoundType);
 		luminance.setValue(block.luminance);
 		breakHarvestLevel.setValue(block.breakHarvestLevel);
+		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
 		isNotColidable.setSelected(block.isNotColidable);
@@ -1459,7 +1494,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
-		refreshFiledsTileEntity();
+		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
@@ -1488,6 +1523,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isItemTinted = isItemTinted.isSelected();
 		block.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
+		block.enablePitch = enablePitch.isSelected();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
@@ -1497,6 +1533,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.tickRandomly = tickRandomly.isSelected();
 		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		block.destroyTool = (String) destroyTool.getSelectedItem();
+		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
 		block.plantsGrowOn = plantsGrowOn.isSelected();
@@ -1565,6 +1602,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRightClicked = onRightClicked.getSelectedProcedure();
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
+		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		block.texture = texture.getID();
 		block.itemTexture = itemTexture.getID();
 		block.particleTexture = particleTexture.getID();

@@ -318,6 +318,13 @@ import ${package}.${JavaModName};
 			}
 		}
 
+		<#else>
+			<#if hasProcedure(data.onClosed)>
+			@Override public void onContainerClosed(PlayerEntity playerIn) {
+				super.onContainerClosed(playerIn);
+				<@procedureOBJToCode data.onClosed/>
+			}
+			</#if>
 		</#if>
 	}
 

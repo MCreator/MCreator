@@ -38,6 +38,8 @@ package ${package}.client.gui;
 
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
+	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
+
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
@@ -68,7 +70,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	</#if>
 
 	<#if data.renderBgLayer>
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${registryname}.png" );
+	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png" );
 	</#if>
 
 	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
@@ -96,7 +98,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "Image">
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/${component.image}"));
+					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
 					this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -184,7 +186,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					}
 				}
 				</#if>;
-                ${name}Menu.guistate.put("text:${component.name}", ${component.name});
+                guistate.put("text:${component.name}", ${component.name});
 				${component.name}.setMaxLength(32767);
 				this.addWidget(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
@@ -209,9 +211,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.name} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-						150, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+						20, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                ${name}Menu.guistate.put("checkbox:${component.name}", ${component.name});
+                guistate.put("checkbox:${component.name}", ${component.name});
                 this.addRenderableWidget(${component.name});
 			</#if>
 		</#list>

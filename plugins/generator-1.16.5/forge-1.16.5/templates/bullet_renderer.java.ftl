@@ -16,7 +16,7 @@ package ${package}.entity.renderer;
 
 	<#if data.bulletModel != "Default">
 	@OnlyIn(Dist.CLIENT) public static class CustomRender extends EntityRenderer<${name}Item.ArrowCustomEntity> {
-		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${data.customBulletModelTexture}");
+		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
 
 		public CustomRender(EntityRendererManager renderManager) {
 			super(renderManager);

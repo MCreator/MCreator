@@ -80,10 +80,6 @@ import java.util.Map;
 	public Procedure onDroppedByPlayer;
 	public Procedure onFinishUsingItem;
 
-	public boolean hasDispenseBehavior;
-	public Procedure dispenseSuccessCondition;
-	public Procedure dispenseResultItemstack;
-
 	// Food
 	public boolean isFood;
 	public int nutritionalValue;
@@ -153,6 +149,6 @@ import java.util.Map;
 	}
 
 	public boolean hasEatResultItem() {
-		return isFood && !eatResultItem.isEmpty();
+		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
 }

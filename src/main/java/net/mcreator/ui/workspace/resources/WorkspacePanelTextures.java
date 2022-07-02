@@ -25,8 +25,8 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -134,6 +134,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importItemTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEntityTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEffectTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importParticleTexture);
+		importMenu.add(workspacePanel.getMcreator().actionRegistry.importScreenTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importArmorTexture);
 		importMenu.add(workspacePanel.getMcreator().actionRegistry.importOtherTexture);
 
@@ -237,7 +241,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.setFixedCellWidth(57);
 		listElement.addMouseListener(mouseAdapter);
 		listGroup.addList(listElement);
-		listElement.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), title, 0, 0,
+		listElement.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
 				listElement.getFont().deriveFont(24.0f), Color.white));
 		return new JComponentWithList<>(PanelUtils.gridElements(1, 1, listElement), listElement);
 	}

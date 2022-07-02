@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
+import net.mcreator.ui.component.util.TableUtil;
 import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -32,6 +33,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
@@ -42,13 +44,17 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 	private final WorkspacePanel workspacePanel;
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
+
+	private volatile boolean storingEdits = false;
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(new BorderLayout(0, 5));
@@ -61,6 +67,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
+				if (storingEdits)
+					return false;
+
 				if (!getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.STRING.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())
@@ -112,17 +121,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					Validator validator = new JavaMemberNameValidator(name, false);
-					name.setValidator(() -> {
-						String textname = Transliteration.transliterateString(name.getText());
-						for (int i = 0; i < elements.getRowCount(); i++) {
-							String nameinrow = (String) elements.getValueAt(i, 0);
-							if (i != row && textname.equals(nameinrow))
-								return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-										L10N.t("common.name_already_exists"));
-						}
-						return validator.validate();
-					});
+					UniqueNameValidator validator = new UniqueNameValidator(name,
+							L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+							() -> TableUtil.getColumnContents(elements, 0).stream(),
+							new JavaMemberNameValidator(name, false));
+					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
 							return name.getValidationStatus().getValidationResultType()
@@ -226,14 +229,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMcreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false);
-							String textname = Transliteration.transliterateString(((VTextField) component).getText());
-							for (int i = 0; i < elements.getRowCount(); i++) {
-								String nameinrow = (String) elements.getValueAt(i, 0);
-								if (textname.equals(nameinrow))
-									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-											L10N.t("common.name_already_exists"));
-							}
+							UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
+									L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+									() -> TableUtil.getColumnContents(elements, 0).stream(),
+									new JavaMemberNameValidator((VTextField) component, false));
+							validator.setIsPresentOnList(false);
 							return validator.validate();
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
@@ -265,9 +265,16 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		// save values on table edit, do it in another thread
 		elements.getModel().addTableModelListener(e -> new Thread(() -> {
 			if (e.getType() == TableModelEvent.UPDATE) {
+				if (storingEdits)
+					return;
+
+				storingEdits = true;
+				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
 				Workspace workspace = workspacePanel.getMcreator().getWorkspace();
 
-				for (VariableElement variableElement : workspace.getVariableElements())
+				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
+				for (VariableElement variableElement : todelete)
 					workspace.removeVariableElement(variableElement);
 
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
@@ -281,6 +288,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						workspace.addVariableElement(element);
 					}
 				}
+
+				elements.setCursor(Cursor.getDefaultCursor());
+				storingEdits = false;
 			}
 		}).start());
 

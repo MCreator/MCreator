@@ -176,8 +176,8 @@ public class PreferencesDialog extends MCreatorDialog {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
 
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
-				"aitpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl", "aitpl");
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_cmd_builder_templates"), "templates/cmdtpl", "cmdtpl");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
 				"templates/textures/texturemaker", "png");
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
@@ -284,7 +284,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Color.class)) {
-			JColor box = new JColor(parent);
+			JColor box = new JColor(parent, false, false);
 			if (entry.visualWidth() != -1)
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setColor((Color) value);

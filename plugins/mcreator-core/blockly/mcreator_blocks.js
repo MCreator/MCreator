@@ -34,6 +34,17 @@ Blockly.Blocks['set_event_result'] = {
     }
 };
 
+Blockly.Blocks['old_command'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.old_command"))
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(160);
+    }
+};
+
 Blockly.Blocks['call_procedure'] = {
     init: function () {
         this.appendDummyInput()
@@ -69,6 +80,16 @@ Blockly.Blocks['aitasks_container'] = {
         this.setNextStatement(true);
         this.setColour(350);
         this.setTooltip(javabridge.t("blockly.block.aitasks_container.tooltip"));
+    }
+};
+
+Blockly.Blocks['args_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.cmdargs_start"));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true);
+        this.setColour(120);
+        this.setTooltip(javabridge.t("blockly.block.cmdargs_start.tooltip"));
     }
 };
 
@@ -350,6 +371,7 @@ Blockly.defineBlocksWithJsonArray([
                 "name": "CONSTANT",
                 "options": [
                     ["Random [0,1)", "RANDOM"],
+                    ["Random with std. normal distribution", "NORMAL"],
                     ["\u03c0", "PI"],
                     ["e", "E"],
                     ["\u221e", "INFINITY"],
@@ -448,6 +470,20 @@ Blockly.defineBlocksWithJsonArray([
     {
         "type": "immediate_source_entity_from_deps",
         "message0": "Immediate source entity",
+        "output": "Entity",
+        "colour": "195"
+    },
+    {
+        "type": "entity_none",
+        "message0": "%1 No entity",
+        "args0": [
+            {
+                "type": "field_image",
+                "src": "./res/null.png",
+                "width": 8,
+                "height": 24
+            }
+        ],
         "output": "Entity",
         "colour": "195"
     },

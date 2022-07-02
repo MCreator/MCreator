@@ -37,11 +37,12 @@ public class ElementUtil {
 
 	/**
 	 * Provides a predicate to check the type of data list entries
+	 *
 	 * @param type The type that the entry has to match
 	 * @return A predicate that checks if the type matches the parameter
 	 */
 	public static Predicate<DataListEntry> typeMatches(String type) {
-		return e -> e.getType().equals(type);
+		return e -> type.equals(e.getType());
 	}
 
 	/**
@@ -116,8 +117,7 @@ public class ElementUtil {
 						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
-						.toList());
+						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).toList());
 		return elements;
 	}
 
@@ -161,6 +161,20 @@ public class ElementUtil {
 		return retval;
 	}
 
+	/**
+	 * Returns all the spawnable entities, which include custom living entities and entities marked as "spawnable"
+	 * in the data lists
+	 *
+	 * @param workspace The workspace from which to gather the entities
+	 * @return All entities that can be spawned
+	 */
+	public static List<DataListEntry> loadAllSpawnableEntities(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
+		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
+		Collections.sort(retval);
+		return retval;
+	}
+
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PARTICLE);
 		retval.addAll(DataListLoader.loadDataList("particles"));
@@ -177,6 +191,10 @@ public class ElementUtil {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTION);
 		retval.addAll(DataListLoader.loadDataList("potions"));
 		return retval;
+	}
+
+	public static List<DataListEntry> loadAllVillagerProfessions() {
+		return DataListLoader.loadDataList("villagerprofessions");
 	}
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {

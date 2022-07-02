@@ -31,7 +31,10 @@ import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ApplicationLoadedEvent;
+import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.accelerators.AcceleratorsManager;
@@ -90,6 +93,8 @@ public final class MCreatorApplication {
 
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
+
+		MCREvent.event(new ApplicationLoadedEvent(this));
 
 		splashScreen.setProgress(10, "Loading UI Themes");
 
@@ -155,6 +160,8 @@ public final class MCreatorApplication {
 
 		splashScreen.setProgress(70, "Loading generators");
 
+		MCREvent.event(new PreGeneratorsLoadingEvent(this));
+
 		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
 		Collections.sort(fileNames);
@@ -204,7 +211,7 @@ public final class MCreatorApplication {
 
 		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
-		if (Launcher.version.isSnapshot()) {
+		if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
 			JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
 					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 		}

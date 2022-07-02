@@ -11,7 +11,7 @@
 				"world": "event.getEntity().level",
 				"entity": "event.getEntity()",
 				"sourceentity": "event.getSource().getEntity()",
-				"imediatesourceentity": "event.getSource().getDirectEntity()",
+				"immediatesourceentity": "event.getSource().getDirectEntity()",
 				"event": "event"
 				}/>
 			</#compress></#assign>

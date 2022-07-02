@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#include "../biomeutils.ftl">
 
 package ${package}.world.biome;
 
@@ -37,69 +38,16 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-<#function type2temperature type>
-<#if type == "WARM">
-	<#return "0, 0.55f">
-<#elseif type == "DESERT">
-	<#return "0.55f, 1">
-<#elseif type == "COOL">
-	<#return "-0.45f, 0">
-<#elseif type == "ICY">
-	<#return "-1, -0.45f">
-<#else>
-	<#return "0, 0">
-</#if>
-</#function>
-
-<#function type2humidity type>
-	<#if type == "WARM">
-		<#return "-0.5f, 1">
-	<#elseif type == "DESERT">
-		<#return "-1, 0">
-	<#elseif type == "COOL">
-		<#return "-0.5f, 1">
-	<#elseif type == "ICY">
-		<#return "-0.5f, 1">
-	<#else>
-		<#return "0, 0">
-	</#if>
-</#function>
-
-<#function baseHeight2continentalness baseHeight biomeWeight>
-	<#-- continentalness (low: oceans, high: inlands) -->
-	<#assign base = baseHeight / 10.0>
-	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function heightVariation2erosion heightVariation biomeWeight>
-	<#-- erosion (high: flat terrain) -->
-	<#assign base = 2 - heightVariation - 1>
-	<#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function registryname2weirdness registryname biomeWeight>
-    <#assign base = (w.random(registryname) * 2) - 1>
-    <#return (base - biomeWeight)?string + "f, " + (base + biomeWeight)?string + "f">
-</#function>
-
-<#function normalizeWeight biomeWeight>
-    <#return (biomeWeight / 40.0)>
-</#function>
-
-<#function normalizeWeightUnderground biomeWeight>
-    <#return (biomeWeight / 10.0)>
-</#function>
-
 public class ${name}Biome {
 
 	<#if data.spawnBiome || data.spawnBiomeNether>
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-	    Climate.Parameter.span(${type2temperature(data.biomeType)}),
-	    Climate.Parameter.span(${type2humidity(data.biomeType)}),
-	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight))}),
-	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight), "f")}),
+	    Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
+	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
+	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
 	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight))}),
+	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
 	    0 <#-- offset -->
 	);
 	</#if>
@@ -108,10 +56,10 @@ public class ${name}Biome {
 	public static final Climate.ParameterPoint PARAMETER_POINT_UNDERGROUND = new Climate.ParameterPoint(
 			Climate.Parameter.span(-1, 1),
 			Climate.Parameter.span(-1, 1),
-			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight))}),
-			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight))}),
+			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight), "f")}),
+			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight), "f")}),
 			Climate.Parameter.span(0.2f, 0.9f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight))}),
+			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight), "f")}),
 			0 <#-- offset -->
 	);
     </#if>
@@ -347,18 +295,11 @@ public class ${name}Biome {
 
         MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder();
         <#list data.spawnEntries as spawnEntry>
-            <#if !spawnEntry.entity.getUnmappedValue().contains("CUSTOM:")>
-                <#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
-                <#if entity != "null">
-                mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-		    	    new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-                </#if>
-            <#else>
-            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-                new MobSpawnSettings.SpawnerData(
-                    ${JavaModName}Entities.${generator.getRegistryNameForModElement(spawnEntry.entity.getUnmappedValue()?replace("CUSTOM:", ""))?upper_case}.get(),
-                    ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-            </#if>
+			<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
+			<#if entity != "null">
+			mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+				new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+			</#if>
         </#list>
 
         return new Biome.BiomeBuilder()

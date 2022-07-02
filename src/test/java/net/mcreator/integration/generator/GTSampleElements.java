@@ -19,6 +19,7 @@
 
 package net.mcreator.integration.generator;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.GeneratorStats;
@@ -28,6 +29,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -39,12 +41,21 @@ public class GTSampleElements {
 		// add sample procedures (used by test mod elements) if supported
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
 				!= GeneratorStats.CoverageStatus.NONE) {
-			for (int i = 1; i <= 13; i++) {
-				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>());
+			for (int i = 1; i <= 14; i++) {
+				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE);
+				if (i == 1) {
+					me.putMetadata("dependencies", Arrays.asList(
+							Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")));
+				} else if (i < 13) {
+					me.putMetadata("dependencies",
+							Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
+				} else {
+					me.putMetadata("dependencies", Collections.emptyList());
+				}
 				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML("");
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);

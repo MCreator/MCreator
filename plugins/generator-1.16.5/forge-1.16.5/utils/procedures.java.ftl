@@ -13,7 +13,7 @@
     </#list>
 
     <#if depsBuilder?size == 0>
-        ${(name)}Procedure.executeProcedure(Collections.EMPTY_MAP)
+        ${(name)}Procedure.executeProcedure(Collections.emptyMap())
     <#else>
         ${(name)}Procedure.executeProcedure(Stream.of(
         <#list depsBuilder as dep>new AbstractMap.SimpleEntry<>(${dep})<#if dep?has_next>,</#if></#list>

@@ -2,7 +2,7 @@
 <#macro multiNoiseSource>
 {
     "type": "minecraft:multi_noise",
-    "seed": 0,
+    "seed": ${thelper.randomlong(registryname)},
     "temperature_noise": {
       "firstOctave": ${-(0.21 * data.biomesInDimension?size + 4.9)},
       "amplitudes": [
@@ -32,7 +32,7 @@
       ]
     },
     "biomes": [
-      <#list data.biomesInDimension as biome>
+      <#list w.filterBrokenReferences(data.biomesInDimension) as biome>
         {
           "biome": "${biome}",
           "parameters": {

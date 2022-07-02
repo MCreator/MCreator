@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final VTextField effectName = new VTextField(20);
-	private final JColor color = new JColor(mcreator);
+	private final JColor color = new JColor(mcreator, false, false);
 	private final VComboBox<String> icon = new SearchableComboBox<>();
 
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
@@ -97,7 +97,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setSelected(true);
 		renderStatusInHUD.setSelected(true);
 
-		icon.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		icon.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.EFFECT));
 
 		icon.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
@@ -122,10 +122,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		importicontexture.setToolTipText(L10N.t("elementgui.potioneffect.import_icon"));
 		importicontexture.setOpaque(false);
 		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.EFFECT);
 			icon.removeAllItems();
 			icon.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> icon.addItem(el.getName()));
+			mcreator.getFolderManager().getTexturesList(TextureType.EFFECT).forEach(el -> icon.addItem(el.getName()));
 		});
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
@@ -202,7 +202,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.EFFECT).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
 

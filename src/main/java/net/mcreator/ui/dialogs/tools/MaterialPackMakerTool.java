@@ -33,7 +33,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public class MaterialPackMakerTool {
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
 		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator);
+		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
@@ -72,7 +72,8 @@ public class MaterialPackMakerTool {
 		props.add(L10N.label("dialog.tools.material_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
+		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+				L10N.t("dialog.tools.material_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.material_pack_create");
