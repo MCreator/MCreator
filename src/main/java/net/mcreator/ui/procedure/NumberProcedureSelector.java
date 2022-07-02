@@ -70,7 +70,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		this.fixedValue = fixedValue;
 		this.defaultName = L10N.t("procedure.common.fixed");
 
-		setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout());
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -80,7 +80,6 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 
 		setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 
-		setOpaque(true);
 		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
@@ -105,7 +104,7 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 		ComponentUtils.deriveFont(nameLabel, 12);
 
 		JLabel eventNameLabel = new JLabel();
-		eventNameLabel.setFont(eventNameLabel.getFont().deriveFont(9f));
+		eventNameLabel.setFont(eventNameLabel.getFont().deriveFont(9.0f));
 		if (side == Side.CLIENT) {
 			eventNameLabel.setIcon(UIRES.get("16px.client"));
 			eventNameLabel.setToolTipText(L10N.t("trigger.triggers_on_client_side_only"));
