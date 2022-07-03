@@ -73,11 +73,12 @@
     </#if>
 </#macro>
 
-<#macro procedureOBJToItemstackCode object="">
+<#macro procedureOBJToItemstackCode object="" addMarker=true>
+    <#if addMarker>/*@ItemStack*/</#if>
     <#if hasProcedure(object)>
-        /*@ItemStack*/ <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
+        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        /*@ItemStack*/ ItemStack.EMPTY
+        ItemStack.EMPTY
     </#if>
 </#macro>
 
