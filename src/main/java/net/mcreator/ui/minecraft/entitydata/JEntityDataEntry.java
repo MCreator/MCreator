@@ -54,7 +54,6 @@ public class JEntityDataEntry extends JPanel {
 		parent.add(container);
 		entryList.add(this);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("dialog.entity_data.name.needs_name")));
 		name.setValidator(new JavaMemberNameValidator(name, false));
 		name.enableRealtimeValidation();
 		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"), L10N.label("dialog.entity_data.name")));
