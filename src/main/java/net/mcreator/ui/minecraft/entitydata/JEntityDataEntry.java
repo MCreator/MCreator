@@ -27,6 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 
 import javax.swing.*;
@@ -54,6 +55,7 @@ public class JEntityDataEntry extends JPanel {
 		entryList.add(this);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("dialog.entity_data.name.needs_name")));
+		name.setValidator(new JavaMemberNameValidator(name, false));
 		name.enableRealtimeValidation();
 		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"), L10N.label("dialog.entity_data.name")));
 		add(name);
