@@ -87,11 +87,13 @@ public class ConverterRegistry {
 				new ProcedureShootArrowFixer()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
+		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
 		put("food", new FoodToItemConverter());
+		put("fuel", new FuelToItemExtensionConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
