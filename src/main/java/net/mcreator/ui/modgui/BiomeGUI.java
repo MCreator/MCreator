@@ -72,6 +72,23 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner heightVariation = new JSpinner(new SpinnerNumberModel(0.2, 0, 2, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
 
+	//m STANDS FOR MULTI-NOISE
+	private final JCheckBox usePureMultiNoise = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner mTemperature1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mTemperature2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mHumidity1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mHumidity2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mContinentalness1 = new JSpinner(new SpinnerNumberModel(0.0, -1.2, 1.0, 0.05));
+	private final JSpinner mContinentalness2 = new JSpinner(new SpinnerNumberModel(0.0, -1.2, 1.0, 0.05));
+	private final JSpinner mWeirdness1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mWeirdness2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mErosion1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mErosion2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner mDepth1 = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
+	private final JSpinner mDepth2 = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
+	private final JSpinner mOffset = new JSpinner(new SpinnerNumberModel(0.0, 0, 1.0, 0.05));
+
+
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
 
@@ -167,6 +184,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane6 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
@@ -291,6 +309,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.setOpaque(false);
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
+		pane6.setOpaque(false);
 
 		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
 		spawnproperties.setOpaque(false);
@@ -342,6 +361,68 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(biomeDictionaryTypes);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
+
+
+
+		JPanel multiproperties = new JPanel(new GridLayout(8, 3, 0, 2));
+		multiproperties.setOpaque(false);
+
+
+		//HERE BEGINS MULTI NOISE, PREPARE FOR FREEDOM!!!
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/use_pure_multi_noise"),
+				L10N.label("elementgui.biome.use_pure_multi_noise")));
+		multiproperties.add(usePureMultiNoise);
+		multiproperties.add(L10N.label("elementgui.biome.multi_noise_common_empty"));
+
+		usePureMultiNoise.setOpaque(false);
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/moffset"),
+				L10N.label("elementgui.biome.multi_noise_offset")));
+		multiproperties.add(mOffset);
+		multiproperties.add(L10N.label("elementgui.biome.multi_noise_common_empty"));
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mtemperature"),
+				L10N.label("elementgui.biome.multi_noise_temperature")));
+		multiproperties.add(mTemperature1);
+		multiproperties.add(mTemperature2);
+
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mhumidity"),
+				L10N.label("elementgui.biome.multi_noise_humidity")));
+		multiproperties.add(mHumidity1);
+		multiproperties.add(mHumidity2);
+
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/merosion"),
+				L10N.label("elementgui.biome.multi_noise_erosion")));
+		multiproperties.add(mErosion1);
+		multiproperties.add(mErosion2);
+
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mweirdness"),
+				L10N.label("elementgui.biome.multi_noise_weirdness")));
+		multiproperties.add(mWeirdness1);
+		multiproperties.add(mWeirdness2);
+
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mcontinentalness"),
+				L10N.label("elementgui.biome.multi_noise_continentalness")));
+		multiproperties.add(mContinentalness1);
+		multiproperties.add(mContinentalness2);
+
+
+		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mdepth"),
+				L10N.label("elementgui.biome.multi_noise_depth")));
+		multiproperties.add(mDepth1);
+		multiproperties.add(mDepth2);
+
+
+		pane6.add("Center", PanelUtils.totalCenterInPanel(multiproperties));
+
+		usePureMultiNoise.addActionListener(e -> refreshFieldsMultiNoise());
+		refreshFieldsMultiNoise();
+		spawnInCaves.addActionListener(e -> refreshFieldsMultiNoise());
+		refreshFieldsMultiNoise();
 
 		JPanel sbbp3 = new JPanel(new GridLayout(11, 2, 10, 2));
 
@@ -596,6 +677,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1);
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
+		addPage(L10N.t("elementgui.biome.multi_noise"), pane6);
 
 		updateBiomeTreesForm();
 		updateParticleParameters();
@@ -606,6 +688,26 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores", "FrozenTopLayer"));
 		}
+	}
+
+	private void refreshFieldsMultiNoise() {
+		mOffset.setEnabled(usePureMultiNoise.isSelected());
+		mTemperature1.setEnabled(usePureMultiNoise.isSelected());
+		mTemperature2.setEnabled(usePureMultiNoise.isSelected());
+		mHumidity1.setEnabled(usePureMultiNoise.isSelected());
+		mHumidity2.setEnabled(usePureMultiNoise.isSelected());
+		mContinentalness1.setEnabled(usePureMultiNoise.isSelected());
+		mContinentalness2.setEnabled(usePureMultiNoise.isSelected());
+		mErosion1.setEnabled(usePureMultiNoise.isSelected());
+		mErosion2.setEnabled(usePureMultiNoise.isSelected());
+		mWeirdness1.setEnabled(usePureMultiNoise.isSelected());
+		mWeirdness2.setEnabled(usePureMultiNoise.isSelected());
+		mDepth1.setEnabled((usePureMultiNoise.isSelected() && spawnInCaves.isSelected()));
+		mDepth2.setEnabled((usePureMultiNoise.isSelected() && spawnInCaves.isSelected()));
+
+		biomeWeight.setEnabled(!usePureMultiNoise.isSelected());
+		baseHeight.setEnabled(!usePureMultiNoise.isSelected());
+		heightVariation.setEnabled(!usePureMultiNoise.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -747,6 +849,23 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
 		spawnEntries.setSpawns(biome.spawnEntries);
 
+		usePureMultiNoise.setSelected(biome.usePureMultiNoise);
+		mOffset.setValue(biome.mOffset);
+		mTemperature1.setValue(biome.mTemperature1);
+		mTemperature2.setValue(biome.mTemperature2);
+		mHumidity1.setValue(biome.mHumidity1);
+		mHumidity2.setValue(biome.mHumidity2);
+		mWeirdness1.setValue(biome.mWeirdness1);
+		mWeirdness2.setValue(biome.mWeirdness2);
+		mErosion1.setValue(biome.mErosion1);
+		mErosion2.setValue(biome.mErosion2);
+		mContinentalness1.setValue(biome.mContinentalness1);
+		mContinentalness2.setValue(biome.mContinentalness2);
+		mDepth1.setValue(biome.mDepth1);
+		mDepth2.setValue(biome.mDepth2);
+
+
+		refreshFieldsMultiNoise();
 		updateBiomeTreesForm();
 		updateParticleParameters();
 	}
@@ -824,6 +943,23 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnBastionRemnant = spawnBastionRemnant.isSelected();
 		biome.spawnEndCity = spawnEndCity.isSelected();
 		biome.spawnRuinedPortal = (String) spawnRuinedPortal.getSelectedItem();
+
+		biome.usePureMultiNoise = usePureMultiNoise.isSelected();
+		biome.mOffset = (double)mOffset.getValue();
+		biome.mTemperature1 = (double)mTemperature1.getValue();
+		biome.mTemperature2 = (double)mTemperature2.getValue();
+		biome.mHumidity1 = (double)mHumidity1.getValue();
+		biome.mHumidity2 = (double)mHumidity2.getValue();
+		biome.mErosion1 = (double)mErosion1.getValue();
+		biome.mErosion2 = (double)mErosion2.getValue();
+		biome.mWeirdness1 = (double)mWeirdness1.getValue();
+		biome.mWeirdness2 = (double)mWeirdness2.getValue();
+		biome.mContinentalness1 = (double)mContinentalness1.getValue();
+		biome.mContinentalness2 = (double)mContinentalness2.getValue();
+		biome.mDepth1 = (double)mDepth1.getValue();
+		biome.mDepth2 = (double)mDepth2.getValue();
+
+
 		return biome;
 	}
 

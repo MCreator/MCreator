@@ -42,25 +42,46 @@ public class ${name}Biome {
 
 	<#if data.spawnBiome || data.spawnBiomeNether>
 	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
+	  <#if data.usePureMultiNoise>
+	    Climate.Parameter.span(${data.mTemperature1}f , ${data.mTemperature2}f),
+      	Climate.Parameter.span(${data.mHumidity1}f , ${data.mHumidity2}f),
+      	Climate.Parameter.span(${data.mContinentalness1}f , ${data.mContinentalness2}f),
+      	Climate.Parameter.span(${data.mErosion1}f , ${data.mErosion2}f),
+      	Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+      	Climate.Parameter.span(${data.mWeirdness1}f , ${data.mWeirdness2}f),
+      	0 <#-- offset -->
+	  <#else>
 	    Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
-	    0 <#-- offset -->
+      	Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
+      	Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
+      	Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
+      	Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+      	Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
+      	0 <#-- offset -->
+	  </#if>
+
 	);
 	</#if>
 
 	<#if data.spawnInCaves>
 	public static final Climate.ParameterPoint PARAMETER_POINT_UNDERGROUND = new Climate.ParameterPoint(
-			Climate.Parameter.span(-1, 1),
-			Climate.Parameter.span(-1, 1),
-			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight), "f")}),
-			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight), "f")}),
-			Climate.Parameter.span(0.2f, 0.9f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight), "f")}),
-			0 <#-- offset -->
+	  <#if data.usePureMultiNoise>
+        Climate.Parameter.span(${data.mTemperature1}f , ${data.mTemperature2}f),
+        Climate.Parameter.span(${data.mHumidity1}f , ${data.mHumidity2}f),
+        Climate.Parameter.span(${data.mContinentalness1}f , ${data.mContinentalness2}f),
+        Climate.Parameter.span(${data.mErosion1}f , ${data.mErosion2}f),
+        Climate.Parameter.span(${data.mDepth1}f , ${data.mDepth2}f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+        Climate.Parameter.span(${data.mWeirdness1}f , ${data.mWeirdness2}f),
+        0 <#-- offset -->
+      <#else>
+		Climate.Parameter.span(-1, 1),
+		Climate.Parameter.span(-1, 1),
+		Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight), "f")}),
+		Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight), "f")}),
+		Climate.Parameter.span(0.2f, 0.9f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
+		Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight), "f")}),
+		0 <#-- offset -->
+	  </#if>
 	);
     </#if>
 
