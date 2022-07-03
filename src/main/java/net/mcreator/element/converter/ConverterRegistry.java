@@ -45,7 +45,7 @@ import net.mcreator.element.converter.fv28.FoodToItemConverter;
 import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
 import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
 import net.mcreator.element.converter.fv31.*;
-import net.mcreator.element.converter.fv32.GUIButtonNameFixer;
+import net.mcreator.element.converter.fv33.GUIButtonNameFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
