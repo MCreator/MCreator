@@ -127,14 +127,16 @@ Blockly.Extensions.register('throwableprojectile_list_provider',
 
 Blockly.Extensions.register('custom_entity_with_entity_data_list_provider',
     function () {
+        var thisBlock = this;
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("customentity"),
                 javabridge.getReadableListOf("entity"))), 'customentity');
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown(
-                    arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getCustomEntityDataList(this.getFieldValue('customentity')),
-                        javabridge.getReadableListOfWithValue('entitydata', this.getFieldValue('customentity')))), 'dataName');
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            function (fieldDropdown) {
+                return arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getCustomEntityDataList(thisBlock.getFieldValue('customentity')),
+                    javabridge.getReadableListOfWithValue('entitydata', thisBlock.getFieldValue('customentity')));
+            }), 'dataName');
     });
 
 Blockly.Extensions.register('fireballprojectile_list_provider',
