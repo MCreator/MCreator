@@ -201,7 +201,7 @@
 @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
    	<#if hasProcedure(procedure)>
     <#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
-    <#if !(dependencies.isEmpty() || dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack")>
+    <#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
    	Entity entity = Minecraft.getInstance().player;
    	</#if>
    	return <@procedureCode procedure, {
