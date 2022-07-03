@@ -341,18 +341,7 @@ public class ${name}Item extends FishingRodItem {
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
     <#if data.hasGlow>
-    	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-    		<#if hasProcedure(data.glowCondition)>
-    		Player entity = Minecraft.getInstance().player;
-    		Level world = entity.level;
-    		double x = entity.getX();
-    		double y = entity.getY();
-    		double z = entity.getZ();
-    		return <@procedureOBJToConditionCode data.glowCondition/>;
-    		<#else>
-    		return true;
-    		</#if>
-    	}
+	<@hasGlow data.glowCondition/>
     </#if>
 </#macro>
 <#-- @formatter:on -->
