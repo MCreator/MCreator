@@ -43,6 +43,7 @@ package ${package}.init;
 
 	@SubscribeEvent
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+		<#compress>
 		ItemStack itemstack = event.getItemStack();
 		<#list itemextensions as extension>
             <#if extension.enableFuel>
@@ -55,6 +56,7 @@ package ${package}.init;
                         </#if>
             </#if>
 		</#list>
+		</#compress>
 	}
 
 }
