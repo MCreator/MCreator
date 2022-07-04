@@ -55,11 +55,6 @@ public class GeneratorSelector {
 			return getGeneratorSelector(parent, null, current, currentFlavor);
 	}
 
-	public static GeneratorConfiguration getGeneratorSelector(MCreator mcreator,
-			@Nullable GeneratorConfiguration current, @Nullable GeneratorFlavor currentFlavor) {
-		return getGeneratorSelector(mcreator, mcreator, current, currentFlavor);
-	}
-
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
 	 *
