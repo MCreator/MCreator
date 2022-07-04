@@ -111,6 +111,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
 
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
+	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 1, 512, 1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
@@ -374,7 +375,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
-		JPanel subpane1 = new JPanel(new GridLayout(11, 2, 0, 2));
+		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		immuneToFire.setOpaque(false);
 		immuneToArrows.setOpaque(false);
@@ -423,6 +424,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
+
+		subpane1.add(L10N.label("elementgui.living_entity.follow"));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/follow_range"), followRange)));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
@@ -528,6 +533,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		attackStrength.setPreferredSize(new Dimension(250, 32));
 		attackKnockback.setPreferredSize(new Dimension(250, 32));
 		knockbackResistance.setPreferredSize(new Dimension(250, 32));
+		followRange.setPreferredSize(new Dimension(250, 32));
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
 
@@ -970,6 +976,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		equipmentBoots.setBlock(livingEntity.equipmentBoots);
 		health.setValue(livingEntity.health);
 		trackingRange.setValue(livingEntity.trackingRange);
+		followRange.setValue(livingEntity.followRange);
 		immuneToFire.setSelected(livingEntity.immuneToFire);
 		immuneToArrows.setSelected(livingEntity.immuneToArrows);
 		immuneToFallDamage.setSelected(livingEntity.immuneToFallDamage);
@@ -1091,6 +1098,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.movementSpeed = (double) movementSpeed.getValue();
 		livingEntity.health = (int) health.getValue();
 		livingEntity.trackingRange = (int) trackingRange.getValue();
+		livingEntity.followRange = (int) followRange.getValue();
 		livingEntity.immuneToFire = immuneToFire.isSelected();
 		livingEntity.immuneToArrows = immuneToArrows.isSelected();
 		livingEntity.immuneToFallDamage = immuneToFallDamage.isSelected();

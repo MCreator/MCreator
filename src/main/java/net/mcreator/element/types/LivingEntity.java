@@ -84,6 +84,7 @@ import java.util.Locale;
 	public double movementSpeed;
 	public double armorBaseValue;
 	public int trackingRange;
+	public int followRange;
 	public int health;
 	public int xpAmount;
 	public boolean waterMob;
