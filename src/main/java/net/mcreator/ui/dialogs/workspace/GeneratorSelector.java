@@ -49,11 +49,14 @@ public class GeneratorSelector {
 
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
 			@Nullable GeneratorFlavor currentFlavor) {
-		return getGeneratorSelector(parent, null, current, currentFlavor);
+		if (parent instanceof MCreator mcreator)
+			return getGeneratorSelector(mcreator, mcreator, current, currentFlavor);
+		else
+			return getGeneratorSelector(parent, null, current, currentFlavor);
 	}
 
-	public static GeneratorConfiguration getGeneratorSelector(MCreator mcreator, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor) {
+	public static GeneratorConfiguration getGeneratorSelector(MCreator mcreator,
+			@Nullable GeneratorConfiguration current, @Nullable GeneratorFlavor currentFlavor) {
 		return getGeneratorSelector(mcreator, mcreator, current, currentFlavor);
 	}
 
@@ -66,8 +69,8 @@ public class GeneratorSelector {
 	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
 	 * @return <p>The {@link GeneratorConfiguration} to use</p>
 	 */
-	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable MCreator mcreator, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor) {
+	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable MCreator mcreator,
+			@Nullable GeneratorConfiguration current, @Nullable GeneratorFlavor currentFlavor) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
