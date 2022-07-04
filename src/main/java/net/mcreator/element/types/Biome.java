@@ -65,21 +65,20 @@ import java.util.Locale;
 	public double baseHeight;
 	public double heightVariation;
 
-	//m stands for multi-noise
 	public boolean usePureMultiNoise;
-	public double mTemperature1;
-	public double mTemperature2;
-	public double mHumidity1;
-	public double mHumidity2;
-	public double mContinentalness1;
-	public double mContinentalness2;
-	public double mWeirdness1;
-	public double mWeirdness2;
-	public double mErosion1;
-	public double mErosion2;
-	public double mDepth1;
-	public double mDepth2;
-	public double mOffset;
+	public double minTemperature;
+	public double maxTemperature;
+	public double minHumidity;
+	public double maxHumidity;
+	public double minContinentalness;
+	public double maxContinentalness;
+	public double minWeirdness;
+	public double maxWeirdness;
+	public double minErosion;
+	public double maxErosion;
+	public double minDepth;
+	public double maxDepth;
+	public double offset;
 
 	public boolean spawnBiome;
 	public boolean spawnBiomeNether;

@@ -72,21 +72,20 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner heightVariation = new JSpinner(new SpinnerNumberModel(0.2, 0, 2, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
 
-	//m STANDS FOR MULTI-NOISE
 	private final JCheckBox usePureMultiNoise = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner mTemperature1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mTemperature2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mHumidity1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mHumidity2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mContinentalness1 = new JSpinner(new SpinnerNumberModel(0.0, -1.2, 1.0, 0.05));
-	private final JSpinner mContinentalness2 = new JSpinner(new SpinnerNumberModel(0.0, -1.2, 1.0, 0.05));
-	private final JSpinner mWeirdness1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mWeirdness2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mErosion1 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mErosion2 = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
-	private final JSpinner mDepth1 = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
-	private final JSpinner mDepth2 = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
-	private final JSpinner mOffset = new JSpinner(new SpinnerNumberModel(0.0, 0, 1.0, 0.05));
+	private final JSpinner minTemperature = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner maxTemperature = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner minHumidity = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner maxHumidity = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner minContinentalness = new JSpinner(new SpinnerNumberModel(0.0, -1.2, 1.0, 0.05));
+	private final JSpinner maxContinentalness = new JSpinner(new SpinnerNumberModel(0.0, -1.2, 1.0, 0.05));
+	private final JSpinner minWeirdness = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner maxWeirdness = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner minErosion = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner maxErosion = new JSpinner(new SpinnerNumberModel(0.0, -1.0, 1.0, 0.05));
+	private final JSpinner minDepth = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
+	private final JSpinner maxDepth = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
+	private final JSpinner offset = new JSpinner(new SpinnerNumberModel(0.0, 0, 1.0, 0.05));
 
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
@@ -368,7 +367,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		multiproperties.setOpaque(false);
 
 
-		//HERE BEGINS MULTI NOISE, PREPARE FOR FREEDOM!!!
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/use_pure_multi_noise"),
 				L10N.label("elementgui.biome.use_pure_multi_noise")));
 		multiproperties.add(usePureMultiNoise);
@@ -378,43 +376,43 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/moffset"),
 				L10N.label("elementgui.biome.multi_noise_offset")));
-		multiproperties.add(mOffset);
+		multiproperties.add(offset);
 		multiproperties.add(L10N.label("elementgui.biome.multi_noise_common_empty"));
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mtemperature"),
 				L10N.label("elementgui.biome.multi_noise_temperature")));
-		multiproperties.add(mTemperature1);
-		multiproperties.add(mTemperature2);
+		multiproperties.add(minTemperature);
+		multiproperties.add(maxTemperature);
 
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mhumidity"),
 				L10N.label("elementgui.biome.multi_noise_humidity")));
-		multiproperties.add(mHumidity1);
-		multiproperties.add(mHumidity2);
+		multiproperties.add(minHumidity);
+		multiproperties.add(maxHumidity);
 
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/merosion"),
 				L10N.label("elementgui.biome.multi_noise_erosion")));
-		multiproperties.add(mErosion1);
-		multiproperties.add(mErosion2);
+		multiproperties.add(minErosion);
+		multiproperties.add(maxErosion);
 
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mweirdness"),
 				L10N.label("elementgui.biome.multi_noise_weirdness")));
-		multiproperties.add(mWeirdness1);
-		multiproperties.add(mWeirdness2);
+		multiproperties.add(minWeirdness);
+		multiproperties.add(maxWeirdness);
 
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mcontinentalness"),
 				L10N.label("elementgui.biome.multi_noise_continentalness")));
-		multiproperties.add(mContinentalness1);
-		multiproperties.add(mContinentalness2);
+		multiproperties.add(minContinentalness);
+		multiproperties.add(maxContinentalness);
 
 
 		multiproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mdepth"),
 				L10N.label("elementgui.biome.multi_noise_depth")));
-		multiproperties.add(mDepth1);
-		multiproperties.add(mDepth2);
+		multiproperties.add(minDepth);
+		multiproperties.add(maxDepth);
 
 
 		pane6.add("Center", PanelUtils.totalCenterInPanel(multiproperties));
@@ -691,19 +689,19 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	private void refreshFieldsMultiNoise() {
-		mOffset.setEnabled(usePureMultiNoise.isSelected());
-		mTemperature1.setEnabled(usePureMultiNoise.isSelected());
-		mTemperature2.setEnabled(usePureMultiNoise.isSelected());
-		mHumidity1.setEnabled(usePureMultiNoise.isSelected());
-		mHumidity2.setEnabled(usePureMultiNoise.isSelected());
-		mContinentalness1.setEnabled(usePureMultiNoise.isSelected());
-		mContinentalness2.setEnabled(usePureMultiNoise.isSelected());
-		mErosion1.setEnabled(usePureMultiNoise.isSelected());
-		mErosion2.setEnabled(usePureMultiNoise.isSelected());
-		mWeirdness1.setEnabled(usePureMultiNoise.isSelected());
-		mWeirdness2.setEnabled(usePureMultiNoise.isSelected());
-		mDepth1.setEnabled((usePureMultiNoise.isSelected() && spawnInCaves.isSelected()));
-		mDepth2.setEnabled((usePureMultiNoise.isSelected() && spawnInCaves.isSelected()));
+		offset.setEnabled(usePureMultiNoise.isSelected());
+		minTemperature.setEnabled(usePureMultiNoise.isSelected());
+		maxTemperature.setEnabled(usePureMultiNoise.isSelected());
+		minHumidity.setEnabled(usePureMultiNoise.isSelected());
+		maxHumidity.setEnabled(usePureMultiNoise.isSelected());
+		minContinentalness.setEnabled(usePureMultiNoise.isSelected());
+		maxContinentalness.setEnabled(usePureMultiNoise.isSelected());
+		minErosion.setEnabled(usePureMultiNoise.isSelected());
+		maxErosion.setEnabled(usePureMultiNoise.isSelected());
+		minWeirdness.setEnabled(usePureMultiNoise.isSelected());
+		maxWeirdness.setEnabled(usePureMultiNoise.isSelected());
+		minDepth.setEnabled((usePureMultiNoise.isSelected() && spawnInCaves.isSelected()));
+		maxDepth.setEnabled((usePureMultiNoise.isSelected() && spawnInCaves.isSelected()));
 
 		biomeWeight.setEnabled(!usePureMultiNoise.isSelected());
 		baseHeight.setEnabled(!usePureMultiNoise.isSelected());
@@ -850,19 +848,19 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnEntries.setSpawns(biome.spawnEntries);
 
 		usePureMultiNoise.setSelected(biome.usePureMultiNoise);
-		mOffset.setValue(biome.mOffset);
-		mTemperature1.setValue(biome.mTemperature1);
-		mTemperature2.setValue(biome.mTemperature2);
-		mHumidity1.setValue(biome.mHumidity1);
-		mHumidity2.setValue(biome.mHumidity2);
-		mWeirdness1.setValue(biome.mWeirdness1);
-		mWeirdness2.setValue(biome.mWeirdness2);
-		mErosion1.setValue(biome.mErosion1);
-		mErosion2.setValue(biome.mErosion2);
-		mContinentalness1.setValue(biome.mContinentalness1);
-		mContinentalness2.setValue(biome.mContinentalness2);
-		mDepth1.setValue(biome.mDepth1);
-		mDepth2.setValue(biome.mDepth2);
+		offset.setValue(biome.offset);
+		minTemperature.setValue(biome.minTemperature);
+		maxTemperature.setValue(biome.maxTemperature);
+		minHumidity.setValue(biome.minHumidity);
+		maxHumidity.setValue(biome.maxHumidity);
+		minWeirdness.setValue(biome.minWeirdness);
+		maxWeirdness.setValue(biome.maxWeirdness);
+		minErosion.setValue(biome.minErosion);
+		maxErosion.setValue(biome.maxErosion);
+		minContinentalness.setValue(biome.minContinentalness);
+		maxContinentalness.setValue(biome.maxContinentalness);
+		minDepth.setValue(biome.minDepth);
+		maxDepth.setValue(biome.maxDepth);
 
 
 		refreshFieldsMultiNoise();
@@ -945,19 +943,19 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnRuinedPortal = (String) spawnRuinedPortal.getSelectedItem();
 
 		biome.usePureMultiNoise = usePureMultiNoise.isSelected();
-		biome.mOffset = (double)mOffset.getValue();
-		biome.mTemperature1 = (double)mTemperature1.getValue();
-		biome.mTemperature2 = (double)mTemperature2.getValue();
-		biome.mHumidity1 = (double)mHumidity1.getValue();
-		biome.mHumidity2 = (double)mHumidity2.getValue();
-		biome.mErosion1 = (double)mErosion1.getValue();
-		biome.mErosion2 = (double)mErosion2.getValue();
-		biome.mWeirdness1 = (double)mWeirdness1.getValue();
-		biome.mWeirdness2 = (double)mWeirdness2.getValue();
-		biome.mContinentalness1 = (double)mContinentalness1.getValue();
-		biome.mContinentalness2 = (double)mContinentalness2.getValue();
-		biome.mDepth1 = (double)mDepth1.getValue();
-		biome.mDepth2 = (double)mDepth2.getValue();
+		biome.offset = (double) offset.getValue();
+		biome.minTemperature = (double) minTemperature.getValue();
+		biome.maxTemperature = (double) maxTemperature.getValue();
+		biome.minHumidity = (double) minHumidity.getValue();
+		biome.maxHumidity = (double) maxHumidity.getValue();
+		biome.minErosion = (double) minErosion.getValue();
+		biome.maxErosion = (double) maxErosion.getValue();
+		biome.minWeirdness = (double) minWeirdness.getValue();
+		biome.maxWeirdness = (double) maxWeirdness.getValue();
+		biome.minContinentalness = (double) minContinentalness.getValue();
+		biome.maxContinentalness = (double) maxContinentalness.getValue();
+		biome.minDepth = (double) minDepth.getValue();
+		biome.maxDepth = (double) maxDepth.getValue();
 
 
 		return biome;
