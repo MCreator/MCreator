@@ -1,1 +1,1 @@
-Sélectionner ce paramètre pour générer des puits de mine abandonné du Mesa (Badlands) dans le biome.
+Sélectionner ce paramètre pour générer des puits de mine abandonnés du Mesa (Badlands) dans le biome.
