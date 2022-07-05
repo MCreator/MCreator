@@ -716,7 +716,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.movementSpeed = 0.76;
 			livingEntity.armorBaseValue = 0.123;
 			livingEntity.health = 42;
-			livingEntity.trackingRange = 27;
+			livingEntity.trackingRange = 64;
 			livingEntity.waterMob = !_true;
 			livingEntity.flyingMob = !_true;
 			livingEntity.inventorySize = 10;
