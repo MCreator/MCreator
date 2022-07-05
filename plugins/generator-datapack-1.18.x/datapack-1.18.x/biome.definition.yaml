@@ -198,7 +198,8 @@ field_inclusions: [heightVariation, baseHeight, rainingPossibility, temperature,
                    spawnJungleTemple, spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument,
                    spawnShipwreck, spawnShipwreckBeached, spawnBuriedTreasure, oceanRuinType,
                    spawnNetherBridge, spawnNetherFossil, spawnBastionRemnant, spawnEndCity,
-                   spawnRuinedPortal]
+                   spawnRuinedPortal, usePureMultiNoise, minTemperature, maxTemperature, minHumidity, maxHumidity,
+                   minErosion, maxErosion, minWeirdness, maxWeirdness, minContinentalness, maxContinentalness, offset]
 
 localizationkeys:
   - key: biome.@modid.@registryname
