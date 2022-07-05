@@ -1,1 +1,1 @@
-This parameter controls the block that generates under the water. Most vanilla biomes use dirt or gravel block for this.
+Ce paramètre conrôle le bloc généré sous l'eau. La plupart des biomes vanilla utilisent la terre, le gravier ou le sable (océans chauds) pour ceci.
