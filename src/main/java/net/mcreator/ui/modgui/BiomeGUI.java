@@ -417,7 +417,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane6.add("Center", PanelUtils.totalCenterInPanel(multiproperties));
 
 		usePureMultiNoise.addActionListener(e -> refreshFieldsMultiNoise());
-		refreshFieldsMultiNoise();
 		spawnInCaves.addActionListener(e -> refreshFieldsMultiNoise());
 		refreshFieldsMultiNoise();
 
