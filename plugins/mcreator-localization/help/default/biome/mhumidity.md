@@ -1,5 +1,3 @@
-Humidity
-
 * Controls the biome placement.
 
 

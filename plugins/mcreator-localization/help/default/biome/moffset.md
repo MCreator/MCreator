@@ -1,6 +1,3 @@
-Offset
-
-
 * Higher number means the biome will be smaller, take beaches for example, they are a small transition biome.
 
 

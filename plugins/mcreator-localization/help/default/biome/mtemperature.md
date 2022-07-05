@@ -1,6 +1,3 @@
-Temperature
-
-
 * Controls the biome placement.
 
 

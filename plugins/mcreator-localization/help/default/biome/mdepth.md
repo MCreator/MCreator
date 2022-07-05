@@ -1,5 +1,3 @@
-Depth
-
 * Only for cave biomes.
 * Controls how deep should biome generate.
 * 0 to 1 means 0 to 128 blocks from the surface.

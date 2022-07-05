@@ -1,7 +1,4 @@
-Continentalness
-
-
-* Controls how close to coast the biomes are.</li>
+* Controls how close to coast the biomes are.
 
 
 * Example: 

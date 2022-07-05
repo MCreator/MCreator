@@ -87,7 +87,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner maxDepth = new JSpinner(new SpinnerNumberModel(0.0, 0, 2.5, 0.05));
 	private final JSpinner offset = new JSpinner(new SpinnerNumberModel(0.0, 0, 1.0, 0.05));
 
-
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
 

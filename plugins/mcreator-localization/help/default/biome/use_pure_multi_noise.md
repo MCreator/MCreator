@@ -1,6 +1,3 @@
-Multi-Noise
-
-
 Multi-noise dictates how biomes are placed.
 
 

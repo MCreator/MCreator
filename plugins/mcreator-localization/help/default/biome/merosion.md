@@ -1,5 +1,3 @@
-Erosion
-
 * Controls in which kind of terrain the biome spawns. Higher values mean flatter areas, lower values mean more hilly areas.
 
 

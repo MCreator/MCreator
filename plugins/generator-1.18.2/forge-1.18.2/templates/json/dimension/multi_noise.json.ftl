@@ -25,7 +25,18 @@
             <#else>
                 <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                     <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
-                    {
+                    <#if ge.usePureMultiNoise>
+                        {
+                        "temperature": [${ge.minTemperature}, ${ge.maxTemperature}],
+                        "humidity": [${ge.minHumidity}, ${ge.maxHumidity}],
+                        "continentalness": [${ge.minContinentalness}, ${ge.maxContinentalness}],
+                        "weirdness": [${ge.minWeirdness}, ${ge.maxWeirdness}],
+                        "erosion": [${ge.minErosion}, ${ge.maxErosion}],
+                        "depth": 0, <#-- 0 for surface biomes, 1 for cave biomes -->
+                        "offset": ${ge.offset}
+                        }
+                    <#else>
+                        {
                         "temperature": [${temperature2temperature(ge.temperature, normalizeWeight(ge.biomeWeight))}],
                         "humidity": [${rainingPossibility2humidity(ge.rainingPossibility, normalizeWeight(ge.biomeWeight))}],
                         "continentalness": [${baseHeight2continentalness(ge.baseHeight normalizeWeight(ge.biomeWeight))}],
@@ -33,7 +44,8 @@
                         "erosion": [${heightVariation2erosion(ge.heightVariation normalizeWeight(ge.biomeWeight))}],
                         "depth": 0, <#-- 0 for surface biomes, 1 for cave biomes -->
                         "offset": 0
-                    }
+                        }
+                    </#if>
                 <#else>
                      ${thelper.obj2str(biomesmap["minecraft:" + biome.toString()])}
                 </#if>
