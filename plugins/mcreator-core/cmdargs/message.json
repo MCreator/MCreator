@@ -26,6 +26,9 @@
       {
         "name": "args"
       }
+    ],
+    "warnings": [
+      "no_more_argument"
     ]
   }
 }
