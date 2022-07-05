@@ -61,8 +61,10 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
+	private final VComboBox<String> zombifiedProfessionTextureFile = new SearchableComboBox<>();
 
 	private final JLabel texturePreview = new JLabel();
+	private final JLabel zombifiedTexturePreview = new JLabel();
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public VillagerProfessionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -75,12 +77,15 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		professionTextureFile.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 		professionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+		zombifiedProfessionTextureFile.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		zombifiedProfessionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(displayName, 16);
 		ComponentUtils.deriveFont(hat, 16);
 
-		JPanel subpanel = new JPanel(new GridLayout(6, 2, 0, 2));
+		JPanel subpanel = new JPanel(new GridLayout(7, 2, 0, 2));
 		subpanel.setOpaque(false);
 
 		name.setEnabled(false);
@@ -122,6 +127,24 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				L10N.label("elementgui.villager_profession.profession_texture")));
 		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture));
 
+		zombifiedProfessionTextureFile.addActionListener(e -> updateZombifiedProfessionTexturePreview());
+
+		JButton importZombifiedProfessionTexture = new JButton(UIRES.get("18px.add"));
+		importZombifiedProfessionTexture.setToolTipText(
+				L10N.t("elementgui.villager_profession.import_zombified_profession_texture"));
+		importZombifiedProfessionTexture.setOpaque(false);
+		importZombifiedProfessionTexture.addActionListener(e -> {
+			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
+			zombifiedProfessionTextureFile.removeAllItems();
+			zombifiedProfessionTextureFile.addItem("");
+			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
+					.forEach(el -> zombifiedProfessionTextureFile.addItem(el.getName()));
+		});
+
+		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/zombified_profession_texture"),
+				L10N.label("elementgui.villager_profession.zombified_profession_texture")));
+		subpanel.add(PanelUtils.centerAndEastElement(zombifiedProfessionTextureFile, importZombifiedProfessionTexture));
+
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(displayName);
 		page1group.addValidationElement(pointOfInterest);
@@ -145,7 +168,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		JPanel mainPanel = new JPanel(new BorderLayout(0, 50));
 		mainPanel.add("North", subpanel);
-		mainPanel.add("Center", PanelUtils.centerInPanel(texturePreview));
+		mainPanel.add("Center",
+				PanelUtils.centerInPanel(PanelUtils.westAndEastElement(texturePreview, zombifiedTexturePreview)));
 		mainPanel.setOpaque(false);
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(mainPanel));
@@ -167,9 +191,24 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				ImageUtils.resize(new ImageIcon(professionTexture.getAbsolutePath()).getImage(), 320, 320)));
 	}
 
+	private void updateZombifiedProfessionTexturePreview() {
+		if (zombifiedProfessionTextureFile.getSelectedItem() == null)
+			return;
+
+		File zombifiedProfessionTexture = mcreator.getFolderManager()
+				.getTextureFile(zombifiedProfessionTextureFile.getSelectedItem().replace(".png", ""),
+						TextureType.ENTITY);
+
+		zombifiedTexturePreview.setIcon(new ImageIcon(
+				ImageUtils.resize(new ImageIcon(zombifiedProfessionTexture.getAbsolutePath()).getImage(), 320, 320)));
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
+				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
+						.collect(Collectors.toList())), "");
+		ComboBoxUtil.updateComboBoxContents(zombifiedProfessionTextureFile, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 	}
@@ -187,6 +226,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		actionSound.setSound(profession.actionSound);
 		hat.setSelectedItem(profession.hat);
 		professionTextureFile.setSelectedItem(profession.professionTextureFile);
+		zombifiedProfessionTextureFile.setSelectedItem(profession.zombifiedProfessionTextureFile);
 
 		updateProfessionTexturePreview();
 	}
@@ -199,6 +239,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();
 		profession.professionTextureFile = professionTextureFile.getSelectedItem();
+		profession.zombifiedProfessionTextureFile = zombifiedProfessionTextureFile.getSelectedItem();
 		return profession;
 	}
 
