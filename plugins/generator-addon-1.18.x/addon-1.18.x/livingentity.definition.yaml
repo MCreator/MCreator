@@ -63,4 +63,4 @@ localizationkeys:
 field_inclusions: [mobModelTexture, mobName, modelWidth, modelHeight, attackStrength, health, movementSpeed, hasSpawnEgg, trackingRange,
                    spawnEggBaseColor, spawnEggDotColor, spawnThisMob, waterMob, flyingMob, disableCollisions, mobBehaviourType, mobSpawningType,
                    spawningProbability, minNumberOfMobsPerGroup, maxNumberOfMobsPerGroup, mobDrop, immuneToDrowning, immuneToFire, immuneToFallDamage,
-                   xpAmount, mobModel, blocklyPanel]
+                   xpAmount, mobModel, blocklyPanel, compileNotesPanel]
