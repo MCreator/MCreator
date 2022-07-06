@@ -124,9 +124,9 @@ public class GeneralTextureSelector extends MCreatorDialog {
 		createTx2.setFont(select.getFont());
 		createTx2.setIcon(UIRES.get("18px.add"));
 		createTx2.addActionListener(event -> {
-			setVisible(false);
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
+			setVisible(false);
 		});
 		pno.add(createTx2);
 

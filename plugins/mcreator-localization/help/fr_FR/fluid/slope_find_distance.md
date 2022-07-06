@@ -1,0 +1,2 @@
+Ce paramètre détermine à quelle distance une pente peut affecter l'étalement de ce fluide. Au lieu de se répandre uniformément,
+le fluide va essayer d'atteindre la pente. Avec des valeurs inférieures, le fluide couvrira généralement de plus grandes surfaces si le sol est inégal.
