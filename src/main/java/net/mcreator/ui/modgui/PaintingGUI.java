@@ -100,7 +100,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		Painting painting = new Painting(modElement);
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
-		painting.texture = texture.getID();
+		painting.texture = texture.getID() + ".png";
 		return painting;
 	}
 

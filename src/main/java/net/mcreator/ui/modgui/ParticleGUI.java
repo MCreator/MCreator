@@ -187,7 +187,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override public Particle getElementFromGUI() {
 		Particle particle = new Particle(modElement);
-		particle.texture = texture.getID();
+		particle.texture = texture.getID() + ".png";
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
 		particle.scale = (double) scale.getValue();
