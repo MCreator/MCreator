@@ -111,7 +111,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
 
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
-	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 1, 512, 1));
+	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 0, 2048, 1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
@@ -405,14 +405,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
 
+		subpane1.add(L10N.label("elementgui.living_entity.movement_speed"));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"), movementSpeed)));
+
 		subpane1.add(L10N.label("elementgui.living_entity.health_xp_amount"));
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"), health),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/xp_amount"), xpAmount)));
 
-		subpane1.add(L10N.label("elementgui.living_entity.movement_speed_tracking_range"));
+		subpane1.add(L10N.label("elementgui.living_entity.follow_range_tracking_range"));
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"), movementSpeed),
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/follow_range"), followRange),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/tracking_range"), trackingRange)));
 
 		subpane1.add(L10N.label("elementgui.living_entity.attack_strenght_armor_value"));
@@ -424,10 +428,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
-
-		subpane1.add(L10N.label("elementgui.living_entity.follow_range"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/follow_range"), followRange)));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
