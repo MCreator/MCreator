@@ -1,1 +1,1 @@
-Utilisez ce paramètre pour avoir des Épaves dans votre biome.
+Sélectionner ce paramètre pour avoir des épaves dans le biome.
