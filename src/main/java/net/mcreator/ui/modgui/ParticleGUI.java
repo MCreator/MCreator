@@ -103,7 +103,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),
-				L10N.t("elementgui.particle.texture")));
+				L10N.t("elementgui.common.texture")));
 
 		JPanel spo2 = new JPanel(new GridLayout(12, 2, 2, 2));
 		spo2.setOpaque(false);
