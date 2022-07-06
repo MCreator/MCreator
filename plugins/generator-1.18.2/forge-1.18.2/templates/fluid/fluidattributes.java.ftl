@@ -56,6 +56,12 @@ public class ${name}FluidAttributes extends FluidAttributes {
 			BiomeColors.getAverageGrassColor(world, pos)
 		<#elseif data.tintType == "Foliage">
 			BiomeColors.getAverageFoliageColor(world, pos)
+		<#elseif data.tintType == "Default foliage">
+			FoliageColor.getDefaultColor()
+		<#elseif data.tintType == "Birch foliage">
+			FoliageColor.getBirchColor()
+		<#elseif data.tintType == "Spruce foliage">
+			FoliageColor.getEvergreenColor()
 		<#elseif data.tintType == "Water">
 			BiomeColors.getAverageWaterColor(world, pos)
 		<#elseif data.tintType == "Sky">

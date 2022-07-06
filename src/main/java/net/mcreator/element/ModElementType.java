@@ -141,11 +141,11 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> ENCHANTMENT;
 	public static ModElementType<?> FEATURE;
 	public static ModElementType<?> FLUID;
-	public static ModElementType<?> FUEL;
 	public static ModElementType<?> FUNCTION;
 	public static ModElementType<?> GAMERULE;
 	public static ModElementType<?> GUI;
 	public static ModElementType<?> ITEM;
+	public static ModElementType<?> ITEMEXTENSION;
 	public static ModElementType<?> KEYBIND;
 	public static ModElementType<?> LIVINGENTITY;
 	public static ModElementType<?> LOOTTABLE;
