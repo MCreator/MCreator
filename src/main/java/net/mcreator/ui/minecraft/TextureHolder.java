@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -32,7 +32,7 @@ import java.awt.event.*;
 public class TextureHolder extends VButton {
 
 	private String id = "";
-	private final BlockItemTextureSelector td;
+	private final GeneralTextureSelector td;
 
 	private ActionListener actionListener;
 
@@ -42,11 +42,11 @@ public class TextureHolder extends VButton {
 
 	private boolean xFlip;
 
-	public TextureHolder(BlockItemTextureSelector td) {
+	public TextureHolder(GeneralTextureSelector td) {
 		this(td, 70);
 	}
 
-	public TextureHolder(BlockItemTextureSelector td, int size) {
+	public TextureHolder(GeneralTextureSelector td, int size) {
 		super("");
 		this.td = td;
 

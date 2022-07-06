@@ -191,9 +191,9 @@ public class DialogsTest {
 
 	@Test public void testBlockItemTextureSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, TextureType.BLOCK).setVisible(true));
+				() -> new GeneralTextureSelector(mcreator, TextureType.BLOCK).setVisible(true));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new BlockItemTextureSelector(mcreator, TextureType.ITEM).setVisible(true));
+				() -> new GeneralTextureSelector(mcreator, TextureType.ITEM).setVisible(true));
 	}
 
 }
