@@ -1223,7 +1223,7 @@ public class TestWorkspaceDataProvider {
 			PotionEffect potionEffect = new PotionEffect(modElement);
 			potionEffect.effectName = modElement.getName() + " Effect Name";
 			potionEffect.color = Color.magenta;
-			potionEffect.icon = "test";
+			potionEffect.icon = "test.png";
 			potionEffect.isInstant = !_true;
 			potionEffect.isBad = _true;
 			potionEffect.isBenefitical = !_true;
@@ -1555,13 +1555,13 @@ public class TestWorkspaceDataProvider {
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
-			painting.texture = "test";
+			painting.texture = "test.png";
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
 		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
 			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
-			particle.texture = "test";
+			particle.texture = "test.png";
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
