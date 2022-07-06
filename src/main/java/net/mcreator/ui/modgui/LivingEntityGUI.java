@@ -264,8 +264,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), BlocklyEditorType.AI_TASK, blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), BlocklyEditorType.AI_TASK, blocklyPanel.getXML(),
+					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -336,8 +336,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
-		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		mobModelTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		mobModelGlowTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -405,33 +407,35 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
 
-		subpane1.add(L10N.label("elementgui.living_entity.movement_speed"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"), movementSpeed)));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"),
+				L10N.label("elementgui.living_entity.movement_speed")));
+		subpane1.add(movementSpeed);
 
-		subpane1.add(L10N.label("elementgui.living_entity.health_xp_amount"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"), health),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/xp_amount"), xpAmount)));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.health_xp_amount"),
+				HelpUtils.helpButton(this.withEntry("entity/health")),
+				HelpUtils.helpButton(this.withEntry("entity/xp_amount"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, health, xpAmount));
 
-		subpane1.add(L10N.label("elementgui.living_entity.follow_range_tracking_range"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/follow_range"), followRange),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/tracking_range"), trackingRange)));
+		subpane1.add(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.follow_range_tracking_range"),
+						HelpUtils.helpButton(this.withEntry("entity/follow_range")),
+						HelpUtils.helpButton(this.withEntry("entity/tracking_range"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, followRange, trackingRange));
 
-		subpane1.add(L10N.label("elementgui.living_entity.attack_strenght_armor_value"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_strength"), attackStrength),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/armor_base_value"), armorBaseValue)));
+		subpane1.add(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.attack_strenght_armor_value"),
+						HelpUtils.helpButton(this.withEntry("entity/attack_strength")),
+						HelpUtils.helpButton(this.withEntry("entity/armor_base_value"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, attackStrength, armorBaseValue));
 
-		subpane1.add(L10N.label("elementgui.living_entity.knockback"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.knockback"),
+				HelpUtils.helpButton(this.withEntry("entity/attack_knockback")),
+				HelpUtils.helpButton(this.withEntry("entity/knockback_resistance"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, attackKnockback, knockbackResistance));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, PanelUtils.totalCenterInPanel(
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0,2, PanelUtils.totalCenterInPanel(
 				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
 						equipmentBody, equipmentLeggings, equipmentBoots))));
 
