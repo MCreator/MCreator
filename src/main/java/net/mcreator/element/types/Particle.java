@@ -87,7 +87,7 @@ public class Particle extends GeneratableElement {
 					|| original.getIconHeight() % original.getIconWidth() != 0) {
 				FileIO.copyFile(originalTextureFileLocation,
 						new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
-								getModElement().getRegistryName() + ".png"));
+								"particle/" + getModElement().getRegistryName() + ".png"));
 			} else {
 				try {
 					TiledImageUtils tiu = new TiledImageUtils(ImageUtils.toBufferedImage(original.getImage()),
@@ -96,7 +96,7 @@ public class Particle extends GeneratableElement {
 					for (int i = 1; i <= tiles; i++) {
 						ImageIO.write(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()), "png",
 								new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
-										getModElement().getRegistryName() + "_" + i + ".png"));
+										"particle/" + getModElement().getRegistryName() + "_" + i + ".png"));
 					}
 				} catch (InvalidTileSizeException | IOException ignored) {
 				}
