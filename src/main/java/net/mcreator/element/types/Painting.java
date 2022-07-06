@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
@@ -39,12 +40,12 @@ public class Painting extends GeneratableElement {
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(getModElement().getFolderManager()
-				.getTextureFile(texture, TextureType.OTHER), width, height);
+				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER), width, height);
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(texture, TextureType.OTHER);
+				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER);
 		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
 				"painting/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);

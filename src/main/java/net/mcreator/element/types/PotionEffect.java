@@ -23,6 +23,7 @@ import net.mcreator.element.parts.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -53,13 +54,13 @@ import java.io.File;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generatePotionEffectIcon(new ImageIcon(
 				getModElement().getWorkspace().getFolderManager()
-						.getTextureFile(icon, TextureType.EFFECT)
+						.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT)
 						.toString()).getImage());
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
-				.getTextureFile(icon, TextureType.EFFECT);
+				.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT);
 		File newLocation = new File(
 				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
 				"mob_effect/" + getModElement().getRegistryName() + ".png");
