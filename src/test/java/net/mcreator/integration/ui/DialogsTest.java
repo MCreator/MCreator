@@ -189,11 +189,11 @@ public class DialogsTest {
 				() -> NewModElementDialog.showNameDialog(mcreator, ModElementType.CODE));
 	}
 
-	@Test public void testBlockItemTextureSelector() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new GeneralTextureSelector(mcreator, TextureType.BLOCK).setVisible(true));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> new GeneralTextureSelector(mcreator, TextureType.ITEM).setVisible(true));
+	@Test public void testGeneralTextureSelector() throws Throwable {
+		for (TextureType type : TextureType.values()) {
+			UITestUtil.waitUntilWindowIsOpen(mcreator,
+					() -> new GeneralTextureSelector(mcreator, type).setVisible(true));
+		}
 	}
 
 }

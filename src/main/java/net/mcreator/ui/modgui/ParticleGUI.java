@@ -27,15 +27,18 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.GeneralTextureSelector;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -52,7 +55,7 @@ import java.util.stream.Collectors;
 
 public class ParticleGUI extends ModElementGUI<Particle> {
 
-	private final VComboBox<String> texture = new SearchableComboBox<>();
+	private TextureHolder texture;
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
@@ -95,26 +98,15 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		alwaysShow.setOpaque(false);
 		animate.setOpaque(false);
 
-		texture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.PARTICLE));
-		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		ComponentUtils.deriveFont(texture, 16);
+		texture = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.PARTICLE));
+		texture.setOpaque(false);
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
+				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),
+				L10N.t("elementgui.particle.texture")));
+
+		JPanel spo2 = new JPanel(new GridLayout(12, 2, 2, 2));
 		spo2.setOpaque(false);
-
-		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-		importmobtexture.setToolTipText(L10N.t("elementgui.particle.texture.import_tooltip"));
-		importmobtexture.setOpaque(false);
-		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.PARTICLE);
-			texture.removeAllItems();
-			texture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.PARTICLE).forEach(el -> texture.addItem(el.getName()));
-		});
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"),
-				L10N.label("elementgui.particle.texture")));
-		spo2.add(PanelUtils.centerAndEastElement(texture, importmobtexture));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
 				L10N.label("elementgui.particle.animated_texture")));
@@ -164,25 +156,17 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(spo2,
-				PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 10)));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
+				PanelUtils.centerAndSouthElement(spo2, PanelUtils.westAndCenterElement(new JEmptyBox(3, 3),
+						additionalExpiryCondition), 5, 10))));
 
-		texture.setValidator(() -> {
-			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.particle.error.needs_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
+		texture.setValidator(new TileHolderValidator(texture));
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-
-		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.PARTICLE).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
 
 		additionalExpiryCondition.refreshListKeepSelected();
 	}
@@ -194,7 +178,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	}
 
 	@Override public void openInEditingMode(Particle particle) {
-		texture.setSelectedItem(particle.texture);
+		texture.setTextureFromTextureName(particle.texture);
 		width.setValue(particle.width);
 		height.setValue(particle.height);
 		scale.setValue(particle.scale);
@@ -214,7 +198,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override public Particle getElementFromGUI() {
 		Particle particle = new Particle(modElement);
-		particle.texture = texture.getSelectedItem();
+		particle.texture = texture.getID();
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
 		particle.scale = (double) scale.getValue();
