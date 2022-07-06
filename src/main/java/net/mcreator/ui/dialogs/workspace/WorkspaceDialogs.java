@@ -65,7 +65,7 @@ public class WorkspaceDialogs {
 	public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
 		MCreatorDialog workspaceDialog = new MCreatorDialog(mcreator, L10N.t("dialog.workspace_settings.title"), true);
 
-		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, mcreator, in);
+		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, in);
 		workspaceDialog.add("Center", wdp);
 		JPanel buttons = new JPanel();
 		JButton ok = L10N.button("dialog.workspace_settings.save_changes");
@@ -175,7 +175,7 @@ public class WorkspaceDialogs {
 		private boolean modIDManuallyEntered = false;
 		private boolean packageNameManuallyEntered = false;
 
-		WorkspaceDialogPanel(Window parent, MCreator mcreator, @Nullable Workspace workspace) {
+		WorkspaceDialogPanel(Window parent, @Nullable Workspace workspace) {
 			setLayout(new BorderLayout());
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces

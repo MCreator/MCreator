@@ -24,14 +24,11 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.workspace.ShareableZIPManager;
-import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -39,7 +36,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Map;
 
@@ -55,8 +51,8 @@ public class GeneratorSelector {
 	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
 	 * @return <p>The {@link GeneratorConfiguration} to use</p>
 	 */
-	public static GeneratorConfiguration getGeneratorSelector(Window parent,
-			@Nullable GeneratorConfiguration current, @Nullable GeneratorFlavor currentFlavor, boolean newWorkspace) {
+	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
+			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace)  {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
@@ -208,8 +204,9 @@ public class GeneratorSelector {
 		int resultval = JOptionPane.showConfirmDialog(parent, mainPanel, L10N.t("dialog.generator_selector.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null)
+		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
 			return (GeneratorConfiguration) generator.getSelectedItem();
+		}
 
 		return null;
 	}
