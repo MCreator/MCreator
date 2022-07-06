@@ -224,12 +224,12 @@ public class GeneratorSelector {
 						== GeneratorFlavor.FABRIC || currentFlavor == GeneratorFlavor.FABRIC
 						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
 						== GeneratorFlavor.FORGE) {
-					int confirmval = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.generator_selector.confirm"),
+					int confirmval = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.generator_selector.confirm_fg_fb_switch"),
 							L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 
 					if (confirmval == JOptionPane.OK_OPTION) {
-						ShareableZIPManager.exportZIP("Workspace backup",
+						ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 								new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
 										"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator,
 								true);
