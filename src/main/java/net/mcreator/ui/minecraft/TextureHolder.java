@@ -24,6 +24,7 @@ import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
+import org.gradle.internal.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -123,11 +124,10 @@ public class TextureHolder extends VButton {
 
 	public void setTextureFromTextureName(String texture) {
 		if (texture != null && !texture.equals("")) {
-			id = texture;
+			id = FileUtils.removeExtension(texture);
 			setToolTipText(texture);
 			setIcon(new ImageIcon(ImageUtils.resize(
-					td.getMCreator().getFolderManager().getTextureImageIcon(texture, td.getTextureType()).getImage(),
-					this.size)));
+					td.getMCreator().getFolderManager().getTextureImageIcon(id, td.getTextureType()).getImage(), this.size)));
 		}
 	}
 
