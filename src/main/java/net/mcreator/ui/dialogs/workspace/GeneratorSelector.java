@@ -52,7 +52,7 @@ public class GeneratorSelector {
 	 * @return <p>The {@link GeneratorConfiguration} to use</p>
 	 */
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
-			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace)  {
+			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 
 		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
@@ -207,7 +207,6 @@ public class GeneratorSelector {
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
 			return (GeneratorConfiguration) generator.getSelectedItem();
 		}
-
 		return null;
 	}
 
