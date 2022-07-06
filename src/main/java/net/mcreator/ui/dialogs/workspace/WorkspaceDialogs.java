@@ -64,7 +64,7 @@ public class WorkspaceDialogs {
 	public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
 		MCreatorDialog workspaceDialog = new MCreatorDialog(mcreator, L10N.t("dialog.workspace_settings.title"), true);
 
-		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, in, mcreator);
+		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, mcreator, in);
 		workspaceDialog.add("Center", wdp);
 		JPanel buttons = new JPanel();
 		JButton ok = L10N.button("dialog.workspace_settings.save_changes");
@@ -157,7 +157,7 @@ public class WorkspaceDialogs {
 		private boolean modIDManuallyEntered = false;
 		private boolean packageNameManuallyEntered = false;
 
-		WorkspaceDialogPanel(Window parent, @Nullable Workspace workspace, MCreator mcreator) {
+		WorkspaceDialogPanel(Window parent, MCreator mcreator, @Nullable Workspace workspace) {
 			setLayout(new BorderLayout());
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces
@@ -334,7 +334,7 @@ public class WorkspaceDialogs {
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
 			selectGenerator.addActionListener(e -> {
-				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(mcreator, (GeneratorConfiguration) generator.getSelectedItem(),
+				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent, mcreator, (GeneratorConfiguration) generator.getSelectedItem(),
 						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
 				if (gc != null)
 					generator.setSelectedItem(gc);
@@ -342,7 +342,7 @@ public class WorkspaceDialogs {
 
 			generator.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
-					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(mcreator,
+					GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent, mcreator,
 							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
 									workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter);
 					if (gc != null)
