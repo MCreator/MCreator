@@ -1,0 +1,1 @@
+Cocher cette case pour générer le biome dans les grottes de l'Overworld.
