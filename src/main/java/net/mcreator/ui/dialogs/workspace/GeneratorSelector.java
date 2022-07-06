@@ -218,7 +218,7 @@ public class GeneratorSelector {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
-			if (mcreator != null) {
+			if (mcreator != null && currentFlavor != ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()) {
 				if (currentFlavor == GeneratorFlavor.FORGE
 						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
 						== GeneratorFlavor.FABRIC || currentFlavor == GeneratorFlavor.FABRIC
