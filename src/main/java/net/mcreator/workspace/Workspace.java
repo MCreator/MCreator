@@ -408,7 +408,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 							L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
 					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
 							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-									currentFlavor), currentFlavor);
+									currentFlavor), currentFlavor, false);
 					if (generatorConfiguration != null) {
 						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
