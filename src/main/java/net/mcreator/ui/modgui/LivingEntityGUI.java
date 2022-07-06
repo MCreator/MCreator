@@ -425,7 +425,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
 
-		subpane1.add(L10N.label("elementgui.living_entity.follow"));
+		subpane1.add(L10N.label("elementgui.living_entity.follow_range"));
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/follow_range"), followRange)));
 
