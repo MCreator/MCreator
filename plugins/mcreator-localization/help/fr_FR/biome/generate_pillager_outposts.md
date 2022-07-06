@@ -1,1 +1,1 @@
-Utilisez ce paramètre pour avoir des Avant-postes de Pilleurs dans votre biome.
+Sélectionner ce paramètre pour avoir des avant-postes de pilleurs.
