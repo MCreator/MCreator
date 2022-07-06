@@ -63,7 +63,7 @@ import java.io.File;
 				.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT);
 		File newLocation = new File(
 				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
-				"mob_effect/" + getModElement().getRegistryName() + ".png");
+				getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 	}
 
