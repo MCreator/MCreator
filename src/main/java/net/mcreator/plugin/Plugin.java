@@ -21,7 +21,10 @@ package net.mcreator.plugin;
 import net.mcreator.Launcher;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * <p>A Plugin is a mod for MCreator allowing to alter, improve or extend features. Most of elements inside MCreator are plugin driven.</p>
@@ -39,6 +42,8 @@ public class Plugin implements Comparable<Plugin> {
 	private long maxversion = -1;
 
 	private PluginInfo info;
+
+	@Nullable private String javaplugin;
 
 	public File getFile() {
 		return file;
@@ -129,6 +134,18 @@ public class Plugin implements Comparable<Plugin> {
 		}
 
 		return info.getVersion();
+	}
+
+	public URL toURL() throws MalformedURLException {
+		if (file.isDirectory()) {
+			return (file.toURI().toURL());
+		} else {
+			return (new URL("jar:file:" + file.getAbsolutePath() + "!/"));
+		}
+	}
+
+	@Nullable public String getJavaPlugin() {
+		return javaplugin;
 	}
 
 	@Override public String toString() {

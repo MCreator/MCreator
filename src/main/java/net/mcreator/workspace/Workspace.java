@@ -27,6 +27,7 @@ import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
@@ -403,9 +404,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 							currentGenerator.split("-")[0].toUpperCase(Locale.ENGLISH));
 
 					JOptionPane.showMessageDialog(ui,
-							"<html><b>This workspace uses unsupported generator type: " + currentGenerator
-									+ "</b><br>Select one of the supported generators for the workspace.",
-							"Unsupported generator", JOptionPane.WARNING_MESSAGE);
+							L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
+							L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
 					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
 							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
 									currentFlavor), currentFlavor);
