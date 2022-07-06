@@ -218,28 +218,29 @@ public class GeneratorSelector {
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (resultval == JOptionPane.OK_OPTION && generator.getSelectedItem() != null) {
-			if (mcreator != null && currentFlavor != ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()) {
-				if (currentFlavor == GeneratorFlavor.FORGE
-						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
-						== GeneratorFlavor.FABRIC || currentFlavor == GeneratorFlavor.FABRIC
-						&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
-						== GeneratorFlavor.FORGE) {
-					int confirmval = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.generator_selector.confirm_fg_fb_switch"),
-							L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION,
-							JOptionPane.WARNING_MESSAGE);
+			if (mcreator != null && ((currentFlavor == GeneratorFlavor.FORGE
+					&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
+					== GeneratorFlavor.FABRIC) || (currentFlavor == GeneratorFlavor.FABRIC
+					&& ((GeneratorConfiguration) generator.getSelectedItem()).getGeneratorFlavor()
+					== GeneratorFlavor.FORGE))) {
+				int confirmval = JOptionPane.showConfirmDialog(parent,
+						L10N.t("dialog.generator_selector.confirm_fg_fb_switch"),
+						L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE);
 
-					if (confirmval == JOptionPane.OK_OPTION) {
-						ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
-								new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
-										"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator,
-								true);
-						return (GeneratorConfiguration) generator.getSelectedItem();
-					}
+				if (confirmval == JOptionPane.OK_OPTION) {
+					ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
+							new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
+									"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator,
+							true);
+				} else {
+					return null;
 				}
-			} else {
-				return (GeneratorConfiguration) generator.getSelectedItem();
 			}
+
+			return (GeneratorConfiguration) generator.getSelectedItem();
 		}
+
 		return null;
 	}
 
