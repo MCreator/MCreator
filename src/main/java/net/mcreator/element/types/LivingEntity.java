@@ -172,6 +172,8 @@ import java.util.Locale;
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
 
+		this.followRange = 16;
+
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}
