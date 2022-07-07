@@ -7,9 +7,10 @@
     double z = arguments.getSource().getPosition().z();
 
 	Entity entity = arguments.getSource().getEntity();
-	Direction direction = Objects.requireNonNull(entity).getDirection();
 	if (entity == null)
 		entity = FakePlayerFactory.getMinecraft(world);
+
+	Direction direction = entity.getDirection();
 
 	HashMap<String, String> cmdparams = new HashMap<>();
 	int index = -1;
@@ -30,9 +31,10 @@
 	double z = arguments.getSource().getPosition().z();
 
 	Entity entity = arguments.getSource().getEntity();
-	Direction direction = Objects.requireNonNull(entity).getDirection();
 	if (entity == null)
 		entity = FakePlayerFactory.getMinecraft(world);
+
+	Direction direction = entity.getDirection();
 
 	HashMap<String, String> cmdparams = new HashMap<>();
 	int index = -1;

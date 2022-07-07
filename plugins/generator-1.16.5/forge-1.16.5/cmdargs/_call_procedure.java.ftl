@@ -7,9 +7,11 @@
 	double z = arguments.getSource().getPos().getZ();
 
 	Entity entity = arguments.getSource().getEntity();
-	Direction direction = Objects.requireNonNull(entity).getHorizontalFacing();
 	if (entity == null)
 		entity = FakePlayerFactory.getMinecraft(world);
+
+	Direction direction = entity.getHorizontalFacing();
+
     <@procedureToCode name=procedure dependencies=dependencies/>
     return 0;
 })
