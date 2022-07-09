@@ -54,7 +54,7 @@
         <block type="text"/>
         <block type="text_join"/>
         <block type="text_length"/>
-        <block type="text_is_empty"/>
+        <block type="text_isEmpty"/>
         <block type="text_replace"/>
         <block type="text_substring"/>
         <block type="text_contains"/>

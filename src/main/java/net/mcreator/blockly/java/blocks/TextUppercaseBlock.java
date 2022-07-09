@@ -36,6 +36,7 @@ public class TextUppercaseBlock implements IBlockGenerator {
 			master.processOutputBlockWithoutParentheses(element);
 			master.append(").toUpperCase()");
 		} else {
+			master.append("");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.empty_text_uppercase_block")));
 		}
