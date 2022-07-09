@@ -49,7 +49,7 @@ public class TextTrimBlock implements IBlockGenerator {
 				}
 			}
 		} else {
-			master.append("");
+			master.append("\"\"");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.empty_text_trim_block")));
 		}
