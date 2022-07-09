@@ -41,7 +41,6 @@ import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
@@ -98,27 +97,12 @@ public class WorkspaceDialogs {
 
 		WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
 
-		if (mcreator != null && ((oldsettings.getCurrentGenerator().startsWith("forge") &&
-				newsettings.getCurrentGenerator().startsWith("fabric")) || (oldsettings.getCurrentGenerator().startsWith("fabric") &&
-				newsettings.getCurrentGenerator().startsWith("forge")))) {
-			int confirmval = JOptionPane.showConfirmDialog(mcreator,
-					L10N.t("dialog.generator_selector.confirm_fg_fb_switch"),
-					L10N.t("dialog.generator_selector.title"), JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.WARNING_MESSAGE);
-
-			if (confirmval == JOptionPane.OK_OPTION)
-				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
-						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
-								"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator,
-						true);
-			else
-				return new WorkspaceSettingsChange(oldsettings, null);
-		}
-
 		if (change.refactorNeeded()) {
 			String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
 					L10N.t("dialog.workspace_settings.refactor.no") };
-			int option = JOptionPane.showOptionDialog(null, L10N.t("dialog.workspace_settings.refactor.text"),
+			int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
+							L10N.t("dialog.workspace_settings.refactor.fg_fb_switch") :
+							L10N.t("dialog.workspace_settings.refactor.text"),
 					L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 			if (option == 1)

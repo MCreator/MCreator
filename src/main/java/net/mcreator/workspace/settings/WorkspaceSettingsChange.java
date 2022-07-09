@@ -34,6 +34,8 @@ public class WorkspaceSettingsChange {
 
 	public boolean mcreatorDepsChanged;
 
+	public boolean generatorFlavorChanged;
+
 	public WorkspaceSettingsChange(@Nonnull WorkspaceSettings workspaceSettings,
 			@Nullable WorkspaceSettings oldSettings) {
 		this.workspaceSettings = workspaceSettings;
@@ -50,6 +52,9 @@ public class WorkspaceSettingsChange {
 
 			this.mcreatorDepsChanged = !GSONCompare.deepEquals(workspaceSettings.getMCreatorDependenciesRaw(),
 					oldSettings.getMCreatorDependenciesRaw());
+
+			this.generatorFlavorChanged = !oldSettings.getCurrentGenerator().split("-")[0].equals(
+					workspaceSettings.getCurrentGenerator().split("-")[0]);
 		}
 	}
 
