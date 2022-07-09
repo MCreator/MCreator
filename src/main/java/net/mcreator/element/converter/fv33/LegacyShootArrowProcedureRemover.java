@@ -51,9 +51,7 @@ public class LegacyShootArrowProcedureRemover implements IConverter {
 		try {
 			procedure.procedurexml = fixXML(procedure.procedurexml);
 		} catch (Exception e) {
-			LOG.warn("Failed to remove legacy shoot arrow blocks for procedure " + input.getModElement()
-					.getName());
-			LOG.warn("Caused by: " + e.getMessage());
+			LOG.warn("Failed to remove legacy shoot arrow blocks for procedure " + input.getModElement().getName());
 		}
 		return procedure;
 	}
