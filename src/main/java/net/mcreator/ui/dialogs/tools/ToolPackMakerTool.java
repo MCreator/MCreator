@@ -41,7 +41,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -101,7 +101,8 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
+		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+				L10N.t("dialog.tools.tool_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
