@@ -87,7 +87,7 @@ public class MCItemHolder extends JButton implements IValidable {
 		} else {
 			setIcon(new EmptyIcon(25, 25));
 			block = "";
-			this.setToolTipText("");
+			this.setToolTipText(null);
 		}
 		getValidationStatus();
 	}
