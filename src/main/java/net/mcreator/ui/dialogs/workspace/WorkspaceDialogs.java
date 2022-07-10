@@ -101,7 +101,7 @@ public class WorkspaceDialogs {
 			String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
 					L10N.t("dialog.workspace_settings.refactor.no") };
 			int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
-							L10N.t("dialog.workspace_settings.refactor.fg_fb_switch") :
+							L10N.t("dialog.workspace_settings.refactor.text_fbfg_switch") :
 							L10N.t("dialog.workspace_settings.refactor.text"),
 					L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
