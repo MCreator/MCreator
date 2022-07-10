@@ -290,6 +290,9 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "spawnableEntity":
+			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
