@@ -1,1 +1,0 @@
-.chance(${field$rarity})

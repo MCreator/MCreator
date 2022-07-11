@@ -1,3 +1,0 @@
-templates:
-  - template: feature.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/feature/@NAMEFeature.java"
