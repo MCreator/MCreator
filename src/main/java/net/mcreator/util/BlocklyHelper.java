@@ -23,7 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class BlocklyHelper {
-	Document doc;
+	private final Document doc;
 
 	public BlocklyHelper(Document doc) {
 		this.doc = doc;
