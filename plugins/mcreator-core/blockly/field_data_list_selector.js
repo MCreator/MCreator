@@ -3,12 +3,15 @@
  * The behaviour is similar to block/item selectors or condition selectors for entity AI blocks
  */
 class FieldDataListSelector extends Blockly.FieldLabelSerializable {
-    constructor(datalist = '') {
+    constructor(datalist = '', opt_validator) {
         super(javabridge.t('blockly.extension.data_list_selector.no_entry'), 'entry-label');
         this.type = datalist;
         this.entry = FieldDataListSelector.getDefaultEntry();
 
         this.EDITABLE = true;
+
+        if (opt_validator)
+            this.setValidator(opt_validator);
     }
 
     // The default entry is ",No entry selected". Since the value is an empty string, the procedure editor will show a compile error
@@ -18,7 +21,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
 
     // Create the field from the json definition
     static fromJson(options) {
-        return new FieldDataListSelector(Blockly.utils.parsing.replaceMessageReferences(options['datalist']));
+        return new FieldDataListSelector(Blockly.utils.parsing.replaceMessageReferences(options['datalist']), undefined);
     }
 
     // Initialize the field with a rectangle surrounding the text
