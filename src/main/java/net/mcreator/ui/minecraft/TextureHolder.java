@@ -75,7 +75,7 @@ public class TextureHolder extends VButton {
 						id = "";
 						setIcon(null);
 						getValidationStatus();
-						setToolTipText("");
+						setToolTipText(null);
 					} else {
 						td.setVisible(true);
 					}
