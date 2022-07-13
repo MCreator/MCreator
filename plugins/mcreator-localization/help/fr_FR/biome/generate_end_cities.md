@@ -1,0 +1,1 @@
+Sélectionner ce paramètre pour générer des cités de l'End dans le biome.
