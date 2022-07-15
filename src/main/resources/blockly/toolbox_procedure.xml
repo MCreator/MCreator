@@ -54,9 +54,15 @@
         <block type="text"/>
         <block type="text_join"/>
         <block type="text_length"/>
+        <block type="text_isEmpty"/>
         <block type="text_replace"/>
         <block type="text_substring"/>
         <block type="text_contains"/>
+        <block type="text_starts_with"/>
+        <block type="text_ends_with"/>
+        <block type="text_trim"/>
+        <block type="text_uppercase"/>
+        <block type="text_lowercase"/>
         <block type="text_format_number">
             <value name="format">
                 <block type="text">
