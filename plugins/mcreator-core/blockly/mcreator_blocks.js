@@ -138,7 +138,7 @@ Blockly.Blocks['java_code_get'] = {
 Blockly.Blocks['text_contains'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_in"));
+            .appendField(javabridge.t("blockly.block.text_contains.in"));
         this.appendValueInput('contains').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_contains.check"));
         this.setInputsInline(true);
@@ -152,7 +152,7 @@ Blockly.Blocks['text_contains'] = {
 Blockly.Blocks['text_starts_with'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_in"));
+            .appendField(javabridge.t("blockly.block.text_starts_with.in"));
         this.appendValueInput('starts').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_starts_with.check"));
         this.setInputsInline(true);
@@ -166,7 +166,7 @@ Blockly.Blocks['text_starts_with'] = {
 Blockly.Blocks['text_ends_with'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_in"));
+            .appendField(javabridge.t("blockly.block.text_ends_with.in"));
         this.appendValueInput('ends').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_ends_with.check"));
         this.setInputsInline(true);
