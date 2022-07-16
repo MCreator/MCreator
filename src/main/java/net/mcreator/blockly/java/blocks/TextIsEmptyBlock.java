@@ -43,7 +43,7 @@ public class TextIsEmptyBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "text_isEmpty" };
+		return new String[] { "text_is_empty" };
 	}
 
 	@Override public BlockType getBlockType() {

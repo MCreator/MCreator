@@ -223,6 +223,18 @@ Blockly.Blocks['text_format_number'] = {
     }
 };
 
+Blockly.Blocks['text_is_empty'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_is_empty"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour(210);
+    }
+};
+
 Blockly.Blocks['text_trim'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
