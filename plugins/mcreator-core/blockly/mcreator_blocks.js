@@ -222,6 +222,7 @@ Blockly.Blocks['text_format_number'] = {
         this.setColour(160);
     }
 };
+
 Blockly.Blocks['text_is_empty'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
