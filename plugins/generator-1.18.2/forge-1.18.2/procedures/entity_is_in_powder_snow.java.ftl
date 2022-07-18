@@ -1,1 +1,1 @@
-(${input$entity}.isAttackable())
+(${input$entity}.isInPowderSnow())
