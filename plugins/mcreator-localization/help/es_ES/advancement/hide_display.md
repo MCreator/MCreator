@@ -1,1 +1,0 @@
-Activa este parámetro para ocultar el logro en las pestañas de logros hasta que sea completado.

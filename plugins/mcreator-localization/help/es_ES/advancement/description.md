@@ -1,1 +1,0 @@
-Aquí es donde pones la información sobre como lograr la tarea.
