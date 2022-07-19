@@ -1,1 +1,1 @@
-(${input$entity}.isInPowderSnow())
+(${input$entity}.isInPowderSnow)
