@@ -1,2 +1,2 @@
 
-${input$entity}.setTicksFrozen(${input$ticks});
+${input$entity}.setTicksFrozen((int) ${input$ticks});
