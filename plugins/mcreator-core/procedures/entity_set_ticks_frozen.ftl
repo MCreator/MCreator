@@ -7,7 +7,7 @@
     },
     {
       "type": "input_value",
-      "name": "air",
+      "name": "ticksfrozen",
       "check": "Number"
     }
   ],
@@ -23,7 +23,7 @@
     ],
     "inputs": [
       "entity",
-      "air"
+      "ticksfrozen"
     ]
   }
 }
