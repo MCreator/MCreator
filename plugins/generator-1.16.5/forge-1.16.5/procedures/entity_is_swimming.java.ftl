@@ -1,1 +1,1 @@
-(${input$entity}.isActuallySwimming())
+(${input$entity}.isActualySwimming())
