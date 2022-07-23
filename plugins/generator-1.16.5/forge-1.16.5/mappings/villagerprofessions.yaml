@@ -1,17 +1,49 @@
-_default: VillagerProfession.ARMORER
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@NAMEProfession.profession"
-ARMORER: VillagerProfession.ARMORER
-BUTCHER: VillagerProfession.BUTCHER
-CARTOGRAPHER: VillagerProfession.CARTOGRAPHER
-CLERIC: VillagerProfession.CLERIC
-FARMER: VillagerProfession.FARMER
-FISHERMAN: VillagerProfession.FISHERMAN
-FLETCHER: VillagerProfession.FLETCHER
-LEATHERWORKER: VillagerProfession.LEATHERWORKER
-LIBRARIAN: VillagerProfession.LIBRARIAN
-MASON: VillagerProfession.MASON
-SHEPHERD: VillagerProfession.SHEPHERD
-TOOLSMITH: VillagerProfession.TOOLSMITH
-WEAPONSMITH: VillagerProfession.WEAPONSMITH
-WANDERING_TRADER: WanderingTrader
+_mcreator_map_template:
+  - "@NAMEProfession.profession"
+  - "@NAMEPOI.pointOfInterest"
+_default:
+  - VillagerProfession.ARMORER
+  - Blocks.BLAST_FURNACE
+ARMORER:
+  - VillagerProfession.ARMORER
+  - Blocks.BLAST_FURNACE
+BUTCHER:
+  - VillagerProfession.BUTCHER
+  - Blocks.SMOKER
+CARTOGRAPHER:
+  - VillagerProfession.CARTOGRAPHER
+  - Blocks.CARTOGRAPHY_TABLE
+CLERIC:
+  - VillagerProfession.CLERIC
+  - Blocks.BREWING_STAND
+FARMER:
+  - VillagerProfession.FARMER
+  - Blocks.COMPOSTER
+FISHERMAN:
+  - VillagerProfession.FISHERMAN
+  - Blocks.BARREL
+FLETCHER:
+  - VillagerProfession.FLETCHER
+  - Blocks.FLETCHING_TABLE
+LEATHERWORKER:
+  - VillagerProfession.LEATHERWORKER
+  - Blocks.CAULDRON
+LIBRARIAN:
+  - VillagerProfession.LIBRARIAN
+  - Blocks.LECTERN
+MASON:
+  - VillagerProfession.MASON
+  - Blocks.STONECUTTER
+SHEPHERD:
+  - VillagerProfession.SHEPHERD
+  - Blocks.LOOM
+TOOLSMITH:
+  - VillagerProfession.TOOLSMITH
+  - Blocks.SMITHING_TABLE
+WEAPONSMITH:
+  - VillagerProfession.WEAPONSMITH
+  - Blocks.GRINDSTONE
+WANDERING_TRADER:
+  - WanderingTrader
+  - Blocks.AIR

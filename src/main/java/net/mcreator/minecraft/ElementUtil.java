@@ -195,8 +195,19 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.VILLAGERPROFESSION);
-		retval.addAll(DataListLoader.loadDataList("villagerprofessions"));
+		retval.addAll(
+				DataListLoader.loadDataList("villagerprofessions").stream().filter(typeMatches("profession")).toList());
 		return retval;
+	}
+
+	public static List<MCItem> loadAllPointOfInterest(Workspace workspace) {
+		List<MCItem> elements = new ArrayList<>();
+		workspace.getModElements().stream().filter(element -> element.getType() == ModElementType.VILLAGERPROFESSION)
+				.forEach(modElement -> elements.addAll(modElement.getMCItems().stream().toList()));
+		elements.addAll(DataListLoader.loadDataList("villagerprofessions").stream()
+				.filter(e -> e.isSupportedInWorkspace(workspace)).filter(typeMatches("poi")).map(e -> (MCItem) e)
+				.toList());
+		return elements;
 	}
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {

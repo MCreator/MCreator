@@ -342,6 +342,12 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "fireballprojectile":
 			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "villagerprofessions":
+			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "villagerpoi":
+			return ElementUtil.loadAllPointOfInterest(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
 		}
