@@ -346,7 +346,6 @@
   type: spawnable
 - EntityFishHook:
   readable_name: "Fishing bobber"
-  type: spawnable
 - EntityMonster:
   readable_name: "Monster entity"
 - EntityPiglin:
