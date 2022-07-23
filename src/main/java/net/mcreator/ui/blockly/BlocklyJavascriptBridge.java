@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
@@ -346,7 +347,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "villagerpoi":
-			return ElementUtil.loadAllPointOfInterest(workspace).stream().map(DataListEntry::getName)
+			return ElementUtil.loadAllPointOfInterest(workspace).stream().map(MItemBlock::getUnmappedValue)
 					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
