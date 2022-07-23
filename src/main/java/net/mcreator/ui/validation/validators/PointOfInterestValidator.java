@@ -25,38 +25,23 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 
-import javax.swing.*;
-
 public class PointOfInterestValidator implements Validator {
 
 	private final MCreator mcreator;
 	private final MCItemHolder holder;
-	private JToggleButton requirement;
 
 	public PointOfInterestValidator(MCreator mcreator, MCItemHolder holder) {
 		this.mcreator = mcreator;
 		this.holder = holder;
 	}
 
-	public PointOfInterestValidator(MCreator mcreator, MCItemHolder holder, JToggleButton requirement) {
-		this.mcreator = mcreator;
-		this.holder = holder;
-		this.requirement = requirement;
-	}
-
 	@Override public ValidationResult validate() {
-		final boolean[] flag = { false };
-		ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).forEach(mcItem -> {
-			if (mcItem.getName().equals(holder.getName()))
-				flag[0] = true;
-		});
-		if (flag[0])
+		if (ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream().toList().contains(holder.getBlock()))
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					L10N.t("validator.point_of_interest.unique"));
-		if (holder.containsItem() || (requirement != null && !requirement.isSelected()))
+		if (holder.containsItem())
 			return Validator.ValidationResult.PASSED;
-		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.select_element"));
+		return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				L10N.t("validators.select_element"));
 	}
 }

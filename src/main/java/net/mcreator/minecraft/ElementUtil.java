@@ -20,6 +20,8 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.VillagerProfession;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -200,13 +202,22 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<MCItem> loadAllPointOfInterest(Workspace workspace) {
-		List<MCItem> elements = new ArrayList<>();
+	public static List<MItemBlock> loadAllPointOfInterest(Workspace workspace) {
+		List<MItemBlock> elements = new ArrayList<>();
 		workspace.getModElements().stream().filter(element -> element.getType() == ModElementType.VILLAGERPROFESSION)
-				.forEach(modElement -> elements.addAll(modElement.getMCItems().stream().toList()));
+				.forEach(modElement -> elements.add(
+						((VillagerProfession) modElement.getGeneratableElement()).pointOfInterest));
+		/*
+		===NEW===
+		elements.addAll(DataListLoader.loadDataList("villagerprofessions").stream()
+				.filter(e -> e.isSupportedInWorkspace(workspace)).filter(typeMatches("poi"))
+				.map(e -> (MItemBlock) e)
+				.toList());
+		===OLD===
 		elements.addAll(DataListLoader.loadDataList("villagerprofessions").stream()
 				.filter(e -> e.isSupportedInWorkspace(workspace)).filter(typeMatches("poi")).map(e -> (MCItem) e)
 				.toList());
+		 */
 		return elements;
 	}
 
