@@ -38,7 +38,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.PointOfInterestValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -156,7 +156,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.setValidator(new TextFieldValidator(displayName,
 				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
 		displayName.enableRealtimeValidation();
-		pointOfInterest.setValidator(new MCItemHolderValidator(pointOfInterest));
+		pointOfInterest.setValidator(new PointOfInterestValidator(mcreator, pointOfInterest));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
