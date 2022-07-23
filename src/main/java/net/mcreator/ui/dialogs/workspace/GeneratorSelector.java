@@ -43,6 +43,14 @@ public class GeneratorSelector {
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
 
+	/**
+	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
+	 *
+	 * @param parent        <p>The  window to attach the dialog</p>
+	 * @param current       <p>The current generator settings used</p>
+	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
+	 * @return <p>The {@link GeneratorConfiguration} to use</p>
+	 */
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
 			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
@@ -59,6 +67,11 @@ public class GeneratorSelector {
 			GeneratorStats stats = generatorConfiguration.getGeneratorStats();
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
+				generator.addItem(generatorConfiguration);
+			} else if ((currentFlavor == GeneratorFlavor.FORGE
+					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC
+					|| currentFlavor == GeneratorFlavor.FABRIC
+					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
