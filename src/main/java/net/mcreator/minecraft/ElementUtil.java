@@ -207,8 +207,7 @@ public class ElementUtil {
 				.forEach(modElement -> elements.add(
 						((VillagerProfession) modElement.getGeneratableElement()).pointOfInterest));
 		DataListLoader.loadDataList("villagerprofessions").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-				.filter(typeMatches("other")).map(e -> (MCItem) e).toList()
-				.forEach(v -> elements.add(new MItemBlock(workspace, v.getName())));
+				.map(DataListEntry::getOther).forEach(poi -> elements.add(new MItemBlock(workspace, (String) poi)));
 		return elements;
 	}
 
