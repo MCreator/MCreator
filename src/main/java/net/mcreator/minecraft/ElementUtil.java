@@ -207,17 +207,9 @@ public class ElementUtil {
 		workspace.getModElements().stream().filter(element -> element.getType() == ModElementType.VILLAGERPROFESSION)
 				.forEach(modElement -> elements.add(
 						((VillagerProfession) modElement.getGeneratableElement()).pointOfInterest));
-		/*
-		===NEW===
-		elements.addAll(DataListLoader.loadDataList("villagerprofessions").stream()
-				.filter(e -> e.isSupportedInWorkspace(workspace)).filter(typeMatches("poi"))
-				.map(e -> (MItemBlock) e)
-				.toList());
-		===OLD===
-		elements.addAll(DataListLoader.loadDataList("villagerprofessions").stream()
-				.filter(e -> e.isSupportedInWorkspace(workspace)).filter(typeMatches("poi")).map(e -> (MCItem) e)
-				.toList());
-		 */
+		DataListLoader.loadDataList("villagerprofessions").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+				.filter(typeMatches("poi")).map(e -> (MCItem) e).toList()
+				.forEach(v -> elements.add(new MItemBlock(workspace, v.getName())));
 		return elements;
 	}
 
