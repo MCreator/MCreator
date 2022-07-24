@@ -197,8 +197,7 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.VILLAGERPROFESSION);
-		retval.addAll(
-				DataListLoader.loadDataList("villagerprofessions").stream().filter(typeMatches("profession")).toList());
+		retval.addAll(DataListLoader.loadDataList("villagerprofessions"));
 		return retval;
 	}
 
@@ -208,7 +207,7 @@ public class ElementUtil {
 				.forEach(modElement -> elements.add(
 						((VillagerProfession) modElement.getGeneratableElement()).pointOfInterest));
 		DataListLoader.loadDataList("villagerprofessions").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-				.filter(typeMatches("poi")).map(e -> (MCItem) e).toList()
+				.filter(typeMatches("other")).map(e -> (MCItem) e).toList()
 				.forEach(v -> elements.add(new MItemBlock(workspace, v.getName())));
 		return elements;
 	}

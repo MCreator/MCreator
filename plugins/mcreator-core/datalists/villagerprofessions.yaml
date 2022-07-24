@@ -1,55 +1,41 @@
 - ARMORER:
-  profession: ARMORER
-  poi: Blocks.BLAST_FURNACE
+  other: Blocks.BLAST_FURNACE
 
 - BUTCHER:
-  profession: BUTCHER
-  poi: Blocks.SMOKER
+  other: Blocks.SMOKER
 
 - CARTOGRAPHER:
-  profession: CARTOGRAPHER
-  poi: Blocks.CARTOGRAPHY_TABLE
+  other: Blocks.CARTOGRAPHY_TABLE
 
 - CLERIC:
-  profession: CLERIC
-  poi: Blocks.BREWING_STAND
+  other: Blocks.BREWING_STAND
 
 - FARMER:
-  profession: FARMER
-  poi: Blocks.COMPOSTER
+  other: Blocks.COMPOSTER
 
 - FISHERMAN:
-  profession: FISHERMAN
-  poi: Blocks.BARREL
+  other: Blocks.BARREL
 
 - FLETCHER:
-  profession: FLETCHER
-  poi: Blocks.FLETCHING_TABLE
+  other: Blocks.FLETCHING_TABLE
 
 - LEATHERWORKER:
-  profession: LEATHERWORKER
-  poi: Blocks.CAULDRON
+  other: Blocks.CAULDRON
 
 - LIBRARIAN:
-  profession: LIBRARIAN
-  poi: Blocks.LECTERN
+  other: Blocks.LECTERN
 
 - MASON:
-  profession: MASON
-  poi: Blocks.STONECUTTER
+  other: Blocks.STONECUTTER
 
 - SHEPHERD:
-  profession: SHEPHERD
-  poi: Blocks.LOOM
+  other: Blocks.LOOM
 
 - TOOLSMITH:
-  profession: TOOLSMITH
-  poi: Blocks.SMITHING_TABLE
+  other: Blocks.SMITHING_TABLE
 
 - WEAPONSMITH:
-  profession: WEAPONSMITH
-  poi: Blocks.GRINDSTONE
+  other: Blocks.GRINDSTONE
 
 - WANDERING_TRADER:
-  profession: WANDERING_TRADER
-  poi: Blocks.AIR
+  other: Blocks.AIR
