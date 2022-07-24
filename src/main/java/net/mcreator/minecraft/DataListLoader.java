@@ -86,6 +86,7 @@ public class DataListLoader {
 								entry.setDescription((String) element.get("description"));
 								entry.setOther(element.get("other"));
 								entry.setTexture((String) element.get("texture"));
+								entry.setPointOfInterest((String) element.get("point_of_interest"));
 
 								if (element.get("required_apis") instanceof List)
 									entry.setRequiredAPIs(
