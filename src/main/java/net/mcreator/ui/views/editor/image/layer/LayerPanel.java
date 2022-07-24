@@ -46,6 +46,7 @@ public class LayerPanel extends JPanel {
 	private final JButton editMeta;
 	private final JButton toggleVisibility;
 	private final JButton delete;
+	private final JButton duplicate;
 
 	private Canvas canvas;
 	private LayerListMode mode;
@@ -71,6 +72,7 @@ public class LayerPanel extends JPanel {
 		editMeta = new JButton(UIRES.get("18px.edit"));
 		toggleVisibility = new JButton(UIRES.get("18px.visibility"));
 		delete = new JButton(UIRES.get("18px.remove"));
+		duplicate = new JButton(UIRES.get("18px.duplicate"));
 
 		add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
 		add.setMargin(new Insets(0, 0, 0, 0));
@@ -104,6 +106,11 @@ public class LayerPanel extends JPanel {
 		delete.setMargin(new Insets(0, 0, 0, 0));
 		delete.setOpaque(false);
 		delete.setBorder(BorderFactory.createEmptyBorder());
+
+		duplicate.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_duplicate_layer"));
+		duplicate.setMargin(new Insets(0, 0, 0, 0));
+		duplicate.setOpaque(false);
+		duplicate.setBorder(BorderFactory.createEmptyBorder());
 
 		canEdit(false);
 
@@ -140,7 +147,13 @@ public class LayerPanel extends JPanel {
 				canvas.remove(selectedID());
 		});
 
+		duplicate.addActionListener(e -> {
+			if (selected() != null)
+				canvas.add(selected().copy());
+		});
+
 		controls.add(add);
+		controls.add(duplicate);
 		controls.add(up);
 		controls.add(down);
 		controls.add(toggleVisibility);
@@ -259,6 +272,7 @@ public class LayerPanel extends JPanel {
 		editMeta.setEnabled(can);
 		toggleVisibility.setEnabled(can);
 		delete.setEnabled(can);
+		duplicate.setEnabled(can);
 	}
 }
 
