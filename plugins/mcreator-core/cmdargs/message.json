@@ -1,0 +1,34 @@
+{
+  "args0": [
+    {
+      "type": "field_javaname",
+      "name": "name",
+      "text": "name"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "args"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "arg_types",
+    "fields": [
+      "name"
+    ],
+    "statements": [
+      {
+        "name": "args"
+      }
+    ],
+    "warnings": [
+      "no_more_argument"
+    ]
+  }
+}
