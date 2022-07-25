@@ -164,6 +164,7 @@ import net.minecraft.block.material.Material;
 			ammma = ammma.createMutableAttribute(Attributes.MAX_HEALTH, ${data.health});
 			ammma = ammma.createMutableAttribute(Attributes.ARMOR, ${data.armorBaseValue});
 			ammma = ammma.createMutableAttribute(Attributes.ATTACK_DAMAGE, ${data.attackStrength});
+		    ammma = ammma.createMutableAttribute(Attributes.FOLLOW_RANGE, ${data.followRange});
 
 			<#if (data.knockbackResistance > 0)>
 			ammma = ammma.createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, ${data.knockbackResistance});

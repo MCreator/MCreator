@@ -65,7 +65,7 @@ public class InjectTagsTool {
 
 		List<Consumer<Boolean>> callables = new ArrayList<>();
 
-		callables.add(addTag(mcreator, props, "dirt", "forge", "Blocks", true));
+		callables.add(addTag(mcreator, props, "dirt", "minecraft", "Blocks", true));
 		callables.add(addTag(mcreator, props, "logs", "minecraft", "Blocks", true));
 		callables.add(addTag(mcreator, props, "fences", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "wooden_fences", "minecraft", "Blocks", false));
