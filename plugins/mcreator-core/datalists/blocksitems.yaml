@@ -5988,7 +5988,7 @@
   texture: FISH#1
 
 - Items.FISH#2:
-  readable_name: "Clownfish"
+  readable_name: "Tropical Fish"
   type: item
   texture: FISH#2
 
