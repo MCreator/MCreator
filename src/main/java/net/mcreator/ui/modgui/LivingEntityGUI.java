@@ -111,6 +111,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
 
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
+	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 0, 2048, 1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
@@ -263,8 +264,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		BlocklyToJava blocklyToJava;
 		try {
-			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), BlocklyEditorType.AI_TASK, blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), BlocklyEditorType.AI_TASK, blocklyPanel.getXML(),
+					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -335,8 +336,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
-		mobModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-		mobModelGlowTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		mobModelTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		mobModelGlowTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -374,7 +377,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
-		JPanel subpane1 = new JPanel(new GridLayout(11, 2, 0, 2));
+		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		immuneToFire.setOpaque(false);
 		immuneToArrows.setOpaque(false);
@@ -404,29 +407,35 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
 
-		subpane1.add(L10N.label("elementgui.living_entity.health_xp_amount"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"), health),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/xp_amount"), xpAmount)));
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"),
+				L10N.label("elementgui.living_entity.movement_speed")));
+		subpane1.add(movementSpeed);
 
-		subpane1.add(L10N.label("elementgui.living_entity.movement_speed_tracking_range"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"), movementSpeed),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/tracking_range"), trackingRange)));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.health_xp_amount"),
+				HelpUtils.helpButton(this.withEntry("entity/health")),
+				HelpUtils.helpButton(this.withEntry("entity/xp_amount"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, health, xpAmount));
 
-		subpane1.add(L10N.label("elementgui.living_entity.attack_strenght_armor_value"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_strength"), attackStrength),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/armor_base_value"), armorBaseValue)));
+		subpane1.add(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.follow_range_tracking_range"),
+						HelpUtils.helpButton(this.withEntry("entity/follow_range")),
+						HelpUtils.helpButton(this.withEntry("entity/tracking_range"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, followRange, trackingRange));
 
-		subpane1.add(L10N.label("elementgui.living_entity.knockback"));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_knockback"), attackKnockback),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/knockback_resistance"), knockbackResistance)));
+		subpane1.add(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.attack_strenght_armor_value"),
+						HelpUtils.helpButton(this.withEntry("entity/attack_strength")),
+						HelpUtils.helpButton(this.withEntry("entity/armor_base_value"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, attackStrength, armorBaseValue));
+
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.knockback"),
+				HelpUtils.helpButton(this.withEntry("entity/attack_knockback")),
+				HelpUtils.helpButton(this.withEntry("entity/knockback_resistance"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, attackKnockback, knockbackResistance));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, PanelUtils.totalCenterInPanel(
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0,2, PanelUtils.totalCenterInPanel(
 				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
 						equipmentBody, equipmentLeggings, equipmentBoots))));
 
@@ -528,6 +537,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		attackStrength.setPreferredSize(new Dimension(250, 32));
 		attackKnockback.setPreferredSize(new Dimension(250, 32));
 		knockbackResistance.setPreferredSize(new Dimension(250, 32));
+		followRange.setPreferredSize(new Dimension(250, 32));
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
 
@@ -970,6 +980,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		equipmentBoots.setBlock(livingEntity.equipmentBoots);
 		health.setValue(livingEntity.health);
 		trackingRange.setValue(livingEntity.trackingRange);
+		followRange.setValue(livingEntity.followRange);
 		immuneToFire.setSelected(livingEntity.immuneToFire);
 		immuneToArrows.setSelected(livingEntity.immuneToArrows);
 		immuneToFallDamage.setSelected(livingEntity.immuneToFallDamage);
@@ -1091,6 +1102,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.movementSpeed = (double) movementSpeed.getValue();
 		livingEntity.health = (int) health.getValue();
 		livingEntity.trackingRange = (int) trackingRange.getValue();
+		livingEntity.followRange = (int) followRange.getValue();
 		livingEntity.immuneToFire = immuneToFire.isSelected();
 		livingEntity.immuneToArrows = immuneToArrows.isSelected();
 		livingEntity.immuneToFallDamage = immuneToFallDamage.isSelected();

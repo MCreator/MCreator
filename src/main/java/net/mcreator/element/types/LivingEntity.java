@@ -84,6 +84,7 @@ import java.util.Locale;
 	public double movementSpeed;
 	public double armorBaseValue;
 	public int trackingRange;
+	public int followRange;
 	public int health;
 	public int xpAmount;
 	public boolean waterMob;
@@ -170,6 +171,8 @@ import java.util.Locale;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
+
+		this.followRange = 16;
 
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;

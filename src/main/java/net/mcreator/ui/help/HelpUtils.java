@@ -49,6 +49,20 @@ public class HelpUtils {
 	}
 
 	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction) {
+		JComponent lab = helpButton(context);
+
+		if (ac != null)
+			ca.setForeground(ac);
+
+		if (direction == SwingConstants.RIGHT)
+			return PanelUtils.join(FlowLayout.LEFT, ca, lab);
+		else {
+			lab.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 3));
+			return PanelUtils.join(FlowLayout.LEFT, 0, 0, lab, ca);
+		}
+	}
+
+	public static JComponent helpButton(IHelpContext context) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -120,14 +134,7 @@ public class HelpUtils {
 			}
 		});
 
-		if (ac != null)
-			ca.setForeground(ac);
-
-		if (direction == SwingConstants.RIGHT)
-			return PanelUtils.join(FlowLayout.LEFT, ca, lab);
-		else {
-			lab.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 3));
-			return PanelUtils.join(FlowLayout.LEFT, 0, 0, lab, ca);
-		}
+		return lab;
 	}
+
 }

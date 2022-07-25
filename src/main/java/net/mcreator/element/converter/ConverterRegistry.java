@@ -85,7 +85,7 @@ public class ConverterRegistry {
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
-				new ProcedureShootArrowFixer()));
+				new ProcedureShootArrowFixer(), new LegacyShootArrowProcedureRemover()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));
