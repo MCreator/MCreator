@@ -69,9 +69,5 @@ resources_setup_tasks:
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
   - task: copy_models
-    type: OBJ_inlinetextures
-    prefix: "@modid:blocks/"
-    to: "@MODASSETSROOT/models/item"
-  - task: copy_models
     type: JSON_noinlinetextures
     to: "@MODASSETSROOT/models/custom"
