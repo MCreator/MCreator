@@ -21,6 +21,6 @@ package net.mcreator.gradle;
 public class GradleCacheImportFailedException extends Exception {
 
 	public GradleCacheImportFailedException(Throwable cause) {
-		super("Failed to import Gradle caches", cause);
+		super("无法载入Gradle缓存", cause);
 	}
 }

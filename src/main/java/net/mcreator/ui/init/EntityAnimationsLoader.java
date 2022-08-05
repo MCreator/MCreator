@@ -39,7 +39,7 @@ public class EntityAnimationsLoader {
 	private static final LinkedHashMap<String, String[]> entityAnimations = new LinkedHashMap<>();
 
 	public static void init() {
-		LOG.debug("Loading entity animations");
+		LOG.debug("正在加载实体动画");
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("templates.animations",
 				Pattern.compile("^[^$].*\\.json"));

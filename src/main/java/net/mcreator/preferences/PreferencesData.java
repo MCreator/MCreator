@@ -19,7 +19,6 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
@@ -40,12 +39,12 @@ public class PreferencesData {
 
 	public static class UISettings {
 
-		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
+		@PreferencesEntry public Locale language = new Locale("zh","Cn");
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
-		@PreferencesEntry(arrayData = { "All", "Current theme", "Custom", "None" })
-		public String backgroundSource = "All";
+		@PreferencesEntry(arrayData = { "全部", "当前主题", "自定义", "无" })
+		public String backgroundSource = "全部";
 
 		@PreferencesEntry public boolean aatext = true;
 
@@ -57,7 +56,8 @@ public class PreferencesData {
 		@PreferencesEntry public boolean use2DAcceleration = false;
 		@PreferencesEntry public boolean autoreloadTabs = true;
 		@PreferencesEntry public boolean remindOfUnsavedChanges = false;
-		@PreferencesEntry public boolean discordRichPresenceEnable = true;
+		@PreferencesEntry public boolean discordRichPresenceEnable = false;
+		@PreferencesEntry public boolean enableWebsitePage = false;
 
 	}
 
@@ -65,7 +65,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public boolean openWhatsNextPage = true;
 		@PreferencesEntry public boolean snapshotMessage = true;
-		@PreferencesEntry public boolean checkAndNotifyForUpdates = true;
+		@PreferencesEntry public boolean checkAndNotifyForUpdates = false;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
 		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
 
@@ -110,6 +110,7 @@ public class PreferencesData {
 
 	public static class GradleSettings {
 
+		@PreferencesEntry public File java_home = null;
 		@PreferencesEntry public boolean compileOnSave = true;
 		@PreferencesEntry public boolean passLangToMinecraft = true;
 
@@ -134,7 +135,6 @@ public class PreferencesData {
 		public int projectTreeSplitPos = 0;
 		public boolean workspaceSortAscending = true;
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
-		public File java_home = null;
 		public String uiTheme = "default_dark";
 		public boolean enableJavaPlugins = false;
 	}

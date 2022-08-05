@@ -49,7 +49,7 @@ public class ExternalBlockLoader {
 	private final Map<String, List<Tuple<ToolboxBlock, String>>> toolbox = new HashMap<>();
 
 	ExternalBlockLoader(String resourceFolder) {
-		LOG.debug("Loading blocks for " + resourceFolder);
+		LOG.debug("正在加载" + resourceFolder + "的积木");
 
 		List<ToolboxCategory> toolboxCategories = new ArrayList<>();
 
@@ -80,8 +80,8 @@ public class ExternalBlockLoader {
 						if (parameters_count == parameters_count_en) {
 							jsonresult.add("message0", new JsonPrimitive(localized_message));
 						} else {
-							LOG.warn("Not all procedure block inputs are defined using %N for block "
-									+ toolboxBlock.machine_name + " for the selected language");
+							LOG.warn("在当前语言中,并非所有程序块输入都是使用%N定义的 (cdc:这啥啊)"
+									+ toolboxBlock.machine_name );
 							if (localized_message_en != null) {
 								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 							}

@@ -54,13 +54,13 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 			setIconTextGap(10);
 			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 18)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 34));
+					+ "</font><small>"+value.getGeneratorName()+"<br>" + StringUtils.abbreviateStringInverse(path, 34));
 		} else {
 			setIcon(null);
 
 			setIconTextGap(0);
 			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 20)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
+					+ "</font><small>"+value.getGeneratorName()+"<br>" + StringUtils.abbreviateStringInverse(path, 37));
 		}
 
 		return this;

@@ -5,33 +5,35 @@
 [![Javadoc](https://img.shields.io/badge/java-doc-%44cc11?style=flat-square)](https://mcreator.github.io/MCreator)
 [![Download](https://img.shields.io/badge/Download-release-%2393c54b?style=flat-square)](https://mcreator.net/download)
 [![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ff7c00?style=flat-square)](https://mcreator.net/donate)
+
 # MCreator - Minecraft Mod Maker
 
 <img align="right" width="300" src="https://mcreator.net/image/mcreatoruifront.png">
 
-https://mcreator.net/ - MCreator is a software used to make Minecraft Java Edition mods, Minecraft Bedrock Edition Add-Ons, and data packs using an intuitive easy-to-learn interface or with an integrated code editor. 
+https://mcreator.net/ -McCreator是一款软件，用于使用直观易学的界面或集成的代码编辑器制作MinecraftJava版mods、Minecrart基岩版的Addon和数据包. 
 
-It is used worldwide by Minecraft players, aspiring mod developers, [for education, online classes, and STEM workshops](https://mcreator.net/education).
+全世界的对于mod开发感兴趣的我的世界玩家都在使用它, [for education, online classes, and STEM workshops](https://mcreator.net/education).
 
 ## Download, community, and support
 
-This repository page is for people looking to contribute to MCreator. Visit https://mcreator.net/ to download MCreator distribution and to engage in the community. Check https://mcreator.net/support to find the support, forums, knowledge base, and more.
+本页面为MCreator-Chinese(下文简称为mcrc)的贡献页面. 如果您需要的是MCreator原始版本请访问https://mcreator.net/下载MCreator原始版本的发行包.
 
-Download MCreator binary distributions on https://mcreator.net/download.
+此为MCreator原始版本的下载地址 https://mcreator.net/download.
+
+您可以通过访问mcrc的github Release来寻找您喜欢的mcrc的发行版本
 
 ## Development
 
-To clone this repository, run `git clone --recursive https://github.com/MCreator/MCreator.git`.
+克隆本仓库请使用 `git clone --recursive https://github.com/MCreator/MCreator.git`.
 
-MCreator uses Gradle build system to manage the building and exporting. Use `runMCreator` task to run test MCreator.
+MCreator采用Gradle进行构建. 请使用 `runMCreator` 来运行测试版本的mcrc.
 
 It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
 tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
 
 ## Contributing
 
-You are welcome to support this project by opening pull requests. Read more about contributing in our [contributing guidelines](CONTRIBUTING.md).
-Before we can use your code, you must sign the [MCreator CLA](https://cla-assistant.io/MCreator/MCreator).
+通过Pull Request您可以自由的贡献本项目,但在贡献之前请阅读 [contributing guidelines](CONTRIBUTING.md).
 
 Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
 
@@ -39,23 +41,23 @@ Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contr
   <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="615"/>
 </a>
 
-### Translations
-
-If you would like to help us translate MCreator to your language, join us on [translate.mcreator.net](https://translate.mcreator.net/)! If your language is not on the list yet, feel free to suggest us to add it.
-
 ## License and trademark
 
-MCreator is licensed under the GPL-3.0 license (with exceptions implemented as specified in section 7 of GPL-3.0) if not otherwise stated in source files or other files of this project. Copyright 2020 Pylo and [contributors](https://github.com/MCreator/MCreator/graphs/contributors).
+如果本项目的源文件或其他文件中未另行说明，MCreator根据GPL-3.0许可证获得许可（GPL-2.0第7节规定的例外情况除外）。版权归2020 Pylo和[贡献者](https://github.com/MCreator/MCreator/graphs/contributors)所有.
 
-MCreator is a trademark of Pylo. Custom distributions of this software may not include Pylo or MCreator trademark (trademark name and logo) to not confuse the software with the official distribution of MCreator project.
-MCreator and Pylo brand files in this repository are not covered by the GPL-3.0 license.
+MCreator是Pylo的商标。本软件的自定义发行版可能不包括Pylo或MCreator商标（商标名称和徽标），以避免将本软件与MCreator项目的官方发行版混淆。
 
-MCreator uses several third-party libraries and projects. License files, attributions, and credits for these projects are located in the `license` subdirectory.
+此存储库中的MCreator和Pylo品牌文件不在GPL-3.0许可范围内。
 
-Some code generators use official Minecraft mappings. 
-The use of these mappings is covered under a license by Microsoft. You should
-be fully aware of this license and the fact your mod may use these mappings.
-At the time of writing, the license is:
+MCreator使用多个第三方库和项目。这些项目的许可证文件位于“License”子目录中。
+
+一些代码生成器使用官方的Minecraft映射。
+
+Microsoft的许可证涵盖了这些映射的使用。你应该
+
+请充分了解此许可证以及您的国防部可能使用这些映射的事实。
+
+在撰写本文时，许可证为：
 
 `© 2020 Microsoft Corporation. These mappings are provided "as-is" and you bear 
 the risk of using them. You may copy and use the mappings for development purposes, 

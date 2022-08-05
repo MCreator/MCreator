@@ -53,9 +53,9 @@ public class ThemeLoader {
 	 * <p>This method loads the {@link net.mcreator.themes.Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
 	 */
 	public static void initUIThemes() {
-		LOG.debug("Loading UI themes");
+		LOG.debug("正在载入界面主题");
 
-		// Load all themes
+		// 载入UI主题
 		Set<String> files = PluginLoader.INSTANCE.getResources("themes", Pattern.compile("theme.json"));
 		for (String file : files) {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
@@ -72,7 +72,7 @@ public class ThemeLoader {
 		}
 
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);
-		LOG.info("Using MCreator UI theme: " + CURRENT_THEME.getID());
+		LOG.info("正在使用的MCreator主题为: " + CURRENT_THEME.getID());
 	}
 
 	public static LinkedHashSet<Theme> getThemes() {
@@ -100,10 +100,11 @@ public class ThemeLoader {
 				return pack;
 		}
 
-		if (id.equals("default_dark"))
-			throw new RuntimeException("No themes present in MCreator");
-
-		LOG.warn("Default theme will be used due to missing theme: " + id);
+		if (id.equals("default_dark")) {
+			JOptionPane.showMessageDialog(null, "您所想要的主题不存在,而默认主题也缺失,因此MCreator无法继续运行", "MCreator严重错误", JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+		}
+		LOG.warn("由于缺少主题，将使用默认主题: " + id);
 
 		return getTheme("default_dark");
 	}

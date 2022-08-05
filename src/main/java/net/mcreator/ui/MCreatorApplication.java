@@ -75,7 +75,7 @@ public final class MCreatorApplication {
 	private final Analytics analytics;
 	private final DeviceInfo deviceInfo;
 	private static boolean applicationStarted = false;
-	private final WorkspaceSelector workspaceSelector;
+	private WorkspaceSelector workspaceSelector;
 
 	private final List<MCreator> openMCreators = new ArrayList<>();
 
@@ -88,53 +88,53 @@ public final class MCreatorApplication {
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(5, "Loading plugins");
+		splashScreen.setProgress(5, "正在载入插件");
 
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
 		PluginLoader.initInstance();
 
 		MCREvent.event(new ApplicationLoadedEvent(this));
 
-		splashScreen.setProgress(10, "Loading UI Themes");
+		splashScreen.setProgress(10, "正在载入界面主题");
 
 		// We load UI themes now as theme plugins are loaded at this point
 		ThemeLoader.initUIThemes();
 
-		splashScreen.setProgress(15, "Loading UI core");
+		splashScreen.setProgress(15, "正在载入UI核心");
 
 		UIRES.preloadImages();
 
 		try {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
-			LOG.error("Failed to set look and feel: " + e.getMessage());
+			LOG.error("无法设置观感: " + e.getMessage());
 		}
 
 		SoundUtils.initSoundSystem();
 
 		taskbarIntegration = new TaskbarIntegration();
 
-		splashScreen.setProgress(25, "Loading interface components");
+		splashScreen.setProgress(25, "加载接口组件");
 
-		// preload help entries cache
+		// 预加载帮助数据
 		HelpLoader.preloadCache();
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
 
-		splashScreen.setProgress(35, "Loading plugin data");
+		splashScreen.setProgress(35, "加载插件数据");
 
 		// load datalists and icons for them after plugins are loaded
 		BlockItemIcons.init();
 		DataListLoader.preloadCache();
 
-		splashScreen.setProgress(45, "Building plugin cache");
+		splashScreen.setProgress(45, "构建插件缓存");
 
 		// load templates for image makers
 		ImageMakerTexturesCache.init();
 		ArmorMakerTexturesCache.init();
 
-		splashScreen.setProgress(55, "Loading plugin templates");
+		splashScreen.setProgress(55, "加载插件模板");
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
@@ -154,10 +154,10 @@ public final class MCreatorApplication {
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
 
-		splashScreen.setProgress(60, "Preloading resources");
+		splashScreen.setProgress(60, "预加载资源");
 		TiledImageCache.loadAndTileImages();
 
-		splashScreen.setProgress(70, "Loading generators");
+		splashScreen.setProgress(70, "加载生成器中");
 
 		MCREvent.event(new PreGeneratorsLoadingEvent(this));
 
@@ -167,18 +167,18 @@ public final class MCreatorApplication {
 		int i = 0;
 		for (String generator : fileNames) {
 			splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
-					"Loading generators: " + generator.split("/")[0]);
-			LOG.info("Loading generator: " + generator);
+					"正在加载生成器: " + generator.split("/")[0]);
+			LOG.info("加载生成器中: " + generator);
 			generator = generator.replace("/generator.yaml", "");
 			try {
 				Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
 			} catch (Exception e) {
-				LOG.error("Failed to load generator: " + generator, e);
+				LOG.error("无法载入生成器: " + generator, e);
 			}
 			i++;
 		}
 
-		splashScreen.setProgress(93, "Initiating user session");
+		splashScreen.setProgress(93, "正在启动用户会话");
 
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);
@@ -189,7 +189,7 @@ public final class MCreatorApplication {
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
 		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
 
-		splashScreen.setProgress(100, "Loading MCreator windows");
+		splashScreen.setProgress(100, "正在加载MCreator窗口");
 
 		try {
 			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
@@ -201,12 +201,10 @@ public final class MCreatorApplication {
 			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
 				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
 		} catch (Exception e) {
-			LOG.warn("Failed to register desktop handlers", e);
+			LOG.warn("无法注册desktop handlers", e);
 		}
 
 		discordClient = new DiscordClient();
-
-		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
 		if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
 			JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
@@ -215,6 +213,9 @@ public final class MCreatorApplication {
 
 		discordClient.updatePresence(L10N.t("dialog.discord_rpc.just_opened"),
 				L10N.t("dialog.discord_rpc.version") + Launcher.version.getMajorString());
+
+/*		//工程选择
+		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);*/
 
 		boolean directLaunch = false;
 		if (launchArguments.size() > 0) {
@@ -229,8 +230,9 @@ public final class MCreatorApplication {
 			}
 		}
 
-		if (!directLaunch)
+		if (!directLaunch) {
 			showWorkspaceSelector();
+		}
 
 		splashScreen.setVisible(false);
 
@@ -267,14 +269,14 @@ public final class MCreatorApplication {
 						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
 				MCreator mcreator = new MCreator(this, workspace);
+				this.workspaceSelector.setVisible(false);
 				if (!this.openMCreators.contains(mcreator)) {
-					this.workspaceSelector.setVisible(false);
 					this.openMCreators.add(mcreator);
 					mcreator.setVisible(true);
 					mcreator.requestFocusInWindow();
 					mcreator.toFront();
 				} else { // already open, just focus it
-					LOG.warn("Trying to open already open workspace, bringing it to the front.");
+					LOG.warn("检测到你尝试打开已打开的工作区，我们将会把它置于最前面.");
 					for (MCreator openmcreator : openMCreators) {
 						if (openmcreator.equals(mcreator)) {
 							openmcreator.requestFocusInWindow();
@@ -286,7 +288,7 @@ public final class MCreatorApplication {
 						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
-			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
+			LOG.fatal("无法打开工作目录!", corruptedWorkspaceFile);
 
 			File backupsDir = new File(workspaceFile.getParentFile(), ".mcreator/workspaceBackups");
 			if (backupsDir.isDirectory()) {
@@ -324,16 +326,16 @@ public final class MCreatorApplication {
 	}
 
 	public void closeApplication() {
-		LOG.debug("Closing any potentially open MCreator windows");
+		LOG.debug("关闭任何打开的MCreator窗口");
 		List<MCreator> mcreatorsTmp = new ArrayList<>(
 				openMCreators); // create list copy so we don't modify the list we iterate
 		for (MCreator mcreator : mcreatorsTmp) {
-			LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
+			LOG.info("试图关闭工作区类型的MCreator窗口: " + mcreator.getWorkspace());
 			if (!mcreator.closeThisMCreator(false))
 				return; // if we fail to close all windows, we cancel the application close
 		}
 
-		LOG.debug("Performing exit tasks");
+		LOG.debug("执行退出任务");
 		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
 		analytics.trackMCreatorClose(); // track app close in sync mode
 
@@ -343,7 +345,7 @@ public final class MCreatorApplication {
 
 		// we close all windows and exit fx platform
 		try {
-			LOG.debug("Stopping AWT and FX threads");
+			LOG.debug("正在停止AWT和FX的线程");
 			Arrays.stream(Window.getWindows()).forEach(Window::dispose);
 			Platform.exit();
 		} catch (Exception ignored) {
@@ -352,7 +354,7 @@ public final class MCreatorApplication {
 		try {
 			PluginLoader.INSTANCE.close();
 		} catch (IOException e) {
-			LOG.warn("Failed to close plugin loader", e);
+			LOG.warn("无法关闭插件载入器", e);
 		}
 
 		try {
@@ -360,11 +362,12 @@ public final class MCreatorApplication {
 		} catch (Exception ignored) {
 		}
 
-		LOG.debug("Exiting MCreator");
+		LOG.debug("正在退出MCreator");
 		System.exit(0); // actually exit MCreator
 	}
 
 	void showWorkspaceSelector() {
+		workspaceSelector = Optional.ofNullable(workspaceSelector).orElse(new WorkspaceSelector(this,this::openWorkspaceInMCreator));
 		workspaceSelector.setVisible(true);
 	}
 

@@ -20,10 +20,15 @@ package net.mcreator.io;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class UserFolderManager {
 
 	private static File getUserFolder() {
+		var mcreator_home = System.getenv("MCREATOR_HOME");
+		if (mcreator_home != null){
+			return new File(mcreator_home);
+		}
 		return new File(System.getProperty("user.home") + "/.mcreator/");
 	}
 
@@ -33,6 +38,10 @@ public class UserFolderManager {
 		// generate folder structure of user folder too
 		getGradleHome().mkdirs();
 
+		getPluginFolder().mkdirs();
+
+		getBackgroundFolder().mkdirs();
+
 		return getUserFolder().isDirectory() && Files.isWritable(getUserFolder().toPath());
 	}
 
@@ -40,7 +49,18 @@ public class UserFolderManager {
 		return new File(getUserFolder(), path);
 	}
 
+	public static File getPluginFolder() {
+		return getFileFromUserFolder("plugins");
+	}
+
+	public static File getBackgroundFolder() {return getFileFromUserFolder("backgrounds");}
+
 	public static File getGradleHome() {
+		//老版本的mcrc是直接写入工作目录下,为此我们做出兼容
+/*		var gradleHome = new File("gradle");
+		if (gradleHome.exists()&&gradleHome.isDirectory()){
+			return gradleHome;
+		}*/
 		return getFileFromUserFolder("/gradle/");
 	}
 

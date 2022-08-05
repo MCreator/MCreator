@@ -46,7 +46,7 @@ public class VariableTypeLoader {
 	}
 
 	public VariableTypeLoader() {
-		LOG.debug("Loading variable types");
+		LOG.debug("加载变量类型");
 
 		final Gson gson = new Gson();
 

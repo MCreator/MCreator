@@ -46,7 +46,7 @@ public class Launcher {
 		List<String> arguments = Arrays.asList(args);
 
 		System.setProperty("jna.nosys", "true");
-		System.setProperty("log_directory", UserFolderManager.getFileFromUserFolder("").getAbsolutePath());
+		System.setProperty("log_directory",System.getProperty("user.dir"));
 
 		if (OS.getOS() == OS.WINDOWS && ManagementFactory.getRuntimeMXBean().getInputArguments().stream()
 				.noneMatch(arg -> arg.contains("idea_rt.jar"))) {
@@ -67,20 +67,21 @@ public class Launcher {
 		UTF8Forcer.forceGlobalUTF8();
 
 		try {
+			//载入mcrc的版本文件
 			Properties conf = new Properties();
-			conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));
+			conf.load(Launcher.class.getResourceAsStream("/mcrc.conf"));
 
 			version = new MCreatorVersionNumber(conf);
 		} catch (IOException e) {
-			LOG.error("Failed to read MCreator config", e);
+			LOG.error("无法载入MCreator-Chinese的内部配置文件", e);
 		}
 
 		LOG.info("Starting MCreator " + version);
 
 		// print version of Java
-		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
-				+ ", vendor: " + System.getProperty("java.vendor"));
-		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
+		LOG.info("Java版本: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
+				+ ", 供应商: " + System.getProperty("java.vendor"));
+		LOG.info("JAVA_HOME: " + System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
 		PreferencesManager.loadPreferences();
@@ -94,7 +95,7 @@ public class Launcher {
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 
-		// if the OS is macOS, we enable javafx single thread mode to avoid some deadlocks with JFXPanel
+		// if the OS is macOS, we enable javafx single thread mode to avoid some deadlocks(死锁) with JFXPanel
 		if (OS.getOS() == OS.MAC) {
 			System.setProperty("javafx.embed.singleThread", "true");
 		}
@@ -108,26 +109,27 @@ public class Launcher {
 		try {
 			SwingUtilities.invokeAndWait(JFXPanel::new);
 		} catch (InterruptedException | InvocationTargetException e) {
-			LOG.error("Failed to start JFX toolkit", e);
+			LOG.error("无法启动JFX toolkit", e);
 		}
 
 		WebConsoleListener.registerLogger(LOG);
 
 		// check if proper version of MCreator per architecture is used
 		if (OS.getSystemBits() == OS.BIT32) {
-			JOptionPane.showMessageDialog(null, "<html>You are trying to run 64-bit MCreator on 32-bit computer.<br>"
-					+ "MCreator no longer supports 32-bit platforms.", "MCreator error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "<html>我们很抱歉的通知您MCreator不支持在32位的电脑上运行.<br>"
+							+ "我们也将永远不会对32位做出兼容  cdc:我不知道为什么,总之就是不行(?????)"
+					, "MCreator错误", JOptionPane.WARNING_MESSAGE);
 			System.exit(-1);
 		}
 
-		LOG.info("Installation path: " + System.getProperty("user.dir"));
-		LOG.info("User home of MCreator: " + UserFolderManager.getFileFromUserFolder("/"));
+		LOG.info("安装目录: " + System.getProperty("user.dir"));
+		LOG.info("MCreator的用户目录: " + UserFolderManager.getFileFromUserFolder("/"));
 
 		if (!UserFolderManager.createUserFolderIfNotExists()) {
-			JOptionPane.showMessageDialog(null, "<html><b>MCreator failed to write to user directory!</b><br><br>"
-							+ "Please make sure that the user running MCreator has permissions to read and write to the directory<br>"
-							+ "in which MCreator tried to create user specific data storage. The path MCreator could not write to is:<br><br>"
-							+ UserFolderManager.getFileFromUserFolder("/") + "<br>", "MCreator file system error",
+			JOptionPane.showMessageDialog(null, "<html><b>MCreator无法写入用户目录！</b><br><br>"
+							+ "请确保运行MCreator的用户具有读取和写入目录的权限<br>"
+							+ "McCreator尝试创建用户特定的数据存储但是失败了。MCreator无法写入的路径为：<br><br>"
+							+ UserFolderManager.getFileFromUserFolder("/") + "<br>", "MCreator文件系统错误",
 					JOptionPane.WARNING_MESSAGE);
 			System.exit(-2);
 		}

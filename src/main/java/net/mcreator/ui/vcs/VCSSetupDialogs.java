@@ -68,7 +68,7 @@ public class VCSSetupDialogs {
 
 		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.setup_remote_workspace_details"),
 				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new String[] { "Setup remote workspace", "Cancel" }, "Setup remote workspace");
+				new String[] { "确定", "取消" }, "确定");
 
 		if (option == 0) {
 			VCSInfo info = new VCSInfo(remote.getText(), username.getText(), new String(password.getPassword()),

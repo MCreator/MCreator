@@ -71,27 +71,24 @@ public class GradleUtils {
 	}
 
 	public static String getJavaHome() {
-		// check if JAVA_HOME was overwritten in preferences and return this one in such case
-		if (PreferencesManager.PREFERENCES.hidden.java_home != null
-				&& PreferencesManager.PREFERENCES.hidden.java_home.isFile()) {
-			LOG.warn("Using java home override specified by users!");
-			String path = PreferencesManager.PREFERENCES.hidden.java_home.toString().replace("\\", "/");
-			if (new File(path).exists() && path.contains("/bin/java"))
-				return path.split("/bin/java")[0];
-			else
-				LOG.error("Java home override from preferences is not valid!");
+
+		if (PreferencesManager.PREFERENCES.gradle.java_home != null) {
+			return PreferencesManager.PREFERENCES.gradle.java_home.getPath();
 		}
-
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
-		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile())
+		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile()) {
+			PreferencesManager.PREFERENCES.gradle.java_home = new File("./jdk/");
 			return FilenameUtils.normalize(new File("./jdk/").getAbsolutePath());
-
+		}
 		// otherwise, we try to set JAVA_HOME to the same Java as MCreator is launched with
 		String current_java_home = System.getProperty("java.home");
-		if (current_java_home != null && current_java_home.contains("jdk")) // only set it if it is jdk, not jre
+		// only set it if it is jdk, not jre
+		if (current_java_home != null && current_java_home.contains("jdk")){
+			PreferencesManager.PREFERENCES.gradle.java_home = new File(current_java_home);
 			return current_java_home;
+	}
 
-		LOG.error("Failed to find any bundled JDKs, using system's default if it exists");
+		LOG.error("找不到任何捆绑的JDK，如果存在，则使用系统默认值");
 
 		// if we can not get a better match, use system default JAVA_HOME variable
 		// THIS ONE CAN BE null!!!, so handle this with care where used

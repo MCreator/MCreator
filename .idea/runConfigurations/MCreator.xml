@@ -3,6 +3,7 @@
     <option name="MAIN_CLASS_NAME" value="net.mcreator.Launcher" />
     <module name="MCreator.main" />
     <option name="VM_PARAMETERS" value="--add-opens=java.base/java.lang=ALL-UNNAMED" />
+    <option name="WORKING_DIRECTORY" value="D:/MCreator" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

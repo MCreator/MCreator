@@ -1,8 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.3+7/windows/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.3+7/linux/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_mac_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.3+7/mac/x64/jdk/hotspot/normal/adoptopenjdk'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.05/nsis-3.05.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
@@ -28,6 +26,7 @@ task downloadJDKWin64(type: DefaultTask, group: 'setup') {
     }
 }
 
+/*
 task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
     doLast {
         if (!file('jdk/jdk17_linux_64/bin/java').exists()) {
@@ -65,7 +64,7 @@ task downloadJDKMac64(type: DefaultTask, group: 'setup') {
         }
     }
 }
-
+*/
 // export environment setup task
 task downloadNSIS(type: DefaultTask, group: 'setup') {
     doLast {
@@ -123,4 +122,4 @@ if (idea.project != null) {
     idea.project.settings.taskTriggers {
         afterSync initialSetup
     }
-}
+    }

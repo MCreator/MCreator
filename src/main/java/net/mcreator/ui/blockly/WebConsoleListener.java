@@ -63,7 +63,7 @@ public abstract class WebConsoleListener {
 					.getMethod("setDefaultListener", Class.forName("com.sun.javafx.webkit.WebConsoleListener"))
 					.invoke(null, listener.instance());
 		} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			logger.warn("Failed to register JavaScript console listener", e);
+			logger.warn("注册JavaScript控制台侦听器失败", e);
 		}
 	}
 

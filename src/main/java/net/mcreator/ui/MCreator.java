@@ -92,7 +92,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	private final long windowUID;
 
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
-		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
+		LOG.info("正在打开工程: " + workspace.getWorkspaceSettings().getModID());
 
 		this.windowUID = System.currentTimeMillis();
 		this.workspace = workspace;
@@ -101,7 +101,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		WorkspaceVCS vcs = WorkspaceVCS.loadVCSWorkspace(this.workspace);
 		if (vcs != null) {
 			this.workspace.setVCS(vcs);
-			LOG.info("Loaded VCS for current workspace");
+			LOG.info("已经为当前工程("+workspace.getWorkspaceSettings().getModID()+")载入了VCS");
 		}
 
 		this.gradleConsole = new GradleConsole(this);
@@ -150,6 +150,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		setLocationRelativeTo(null);
 
+
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent arg0) {
@@ -175,14 +176,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		// Load backgrounds depending on the background source
 		List<Image> bgimages = new ArrayList<>();
 		switch (PreferencesManager.PREFERENCES.ui.backgroundSource) {
-		case "All":
+		case "全部":
 			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
 			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
 			break;
-		case "Current theme":
+		case "当前主题":
 			bgimages = BackgroundLoader.loadThemeBackgrounds();
 			break;
-		case "Custom":
+		case "自定义":
 			bgimages = BackgroundLoader.loadUserBackgrounds();
 			break;
 		}
@@ -355,7 +356,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 
 		if (safetoexit) {
-			LOG.info("Closing MCreator window ...");
+			LOG.info("关闭MCreator窗口中 ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen = getExtendedState() == MAXIMIZED_BOTH;
 			if (splitPane != null)
 				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future

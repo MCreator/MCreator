@@ -18,9 +18,17 @@
 
 package net.mcreator.io.net.api.update;
 
+import net.mcreator.Launcher;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateInfo {
+
+	public UpdateInfo(){
+		this.latestMajor = Launcher.version.major;
+		this.releases = new HashMap<>();
+	}
 
 	private String latestMajor;
 	private Map<String, Release> releases;

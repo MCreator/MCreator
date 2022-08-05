@@ -42,6 +42,7 @@ import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
@@ -78,9 +79,8 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public final class WorkspaceSelector extends JFrame implements DropTargetListener {
@@ -122,7 +122,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.import"), UIRES.get("impfile"), e -> {
 			File file = FileDialogs.getOpenDialog(this, new String[] { ".zip" });
 			if (file != null) {
-				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
+				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, UserFolderManager.getFileFromUserFolder("/MCreatorWorkspaces"));
 				if (workspaceDir != null) {
 					File workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
 					if (workspaceFile != null)
@@ -211,7 +211,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				try {
 					String flagpath =
 							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
-					BufferedImage image = ImageIO.read(getClass().getResourceAsStream(flagpath));
+					BufferedImage image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(flagpath)));
 					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 5, this);
 				} catch (Exception ignored) { // flag not found, ignore
 				}
@@ -241,7 +241,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 		recentPanel.setPreferredSize(new Dimension(220, 10));
 
-		initWebsitePanel();
+		if (PreferencesManager.PREFERENCES.ui.enableWebsitePage) {
+			initWebsitePanel();
+		}
 
 		add("West", recentPanel);
 
@@ -344,7 +346,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			} catch (Exception e) {
 				recentWorkspaces = null;
-				LOG.warn("Failed to load recent workspaces", e);
+				LOG.warn("无法载入最近项目", e);
 			}
 		}
 
@@ -363,6 +365,15 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						reloadRecents();
 					} else if (mouseEvent.getClickCount() == 2) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+					}
+				}
+			});
+			recentsList.addKeyListener(new KeyAdapter() {
+				@Override public void keyTyped(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER){
+						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+					} else if (e.getKeyCode() == KeyEvent.VK_DELETE){
+						removeRecentWorkspace(recentsList.getSelectedValue());
 					}
 				}
 			});
@@ -413,6 +424,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				"dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
+
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
 			if (news != null)
 				nov.setText("<html>" + L10N.t("dialog.workspace_selector.news")

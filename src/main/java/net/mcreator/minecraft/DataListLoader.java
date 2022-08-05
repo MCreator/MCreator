@@ -71,7 +71,7 @@ public class DataListLoader {
 					((List<?>) reader.read()).forEach(elementObj -> {
 						if (elementObj instanceof String) {
 							if (list.get().containsKey(elementObj))
-								LOG.warn("Duplicate datalist key: " + elementObj);
+								LOG.warn("重复的datalist的key为: " + elementObj);
 							list.get().put((String) elementObj, new DataListEntry((String) elementObj));
 						} else if (elementObj instanceof Map<?, ?> element) {
 							String elementName = null;
@@ -98,11 +98,11 @@ public class DataListLoader {
 										mcitem.setSubtypes(Boolean.parseBoolean((String) element.get("subtypes")));
 									}
 									if (list.get().containsKey(elementName))
-										LOG.warn("Duplicate datalist key: " + elementName);
+										LOG.warn("重复的datalist的key为: " + elementName);
 									list.get().put(elementName, mcitem);
 								} else {
 									if (list.get().containsKey(elementName))
-										LOG.warn("Duplicate datalist key: " + elementName);
+										LOG.warn("重复的datalist的key为: " + elementName);
 									list.get().put(elementName, entry);
 								}
 							}
@@ -113,10 +113,10 @@ public class DataListLoader {
 				}
 			});
 		} catch (IOException e) {
-			LOG.error("Failed to load datalist resource", e);
+			LOG.error("载入datalist失败", e);
 		}
 
-		LOG.debug("Added " + listName + " datamap to cache");
+		LOG.debug("已经添加 " + listName + " 数据映射到缓存");
 
 		cache.put(listName, list.get());
 

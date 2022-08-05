@@ -57,7 +57,7 @@ public class DiscordClient implements Closeable {
 				}
 			}, 0, 5000);
 		} catch (Exception e) {
-			LOG.warn("Failed to init", e);
+			LOG.warn("无法初始化", e);
 		}
 	}
 

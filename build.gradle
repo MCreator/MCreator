@@ -8,13 +8,24 @@ plugins {
 }
 
 repositories {
+    flatDir { dirs 'lib' }
+    mavenLocal()
+    maven {
+        url 'https://maven.aliyun.com/repository/public/'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring/'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/gradle-plugin'
+    }
     maven { url "https://repo.gradle.org/gradle/libs-releases-local/" }
     maven { url "https://maven.scijava.org/content/repositories/public/" }
-    flatDir { dirs 'lib' }
+    mavenCentral()
 }
 
 project.ext.mcreatorconf = new Properties()
-file('src/main/resources/mcreator.conf').withInputStream { project.mcreatorconf.load(it) }
+file('src/main/resources/mcrc.conf').withInputStream { project.mcreatorconf.load(it) }
 
 group = 'net.mcreator'
 version = project.mcreatorconf.getProperty('mcreator')

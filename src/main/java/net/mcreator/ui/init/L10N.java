@@ -56,12 +56,12 @@ public class L10N {
 		if (supportedLocales.containsKey(getLocale())) {
 			rb = supportedLocales.get(getLocale()).resourceBundle();
 		} else {
-			LOG.warn("Locale " + getLocale() + " is not supported. Falling back to default locale.");
+			LOG.warn("Locale " + getLocale() + " 是不支持的. 正在使用默认语言.");
 
 			rb = supportedLocales.get(DEFAULT_LOCALE).resourceBundle();
 		}
 
-		LOG.info("Setting default locale to: " + getLocale());
+		LOG.info("正在设置语言为: " + getLocale());
 		Locale.setDefault(getLocale());
 		JComponent.setDefaultLocale(getLocale());
 	}

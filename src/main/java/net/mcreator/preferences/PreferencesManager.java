@@ -44,10 +44,10 @@ public class PreferencesManager {
 			try {
 				PREFERENCES = gson.fromJson(FileIO.readFileToString(preferencesFile), PreferencesData.class);
 				if (PREFERENCES == null)
-					throw new NullPointerException("Preferences are null!");
-				LOG.debug("Loading preferences from " + preferencesFile);
+					throw new NullPointerException("Preferences为空!");
+				LOG.debug("正在载入首选项: " + preferencesFile);
 			} catch (Exception e) {
-				LOG.error("Failed to load preferences. Reloading defaults!", e);
+				LOG.error("无法载入首选项,正在载入默认首选项文件", e);
 				storePreferences(new PreferencesData());
 			}
 		}

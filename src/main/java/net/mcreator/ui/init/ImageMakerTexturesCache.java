@@ -42,7 +42,7 @@ public class ImageMakerTexturesCache {
 			try {
 				CACHE.put(resourcePointer, new ImageIcon(ImageIO.read(resourcePointer.getStream())));
 			} catch (Exception e) {
-				LOG.warn("Failed to load texture from templates: " + resourcePointer.identifier);
+				LOG.warn("无法从模板加载材质: " + resourcePointer.identifier);
 			}
 		});
 		ImageIO.setUseCache(true);

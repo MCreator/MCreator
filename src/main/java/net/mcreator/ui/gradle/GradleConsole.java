@@ -122,7 +122,7 @@ public class GradleConsole extends JPanel {
 							}
 						}
 					} catch (SecurityException | IllegalArgumentException ex) {
-						LOG.info("Loading JARs for code editor failed. Error: " + ex.getMessage());
+						LOG.info("为代码编辑器加载JAR失败. Error: " + ex.getMessage());
 					}
 				}
 			}

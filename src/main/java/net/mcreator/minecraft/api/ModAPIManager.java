@@ -74,9 +74,9 @@ public class ModAPIManager {
 
 				modApiList.put(FilenameUtilsPatched.getBaseName(apidefinition), modAPI);
 
-				LOG.debug("Loaded mod API definition: " + FilenameUtilsPatched.getBaseName(apidefinition));
+				LOG.debug("加载完成的MOD API: " + FilenameUtilsPatched.getBaseName(apidefinition));
 			} catch (YamlException e) {
-				LOG.error("Failed to load mod API definition: " + e.getMessage());
+				LOG.error("无法载入MOD API: " + e.getMessage());
 			}
 		}
 	}

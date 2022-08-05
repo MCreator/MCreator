@@ -70,7 +70,7 @@ public class DesktopUtils {
 			return true;
 		}
 
-		LOG.warn(String.format("Failed to browse %s", uri));
+		LOG.warn(String.format("无法浏览 %s", uri));
 
 		return false;
 	}
@@ -84,7 +84,7 @@ public class DesktopUtils {
 			return true;
 		}
 
-		LOG.warn(String.format("Failed to open %s", file.getAbsolutePath()));
+		LOG.warn(String.format("无法打开 %s", file.getAbsolutePath()));
 
 		return false;
 	}
@@ -98,7 +98,7 @@ public class DesktopUtils {
 			return true;
 		}
 
-		LOG.warn(String.format("Failed to edit %s", file.getAbsolutePath()));
+		LOG.warn(String.format("无法编辑 %s", file.getAbsolutePath()));
 
 		return false;
 	}
@@ -141,21 +141,21 @@ public class DesktopUtils {
 	private static boolean browseDESKTOP(URI uri) {
 		try {
 			if (!Desktop.isDesktopSupported()) {
-				LOG.debug("Platform is not supported.");
+				LOG.debug("平台不受支持.");
 				return false;
 			}
 
 			if (!Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				LOG.debug("BROWSE is not supported.");
+				LOG.debug("不支持浏览.");
 				return false;
 			}
 
-			LOG.info("Trying to use Desktop.getDesktop().browse() with " + uri.toString());
+			LOG.info("正在尝试使用Desktop.getDesktop()浏览链接 " + uri.toString());
 			Desktop.getDesktop().browse(uri);
 
 			return true;
 		} catch (Throwable t) {
-			LOG.error("Error using desktop browse.", t);
+			LOG.error("使用Desktop浏览时出错.", t);
 			return false;
 		}
 	}
@@ -163,16 +163,16 @@ public class DesktopUtils {
 	private static boolean openDESKTOP(File file, boolean selectOnly) {
 		try {
 			if (!Desktop.isDesktopSupported()) {
-				LOG.debug("Platform is not supported.");
+				LOG.debug("平台不支持.");
 				return false;
 			}
 
 			if (selectOnly && !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE_FILE_DIR)
 					&& !SystemUtils.IS_OS_WINDOWS) {
-				LOG.debug("BROWSE_FILE_DIR is not supported.");
+				LOG.debug("BROWSE_FILE_DIR不受支持.");
 				return openDESKTOP(file, false);
 			} else if (!Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
-				LOG.debug("OPEN is not supported.");
+				LOG.debug("OPEN不受支持.");
 				return false;
 			}
 
@@ -199,16 +199,16 @@ public class DesktopUtils {
 	private static boolean editDESKTOP(File file) {
 		try {
 			if (!Desktop.isDesktopSupported()) {
-				LOG.debug("Platform is not supported.");
+				LOG.debug("平台不受支持.");
 				return false;
 			}
 
 			if (!Desktop.getDesktop().isSupported(Desktop.Action.EDIT)) {
-				LOG.debug("EDIT is not supported.");
+				LOG.debug("EDIT不受支持.");
 				return false;
 			}
 
-			LOG.info("Trying to use Desktop.getDesktop().edit() with " + file);
+			LOG.info("尝试使用Desktop.getDesktop().edit() 打开 " + file);
 			Desktop.getDesktop().edit(file);
 
 			return true;

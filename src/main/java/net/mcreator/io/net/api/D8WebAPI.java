@@ -21,6 +21,7 @@ package net.mcreator.io.net.api;
 import com.google.gson.Gson;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.io.net.api.update.UpdateInfo;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +46,13 @@ public class D8WebAPI implements IWebAPI {
 
 	private UpdateInfo updateInfo;
 
+	/**
+	 * 新
+	 */
 	private String[] news;
+	/**
+	 * the week of Mod
+	 */
 	private String[] motw;
 
 	private final Set<CompletableFuture<String[]>> newsFutures = new HashSet<>();
@@ -58,8 +65,12 @@ public class D8WebAPI implements IWebAPI {
 		if (appData.equals(""))
 			return false;
 
-		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
-
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates) {
+			updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
+		} else {
+			updateInfo = new UpdateInfo();
+		}
+		//获取网站的最新
 		new Thread(() -> {
 			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));

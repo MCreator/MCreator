@@ -42,7 +42,7 @@ public class BlocklyJavaScriptsLoader {
 	private final List<String> SCRIPTS = new ArrayList<>();
 
 	public BlocklyJavaScriptsLoader() {
-		LOG.debug("Loading Blockly JavaScript files from plugins");
+		LOG.debug("正在从插件中加载Blockly JavaScript文件");
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.js"));
 		for (String fileName : fileNames)

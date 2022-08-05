@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
+import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
@@ -27,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +42,7 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -280,7 +283,6 @@ public class PreferencesDialog extends MCreatorDialog {
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setEditable(entry.arrayDataEditable());
 			box.setSelectedItem(value);
-			box.addActionListener(e -> apply.setEnabled(true));
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Color.class)) {
@@ -307,6 +309,32 @@ public class PreferencesDialog extends MCreatorDialog {
 			box.addActionListener(e -> apply.setEnabled(true));
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
+		} else if (actualField.getType().equals(File.class)){
+			File currentSelected = (File) value;
+			JPanel box = new JPanel(new GridLayout(1,2));
+			JTextField path = new JTextField();
+			path.setText(value.toString());
+			path.setEditable(false);
+			box.add(path);
+			JButton button = new JButton("...");
+			button.addActionListener(a->{
+				var fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				fileChooser.setCurrentDirectory(currentSelected);
+				fileChooser.setMultiSelectionEnabled(false);
+				var state = fileChooser.showOpenDialog(this);
+				if (state == JFileChooser.APPROVE_OPTION) {
+					var path1 = fileChooser.getSelectedFile();
+					if (!path1.isAbsolute()){
+						path1 = new File(path1.getAbsolutePath());
+					}
+					path.setText(path1.toString());
+					box.setName(path1.toString());
+				}
+			});
+			box.add(button);
+			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
+			return box;
 		}
 
 		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), cons);
@@ -324,6 +352,11 @@ public class PreferencesDialog extends MCreatorDialog {
 			return ((JColor) value).getColor();
 		} else if (type.equals(Locale.class)) {
 			return ((JComboBox<?>) value).getSelectedItem();
+		} else if (type.equals(File.class)){
+			if (value.getName() == null){
+				return null;
+			}
+			return new File(value.getName());
 		}
 		return null;
 	}

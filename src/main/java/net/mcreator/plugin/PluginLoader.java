@@ -33,6 +33,7 @@ import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -64,6 +65,8 @@ public class PluginLoader extends URLClassLoader {
 
 	private final Reflections reflections;
 
+	private final String[] pluginsExtensions = {"zip"};
+
 	/**
 	 * <p>The core of the detection and loading</p>
 	 */
@@ -76,14 +79,13 @@ public class PluginLoader extends URLClassLoader {
 
 		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {}, Thread.currentThread().getContextClassLoader());
 
-		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
-
 		List<Plugin> pluginsLoadList = new ArrayList<>();
 		pluginsLoadList.addAll(listPluginsFromFolder(new File("./plugins/"), true));
-		pluginsLoadList.addAll(listPluginsFromFolder(UserFolderManager.getFileFromUserFolder("plugins"), false));
+		pluginsLoadList.addAll(listPluginsFromFolder(UserFolderManager.getPluginFolder(), false));
 
+/*		//这感觉没必要....浪费屑
 		if (System.getenv("MCREATOR_PLUGINS_FOLDER") != null)
-			pluginsLoadList.addAll(listPluginsFromFolder(new File(System.getenv("MCREATOR_PLUGINS_FOLDER")), false));
+			pluginsLoadList.addAll(listPluginsFromFolder(new File(System.getenv("MCREATOR_PLUGINS_FOLDER")), false));*/
 
 		Collections.sort(pluginsLoadList);
 
@@ -92,7 +94,7 @@ public class PluginLoader extends URLClassLoader {
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
 				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
-					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
+					LOG.warn(plugin.getInfo().getName() + " 无法载入,因为此插件需要 " + plugin.getInfo()
 							.getDependencies());
 					plugin.loaded = false;
 					continue;
@@ -100,7 +102,7 @@ public class PluginLoader extends URLClassLoader {
 			}
 
 			try {
-				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + ", weight: "
+				LOG.info("正在加载插件: " + plugin.getID() + " (" + plugin.getFile() + ")" + ", 大小: "
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
@@ -115,7 +117,8 @@ public class PluginLoader extends URLClassLoader {
 
 				plugin.loaded = true;
 			} catch (Exception e) {
-				LOG.error("Failed to load plugin " + plugin.getID(), e);
+				LOG.error("无法载入插件 " + plugin.getID(), e);
+				JOptionPane.showMessageDialog(null,"无法载入插件" + plugin.getID(),"插件载入错误",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -177,16 +180,17 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
-		LOG.debug("Loading plugins from: " + folder);
+		LOG.debug("正在载入此目录下的所有插件: " + folder);
 
 		List<Plugin> loadList = new ArrayList<>();
-
-		File[] pluginFiles = folder.listFiles();
+		//过滤
+		File[] pluginFiles = folder.listFiles(a-> Arrays.stream(pluginsExtensions)
+				.anyMatch(ext -> a.getName().endsWith("." + ext)||a.isDirectory()));
 		for (File pluginFile : pluginFiles != null ? pluginFiles : new File[0]) {
 			Plugin plugin = loadPlugin(pluginFile, builtin);
 			if (plugin != null) {
 				if (plugins.contains(plugin)) {
-					LOG.warn("Trying to load duplicate plugin: " + plugin.getID() + " from: " + plugin.getFile());
+					LOG.warn("尝试加载重复插件: " + plugin.getID() + "(" + plugin.getFile()+")");
 					continue;
 				}
 				plugins.add(plugin);
@@ -208,7 +212,7 @@ public class PluginLoader extends URLClassLoader {
 					plugin.file = pluginFile;
 					return validatePlugin(plugin);
 				} catch (Exception e) {
-					LOG.error("Failed to load plugin from " + pluginFile, e);
+					LOG.error("无法载入插件: " + pluginFile, e);
 				}
 			} else {
 				File[] pluginFiles = pluginFile.listFiles();
@@ -225,23 +229,27 @@ public class PluginLoader extends URLClassLoader {
 				plugin.file = pluginFile;
 				return validatePlugin(plugin);
 			} catch (Exception e) {
-				LOG.error("Failed to load plugin from " + pluginFile, e);
+				LOG.error("无法载入插件: " + pluginFile, e);
 			}
 		}
 		return null;
 	}
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
-		if (!plugin.isCompatible()) {
-			LOG.warn("Plugin " + plugin.getID()
-					+ " is not compatible with this MCreator version! Skipping this plugin.");
+		if (plugin.getMinVersion() < 0) {
+			LOG.warn("插件(" + plugin.getID() + ")未指定最小版本。我们将会跳过此插件.");
+			JOptionPane.showMessageDialog(null,"插件(" + plugin.getID() + ")未指定最小版本。我们将会跳过此插件.","插件兼容性错误",JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 
-		if (plugin.getMinVersion() < 0) {
-			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
+		if (!plugin.isCompatible()) {
+			LOG.warn("插件 " + plugin.getID()
+					+ " 不支持当前版本的MCreator! 我们将跳过此插件.");
+			JOptionPane.showMessageDialog(null,"插件 " + plugin.getID()
+					+ " 不支持当前版本的MCreator! 我们将跳过此插件.","插件兼容性错误",JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
+
 
 		return plugin;
 	}
@@ -259,7 +267,7 @@ public class PluginLoader extends URLClassLoader {
 								return new PluginUpdateInfo(plugin, version);
 							}
 						} catch (Exception e) {
-							LOG.warn("Failed to parse update info for plugin: " + plugin.getID(), e);
+							LOG.warn("无法分析此插件的更新信息: " + plugin.getID(), e);
 						}
 					}
 				}

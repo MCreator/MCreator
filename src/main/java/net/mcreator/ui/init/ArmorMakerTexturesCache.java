@@ -46,7 +46,7 @@ public class ArmorMakerTexturesCache {
 			try {
 				CACHE.put(resourcePointer.toString(), new ImageIcon(ImageIO.read(resourcePointer.getStream())));
 			} catch (Exception e) {
-				LOG.warn("Failed to load armor texture from template: " + resourcePointer.identifier);
+				LOG.warn("无法从模板加载装备材质: " + resourcePointer.identifier);
 			}
 		});
 		ImageIO.setUseCache(true);

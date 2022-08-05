@@ -31,10 +31,13 @@ public final class RecentWorkspaceEntry {
 
 	@Nonnull private final String path;
 
+	private final String generatorName;
+
 	public RecentWorkspaceEntry(Workspace workspace, File path) {
 		this.name = workspace.getWorkspaceSettings().getModName();
 		this.path = path.toString();
 		this.type = workspace.getGeneratorConfiguration().getGeneratorFlavor();
+		this.generatorName = workspace.getGenerator().getGeneratorName();
 	}
 
 	public void update(RecentWorkspaceEntry source) {
@@ -48,6 +51,10 @@ public final class RecentWorkspaceEntry {
 
 	@Nonnull public String getName() {
 		return name;
+	}
+
+	public String getGeneratorName(){
+		return generatorName;
 	}
 
 	@Nonnull public GeneratorFlavor getType() {
