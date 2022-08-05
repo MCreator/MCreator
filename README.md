@@ -16,7 +16,7 @@ https://mcreator.net/ -McCreator是一款软件，用于使用直观易学的界
 
 ## Download, community, and support
 
-本页面为MCreator-Chinese(下文简称为mcrc)的贡献页面. 如果您需要的是MCreator原始版本请访问https://mcreator.net/下载MCreator原始版本的发行包.
+本页面为MCreator-Chinese(下文简称为mcrc)的贡献页面. 如果您需要的是MCreator原始版本请访问https://mcreator.net/ 下载MCreator原始版本的发行包.
 
 此为MCreator原始版本的下载地址 https://mcreator.net/download.
 
