@@ -372,7 +372,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				if (returnToProjectSelector)
 					application.showWorkspaceSelector();
 				else
-					application.closeApplication();
+					application.closeApplication(false);
 			}
 
 			return true;

@@ -215,7 +215,7 @@ public class ActionRegistry {
 		this.preferences = new BasicAction(this, L10N.t("action.preferences"),
 				e -> new PreferencesDialog(mcreator, null)).setIcon(UIRES.get("settings"));
 		this.exitMCreator = new BasicAction(this, L10N.t("action.exit"),
-				e -> mcreator.getApplication().closeApplication());
+				e -> mcreator.getApplication().closeApplication(false));
 		this.aboutMCreator = new AboutAction(this);
 		this.checkForUpdates = new CheckForUpdatesAction(this);
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");

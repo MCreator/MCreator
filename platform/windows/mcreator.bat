@@ -4,7 +4,7 @@
 :: MCreator Launcher
 :: ---------------------------------------------------------------------
 ::
-
+timeout /T 2
 :: set the classpath
 set CLASSPATH=./lib/mcreator.jar;./lib/*
 

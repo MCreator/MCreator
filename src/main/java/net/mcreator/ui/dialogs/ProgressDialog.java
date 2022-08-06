@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
@@ -28,6 +29,8 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Locale;
 
 public class ProgressDialog extends MCreatorDialog {
@@ -41,7 +44,7 @@ public class ProgressDialog extends MCreatorDialog {
 	@Nullable private MCreator mcreator = null;
 
 	public ProgressDialog(Window w, String title) {
-		super(w, title, true);
+		super(null, title, true);
 
 		if (w instanceof MCreator) {
 			mcreator = (MCreator) w;
@@ -49,7 +52,16 @@ public class ProgressDialog extends MCreatorDialog {
 
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
-		setClosable(false);
+		setClosable(true);
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				int a = JOptionPane.showConfirmDialog(ProgressDialog.this,"构建还在进行,确定要退出吗?","构建结束提醒",JOptionPane.YES_NO_OPTION);
+				if (a == JOptionPane.YES_OPTION){
+					MCreatorApplication.exit(true);
+				}
+			}
+		});
+
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 		progress.setCellRenderer(new Render());

@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
-import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
@@ -29,7 +28,9 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.DesktopUtils;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,20 +40,16 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
@@ -225,8 +222,8 @@ public class PreferencesDialog extends MCreatorDialog {
 				component.setName(sectionId);
 				component.addFocusListener(new FocusAdapter() {
 					@Override public void focusGained(FocusEvent e) {
-						if (e.getComponent().getName().equals("ui")){
-							PreferencesDialog.this.needRestart = true;
+						if (e.getComponent().getName().matches("ui")){
+							needRestart = true;
 						}
 					}
 				});
@@ -265,19 +262,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		if (needRestart){
 			int opt = JOptionPane.showConfirmDialog(this,"检测到敏感配置被修改,是否重启","重启提示",JOptionPane.YES_NO_OPTION);
 			if (opt == JOptionPane.YES_OPTION) {
-				Thread restart = new Thread(() -> {
-					//我们不做多平台,主要在Windows
-					String restartCommand = "mcreator.bat";
-					if (Files.exists(Paths.get(restartCommand))) {
-						try {
-							var process = Runtime.getRuntime().exec(restartCommand);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-				Runtime.getRuntime().addShutdownHook(restart);
-				System.exit(-1);
+				MCreatorApplication.exit(true);
+			} else {
+				needRestart = false;
 			}
 		}
 	}
@@ -347,14 +334,28 @@ public class PreferencesDialog extends MCreatorDialog {
 			return box;
 		} else if (actualField.getType().equals(File.class)){
 			File currentSelected = (File) value;
-			JTextField path = new JTextField();
+			VTextField path = new VTextField();
+			path.setValidator(new Validator(){
+
+				@Override public ValidationResult validateIfEnabled(IValidable validable) {
+					if (new File(path.getText(),"bin/java.exe").exists()&&new File(path.getText(),"bin/javac.exe").exists()) {
+						return new ValidationResult(ValidationResultType.PASSED,"检查通过");
+					} else {
+						return new ValidationResult(ValidationResultType.ERROR,"请检查是否为java_home,如果是则请检查是否为jdk");
+					}
+				}
+
+				@Override public ValidationResult validate() {
+					return null;
+				}
+			});
 			path.setText(value.toString());
 			path.setEditable(false);
 			JButton button = new JButton("...");
 			button.addActionListener(a->{
 				var fileChooser = new JFileChooser();
-				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.setCurrentDirectory(currentSelected);
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.setMultiSelectionEnabled(false);
 				var state = fileChooser.showOpenDialog(this);
 				if (state == JFileChooser.APPROVE_OPTION) {
@@ -363,6 +364,7 @@ public class PreferencesDialog extends MCreatorDialog {
 						path1 = new File(path1.getAbsolutePath());
 					}
 					path.setText(path1.toString());
+					path.getValidationStatus();
 				}
 			});
 			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.westAndEastElement(path,button)), cons);

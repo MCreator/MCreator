@@ -18,7 +18,7 @@ SetCompressor "lzma" ; to improve installer open performance and its size
 Name "MCreator ${MCREATOR_VERSION}"
 BrandingText "MCreator ${MCREATOR_VERSION}.${BUILD} - Developed by Pylo"
 
-!define MUI_PRODUCT "MCreator"
+!define MUI_PRODUCT "MCreator-Chinese"
 !define MUI_ICON "..\..\platform\windows\installer\installer.ico"
 !define MUI_UNICON "..\..\platform\windows\installer\uninstaller.ico"
 

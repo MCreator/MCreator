@@ -97,7 +97,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		reloadTitle();
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				MCreatorApplication.exit(false);
+			}
+		});
 
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {
@@ -362,7 +368,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 			recentsList.addKeyListener(new KeyAdapter() {
-				@Override public void keyTyped(KeyEvent e) {
+				@Override public void keyPressed(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_ENTER){
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
 					} else if (e.getKeyCode() == KeyEvent.VK_DELETE){

@@ -73,6 +73,7 @@ class NativeFileDialogs {
 		return new File[] {};
 	}
 
+
 	protected static File getWorkspaceDirectorySelectDialog(Window f, File file) {
 		SynchronousJFXDirectoryChooser chooser = new SynchronousJFXDirectoryChooser(null, () -> {
 			DirectoryChooser ch = new DirectoryChooser();

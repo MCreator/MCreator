@@ -26,8 +26,8 @@ createExe {
     supportUrl = 'https://mcreator.net/support'
 
     fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
-    productName = "MCreator"
-    companyName = "Pylo"
+    productName = "MCreator-Chinese"
+    companyName = "Pylo and cdc12345"
 
     icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
 }

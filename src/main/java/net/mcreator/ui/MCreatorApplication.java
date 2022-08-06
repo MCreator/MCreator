@@ -60,11 +60,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public final class MCreatorApplication {
+
+	private static MCreatorApplication application;
+
+	public static void exit(boolean restart){
+		application.closeApplication(restart);
+	}
 
 	private static final Logger LOG = LogManager.getLogger("Application");
 
@@ -199,7 +207,7 @@ public final class MCreatorApplication {
 				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
 
 			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
-				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication(false));
 		} catch (Exception e) {
 			LOG.warn("无法注册desktop handlers", e);
 		}
@@ -236,8 +244,6 @@ public final class MCreatorApplication {
 
 		splashScreen.setVisible(false);
 
-		Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
-
 		//track after the setup is done
 		analytics.async(analytics::trackMCreatorLaunch);
 
@@ -254,7 +260,9 @@ public final class MCreatorApplication {
 
 	public static void createApplication(List<String> arguments) {
 		if (!applicationStarted) {
-			SwingUtilities.invokeLater(() -> new MCreatorApplication(arguments));
+			SwingUtilities.invokeLater(() ->
+					application = new MCreatorApplication(arguments)
+			);
 			applicationStarted = true;
 		}
 	}
@@ -329,14 +337,18 @@ public final class MCreatorApplication {
 				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 	}
 
-	public void closeApplication() {
+	public void closeApplication(boolean restart) {
 		LOG.debug("关闭任何打开的MCreator窗口");
 		List<MCreator> mcreatorsTmp = new ArrayList<>(
 				openMCreators); // create list copy so we don't modify the list we iterate
 		for (MCreator mcreator : mcreatorsTmp) {
 			LOG.info("试图关闭工作区类型的MCreator窗口: " + mcreator.getWorkspace());
-			if (!mcreator.closeThisMCreator(false))
-				return; // if we fail to close all windows, we cancel the application close
+			if (!mcreator.closeThisMCreator(false)) {
+				int stat = JOptionPane.showConfirmDialog(null, "是否强行退出MCreator?", "强制退出提醒", JOptionPane.YES_NO_OPTION);
+				if (stat == JOptionPane.NO_OPTION) {
+					return; // if we fail to close all windows, we cancel the application close
+				}
+			}
 		}
 
 		LOG.debug("执行退出任务");
@@ -357,17 +369,24 @@ public final class MCreatorApplication {
 
 		try {
 			PluginLoader.INSTANCE.close();
+			LOG.info("插件载入器关闭成功");
 		} catch (IOException e) {
 			LOG.warn("无法关闭插件载入器", e);
 		}
 
-		try {
-			Thread.sleep(60000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (restart){
+			LOG.info("执行重启");
+			String restartCommand = "mcreator.exe";
+			if (Files.exists(Paths.get(restartCommand))) {
+				try {
+					Runtime.getRuntime().exec(restartCommand);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		LOG.debug("正在强制退出MCreator");
-		Runtime.getRuntime().halt(-1);
+		LOG.info("正在退出MCreator");
+		System.exit(-1);
 	}
 
 	void showWorkspaceSelector() {
