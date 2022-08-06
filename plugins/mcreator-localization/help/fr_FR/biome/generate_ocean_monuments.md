@@ -1,1 +1,0 @@
-Sélectionner ce paramètre pour avoir des temples de l'océan.

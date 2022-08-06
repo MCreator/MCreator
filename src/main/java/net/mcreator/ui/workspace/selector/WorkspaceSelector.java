@@ -91,20 +91,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private final WorkspaceOpenListener workspaceOpenListener;
 	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
-	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
+	public WorkspaceSelector(WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
 
 		reloadTitle();
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-		if (application != null)
-			addWindowListener(new WindowAdapter() {
-				@Override public void windowClosing(WindowEvent arg0) {
-					application.closeApplication();
-				}
-			});
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {

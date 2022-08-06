@@ -1,1 +1,0 @@
-Este parámetro controla qué tan alto el cuadro será (en unidad de bloques).

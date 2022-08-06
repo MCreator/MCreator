@@ -1,1 +1,0 @@
-Activa esta casilla para habilitar la barra de búsqueda de la pestaña para buscar en esta pestaña de creativo. 

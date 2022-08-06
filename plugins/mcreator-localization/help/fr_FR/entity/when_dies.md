@@ -1,1 +1,0 @@
-Déclenche la procédure quand l'entité meurt.

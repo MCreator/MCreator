@@ -1,1 +1,0 @@
-Déclenche une procédure lorsque le joueur brise le bloc.

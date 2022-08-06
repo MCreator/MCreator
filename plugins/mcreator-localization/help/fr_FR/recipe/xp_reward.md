@@ -1,1 +1,0 @@
-Ce paramètre contrôle le nombre de points d'expérience que le joueur recevra après avoir terminé la recette.

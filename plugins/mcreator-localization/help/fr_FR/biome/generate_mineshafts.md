@@ -1,1 +1,0 @@
-Utilisez ce paramètre pour avoir des Mines dans votre biome.

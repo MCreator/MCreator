@@ -1,1 +1,0 @@
-Quand une entité utilise le portail, cette procédure sera exécutée.

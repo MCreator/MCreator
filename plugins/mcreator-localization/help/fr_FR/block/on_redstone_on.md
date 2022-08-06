@@ -1,1 +1,0 @@
-Déclenche une procédure lorsque le bloc est alimenté par la redstone.

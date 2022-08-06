@@ -1,1 +1,0 @@
-Le bloc principal de la dimension comme la Pierre pour l'Overworld.

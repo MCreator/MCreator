@@ -1,1 +1,0 @@
-Les effets de potion dans la liste ci-dessous seront donnés aux entitées affectées par votre potion.

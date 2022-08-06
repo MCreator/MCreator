@@ -1,1 +1,0 @@
-C'est le nom de la GameRule qui est affiché en jeu dans les commandes pour modifier/activer les GameRules.

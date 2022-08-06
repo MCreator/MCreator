@@ -1,1 +1,0 @@
-Si une condition est spécifiée, cette image ne peut être affichée que si la condition est passée.

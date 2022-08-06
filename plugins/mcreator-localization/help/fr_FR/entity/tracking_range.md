@@ -1,1 +1,0 @@
-Ce paramètre contrôle de combien de blocs l'entité peut être vue.

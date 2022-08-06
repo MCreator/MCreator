@@ -1,1 +1,0 @@
-Sélectionner ce paramètre pour générer des forteresses du Nether dans le biome.

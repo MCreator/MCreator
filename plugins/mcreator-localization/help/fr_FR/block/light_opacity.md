@@ -1,2 +1,0 @@
-Cette propriété détermine de combien le niveau de lumière diminue en traversant ce bloc. Par exemple,
-une valeur de 15 permet au bloc de bloquer toute la lumière, tandis qu'une valeur de 0 rendra le bloc transparent.

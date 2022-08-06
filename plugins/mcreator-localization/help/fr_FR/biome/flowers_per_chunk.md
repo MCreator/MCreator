@@ -1,1 +1,0 @@
-Ce paramètre contrôle le nombre de fleurs vanilla (coquelicots et pissenlits uniquement) par tronçon de biome

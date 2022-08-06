@@ -1,1 +1,0 @@
-Les items utilisés pour reproduire l'entité avec une autre si le paramètre de reproduction est activé.

@@ -1,1 +1,0 @@
-La capa de la textura de la armadura son las texturas mostradas en el jugador cuando tiene la armadura en él.

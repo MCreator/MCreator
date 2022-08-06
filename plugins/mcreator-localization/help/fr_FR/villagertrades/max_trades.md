@@ -1,1 +1,0 @@
-Nombre maximum d'échanges que le Villageois peut faire avant de se recharger.

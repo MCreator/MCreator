@@ -1,1 +1,0 @@
-﻿Cocher cette case pour rendre cet item mangeable (activer le pour avoir les propriétés de nourriture).

@@ -1,1 +1,0 @@
-Le fluide pour les lacs comme l'eau pour l'Overworld et la lave pour le Nether

@@ -1,1 +1,0 @@
-Cochez ce paramètre si votre effet doit s'appliquer une fois comme le soin instantané.

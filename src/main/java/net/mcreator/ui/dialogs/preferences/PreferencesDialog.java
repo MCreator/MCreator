@@ -23,6 +23,7 @@ import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -41,10 +42,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
@@ -65,6 +73,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private final Window parent;
 
+	public boolean needRestart = false;
 	public PreferencesDialog(Window parent, @Nullable String selectedTab) {
 		super(parent);
 
@@ -188,10 +197,10 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
-		String sectionid = sectionField.getName();
+		String sectionId = sectionField.getName();
 
-		String name = L10N.t("preferences.section." + sectionid);
-		String description = L10N.t("preferences.section." + sectionid + ".description");
+		String name = L10N.t("preferences.section." + sectionId);
+		String description = L10N.t("preferences.section." + sectionId + ".description");
 
 		model.addElement(name);
 
@@ -212,7 +221,15 @@ public class PreferencesDialog extends MCreatorDialog {
 			try {
 				Object sectionInstance = sectionField.get(PreferencesManager.PREFERENCES); // load actual data
 				Object value = field.get(sectionInstance);
-				JComponent component = generateEntryComponent(field, sectionid, entry, value, sectionPanel, cons);
+				JComponent component = generateEntryComponent(field, sectionId, entry, value, sectionPanel, cons);
+				component.setName(sectionId);
+				component.addFocusListener(new FocusAdapter() {
+					@Override public void focusGained(FocusEvent e) {
+						if (e.getComponent().getName().equals("ui")){
+							PreferencesDialog.this.needRestart = true;
+						}
+					}
+				});
 				entries.put(new PreferencesUnit(sectionField, field), component);
 			} catch (IllegalAccessException e) {
 				LOG.info("Reflection error: " + e.getMessage());
@@ -244,6 +261,25 @@ public class PreferencesDialog extends MCreatorDialog {
 		data.hidden.uiTheme = themes.getSelectedTheme();
 
 		PreferencesManager.storePreferences(data);
+
+		if (needRestart){
+			int opt = JOptionPane.showConfirmDialog(this,"检测到敏感配置被修改,是否重启","重启提示",JOptionPane.YES_NO_OPTION);
+			if (opt == JOptionPane.YES_OPTION) {
+				Thread restart = new Thread(() -> {
+					//我们不做多平台,主要在Windows
+					String restartCommand = "mcreator.bat";
+					if (Files.exists(Paths.get(restartCommand))) {
+						try {
+							var process = Runtime.getRuntime().exec(restartCommand);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				Runtime.getRuntime().addShutdownHook(restart);
+				System.exit(-1);
+			}
+		}
 	}
 
 	private JComponent generateEntryComponent(Field actualField, String sectionid, PreferencesEntry entry, Object value,
@@ -311,11 +347,9 @@ public class PreferencesDialog extends MCreatorDialog {
 			return box;
 		} else if (actualField.getType().equals(File.class)){
 			File currentSelected = (File) value;
-			JPanel box = new JPanel(new GridLayout(1,2));
 			JTextField path = new JTextField();
 			path.setText(value.toString());
 			path.setEditable(false);
-			box.add(path);
 			JButton button = new JButton("...");
 			button.addActionListener(a->{
 				var fileChooser = new JFileChooser();
@@ -329,12 +363,10 @@ public class PreferencesDialog extends MCreatorDialog {
 						path1 = new File(path1.getAbsolutePath());
 					}
 					path.setText(path1.toString());
-					box.setName(path1.toString());
 				}
 			});
-			box.add(button);
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
-			return box;
+			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.westAndEastElement(path,button)), cons);
+			return path;
 		}
 
 		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), cons);
@@ -353,10 +385,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		} else if (type.equals(Locale.class)) {
 			return ((JComboBox<?>) value).getSelectedItem();
 		} else if (type.equals(File.class)){
-			if (value.getName() == null){
-				return null;
-			}
-			return new File(value.getName());
+			return new File(((JTextField) value).getText());
 		}
 		return null;
 	}

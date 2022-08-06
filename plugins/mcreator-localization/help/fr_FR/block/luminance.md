@@ -1,2 +1,0 @@
-Ce paramètre contrôle la quantité de lumière émise par le bloc. Il s'agit d'une valeur comprise entre 0 et 15.
-S'il est défini sur 0, le bloc n'émettra pas de lumière. S'il est défini sur 15, le bloc aura une valeur de lumière identique à la pierre lumineuse.

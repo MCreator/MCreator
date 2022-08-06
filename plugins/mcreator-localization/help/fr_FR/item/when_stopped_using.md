@@ -1,1 +1,0 @@
-Cette procédure est appelée quand le joueur arrête d'utiliser cet item (usuellement quand le clic droit est relaché).

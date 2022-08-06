@@ -1,1 +1,0 @@
-Ce paramètre contrôle la résistance au recul de l'armure.

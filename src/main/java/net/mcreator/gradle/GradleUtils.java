@@ -88,7 +88,7 @@ public class GradleUtils {
 			return current_java_home;
 	}
 
-		LOG.error("找不到任何捆绑的JDK，如果存在，则使用系统默认值");
+		LOG.error("系统找不到任何可用JDK，如果系统环境存在JAVA_HOME，则使用系统默认值");
 
 		// if we can not get a better match, use system default JAVA_HOME variable
 		// THIS ONE CAN BE null!!!, so handle this with care where used

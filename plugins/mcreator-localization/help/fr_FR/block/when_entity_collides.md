@@ -1,1 +1,0 @@
-Déclenche une procédure lorsqu'une entité est à l'intérieur du bloc.

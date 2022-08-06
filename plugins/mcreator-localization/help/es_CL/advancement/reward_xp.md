@@ -1,1 +1,0 @@
-Esto define cuánta experiencia el jugador recibirá después de completar el logro.

@@ -1,1 +1,0 @@
-Le(s) item(s) pouvant réparer l'outil dans une enclume.

@@ -1,1 +1,0 @@
-Ce paramètre contrôle la texture du portail comme la texture violette animée du portail du Nether.

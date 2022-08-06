@@ -1,1 +1,0 @@
-Cette propriété facultative changera la texture du sceau dans l'inventaire, remplaçant celle générée automatiquement.

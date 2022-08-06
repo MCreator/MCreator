@@ -1,1 +1,0 @@
-La portée de poursuite est la distance à laquelle l'entité remarquera et continuera de poursuivre sa cible.

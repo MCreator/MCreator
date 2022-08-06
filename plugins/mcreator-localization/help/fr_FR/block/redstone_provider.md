@@ -1,1 +1,0 @@
-Lorsque cette procédure conditionnelle retourne un nombre, la puissance du courant de redstone généré par ce bloc sera remplacée par le nombre retourné.

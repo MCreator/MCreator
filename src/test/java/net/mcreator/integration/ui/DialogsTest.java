@@ -97,7 +97,7 @@ public class DialogsTest {
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, f -> {}));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(f -> {}));
 	}
 
 	@Test public void testNewWorkspaceDialog() throws Throwable {

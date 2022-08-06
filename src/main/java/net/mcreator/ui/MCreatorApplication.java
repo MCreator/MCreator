@@ -236,8 +236,12 @@ public final class MCreatorApplication {
 
 		splashScreen.setVisible(false);
 
+		Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
+
 		//track after the setup is done
 		analytics.async(analytics::trackMCreatorLaunch);
+
+
 	}
 
 	public Analytics getAnalytics() {
@@ -358,16 +362,16 @@ public final class MCreatorApplication {
 		}
 
 		try {
-			Thread.sleep(1000); // additional sleep for more robustness
-		} catch (Exception ignored) {
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-
-		LOG.debug("正在退出MCreator");
-		System.exit(0); // actually exit MCreator
+		LOG.debug("正在强制退出MCreator");
+		Runtime.getRuntime().halt(-1);
 	}
 
 	void showWorkspaceSelector() {
-		workspaceSelector = Optional.ofNullable(workspaceSelector).orElse(new WorkspaceSelector(this,this::openWorkspaceInMCreator));
+		workspaceSelector = Optional.ofNullable(workspaceSelector).orElse(new WorkspaceSelector(this::openWorkspaceInMCreator));
 		workspaceSelector.setVisible(true);
 	}
 

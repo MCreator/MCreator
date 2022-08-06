@@ -1,1 +1,0 @@
-Si ce paramètre est coché, le bloc tombera comme du sable.

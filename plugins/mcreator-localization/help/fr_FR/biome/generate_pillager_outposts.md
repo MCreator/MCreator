@@ -1,1 +1,0 @@
-Sélectionner ce paramètre pour avoir des avant-postes de pilleurs.

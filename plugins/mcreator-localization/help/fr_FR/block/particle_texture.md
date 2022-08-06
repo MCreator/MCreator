@@ -1,1 +1,0 @@
-Cette propriété optionelle changera la texture des particules quand le bloc est cassé, quand une entité tombe dessus, ainsi de suite.

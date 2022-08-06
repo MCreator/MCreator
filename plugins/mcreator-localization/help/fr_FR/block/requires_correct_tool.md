@@ -1,1 +1,0 @@
-Si cette option est activée, le bloc droppera seulement lorsqu'il sera brisé avec l'outil approprié.

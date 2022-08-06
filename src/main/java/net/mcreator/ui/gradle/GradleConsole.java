@@ -454,8 +454,8 @@ public class GradleConsole extends JPanel {
 							}
 						} else if (workspaceReportedFailingGradleDependencies
 								|| GradleErrorDecoder.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
-							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
-									"<html><font color=gray>Do nothing" };
+							Object[] options = { L10N.t("action.gradle.clear_caches.option.gradle_caches"),L10N.t("action.gradle.clear_caches.option.gradle_folder"),
+									"<html><font color=gray>"+L10N.t("common.cancel")};
 							int reply = JOptionPane.showOptionDialog(ref,
 									L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
 									L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),

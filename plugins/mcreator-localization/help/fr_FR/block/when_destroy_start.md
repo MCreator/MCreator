@@ -1,1 +1,0 @@
-Déclenche une procédure lorsqu'un joueur commence à détruire le bloc.

@@ -67,6 +67,7 @@ class PluginsPanel {
 						new File(UserFolderManager.getFileFromUserFolder("plugins"), f.getName())));
 				PluginLoader.initInstance(); // reload plugin loader
 				reloadPluginList();
+				preferencesDialog.needRestart = true;
 			}
 		});
 
@@ -88,7 +89,10 @@ class PluginsPanel {
 		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
 		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins);
 
-		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins = box.isSelected());
+		box.addActionListener(e -> {
+			PreferencesManager.PREFERENCES.hidden.enableJavaPlugins = box.isSelected();
+			preferencesDialog.needRestart = true;
+		});
 
 		openPluginFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));

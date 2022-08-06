@@ -1,1 +1,0 @@
-Cette procédure sera exécutée quand un joueur entre dans la dimension.

@@ -1,1 +1,0 @@
-Ce paramètre contrôle la rapidité avec laquelle le feu se propage à d'autres blocs.

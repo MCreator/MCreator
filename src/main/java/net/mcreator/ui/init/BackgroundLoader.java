@@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -38,14 +39,14 @@ public class BackgroundLoader {
 	private static final Logger LOG = LogManager.getLogger("Background Loader");
 
 	public static List<Image> loadUserBackgrounds() {
-		File[] bgfiles = UserFolderManager.getFileFromUserFolder("backgrounds").listFiles();
+		File[] bgfiles = UserFolderManager.getBackgroundFolder().listFiles();
 		if (bgfiles != null) {
 			List<Image> images = new ArrayList<>();
 			Arrays.stream(bgfiles).forEach(f -> {
 				try {
 					images.add(ImageIO.read(f));
 				} catch (IOException e) {
-					LOG.error("Can not load " + f.getName(), e.getMessage());
+					LOG.error("无法载入背景" + f.getName(), e.getMessage());
 					e.printStackTrace();
 				}
 			});

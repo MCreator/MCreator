@@ -1,1 +1,0 @@
-Ce paramètre contrôle la couleur de l'eau à l'intérieur du biome

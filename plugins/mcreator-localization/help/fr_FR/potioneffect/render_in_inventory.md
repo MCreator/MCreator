@@ -1,1 +1,0 @@
-Activez ce paramètre pour afficher l'effet dans l'inventaire du joueur lorsqu'il est actif.

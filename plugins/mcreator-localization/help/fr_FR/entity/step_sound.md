@@ -1,1 +1,0 @@
-Le son joué quand l'entité marche.
