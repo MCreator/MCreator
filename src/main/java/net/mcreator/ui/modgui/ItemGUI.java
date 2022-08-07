@@ -160,7 +160,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
