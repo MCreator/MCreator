@@ -59,21 +59,14 @@ public class ${name}Enchantment extends Enchantment {
 
 	<#if data.compatibleEnchantments?has_content>
 	@Override protected boolean checkCompatibility(Enchantment ench) {
-		<#list data.compatibleEnchantments as compatibleEnchantment>
-			if(ench == ${compatibleEnchantment})
-				return true;
-		</#list>
-		return false;
+		return <#list data.compatibleEnchantments as compatibleEnchantment>ench == ${compatibleEnchantment}<#sep>||</#list>;
 	}
 	</#if>
 
 	<#if data.compatibleItems?has_content>
 	@Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
-		<#list data.compatibleItems as compatibleItem>
-			if(stack.getItem() == ${mappedMCItemToItem(compatibleItem)})
-				return true;
-		</#list>
-		return false;
+		Item item = stack.getItem();
+		return <#list data.compatibleItems as compatibleItem>item == ${mappedMCItemToItem(compatibleItem)}<#sep>||</#list>;
 	}
 	</#if>
 
