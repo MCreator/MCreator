@@ -10,7 +10,7 @@
 
 <img align="right" width="300" src="https://mcreator.net/image/mcreatoruifront.png">
 
-https://mcreator.net/ -McCreator是一款软件，用于使用直观易学的界面或集成的代码编辑器制作MinecraftJava版mods、Minecrart基岩版的Addon和数据包. 
+https://mcreator.net/ -MCreator是一款使用直观易学的界面或集成的代码编辑器制作 MinecraftJava版mods、Minecrart基岩版的Addon和数据包的工具. 
 
 全世界的对于mod开发感兴趣的我的世界玩家都在使用它, [for education, online classes, and STEM workshops](https://mcreator.net/education).
 
