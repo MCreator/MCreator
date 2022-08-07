@@ -70,10 +70,16 @@ public class Launcher {
 			//载入mcrc的版本文件
 			Properties conf = new Properties();
 			conf.load(Launcher.class.getResourceAsStream("/mcrc.conf"));
-
 			version = new MCreatorVersionNumber(conf);
+
+			if (Boolean.parseBoolean(conf.getProperty("debug"))){
+				LOG.info("debug模式为开启状态,等待30秒钟来让外部debug工具接入");
+				Thread.sleep(30000L);
+			}
 		} catch (IOException e) {
 			LOG.error("无法载入MCreator-Chinese的内部配置文件", e);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 
 		LOG.info("Starting MCreator " + version);

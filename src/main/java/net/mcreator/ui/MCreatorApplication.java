@@ -191,10 +191,13 @@ public final class MCreatorApplication {
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);
 
+		LOG.info("正在于官网联系");
 		isInternet = MCreatorApplication.WEB_API.initAPI();
 
 		// we do async login attempt
+		LOG.info("正在检查是否要更新");
 		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
+		LOG.info("正在检查是否有插件更新");
 		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
 
 		splashScreen.setProgress(100, "正在加载MCreator窗口");

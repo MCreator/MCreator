@@ -60,24 +60,23 @@ public class D8WebAPI implements IWebAPI {
 
 	@Override public boolean initAPI() {
 		CookieHandler.setDefault(null);
-
-		String appData = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/repository");
-		if (appData.equals(""))
-			return false;
-
 		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates) {
+			String appData = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/repository");
+			if (appData.equals(""))
+				return false;
+
 			updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
+			new Thread(() -> {
+				initAPIPrivate();
+				newsFutures.forEach(future -> future.complete(news));
+				motwFutures.forEach(future -> future.complete(motw));
+			}).start();
+			return true;
 		} else {
 			updateInfo = new UpdateInfo();
 		}
-		//获取网站的最新
-		new Thread(() -> {
-			initAPIPrivate();
-			newsFutures.forEach(future -> future.complete(news));
-			motwFutures.forEach(future -> future.complete(motw));
-		}).start();
 
-		return true;
+		return false;
 	}
 
 	private void initAPIPrivate() {

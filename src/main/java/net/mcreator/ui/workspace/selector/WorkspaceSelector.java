@@ -356,14 +356,41 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+
+			JPopupMenu popup = new JPopupMenu();
+			JMenuItem open = new JMenuItem("打开项目");
+			open.addActionListener(e -> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
+			popup.add(open);
+			JMenuItem delete = new JMenuItem("从最近删除");
+			delete.addActionListener(e -> {
+				removeRecentWorkspace(recentsList.getSelectedValue());
+				reloadRecents();
+			});
+			popup.add(delete);
+			JMenuItem openInExplorer = new JMenuItem("在资源管理器打开");
+			openInExplorer.addActionListener(e -> DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile()));
+			popup.addMouseListener(new MouseAdapter() {
+				@Override public void mousePressed(MouseEvent e) {
+					popup.setVisible(false);
+				}
+			});
+			popup.add(openInExplorer);
+
+
+
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
+					recentsList.setSelectedIndex(recentsList.locationToIndex(mouseEvent.getPoint()));
 					if (mouseEvent.getButton() == MouseEvent.BUTTON2) {
-						int idx = recentsList.locationToIndex(mouseEvent.getPoint());
-						removeRecentWorkspace(defaultListModel.elementAt(idx));
+						removeRecentWorkspace(recentsList.getSelectedValue());
 						reloadRecents();
-					} else if (mouseEvent.getClickCount() == 2) {
+					} else if (mouseEvent.getButton() == MouseEvent.BUTTON1&&mouseEvent.getClickCount() == 2) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+					} else if (mouseEvent.getButton() == MouseEvent.BUTTON3){
+						popup.pack();
+						popup.setLocation(mouseEvent.getLocationOnScreen());
+						popup.setVisible(true);
 					}
 				}
 			});

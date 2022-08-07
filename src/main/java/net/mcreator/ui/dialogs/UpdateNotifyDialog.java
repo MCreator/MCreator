@@ -40,7 +40,7 @@ import java.util.Map;
 public class UpdateNotifyDialog {
 
 	public static void showUpdateDialogIfUpdateExists(Window parent, boolean showNoUpdates) {
-		if (MCreatorApplication.isInternet) {
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates&&MCreatorApplication.isInternet) {
 			long oldMajor = Launcher.version.majorlong;
 			UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
 			if (updateInfo != null) {
