@@ -18,6 +18,7 @@
 
 package net.mcreator.ui;
 
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -51,6 +52,8 @@ public class StatusBar extends JPanel {
 	private final JLabel currentBranch = new JLabel();
 
 	public StatusBar(MCreator mcreator) {
+
+
 		super(new BorderLayout(0, 0));
 
 		this.mcreator = mcreator;
@@ -69,7 +72,7 @@ public class StatusBar extends JPanel {
 		});
 		currentBranch.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		currentBranch.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-		ComponentUtils.deriveFont(currentBranch, 12);
+		ComponentUtils.deriveFont(currentBranch, ThemeLoader.CURRENT_THEME.getFontSize());
 
 		left.add(new JEmptyBox(5, 5));
 
@@ -116,8 +119,8 @@ public class StatusBar extends JPanel {
 		gradleMessages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		right.add(gradleMessages);
 
-		ComponentUtils.deriveFont(gradleMessages, 12);
-		ComponentUtils.deriveFont(messages, 12);
+		ComponentUtils.deriveFont(gradleMessages, ThemeLoader.CURRENT_THEME.getFontSize());
+		ComponentUtils.deriveFont(messages, ThemeLoader.CURRENT_THEME.getFontSize());
 
 		right.add(new JEmptyBox(3, 3));
 

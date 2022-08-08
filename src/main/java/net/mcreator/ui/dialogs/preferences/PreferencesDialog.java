@@ -32,6 +32,7 @@ import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.image.ImageUtils;
+import org.apache.commons.text.translate.NumericEntityUnescaper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -219,14 +220,6 @@ public class PreferencesDialog extends MCreatorDialog {
 				Object sectionInstance = sectionField.get(PreferencesManager.PREFERENCES); // load actual data
 				Object value = field.get(sectionInstance);
 				JComponent component = generateEntryComponent(field, sectionId, entry, value, sectionPanel, cons);
-				component.setName(sectionId);
-				component.addFocusListener(new FocusAdapter() {
-					@Override public void focusGained(FocusEvent e) {
-						if (e.getComponent().getName().matches("ui")){
-							needRestart = true;
-						}
-					}
-				});
 				entries.put(new PreferencesUnit(sectionField, field), component);
 			} catch (IllegalAccessException e) {
 				LOG.info("Reflection error: " + e.getMessage());
@@ -291,13 +284,13 @@ public class PreferencesDialog extends MCreatorDialog {
 			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) value), (int) entry.min(), max,
 					1);
 			JSpinner spinner = new JSpinner(model);
-			spinner.addChangeListener(e -> apply.setEnabled(true));
+			spinner.addChangeListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, spinner), cons);
 			return spinner;
 		} else if (actualField.getType().equals(boolean.class) || actualField.getType().equals(Boolean.class)) {
 			JCheckBox box = new JCheckBox();
 			box.setSelected((boolean) value);
-			box.addActionListener(e -> apply.setEnabled(true));
+			box.addActionListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(String.class)) {
@@ -313,7 +306,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			if (entry.visualWidth() != -1)
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setColor((Color) value);
-			box.setColorSelectedListener(e -> apply.setEnabled(true));
+			box.setColorSelectedListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Locale.class)) {
@@ -363,7 +356,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 				});
 			}
-			path.setText(value.toString());
+			path.setText(Optional.ofNullable(value).orElse("null").toString());
 			path.setEditable(false);
 			JButton button = new JButton("...");
 			button.addActionListener(a->{
@@ -379,6 +372,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 					path.setText(path1.toString());
 					path.getValidationStatus();
+					markChanged();
 				}
 			});
 			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.westAndEastElement(path,button)), cons);
@@ -401,12 +395,18 @@ public class PreferencesDialog extends MCreatorDialog {
 		} else if (type.equals(Locale.class)) {
 			return ((JComboBox<?>) value).getSelectedItem();
 		} else if (type.equals(File.class)){
-			return new File(((JTextField) value).getText());
+			var text = ((JTextField) value).getText();
+			if (text.equals("null"))
+				return null;
+			return new File(text);
 		}
 		return null;
 	}
 
 	public void markChanged() {
+		if (getCurrentSection() == 0){
+			needRestart = true;
+		}
 		apply.setEnabled(true);
 	}
 
@@ -480,6 +480,10 @@ public class PreferencesDialog extends MCreatorDialog {
 			g.drawString("Tips: " + helpTipsPercent + "%", getWidth() / 2 + 2 + 2, getHeight() - 2);
 		}
 
+	}
+
+	public int getCurrentSection(){
+		return sections.getSelectedIndex();
 	}
 
 }

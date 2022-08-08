@@ -95,7 +95,7 @@ public class MainToolBar extends JToolBar {
 
 	@Override public JButton add(Action action) {
 		JButton button = super.add(action);
-		button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		button.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {
 				super.mouseEntered(mouseEvent);

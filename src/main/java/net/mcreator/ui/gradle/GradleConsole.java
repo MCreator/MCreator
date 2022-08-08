@@ -21,10 +21,12 @@ package net.mcreator.ui.gradle;
 import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
+import net.mcreator.io.UserFolderManager;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
@@ -72,6 +74,8 @@ public class GradleConsole extends JPanel {
 	private final List<GradleStateListener> stateListeners = new ArrayList<>();
 
 	private final MCreator ref;
+
+	private final int fontSize = ThemeLoader.CURRENT_THEME.getFontSize();
 
 	private final JToggleButton sinfo = new JToggleButton(UIRES.get("16px.sinfo"));
 	private final JToggleButton serr = new JToggleButton(UIRES.get("16px.serr"));
@@ -302,7 +306,9 @@ public class GradleConsole extends JPanel {
 					+ "-bit, " + ref.getApplication().getDeviceInfo().getRamAmountMB() + " MB, " + ref.getApplication()
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
-					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime())+"\n,Gradle_Home:"
+					+ UserFolderManager.getGradleHome();
+			LOG.info(deviceInfo.replaceAll("\n",""));
 			append(deviceInfo, new Color(127, 120, 120));
 			append(" ");
 			taskOut.append(deviceInfo);
@@ -661,10 +667,10 @@ public class GradleConsole extends JPanel {
 						bracketText = spl[0];
 
 					SimpleAttributeSet keyWord = new SimpleAttributeSet();
-					StyleConstants.setFontSize(keyWord, 9);
+					StyleConstants.setFontSize(keyWord, fontSize);
 
 					if (bracketText.contains(":") && !bracketText.contains("]:"))
-						StyleConstants.setFontSize(keyWord, 6);
+						StyleConstants.setFontSize(keyWord, fontSize-3);
 
 					StyleConstants.setForeground(keyWord, c2);
 					StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -713,7 +719,7 @@ public class GradleConsole extends JPanel {
 			String err = text.replaceAll(": error:.*", "");
 			String othr = text.replaceAll(".+\\.java:\\d+", "") + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
-			StyleConstants.setFontSize(keyWord, 9);
+			StyleConstants.setFontSize(keyWord, fontSize);//9
 			StyleConstants.setForeground(keyWord, new Color(0xF98771));
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			pan.insertLink(err.trim(), err.trim(), othr, keyWord);
@@ -733,7 +739,7 @@ public class GradleConsole extends JPanel {
 				String classLine = text.split("\\.java:")[1].split("\\)")[0];
 
 				SimpleAttributeSet keyWord = new SimpleAttributeSet();
-				StyleConstants.setFontSize(keyWord, 9);
+				StyleConstants.setFontSize(keyWord, fontSize);
 				StyleConstants.setForeground(keyWord, Color.white);
 				StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 				pan.insertString(text.split("\\(")[0] + "(", keyWord);
@@ -755,7 +761,7 @@ public class GradleConsole extends JPanel {
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
-			StyleConstants.setFontSize(keyWord, 9);
+			StyleConstants.setFontSize(keyWord, fontSize);
 			StyleConstants.setItalic(keyWord, a);
 			StyleConstants.setForeground(keyWord, c);
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));

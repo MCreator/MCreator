@@ -19,6 +19,7 @@
 
 package net.mcreator.themes;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
 
 import javax.annotation.Nullable;
@@ -105,10 +106,14 @@ import javax.swing.*;
 	 * @return <p>The main font size</p>
 	 */
 	public int getFontSize() {
-		if (fontSize != 0)
+		int forceTextSize = PreferencesManager.PREFERENCES.ui.textSize;
+		if (forceTextSize > 0){
+			return forceTextSize;
+		} else if (fontSize != 0){
 			return fontSize;
-		else
+		} else {
 			return 12;
+		}
 	}
 
 	/**

@@ -46,6 +46,8 @@ public class PreferencesData {
 		@PreferencesEntry(arrayData = { "全部", "当前主题", "自定义", "无" })
 		public String backgroundSource = "全部";
 
+		@PreferencesEntry(min = -1,max=1638) public int textSize = -1;
+
 		@PreferencesEntry public boolean aatext = true;
 
 		@PreferencesEntry(arrayData = { "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr" })

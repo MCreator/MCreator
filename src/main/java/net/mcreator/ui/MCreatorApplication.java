@@ -96,6 +96,9 @@ public final class MCreatorApplication {
 		final SplashScreen splashScreen = new SplashScreen();
 		splashScreen.setVisible(true);
 
+		LOG.info("正在于官网联系");
+		isInternet = MCreatorApplication.WEB_API.initAPI();
+
 		splashScreen.setProgress(5, "正在载入插件");
 
 		// Plugins are loaded before the Splash screen is visible, so every image can be changed
@@ -190,9 +193,6 @@ public final class MCreatorApplication {
 
 		deviceInfo = new DeviceInfo();
 		analytics = new Analytics(deviceInfo);
-
-		LOG.info("正在于官网联系");
-		isInternet = MCreatorApplication.WEB_API.initAPI();
 
 		// we do async login attempt
 		LOG.info("正在检查是否要更新");
