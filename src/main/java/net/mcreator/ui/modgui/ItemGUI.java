@@ -120,7 +120,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "eat", "block", "bow", "crossbow", "drink", "none", "spear" });
+			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -333,7 +333,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
 
-		isFood.addActionListener(e -> updateFoodPanel());
+		isFood.addActionListener(e -> {
+			updateFoodPanel();
+			if (!isEditingMode()) {
+				animation.setSelectedItem("eat");
+				useDuration.setValue(32);
+			}
+		});
+
 		updateFoodPanel();
 
 		foodSubpane.add(
