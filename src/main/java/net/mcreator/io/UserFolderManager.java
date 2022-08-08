@@ -18,6 +18,8 @@
 
 package net.mcreator.io;
 
+import net.mcreator.preferences.PreferencesManager;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -56,12 +58,13 @@ public class UserFolderManager {
 	public static File getBackgroundFolder() {return getFileFromUserFolder("backgrounds");}
 
 	public static File getGradleHome() {
-		//老版本的mcrc是直接写入工作目录下,为此我们做出兼容
-/*		var gradleHome = new File("gradle");
-		if (gradleHome.exists()&&gradleHome.isDirectory()){
-			return gradleHome;
-		}*/
-		return getFileFromUserFolder("/gradle/");
+		if (PreferencesManager.PREFERENCES.gradle.gradleHome == null) {
+			var defaultValue = getFileFromUserFolder("/gradle/");
+			PreferencesManager.PREFERENCES.gradle.gradleHome = defaultValue;
+			return defaultValue;
+		} else {
+			return PreferencesManager.PREFERENCES.gradle.gradleHome;
+		}
 	}
 
 }

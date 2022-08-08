@@ -153,7 +153,7 @@ public class WorkspaceGeneratorSetupDialog {
 			StringSelection stringSelection = new StringSelection(m.getGradleConsole().getConsoleText());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 			m.closeThisMCreator(true);
-		} else {
+		} else if (action == 3) {
 			m.closeThisMCreator(true);
 		}
 	}

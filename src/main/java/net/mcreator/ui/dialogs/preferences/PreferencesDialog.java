@@ -335,20 +335,34 @@ public class PreferencesDialog extends MCreatorDialog {
 		} else if (actualField.getType().equals(File.class)){
 			File currentSelected = (File) value;
 			VTextField path = new VTextField();
-			path.setValidator(new Validator(){
+			if (actualField.getName().equals("java_home")) {
+				path.setValidator(new Validator() {
 
-				@Override public ValidationResult validateIfEnabled(IValidable validable) {
-					if (new File(path.getText(),"bin/java.exe").exists()&&new File(path.getText(),"bin/javac.exe").exists()) {
-						return new ValidationResult(ValidationResultType.PASSED,"检查通过");
-					} else {
-						return new ValidationResult(ValidationResultType.ERROR,"请检查是否为java_home,如果是则请检查是否为jdk");
+					@Override public ValidationResult validateIfEnabled(IValidable validable) {
+						if (new File(path.getText(), "bin/java.exe").exists() && new File(path.getText(),
+								"bin/javac.exe").exists()) {
+							return new ValidationResult(ValidationResultType.PASSED, "检查通过");
+						} else {
+							return new ValidationResult(ValidationResultType.ERROR, "请检查是否为java_home,如果是则请检查是否为jdk");
+						}
 					}
-				}
 
-				@Override public ValidationResult validate() {
-					return null;
-				}
-			});
+					@Override public ValidationResult validate() {
+						return null;
+					}
+				});
+			} else if (actualField.getName().equals("gradleHome")){
+				path.setValidator(new Validator() {
+
+					@Override public ValidationResult validateIfEnabled(IValidable validable) {
+						return Validator.super.validateIfEnabled(validable);
+					}
+
+					@Override public ValidationResult validate() {
+						return null;
+					}
+				});
+			}
 			path.setText(value.toString());
 			path.setEditable(false);
 			JButton button = new JButton("...");

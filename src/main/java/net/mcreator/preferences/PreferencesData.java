@@ -111,6 +111,7 @@ public class PreferencesData {
 	public static class GradleSettings {
 
 		@PreferencesEntry public File java_home = null;
+		@PreferencesEntry public File gradleHome = null;
 		@PreferencesEntry public boolean compileOnSave = true;
 		@PreferencesEntry public boolean passLangToMinecraft = true;
 
