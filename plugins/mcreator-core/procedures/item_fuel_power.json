@@ -17,6 +17,9 @@
     ],
     "inputs": [
       "item"
+    ],
+    "warnings": [
+      "no_item_extension"
     ]
   }
 }
