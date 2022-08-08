@@ -45,16 +45,15 @@ package ${package}.init;
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
 		<#compress>
 		ItemStack itemstack = event.getItemStack();
-		<#list itemextensions as extension>
-            <#if extension.enableFuel>
-                if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)})
-                    <#if hasProcedure(extension.fuelSuccessCondition)>if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>)</#if>
-                        <#if hasProcedure(extension.fuelPower)>
-                            event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
-                        <#else>
-                            event.setBurnTime(${extension.fuelPower.getFixedValue()});
-                        </#if>
-            </#if>
+		<#list itemextensions?filter(e -> e.enableFuel) as extension>
+			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
+			<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
+				<#if hasProcedure(extension.fuelPower)>
+					event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
+				<#else>
+					event.setBurnTime(${extension.fuelPower.getFixedValue()});
+				</#if>
+			<#sep>else
 		</#list>
 		</#compress>
 	}

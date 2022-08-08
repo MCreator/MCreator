@@ -7,6 +7,7 @@ new Object() {
 		<#if hasShooter>entityToSpawn.setOwner(shooter);</#if>
 		entityToSpawn.setBaseDamage(damage);
 		entityToSpawn.setKnockback(knockback);
+		<#if field$projectile?starts_with("CUSTOM:")>entityToSpawn.setSilent(true);</#if>
 		<#if isPiercing>entityToSpawn.setPierceLevel(piercing);</#if>
 		<#if field$fire == "TRUE">entityToSpawn.setSecondsOnFire(100);</#if>
 		<#if field$particles == "TRUE">entityToSpawn.setCritArrow(true);</#if>

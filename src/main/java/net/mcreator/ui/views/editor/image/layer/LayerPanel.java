@@ -271,7 +271,7 @@ public class LayerPanel extends JPanel {
 	private void canEdit(boolean can) {
 		editMeta.setEnabled(can);
 		toggleVisibility.setEnabled(can);
-		delete.setEnabled(can);
+		delete.setEnabled(can && canvas.size() > 1); // Disable the button if only one layer is present
 		duplicate.setEnabled(can);
 	}
 }
