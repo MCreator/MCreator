@@ -1,0 +1,56 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "projectile",
+      "datalist": "fireballProjectile"
+    },
+    {
+      "type": "input_value",
+      "name": "ax",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "ay",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "az",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "shooter",
+      "check": "Entity"
+    }
+  ],
+  "inputsInline": true,
+  "output": "ProjectileEntity",
+  "colour": 300,
+  "mcreator": {
+    "toolbox_id": "projectilemanagement",
+    "toolbox_init": [
+      "<value name=\"shooter\"><block type=\"entity_none\"></block></value>",
+      "<value name=\"ax\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"ay\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"az\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "inputs": [
+      "ax",
+      "ay",
+      "az",
+      "shooter"
+    ],
+    "fields": [
+      "projectile"
+    ],
+    "dependencies": [
+      {
+        "name": "projectileLevel",
+        "type": "world"
+      }
+    ]
+  }
+}
