@@ -1,41 +1,41 @@
 - ARMORER:
-  point_of_interest: Blocks.BLAST_FURNACE
+  other: Blocks.BLAST_FURNACE
 
 - BUTCHER:
-  point_of_interest: Blocks.SMOKER
+  other: Blocks.SMOKER
 
 - CARTOGRAPHER:
-  point_of_interest: Blocks.CARTOGRAPHY_TABLE
+  other: Blocks.CARTOGRAPHY_TABLE
 
 - CLERIC:
-  point_of_interest: Blocks.BREWING_STAND
+  other: Blocks.BREWING_STAND
 
 - FARMER:
-  point_of_interest: Blocks.COMPOSTER
+  other: Blocks.COMPOSTER
 
 - FISHERMAN:
-  point_of_interest: Blocks.BARREL
+  other: Blocks.BARREL
 
 - FLETCHER:
-  point_of_interest: Blocks.FLETCHING_TABLE
+  other: Blocks.FLETCHING_TABLE
 
 - LEATHERWORKER:
-  point_of_interest: Blocks.CAULDRON
+  other: Blocks.CAULDRON
 
 - LIBRARIAN:
-  point_of_interest: Blocks.LECTERN
+  other: Blocks.LECTERN
 
 - MASON:
-  point_of_interest: Blocks.STONECUTTER
+  other: Blocks.STONECUTTER
 
 - SHEPHERD:
-  point_of_interest: Blocks.LOOM
+  other: Blocks.LOOM
 
 - TOOLSMITH:
-  point_of_interest: Blocks.SMITHING_TABLE
+  other: Blocks.SMITHING_TABLE
 
 - WEAPONSMITH:
-  point_of_interest: Blocks.GRINDSTONE
+  other: Blocks.GRINDSTONE
 
 - WANDERING_TRADER:
-  point_of_interest: Blocks.AIR
+  other: Blocks.AIR

@@ -34,7 +34,6 @@ public class DataListEntry implements Comparable<DataListEntry> {
 	private String description;
 	private String type;
 	private String texture;
-	private String pointOfInterest;
 	private Object other;
 
 	@Nullable public List<String> required_apis;
@@ -56,10 +55,6 @@ public class DataListEntry implements Comparable<DataListEntry> {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public void setPointOfInterest(String pointOfInterest) {
-		this.pointOfInterest = pointOfInterest;
 	}
 
 	public void setOther(Object other) {
@@ -100,10 +95,6 @@ public class DataListEntry implements Comparable<DataListEntry> {
 
 	public String getType() {
 		return type;
-	}
-
-	public String getPointOfInterest() {
-		return pointOfInterest;
 	}
 
 	public Object getOther() {
