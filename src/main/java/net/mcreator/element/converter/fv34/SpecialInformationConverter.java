@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv33;
+package net.mcreator.element.converter.fv34;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -48,6 +48,6 @@ public class SpecialInformationConverter<T extends ISpecialInformationHolder> im
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 33;
+		return 34;
 	}
 }
