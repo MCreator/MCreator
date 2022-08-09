@@ -25,46 +25,6 @@ task downloadJDKWin64(type: DefaultTask, group: 'setup') {
         }
     }
 }
-
-/*
-task downloadJDKLinux64(type: DefaultTask, group: 'setup') {
-    doLast {
-        if (!file('jdk/jdk17_linux_64/bin/java').exists()) {
-            mkdir 'jdk/jdk17_linux_64'
-
-            download.run {
-                src jdk17_linux_64
-                dest 'build/tmp/jdk17_linux_64'
-                overwrite false
-            }
-            copy { from tarTree(resources.gzip('build/tmp/jdk17_linux_64')) into file('jdk/jdk17_linux_64/') }
-            delete 'build/tmp/jdk17_linux_64'
-
-            copy { from file('jdk/jdk17_linux_64/jdk-17.0.3+7') into file('jdk/jdk17_linux_64/') }
-            delete 'jdk/jdk17_linux_64/jdk-17.0.3+7'
-        }
-    }
-}
-
-task downloadJDKMac64(type: DefaultTask, group: 'setup') {
-    doLast {
-        if (!file('jdk/jdk17_mac_64/').exists()) {
-            mkdir 'jdk/jdk17_mac_64'
-
-            download.run {
-                src jdk17_mac_64
-                dest 'build/tmp/jdk17_mac_64'
-                overwrite false
-            }
-            copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_64')) into file('jdk/jdk17_mac_64/') }
-            delete 'build/tmp/jdk17_mac_64'
-
-            copy { from file('jdk/jdk17_mac_64/jdk-17.0.3+7/') into file('jdk/jdk17_mac_64/') }
-            delete 'jdk/jdk17_mac_64/jdk-17.0.3+7/'
-        }
-    }
-}
-*/
 // export environment setup task
 task downloadNSIS(type: DefaultTask, group: 'setup') {
     doLast {
@@ -111,10 +71,6 @@ task downloadMKISOFS(type: DefaultTask, group: 'setup') {
 task initialSetup(type: DefaultTask, group: 'setup') {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         dependsOn downloadJDKWin64
-    } else if (Os.isFamily(Os.FAMILY_MAC)) {
-        dependsOn downloadJDKMac64
-    } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-        dependsOn downloadJDKLinux64
     }
 }
 

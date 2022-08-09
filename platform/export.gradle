@@ -94,7 +94,5 @@ task generateExportReport {
 apply from: 'platform/windows/windows.gradle'
 
 exportRelease.dependsOn(exportWindowsAll)
-exportRelease.dependsOn(generateExportReport)
 
 exportSnapshot.dependsOn(exportWindowsZIP)
-exportSnapshot.dependsOn(generateExportReport)
