@@ -4,9 +4,12 @@
 :: MCreator Launcher
 :: ---------------------------------------------------------------------
 ::
-timeout /T 2
 :: set the classpath
 set CLASSPATH=./lib/mcreator.jar;./lib/*
 
-:: launch MCreator with bundled java
+if exist "./jdk/bin/java.exe" (
 "./jdk/bin/java.exe" --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher
+) else (
+    java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher
+)
+:: launch MCreator with bundled java
