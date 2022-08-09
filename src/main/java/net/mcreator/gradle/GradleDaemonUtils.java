@@ -38,7 +38,7 @@ public class GradleDaemonUtils {
 		// avoid global overrides
 		GradleUtils.cleanupEnvironment(environment);
 
-		environment.put("GRADLE_USER_HOME", UserFolderManager.getGradleHome().getAbsolutePath());
+		environment.put("GRADLE_USER_HOME", UserFolderManager.getGradleHome().getPath());
 
 		String java_home = GradleUtils.getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null

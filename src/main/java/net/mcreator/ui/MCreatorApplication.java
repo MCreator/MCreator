@@ -83,7 +83,7 @@ public final class MCreatorApplication {
 	private final Analytics analytics;
 	private final DeviceInfo deviceInfo;
 	private static boolean applicationStarted = false;
-	private WorkspaceSelector workspaceSelector;
+	private final WorkspaceSelector workspaceSelector;
 
 	private final List<MCreator> openMCreators = new ArrayList<>();
 
@@ -225,8 +225,7 @@ public final class MCreatorApplication {
 		discordClient.updatePresence(L10N.t("dialog.discord_rpc.just_opened"),
 				L10N.t("dialog.discord_rpc.version") + Launcher.version.getMajorString());
 
-/*		//工程选择
-		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);*/
+		workspaceSelector = new WorkspaceSelector(this::openWorkspaceInMCreator);
 
 		boolean directLaunch = false;
 		if (launchArguments.size() > 0) {
@@ -393,7 +392,6 @@ public final class MCreatorApplication {
 	}
 
 	void showWorkspaceSelector() {
-		workspaceSelector = Optional.ofNullable(workspaceSelector).orElse(new WorkspaceSelector(this::openWorkspaceInMCreator));
 		workspaceSelector.setVisible(true);
 	}
 

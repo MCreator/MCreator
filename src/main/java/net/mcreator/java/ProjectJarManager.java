@@ -119,9 +119,9 @@ public class ProjectJarManager extends JarManager {
 	private void loadExternalDependency(GeneratorGradleCache.ClasspathEntry classpathEntry)
 			throws GradleCacheImportFailedException {
 		if (!new File(classpathEntry.getLib()).exists()) {
-			LOG.warn("Failed to load cached library " + classpathEntry.getLib());
+			LOG.warn("无法载入缓存库 " + classpathEntry.getLib());
 			throw new GradleCacheImportFailedException(
-					new IOException("Failed to load cached library " + classpathEntry.getLib()));
+					new IOException("无法载入缓存库 " + classpathEntry.getLib()));
 		}
 
 		JarLibraryInfo libraryInfo = new JarLibraryInfo(classpathEntry.getLib());
@@ -135,9 +135,9 @@ public class ProjectJarManager extends JarManager {
 		try {
 			addClassFileSource(libraryInfo);
 		} catch (IOException e) {
-			LOG.warn("Failed to load classpath file " + classpathEntry.getLib(), e);
+			LOG.warn("无法载入ClassPath " + classpathEntry.getLib(), e);
 			throw new GradleCacheImportFailedException(
-					new IOException("Failed to load classpath file " + classpathEntry.getLib()));
+					new IOException("无法载入ClassPath " + classpathEntry.getLib()));
 		}
 	}
 
@@ -147,7 +147,7 @@ public class ProjectJarManager extends JarManager {
 		final File classesArchive = findExistingPath(jreHome, "lib/rt.jar", "../Classes/classes.jar",
 				"jmods/java.base.jmod");
 		if (classesArchive == null) {
-			LOG.warn("Failed to load default JRE JAR info");
+			LOG.warn("无法载入默认的JRE jar信息");
 			return null;
 		}
 

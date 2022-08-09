@@ -296,7 +296,7 @@ public class GradleConsole extends JPanel {
 		StyleConstants.setFontSize(keyWord, 4);
 		pan.insertString("\n", keyWord);
 
-		append("Executing Gradle task: " + command, new Color(0xBBD9D0));
+		append("正在执行Gradle任务: " + command, new Color(0xBBD9D0));
 
 		String java_home = GradleUtils.getJavaHome();
 
@@ -306,7 +306,7 @@ public class GradleConsole extends JPanel {
 					+ "-bit, " + ref.getApplication().getDeviceInfo().getRamAmountMB() + " MB, " + ref.getApplication()
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
-					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime())+"\n,Gradle_Home:"
+					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime())+"\n,Gradle_User_Home:"
 					+ UserFolderManager.getGradleHome();
 			LOG.info(deviceInfo.replaceAll("\n",""));
 			append(deviceInfo, new Color(127, 120, 120));
@@ -326,9 +326,13 @@ public class GradleConsole extends JPanel {
 		}
 
 		String[] commandTokens = command.split(" ");
+		//任务s
 		String[] commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
+		//参数s
 		List<String> arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--"))
 				.collect(Collectors.toList());
+
+		LOG.debug("tasks: {} , arguments: {} ",Arrays.toString(commands),arguments.toString());
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
 

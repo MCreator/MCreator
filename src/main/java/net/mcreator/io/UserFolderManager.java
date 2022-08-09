@@ -22,7 +22,6 @@ import net.mcreator.preferences.PreferencesManager;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 public class UserFolderManager {
@@ -59,8 +58,11 @@ public class UserFolderManager {
 	public static File getBackgroundFolder() {return getFileFromUserFolder("backgrounds");}
 
 	public static File getGradleHome() {
-		return Objects.requireNonNullElseGet(PreferencesManager.PREFERENCES.gradle.gradleHome,
-				() -> getFileFromUserFolder("/gradle/"));
+		File result = getFileFromUserFolder("/gradle/");
+		if (!"null".equals(PreferencesManager.PREFERENCES.gradle.gradleHome.toString())){
+			result = PreferencesManager.PREFERENCES.gradle.gradleHome;
+		}
+		return result;
 	}
 
 }

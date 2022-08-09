@@ -47,6 +47,8 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -357,7 +359,11 @@ public class PreferencesDialog extends MCreatorDialog {
 				});
 			}
 			path.setText(Optional.ofNullable(value).orElse("null").toString());
-			path.setEditable(false);
+			path.addKeyListener(new KeyAdapter() {
+				@Override public void keyPressed(KeyEvent e) {
+					markChanged();
+				}
+			});
 			JButton button = new JButton("...");
 			button.addActionListener(a->{
 				var fileChooser = new JFileChooser();
@@ -395,10 +401,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		} else if (type.equals(Locale.class)) {
 			return ((JComboBox<?>) value).getSelectedItem();
 		} else if (type.equals(File.class)){
-			var text = ((JTextField) value).getText();
-			if (text.equals("null"))
-				return null;
-			return new File(text);
+			return new File(((VTextField)value).getText());
 		}
 		return null;
 	}

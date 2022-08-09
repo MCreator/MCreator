@@ -81,6 +81,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 public final class WorkspaceSelector extends JFrame implements DropTargetListener {
@@ -360,20 +361,22 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 			JPopupMenu popup = new JPopupMenu();
 			JMenuItem open = new JMenuItem("打开项目");
-			open.addActionListener(e -> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
+			open.addActionListener(e -> {
+				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+				popup.setVisible(false);
+			});
 			popup.add(open);
 			JMenuItem delete = new JMenuItem("从最近删除");
 			delete.addActionListener(e -> {
 				removeRecentWorkspace(recentsList.getSelectedValue());
 				reloadRecents();
+				popup.setVisible(false);
 			});
 			popup.add(delete);
 			JMenuItem openInExplorer = new JMenuItem("在资源管理器打开");
-			openInExplorer.addActionListener(e -> DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile()));
-			popup.addMouseListener(new MouseAdapter() {
-				@Override public void mousePressed(MouseEvent e) {
-					popup.setVisible(false);
-				}
+			openInExplorer.addActionListener(e -> {
+				DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile());
+				popup.setVisible(false);
 			});
 			popup.add(openInExplorer);
 

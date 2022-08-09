@@ -24,18 +24,21 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 public class Launcher {
@@ -56,6 +59,17 @@ public class Launcher {
 		}
 
 		final Logger LOG = LogManager.getLogger("Launcher"); // init logger after log directory is set
+		LOG.info("温馨提醒一下日志文件是否过多");
+
+		File logs = new File(System.getProperty("user.dir"),"logs");
+		File[] logsList = logs .listFiles(a -> !"mcreator.log".equals(a.getName()));
+		assert logsList != null;
+		if (logsList.length >= 10){
+			int stat = JOptionPane.showConfirmDialog(null,"检测到您得日志文件超过10个,是否清空?","日志清理提醒",JOptionPane.YES_NO_OPTION);
+			if (stat == JOptionPane.YES_OPTION){
+				Arrays.stream(logsList).forEach(File::delete);
+			}
+		}
 
 		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));

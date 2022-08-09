@@ -146,9 +146,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 			JTable elements = new JTable(new DefaultTableModel(
 					new Object[] { L10N.t("workspace.localization.column_key"),
-							"Localized text for " + entry.getKey() + (entry.getKey().equals("en_us") ?
-									" - values in en_us might get overwritten!" :
-									" - mappings can be edited here") }, 0));
+							"本地化内容" + entry.getKey() + (entry.getKey().equals("en_us") ?
+									" - 所有在en_us中得本地化内容可能会导致原版被重写!" :"- 匹配得本地化文字"
+									) }, 0));
 
 			final Font textFont = new Font("Sans-Serif", Font.PLAIN, 13);
 			elements.setFont(textFont);

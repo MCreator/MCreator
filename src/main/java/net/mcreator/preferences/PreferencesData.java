@@ -19,6 +19,7 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
+import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
@@ -65,7 +66,7 @@ public class PreferencesData {
 
 	public static class NotificationSettings {
 
-		@PreferencesEntry public boolean openWhatsNextPage = true;
+		@PreferencesEntry public boolean openWhatsNextPage = false ;
 		@PreferencesEntry public boolean snapshotMessage = true;
 		@PreferencesEntry public boolean checkAndNotifyForUpdates = false;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
@@ -113,7 +114,7 @@ public class PreferencesData {
 	public static class GradleSettings {
 
 		@PreferencesEntry public File java_home = null;
-		@PreferencesEntry public File gradleHome = null;
+		@PreferencesEntry public File gradleHome = UserFolderManager.getFileFromUserFolder("/gradle/");
 		@PreferencesEntry public boolean compileOnSave = true;
 		@PreferencesEntry public boolean passLangToMinecraft = true;
 

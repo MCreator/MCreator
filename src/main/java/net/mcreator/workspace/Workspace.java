@@ -428,7 +428,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				try {
 					retval.generator.loadOrCreateGradleCaches();
 				} catch (GradleCacheImportFailedException e) {
-					LOG.warn("Failed to import caches when opening a workspace", e);
+					LOG.warn("无法载入缓存", e);
 					// gradle is missing libs, rerun the setup to fix this
 					WorkspaceGeneratorSetup.requestSetup(retval);
 				}
