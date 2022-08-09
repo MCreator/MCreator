@@ -121,7 +121,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "eat", "block", "bow", "crossbow", "drink", "none", "spear" });
+			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -161,7 +161,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
@@ -334,7 +334,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
 
-		isFood.addActionListener(e -> updateFoodPanel());
+		isFood.addActionListener(e -> {
+			updateFoodPanel();
+			if (!isEditingMode()) {
+				animation.setSelectedItem("eat");
+				useDuration.setValue(32);
+			}
+		});
+
 		updateFoodPanel();
 
 		foodSubpane.add(
@@ -428,8 +435,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 			isMeat.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
 			eatResultItem.setEnabled(true);
-			if ((int) useDuration.getValue() <= 0)
-				useDuration.setValue(32);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);

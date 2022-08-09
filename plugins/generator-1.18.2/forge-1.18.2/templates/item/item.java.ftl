@@ -112,9 +112,11 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
+	<#if (!data.isFood && data.useDuration != 0) || (data.isFood && data.useDuration != 32)>
 	@Override public int getUseDuration(ItemStack itemstack) {
 		return ${data.useDuration};
 	}
+	</#if>
 
 	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
