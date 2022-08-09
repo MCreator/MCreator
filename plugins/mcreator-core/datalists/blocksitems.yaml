@@ -2942,6 +2942,7 @@
 
 - Blocks.MANGROVE_SLAB:
   readable_name: "Mangrove Slab"
+  type: block
 
 - Blocks.STONE_SLAB:
   readable_name: "Any Stone Slab"
