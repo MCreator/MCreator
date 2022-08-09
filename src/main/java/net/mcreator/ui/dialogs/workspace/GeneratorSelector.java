@@ -151,6 +151,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
 				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
