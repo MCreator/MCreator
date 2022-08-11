@@ -301,6 +301,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setEditable(entry.arrayDataEditable());
 			box.setSelectedItem(value);
+			box.addActionListener(a->markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Color.class)) {

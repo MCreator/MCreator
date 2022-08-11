@@ -346,10 +346,7 @@ public final class MCreatorApplication {
 		for (MCreator mcreator : mcreatorsTmp) {
 			LOG.info("试图关闭工作区类型的MCreator窗口: " + mcreator.getWorkspace());
 			if (!mcreator.closeThisMCreator(false)) {
-				int stat = JOptionPane.showConfirmDialog(null, "是否强行退出MCreator?", "强制退出提醒", JOptionPane.YES_NO_OPTION);
-				if (stat == JOptionPane.NO_OPTION) {
-					return; // if we fail to close all windows, we cancel the application close
-				}
+				return; // if we fail to close all windows, we cancel the application close
 			}
 		}
 
