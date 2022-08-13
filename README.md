@@ -37,8 +37,8 @@ tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
 
 Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
 
-<a href="https://github.com/MCreator/MCreator/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MCreator/MCreator" width="615"/>
+<a href="https://github.com/cdc12345/MCreator-Chinese/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cdc12345/MCreator" width="615"/>
 </a>
 
 ## License and trademark
