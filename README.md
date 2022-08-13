@@ -14,25 +14,25 @@
 
 MCreator 是一款制作 Minecraft Java 版 Mod、Minecrart 基岩版 Addon 和数据包 Datapack 的工具，具有直观易学的界面和集成的代码编辑器。
 
-它在世界范围内应用广泛，不论是 Minecraft 玩家、Mod 开发者，还是[教育者、网课制作者、STEM工坊](https://mcreator.net/education)，都在使用它。
+它在世界范围内应用广泛，不论是 Minecraft 玩家、Mod 开发者，还是 [教育者、网课制作者、 STEM 工坊](https://mcreator.net/education) ，都在使用它。
 
 ## 下载，社区和支持
 
-本页面为 MCreator-Chinese ( MCreator 中国版，简称为 mcrc ) 的贡献页面。
+本页面为 MCreator-Chinese（MCreator 中国版，简称为 mcrc）的贡献页面。
 
 如果您需要的是 MCreator 原始版本，请访问 [官网下载](https://mcreator.net/download) 。
 
 最新快照版本请访问 [快照下载](https://mcreator.net/download/snapshots) 。
 
-您可以通过访问 mcrc 的 [Github Release页面](https://github.com/cdc12345/MCreator-Chinese/releases) 来寻找您喜欢的 mcrc 的发行版本。
+您可以通过访问 mcrc 的 [Github Release 页面](https://github.com/cdc12345/MCreator-Chinese/releases) 来寻找您喜欢的 mcrc 的发行版本。
 
 ## 开发
 
-MCreator 采用 Gradle 进行构建。请使用 `runMCreator` 来运行测试版本的 mcrc 。
+MCreator 采用 Gradle 进行构建。请使用 `runMCreator` 来运行测试版本的 mcrc。
 
 推荐使用 Intellij IDEA 进行开发和测试。
 
-更多关于开发过程的信息和提示请见 [MCreator开发者wiki](https://github.com/MCreator/MCreator/wiki) 。
+更多关于开发过程的信息和提示请见 [MCreator 开发者 wiki](https://github.com/MCreator/MCreator/wiki) 。
 
 ## 贡献
 
@@ -46,13 +46,13 @@ MCreator 采用 Gradle 进行构建。请使用 `runMCreator` 来运行测试版
 
 ## 许可证和商标
 
-如果本项目的源文件或其他文件中未另行说明，MCreator 根据 GPL-3.0 许可证获得许可（ GPL-2.0 第 7 节规定的例外情况除外）。版权归 2020 Pylo 和[贡献者](https://github.com/MCreator/MCreator/graphs/contributors)所有。
+如果本项目的源文件或其他文件中未另行说明，MCreator 根据 GPL-3.0 许可证获得许可（GPL-2.0 第 7 节规定的例外情况除外）。版权归 2020 Pylo 和 [贡献者](https://github.com/MCreator/MCreator/graphs/contributors) 所有。
 
 MCreator 是 Pylo 的商标。本软件的自定义发行版可能不包括 Pylo 或 MCreator 商标（商标名称和徽标），以避免将本软件与 MCreator 项目的官方发行版混淆。
 
 此仓库中的 MCreator 和 Pylo 品牌文件不在 GPL-3.0 许可范围内。
 
-MCreator 使用多个第三方库和项目。这些项目的许可证文件位于 “License” 子目录中。
+MCreator 使用多个第三方库和项目。这些项目的许可证文件位于“License”子目录中。
 
 一些代码生成器使用官方的 Minecraft 映射。
 
