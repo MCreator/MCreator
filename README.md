@@ -6,56 +6,57 @@
 [![Download](https://img.shields.io/badge/Download-release-%2393c54b?style=flat-square)](https://mcreator.net/download)
 [![Donate](https://img.shields.io/badge/Donate-%E2%99%A1-%23ff7c00?style=flat-square)](https://mcreator.net/donate)
 
-# MCreator - Minecraft Mod Maker
+# MCreator - Minecraft 模组制作器
 
 <img align="right" width="300" src="https://mcreator.net/image/mcreatoruifront.png">
 
-https://mcreator.net/ -MCreator是一款使用直观易学的界面或集成的代码编辑器制作 MinecraftJava版mods、Minecrart基岩版的Addon和数据包的工具. 
+官网：https://mcreator.net/
 
-全世界的对于mod开发感兴趣的我的世界玩家都在使用它, [for education, online classes, and STEM workshops](https://mcreator.net/education).
+MCreator 是一款制作 Minecraft Java 版 Mod、Minecrart 基岩版 Addon 和数据包 Datapack 的工具，具有直观易学的界面和集成的代码编辑器。
 
-## Download, community, and support
+它在世界范围内应用广泛，不论是 Minecraft 玩家、Mod 开发者，还是[教育者、网课制作者、STEM工坊](https://mcreator.net/education)，都在使用它。
 
-本页面为MCreator-Chinese(下文简称为mcrc)的贡献页面. 如果您需要的是MCreator原始版本请访问https://mcreator.net/ 下载MCreator原始版本的发行包.
+## 下载，社区和支持
 
-此为MCreator原始版本的下载地址 https://mcreator.net/download.
+本页面为 MCreator-Chinese ( MCreator 中国版，简称为 mcrc ) 的贡献页面。
 
-您可以通过访问mcrc的github Release来寻找您喜欢的mcrc的发行版本
+如果您需要的是 MCreator 原始版本，请访问 [官网下载](https://mcreator.net/download) 。
 
-## Development
+最新快照版本请访问 [快照下载](https://mcreator.net/download/snapshots) 。
 
-克隆本仓库请使用 `git clone --recursive https://github.com/MCreator/MCreator.git`.
+您可以通过访问 mcrc 的 [Github Release页面](https://github.com/cdc12345/MCreator-Chinese/releases) 来寻找您喜欢的 mcrc 的发行版本。
 
-MCreator采用Gradle进行构建. 请使用 `runMCreator` 来运行测试版本的mcrc.
+## 开发
 
-It is recommended to use Intellij IDEA for development and testing. Learn more about the development process, and 
-tips on [MCreator developers wiki](https://github.com/MCreator/MCreator/wiki).
+MCreator 采用 Gradle 进行构建。请使用 `runMCreator` 来运行测试版本的 mcrc 。
 
-## Contributing
+推荐使用 Intellij IDEA 进行开发和测试。
 
-通过Pull Request您可以自由的贡献本项目,但在贡献之前请阅读 [contributing guidelines](CONTRIBUTING.md).
+更多关于开发过程的信息和提示请见 [MCreator开发者wiki](https://github.com/MCreator/MCreator/wiki) 。
 
-Big thanks to [all the people](https://github.com/MCreator/MCreator/graphs/contributors) who already contributed to MCreator! 💚
+## 贡献
+
+通过 Pull Request 您可以自由地贡献本项目，但在贡献之前请阅读 [贡献指南](CONTRIBUTING.md) 。
+
+感谢 MCreator 项目的 [所有贡献者](https://github.com/MCreator/MCreator/graphs/contributors) ！💚
 
 <a href="https://github.com/cdc12345/MCreator-Chinese/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=cdc12345/MCreator-Chinese" width="615"/>
 </a>
 
-## License and trademark
+## 许可证和商标
 
-如果本项目的源文件或其他文件中未另行说明，MCreator根据GPL-3.0许可证获得许可（GPL-2.0第7节规定的例外情况除外）。版权归2020 Pylo和[贡献者](https://github.com/MCreator/MCreator/graphs/contributors)所有.
+如果本项目的源文件或其他文件中未另行说明，MCreator 根据 GPL-3.0 许可证获得许可（ GPL-2.0 第 7 节规定的例外情况除外）。版权归 2020 Pylo 和[贡献者](https://github.com/MCreator/MCreator/graphs/contributors)所有。
 
-MCreator是Pylo的商标。本软件的自定义发行版可能不包括Pylo或MCreator商标（商标名称和徽标），以避免将本软件与MCreator项目的官方发行版混淆。
+MCreator 是 Pylo 的商标。本软件的自定义发行版可能不包括 Pylo 或 MCreator 商标（商标名称和徽标），以避免将本软件与 MCreator 项目的官方发行版混淆。
 
-此存储库中的MCreator和Pylo品牌文件不在GPL-3.0许可范围内。
+此仓库中的 MCreator 和 Pylo 品牌文件不在 GPL-3.0 许可范围内。
 
-MCreator使用多个第三方库和项目。这些项目的许可证文件位于“License”子目录中。
+MCreator 使用多个第三方库和项目。这些项目的许可证文件位于 “License” 子目录中。
 
-一些代码生成器使用官方的Minecraft映射。
+一些代码生成器使用官方的 Minecraft 映射。
 
-Microsoft的许可证涵盖了这些映射的使用。你应该
-
-请充分了解此许可证以及您的国防部可能使用这些映射的事实。
+Microsoft 的许可证涵盖了这些映射的使用。您应该充分了解此许可证以及您的模组可能使用这些映射的事实。
 
 在撰写本文时，许可证为：
 
@@ -67,6 +68,14 @@ provided here.  Use and modification of this document or the source code (in any
 of Minecraft: Java Edition is governed by the Minecraft End User License Agreement 
 available at https://account.mojang.com/documents/minecraft_eula.`
 
-## Notice
+## 注意
 
-NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.
+并非官方 Minecraft 软件。未取得 Mojang 授权且与其无关。
+
+## 中国版说明
+
+在 mcrc 中加入了许多便利中国大陆用户的设置，包括但不限于：
+
+* 更改字体字号
+* 更改 gradle/home 路径以节省C盘空间
+* Tips 翻译
