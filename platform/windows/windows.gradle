@@ -4,7 +4,7 @@ task dummyTask {
 }
 
 createExe {
-    outfile = 'mcreator.exe'
+/*    outfile = 'mcreator.exe'
     mainClassName = 'net.mcreator.Launcher'
     dontWrapJar = true
     copyConfigurable = dummyTask.outputs.files
@@ -29,7 +29,7 @@ createExe {
     productName = "MCreator-Chinese"
     companyName = "Pylo and cdc12345"
 
-    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
+    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"*/
 }
 
 task exportWin64(type: Copy, dependsOn: [downloadJDKWin64, createExe, jar, exportPlugins]) {
