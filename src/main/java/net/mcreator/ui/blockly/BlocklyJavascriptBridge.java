@@ -157,6 +157,15 @@ public class BlocklyJavascriptBridge {
 			case "enchantment" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEnchantments(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.enchantment.message"), L10N.t("dialog.selector.enchantment.title"));
+			case "arrowProjectile" -> openDataListEntrySelector(
+					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
+			case "fireballProjectile" -> openDataListEntrySelector(
+					w -> ElementUtil.loadFireballProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
+			case "throwableProjectile" -> openDataListEntrySelector(
+					w -> ElementUtil.loadThrowableProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -407,6 +416,7 @@ public class BlocklyJavascriptBridge {
 		switch (type) {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
+		case "arrowProjectile", "fireballProjectile", "throwableProjectile" -> datalist = "projectiles";
 		default -> {
 			return "";
 		}
