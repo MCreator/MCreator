@@ -40,6 +40,8 @@ public class PreferencesData {
 
 	public static class UISettings {
 
+		@PreferencesEntry public boolean onlyForge = true;
+
 		@PreferencesEntry public Locale language = new Locale("zh","Cn");
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
