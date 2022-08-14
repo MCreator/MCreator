@@ -50,9 +50,9 @@ public class UnsupportedComponent extends JPanel {
 
 		if (getWidth() > 100) {
 			g.setFont(g.getFont().deriveFont(12f));
-			g.drawImage(warning, x - g.getFontMetrics().stringWidth("Not supported") / 2, y, null);
+			g.drawImage(warning, x - g.getFontMetrics().stringWidth("不受支持") / 2, y, null);
 			g.setColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			g.drawString("Not supported", x - g.getFontMetrics().stringWidth("Not supported") / 2 + 18 + 4, y + 13);
+			g.drawString("不受支持", x - g.getFontMetrics().stringWidth("不受支持") / 2 + 18 + 4, y + 13);
 		} else {
 			g.drawImage(warning, x, y, null);
 		}
