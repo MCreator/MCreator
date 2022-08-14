@@ -71,6 +71,7 @@ public class PreferencesData {
 		@PreferencesEntry public boolean checkAndNotifyForUpdates = false;
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
 		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
+		@PreferencesEntry public boolean notifyLogsTooMore = true;
 
 	}
 

@@ -768,7 +768,7 @@ public class Generator implements IGenerator, Closeable {
 						.forProjectDirectory(workspace.getWorkspaceFolder())
 						.useGradleUserHomeDir(UserFolderManager.getGradleHome()).connect();
 			} catch (Exception e) {
-				LOG.warn("Failed to load Gradle project", e);
+				LOG.warn("无法载入gradle项目", e);
 			}
 		}
 

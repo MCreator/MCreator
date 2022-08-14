@@ -59,17 +59,6 @@ public class Launcher {
 		}
 
 		final Logger LOG = LogManager.getLogger("Launcher"); // init logger after log directory is set
-		LOG.info("温馨提醒一下日志文件是否过多");
-
-		File logs = new File(System.getProperty("user.dir"),"logs");
-		File[] logsList = logs .listFiles(a -> !"mcreator.log".equals(a.getName()));
-		assert logsList != null;
-		if (logsList.length >= 10){
-			int stat = JOptionPane.showConfirmDialog(null,"检测到您得日志文件超过10个,是否清空?","日志清理提醒",JOptionPane.YES_NO_OPTION);
-			if (stat == JOptionPane.YES_OPTION){
-				Arrays.stream(logsList).forEach(File::delete);
-			}
-		}
 
 		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
@@ -105,6 +94,18 @@ public class Launcher {
 
 		// after we have libraries loaded, we load preferences
 		PreferencesManager.loadPreferences();
+
+		LOG.info("温馨提醒一下日志文件是否过多");
+
+		File logs = new File(System.getProperty("user.dir"),"logs");
+		File[] logsList = logs .listFiles(a -> !"mcreator.log".equals(a.getName()));
+		assert logsList != null;
+		if (logsList.length >= 10&&PreferencesManager.PREFERENCES.notifications.notifyLogsTooMore){
+			int stat = JOptionPane.showConfirmDialog(null,"检测到您得日志文件超过10个,是否清空?","日志清理提醒",JOptionPane.YES_NO_OPTION);
+			if (stat == JOptionPane.YES_OPTION){
+				Arrays.stream(logsList).forEach(File::delete);
+			}
+		}
 
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",

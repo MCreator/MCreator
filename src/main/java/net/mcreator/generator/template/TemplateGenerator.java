@@ -103,7 +103,7 @@ public class TemplateGenerator {
 			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
-			LOG.error("Failed to generate template: " + templateName, e);
+			LOG.error("无法生成模板: " + templateName, e);
 			throw new TemplateGeneratorException();
 		}
 	}

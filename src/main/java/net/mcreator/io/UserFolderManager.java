@@ -60,7 +60,7 @@ public class UserFolderManager {
 	public static File getGradleHome() {
 		File result = getFileFromUserFolder("/gradle/");
 		if (!"null".equals(PreferencesManager.PREFERENCES.gradle.gradleHome.toString())){
-			result = PreferencesManager.PREFERENCES.gradle.gradleHome;
+			result = new File(PreferencesManager.PREFERENCES.gradle.gradleHome.getPath().replace('\\','/'));
 		}
 		return result;
 	}
