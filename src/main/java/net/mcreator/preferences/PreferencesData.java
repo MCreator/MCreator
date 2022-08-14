@@ -42,7 +42,7 @@ public class PreferencesData {
 
 		@PreferencesEntry public boolean onlyForge = true;
 
-		@PreferencesEntry public Locale language = new Locale("zh","Cn");
+		@PreferencesEntry public Locale language = new Locale("zh","CN");
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
