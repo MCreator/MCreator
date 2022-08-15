@@ -42,13 +42,13 @@ base_templates:
   - template: modbase/pack.mcmeta.ftl
     writer: json
     name: "@RESROOT/pack.mcmeta"
-#  - template: modbase/sounds.json.ftl
-#    writer: json
-#    name: "@MODASSETSROOT/sounds.json"
-#    condition: hasSounds()
-#  - template: elementinits/sounds.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
-#    condition: hasSounds()
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: elementinits/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
 #  - template: modbase/variableslist.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
 #    condition: hasVariables()
