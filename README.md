@@ -70,12 +70,15 @@ available at https://account.mojang.com/documents/minecraft_eula.`
 
 ## 注意
 
-并非官方 Minecraft 软件。未取得 Mojang 授权且与其无关。
+MCreator并非官方软件,Mojang与MCreator不存在附属关系
 
 ## 中国版说明
 
 在 mcrc 中加入了许多便利中国大陆用户的设置，包括但不限于：
 
 * 更改字体字号
-* 更改 gradle/home 路径以节省C盘空间
 * Tips 翻译
+* 为开发者提供了更多的自定义选项
+* 汉化了部分原本不能翻译的汉化部分
+* onlyForge 屏蔽除forge用户外的其他开发者(这是其他群友让我加的....)
+* 可以自由关闭与官网相关的ui组件,提升了启动速度
