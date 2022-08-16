@@ -249,7 +249,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if ("Crafting".equals(recipeType.getSelectedItem())) {
 			if (!rm.cb10.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_Crafting_no_result"));
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
 			} else if (!(rm.cb1.containsItem() || rm.cb2.containsItem() || rm.cb3.containsItem()
 					|| rm.cb4.containsItem() || rm.cb5.containsItem() || rm.cb6.containsItem() || rm.cb7.containsItem()
 					|| rm.cb8.containsItem() || rm.cb9.containsItem())) {
