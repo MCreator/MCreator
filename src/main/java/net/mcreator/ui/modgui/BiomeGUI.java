@@ -36,6 +36,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -95,11 +96,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnNetherFossil = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBastionRemnant = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> spawnRuinedPortal = new JComboBox<>(
-			new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
-	private final JComboBox<String> villageType = new JComboBox<>(
-			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
-	private final JComboBox<String> oceanRuinType = new JComboBox<>(new String[] { "NONE", "COLD", "WARM" });
+	private final AdvancedTranslatableComboBox<String> spawnRuinedPortal = new AdvancedTranslatableComboBox<>(
+			new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" },new String[]{
+					"无","标准","沙漠","丛林","沼泽","高山","海洋","地狱"
+	});
+	private final AdvancedTranslatableComboBox<String> villageType = new AdvancedTranslatableComboBox<>(
+			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" },new String[]{
+					"无","沙漠","平原","稀数草原","雪地","针树林"
+	});
+	private final AdvancedTranslatableComboBox<String> oceanRuinType = new AdvancedTranslatableComboBox<>(
+			new String[] { "NONE", "COLD", "WARM" },new String[]{"无","热带","寒带"});
 
 	private JSpawnEntriesList spawnEntries;
 
@@ -135,9 +141,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER", "UNDERGROUND",
 					"MOUNTAIN" });
 
-	private final JComboBox<String> vanillaTreeType = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> vanillaTreeType = new AdvancedTranslatableComboBox<>(
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
-					"Mega spruce trees" });
+					"Mega spruce trees" },new String[]{"默认","大树","桦树","稀树草原树","巨型松树","巨型云杉"});
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -151,6 +157,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	@Override protected void initGUI() {
+		oceanRuinType.setDisplayEnglish(true);
+		villageType.setDisplayEnglish(true);
+//		biomeCategory.setDisplayEnglish(true);
+		vanillaTreeType.setDisplayEnglish(true);
+		spawnRuinedPortal.setDisplayEnglish(true);
 		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		undergroundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		underwaterBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
