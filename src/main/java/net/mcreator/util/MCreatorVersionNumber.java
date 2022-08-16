@@ -45,6 +45,8 @@ public class MCreatorVersionNumber {
 	public long buildlong;
 	public long versionlong;
 
+	public String mcrcVersion;
+
 	public MCreatorVersionNumber(Properties properties) {
 		major = properties.getProperty("mcreator");
 
@@ -73,6 +75,8 @@ public class MCreatorVersionNumber {
 		this.buildlong = Long.parseLong(this.build);
 		this.majorlong = majorStringToLong(this.major);
 		this.versionlong = this.majorlong * (long) Math.pow(10, buildFormat.length()) + this.buildlong;
+
+		this.mcrcVersion = properties.getProperty("mcrc");
 	}
 
 	public boolean isSnapshot() {

@@ -60,8 +60,6 @@ configurations {
     export.canBeResolved = true
 
     win64
-    mac64
-    linux64
 }
 
 dependencies {
@@ -107,20 +105,6 @@ dependencies {
     win64 group: 'org.openjfx', name: 'javafx-media', version: '18.0.2', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.2', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-swing', version: '18.0.2', classifier: 'win'
-
-    mac64 group: 'org.openjfx', name: 'javafx-base', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-media', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '18.0.2', classifier: 'mac'
-
-    linux64 group: 'org.openjfx', name: 'javafx-base', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-media', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '18.0.2', classifier: 'linux'
 }
 
 javafx {

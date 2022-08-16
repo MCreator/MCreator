@@ -59,6 +59,11 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
+		add(new JEmptyBox(30,30));
+
+		add(PanelUtils.westAndEastElement(new JLabel("项目Java"),PanelUtils.centerAndEastElement(workspaceDialogPanel.javaHome,
+				workspaceDialogPanel.selectJavaHome,5,5)));
+
 		add(new JEmptyBox(30, 142));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.ok")), new JEmptyBox(0, 0),

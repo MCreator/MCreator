@@ -21,12 +21,15 @@ package net.mcreator.workspace.settings;
 import com.google.common.base.CaseFormat;
 import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -64,6 +67,8 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
+	private File javaHome;
+
 	private static transient final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
@@ -86,6 +91,7 @@ import java.util.stream.Stream;
 		this.credits = other.credits;
 		this.modElementsPackage = other.modElementsPackage;
 		this.lockBaseModFiles = other.lockBaseModFiles;
+		this.javaHome = other.javaHome;
 
 		this.workspace = other.workspace;
 	}
@@ -158,9 +164,17 @@ import java.util.stream.Stream;
 		this.mcreatorDependencies = mcreatorDependencies;
 	}
 
+	public void setJavaHome(File javaHome){
+		this.javaHome = javaHome;
+	}
+
+	public File getJavaHome(){
+		return Objects.requireNonNullElse(javaHome,PreferencesManager.PREFERENCES.gradle.java_home);
+	}
+
 	public String getLicense() {
 		if (license == null || license.isEmpty())
-			return "Not specified";
+			return "没有指定";
 
 		return license;
 	}

@@ -23,6 +23,7 @@ import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -47,10 +48,11 @@ public class SplashScreen extends JWindow {
 		pylo.setBounds(540 - 15 - 10, 348 - 15 - 10, 90, 24);
 		imagePanel.add(pylo);
 
-		JLabel label = new JLabel(
+		JLabel label = new JLabel(String.format(
 				"<html><p>MCreator is a Minecraft mod making toolkit developed by Pylo. Minecraft is a</p>"
 						+ "<p style='margin-top:-2'>registered trademark of Mojang. MCreator is not an official Minecraft product.</p>"
-						+ "<p style='margin-top:-2'>It is not approved by or associated with Mojang.</p>");
+						+ "<p style='margin-top:-2'>It is not approved by or associated with Mojang.</p>"
+						+ "<p style='margin-top:-2>此为MCreator-Chinese的%s版本", Launcher.version.mcrcVersion));
 		label.setFont(splashFont.deriveFont(10f));
 		label.setForeground(Color.white);
 		label.setBounds(30 + 10 - 4, 330 - 10 - 10, 500, 45);

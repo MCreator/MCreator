@@ -65,7 +65,7 @@ import java.util.Locale;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
-	private static final Logger LOG = LogManager.getLogger("MCreator");
+	private static final Logger LOG = LogManager.getLogger("MCreator Class");
 
 	public WorkspacePanel mv;
 	private final GradleConsole gradleConsole;

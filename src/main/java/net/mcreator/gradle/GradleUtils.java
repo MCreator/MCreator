@@ -48,9 +48,12 @@ public class GradleUtils {
 				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms + "m",
 						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx + "m");
 
-		String java_home = getJavaHome();
-		if (java_home != null) // make sure detected JAVA_HOME is not null
+		String workSpaceJavaHome = workspace.getWorkspaceSettings().getJavaHome().getPath();
+		String java_home = ("".equals(workSpaceJavaHome))? getJavaHome():workSpaceJavaHome;
+		if (java_home != null) {
+			workspace.getWorkspaceSettings().setJavaHome(new File(java_home));
 			retval = retval.setJavaHome(new File(java_home));
+		}
 
 		Map<String, String> environment = new HashMap<>(System.getenv());
 

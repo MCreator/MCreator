@@ -296,7 +296,8 @@ public class GradleConsole extends JPanel {
 
 		append("正在执行Gradle任务: " + command, new Color(0xBBD9D0));
 
-		String java_home = GradleUtils.getJavaHome();
+		var workSpaceJava = ref.getWorkspaceSettings().getJavaHome();
+		String java_home = (workSpaceJava!=null&&!"".equals(workSpaceJava.getPath()))? workSpaceJava.getPath():GradleUtils.getJavaHome();
 
 		if (ref.getApplication() != null) {
 			String deviceInfo = "Build info: MCreator " + Launcher.version.getFullString() + ", " + ref.getWorkspace()

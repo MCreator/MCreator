@@ -138,6 +138,8 @@ public class WorkspaceDialogs {
 		JTextField requiredMods = new JTextField(24);
 		JTextField dependencies = new JTextField(24);
 		JTextField dependants = new JTextField(24);
+		VTextField javaHome = new VTextField(24);
+		JButton selectJavaHome = new JButton("...");
 
 		JComboBox<String> license = new JComboBox<>(
 				new String[] { "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
@@ -506,6 +508,37 @@ public class WorkspaceDialogs {
 			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
+			selectJavaHome.addActionListener(a->{
+				var currentSelected = new File(javaHome.getText()).getParentFile();
+				var fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(currentSelected);
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				fileChooser.setMultiSelectionEnabled(false);
+				var state = fileChooser.showOpenDialog(this);
+				if (state == JFileChooser.APPROVE_OPTION) {
+					var path1 = fileChooser.getSelectedFile();
+					if (!path1.isAbsolute()){
+						path1 = new File(path1.getAbsolutePath());
+					}
+					javaHome.setText(path1.toString());
+					javaHome.getValidationStatus();
+				}
+			});
+			javaHome.enableRealtimeValidation();
+			javaHome.setValidator(()-> {
+				if (new File(javaHome.getText(), "bin/java.exe").exists() && new File(javaHome.getText(),
+						"bin/javac.exe").exists()) {
+					return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "检查通过");
+				} else {
+					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+							"请检查是否为java_home,如果是则请检查是否为jdk");
+				}
+			});
+			advancedSettings.add(new JLabel("JAVA_HOME"));
+			JPanel setJava = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			setJava.add(javaHome);
+			setJava.add(selectJavaHome);
+			advancedSettings.add(setJava);
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 5, 2));
 			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
@@ -558,6 +591,7 @@ public class WorkspaceDialogs {
 
 		public WorkspaceSettings getWorkspaceSettings(@Nullable Workspace workspace) {
 			WorkspaceSettings retVal = new WorkspaceSettings(modID.getText());
+			retVal.setJavaHome(new File(javaHome.getText()));
 			retVal.setWorkspace(workspace);
 			retVal.setModName(modName.getText());
 			retVal.setVersion(version.getText());
