@@ -12,9 +12,9 @@
 
 官网：https://mcreator.net/
 
-MCreator 是一款制作 Minecraft Java 版 Mod、Minecrart 基岩版 Addon 和数据包 Datapack 的工具，具有直观易学的界面和集成的代码编辑器。
+MCreator 是一款制作 Minecraft Java 版 Mod、Minecrart 基岩版 Addon 和数据包 Datapack 的工具软件，具有直观易学的界面和集成的代码编辑器。
 
-它在世界范围内应用广泛，不论是 Minecraft 玩家、Mod 开发者，还是 [教育者、网课制作者、 STEM 工坊](https://mcreator.net/education) ，都在使用它。
+它在全世界范围内应用广泛，不论是 Minecraft 玩家、Mod 开发者，还是 [教育、网课制作、 STEM 工坊](https://mcreator.net/education) ，都在使用它。
 
 ## 下载，社区和支持
 
@@ -82,3 +82,5 @@ MCreator并非官方软件,Mojang与MCreator不存在附属关系
 * 汉化了部分原本不能翻译的汉化部分
 * onlyForge 屏蔽除forge用户外的其他开发者(这是其他群友让我加的....)
 * 可以自由关闭与官网相关的ui组件,提升了启动速度
+
+MCrC仅是基于MCreator软件开发的一款面向中国开发者的 Minecraft Mod 开发软件，由中国MCr社区开发者 cdc12345 和 其他贡献者开发。
