@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -45,9 +46,9 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	private final VTextField displayName = new VTextField(30);
 	private final VTextField description = new VTextField(30);
 
-	private final JComboBox<String> gameruleCategory = new JComboBox<>(
-			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
-	private final JComboBox<String> gameruleType = new JComboBox<>(new String[] { "Number", "Logic" });
+	private final AdvancedTranslatableComboBox<String> gameruleCategory = new AdvancedTranslatableComboBox<>(
+			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" },new String[]{"玩家相关的","升级相关的","聊天相关的","掉落物相关的","杂项相关的","生物相关的","生成相关的"});
+	private final AdvancedTranslatableComboBox<String> gameruleType = new AdvancedTranslatableComboBox<>(new String[] { "Number", "Logic" },new String[]{"数据","布尔值"});
 
 	private final JComboBox<String> defaultValueLogic = new JComboBox<>(new String[] { "false", "true" });
 	private final JSpinner defaultValueNumber = new JSpinner(
@@ -65,6 +66,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	}
 
 	@Override protected void initGUI() {
+		gameruleCategory.setDisplayEnglish(true);
+		gameruleType.setDisplayEnglish(true);
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);

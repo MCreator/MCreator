@@ -133,7 +133,7 @@ public class GradleConsole extends JPanel {
 		searchBar.reinstall(pan);
 
 		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		aae.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"),
 				(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), aae.getVerticalScrollBar()));

@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.recipemakers.*;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -43,8 +44,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 public class RecipeGUI extends ModElementGUI<Recipe> {
 
@@ -79,30 +78,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	 * Brewing 酿造-酿造台
 	 */
 
-	private final JComboBox<String> recipeType = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> recipeType = new AdvancedTranslatableComboBox<>(new String[]{"Crafting","Smelting","Brewing","Blasting","Smoking",
+			"Stone cutting","Campfire cooking","Smithing"},
 			new String[] { "合成表-工作台", "冶炼-熔炉", "酿造-酿造台", "烧炼-高炉", "烟熏-烟熏炉", "切割-切石机",
-					"烧炼-篝火", "锻造-锻造台" }){
-		private final Map<String,String> tra = Map.of("合成表-工作台","Crafting","冶炼-熔炉","Smelting","烧炼-高炉","Blasting"
-		,"烟熏-烟熏炉","Smoking","切除-切石机","Stone cutting","烧炼-篝火","Campfire cooking","锻造-锻造台","Smithing",
-				"酿造-酿造台","Brewing");
-		@Override
-		public String getSelectedItem(){
-			return tra.get(Objects.requireNonNull(super.getSelectedItem()).toString());
-		}
-
-		@Override public void setSelectedItem(Object anObject) {
-			if (anObject.toString().matches("[a-zA-Z]+")){
-				for (Map.Entry<String,String> entry:tra.entrySet()){
-					if (entry.getValue().equals(anObject)){
-						super.setSelectedItem(entry.getKey());
-						return;
-					}
-				}
-				return;
-			}
-			super.setSelectedItem(anObject);
-		}
-	};
+					"烧炼-篝火", "锻造-锻造台" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -111,6 +90,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	}
 
 	@Override protected void initGUI() {
+		recipeType.setForeground(Color.WHITE);
 		rm = new CraftingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 		fm = new SmeltingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
 		bm = new BlastFurnaceRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,

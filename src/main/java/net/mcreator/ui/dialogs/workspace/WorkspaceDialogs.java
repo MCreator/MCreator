@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.workspace;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
@@ -162,6 +163,7 @@ public class WorkspaceDialogs {
 		private boolean packageNameManuallyEntered = false;
 
 		WorkspaceDialogPanel(Window parent, @Nullable Workspace workspace) {
+			javaHome.setText(GradleUtils.getJavaHome());
 			setLayout(new BorderLayout());
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces

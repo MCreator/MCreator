@@ -29,6 +29,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,8 +45,8 @@ public class JVillagerTradeEntry extends JPanel {
 	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 	private final JSpinner countOffer = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 
-	private final JComboBox<String> level = new JComboBox<>(
-			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" });
+	private final AdvancedTranslatableComboBox<String> level = new AdvancedTranslatableComboBox<>(
+			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" },new String[]{"新手","学徒","老手","专家","大师"});
 
 	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
 	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));

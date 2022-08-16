@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
@@ -46,7 +47,7 @@ import java.util.Objects;
 public class TagGUI extends ModElementGUI<Tag> {
 
 	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Entities", "Functions" });
+	private final JComboBox<String> type = new AdvancedTranslatableComboBox<>(new String[] { "Items", "Blocks", "Entities", "Functions" },new String[]{"物品","方块","实体","函数"});
 
 	private MCItemListField items;
 	private MCItemListField blocks;

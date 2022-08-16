@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -32,12 +33,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 
 public class NewVariableDialog {
 
 	public static VariableElement showNewVariableDialog(MCreator mcreator, boolean showScope,
 			OptionPaneValidatior variableNameValidator, Collection<VariableType> supportedTypes) {
+
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
+
+		JLabel label = new JLabel("Java命名规则:1.不要使用数字开头,2.尽量使用英文(否则可读性会很低),3.不要加入空格,4.不要使用关键字");
+		inp.add("South",label);
 
 		VTextField textField = new VTextField(25);
 		textField.setPreferredSize(new Dimension(200, 28));
@@ -45,10 +52,14 @@ public class NewVariableDialog {
 		variableNameValidator.setValidatedComponent(textField);
 		textField.setValidator(variableNameValidator);
 
-		JComboBox<VariableType> type = new JComboBox<>(supportedTypes.toArray(new VariableType[0]));
+		AdvancedTranslatableComboBox<VariableType> type = new AdvancedTranslatableComboBox<>(Map.of("blockstate","方块状态","direction","方向","itemstack"
+				,"物品组","logic","逻辑","number","数字","string","文本串"), Objects::toString);
+		type.setDisplayEnglish(true);
+		supportedTypes.forEach(type::addItem);
 
-		JComboBox<VariableType.Scope> scope = new JComboBox<>();
-
+		AdvancedTranslatableComboBox<VariableType.Scope> scope = new AdvancedTranslatableComboBox<>(Map.of("GLOBAL_MAP","全地图","GLOBAL_WORLD","全世界","GLOBAL_SESSION","全局"
+				,"PLAYER_LIFETIME","玩家一条命","PLAYER_PERSISTENT","玩家一直有","LOCAL","本地"),Object::toString);
+		scope.setDisplayEnglish(true);
 		inp.add("North", L10N.label("dialog.variables.enter_name_select_type"));
 
 		JPanel data = new JPanel(new GridLayout(showScope ? 3 : 2, 2, 5, 5));
@@ -84,8 +95,7 @@ public class NewVariableDialog {
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableElement element = new VariableElement();
-			VariableType variable = VariableTypeLoader.INSTANCE.fromName(
-					((VariableType) type.getSelectedItem()).getName());
+			VariableType variable = VariableTypeLoader.INSTANCE.fromName(type.getSelectedItem().toString());
 			if (variable != null) {
 				element.setName(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());

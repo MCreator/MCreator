@@ -37,6 +37,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -57,8 +58,8 @@ import java.util.stream.Collectors;
 public class CommandGUI extends ModElementGUI<Command> {
 
 	private final VTextField commandName = new VTextField(25);
-	private final JComboBox<String> permissionLevel = new JComboBox<>(
-			new String[] { "No requirement", "1", "2", "3", "4" });
+	private final AdvancedTranslatableComboBox<String> permissionLevel = new AdvancedTranslatableComboBox<>(
+			new String[] { "No requirement", "1", "2", "3", "4" },new String[]{"无权限","1","2","3","4"});
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
 	private BlocklyPanel blocklyPanel;

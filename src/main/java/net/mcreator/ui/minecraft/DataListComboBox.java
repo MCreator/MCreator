@@ -30,12 +30,14 @@ import net.mcreator.util.image.ImageUtils;
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataListComboBox extends JComboBox<DataListEntry> {
 
 	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
-		super(list.toArray(new DataListEntry[0]));
+		super();
 		init(mcreator);
 	}
 
@@ -94,7 +96,26 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 				setForeground(list.getForeground());
 			}
 
-			setText(value.getReadableName());
+			HashMap<String,String> tra = new java.util.HashMap<>(
+					Map.of("FARMER", "农夫", "FLETCHER", "制箭师", "CLERIC", "牧羊人", "ARMORER", "盔甲匠", "TOOLSMITH", "工具匠",
+							"BUTCHER", "屠夫", "CARTOGRAPHER", "制图师", "LIBRARIAN", "图书管理员", "MASON", "石匠", "SHEPHERD",
+							"牧羊人"));
+			tra.put("LEATHERWORKER","皮匠");
+			tra.put("FISHERMAN","渔夫");
+			tra.put("WATER","流水");
+			tra.put("LAVA","岩浆");
+			tra.put("MISC","杂项");
+			tra.put("BUILDING_BLOCKS","建筑方块");
+			tra.put("DECORATIONS","装饰性方块");
+			tra.put("REDSTONE","红石");
+			tra.put("TRANSPORTATION","交通运输");
+			tra.put("FOOD","食物");
+			tra.put("TOOLS","工具");
+			tra.put("COMBAT","战斗用品");
+			tra.put("BREWING","酿造");
+			tra.put("MATERIALS","材料");
+
+			setText(tra.getOrDefault(value.getReadableName(),value.getReadableName()));
 
 			if (value instanceof DataListEntry.Custom) {
 				setIcon(MCItem.getBlockIconBasedOnName(((DataListEntry.Custom) value).getModElement().getWorkspace(),

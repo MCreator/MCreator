@@ -56,8 +56,6 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		setOpaque(false);
 
-		villagerProfession.setRenderer(new JComboBox<>().getRenderer());
-
 		this.workspace = mcreator.getWorkspace();
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
