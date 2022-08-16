@@ -98,11 +98,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
 	private final AdvancedTranslatableComboBox<String> spawnRuinedPortal = new AdvancedTranslatableComboBox<>(
 			new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" },new String[]{
-					"无","标准","沙漠","丛林","沼泽","高山","海洋","地狱"
+					"无","标准","沙漠","丛林","沼泽","高山","海洋","下界"
 	});
 	private final AdvancedTranslatableComboBox<String> villageType = new AdvancedTranslatableComboBox<>(
 			new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" },new String[]{
-					"无","沙漠","平原","稀数草原","雪地","针树林"
+					"无","沙漠","平原","热带草原","雪地","针叶林"
 	});
 	private final AdvancedTranslatableComboBox<String> oceanRuinType = new AdvancedTranslatableComboBox<>(
 			new String[] { "NONE", "COLD", "WARM" },new String[]{"无","热带","寒带"});
@@ -143,7 +143,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final AdvancedTranslatableComboBox<String> vanillaTreeType = new AdvancedTranslatableComboBox<>(
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
-					"Mega spruce trees" },new String[]{"默认","大树","桦树","稀树草原树","巨型松树","巨型云杉"});
+					"Mega spruce trees" },new String[]{"默认","大树","桦树","金合欢树","巨型松树","巨型云杉树"});
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
