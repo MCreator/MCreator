@@ -37,7 +37,7 @@ import java.util.Map;
 public class DataListComboBox extends JComboBox<DataListEntry> {
 
 	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
-		super();
+		super(list.toArray(new DataListEntry[0]));
 		init(mcreator);
 	}
 

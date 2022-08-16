@@ -136,10 +136,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
 
-	private final JComboBox<String> biomeCategory = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> biomeCategory = new AdvancedTranslatableComboBox<>(
 			new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA", "ICY", "THEEND",
 					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER", "UNDERGROUND",
-					"MOUNTAIN" });
+					"MOUNTAIN" },new String[]{"无","针叶林","峭壁","丛林","平顶山","平原","热带草原","冰原","末地","沙滩","森林","海洋","沙漠","河流","沼泽","蘑菇岛","下界","地下"});
 
 	private final AdvancedTranslatableComboBox<String> vanillaTreeType = new AdvancedTranslatableComboBox<>(
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
@@ -159,7 +159,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	@Override protected void initGUI() {
 		oceanRuinType.setDisplayEnglish(true);
 		villageType.setDisplayEnglish(true);
-//		biomeCategory.setDisplayEnglish(true);
+		biomeCategory.setDisplayEnglish(true);
 		vanillaTreeType.setDisplayEnglish(true);
 		spawnRuinedPortal.setDisplayEnglish(true);
 		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
