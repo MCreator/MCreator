@@ -29,7 +29,7 @@ task exportReleasePreTask(type: DefaultTask, dependsOn: testClasses) {
 
 jar {
     archiveFileName = 'mcreator.jar'
-//    destinationDir(new File("D:/MCreator/lib"))
+    destinationDir(new File("D:/MCreator/lib"))
     manifest {
         attributes(
                 'Main-Class': 'net.mcreator.Launcher',

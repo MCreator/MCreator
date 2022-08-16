@@ -37,9 +37,9 @@ public class RecipeTypeConverter implements IConverter {
 			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack") != null
 					&& !jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack")
 					.getAsJsonObject().get("value").getAsString().trim().equals("")) { // treat as crafting
-				recipe.recipeType = "Crafting";
+				recipe.recipeType = "合成表-工作台";
 			} else { // treat as smelting
-				recipe.recipeType = "Smelting";
+				recipe.recipeType = "冶炼-熔炉";
 			}
 		} catch (Exception e) {
 			LOG.warn("Could not determine recipe type for " + input.getModElement().getName()

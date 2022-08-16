@@ -43,6 +43,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public class RecipeGUI extends ModElementGUI<Recipe> {
 
@@ -66,9 +68,41 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final VTextField group = new VTextField();
 
+	/**
+	 * Crafting 合成表-工作台
+	 * Smelting 冶炼-熔炉
+	 * Blasting 烧炼-高炉
+	 * Smoking 烟熏-烟熏炉
+	 * Stone cutting 切除-切石机
+	 * Campfire cooking 烧炼-篝火
+	 * Smithing 锻造-锻造台
+	 * Brewing 酿造-酿造台
+	 */
+
 	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "合成表-工作台", "冶炼-熔炉", "酿造-酿造台", "烧炼-高炉", "烟熏-烟熏炉", "切除-切石机",
-					"烧炼-篝火", "锻造-锻造台" });
+			new String[] { "合成表-工作台", "冶炼-熔炉", "酿造-酿造台", "烧炼-高炉", "烟熏-烟熏炉", "切割-切石机",
+					"烧炼-篝火", "锻造-锻造台" }){
+		private final Map<String,String> tra = Map.of("合成表-工作台","Crafting","冶炼-熔炉","Smelting","烧炼-高炉","Blasting"
+		,"烟熏-烟熏炉","Smoking","切除-切石机","Stone cutting","烧炼-篝火","Campfire cooking","锻造-锻造台","Smithing",
+				"酿造-酿造台","Brewing");
+		@Override
+		public String getSelectedItem(){
+			return tra.get(Objects.requireNonNull(super.getSelectedItem()).toString());
+		}
+
+		@Override public void setSelectedItem(Object anObject) {
+			if (anObject.toString().matches("[a-zA-Z]+")){
+				for (Map.Entry<String,String> entry:tra.entrySet()){
+					if (entry.getValue().equals(anObject)){
+						super.setSelectedItem(entry.getKey());
+						return;
+					}
+				}
+				return;
+			}
+			super.setSelectedItem(anObject);
+		}
+	};
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -134,14 +168,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipeShapeless.setOpaque(false);
 		recipeShapeless.addActionListener(event -> rm.setShapeless(recipeShapeless.isSelected()));
 
-		recipesPanel.add(crafting, "合成表-工作台");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(fm), "冶炼-熔炉");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(bm), "烧炼-高炉");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(sm), "烟熏-烟熏炉");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(scm), "切除-切石机");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(ccm), "烧炼-篝火");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(smcm), "锻造-锻造台");
-		recipesPanel.add(PanelUtils.totalCenterInPanel(brm), "酿造-酿造台");
+		recipesPanel.add(crafting, "crafting");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(fm), "smelting");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(bm), "blasting");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(sm), "smoking");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(scm), "stone cutting");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(ccm), "campfire cooking");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(smcm), "smithing");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(brm), "brewing");
 
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
@@ -184,17 +218,17 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		recipeType.addActionListener(e -> {
 			if (recipeType.getSelectedItem() != null) {
-				xpReward.setEnabled(!recipeType.getSelectedItem().equals("合成表-工作台") && !recipeType.getSelectedItem()
-						.equals("切除-切石机") && !recipeType.getSelectedItem().equals("锻造-锻造台")
-						&& !recipeType.getSelectedItem().equals("酿造-酿造台"));
-				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("合成表-工作台") && !recipeType.getSelectedItem()
-						.equals("切除-切石机") && !recipeType.getSelectedItem().equals("锻造-锻造台")
-						&& !recipeType.getSelectedItem().equals("酿造-酿造台"));
+				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
+						&& !recipeType.getSelectedItem().equals("Brewing"));
+				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
+						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
+						&& !recipeType.getSelectedItem().equals("Brewing"));
 
-				group.setEnabled(!recipeType.getSelectedItem().equals("酿造-酿造台"));
+				group.setEnabled(!recipeType.getSelectedItem().equals("Brewing"));
 
 				if (!isEditingMode() && cookingTime.isEnabled()) {
-					if (recipeType.getSelectedItem().equals("冶炼-熔炉")) {
+					if (recipeType.getSelectedItem().equals("Smelting")) {
 						cookingTime.setValue(200);
 					} else {
 						cookingTime.setValue(100);
@@ -213,45 +247,45 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if ("合成表-工作台".equals(recipeType.getSelectedItem())) {
+		if ("Crafting".equals(recipeType.getSelectedItem())) {
 			if (!rm.cb10.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_合成表-工作台_no_result"));
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_Crafting_no_result"));
 			} else if (!(rm.cb1.containsItem() || rm.cb2.containsItem() || rm.cb3.containsItem()
 					|| rm.cb4.containsItem() || rm.cb5.containsItem() || rm.cb6.containsItem() || rm.cb7.containsItem()
 					|| rm.cb8.containsItem() || rm.cb9.containsItem())) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
 			}
-		} else if ("冶炼-熔炉".equals(recipeType.getSelectedItem())) {
+		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
 			if (!fm.cb1.containsItem() || !fm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
 			}
-		} else if ("烧炼-高炉".equals(recipeType.getSelectedItem())) {
+		} else if ("Blasting".equals(recipeType.getSelectedItem())) {
 			if (!bm.cb1.containsItem() || !bm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
 			}
-		} else if ("烟熏-烟熏炉".equals(recipeType.getSelectedItem())) {
+		} else if ("Smoking".equals(recipeType.getSelectedItem())) {
 			if (!sm.cb1.containsItem() || !sm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
 			}
-		} else if ("切除-切石机".equals(recipeType.getSelectedItem())) {
+		} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
 			if (!scm.cb1.containsItem() || !scm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
 			}
-		} else if ("烧炼-篝火".equals(recipeType.getSelectedItem())) {
+		} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
 			if (!ccm.cb1.containsItem() || !ccm.cb2.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
 			}
-		} else if ("锻造-锻造台".equals(recipeType.getSelectedItem())) {
+		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
 			if (!smcm.cb1.containsItem() || !smcm.cb2.containsItem() || !smcm.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}
-		} else if ("酿造-酿造台".equals(recipeType.getSelectedItem())) {
+		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
 			if (!brm.cb1.containsItem() || !brm.cb2.containsItem() || !brm.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
@@ -269,7 +303,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		group.setText(recipe.group);
 
-		if ("合成表-工作台".equals(recipe.recipeType)) {
+		if ("Crafting".equals(recipe.recipeType)) {
 			recipeShapeless.setSelected(recipe.recipeShapeless);
 			rm.cb1.setBlock(recipe.recipeSlots[0]);
 			rm.cb2.setBlock(recipe.recipeSlots[3]);
@@ -283,35 +317,35 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			rm.cb10.setBlock(recipe.recipeReturnStack);
 			rm.sp.setValue(recipe.recipeRetstackSize);
 			rm.setShapeless(recipeShapeless.isSelected());
-		} else if ("冶炼-熔炉".equals(recipe.recipeType)) {
+		} else if ("Smelting".equals(recipe.recipeType)) {
 			fm.cb1.setBlock(recipe.smeltingInputStack);
 			fm.cb2.setBlock(recipe.smeltingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("烧炼-高炉".equals(recipe.recipeType)) {
+		} else if ("Blasting".equals(recipe.recipeType)) {
 			bm.cb1.setBlock(recipe.blastingInputStack);
 			bm.cb2.setBlock(recipe.blastingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("烟熏-烟熏炉".equals(recipe.recipeType)) {
+		} else if ("Smoking".equals(recipe.recipeType)) {
 			sm.cb1.setBlock(recipe.smokingInputStack);
 			sm.cb2.setBlock(recipe.smokingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("切除-切石机".equals(recipe.recipeType)) {
+		} else if ("Stone cutting".equals(recipe.recipeType)) {
 			scm.cb1.setBlock(recipe.stoneCuttingInputStack);
 			scm.cb2.setBlock(recipe.stoneCuttingReturnStack);
 			scm.sp.setValue(recipe.recipeRetstackSize);
-		} else if ("烧炼-篝火".equals(recipe.recipeType)) {
+		} else if ("Campfire cooking".equals(recipe.recipeType)) {
 			ccm.cb1.setBlock(recipe.campfireCookingInputStack);
 			ccm.cb2.setBlock(recipe.campfireCookingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("锻造-锻造台".equals(recipe.recipeType)) {
+		} else if ("Smithing".equals(recipe.recipeType)) {
 			smcm.cb1.setBlock(recipe.smithingInputStack);
 			smcm.cb2.setBlock(recipe.smithingInputAdditionStack);
 			smcm.cb3.setBlock(recipe.smithingReturnStack);
-		} else if ("酿造-酿造台".equals(recipe.recipeType)) {
+		} else if ("Brewing".equals(recipe.recipeType)) {
 			brm.cb1.setBlock(recipe.brewingInputStack);
 			brm.cb2.setBlock(recipe.brewingIngredientStack);
 			brm.cb3.setBlock(recipe.brewingReturnStack);
@@ -322,7 +356,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		Recipe recipe = new Recipe(modElement);
 		recipe.recipeType = (String) recipeType.getSelectedItem();
 
-		if ("合成表-工作台".equals(recipe.recipeType)) {
+		if ("Crafting".equals(recipe.recipeType)) {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
 			recipeSlots[0] = rm.cb1.getBlock();
 			recipeSlots[3] = rm.cb2.getBlock();
@@ -337,35 +371,35 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.recipeShapeless = recipeShapeless.isSelected();
 			recipe.recipeReturnStack = rm.cb10.getBlock();
 			recipe.recipeSlots = recipeSlots;
-		} else if ("冶炼-熔炉".equals(recipe.recipeType)) {
+		} else if ("Smelting".equals(recipe.recipeType)) {
 			recipe.smeltingInputStack = fm.getBlock();
 			recipe.smeltingReturnStack = fm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("烧炼-高炉".equals(recipe.recipeType)) {
+		} else if ("Blasting".equals(recipe.recipeType)) {
 			recipe.blastingInputStack = bm.getBlock();
 			recipe.blastingReturnStack = bm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("烟熏-烟熏炉".equals(recipe.recipeType)) {
+		} else if ("Smoking".equals(recipe.recipeType)) {
 			recipe.smokingInputStack = sm.getBlock();
 			recipe.smokingReturnStack = sm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("切除-切石机".equals(recipe.recipeType)) {
+		} else if ("Stone cutting".equals(recipe.recipeType)) {
 			recipe.recipeRetstackSize = (int) scm.sp.getValue();
 			recipe.stoneCuttingInputStack = scm.getBlock();
 			recipe.stoneCuttingReturnStack = scm.getBlock2();
-		} else if ("烧炼-篝火".equals(recipe.recipeType)) {
+		} else if ("Campfire cooking".equals(recipe.recipeType)) {
 			recipe.campfireCookingInputStack = ccm.getBlock();
 			recipe.campfireCookingReturnStack = ccm.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("锻造-锻造台".equals(recipe.recipeType)) {
+		} else if ("Smithing".equals(recipe.recipeType)) {
 			recipe.smithingInputStack = smcm.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smcm.cb2.getBlock();
 			recipe.smithingReturnStack = smcm.cb3.getBlock();
-		} else if ("酿造-酿造台".equals(recipe.recipeType)) {
+		} else if ("Brewing".equals(recipe.recipeType)) {
 			recipe.brewingInputStack = brm.cb1.getBlock();
 			recipe.brewingIngredientStack = brm.cb2.getBlock();
 			recipe.brewingReturnStack = brm.cb3.getBlock();

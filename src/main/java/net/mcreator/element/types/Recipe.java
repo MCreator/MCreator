@@ -101,7 +101,7 @@ import java.util.Arrays;
 		} else if ("Smelting".equals(recipeType) && !smeltingInputStack.isEmpty() && !smeltingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateRecipePreviewPicture(getModElement().getWorkspace(),
 					new MItemBlock[] { smeltingInputStack }, smeltingReturnStack);
-		} else if ("Blasting".equals(recipeType) && !blastingInputStack.isEmpty() && !blastingReturnStack.isEmpty()) {
+		} else if ("Campfire cooking".equals(recipeType) && !blastingInputStack.isEmpty() && !blastingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateBlastingPreviewPicture(getModElement().getWorkspace(),
 					blastingInputStack, blastingReturnStack);
 		} else if ("Smoking".equals(recipeType) && !smokingInputStack.isEmpty() && !smokingReturnStack.isEmpty()) {
