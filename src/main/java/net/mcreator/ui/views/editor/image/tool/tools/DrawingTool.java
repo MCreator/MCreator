@@ -20,6 +20,7 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -33,6 +34,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.util.Map;
 
 public class DrawingTool extends AbstractModificationTool {
 
@@ -51,7 +53,8 @@ public class DrawingTool extends AbstractModificationTool {
 		super(name, description, icon, canvas, colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
-		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
+		AdvancedTranslatableComboBox<Shape> shapeBox = new AdvancedTranslatableComboBox<>(Shape.values(), Map.of(Shape.SQUARE,"正方形",Shape.FRAME,"框选",Shape.CIRCLE,"圆形",Shape.RING,"环形"));
+		shapeBox.setDisplayEnglish(true);
 		shapeBox.setSelectedIndex(0);
 		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
 				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);

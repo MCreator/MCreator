@@ -43,17 +43,19 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 		matchString = stringMatcher;
 		setRenderer(new TranslatableCellRender());
 	}
-	public AdvancedTranslatableComboBox(Map<T,String> diction){
-		super();
+	public AdvancedTranslatableComboBox(T[] origin,Map<T,String> diction){
+		super(origin);
 		this.diction = diction;
 		setRenderer(new TranslatableCellRender());
 	}
 	public AdvancedTranslatableComboBox(T[] origin,String[] translated){
 		super(origin);
 		diction = new HashMap<>();
-		for (int i=0;i<translated.length;i++){
-			if (i<origin.length)
+		for (int i=0;i<origin.length;i++){
+			if (i<translated.length)
 				diction.put(origin[i],translated[i]);
+			else
+				diction.put(origin[i],origin[i].toString());
 		}
 		setRenderer(new TranslatableCellRender());
 	}

@@ -27,6 +27,7 @@ import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
@@ -98,7 +99,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 		JPanel templates = new JPanel(new GridLayout(2, 2, 5, 5));
 		templates.setBorder(new EmptyBorder(5, 2, 10, 2));
 
-		JComboBox<String> templateSelector = new JComboBox<>(templateList);
+		AdvancedTranslatableComboBox<String> templateSelector = new AdvancedTranslatableComboBox<>(templateList,new
+				String[]{"随机","剑","镐⛏","斧头","铲子","锄头","剪刀","唱片","普通药水","喷溅药水","滞留药水","矿物"});
 		templateSelector.setSelectedIndex(0);
 		templates.add(L10N.label("dialog.imageeditor.template_generator"));
 		templates.add(templateSelector);

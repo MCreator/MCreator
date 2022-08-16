@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -84,10 +85,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> worldGenType = new JComboBox<>(
-			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
+	private final AdvancedTranslatableComboBox<String> worldGenType = new AdvancedTranslatableComboBox<>(
+			new String[] { "Normal world gen", "Nether like gen", "End like gen" },new String[]{"类主世界","类地狱","类末地"});
 
-	private final JComboBox<String> sleepResult = new JComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
+	private final AdvancedTranslatableComboBox<String> sleepResult = new AdvancedTranslatableComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" },
+	new String[]{"允许","禁止","床会爆炸"});
 
 	private BiomeListField biomesInDimension;
 
@@ -108,6 +110,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	public DimensionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
+		sleepResult.setDisplayEnglish(true);
 		this.initGUI();
 		super.finalizeGUI();
 	}

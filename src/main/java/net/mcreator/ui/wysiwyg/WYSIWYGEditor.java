@@ -37,6 +37,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -80,7 +81,7 @@ public class WYSIWYGEditor extends JPanel {
 	public JButton slot2 = new JButton(UIRES.get("32px.addoutslot"));
 	public JButton checkbox = new JButton(UIRES.get("32px.addcheckbox"));
 
-	public JComboBox<String> lol = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public AdvancedTranslatableComboBox<String> lol = new AdvancedTranslatableComboBox<>(new String[] { "GUI without slots", "GUI with slots" },new String[]{"纯GUI","带可互动组件得GUI"});
 
 	private boolean opening = false;
 
@@ -99,6 +100,8 @@ public class WYSIWYGEditor extends JPanel {
 
 	public WYSIWYGEditor(final MCreator mcreator, boolean isNotOverlayType) {
 		super(new BorderLayout(5, 0));
+		lol.setDisplayEnglish(true);
+
 		setOpaque(false);
 
 		this.mcreator = mcreator;

@@ -59,6 +59,11 @@ public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
+		add(new JEmptyBox(30, 30));
+
+		add(PanelUtils.westAndEastElement(new JLabel("项目Java"),PanelUtils.centerAndEastElement(workspaceDialogPanel.javaHome,
+				workspaceDialogPanel.selectJavaHome,5,5)));
+
 		add(new JEmptyBox(30, 170));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
@@ -68,6 +73,7 @@ public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
 		validationGroup.addValidationElement(workspaceDialogPanel.packageName);
 		validationGroup.addValidationElement(workspaceFolder);
+		validationGroup.addValidationElement(workspaceDialogPanel.javaHome);
 
 		workspaceDialogPanel.setFlavorFilter(GeneratorFlavor.FABRIC);
 

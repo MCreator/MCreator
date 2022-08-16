@@ -76,6 +76,7 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
 		validationGroup.addValidationElement(workspaceDialogPanel.packageName);
 		validationGroup.addValidationElement(workspaceFolder);
+		validationGroup.addValidationElement(workspaceDialogPanel.javaHome);
 
 		workspaceDialogPanel.setFlavorFilter(GeneratorFlavor.FORGE);
 

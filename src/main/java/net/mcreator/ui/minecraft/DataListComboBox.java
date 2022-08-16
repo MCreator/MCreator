@@ -115,6 +115,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 			tra.put("BREWING","酿造");
 			tra.put("MATERIALS","材料");
 
+
 			setText(tra.getOrDefault(value.getReadableName(),value.getReadableName()));
 
 			if (value instanceof DataListEntry.Custom) {

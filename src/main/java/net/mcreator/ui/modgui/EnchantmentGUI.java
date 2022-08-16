@@ -30,10 +30,12 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.util.MapUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -47,9 +49,12 @@ import java.util.stream.Collectors;
 public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> type = new JComboBox<>();
-	private final JComboBox<String> rarity = new JComboBox<>(
-			new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
+	private final AdvancedTranslatableComboBox<String> type = new AdvancedTranslatableComboBox<>(MapUtils.createMap(
+			"BREAKABLE","耐久类","VANISHABLE","消失类","ARMOR","盔甲","ARMOR_FEET","靴子","ARMOR_LEGS",
+			"裤腿","ARMOR_CHEST","胸甲","ARMOR-HEAD","头盔","WEAPON","武器","DIGGER","挖掘类","FISHING_ROD","渔具",
+			"TRIDENT","三叉戟","BOW","弓","WEARABLE","可穿戴的","CROSSBOW","弩"),Object::toString);
+	private final AdvancedTranslatableComboBox<String> rarity = new AdvancedTranslatableComboBox<>(
+			new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" },new String[]{"普通的","不寻常的","稀有的","史诗的"});
 
 	private final JSpinner minLevel = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
 	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
@@ -74,6 +79,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected void initGUI() {
+		rarity.setDisplayEnglish(true);
 		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		compatibleEnchantments = new EnchantmentListField(mcreator);
 

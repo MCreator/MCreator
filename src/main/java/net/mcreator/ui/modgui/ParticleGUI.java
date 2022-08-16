@@ -33,6 +33,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -69,12 +70,13 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox animate = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT", "LIT" });
+	private final AdvancedTranslatableComboBox<String> renderType = new AdvancedTranslatableComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT", "LIT" },new String[]{"不透明","半透明","发光"});
 
 	private ProcedureSelector additionalExpiryCondition;
 
 	public ParticleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
+		renderType.setDisplayEnglish(true);
 		this.initGUI();
 		super.finalizeGUI();
 	}

@@ -21,15 +21,18 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.component.JTitledComponentWrapper;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.util.MapUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 
 public class ShapeTool extends AbstractModificationTool {
 
@@ -43,7 +46,8 @@ public class ShapeTool extends AbstractModificationTool {
 				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
-		JComboBox<Shape> shapeBox = new JComboBox<>(Shape.values());
+		AdvancedTranslatableComboBox<Shape> shapeBox = new AdvancedTranslatableComboBox<>(Shape.values(), Map.of(Shape.SQUARE,"正方形",Shape.FRAME,"框选",Shape.CIRCLE,"圆形",Shape.RING,"环形"));
+		shapeBox.setDisplayEnglish(true);
 		shapeBox.setSelectedIndex(0);
 		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
 				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);

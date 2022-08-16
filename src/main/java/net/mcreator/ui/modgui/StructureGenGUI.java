@@ -36,6 +36,7 @@ import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.DimensionListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
@@ -56,14 +57,14 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	private DimensionListField spawnWorldTypes;
 
-	private final JComboBox<String> spawnLocation = new JComboBox<>(new String[] { "Ground", "Air", "Underground" });
-	private final JComboBox<String> ignoreBlocks = new JComboBox<>(
-			new String[] { "STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR" });
+	private final AdvancedTranslatableComboBox<String> spawnLocation = new AdvancedTranslatableComboBox<>(new String[] { "Ground", "Air", "Underground" },new String[] {"地面","空中","地下"});
+	private final AdvancedTranslatableComboBox<String> ignoreBlocks = new AdvancedTranslatableComboBox<>(
+			new String[] { "STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR" },new String[]{"结构方块","空气和结构方块","空气"});
 
 	private final JSpinner spawnProbability = new JSpinner(new SpinnerNumberModel(10000, 0, 1000000, 1));
 
-	private final JComboBox<String> surfaceDetectionType = new JComboBox<>(
-			new String[] { "First motion blocking block", "First block" });
+	private final AdvancedTranslatableComboBox<String> surfaceDetectionType = new AdvancedTranslatableComboBox<>(
+			new String[] { "First motion blocking block", "First block" },new String[]{"第一个被侦测得阻塞方块","第一个方块"});
 
 	private final JSpinner spawnHeightOffset = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 	private final JSpinner spawnOffsetX = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
@@ -87,6 +88,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	public StructureGenGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
+		ignoreBlocks.setDisplayEnglish(true);
+		surfaceDetectionType.setDisplayEnglish(true);
 		this.initGUI();
 		super.finalizeGUI();
 	}

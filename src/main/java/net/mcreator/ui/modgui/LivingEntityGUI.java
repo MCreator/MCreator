@@ -63,6 +63,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.MapUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -151,8 +152,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JCheckBox hasSpawnEgg = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> mobSpawningType = new JComboBox<>(
-			ElementUtil.getDataListAsStringArray("mobspawntypes"));
+	private final AdvancedTranslatableComboBox<String> mobSpawningType = new AdvancedTranslatableComboBox<>(
+			ElementUtil.getDataListAsStringArray("mobspawntypes"),new String[]{"怪物","动物","洞穴","地下水生","水生","洞穴水生","杂项","美西螈"});
 
 	private MCItemHolder mobDrop;
 	private MCItemHolder equipmentMainHand;
@@ -199,23 +200,26 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
 	//mob bases
-	private final JComboBox<String> aiBase = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> aiBase = new AdvancedTranslatableComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().toArray(String[]::new));
+					"IronGolem").sorted().toArray(String[]::new), MapUtils.createMap("(none)","无","Creeper","爬行者",
+			"Skeleton","骷髅","Enderman","末影人","Blaze","烈焰人","Slime","史莱姆","Witch","女巫","Zombie","僵尸","MagmaCube","岩浆史莱姆"
+			,"Pig","猪","Villager","村民","Wolf","狼","Cow","牛","Bat","蝙蝠","Chicken","鸡","Ocelot","豹猫","Squid","鱿鱼",
+			"Horse","马","Spider","蜘蛛"));
 
 	private final AdvancedTranslatableComboBox<String> mobBehaviourType = new AdvancedTranslatableComboBox<>(new String[] { "Mob", "Creature" }
 			,new String[]{"怪物","动物"});
-	private final ComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-	private final JComboBox<String> bossBarColor = new JComboBox<>(
-			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
+	private final AdvancedTranslatableComboBox<String> mobCreatureType = new AdvancedTranslatableComboBox<>(
+			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" },new String[]{"不明确的","不死","节肢","灾厄","水生"});
+	private final AdvancedTranslatableComboBox<String> bossBarColor = new AdvancedTranslatableComboBox<>(
+			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" },new String[]{"粉色","蓝色","红色","绿色","黄色","紫色","白色"});
 	private final JComboBox<String> bossBarType = new JComboBox<>(
 			new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
 
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
-	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
-			new String[] { "Spread", "Top", "Tube", "Plane" });
+	private final AdvancedTranslatableComboBox<String> particleSpawningShape = new AdvancedTranslatableComboBox<>(
+			new String[] { "Spread", "Top", "Tube", "Plane" },new String[]{"扩散","顶部","管","平面"});
 	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
 	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 
@@ -246,6 +250,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
+		mobBehaviourType.setDisplayEnglish(true);
+		mobCreatureType.setDisplayEnglish(true);
+		mobSpawningType.setDisplayEnglish(true);
+		particleSpawningShape.setDisplayEnglish(true);
+		aiBase.setDisplayEnglish(true);
 		this.initGUI();
 		super.finalizeGUI();
 	}

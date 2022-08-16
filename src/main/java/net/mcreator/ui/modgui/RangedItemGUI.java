@@ -42,6 +42,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -81,8 +82,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
-	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "bow", "block", "crossbow", "drink", "eat", "none", "spear" });
+	private final AdvancedTranslatableComboBox<String> animation = new AdvancedTranslatableComboBox<>(
+			new String[] { "bow", "block", "crossbow", "drink", "eat", "none", "spear" },new String[]{"弓","方块","弩","饮用","吃","无","矛"});
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;
@@ -129,6 +130,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	}
 
 	@Override protected void initGUI() {
+		animation.setDisplayEnglish(true);
 		ammoItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		bulletItemTexture = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
