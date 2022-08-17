@@ -67,7 +67,7 @@ public class RulesDialog {
 			<p><em>Q：构建失败怎么办？（创建工作区弹窗失败）</em></p>
 			<p><em>A：点左一按钮RE-RUN。或者下载一群群文件已构建版本。</em></p>
 			<p><em>Q：兼容什么版本？</em></p>
-			<p><em>A：JavaForge1.12.2+版本，Fabric1.14.4+版本，基岩版，数据包等。</em></p>
+			<p><em>A：JavaForge1.16.5+版本。</em></p>
 			<p><em>Q：已构建文件如何解压？</em></p>
 			<p><em>A：属于分卷压缩，解压part1自动解压所有。解压至C:\\Users\\你的用户名 下。</em></p>
 			<p><em>Q：如何建模？</em></p>
