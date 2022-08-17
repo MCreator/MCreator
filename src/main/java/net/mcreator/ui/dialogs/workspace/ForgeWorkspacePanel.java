@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.workspace;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -60,6 +61,8 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
 		add(new JEmptyBox(30,30));
+
+		workspaceDialogPanel.javaHome.setText(GradleUtils.getJavaHome());
 
 		add(PanelUtils.westAndEastElement(new JLabel("项目Java"),PanelUtils.centerAndEastElement(workspaceDialogPanel.javaHome,
 				workspaceDialogPanel.selectJavaHome,5,5)));

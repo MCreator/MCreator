@@ -163,7 +163,6 @@ public class WorkspaceDialogs {
 		private boolean packageNameManuallyEntered = false;
 
 		WorkspaceDialogPanel(Window parent, @Nullable Workspace workspace) {
-			javaHome.setText(GradleUtils.getJavaHome());
 			setLayout(new BorderLayout());
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces

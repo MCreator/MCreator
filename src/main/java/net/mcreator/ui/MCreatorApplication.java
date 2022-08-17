@@ -39,6 +39,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
+import net.mcreator.ui.dialogs.RulesDialog;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -388,8 +389,11 @@ public final class MCreatorApplication {
 		System.exit(-1);
 	}
 
-	void showWorkspaceSelector() {
+	void showWorkspaceSelector()  {
 		workspaceSelector.setVisible(true);
+		if (!PreferencesManager.PREFERENCES.hidden.acceptRules){
+			new RulesDialog(workspaceSelector);
+		}
 	}
 
 	List<RecentWorkspaceEntry> getRecentWorkspaces() {

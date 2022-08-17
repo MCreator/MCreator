@@ -144,6 +144,7 @@ public class PreferencesData {
 		public WorkspaceSortType workspaceSortType = WorkspaceSortType.CREATED;
 		public String uiTheme = "default_dark";
 		public boolean enableJavaPlugins = false;
+		public boolean acceptRules = false;
 	}
 
 	public enum WorkspaceSortType {
