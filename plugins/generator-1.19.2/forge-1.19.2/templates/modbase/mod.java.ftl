@@ -33,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 	public ${JavaModName}() {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 	}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
