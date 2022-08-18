@@ -30,11 +30,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class PreferenceEntry<T> {
+
 	private final String id;
 	protected T value;
-	private transient final PreferenceSection section;
+	private transient final String section;
 
-	public PreferenceEntry(String id, T value, PreferenceSection section) {
+	public PreferenceEntry(String id, T value, String section) {
 		this.id = id;
 		this.value = value;
 		this.section = section;
@@ -83,7 +84,7 @@ public class PreferenceEntry<T> {
 		this.value = (T) object;
 	}
 
-	public PreferenceSection getSection() {
+	public String getSection() {
 		return section;
 	}
 

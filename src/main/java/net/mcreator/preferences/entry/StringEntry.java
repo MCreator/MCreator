@@ -21,22 +21,19 @@ package net.mcreator.preferences.entry;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.EventListener;
 import java.util.EventObject;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class StringEntry extends PreferenceEntry<String> {
 
 	private transient final String[] choices;
 	private transient final boolean editable;
 
-	public StringEntry(String id, String value, PreferenceSection section, String... choices) {
+	public StringEntry(String id, String value, String section, String... choices) {
 		this(id, value, section, false, choices);
 	}
 
-	public StringEntry(String id, String value, PreferenceSection section, boolean editable, String... choices) {
+	public StringEntry(String id, String value, String section, boolean editable, String... choices) {
 		super(id, value, section);
 		this.choices = choices;
 		this.editable = editable;

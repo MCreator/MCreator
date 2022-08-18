@@ -30,9 +30,16 @@ import java.awt.*;
 import java.io.File;
 import java.util.Locale;
 
-import static net.mcreator.preferences.entry.PreferenceSection.*;
-
 public class Preferences {
+	// Sections
+	public static final String UI = "ui";
+	public static final String BACKUPS = "backups";
+	public static final String BLOCKLY = "blockly";
+	public static final String IDE = "ide";
+	public static final String GRADLE = "gradle";
+	public static final String BEDROCK = "bedrock";
+	public static final String NOTIFICATIONS = "notifications";
+	public static final String HIDDEN = "hidden";
 
 	// UI
 	public PreferenceEntry<Locale> language;

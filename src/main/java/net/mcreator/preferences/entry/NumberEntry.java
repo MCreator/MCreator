@@ -32,11 +32,11 @@ public class NumberEntry extends PreferenceEntry<Double> {
 	public static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
 	protected transient double min, max;
-	public NumberEntry(String id, int value, PreferenceSection section) {
+	public NumberEntry(String id, int value, String section) {
 		this(id, value, section, Double.NaN, Double.NaN);
 	}
 
-	public NumberEntry(String id, double value, PreferenceSection section, double min, double max) {
+	public NumberEntry(String id, double value, String section, double min, double max) {
 		super(id, value, section);
 		this.min = min;
 		this.max = max;

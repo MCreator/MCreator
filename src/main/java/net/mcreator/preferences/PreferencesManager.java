@@ -89,7 +89,7 @@ public class PreferencesManager {
 				Arrays.stream(list).forEach(entry -> PREFERENCE_ENTRIES.forEach(preference -> {
 					if (preference.getID().equals(entry.getID())) {
 						if (preference.getValue() instanceof Locale)
-							preference.setValue(new Locale((String) entry.getValue()));
+							preference.setValue(Locale.forLanguageTag(((String) entry.getValue()).replace("_", "-")));
 						else if (preference.getValue() instanceof Color)
 							preference.setValue(new Color((int) (double) entry.getValue()));
 						else
@@ -117,7 +117,7 @@ public class PreferencesManager {
 	public static void convertOldPreferences(File file) {
 		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
 		PREFERENCE_ENTRIES.forEach(entry -> {
-			JsonElement value = obj.get(entry.getSection().name().toLowerCase()).getAsJsonObject()
+			JsonElement value = obj.get(entry.getSection()).getAsJsonObject()
 					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
 							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
 			if (value == null)
@@ -149,7 +149,7 @@ public class PreferencesManager {
 		return entry;
 	}
 
-	public static List<PreferenceEntry<?>> getPreferences() {
+	public static List<PreferenceEntry<?>> getPreferenceEntries() {
 		return PREFERENCE_ENTRIES;
 	}
 }

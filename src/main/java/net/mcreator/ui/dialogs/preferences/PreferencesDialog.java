@@ -20,7 +20,6 @@ package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.*;
 import net.mcreator.preferences.entry.PreferenceEntry;
-import net.mcreator.preferences.entry.PreferenceSection;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -158,14 +157,13 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void loadSections() {
-		// Create a JPanel for all required sections
-		Arrays.stream(PreferenceSection.values()).filter(s -> !s.equals(PreferenceSection.HIDDEN))
-				.forEach(s -> addPreferenceSection(s.name().toLowerCase()));
-
 		// Add preference entries
-		PreferencesManager.getPreferences().stream().filter(e -> !e.getSection().equals(PreferenceSection.HIDDEN))
-				.toList().forEach(entry -> entries.put(entry,
-						generateEntryComponent(entry, sectionPanels.get(entry.getSection().name().toLowerCase()))));
+		PreferencesManager.getPreferenceEntries().stream().filter(e -> !e.getSection().equals(Preferences.HIDDEN))
+				.toList().forEach(entry -> {
+					if (!sectionPanels.containsKey(entry.getSection()))
+						addPreferenceSection(entry.getSection());
+					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
+				});
 
 		sections.setSelectedIndex(0);
 
@@ -184,6 +182,9 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void addPreferenceSection(String section) {
+		if (section.equals(Preferences.HIDDEN))
+			return;
+
 		String name = L10N.t("preferences.section." + section);
 		String description = L10N.t("preferences.section." + section + ".description");
 		model.addElement(name);
@@ -203,7 +204,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void storePreferences() {
-		for (PreferenceEntry<?> entry : PreferencesManager.getPreferences()) {
+		for (PreferenceEntry<?> entry : PreferencesManager.getPreferenceEntries()) {
 			JComponent component = entries.get(entry);
 			if (component instanceof JSpinner spinner) {
 				entry.setValue(spinner.getValue());
@@ -220,9 +221,8 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private JComponent generateEntryComponent(PreferenceEntry<?> entry, JPanel placeInside) {
-		String sectionId = entry.getSection().name().toLowerCase();
-		String name = L10N.t("preferences." + sectionId + "." + entry.getID());
-		String description = L10N.t("preferences." + sectionId + "." + entry.getID() + ".description");
+		String name = L10N.t("preferences." + entry.getSection() + "." + entry.getID());
+		String description = L10N.t("preferences." + entry.getSection() + "." + entry.getID() + ".description");
 		if (description == null)
 			description = "";
 
