@@ -139,12 +139,12 @@ public class PreferencesDialog extends MCreatorDialog {
 		}
 
 		ok.addActionListener(event -> {
-			storePreferences();
+			savePreferences();
 			setVisible(false);
 		});
 
 		apply.addActionListener(event -> {
-			storePreferences();
+			savePreferences();
 			apply.setEnabled(false);
 		});
 
@@ -161,7 +161,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		PreferencesManager.getPreferenceEntries().stream().filter(e -> !e.getSection().equals(Preferences.HIDDEN))
 				.toList().forEach(entry -> {
 					if (!sectionPanels.containsKey(entry.getSection()))
-						addPreferenceSection(entry.getSection());
+						createPreferenceSection(entry.getSection());
 					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
 				});
 
@@ -181,7 +181,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				"png");
 	}
 
-	private void addPreferenceSection(String section) {
+	private void createPreferenceSection(String section) {
 		if (section.equals(Preferences.HIDDEN))
 			return;
 
@@ -192,18 +192,18 @@ public class PreferencesDialog extends MCreatorDialog {
 		JPanel sectionPanel = new JPanel(new GridBagLayout());
 		sectionPanel.setOpaque(false);
 
-		JComponent titleBar = L10N.label("dialog.preferences.description", name, description);
-		titleBar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
+		JComponent titlebar  = L10N.label("dialog.preferences.description", name, description);
+		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
 
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		preferences.add(PanelUtils.northAndCenterElement(titleBar, scrollPane), name);
+		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
 
 		sectionPanels.put(section, sectionPanel);
 
 	}
 
-	private void storePreferences() {
+	private void savePreferences() {
 		for (PreferenceEntry<?> entry : PreferencesManager.getPreferenceEntries()) {
 			JComponent component = entries.get(entry);
 			if (component instanceof JSpinner spinner) {

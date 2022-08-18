@@ -29,6 +29,12 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * <p>This is the basic and the common class for all preferences of the software.
+ * It stores everything the preference needs to have to be used or saved, such as an ID, its value or its {@link JComponent} for {@link PreferencesDialog}.
+ * This is also the class used to save each preference inside the user's folder. However, only required (fields without {@code transient}) fields are saved.</p>
+ * @param <T> <p>The type of the stored value.</p>
+ */
 public class PreferenceEntry<T> {
 
 	private final String id;
@@ -40,7 +46,14 @@ public class PreferenceEntry<T> {
 		this.value = value;
 		this.section = section;
 	}
-	
+
+	/**
+	 * <p>Generate a {@link JComponent} for the {@link PreferencesDialog}, so users can change the value.</p>
+	 *
+	 * @param parent <p>The component's parent, which is the opened {@link PreferencesDialog}.</p>
+	 * @param fct <p>This is the {@link Consumer} used to enable the apply button when the value of the {@link JComponent} is changed.</p>
+	 * @return <p>The {@link JComponent} to use inside the {@link PreferencesDialog} for all preference entries using the same type.</p>
+	 */
 	public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 		if (value instanceof Boolean bool) {
 			JCheckBox box = new JCheckBox();
