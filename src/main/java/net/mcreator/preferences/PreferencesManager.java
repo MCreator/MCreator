@@ -40,6 +40,8 @@ package net.mcreator.preferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.entry.PreferenceEntry;
@@ -70,19 +72,26 @@ public class PreferencesManager {
 	}
 
 	public static void loadPreferences() {
-		if (!preferencesFile.exists()) {
+		if (!preferencesFile.isFile()) {
+			if (UserFolderManager.getFileFromUserFolder("preferences").exists()) {
+				LOG.info("Old preferences detected. Converting them to the new format.");
+				convertOldPreferences(UserFolderManager.getFileFromUserFolder("preferences"));
+				savePreferences();
+				return;
+			}
 			LOG.info("Preferences not created yet. Loading defaults.");
 			savePreferences();
 		} else {
 			try {
 				LOG.debug("Loading preferences from " + preferencesFile);
-				PreferenceEntry<?>[] list = gson.fromJson(FileIO.readFileToString(preferencesFile), PreferenceEntry[].class);
+				PreferenceEntry<?>[] list = gson.fromJson(FileIO.readFileToString(preferencesFile),
+						PreferenceEntry[].class);
 				Arrays.stream(list).forEach(entry -> PREFERENCE_ENTRIES.forEach(preference -> {
 					if (preference.getID().equals(entry.getID())) {
 						if (preference.getValue() instanceof Locale)
 							preference.setValue(new Locale((String) entry.getValue()));
 						else if (preference.getValue() instanceof Color)
-							preference.setValue(new Color((int)(double)entry.getValue()));
+							preference.setValue(new Color((int) (double) entry.getValue()));
 						else
 							preference.setValue(entry.getValue());
 					}
@@ -103,6 +112,32 @@ public class PreferencesManager {
 				entry.setValue(color.getRGB());
 		});
 		FileIO.writeStringToFile(gson.toJson(list), preferencesFile);
+	}
+
+	public static void convertOldPreferences(File file) {
+		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
+		PREFERENCE_ENTRIES.forEach(entry -> {
+			JsonElement value = obj.get(entry.getSection().name().toLowerCase()).getAsJsonObject()
+					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
+							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
+			if (value == null)
+				return;
+
+			if (entry.getValue() instanceof Double)
+				entry.setValue(value.getAsDouble());
+			else if (entry.getValue() instanceof String)
+				entry.setValue(value.getAsString());
+			else if (entry.getValue() instanceof Boolean)
+				entry.setValue(value.getAsBoolean());
+			else if (entry.getValue() instanceof Locale)
+				entry.setValue(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
+			else if (entry.getValue() instanceof Color)
+				entry.setValue(new Color(value.getAsJsonObject().get("value").getAsInt()));
+			else if (entry.getValue() instanceof WorkspacePreferenceEnums.WorkspaceIconSize)
+				entry.setValue(WorkspacePreferenceEnums.WorkspaceIconSize.valueOf(value.getAsString()));
+			else if (entry.getValue() instanceof WorkspacePreferenceEnums.WorkspaceSortType)
+				entry.setValue(WorkspacePreferenceEnums.WorkspaceSortType.valueOf(value.getAsString()));
+		});
 	}
 
 	public static void reset() {

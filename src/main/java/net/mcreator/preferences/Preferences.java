@@ -108,10 +108,10 @@ public class Preferences {
 		interfaceAccentColor = PreferencesManager.register(new PreferenceEntry<>("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, UI));
 		backgroundSource = PreferencesManager.register(new StringEntry("backgroundSource", "All", UI,
 				"All", "Current theme", "Custom", "None"));
-		aaText = PreferencesManager.register(new PreferenceEntry<>("aatext", true, UI));
+		aaText = PreferencesManager.register(new PreferenceEntry<>("aaText", true, UI));
 		textAntialiasingType = PreferencesManager.register(new StringEntry("textAntialiasingType", "All", UI,
 				"on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr"));
-		usemacOSMenuBar = PreferencesManager.register(new PreferenceEntry<>("usemacOSMenuBar", true, UI));
+		usemacOSMenuBar = PreferencesManager.register(new PreferenceEntry<>("useMacOSMenuBar", true, UI));
 		useNativeFileChooser = PreferencesManager.register(new PreferenceEntry<>("useNativeFileChooser", OS.getOS() == OS.WINDOWS, UI));
 		expandSectionsByDefault = PreferencesManager.register(new PreferenceEntry<>("expandSectionsByDefault", false, UI));
 		use2DAcceleration = PreferencesManager.register(new PreferenceEntry<>("use2DAcceleration", false, UI));

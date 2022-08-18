@@ -68,7 +68,6 @@ public class MCreatorTheme extends OceanTheme {
 				MAIN_TINT = PreferencesManager.PREFERENCES.interfaceAccentColor.getValue();
 			}
 		} else {
-			System.out.println(PreferencesManager.PREFERENCES.interfaceAccentColor.getValue());
 			MAIN_TINT = PreferencesManager.PREFERENCES.interfaceAccentColor.getValue();
 		}
 
