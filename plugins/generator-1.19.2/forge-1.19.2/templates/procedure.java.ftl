@@ -80,10 +80,6 @@ public class ${name}Procedure {
 			) return <#if return_type??>${return_type.getDefaultValue(generator.getWorkspace())}</#if>;
 		</#if>
 
-		<#list localvariables as var>
-			<@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/>
-		</#list>
-
 		${procedurecode}
 	}
 
