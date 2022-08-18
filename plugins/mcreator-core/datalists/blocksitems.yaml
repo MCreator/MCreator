@@ -6909,3 +6909,7 @@
 - Items.GOAT_HORN:
   readable_name: "Goat Horn"
   type: item
+
+- Items.ECHO_SHARD:
+  readable_name: "Echo Shard"
+  type: item
