@@ -19,10 +19,8 @@
 package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.*;
-import net.mcreator.preferences.entry.NumberEntry;
 import net.mcreator.preferences.entry.PreferenceEntry;
 import net.mcreator.preferences.entry.PreferenceSection;
-import net.mcreator.preferences.entry.StringEntry;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -41,9 +39,6 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Field;
-import java.util.List;
 import java.util.*;
 
 public class PreferencesDialog extends MCreatorDialog {
@@ -59,7 +54,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
 
-	private final Map<PreferencesUnit, JComponent> entries = new HashMap<>();
+	private final Map<PreferenceEntry<?>, JComponent> entries = new HashMap<>();
 
 	private final JButton apply = L10N.button("action.common.apply");
 
@@ -164,12 +159,11 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private void loadSections() {
 		// Create a JPanel for all required sections
-		Arrays.stream(PreferenceSection.values()).forEach(s -> addPreferenceSection(s.name().toLowerCase()));
+		Arrays.stream(PreferenceSection.values()).filter(s -> !s.equals(PreferenceSection.HIDDEN)).forEach(s -> addPreferenceSection(s.name().toLowerCase()));
 
 		// Add preference entries
-		for (PreferenceEntry<?> entry : PreferencesRegistry.getPreferences()) {
-			generateEntryComponent(entry, sectionPanels.get(entry.getSection().name().toLowerCase()));
-		}
+		for (PreferenceEntry<?> entry : PreferencesRegistry.getPreferences())
+			entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection().name().toLowerCase())));
 
 		sections.setSelectedIndex(0);
 
@@ -207,22 +201,36 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void storePreferences() {
-		PreferencesData data = PreferencesManager.PREFERENCES;
-		for (Map.Entry<PreferencesUnit, JComponent> entry : entries.entrySet()) {
-			PreferencesUnit unit = entry.getKey();
-			try {
-				Object sectionInstance = unit.section.get(data); // load actual data
-				Object value = getValueFromComponent(unit.entry.getType(), entry.getValue());
-				if (value != null)
-					unit.entry.set(sectionInstance, value);
-			} catch (IllegalAccessException e) {
-				LOG.info("Reflection error: " + e.getMessage());
+		for (PreferenceEntry<?> entry : PreferencesRegistry.getPreferences()) {
+			JComponent component = entries.get(entry);
+			if (component instanceof JSpinner spinner) {
+				entry.setValue(spinner.getValue());
+			} else if (component instanceof JCheckBox box) {
+				entry.setValue(box.isSelected());
+			} else if (component instanceof JComboBox<?> box) {
+				entry.setValue(box.getSelectedItem());
+			} else if (component instanceof JColor color) {
+				entry.setValue(color.getColor());
 			}
 		}
+		PreferencesRegistry.savePreferences();
 
-		data.hidden.uiTheme = themes.getSelectedTheme();
-
-		PreferencesManager.storePreferences(data);
+//		PreferencesData data = PreferencesManager.PREFERENCES;
+//		for (Map.Entry<PreferencesUnit, JComponent> entry : entries.entrySet()) {
+//			PreferencesUnit unit = entry.getKey();
+//			try {
+//				Object sectionInstance = unit.section.get(data); // load actual data
+//				Object value = getValueFromComponent(unit.entry.getType(), entry.getValue());
+//				if (value != null)
+//					unit.entry.set(sectionInstance, value);
+//			} catch (IllegalAccessException e) {
+//				LOG.info("Reflection error: " + e.getMessage());
+//			}
+//		}
+//
+//		data.hidden.uiTheme = themes.getSelectedTheme();
+//
+//		PreferencesManager.storePreferences(data);
 	}
 
 	private JComponent generateEntryComponent(PreferenceEntry<?> entry, JPanel placeInside) {
@@ -233,58 +241,12 @@ public class PreferencesDialog extends MCreatorDialog {
 			description = "";
 
 		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
-
-		if (entry.getValue() instanceof Integer) {
-			double min = Double.NaN, max = Double.NaN;
-			if (entry instanceof NumberEntry numberEntry) {
-				min = numberEntry.getMin();
-				max = numberEntry.getMax();
-			}
-			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) entry.getValue()), min, max, 1);
-
-			JSpinner spinner = new JSpinner(model);
-			spinner.addChangeListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, spinner), getConstraints());
-		} else if (entry.getValue() instanceof Boolean) {
-			JCheckBox box = new JCheckBox();
-			box.setSelected((boolean) entry.getValue());
-			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
-			return box;
-		} else if (entry.getValue() instanceof String) {
-			StringEntry se = (StringEntry) entry;
-			JComboBox<String> box = new JComboBox<>(se.getChoices());
-			box.setEditable(se.isEditable());
-			box.setSelectedItem(entry.getValue());
-			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
-			return box;
-		} else if (entry.getValue() instanceof Color) {
-			JColor box = new JColor(parent, false, false);
-			box.setColor((Color) entry.getValue());
-			box.setColorSelectedListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
-			return box;
-		} else if (entry.getValue() instanceof Locale) {
-			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
-			locales.sort((a, b) -> {
-				int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
-				int sb = L10N.getUITextsLocaleSupport(b) + L10N.getHelpTipsSupport(b);
-				if (sa == sb)
-					return a.getDisplayName().compareTo(b.getDisplayName());
-
-				return sb - sa;
-			});
-			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
-			box.setRenderer(new LocaleListRenderer());
-			box.setSelectedItem(entry.getValue());
-			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
-			return box;
-		}
-
-		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), getConstraints());
-		return null;
+		JComponent component = entry.getComponent(parent, e -> apply.setEnabled(true));
+		if (component != null)
+			placeInside.add(PanelUtils.westAndEastElement(label, component), getConstraints());
+		else
+			placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), getConstraints());
+		return component;
 	}
 
 	private GridBagConstraints getConstraints() {
@@ -298,37 +260,11 @@ public class PreferencesDialog extends MCreatorDialog {
 		return cons;
 	}
 
-	private Object getValueFromComponent(Class<?> type, JComponent value) {
-		if (type.equals(int.class) || type.equals(Integer.class)) {
-			return ((JSpinner) value).getValue();
-		} else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
-			return ((JCheckBox) value).isSelected();
-		} else if (type.equals(String.class)) {
-			return ((JComboBox<?>) value).getSelectedItem();
-		} else if (type.equals(Color.class)) {
-			return ((JColor) value).getColor();
-		} else if (type.equals(Locale.class)) {
-			return ((JComboBox<?>) value).getSelectedItem();
-		}
-		return null;
-	}
-
 	public void markChanged() {
 		apply.setEnabled(true);
 	}
 
-	private static class PreferencesUnit {
-
-		Field entry;
-		Field section;
-
-		PreferencesUnit(Field section, Field entry) {
-			this.section = section;
-			this.entry = entry;
-		}
-	}
-
-	private static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
+	public static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
 
 		private int uiTextsPercent = 0;
 		private int helpTipsPercent = 0;

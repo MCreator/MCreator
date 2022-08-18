@@ -19,10 +19,18 @@
 
 package net.mcreator.preferences.entry;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.EventListener;
+import java.util.EventObject;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 public class StringEntry extends PreferenceEntry<String> {
 
-	private final String[] choices;
-	private final boolean editable;
+	private transient final String[] choices;
+	private transient final boolean editable;
 
 
 	public StringEntry(String id, String value, PreferenceSection section, String... choices) {
@@ -35,11 +43,11 @@ public class StringEntry extends PreferenceEntry<String> {
 		this.editable = editable;
 	}
 
-	public String[] getChoices() {
-		return choices;
-	}
-
-	public boolean isEditable() {
-		return editable;
+	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
+		JComboBox<String> box = new JComboBox<>(choices);
+		box.setEditable(editable);
+		box.setSelectedItem(value);
+		box.addActionListener(fct::accept);
+		return box;
 	}
 }

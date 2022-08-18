@@ -19,17 +19,56 @@
 
 package net.mcreator.preferences.entry;
 
-import net.mcreator.preferences.PreferencesRegistry;
+import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
+import net.mcreator.ui.init.L10N;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class PreferenceEntry<T> {
 	private final String id;
-	private T value;
-	private final PreferenceSection section;
+	protected T value;
+	private transient final PreferenceSection section;
 
 	public PreferenceEntry(String id, T value, PreferenceSection section) {
 		this.id = id;
 		this.value = value;
 		this.section = section;
+	}
+	
+	public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
+		if (value instanceof Boolean) {
+			JCheckBox box = new JCheckBox();
+			box.setSelected((Boolean) value);
+			box.addActionListener(fct::accept);
+			return box;
+		} else if (value instanceof Color) {
+			JColor box = new JColor(parent, false, false);
+			box.setColor((Color) value);
+			box.setColorSelectedListener(fct::accept);
+			return box;
+		} else if (value instanceof Locale) {
+			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
+			locales.sort((a, b) -> {
+				int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
+				int sb = L10N.getUITextsLocaleSupport(b) + L10N.getHelpTipsSupport(b);
+				if (sa == sb)
+					return a.getDisplayName().compareTo(b.getDisplayName());
+
+				return sb - sa;
+			});
+			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
+			box.setRenderer(new PreferencesDialog.LocaleListRenderer());
+			box.setSelectedItem(value);
+			box.addActionListener(fct::accept);
+			return box;
+		}
+		
+		return null;
 	}
 
 	public String getID() {
@@ -40,8 +79,8 @@ public class PreferenceEntry<T> {
 		return value;
 	}
 
-	public void setValue(T value) {
-		this.value = value;
+	public void setValue(Object object) {
+		this.value = (T) object;
 	}
 
 	public PreferenceSection getSection() {

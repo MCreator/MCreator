@@ -21,25 +21,30 @@ package net.mcreator.preferences.entry;
 
 import com.sun.management.OperatingSystemMXBean;
 
+import javax.swing.*;
+import java.awt.*;
 import java.lang.management.ManagementFactory;
+import java.util.EventObject;
+import java.util.function.Consumer;
 
-public class NumberEntry extends PreferenceEntry<Integer> {
+public class NumberEntry extends PreferenceEntry<Double> {
 
-	public static int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+	private static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
-	private final double min, max;
+	protected transient double min, max;
+	public NumberEntry(String id, double value, PreferenceSection section) {
+		this(id, value, section, Double.NaN, Double.NaN);
+	}
 
-	public NumberEntry(String id, int value, PreferenceSection section, double min, double max) {
+	public NumberEntry(String id, double value, PreferenceSection section, double min, double max) {
 		super(id, value, section);
 		this.min = min;
 		this.max = max;
 	}
 
-	public double getMin() {
-		return min;
-	}
-
-	public double getMax() {
-		return max;
+	@Override public JSpinner getComponent(Window parent, Consumer<EventObject> fct) {
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel((int) Math.round(value), min, max, 1));
+		spinner.addChangeListener(fct::accept);
+		return spinner;
 	}
 }

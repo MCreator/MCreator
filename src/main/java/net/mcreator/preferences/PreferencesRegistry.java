@@ -19,19 +19,28 @@
 
 package net.mcreator.preferences;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.entry.PreferenceEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class PreferencesRegistry {
 
 	private static final Logger LOG = LogManager.getLogger("Preferences Manager");
-	private static final File preferencesFile = UserFolderManager.getFileFromUserFolder("preferences");
+	private static final File preferencesFile = UserFolderManager.getFileFromUserFolder("preferences.json");
+
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
 
 	public static Preferences PREFERENCES;
 	private static List<PreferenceEntry<?>> PREFERENCE_ENTRIES;
@@ -39,6 +48,43 @@ public class PreferencesRegistry {
 	public static void init() {
 		PREFERENCE_ENTRIES = new ArrayList<>();
 		PREFERENCES = new Preferences();
+		loadPreferences();
+	}
+
+	public static void loadPreferences() {
+		if (!preferencesFile.isFile()) {
+			savePreferences();
+			LOG.info("Preferences not created yet. Loading defaults.");
+		} else {
+			try {
+				LOG.debug("Loading preferences from " + preferencesFile);
+				PreferenceEntry<?>[] list = gson.fromJson(FileIO.readFileToString(preferencesFile), PreferenceEntry[].class);
+				Arrays.stream(list).forEach(entry -> PREFERENCE_ENTRIES.forEach(preference -> {
+					if (preference.getID().equals(entry.getID())) {
+						if (preference.getValue() instanceof Locale)
+							preference.setValue(new Locale((String) entry.getValue()));
+						else if (preference.getValue() instanceof Color)
+							preference.setValue(new Color((int)(double) entry.getValue()));
+						else
+							preference.setValue(entry.getValue());
+					}
+				}));
+			} catch (Exception e) {
+				LOG.error("Failed to load preferences. Reloading defaults!", e);
+				savePreferences();
+			}
+		}
+	}
+
+	public static void savePreferences() {
+		// We create a temp list, so we can do changes without affecting the cache
+		List<PreferenceEntry<?>> list = PREFERENCE_ENTRIES;
+		list.forEach(entry -> {
+			// We change the full Color object to the RGB code, so we can decode it when loading preferences (fixing a problem)
+			if (entry.getValue() instanceof Color color)
+				entry.setValue(color.getRGB());
+		});
+		FileIO.writeStringToFile(gson.toJson(list), preferencesFile);
 	}
 
 	public static void reset() {
