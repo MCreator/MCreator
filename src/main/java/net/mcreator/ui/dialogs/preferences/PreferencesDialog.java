@@ -18,10 +18,11 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
-import net.mcreator.preferences.PreferencesData;
-import net.mcreator.preferences.PreferencesEntry;
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.preferences.*;
+import net.mcreator.preferences.entry.NumberEntry;
+import net.mcreator.preferences.entry.PreferenceEntry;
+import net.mcreator.preferences.entry.PreferenceSection;
+import net.mcreator.preferences.entry.StringEntry;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -52,6 +53,8 @@ public class PreferencesDialog extends MCreatorDialog {
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
 	private ThemesPanel themes;
+
+	private final Map<String, JPanel> sectionPanels = new HashMap<>();
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
@@ -112,8 +115,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
-				PreferencesManager.PREFERENCES = new PreferencesData();
-				PreferencesManager.storePreferences(PreferencesManager.PREFERENCES);
+				PreferencesRegistry.reset();
 				setVisible(false);
 				new PreferencesDialog(parent, sections.getSelectedValue());
 			}
@@ -161,13 +163,14 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void loadSections() {
-		Field[] fields = PreferencesData.class.getFields();
-		for (Field field : fields) {
-			PreferencesSection section = field.getAnnotation(PreferencesSection.class);
-			if (section != null) {
-				createPreferencesPanel(field);
-			}
+		// Create a JPanel for all required sections
+		Arrays.stream(PreferenceSection.values()).forEach(s -> addPreferenceSection(s.name().toLowerCase()));
+
+		// Add preference entries
+		for (PreferenceEntry<?> entry : PreferencesRegistry.getPreferences()) {
+			generateEntryComponent(entry, sectionPanels.get(entry.getSection().name().toLowerCase()));
 		}
+
 		sections.setSelectedIndex(0);
 
 		new PluginsPanel(this);
@@ -184,44 +187,23 @@ public class PreferencesDialog extends MCreatorDialog {
 				"png");
 	}
 
-	private void createPreferencesPanel(Field sectionField) {
-		String sectionid = sectionField.getName();
-
-		String name = L10N.t("preferences.section." + sectionid);
-		String description = L10N.t("preferences.section." + sectionid + ".description");
-
+	private void addPreferenceSection(String section) {
+		String name = L10N.t("preferences.section." + section);
+		String description = L10N.t("preferences.section." + section + ".description");
 		model.addElement(name);
 
 		JPanel sectionPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints cons = new GridBagConstraints();
-		cons.anchor = GridBagConstraints.NORTH;
-		cons.fill = GridBagConstraints.BOTH;
-		cons.gridx = 0;
-		cons.weightx = 1;
-		cons.weighty = 1;
-		cons.insets = new Insets(5, 10, 15, 10);
 		sectionPanel.setOpaque(false);
-		cons.insets = new Insets(5, 10, 5, 10);
 
-		Field[] fields = sectionField.getType().getFields();
-		for (Field field : fields) {
-			PreferencesEntry entry = field.getAnnotation(PreferencesEntry.class);
-			try {
-				Object sectionInstance = sectionField.get(PreferencesManager.PREFERENCES); // load actual data
-				Object value = field.get(sectionInstance);
-				JComponent component = generateEntryComponent(field, sectionid, entry, value, sectionPanel, cons);
-				entries.put(new PreferencesUnit(sectionField, field), component);
-			} catch (IllegalAccessException e) {
-				LOG.info("Reflection error: " + e.getMessage());
-			}
-		}
-
-		JComponent titlebar = L10N.label("dialog.preferences.description", name, description);
-		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
+		JComponent titleBar = L10N.label("dialog.preferences.description", name, description);
+		titleBar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
 
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
+		preferences.add(PanelUtils.northAndCenterElement(titleBar, scrollPane), name);
+
+		sectionPanels.put(section, sectionPanel);
+
 	}
 
 	private void storePreferences() {
@@ -243,55 +225,47 @@ public class PreferencesDialog extends MCreatorDialog {
 		PreferencesManager.storePreferences(data);
 	}
 
-	private JComponent generateEntryComponent(Field actualField, String sectionid, PreferencesEntry entry, Object value,
-			JPanel placeInside, GridBagConstraints cons) {
-		String fieldName = actualField.getName();
-		String name = L10N.t("preferences." + sectionid + "." + fieldName);
-		String description = L10N.t("preferences." + sectionid + "." + fieldName + ".description");
-
+	private JComponent generateEntryComponent(PreferenceEntry<?> entry, JPanel placeInside) {
+		String sectionId = entry.getSection().name().toLowerCase();
+		String name = L10N.t("preferences." + sectionId + "." + entry.getID());
+		String description = L10N.t("preferences." + sectionId + "." + entry.getID() + ".description");
 		if (description == null)
 			description = "";
 
 		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
 
-		if (actualField.getType().equals(int.class) || actualField.getType().equals(Integer.class)) {
-			int max = (int) entry.max();
-			if (entry.meta().equals("max:maxram")) {
-				max = ((int) (
-						((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
-								/ 1048576)) - 1024;
+		if (entry.getValue() instanceof Integer) {
+			double min = Double.NaN, max = Double.NaN;
+			if (entry instanceof NumberEntry numberEntry) {
+				min = numberEntry.getMin();
+				max = numberEntry.getMax();
 			}
-			value = Math.max(entry.min(), Math.min(max, (Integer) value));
-			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) value), (int) entry.min(), max,
-					1);
+			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) entry.getValue()), min, max, 1);
+
 			JSpinner spinner = new JSpinner(model);
 			spinner.addChangeListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, spinner), cons);
-			return spinner;
-		} else if (actualField.getType().equals(boolean.class) || actualField.getType().equals(Boolean.class)) {
+			placeInside.add(PanelUtils.westAndEastElement(label, spinner), getConstraints());
+		} else if (entry.getValue() instanceof Boolean) {
 			JCheckBox box = new JCheckBox();
-			box.setSelected((boolean) value);
+			box.setSelected((boolean) entry.getValue());
 			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
+			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
 			return box;
-		} else if (actualField.getType().equals(String.class)) {
-			JComboBox<String> box = new JComboBox<>(entry.arrayData());
-			if (entry.visualWidth() != -1)
-				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
-			box.setEditable(entry.arrayDataEditable());
-			box.setSelectedItem(value);
+		} else if (entry.getValue() instanceof String) {
+			StringEntry se = (StringEntry) entry;
+			JComboBox<String> box = new JComboBox<>(se.getChoices());
+			box.setEditable(se.isEditable());
+			box.setSelectedItem(entry.getValue());
 			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
+			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
 			return box;
-		} else if (actualField.getType().equals(Color.class)) {
+		} else if (entry.getValue() instanceof Color) {
 			JColor box = new JColor(parent, false, false);
-			if (entry.visualWidth() != -1)
-				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
-			box.setColor((Color) value);
+			box.setColor((Color) entry.getValue());
 			box.setColorSelectedListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
+			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
 			return box;
-		} else if (actualField.getType().equals(Locale.class)) {
+		} else if (entry.getValue() instanceof Locale) {
 			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
 			locales.sort((a, b) -> {
 				int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
@@ -303,14 +277,25 @@ public class PreferencesDialog extends MCreatorDialog {
 			});
 			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
 			box.setRenderer(new LocaleListRenderer());
-			box.setSelectedItem(value);
+			box.setSelectedItem(entry.getValue());
 			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
+			placeInside.add(PanelUtils.westAndEastElement(label, box), getConstraints());
 			return box;
 		}
 
-		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), cons);
+		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), getConstraints());
 		return null;
+	}
+
+	private GridBagConstraints getConstraints() {
+		GridBagConstraints cons = new GridBagConstraints();
+		cons.anchor = GridBagConstraints.NORTH;
+		cons.fill = GridBagConstraints.BOTH;
+		cons.gridx = 0;
+		cons.weightx = 1;
+		cons.weighty = 1;
+		cons.insets = new Insets(5, 10, 5, 10);
+		return cons;
 	}
 
 	private Object getValueFromComponent(Class<?> type, JComponent value) {

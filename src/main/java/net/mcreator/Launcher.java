@@ -22,6 +22,7 @@ import javafx.embed.swing.JFXPanel;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.preferences.PreferencesRegistry;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.util.*;
@@ -84,6 +85,7 @@ public class Launcher {
 
 		// after we have libraries loaded, we load preferences
 		PreferencesManager.loadPreferences();
+		PreferencesRegistry.init();
 
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
