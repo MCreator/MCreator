@@ -41,17 +41,17 @@ public class PreferenceEntry<T> {
 	}
 	
 	public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		if (value instanceof Boolean) {
+		if (value instanceof Boolean bool) {
 			JCheckBox box = new JCheckBox();
-			box.setSelected((Boolean) value);
+			box.setSelected(bool);
 			box.addActionListener(fct::accept);
 			return box;
-		} else if (value instanceof Color) {
+		} else if (value instanceof Color color) {
 			JColor box = new JColor(parent, false, false);
-			box.setColor((Color) value);
+			box.setColor(color);
 			box.setColorSelectedListener(fct::accept);
 			return box;
-		} else if (value instanceof Locale) {
+		} else if (value instanceof Locale locale) {
 			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
 			locales.sort((a, b) -> {
 				int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
@@ -63,7 +63,7 @@ public class PreferenceEntry<T> {
 			});
 			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
 			box.setRenderer(new PreferencesDialog.LocaleListRenderer());
-			box.setSelectedItem(value);
+			box.setSelectedItem(locale);
 			box.addActionListener(fct::accept);
 			return box;
 		}

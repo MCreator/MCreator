@@ -29,10 +29,10 @@ import java.util.function.Consumer;
 
 public class NumberEntry extends PreferenceEntry<Double> {
 
-	private static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+	public static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
 	protected transient double min, max;
-	public NumberEntry(String id, double value, PreferenceSection section) {
+	public NumberEntry(String id, int value, PreferenceSection section) {
 		this(id, value, section, Double.NaN, Double.NaN);
 	}
 
@@ -43,7 +43,7 @@ public class NumberEntry extends PreferenceEntry<Double> {
 	}
 
 	@Override public JSpinner getComponent(Window parent, Consumer<EventObject> fct) {
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel((int) Math.round(value), min, max, 1));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Math.round(value), min, max, 1));
 		spinner.addChangeListener(fct::accept);
 		return spinner;
 	}

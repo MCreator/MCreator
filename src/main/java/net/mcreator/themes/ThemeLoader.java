@@ -71,7 +71,7 @@ public class ThemeLoader {
 			THEMES.add(theme);
 		}
 
-		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme);
+		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.uiTheme.getValue());
 		LOG.info("Using MCreator UI theme: " + CURRENT_THEME.getID());
 	}
 

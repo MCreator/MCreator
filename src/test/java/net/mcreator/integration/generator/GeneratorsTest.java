@@ -18,7 +18,6 @@
 
 package net.mcreator.integration.generator;
 
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
@@ -65,7 +64,7 @@ public class GeneratorsTest {
 		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
+		PreferencesManager.PREFERENCES.workspaceAutosaveInterval.setValue(2000);
 	}
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {

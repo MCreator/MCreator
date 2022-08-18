@@ -208,7 +208,7 @@ public final class MCreatorApplication {
 
 		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
-		if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
+		if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.snapshotMessage.getValue()) {
 			JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
 					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 		}
@@ -334,7 +334,7 @@ public final class MCreatorApplication {
 		}
 
 		LOG.debug("Performing exit tasks");
-		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
+		PreferencesManager.savePreferences(); // store any potential preferences changes
 		analytics.trackMCreatorClose(); // track app close in sync mode
 
 		discordClient.close(); // close discord client

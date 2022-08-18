@@ -65,10 +65,11 @@ public class MCreatorTheme extends OceanTheme {
 				LOG.warn(colorScheme.getInterfaceAccentColor()
 								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
 						exception.getMessage());
-				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+				MAIN_TINT = PreferencesManager.PREFERENCES.interfaceAccentColor.getValue();
 			}
 		} else {
-			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+			System.out.println(PreferencesManager.PREFERENCES.interfaceAccentColor.getValue());
+			MAIN_TINT = PreferencesManager.PREFERENCES.interfaceAccentColor.getValue();
 		}
 
 		try {

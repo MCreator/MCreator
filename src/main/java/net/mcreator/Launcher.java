@@ -22,7 +22,6 @@ import javafx.embed.swing.JFXPanel;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.preferences.PreferencesRegistry;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.util.*;
@@ -84,15 +83,14 @@ public class Launcher {
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
-		PreferencesManager.loadPreferences();
-		PreferencesRegistry.init();
+		PreferencesManager.init();
 
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
-				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar));
-		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType);
-		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aatext));
-		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration));
+				Boolean.toString(PreferencesManager.PREFERENCES.usemacOSMenuBar.getValue()));
+		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.textAntialiasingType.getValue());
+		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.aaText.getValue()));
+		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.use2DAcceleration.getValue()));
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 

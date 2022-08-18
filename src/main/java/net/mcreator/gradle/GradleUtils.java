@@ -45,8 +45,8 @@ public class GradleUtils {
 
 	public static BuildLauncher getGradleTaskLauncher(Workspace workspace, String... tasks) {
 		BuildLauncher retval = getGradleProjectConnection(workspace).newBuild().forTasks(tasks)
-				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms + "m",
-						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx + "m");
+				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.xms.getValue() + "m",
+						"-Xmx" + PreferencesManager.PREFERENCES.xmx.getValue() + "m");
 
 		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
@@ -72,10 +72,10 @@ public class GradleUtils {
 
 	public static String getJavaHome() {
 		// check if JAVA_HOME was overwritten in preferences and return this one in such case
-		if (PreferencesManager.PREFERENCES.hidden.java_home != null
-				&& PreferencesManager.PREFERENCES.hidden.java_home.isFile()) {
+		if (PreferencesManager.PREFERENCES.java_home.getValue() != null
+				&& PreferencesManager.PREFERENCES.java_home.getValue().isFile()) {
 			LOG.warn("Using java home override specified by users!");
-			String path = PreferencesManager.PREFERENCES.hidden.java_home.toString().replace("\\", "/");
+			String path = PreferencesManager.PREFERENCES.java_home.getValue().toString().replace("\\", "/");
 			if (new File(path).exists() && path.contains("/bin/java"))
 				return path.split("/bin/java")[0];
 			else

@@ -45,7 +45,7 @@ public class UpdateNotifyDialog {
 			UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
 			if (updateInfo != null) {
 				long newMajor = MCreatorVersionNumber.majorStringToLong(updateInfo.getLatestMajor());
-				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates
+				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.checkAndNotifyForUpdates.getValue()
 						|| Launcher.version.isSnapshot())) {
 					JPanel pan = new JPanel(new BorderLayout());
 					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major,
@@ -79,7 +79,7 @@ public class UpdateNotifyDialog {
 					Release thisRelease = updateInfo.getReleases().get(Launcher.version.major);
 					if (thisRelease != null) {
 						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild()) && (
-								PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches
+								PreferencesManager.PREFERENCES.checkAndNotifyForPatches.getValue()
 										|| Launcher.version.isSnapshot())) {
 							JPanel pan = new JPanel(new BorderLayout());
 							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,

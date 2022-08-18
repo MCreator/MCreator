@@ -33,7 +33,7 @@ import java.awt.*;
 public class UpdatePluginDialog {
 
 	public static void showPluginUpdateDialogIfUpdatesExist(Window parent) {
-		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates
+		if (PreferencesManager.PREFERENCES.checkAndNotifyForPluginUpdates.getValue()
 				&& !PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout(10, 15));
 

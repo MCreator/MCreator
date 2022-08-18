@@ -317,7 +317,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")),
 										helmetImmuneToFire))));
-		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -348,7 +348,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 										bodySpecialInfo), PanelUtils.join(FlowLayout.LEFT,
 										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")), bodyImmuneToFire))));
-		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName), bodyModelPanel),
@@ -373,7 +373,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")),
 										leggingsImmuneToFire))));
-		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -397,7 +397,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 										bootsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
 										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 												L10N.label("elementgui.item.is_immune_to_fire")), bootsImmuneToFire))));
-		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),

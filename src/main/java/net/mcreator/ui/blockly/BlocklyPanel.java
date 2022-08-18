@@ -122,7 +122,7 @@ public class BlocklyPanel extends JFXPanel {
 					}
 
 					//remove font declaration if property set so
-					if (PreferencesManager.PREFERENCES.blockly.legacyFont) {
+					if (PreferencesManager.PREFERENCES.legacyFont.getValue()) {
 						css = css.replace("font-family: sans-serif;", "");
 					}
 
@@ -133,13 +133,13 @@ public class BlocklyPanel extends JFXPanel {
 
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
-							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
-							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
-							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
-							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan + ","
-							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale/100.0 + ","
-							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale/100.0 + ","
-							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed/100.0 + ","
+							+ "'comments' : " + PreferencesManager.PREFERENCES.enableComments.getValue() + ","
+							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockRenderer.getValue().toLowerCase(Locale.ENGLISH) + "',"
+							+ "'collapse' : " + PreferencesManager.PREFERENCES.enableCollapse.getValue() + ","
+							+ "'trashcan' : " + PreferencesManager.PREFERENCES.enableTrashcan.getValue() + ","
+							+ "'maxScale' : " + PreferencesManager.PREFERENCES.maxScale.getValue()/100.0 + ","
+							+ "'minScale' : " + PreferencesManager.PREFERENCES.minScale.getValue()/100.0 + ","
+							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.scaleSpeed.getValue()/100.0 + ","
 							+ " };");
 					// @formatter:on
 

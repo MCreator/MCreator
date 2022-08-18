@@ -110,7 +110,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
-				PreferencesRegistry.reset();
+				PreferencesManager.reset();
 				setVisible(false);
 				new PreferencesDialog(parent, sections.getSelectedValue());
 			}
@@ -159,11 +159,13 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private void loadSections() {
 		// Create a JPanel for all required sections
-		Arrays.stream(PreferenceSection.values()).filter(s -> !s.equals(PreferenceSection.HIDDEN)).forEach(s -> addPreferenceSection(s.name().toLowerCase()));
+		Arrays.stream(PreferenceSection.values()).filter(s -> !s.equals(PreferenceSection.HIDDEN))
+				.forEach(s -> addPreferenceSection(s.name().toLowerCase()));
 
 		// Add preference entries
-		for (PreferenceEntry<?> entry : PreferencesRegistry.getPreferences())
-			entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection().name().toLowerCase())));
+		PreferencesManager.getPreferences().stream().filter(e -> !e.getSection().equals(PreferenceSection.HIDDEN))
+				.toList().forEach(entry -> entries.put(entry,
+						generateEntryComponent(entry, sectionPanels.get(entry.getSection().name().toLowerCase()))));
 
 		sections.setSelectedIndex(0);
 
@@ -201,7 +203,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void storePreferences() {
-		for (PreferenceEntry<?> entry : PreferencesRegistry.getPreferences()) {
+		for (PreferenceEntry<?> entry : PreferencesManager.getPreferences()) {
 			JComponent component = entries.get(entry);
 			if (component instanceof JSpinner spinner) {
 				entry.setValue(spinner.getValue());
@@ -213,24 +215,8 @@ public class PreferencesDialog extends MCreatorDialog {
 				entry.setValue(color.getColor());
 			}
 		}
-		PreferencesRegistry.savePreferences();
-
-//		PreferencesData data = PreferencesManager.PREFERENCES;
-//		for (Map.Entry<PreferencesUnit, JComponent> entry : entries.entrySet()) {
-//			PreferencesUnit unit = entry.getKey();
-//			try {
-//				Object sectionInstance = unit.section.get(data); // load actual data
-//				Object value = getValueFromComponent(unit.entry.getType(), entry.getValue());
-//				if (value != null)
-//					unit.entry.set(sectionInstance, value);
-//			} catch (IllegalAccessException e) {
-//				LOG.info("Reflection error: " + e.getMessage());
-//			}
-//		}
-//
-//		data.hidden.uiTheme = themes.getSelectedTheme();
-//
-//		PreferencesManager.storePreferences(data);
+		PreferencesManager.PREFERENCES.uiTheme.setValue(themes.getSelectedTheme());
+		PreferencesManager.savePreferences();
 	}
 
 	private JComponent generateEntryComponent(PreferenceEntry<?> entry, JPanel placeInside) {

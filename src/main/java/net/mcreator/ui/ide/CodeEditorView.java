@@ -169,9 +169,9 @@ public class CodeEditorView extends ViewBase {
 
 		ToolTipManager.sharedInstance().registerComponent(te);
 
-		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers);
+		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.lineNumbers.getValue());
 
-		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize);
+		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.fontSize.getValue().intValue());
 
 		sp.setFoldIndicatorEnabled(true);
 
@@ -247,7 +247,7 @@ public class CodeEditorView extends ViewBase {
 		cp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		cp.add(sp);
 
-		if (PreferencesManager.PREFERENCES.ide.errorInfoEnable) {
+		if (PreferencesManager.PREFERENCES.errorInfoEnable.getValue()) {
 			ErrorStrip errorStrip = new ErrorStrip(te);
 			errorStrip.setFollowCaret(false);
 			errorStrip.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -375,10 +375,10 @@ public class CodeEditorView extends ViewBase {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
-			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete);
-			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.equals("Manual"));
+			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.autocomplete.getValue());
+			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.autocompleteMode.getValue().equals("Manual"));
 			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow);
+			jls.setShowDescWindow(PreferencesManager.PREFERENCES.autocompleteDocWindow.getValue());
 
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
@@ -419,7 +419,7 @@ public class CodeEditorView extends ViewBase {
 			JavaParser parser = jls.getParser(te);
 
 			te.addKeyListener(new KeyAdapter() {
-				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.equals("Smart");
+				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.autocompleteMode.getValue().equals("Smart");
 
 				boolean completitionInAction = false;
 
@@ -519,11 +519,11 @@ public class CodeEditorView extends ViewBase {
 
 			JavaScriptLanguageSupport javaScriptLanguageSupport = new JavaScriptLanguageSupport();
 
-			javaScriptLanguageSupport.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete);
+			javaScriptLanguageSupport.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.autocomplete.getValue());
 			javaScriptLanguageSupport.setAutoActivationEnabled(
-					!PreferencesManager.PREFERENCES.ide.autocompleteMode.equals("Manual"));
+					!PreferencesManager.PREFERENCES.autocompleteMode.getValue().equals("Manual"));
 			javaScriptLanguageSupport.setParameterAssistanceEnabled(true);
-			javaScriptLanguageSupport.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow);
+			javaScriptLanguageSupport.setShowDescWindow(PreferencesManager.PREFERENCES.autocompleteDocWindow.getValue());
 
 			javaScriptLanguageSupport.install(te);
 

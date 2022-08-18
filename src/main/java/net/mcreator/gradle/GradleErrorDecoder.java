@@ -65,7 +65,7 @@ public class GradleErrorDecoder {
 		if ((err.contains("No cached version of ") && err.contains(" available for offline mode.")) || (
 				err.contains(" not found! Maybe you are running in offline mode?") && err.contains(
 						"java.io.FileNotFoundException"))) {
-			if (PreferencesManager.PREFERENCES.gradle.offline)
+			if (PreferencesManager.PREFERENCES.offline.getValue())
 				return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED, whereToShow);
 			else
 				return GradleErrorDialogs.showErrorDialog(GradleErrorCodes.GRADLE_CACHEDATA_ERROR, whereToShow);
