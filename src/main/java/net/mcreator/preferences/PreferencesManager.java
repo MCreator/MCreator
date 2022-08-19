@@ -92,6 +92,8 @@ public class PreferencesManager {
 							preference.setValue(Locale.forLanguageTag(((String) entry.getValue()).replace("_", "-")));
 						else if (preference.getValue() instanceof Color)
 							preference.setValue(new Color((int) (double) entry.getValue()));
+						else if (entry.getValue() instanceof Double val) // fix a problem where Gson read numbers as double
+							preference.setValue(val.intValue());
 						else
 							preference.setValue(entry.getValue());
 					}
@@ -121,10 +123,10 @@ public class PreferencesManager {
 					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
 							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
 			if (value == null)
-				return;
+				return; // we use the default value
 
-			if (entry.getValue() instanceof Double)
-				entry.setValue(value.getAsDouble());
+			if (entry.getValue() instanceof Number)
+				entry.setValue(value.getAsInt());
 			else if (entry.getValue() instanceof String)
 				entry.setValue(value.getAsString());
 			else if (entry.getValue() instanceof Boolean)
@@ -144,7 +146,7 @@ public class PreferencesManager {
 		PREFERENCES = new Preferences();
 	}
 
-	public static <T> PreferenceEntry<T> register(PreferenceEntry<T> entry) {
+	public static <T, C extends PreferenceEntry<T>> C register(C entry) {
 		PREFERENCE_ENTRIES.add(entry);
 		return entry;
 	}

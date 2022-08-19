@@ -44,9 +44,9 @@ public class Preferences {
 	// UI
 	public PreferenceEntry<Locale> language;
 	public PreferenceEntry<Color> interfaceAccentColor;
-	public PreferenceEntry<String> backgroundSource;
+	public StringEntry backgroundSource;
 	public PreferenceEntry<Boolean> aaText;
-	public PreferenceEntry<String> textAntialiasingType;
+	public StringEntry textAntialiasingType;
 	public PreferenceEntry<Boolean> usemacOSMenuBar;
 	public PreferenceEntry<Boolean> useNativeFileChooser;
 	public PreferenceEntry<Boolean> expandSectionsByDefault;
@@ -64,27 +64,27 @@ public class Preferences {
 
 	// Backups
 
-	public PreferenceEntry<Double> workspaceAutosaveInterval;
-	public PreferenceEntry<Double> automatedBackupInterval;
-	public PreferenceEntry<Double> numberOfBackupsToStore;
+	public NumberEntry workspaceAutosaveInterval;
+	public NumberEntry automatedBackupInterval;
+	public NumberEntry numberOfBackupsToStore;
 	public PreferenceEntry<Boolean> backupOnVersionSwitch;
 
 	// Blockly
-	public PreferenceEntry<String> blockRenderer;
+	public StringEntry blockRenderer;
 	public PreferenceEntry<Boolean> useSmartSort;
 	public PreferenceEntry<Boolean> enableComments;
 	public PreferenceEntry<Boolean> enableCollapse;
 	public PreferenceEntry<Boolean> enableTrashcan;
-	public PreferenceEntry<Double> maxScale;
-	public PreferenceEntry<Double> minScale;
-	public PreferenceEntry<Double> scaleSpeed;
+	public NumberEntry maxScale;
+	public NumberEntry minScale;
+	public NumberEntry scaleSpeed;
 	public PreferenceEntry<Boolean> legacyFont;
 	
 	// IDE
-	public PreferenceEntry<String> editorTheme;
-	public PreferenceEntry<Double> fontSize;
+	public StringEntry editorTheme;
+	public NumberEntry fontSize;
 	public PreferenceEntry<Boolean> autocomplete;
-	public PreferenceEntry<String> autocompleteMode;
+	public StringEntry autocompleteMode;
 	public PreferenceEntry<Boolean> autocompleteDocWindow;
 	public PreferenceEntry<Boolean> lineNumbers;
 	public PreferenceEntry<Boolean> errorInfoEnable;
@@ -92,8 +92,8 @@ public class Preferences {
 	// Gradle
 	public PreferenceEntry<Boolean> compileOnSave;
 	public PreferenceEntry<Boolean> passLangToMinecraft;
-	public PreferenceEntry<Double> xms;
-	public PreferenceEntry<Double> xmx;
+	public NumberEntry xms;
+	public NumberEntry xmx;
 	public PreferenceEntry<Boolean> offline;
 
 	// Bedrock
@@ -102,7 +102,7 @@ public class Preferences {
 	// Hidden
 	public PreferenceEntry<WorkspacePreferenceEnums.WorkspaceIconSize> workspaceModElementIconSize;
 	public PreferenceEntry<Boolean> fullScreen;
-	public PreferenceEntry<Double> projectTreeSplitPos;
+	public NumberEntry projectTreeSplitPos;
 	public PreferenceEntry<Boolean> workspaceSortAscending;
 	public PreferenceEntry<WorkspacePreferenceEnums.WorkspaceSortType> workspaceSortType;
 	public PreferenceEntry<File> java_home;

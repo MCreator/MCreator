@@ -27,6 +27,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
@@ -81,6 +82,9 @@ public class TestSetup {
 		} catch (InterruptedException | InvocationTargetException e) {
 			LOG.error("Failed to start JFX toolkit", e);
 		}
+
+		// load preferences
+		PreferencesManager.init();
 
 		// load plugins
 		// We begin by loading plugins, so every image can be changed

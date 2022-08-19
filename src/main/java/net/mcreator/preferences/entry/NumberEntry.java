@@ -27,23 +27,25 @@ import java.lang.management.ManagementFactory;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class NumberEntry extends PreferenceEntry<Double> {
+public class NumberEntry extends PreferenceEntry<Integer> {
 
 	public static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
-	protected transient double min, max;
+	protected transient int min;
+	protected transient int max;
+
 	public NumberEntry(String id, int value, String section) {
-		this(id, value, section, Double.NaN, Double.NaN);
+		this(id, value, section, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
-	public NumberEntry(String id, double value, String section, double min, double max) {
+	public NumberEntry(String id, int value, String section, int min, int max) {
 		super(id, value, section);
 		this.min = min;
 		this.max = max;
 	}
 
 	@Override public JSpinner getComponent(Window parent, Consumer<EventObject> fct) {
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Math.round(value), min, max, 1));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(getValue().intValue(), min, max, 1));
 		spinner.addChangeListener(fct::accept);
 		return spinner;
 	}
