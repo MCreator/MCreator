@@ -75,7 +75,7 @@ public class ColorScheme {
 	}
 
 	/**
-	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link net.mcreator.preferences.PreferencesData}</p>
+	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link net.mcreator.preferences.Preferences}</p>
 	 */
 	@Nullable public String getInterfaceAccentColor() {
 		return interfaceAccentColor;
