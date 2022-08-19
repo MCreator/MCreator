@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 /**
  * <p>This is the basic and the common class for all preferences of the software.
  * It stores everything the preference needs to have to be used or saved, such as an ID, its value or its {@link JComponent} for {@link PreferencesDialog}.
- * This is also the class used to save each preference inside the user's folder. However, only required (fields without {@code transient}) fields are saved.</p>
+ * This is also the class used to save each preference inside the user's folder. However, only required (fields without transient) fields are saved.</p>
  * @param <T> <p>The type of the stored value.</p>
  */
 public class PreferenceEntry<T> {
