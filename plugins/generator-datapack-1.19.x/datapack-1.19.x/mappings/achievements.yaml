@@ -79,11 +79,16 @@ adventure/walk_on_powder_snow_with_leather_boots: minecraft:adventure/walk_on_po
 adventure/fall_from_world_height: minecraft:adventure/fall_from_world_height
 adventure/play_jukebox_in_meadows: minecraft:adventure/play_jukebox_in_meadows
 adventure/trade_at_world_height: minecraft:adventure/trade_at_world_height
+adventure/avoid_vibration: minecraft:adventure/avoid_vibration
+adventure/kill_mob_near_sculk_catalyst: minecraft:adventure/kill_mob_near_sculk_catalyst
 husbandry/root: minecraft:husbandry/root
+husbandry/allay_deliver_cake_to_note_block: minecraft:husbandry/allay_deliver_cake_to_note_block
+husbandry/allay_deliver_item_to_player: minecraft:husbandry/allay_deliver_item_to_player
 husbandry/safely_harvest_honey: minecraft:husbandry/safely_harvest_honey
 husbandry/breed_an_animal: minecraft:husbandry/breed_an_animal
 husbandry/tame_an_animal: minecraft:husbandry/tame_an_animal
 husbandry/fishy_business: minecraft:husbandry/fishy_business
+husbandry/froglights: minecraft:husbandry/froglights
 husbandry/silk_touch_nest: minecraft:husbandry/silk_touch_nest
 husbandry/plant_seed: minecraft:husbandry/plant_seed
 husbandry/breed_all_animals: minecraft:husbandry/bred_all_animals
@@ -93,7 +98,9 @@ husbandry/balanced_diet: minecraft:husbandry/balanced_diet
 husbandry/obtain_netherite_hoe: minecraft:husbandry/obtain_netherite_hoe
 husbandry/axolotl_in_a_bucket: minecraft:husbandry/axolotl_in_a_bucket
 husbandry/kill_axolotl_target: minecraft:husbandry/kill_axolotl_target
+husbandry/leash_all_frog_variants: minecraft:husbandry/leash_all_frog_variants
 husbandry/make_a_sign_glow: minecraft:husbandry/make_a_sign_glow
 husbandry/ride_a_boat_with_a_goat: minecraft:husbandry/ride_a_boat_with_a_goat
+husbandry/tadpole_in_a_bucket: minecraft:husbandry/tadpole_in_a_bucket
 husbandry/wax_off: minecraft:husbandry/wax_off
 husbandry/wax_on: minecraft:husbandry/wax_on

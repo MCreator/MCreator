@@ -8,6 +8,7 @@ EntityBat: bat
 EntityBee: bee
 EntityBlaze: blaze
 EntityBoat: boat
+EntityChestBoat: chest_boat
 EntityCat: cat
 EntityCaveSpider: cave_spider
 EntityChicken: chicken
@@ -115,3 +116,7 @@ EntityZoglin: zoglin
 EntityAxolotl: axolotl
 EntityGoat: goat
 EntityMarker: marker
+EntityAllay: allay
+EntityFrog: frog
+EntityTadpole: tadpole
+EntityWarden: warden
