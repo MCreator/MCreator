@@ -1,7 +1,7 @@
 {
-  "id": "generator-addon-1.18.x",
-  "minversion": 202100300000,
+  "id": "generator-addon-1.19.x",
+  "minversion": 202200200000,
   "info": {
-    "name": "Minecraft addon 1.18.x generator"
+    "name": "Minecraft addon 1.19.x generator"
   }
 }
