@@ -110,3 +110,8 @@ EntityStrider: strider
 EntityZoglin: zoglin
 EntityAxolotl: axolotl
 EntityGoat: goat
+EntityChestBoat: chest_boat
+EntityAllay: allay
+EntityFrog: frog
+EntityTadpole: tadpole
+EntityWarden: warden
