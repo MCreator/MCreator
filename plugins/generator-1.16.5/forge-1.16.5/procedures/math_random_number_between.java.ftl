@@ -1,1 +1,0 @@
-(MathHelper.nextDouble(new Random(), ${opt.removeParentheses(input$min)}, ${opt.removeParentheses(input$max)}))
