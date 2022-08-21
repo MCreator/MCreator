@@ -1,0 +1,7 @@
+defaultvalue: ItemStack.EMPTY
+scopes:
+  local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: /*@ItemStack*/${name}
+    set: <#include "mcitems.ftl"> ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+      }
