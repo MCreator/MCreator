@@ -20,9 +20,9 @@
 package net.mcreator.preferences;
 
 import net.mcreator.io.OS;
-import net.mcreator.preferences.entry.NumberEntry;
-import net.mcreator.preferences.entry.StringEntry;
-import net.mcreator.preferences.entry.PreferenceEntry;
+import net.mcreator.preferences.entries.NumberEntry;
+import net.mcreator.preferences.entries.StringEntry;
+import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 
@@ -111,73 +111,77 @@ public class Preferences {
 
 	public Preferences() {
 		// UI
-		language = PreferencesManager.register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, UI));
-		interfaceAccentColor = PreferencesManager.register(new PreferenceEntry<>("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, UI));
-		backgroundSource = PreferencesManager.register(new StringEntry("backgroundSource", "All", UI,
+		language = register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, UI));
+		interfaceAccentColor = register(new PreferenceEntry<>("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, UI));
+		backgroundSource = register(new StringEntry("backgroundSource", "All", UI,
 				"All", "Current theme", "Custom", "None"));
-		aaText = PreferencesManager.register(new PreferenceEntry<>("aaText", true, UI));
-		textAntialiasingType = PreferencesManager.register(new StringEntry("textAntialiasingType", "All", UI,
+		aaText = register(new PreferenceEntry<>("aaText", true, UI));
+		textAntialiasingType = register(new StringEntry("textAntialiasingType", "All", UI,
 				"on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr"));
-		usemacOSMenuBar = PreferencesManager.register(new PreferenceEntry<>("useMacOSMenuBar", true, UI));
-		useNativeFileChooser = PreferencesManager.register(new PreferenceEntry<>("useNativeFileChooser", OS.getOS() == OS.WINDOWS, UI));
-		expandSectionsByDefault = PreferencesManager.register(new PreferenceEntry<>("expandSectionsByDefault", false, UI));
-		use2DAcceleration = PreferencesManager.register(new PreferenceEntry<>("use2DAcceleration", false, UI));
-		autoReloadTabs = PreferencesManager.register(new PreferenceEntry<>("autoReloadTabs", true, UI));
-		remindOfUnsavedChanges = PreferencesManager.register(new PreferenceEntry<>("remindOfUnsavedChanges", false, UI));
-		discordRichPresenceEnable = PreferencesManager.register(new PreferenceEntry<>("discordRichPresenceEnable", true, UI));
+		usemacOSMenuBar = register(new PreferenceEntry<>("useMacOSMenuBar", true, UI));
+		useNativeFileChooser = register(new PreferenceEntry<>("useNativeFileChooser", OS.getOS() == OS.WINDOWS, UI));
+		expandSectionsByDefault = register(new PreferenceEntry<>("expandSectionsByDefault", false, UI));
+		use2DAcceleration = register(new PreferenceEntry<>("use2DAcceleration", false, UI));
+		autoReloadTabs = register(new PreferenceEntry<>("autoReloadTabs", true, UI));
+		remindOfUnsavedChanges = register(new PreferenceEntry<>("remindOfUnsavedChanges", false, UI));
+		discordRichPresenceEnable = register(new PreferenceEntry<>("discordRichPresenceEnable", true, UI));
 
 		// Notifications
-		openWhatsNextPage = PreferencesManager.register(new PreferenceEntry<>("openWhatsNextPage", true, NOTIFICATIONS));
-		snapshotMessage = PreferencesManager.register(new PreferenceEntry<>("snapshotMessage", true, NOTIFICATIONS));
-		checkAndNotifyForUpdates = PreferencesManager.register(new PreferenceEntry<>("checkAndNotifyForUpdates", true, NOTIFICATIONS));
-		checkAndNotifyForPatches = PreferencesManager.register(new PreferenceEntry<>("checkAndNotifyForPatches", true, NOTIFICATIONS));
-		checkAndNotifyForPluginUpdates = PreferencesManager.register(new PreferenceEntry<>("checkAndNotifyForPluginUpdates", false, NOTIFICATIONS));
+		openWhatsNextPage = register(new PreferenceEntry<>("openWhatsNextPage", true, NOTIFICATIONS));
+		snapshotMessage = register(new PreferenceEntry<>("snapshotMessage", true, NOTIFICATIONS));
+		checkAndNotifyForUpdates = register(new PreferenceEntry<>("checkAndNotifyForUpdates", true, NOTIFICATIONS));
+		checkAndNotifyForPatches = register(new PreferenceEntry<>("checkAndNotifyForPatches", true, NOTIFICATIONS));
+		checkAndNotifyForPluginUpdates = register(new PreferenceEntry<>("checkAndNotifyForPluginUpdates", false, NOTIFICATIONS));
 
 		// Backups
-		workspaceAutosaveInterval = PreferencesManager.register(new NumberEntry("workspaceAutosaveInterval", 30, BACKUPS, 10, 1800));
-		automatedBackupInterval = PreferencesManager.register(new NumberEntry("automatedBackupInterval", 5, BACKUPS, 3, 120));
-		numberOfBackupsToStore = PreferencesManager.register(new NumberEntry("numberOfBackupsToStore", 10, BACKUPS, 2, 20));
-		backupOnVersionSwitch = PreferencesManager.register(new PreferenceEntry<>("backupOnVersionSwitch", true, BACKUPS));
+		workspaceAutosaveInterval = register(new NumberEntry("workspaceAutosaveInterval", 30, BACKUPS, 10, 1800));
+		automatedBackupInterval = register(new NumberEntry("automatedBackupInterval", 5, BACKUPS, 3, 120));
+		numberOfBackupsToStore = register(new NumberEntry("numberOfBackupsToStore", 10, BACKUPS, 2, 20));
+		backupOnVersionSwitch = register(new PreferenceEntry<>("backupOnVersionSwitch", true, BACKUPS));
 
 		// Blockly
-		blockRenderer = PreferencesManager.register(new StringEntry("blockRenderer", "Thrasos", BLOCKLY, "Geras", "Thrasos"));
-		useSmartSort = PreferencesManager.register(new PreferenceEntry<>("useSmartSort", true, BLOCKLY));
-		enableComments = PreferencesManager.register(new PreferenceEntry<>("enableComments", true, BLOCKLY));
-		enableCollapse = PreferencesManager.register(new PreferenceEntry<>("enableCollapse", true, BLOCKLY));
-		enableTrashcan = PreferencesManager.register(new PreferenceEntry<>("enableTrashcan", true, BLOCKLY));
-		maxScale = PreferencesManager.register(new NumberEntry("maxScale", 100, BLOCKLY, 95, 200));
-		minScale = PreferencesManager.register(new NumberEntry("minScale", 40, BLOCKLY, 20, 95));
-		scaleSpeed = PreferencesManager.register(new NumberEntry("scaleSpeed", 105, BLOCKLY, 0, 200));
-		legacyFont = PreferencesManager.register(new PreferenceEntry<>("legacyFont", false, BLOCKLY));
+		blockRenderer = register(new StringEntry("blockRenderer", "Thrasos", BLOCKLY, "Geras", "Thrasos"));
+		useSmartSort = register(new PreferenceEntry<>("useSmartSort", true, BLOCKLY));
+		enableComments = register(new PreferenceEntry<>("enableComments", true, BLOCKLY));
+		enableCollapse = register(new PreferenceEntry<>("enableCollapse", true, BLOCKLY));
+		enableTrashcan = register(new PreferenceEntry<>("enableTrashcan", true, BLOCKLY));
+		maxScale = register(new NumberEntry("maxScale", 100, BLOCKLY, 95, 200));
+		minScale = register(new NumberEntry("minScale", 40, BLOCKLY, 20, 95));
+		scaleSpeed = register(new NumberEntry("scaleSpeed", 105, BLOCKLY, 0, 200));
+		legacyFont = register(new PreferenceEntry<>("legacyFont", false, BLOCKLY));
 
 		// IDE
-		editorTheme = PreferencesManager.register(new StringEntry("editorTheme", "Thrasos", IDE, "Geras", "Thrasos"));
-		fontSize = PreferencesManager.register(new NumberEntry("fontSize", 12, IDE, 5, 48));
-		autocomplete = PreferencesManager.register(new PreferenceEntry<>("autocomplete", true, IDE));
-		autocompleteMode = PreferencesManager.register(new StringEntry("autocompleteMode", "Smart", IDE, "Manual", "Trigger on dot", "Smart"));
-		autocompleteDocWindow = PreferencesManager.register(new PreferenceEntry<>("autocompleteDocWindow", true, IDE));
-		lineNumbers = PreferencesManager.register(new PreferenceEntry<>("lineNumbers", true, IDE));
-		errorInfoEnable = PreferencesManager.register(new PreferenceEntry<>("errorInfoEnable", true, IDE));
+		editorTheme = register(new StringEntry("editorTheme", "Thrasos", IDE, "Geras", "Thrasos"));
+		fontSize = register(new NumberEntry("fontSize", 12, IDE, 5, 48));
+		autocomplete = register(new PreferenceEntry<>("autocomplete", true, IDE));
+		autocompleteMode = register(new StringEntry("autocompleteMode", "Smart", IDE, "Manual", "Trigger on dot", "Smart"));
+		autocompleteDocWindow = register(new PreferenceEntry<>("autocompleteDocWindow", true, IDE));
+		lineNumbers = register(new PreferenceEntry<>("lineNumbers", true, IDE));
+		errorInfoEnable = register(new PreferenceEntry<>("errorInfoEnable", true, IDE));
 
 		// Gradle
-		compileOnSave = PreferencesManager.register(new PreferenceEntry<>("compileOnSave", true, GRADLE));
-		passLangToMinecraft = PreferencesManager.register(new PreferenceEntry<>("passLangToMinecraft", true, GRADLE));
-		xms = PreferencesManager.register(new NumberEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, GRADLE, 128, NumberEntry.MAX_RAM));
-		xmx = PreferencesManager.register(new NumberEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, GRADLE, 128, NumberEntry.MAX_RAM));
-		offline = PreferencesManager.register(new PreferenceEntry<>("offline", false, GRADLE));
+		compileOnSave = register(new PreferenceEntry<>("compileOnSave", true, GRADLE));
+		passLangToMinecraft = register(new PreferenceEntry<>("passLangToMinecraft", true, GRADLE));
+		xms = register(new NumberEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, GRADLE, 128, NumberEntry.MAX_RAM));
+		xmx = register(new NumberEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, GRADLE, 128, NumberEntry.MAX_RAM));
+		offline = register(new PreferenceEntry<>("offline", false, GRADLE));
 
 		// Bedrock
-		silentReload = PreferencesManager.register(new PreferenceEntry<>("silentReload", false, BEDROCK));
+		silentReload = register(new PreferenceEntry<>("silentReload", false, BEDROCK));
 
 		// Hidden
-		workspaceModElementIconSize = PreferencesManager.register(new PreferenceEntry<>("workspaceModElementIconSize", WorkspacePreferenceEnums.WorkspaceIconSize.TILES, HIDDEN));
-		fullScreen = PreferencesManager.register(new PreferenceEntry<>("fullScreen", false, HIDDEN));
-		projectTreeSplitPos = PreferencesManager.register(new NumberEntry("projectTreeSplitPos", 0, HIDDEN));
-		workspaceSortAscending = PreferencesManager.register(new PreferenceEntry<>("workspaceSortAscending", false, HIDDEN));
-		workspaceSortType = PreferencesManager.register(new PreferenceEntry<>("workspaceSortType", WorkspacePreferenceEnums.WorkspaceSortType.CREATED, HIDDEN));
-		java_home = PreferencesManager.register(new PreferenceEntry<>("java_home", null, HIDDEN));
-		uiTheme = PreferencesManager.register(new PreferenceEntry<>("uiTheme", "default_dark", HIDDEN));
-		enableJavaPlugins = PreferencesManager.register(new PreferenceEntry<>("fullScreen", false, HIDDEN));
-
+		workspaceModElementIconSize = register(new PreferenceEntry<>("workspaceModElementIconSize", WorkspacePreferenceEnums.WorkspaceIconSize.TILES, HIDDEN));
+		fullScreen = register(new PreferenceEntry<>("fullScreen", false, HIDDEN));
+		projectTreeSplitPos = register(new NumberEntry("projectTreeSplitPos", 0, HIDDEN));
+		workspaceSortAscending = register(new PreferenceEntry<>("workspaceSortAscending", false, HIDDEN));
+		workspaceSortType = register(new PreferenceEntry<>("workspaceSortType", WorkspacePreferenceEnums.WorkspaceSortType.CREATED, HIDDEN));
+		java_home = register(new PreferenceEntry<>("java_home", null, HIDDEN));
+		uiTheme = register(new PreferenceEntry<>("uiTheme", "default_dark", HIDDEN));
+		enableJavaPlugins = register(new PreferenceEntry<>("fullScreen", false, HIDDEN));
+	}
+	
+	private static <T, S extends PreferenceEntry<T>> S register(S entry) {
+		PreferencesManager.register("mcreator", entry);
+		return entry;
 	}
 }

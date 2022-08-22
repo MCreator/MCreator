@@ -17,33 +17,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.preferences.entry;
+package net.mcreator.preferences.entries;
+
+import com.sun.management.OperatingSystemMXBean;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.management.ManagementFactory;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class StringEntry extends PreferenceEntry<String> {
+public class NumberEntry extends PreferenceEntry<Integer> {
 
-	private transient final String[] choices;
-	private transient final boolean editable;
+	public static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+					/ 1048576) - 1024;
+	protected transient int min;
+	protected transient int max;
 
-	public StringEntry(String id, String value, String section, String... choices) {
-		this(id, value, section, false, choices);
+	public NumberEntry(String id, int value, String section) {
+		this(id, value, section, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
-	public StringEntry(String id, String value, String section, boolean editable, String... choices) {
+	public NumberEntry(String id, int value, String section, int min, int max) {
 		super(id, value, section);
-		this.choices = choices;
-		this.editable = editable;
+		this.min = min;
+		this.max = max;
 	}
 
-	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		JComboBox<String> box = new JComboBox<>(choices);
-		box.setEditable(editable);
-		box.setSelectedItem(value);
-		box.addActionListener(fct::accept);
-		return box;
+	@Override public JSpinner getComponent(Window parent, Consumer<EventObject> fct) {
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(getValue().intValue(), min, max, 1));
+		spinner.addChangeListener(fct::accept);
+		return spinner;
 	}
 }

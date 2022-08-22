@@ -19,7 +19,7 @@
 package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.*;
-import net.mcreator.preferences.entry.PreferenceEntry;
+import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -158,12 +158,13 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private void loadSections() {
 		// Add preference entries
-		PreferencesManager.getPreferenceEntries().stream().filter(e -> !e.getSection().equals(Preferences.HIDDEN))
-				.toList().forEach(entry -> {
-					if (!sectionPanels.containsKey(entry.getSection()))
-						createPreferenceSection(entry.getSection());
-					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
-				});
+		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> {
+			preferences.stream().filter(e -> !e.getSection().equals(Preferences.HIDDEN)).toList().forEach(entry -> {
+				if (!sectionPanels.containsKey(entry.getSection()))
+					createPreferenceSection(entry.getSection());
+				entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
+			});
+		});
 
 		sections.setSelectedIndex(0);
 
@@ -204,18 +205,20 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void savePreferences() {
-		for (PreferenceEntry<?> entry : PreferencesManager.getPreferenceEntries()) {
-			JComponent component = entries.get(entry);
-			if (component instanceof JSpinner spinner) {
-				entry.setValue(spinner.getValue());
-			} else if (component instanceof JCheckBox box) {
-				entry.setValue(box.isSelected());
-			} else if (component instanceof JComboBox<?> box) {
-				entry.setValue(box.getSelectedItem());
-			} else if (component instanceof JColor color) {
-				entry.setValue(color.getColor());
-			}
-		}
+		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> {
+			preferences.forEach(entry -> {
+				JComponent component = entries.get(entry);
+				if (component instanceof JSpinner spinner) {
+					entry.setValue(spinner.getValue());
+				} else if (component instanceof JCheckBox box) {
+					entry.setValue(box.isSelected());
+				} else if (component instanceof JComboBox<?> box) {
+					entry.setValue(box.getSelectedItem());
+				} else if (component instanceof JColor color) {
+					entry.setValue(color.getColor());
+				}
+			});
+		});
 		PreferencesManager.PREFERENCES.uiTheme.setValue(themes.getSelectedTheme());
 		PreferencesManager.savePreferences();
 	}

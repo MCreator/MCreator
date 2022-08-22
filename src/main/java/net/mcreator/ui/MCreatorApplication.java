@@ -95,6 +95,9 @@ public final class MCreatorApplication {
 
 		MCREvent.event(new ApplicationLoadedEvent(this));
 
+		// As plugins are now loaded, preferences from Java plugins can now be loaded
+		PreferencesManager.loadPlugins();
+
 		splashScreen.setProgress(10, "Loading UI Themes");
 
 		// We load UI themes now as theme plugins are loaded at this point

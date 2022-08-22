@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.preferences.entry;
+package net.mcreator.preferences.entries;
 
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -102,7 +102,7 @@ public class PreferenceEntry<T> {
 	}
 
 	@Override public String toString() {
-		return id;
+		return id + ": value: " + value + ",";
 	}
 
 }
