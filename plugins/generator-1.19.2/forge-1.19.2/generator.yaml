@@ -49,9 +49,9 @@ base_templates:
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-#  - template: modbase/variableslist.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
-#    condition: hasVariables()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
 #  - template: elementinits/javamodels.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
 #    condition: hasJavaModels()
