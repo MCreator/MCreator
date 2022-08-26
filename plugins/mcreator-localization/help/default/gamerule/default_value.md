@@ -1,1 +1,1 @@
-This is the GameRule's default value. The GameRule will have this value until something in the game (player or command) changes it.
+This is the game rule default value. The game rule will have this value until something in the game (player or command) changes it.

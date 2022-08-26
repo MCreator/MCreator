@@ -31,10 +31,13 @@ import org.apache.logging.log4j.Logger;
 	private static int messageID = 0;
 
 	public ${JavaModName}() {
+		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
+
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 	}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

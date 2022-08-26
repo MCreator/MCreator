@@ -150,3 +150,17 @@
   texture: SPORE_BLOSSOM
 - TUFF:
   texture: TUFF
+- FROGLIGHT:
+  texture: FROGLIGHT
+- FROGSPAWN:
+  texture: FROGSPAWN
+- MANGROVE_ROOTS:
+  texture: MANGROVE_ROOTS
+- MUDDY_MANGROVE_ROOTS:
+  texture: MUDDY_MANGROVE_ROOTS
+- MUD:
+  texture: MUD
+- MUD_BRICKS:
+  texture: MUD_BRICKS
+- PACKED_MUD:
+  texture: PACKED_MUD
