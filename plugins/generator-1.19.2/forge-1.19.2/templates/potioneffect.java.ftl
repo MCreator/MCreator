@@ -112,27 +112,23 @@ public class ${name}MobEffect extends MobEffect {
 	}
 
 	<#if data.hasCustomRenderer()>
-	@Override public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.EffectRenderer> consumer) {
-		consumer.accept(new EffectRenderer() {
+	@Override public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
+		consumer.accept(new IClientMobEffectExtensions() {
 			<#if !data.renderStatusInInventory>
-			@Override public boolean shouldRender(MobEffectInstance effect) {
+			@Override public boolean isVisibleInInventory(MobEffectInstance effect) {
 				return false;
 			}
 
-			@Override public boolean shouldRenderInvText(MobEffectInstance effect) {
+			@Override public boolean renderInventoryText(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, PoseStack poseStack, int x, int y, int blitOffset) {
 				return false;
 			}
 			</#if>
 
 			<#if !data.renderStatusInHUD>
-			@Override public boolean shouldRenderHUD(MobEffectInstance effect) {
+			@Override public boolean isVisibleInGui(MobEffectInstance effect) {
 				return false;
 			}
 			</#if>
-
-			@Override public void renderInventoryEffect(MobEffectInstance effect, EffectRenderingInventoryScreen<?> gui, PoseStack mStack, int x, int y, float z) {}
-
-			@Override public void renderHUDEffect(MobEffectInstance effect, GuiComponent gui, PoseStack mStack, int x, int y, float z, float alpha) {}
 		});
 	}
 	</#if>
