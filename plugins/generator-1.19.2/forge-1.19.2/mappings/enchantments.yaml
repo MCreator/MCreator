@@ -1,0 +1,4 @@
+_default: Enchantments.BLOCK_EFFICIENCY
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@JavaModNameEnchantments.@REGISTRYNAME.get()"
+PROTECTION: Enchantments.ALL_DAMAGE_PROTECTION
