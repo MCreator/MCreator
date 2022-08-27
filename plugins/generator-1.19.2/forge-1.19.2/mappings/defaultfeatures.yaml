@@ -1,0 +1,33 @@
+_default: null
+TaigaLargeFerns: Ferns
+JungleTreeForest: JungleTrees
+PlainsTallGrass: SavannaGrass
+TaigaGrassAndMushrooms: TaigaGrass
+Icebergs: Icebergs
+AmethystGeodes: DefaultCrystalFormations
+Bamboo: BambooVegetation
+Caves: DefaultCarversAndLakes
+DeadBushes: DesertVegetation
+SwampVegetation: SwampVegetation
+DesertFeatures: DesertExtraDecoration
+Dripstone: Dripstone
+Ores: DefaultOres
+SavannaTrees: SavannaTrees
+ExtraGoldOre: ExtraGold
+ExtraEmeraldOre: ExtraEmeralds
+Fossils: FossilDecoration
+FrozenTopLayer: SurfaceFreezing
+InfestedStone: InfestedStone
+JungleGrass: JungleGrass
+LushCavesDecoration: LushCavesVegetationFeatures
+MeadowVegetation: MeadowVegetation
+MonsterRooms: DefaultMonsterRoom
+ReedsAndPumpkins: DefaultExtraVegetation
+TaigaRocks: MossyStoneBlock
+TallSeagrassLush: DefaultSeagrass
+MangroveSwampVegetation: MangroveSwampVegetation
+Sculk: Sculk
+
+# These are now part of other default features
+Lakes: null
+OceanCaves: null
