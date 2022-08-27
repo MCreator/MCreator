@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedBlockToBlock(input$block)}.getStateDefinition().getProperty(${input$property}) instanceof EnumProperty _ep ? ${mappedBlockToBlockStateCode(input$block)}.getValue(_ep).toString() : "")
+(${mappedBlockToBlock(input$block)}.getStateDefinition().getProperty(${input$property}) instanceof EnumProperty _getep${customBlockIndex} ? ${mappedBlockToBlockStateCode(input$block)}.getValue(_getep${customBlockIndex}).toString() : "")
