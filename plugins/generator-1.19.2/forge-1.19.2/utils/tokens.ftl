@@ -39,7 +39,7 @@
             <#assign sourceNew += "<(new Object(){
                                         public double getValue(BlockPos pos, String tag){
                                         	BlockEntity BlockEntity=world.getBlockEntity(pos);
-                                            if(BlockEntity!=null) return BlockEntity.getTileData().getDouble(tag);
+                                            if(BlockEntity!=null) return BlockEntity.getPersistentData().getDouble(tag);
                                             return 0;
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:number:", "").replace(">", "").toString()) + "\"))>">
@@ -47,7 +47,7 @@
             <#assign sourceNew += "<((int) new Object(){
                                         public double getValue(BlockPos pos, String tag){
                                             BlockEntity BlockEntity=world.getBlockEntity(pos);
-                                            if(BlockEntity!=null) return BlockEntity.getTileData().getDouble(tag);
+                                            if(BlockEntity!=null) return BlockEntity.getPersistentData().getDouble(tag);
                                             return 0;
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:integer:", "").replace(">", "").toString()) + "\"))>">
@@ -55,7 +55,7 @@
             <#assign sourceNew += "<(new Object(){
                                         public boolean getValue(BlockPos pos, String tag){
                                         	BlockEntity BlockEntity=world.getBlockEntity(pos);
-                                            if(BlockEntity!=null) return BlockEntity.getTileData().getBoolean(tag);
+                                            if(BlockEntity!=null) return BlockEntity.getPersistentData().getBoolean(tag);
                                             return false;
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:logic:", "").replace(">", "").toString()) + "\"))>">
@@ -63,7 +63,7 @@
             <#assign sourceNew += "<(new Object(){
                                         public String getValue(BlockPos pos, String tag){
                                         	BlockEntity BlockEntity=world.getBlockEntity(pos);
-                                            if(BlockEntity!=null) return BlockEntity.getTileData().getString(tag);
+                                            if(BlockEntity!=null) return BlockEntity.getPersistentData().getString(tag);
                                             return \"\";
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:text:", "").replace(">", "").toString()) + "\"))>">
