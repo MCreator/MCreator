@@ -91,9 +91,9 @@ package ${package}.client.particle;
 	}
 
 	<#if data.renderType == "LIT">
-   	@Override public int getLightColor(float partialTick) {
+	@Override public int getLightColor(float partialTick) {
 		return 15728880;
-   	}
+	}
 	</#if>
 
 	@Override public ParticleRenderType getRenderType() {
