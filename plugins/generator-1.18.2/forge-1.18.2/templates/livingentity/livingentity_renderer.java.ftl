@@ -109,6 +109,12 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 	}
 
+	<#if data.mobModelName == "Villager">
+	@Override protected void scale(${name}Entity villager, PoseStack poseStack, float f) {
+		poseStack.scale(0.9375f, 0.9375f, 0.9375f);
+	}
+	</#if>
+
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
