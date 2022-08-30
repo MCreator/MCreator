@@ -1322,3 +1322,8 @@ entity.warden.sonic_boom: entity.warden.sonic_boom
 entity.warden.sonic_charge: entity.warden.sonic_charge
 entity.warden.step: entity.warden.step
 entity.warden.tendril_clicks: entity.warden.tendril_clicks
+block.mangrove_roots.break: block.mangrove_roots.break
+block.mangrove_roots.fall: block.mangrove_roots.fall
+block.mangrove_roots.hit: block.mangrove_roots.hit
+block.mangrove_roots.place: block.mangrove_roots.place
+block.mangrove_roots.step: block.mangrove_roots.step
