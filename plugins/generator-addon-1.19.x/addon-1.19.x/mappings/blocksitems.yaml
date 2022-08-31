@@ -888,7 +888,6 @@ Blocks.SCULK_SHRIEKER: "sculk_shrieker"
 Blocks.MANGROVE_FENCE: "mangrove_fence"
 Blocks.MANGROVE_FENCE_GATE: "mangrove_fence_gate"
 Blocks.MANGROVE_SLAB: "mangrove_slab"
-Blocks.POTTED_MANGROVE_PROPAGULE:
 Blocks.OCHRE_FROGLIGHT: "ochre_froglight"
 Blocks.VERDANT_FROGLIGHT: "verdant_froglight"
 Blocks.PEARLESCENT_FROGLIGHT: "pearlescent_froglight"
