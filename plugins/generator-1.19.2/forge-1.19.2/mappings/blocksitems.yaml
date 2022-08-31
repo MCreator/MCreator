@@ -1661,6 +1661,9 @@ Blocks.JUNGLE_SIGN:
 Blocks.DARK_OAK_SIGN:
   - Blocks.DARK_OAK_SIGN
   - "dark_oak_sign"
+Blocks.MANGROVE_SIGN:
+  - Blocks.MANGROVE_SIGN
+  - "mangrove_sign"
 Blocks.SPRUCE_WALL_SIGN:
   - Blocks.SPRUCE_WALL_SIGN
   - "spruce_wall_sign"
@@ -3401,6 +3404,27 @@ Items.DARK_OAK_BOAT:
 Items.MANGROVE_BOAT:
   - Items.MANGROVE_BOAT
   - "mangrove_boat"
+Items.OAK_CHEST_BOAT:
+  - Items.OAK_CHEST_BOAT
+  - "oak_chest_boat"
+Items.SPRUCE_CHEST_BOAT:
+  - Items.SPRUCE_CHEST_BOAT
+  - "spruce_chest_boat"
+Items.BIRCH_CHEST_BOAT:
+  - Items.BIRCH_CHEST_BOAT
+  - "birch_chest_boat"
+Items.JUNGLE_CHEST_BOAT:
+  - Items.JUNGLE_CHEST_BOAT
+  - "jungle_chest_boat"
+Items.ACACIA_CHEST_BOAT:
+  - Items.ACACIA_CHEST_BOAT
+  - "acacia_chest_boat"
+Items.DARK_OAK_CHEST_BOAT:
+  - Items.DARK_OAK_CHEST_BOAT
+  - "dark_oak_chest_boat"
+Items.MANGROVE_CHEST_BOAT:
+  - Items.MANGROVE_CHEST_BOAT
+  - "mangrove_chest_boat"
 Items.REPEATER:
   - Items.REPEATER
   - "repeater"
