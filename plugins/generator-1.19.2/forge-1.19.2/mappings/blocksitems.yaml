@@ -80,6 +80,9 @@ Blocks.PLANKS#4:
 Blocks.PLANKS#5:
   - Blocks.DARK_OAK_PLANKS
   - "dark_oak_planks"
+Blocks.MANGROVE_PLANKS:
+  - Blocks.MANGROVE_PLANKS
+  - "mangrove_planks"
 Blocks.SAPLING:
   - Blocks.OAK_SAPLING
   - "#minecraft:saplings"
@@ -101,6 +104,9 @@ Blocks.SAPLING#4:
 Blocks.SAPLING#5:
   - Blocks.DARK_OAK_SAPLING
   - "dark_oak_sapling"
+Blocks.MANGROVE_PROPAGULE:
+  - Blocks.MANGROVE_PROPAGULE
+  - "mangrove_propagule"
 Blocks.REEDS:
   - Blocks.SUGAR_CANE
   - "sugar_cane"
@@ -254,6 +260,9 @@ Blocks.LOG2#0:
 Blocks.LOG2#1:
   - Blocks.DARK_OAK_LOG
   - "dark_oak_log"
+Blocks.MANGROVE_LOG:
+  - Blocks.MANGROVE_LOG
+  - "mangrove_log"
 Blocks.LEAVES:
   - Blocks.OAK_LEAVES
   - "oak_leaves"
@@ -284,6 +293,15 @@ Blocks.AZALEA_LEAVES:
 Blocks.FLOWERING_AZALEA_LEAVES:
   - Blocks.FLOWERING_AZALEA_LEAVES
   - "flowering_azalea_leaves"
+Blocks.MANGROVE_LEAVES:
+  - Blocks.MANGROVE_LEAVES
+  - "mangrove_leaves"
+Blocks.MANGROVE_ROOTS:
+  - Blocks.MANGROVE_ROOTS
+  - "mangrove_roots"
+Blocks.MUDDY_MANGROVE_ROOTS:
+  - Blocks.MUDDY_MANGROVE_ROOTS
+  - "muddy_mangrove_roots"
 Blocks.SPONGE:
   - Blocks.SPONGE
   - "sponge"
@@ -467,6 +485,9 @@ Blocks.ACACIA_STAIRS:
 Blocks.DARK_OAK_STAIRS:
   - Blocks.DARK_OAK_STAIRS
   - "dark_oak_stairs"
+Blocks.MANGROVE_STAIRS:
+  - Blocks.MANGROVE_STAIRS
+  - "mangrove_stairs"
 Blocks.SANDSTONE_STAIRS:
   - Blocks.SANDSTONE_STAIRS
   - "sandstone_stairs"
@@ -536,6 +557,9 @@ Blocks.ACACIA_DOOR:
 Blocks.DARK_OAK_DOOR:
   - Blocks.DARK_OAK_DOOR
   - "dark_oak_door"
+Blocks.MANGROVE_DOOR:
+  - Blocks.MANGROVE_DOOR
+  - "mangrove_door"
 Blocks.IRON_DOOR:
   - Blocks.IRON_DOOR
   - "iron_door"
@@ -671,6 +695,9 @@ Blocks.ACACIA_FENCE:
 Blocks.DARK_OAK_FENCE:
   - Blocks.DARK_OAK_FENCE
   - "dark_oak_fence"
+Blocks.MANGROVE_FENCE:
+  - Blocks.MANGROVE_FENCE
+  - "mangrove_fence"
 Blocks.OAK_FENCE_GATE:
   - Blocks.OAK_FENCE_GATE
   - "oak_fence_gate"
@@ -689,6 +716,9 @@ Blocks.ACACIA_FENCE_GATE:
 Blocks.DARK_OAK_FENCE_GATE:
   - Blocks.DARK_OAK_FENCE_GATE
   - "dark_oak_fence_gate"
+Blocks.MANGROVE_FENCE_GATE:
+  - Blocks.MANGROVE_FENCE_GATE
+  - "mangrove_fence_gate"
 Blocks.NETHER_BRICK_FENCE:
   - Blocks.NETHER_BRICK_FENCE
   - "nether_brick_fence"
@@ -866,6 +896,9 @@ Blocks.WOODEN_SLAB#4:
 Blocks.WOODEN_SLAB#5:
   - Blocks.DARK_OAK_SLAB
   - "dark_oak_slab"
+Blocks.MANGROVE_SLAB:
+  - Blocks.MANGROVE_SLAB
+  - "mangrove_slab"
 Blocks.STONE_SLAB:
   - Blocks.COBBLESTONE_SLAB
   - "#minecraft:slabs"
@@ -1505,6 +1538,9 @@ Blocks.STRIPPED_DARK_OAK_LOG:
 Blocks.STRIPPED_OAK_LOG:
   - Blocks.STRIPPED_OAK_LOG
   - "stripped_oak_log"
+Blocks.STRIPPED_MANGROVE_LOG:
+  - Blocks.STRIPPED_MANGROVE_LOG
+  - "stripped_mangrove_log"
 Blocks.OAK_WOOD:
   - Blocks.OAK_WOOD
   - "oak_wood"
@@ -1523,6 +1559,9 @@ Blocks.ACACIA_WOOD:
 Blocks.DARK_OAK_WOOD:
   - Blocks.DARK_OAK_WOOD
   - "dark_oak_wood"
+Blocks.MANGROVE_WOOD:
+  - Blocks.MANGROVE_WOOD
+  - "mangrove_wood"
 Blocks.STRIPPED_OAK_WOOD:
   - Blocks.STRIPPED_OAK_WOOD
   - "stripped_oak_wood"
@@ -1541,6 +1580,9 @@ Blocks.STRIPPED_ACACIA_WOOD:
 Blocks.STRIPPED_DARK_OAK_WOOD:
   - Blocks.STRIPPED_DARK_OAK_WOOD
   - "stripped_dark_oak_wood"
+Blocks.STRIPPED_MANGROVE_WOOD:
+  - Blocks.STRIPPED_MANGROVE_WOOD
+  - "stripped_mangrove_wood"
 Blocks.ORANGE_BED:
   - Blocks.ORANGE_BED
   - "orange_bed"
@@ -1634,6 +1676,9 @@ Blocks.JUNGLE_WALL_SIGN:
 Blocks.DARK_OAK_WALL_SIGN:
   - Blocks.DARK_OAK_WALL_SIGN
   - "dark_oak_wall_sign"
+Blocks.MANGROVE_WALL_SIGN:
+  - Blocks.MANGROVE_WALL_SIGN
+  - "mangrove_wall_sign"
 Blocks.SPRUCE_PRESSURE_PLATE:
   - Blocks.SPRUCE_PRESSURE_PLATE
   - "spruce_pressure_plate"
@@ -1649,6 +1694,9 @@ Blocks.ACACIA_PRESSURE_PLATE:
 Blocks.DARK_OAK_PRESSURE_PLATE:
   - Blocks.DARK_OAK_PRESSURE_PLATE
   - "dark_oak_pressure_plate"
+Blocks.MANGROVE_PRESSURE_PLATE:
+  - Blocks.MANGROVE_PRESSURE_PLATE
+  - "mangrove_pressure_plate"
 Blocks.REDSTONE_WALL_TORCH:
   - Blocks.REDSTONE_WALL_TORCH
   - "redstone_wall_torch"
@@ -1670,6 +1718,9 @@ Blocks.ACACIA_TRAPDOOR:
 Blocks.DARK_OAK_TRAPDOOR:
   - Blocks.DARK_OAK_TRAPDOOR
   - "dark_oak_trapdoor"
+Blocks.MANGROVE_TRAPDOOR:
+  - Blocks.MANGROVE_TRAPDOOR
+  - "mangrove_trapdoor"
 Blocks.MUSHROOM_STEM:
   - Blocks.MUSHROOM_STEM
   - "mushroom_stem"
@@ -1766,6 +1817,9 @@ Blocks.ACACIA_BUTTON:
 Blocks.DARK_OAK_BUTTON:
   - Blocks.DARK_OAK_BUTTON
   - "dark_oak_button"
+Blocks.MANGROVE_BUTTON:
+  - Blocks.MANGROVE_BUTTON
+  - "mangrove_button"
 Blocks.PRISMARINE_STAIRS:
   - Blocks.PRISMARINE_STAIRS
   - "prismarine_stairs"
@@ -2627,6 +2681,18 @@ Blocks.POWDER_SNOW:
 Blocks.SCULK_SENSOR:
   - Blocks.SCULK_SENSOR
   - "sculk_sensor"
+Blocks.SCULK:
+  - Blocks.SCULK
+  - "sculk"
+Blocks.SCULK_VEIN:
+  - Blocks.SCULK_VEIN
+  - "sculk_vein"
+Blocks.SCULK_CATALYST:
+  - Blocks.SCULK_CATALYST
+  - "sculk_catalyst"
+Blocks.SCULK_SHRIEKER:
+  - Blocks.SCULK_SHRIEKER
+  - "sculk_shrieker"
 Blocks.OXIDIZED_COPPER:
   - Blocks.OXIDIZED_COPPER
   - "oxidized_copper"
@@ -2768,9 +2834,30 @@ Blocks.HANGING_ROOTS:
 Blocks.ROOTED_DIRT:
   - Blocks.ROOTED_DIRT
   - "rooted_dirt"
+Blocks.MUD:
+  - Blocks.MUD
+  - "mud"
+Blocks.PACKED_MUD:
+  - Blocks.PACKED_MUD
+  - "packed_mud"
+Blocks.MUD_BRICK_STAIRS:
+  - Blocks.MUD_BRICK_STAIRS
+  - "mud_brick_stairs"
+Blocks.MUD_BRICK_SLAB:
+  - Blocks.MUD_BRICK_SLAB
+  - "mud_brick_slab"
+Blocks.MUD_BRICK_WALL:
+  - Blocks.MUD_BRICK_WALL
+  - "mud_brick_wall"
+Blocks.MUD_BRICKS:
+  - Blocks.MUD_BRICKS
+  - "mud_bricks"
 Blocks.DEEPSLATE:
   - Blocks.DEEPSLATE
   - "deepslate"
+Blocks.REINFORCED_DEEPSLATE:
+  - Blocks.REINFORCED_DEEPSLATE
+  - "reinforced_deepslate"
 Blocks.COBBLED_DEEPSLATE:
   - Blocks.COBBLED_DEEPSLATE
   - "cobbled_deepslate"
@@ -2846,6 +2933,21 @@ Blocks.POTTED_AZALEA_BUSH:
 Blocks.POTTED_FLOWERING_AZALEA_BUSH:
   - Blocks.POTTED_FLOWERING_AZALEA
   - "potted_flowering_azalea_bush"
+Blocks.POTTED_MANGROVE_PROPAGULE:
+  - Blocks.POTTED_MANGROVE_PROPAGULE
+  - "potted_mangrove_propagule"
+Blocks.OCHRE_FROGLIGHT:
+  - Blocks.OCHRE_FROGLIGHT
+  - "ochre_froglight"
+Blocks.VERDANT_FROGLIGHT:
+  - Blocks.VERDANT_FROGLIGHT
+  - "verdant_froglight"
+Blocks.PEARLESCENT_FROGLIGHT:
+  - Blocks.PEARLESCENT_FROGLIGHT
+  - "pearlescent_froglight"
+Blocks.FROGSPAWN:
+  - Blocks.FROGSPAWN
+  - "frogspawn"
 Items.DYE:
   - Items.INK_SAC
   - "#forge:dyes"
@@ -2975,6 +3077,9 @@ Items.CARROT_ON_A_STICK:
 Items.COMPASS:
   - Items.COMPASS
   - "compass"
+Items.RECOVERY_COMPASS:
+  - Items.RECOVERY_COMPASS
+  - "recovery_compass"
 Items.CLOCK:
   - Items.CLOCK
   - "clock"
@@ -3233,6 +3338,9 @@ Items.ACACIA_DOOR:
 Items.DARK_OAK_DOOR:
   - Items.DARK_OAK_DOOR
   - "dark_oak_door"
+Items.MANGROVE_DOOR:
+  - Items.MANGROVE_DOOR
+  - "mangrove_door"
 Items.IRON_DOOR:
   - Items.IRON_DOOR
   - "iron_door"
@@ -3290,6 +3398,9 @@ Items.ACACIA_BOAT:
 Items.DARK_OAK_BOAT:
   - Items.DARK_OAK_BOAT
   - "dark_oak_boat"
+Items.MANGROVE_BOAT:
+  - Items.MANGROVE_BOAT
+  - "mangrove_boat"
 Items.REPEATER:
   - Items.REPEATER
   - "repeater"
@@ -3698,6 +3809,12 @@ Items.MUSIC_DISC_PIGSTEP:
 Items.MUSIC_DISC_OTHERSIDE:
   - Items.MUSIC_DISC_OTHERSIDE
   - "music_disc_otherside"
+Items.MUSIC_DISC_5:
+  - Items.MUSIC_DISC_5
+  - "music_disc_5"
+Items.DISC_FRAGMENT_5:
+  - Items.DISC_FRAGMENT_5
+  - "disc_fragment_5"
 Items.SKULL:
   - Items.SKELETON_SKULL
   - "#forge:heads"
@@ -3746,6 +3863,9 @@ Items.ACACIA_SIGN:
 Items.DARK_OAK_SIGN:
   - Items.DARK_OAK_SIGN
   - "dark_oak_sign"
+Items.MANGROVE_SIGN:
+  - Items.MANGROVE_SIGN
+  - "mangrove_sign"
 Items.PUFFERFISH_BUCKET:
   - Items.PUFFERFISH_BUCKET
   - "pufferfish_bucket"
@@ -3758,6 +3878,9 @@ Items.COD_BUCKET:
 Items.TROPICAL_FISH_BUCKET:
   - Items.TROPICAL_FISH_BUCKET
   - "tropical_fish_bucket"
+Items.TADPOLE_BUCKET:
+  - Items.TADPOLE_BUCKET
+  - "tadpole_bucket"
 Items.DRIED_KELP:
   - Items.DRIED_KELP
   - "dried_kelp"
@@ -3974,6 +4097,18 @@ Items.GLOW_SQUID_SPAWN_EGG:
 Items.GOAT_SPAWN_EGG:
   - Items.GOAT_SPAWN_EGG
   - "goat_spawn_egg"
+Items.ALLAY_SPAWN_EGG:
+  - Items.ALLAY_SPAWN_EGG
+  - "allay_spawn_egg"
+Items.FROG_SPAWN_EGG:
+  - Items.FROG_SPAWN_EGG
+  - "frog_spawn_egg"
+Items.TADPOLE_SPAWN_EGG:
+  - Items.TADPOLE_SPAWN_EGG
+  - "tadpole_spawn_egg"
+Items.WARDEN_SPAWN_EGG:
+  - Items.WARDEN_SPAWN_EGG
+  - "warden_spawn_egg"
 Items.AXOLOTL_BUCKET:
   - Items.AXOLOTL_BUCKET
   - "axolotl_bucket"
@@ -4007,3 +4142,9 @@ Items.RAW_COPPER:
 Items.SPYGLASS:
   - Items.SPYGLASS
   - "spyglass"
+Items.GOAT_HORN:
+  - Items.GOAT_HORN
+  - "goat_horn"
+Items.ECHO_SHARD:
+  - Items.ECHO_SHARD
+  - "echo_shard"
