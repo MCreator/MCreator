@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-<#include "triggers.java.ftl">
 <#include "mcitems.ftl">
 
 package ${package}.world.features;
