@@ -37,37 +37,37 @@ package ${package}.item.extension;
 
 <#compress>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
-    	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-    		event.enqueueWork(() -> DispenserBlock.registerBehavior(${mappedMCItemToItem(data.item)}, new OptionalDispenseItemBehavior() {
-    			public ItemStack execute(BlockSource blockSource, ItemStack stack) {
-    				<#assign hasSuccessCondition = hasProcedure(data.dispenseSuccessCondition)>
-    				ItemStack itemstack = stack.copy();
-    				Level world = blockSource.getLevel();
-    				Direction direction = blockSource.getBlockState().getValue(DispenserBlock.FACING);
-    				int x = blockSource.getPos().getX();
-    				int y = blockSource.getPos().getY();
-    				int z = blockSource.getPos().getZ();
+		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+			event.enqueueWork(() -> DispenserBlock.registerBehavior(${mappedMCItemToItem(data.item)}, new OptionalDispenseItemBehavior() {
+				public ItemStack execute(BlockSource blockSource, ItemStack stack) {
+					<#assign hasSuccessCondition = hasProcedure(data.dispenseSuccessCondition)>
+					ItemStack itemstack = stack.copy();
+					Level world = blockSource.getLevel();
+					Direction direction = blockSource.getBlockState().getValue(DispenserBlock.FACING);
+					int x = blockSource.getPos().getX();
+					int y = blockSource.getPos().getY();
+					int z = blockSource.getPos().getZ();
 
-    				<#if hasSuccessCondition>
-    				    this.setSuccess(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
-    				</#if>
+					<#if hasSuccessCondition>
+						this.setSuccess(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
+					</#if>
 
-    				<#if hasProcedure(data.dispenseResultItemstack)>
-    					boolean success = this.isSuccess();
-    					<#if hasReturnValueOf(data.dispenseResultItemstack, "itemstack")>
-    						return <@procedureOBJToItemstackCode data.dispenseResultItemstack, false/>;
-    					<#else>
-    						<@procedureOBJToCode data.dispenseResultItemstack/>
-    						<#if hasSuccessCondition>if(success)</#if>
-    						itemstack.shrink(1);
-    						return itemstack;
-    					</#if>
-    				<#else>
-    					<#if hasSuccessCondition>if(this.isSuccess())</#if>
-    					itemstack.shrink(1);
-    					return itemstack;
-    				</#if>
-    			}
-    		}));
-    	}
+					<#if hasProcedure(data.dispenseResultItemstack)>
+						boolean success = this.isSuccess();
+						<#if hasReturnValueOf(data.dispenseResultItemstack, "itemstack")>
+							return <@procedureOBJToItemstackCode data.dispenseResultItemstack, false/>;
+						<#else>
+							<@procedureOBJToCode data.dispenseResultItemstack/>
+							<#if hasSuccessCondition>if(success)</#if>
+							itemstack.shrink(1);
+							return itemstack;
+						</#if>
+					<#else>
+						<#if hasSuccessCondition>if(this.isSuccess())</#if>
+						itemstack.shrink(1);
+						return itemstack;
+					</#if>
+				}
+			}));
+		}
 }</#compress>
