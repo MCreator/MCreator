@@ -1049,7 +1049,7 @@
   type: block
 
 - Blocks.MUDDY_MANGROVE_ROOTS:
-  readable_name: "Muddy Mangrove Toots"
+  readable_name: "Muddy Mangrove Roots"
   type: block
 
 - Blocks.STRIPPED_OAK_LOG:
@@ -1982,6 +1982,10 @@
   readable_name: "Warped Sign"
   type: block
   texture: STANDING_WARPED_SIGN
+
+- Blocks.MANGROVE_SIGN:
+  readable_name: "Mangrove Sign"
+  type: block
 
 - Blocks.WALL_SIGN:
   readable_name: "Oak Wall Sign"
@@ -5810,6 +5814,34 @@
   readable_name: "Mangrove Boat"
   type: item
 
+- Items.OAK_CHEST_BOAT:
+  readable_name: "Oak Boat with Chest"
+  type: item
+
+- Items.SPRUCE_CHEST_BOAT:
+  readable_name: "Spruce Boat with Chest"
+  type: item
+
+- Items.BIRCH_CHEST_BOAT:
+  readable_name: "Birch Boat with Chest"
+  type: item
+
+- Items.JUNGLE_CHEST_BOAT:
+  readable_name: "Jungle Boat with Chest"
+  type: item
+
+- Items.ACACIA_CHEST_BOAT:
+  readable_name: "Acacia Boat with Chest"
+  type: item
+
+- Items.DARK_OAK_CHEST_BOAT:
+  readable_name: "Dark Oak Boat with Chest"
+  type: item
+
+- Items.MANGROVE_CHEST_BOAT:
+  readable_name: "Mangrove Boat with Chest"
+  type: item
+
 - Items.REPEATER:
   readable_name: "Redstone Repeater"
   type: item
@@ -6848,7 +6880,6 @@
 - Items.DISC_FRAGMENT_5:
   readable_name: "Disc Fragment 5"
   type: item
-  texture: HONEY_BOTTLE
 
 - Items.SKULL:
   readable_name: "Any Skull"
