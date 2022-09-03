@@ -627,7 +627,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 								break;
 							}
 						}
-						if (procedureUsedByGUI)
+						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement, modElement.getName()))
 							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
