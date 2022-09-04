@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -44,9 +44,33 @@ public class ${JavaModName}Items {
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
 	<#list items as item>
-		public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+		<#if item.getModElement().getType().getBaseType()?string == "BLOCK">
+			<#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
+				<#assign hasDoubleBlocks = true>
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+			<#else>
+				<#assign hasBlocks = true>
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+			</#if>
+		<#else>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+		</#if>
 	</#list>
+
+	<#if hasBlocks>
+	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {
+		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+	}
+	</#if>
+
+	<#if hasDoubleBlocks>
+	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block, CreativeModeTab tab) {
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties().tab(tab)));
+	}
+	</#if>
 }
 
 <#-- @formatter:on -->
