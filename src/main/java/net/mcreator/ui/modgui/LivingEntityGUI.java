@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.BlocklyCompileNote.Type;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
@@ -274,9 +275,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			enableBlocklyPanel();
 			hasErrors = false;
 			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
+				if (note.type() == Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
@@ -650,6 +652,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		breedTriggerItems.setPreferredSize(new Dimension(300, 32));
 		aiBase.setPreferredSize(new Dimension(250, 32));
+		aiBase.addActionListener(e -> enableBlocklyPanel());
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
@@ -874,10 +877,21 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
 		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
 
+		enableBlocklyPanel();
+
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
 		}
+	}
+
+	private void enableBlocklyPanel() {
+		if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getUnmodifiableAIBases()
+				.contains(aiBase.getSelectedItem()))
+			compileNotesPanel.addCompileNote(0, new BlocklyCompileNote(Type.INFO,
+					L10N.t("blockly.warnings.unmodifiable_ai_bases")));
+		else if (!compileNotesPanel.getCompileNotes().isEmpty())
+			compileNotesPanel.getCompileNotes().remove(0);
 	}
 
 	@Override public void reloadDataLists() {

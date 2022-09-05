@@ -222,7 +222,9 @@ import java.util.Locale;
 					this.aixml, this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
-			additionalData.put("aicode", blocklyToJava.getGeneratedCode());
+			additionalData.put("aicode",
+					!getModElement().getWorkspace().getGenerator().getGeneratorConfiguration().getUnmodifiableAIBases()
+							.contains(aiBase) ? blocklyToJava.getGeneratedCode() : "");
 		};
 	}
 

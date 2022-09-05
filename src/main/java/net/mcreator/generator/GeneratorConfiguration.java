@@ -135,6 +135,12 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
+	public List<?> getUnmodifiableAIBases() {
+		return (generatorConfig.get("unmodifiable_ai_bases") != null) ?
+				(List<?>) generatorConfig.get("unmodifiable_ai_bases") :
+				new ArrayList<>();
+	}
+
 	public GeneratorFlavor getGeneratorFlavor() {
 		return generatorFlavor;
 	}
