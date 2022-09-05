@@ -4,8 +4,8 @@ buildfileversion: 40.1.0
 
 java_models:
   key: mojmap-1.18.x
-  compatible: [mojmap-1.17.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+  compatible: [ mojmap-1.17.x ]
+  requested_key_words: [ ModelPart, ~ModelRenderer ]
 
 # gradle task definitions
 gradle:
@@ -32,7 +32,7 @@ particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 
-unmodifiable_ai_bases: [Bat,MagmaCube,Slime]
+unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
 
 base_templates:
   - template: modbase/mod.java.ftl
