@@ -5,6 +5,6 @@
 		} catch (CommandSyntaxException e) {
 			e.printStackTrace();
 			return 0;
-			}
 		}
+	}
 }.getX())
