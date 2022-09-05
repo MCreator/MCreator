@@ -202,7 +202,7 @@ import java.util.stream.Collectors;
 		return spawnWorldTypes.size() > 0;
 	}
 
-	public String getRenderType() {
+	@Override public String getRenderType() {
 		return "cutout";
 	}
 

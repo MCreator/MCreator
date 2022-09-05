@@ -43,7 +43,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#compress>
 public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements EntityBlock</#if>{
 	public ${name}Block() {
-		super(<#if data.plantType == "normal">MobEffects.MOVEMENT_SPEED, ${data.suspiciousStewDuration},</#if>
+		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
@@ -59,7 +59,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
 			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
 		<#else>
-			.sound(SoundType.CROP)
+			.sound(SoundType.${data.soundOnStep})
 		</#if>
 		<#if data.unbreakable>
 		.strength(-1, 3600000)
