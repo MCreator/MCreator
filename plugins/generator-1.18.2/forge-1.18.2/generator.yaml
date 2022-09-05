@@ -4,8 +4,8 @@ buildfileversion: 40.1.0
 
 java_models:
   key: mojmap-1.18.x
-  compatible: [ mojmap-1.17.x ]
-  requested_key_words: [ ModelPart, ~ModelRenderer ]
+  compatible: [mojmap-1.17.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
 gradle:
