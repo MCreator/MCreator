@@ -145,6 +145,10 @@ import java.util.List;
 		return spawnWorldTypes.size() > 0;
 	}
 
+	@Override public String getRenderType() {
+		return "translucent";
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
 

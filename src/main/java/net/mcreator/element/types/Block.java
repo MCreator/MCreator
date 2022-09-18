@@ -36,10 +36,8 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
@@ -317,6 +315,10 @@ import java.util.stream.Collectors;
 		if (textureName.equals(""))
 			return getMainTexture();
 		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
+	}
+
+	@Override public String getRenderType() {
+		return transparencyType.toLowerCase(Locale.ENGLISH);
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

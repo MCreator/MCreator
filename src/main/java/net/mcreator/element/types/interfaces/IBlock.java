@@ -30,4 +30,6 @@ public interface IBlock extends IItem {
 		return List.of(BaseType.BLOCK, BaseType.ITEM);
 	}
 
+	String getRenderType();
+
 }
