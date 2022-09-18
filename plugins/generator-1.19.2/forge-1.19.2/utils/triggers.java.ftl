@@ -10,10 +10,10 @@
 			double x = entity != null ? entity.getX() : 0.0;
 			double y = entity != null ? entity.getY() : 0.0;
 			double z = entity != null ? entity.getZ() : 0.0;
-			list.add(new TextComponent(<@procedureOBJToTextCode procedure/>));
+			list.add(Component.literal(<@procedureOBJToTextCode procedure/>));
 		<#else>
 			<#list thelper.splitCommaSeparatedStringListWithEscapes(procedure.getFixedText()) as entry>
-				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
 			</#list>
 		</#if>
 		}
