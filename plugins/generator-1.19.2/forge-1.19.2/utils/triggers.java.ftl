@@ -1,6 +1,25 @@
 <#include "procedures.java.ftl">
 
 <#-- Item-related triggers -->
+<#macro addSpecialInformation procedure="">
+	<#if procedure?has_content || hasProcedure(procedure)>
+		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, world, list, flag);
+		<#if hasProcedure(procedure)>
+			Entity entity = itemstack.getEntityRepresentation();
+			double x = entity != null ? entity.getX() : 0.0;
+			double y = entity != null ? entity.getY() : 0.0;
+			double z = entity != null ? entity.getZ() : 0.0;
+			list.add(new TextComponent(<@procedureOBJToTextCode procedure/>));
+		<#else>
+			<#list thelper.splitCommaSeparatedStringListWithEscapes(procedure.getFixedText()) as entry>
+				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		</#if>
+		}
+	</#if>
+</#macro>
+
 <#macro onEntitySwing procedure="">
 <#if hasProcedure(procedure)>
 @Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
