@@ -29,23 +29,31 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
+
+/*
+*    MCreator note: This file will be REGENERATED on each build.
+*/
 
 package ${package}.village;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}POI {
+import net.minecraft.sounds.SoundEvent;
+import javax.annotation.Nullable;
 
-    @ObjectHolder("${modid}:${registryname}")
-    public static final PointOfInterestType pointOfInterest = null;
+public class ${JavaModName}VillagerProfessions extends VillagerProfession {
 
-    @SubscribeEvent public static void registerPointOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-        event.getRegistry().register(new POICustom());
+    private final List<Supplier<SoundEvent>> soundEventSuppliers;
+
+    @SafeVarargs
+    public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
+        this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
     }
 
-    public static class POICustom extends PointOfInterestType {
-        public POICustom() {
-            super("${registryname}", getAllStates(${mappedBlockToBlock(data.pointOfInterest)}), 1, 1);
-            setRegistryName("${registryname}");
-        }
+    @Nullable
+    @Override
+    public SoundEvent getWorkSound() {
+        int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
+        return soundEventSuppliers.get(n).get();
     }
 }
+<#-- @formatter:on -->

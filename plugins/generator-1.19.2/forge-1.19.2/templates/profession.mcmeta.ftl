@@ -1,5 +1,5 @@
 {
-    "villager": {
-        "hat": "${data.hat?lower_case}"
-    }
+"villager": {
+"hat": "${data.hat?lower_case}"
+}
 }

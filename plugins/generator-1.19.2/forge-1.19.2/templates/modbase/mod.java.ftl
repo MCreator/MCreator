@@ -44,6 +44,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("villagerprofession")>
+			${JavaModName}Professions.POI.register(bus);
+			${JavaModName}Professions.PROFESSIONS.register(bus);
+		</#if>
 	}
 
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
