@@ -1,13 +1,15 @@
 templates:
-  - template: poi.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEPOI.java"
-  - template: villagerprofession.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/village/@NAMEProfession.java"
   - template: profession.mcmeta.ftl
     writer: json
     condition: isHatEnabled()
     deleteWhenConditionFalse: true
     name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
+
+global_templates:
+  - template: elementinits/villagerprofessions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/village/@JavaModNameVillagerProfessions.java"
+  - template: elementinits/professions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameProfessions.java"
 
 localizationkeys:
   - key: entity.minecraft.villager.@modid.@registryname

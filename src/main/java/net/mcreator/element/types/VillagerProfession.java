@@ -33,6 +33,7 @@ public class VillagerProfession extends GeneratableElement {
 
 	public String name;
 	public String displayName;
+	public MItemBlock oldPOI;
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
 	public String hat;

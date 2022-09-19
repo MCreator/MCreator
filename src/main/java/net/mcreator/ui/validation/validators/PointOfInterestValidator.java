@@ -29,19 +29,24 @@ public class PointOfInterestValidator implements Validator {
 
 	private final MCreator mcreator;
 	private final MCItemHolder holder;
+	private final MCItemHolder exception;
 
-	public PointOfInterestValidator(MCreator mcreator, MCItemHolder holder) {
+	public PointOfInterestValidator(MCreator mcreator, MCItemHolder holder, MCItemHolder exception) {
 		this.mcreator = mcreator;
 		this.holder = holder;
+		this.exception = exception;
 	}
 
 	@Override public ValidationResult validate() {
-		if (ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream().toList().contains(holder.getBlock()))
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validator.point_of_interest.unique"));
-		if (holder.containsItem())
-			return Validator.ValidationResult.PASSED;
-		return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-				L10N.t("validators.select_element"));
+		if (holder.containsItem()) {
+			if (exception.containsItem() && holder == exception)
+				return ValidationResult.PASSED;
+			if (ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream().toList()
+					.contains(holder.getBlock()))
+				return new Validator.ValidationResult(ValidationResultType.ERROR,
+						L10N.t("validator.point_of_interest.unique"));
+			return ValidationResult.PASSED;
+		}
+		return new Validator.ValidationResult(ValidationResultType.ERROR, L10N.t("validators.select_element"));
 	}
 }
