@@ -453,7 +453,6 @@ public class TestWorkspaceDataProvider {
 			fluid.density = 5;
 			fluid.viscosity = 10;
 			fluid.temperature = 375;
-			fluid.isGas = _true;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
 			fluid.textureBucket = emptyLists ? "" : "itest";

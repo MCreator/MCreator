@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -32,47 +33,18 @@
 
 package ${package}.fluid;
 
+<#compress>
 public abstract class ${name}Fluid extends ForgeFlowingFluid {
 
 	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
-			${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
-			${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()},
-			<#if data.extendsFluidAttributes()>${name}</#if>FluidAttributes
-			.builder(new ResourceLocation("${modid}:blocks/${data.textureStill}"), new ResourceLocation("${modid}:blocks/${data.textureFlowing}"))
-			<#if data.luminosity != 0>.luminosity(${data.luminosity})</#if>
-			<#if data.density != 1000>.density(${data.density})</#if>
-			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
-			<#if data.temperature != 300>.temperature(${data.temperature})</#if>
-			<#if data.density lt 0>.gaseous()</#if>
-			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
-			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
-			</#if>
-			<#if data.isFluidTinted()>
-			.color(<#if data.tintType == "Grass">
-				-6506636
-				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
-				-12012264
-				<#elseif data.tintType == "Birch foliage">
-				-8345771
-				<#elseif data.tintType == "Spruce foliage">
-				-10380959
-				<#elseif data.tintType == "Water">
-				-13083194
-				<#elseif data.tintType == "Sky">
-				-8214273
-				<#elseif data.tintType == "Fog">
-				-4138753
-				<#else>
-				-16448205
-				</#if>)
-			</#if>)
+		() -> ${JavaModName}FluidTypes.${data.getModElement().getRegistryNameUpper()}_TYPE.get(),
+		() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		() -> ${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}.get())
 		.explosionResistance(${data.resistance}f)
-		<#if data.canMultiply>.canMultiply()</#if>
 		<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
 		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
 		<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
-		<#if data.generateBucket>.bucket(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET)</#if>
+		<#if data.generateBucket>.bucket(() -> ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET.get())</#if>
 		.block(() -> (LiquidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 
 	private ${name}Fluid() {
@@ -82,12 +54,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	<#if data.spawnParticles>
 	@Override public ParticleOptions getDripParticle() {
 		return ${data.dripParticle};
-	}
-	</#if>
-
-	<#if data.flowStrength != 1>
-	@Override public Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState fluidstate) {
-		return super.getFlow(world, pos, fluidstate).scale(${data.flowStrength});
 	}
 	</#if>
 
@@ -118,10 +84,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	</#if>
 
 	public static class Source extends ${name}Fluid {
-		public Source() {
-			super();
-		}
-
 		public int getAmount(FluidState state) {
 			return 8;
 		}
@@ -132,10 +94,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	}
 
 	public static class Flowing extends ${name}Fluid {
-		public Flowing() {
-			super();
-		}
-
 		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
 			super.createFluidStateDefinition(builder);
 			builder.add(LEVEL);
@@ -150,5 +108,5 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 		}
 	}
 
-}
+}</#compress>
 <#-- @formatter:on -->

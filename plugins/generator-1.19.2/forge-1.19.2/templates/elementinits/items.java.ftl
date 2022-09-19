@@ -44,7 +44,10 @@ public class ${JavaModName}Items {
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
 	<#list items as item>
-		<#if item.getModElement().getType().getBaseType()?string == "BLOCK">
+		<#if item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
+		<#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
 			<#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
 				<#assign hasDoubleBlocks = true>
 				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
