@@ -55,8 +55,13 @@ public class ${JavaModName}Blocks {
 	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
 
 	<#list blocks as block>
-		public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
+		<#if block.getModElement().getTypeString() == "dimension">
+            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
+				REGISTRY.register("${block.getModElement().getRegistryName()}_portal", () -> new ${block.getModElement().getName()}PortalBlock());
+		<#else>
+			public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
+		</#if>
 	</#list>
 
 	<#if hasTintedBlocks || hasTintedBlockItems>

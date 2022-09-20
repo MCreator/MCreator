@@ -57,6 +57,7 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
+      - ${w.hasElementsOfType('dimension')}
 #  - template: elementinits/javamodels.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
 #    condition: hasJavaModels()
