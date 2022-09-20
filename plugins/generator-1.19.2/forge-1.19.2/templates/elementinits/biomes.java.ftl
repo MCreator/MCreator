@@ -43,7 +43,10 @@ import com.mojang.datafixers.util.Pair;
 <#assign spawn_overworld_caves = []>
 <#assign spawn_nether = []>
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Biomes {
+<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
+@Mod.EventBusSubscriber
+</#if>
+public class ${JavaModName}Biomes {
 
 	public static final DeferredRegister<Biome> REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
 
@@ -64,16 +67,7 @@ import com.mojang.datafixers.util.Pair;
 		</#if>
     </#list>
 
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		event.enqueueWork(() -> {
-	    <#list biomes as biome>
-            ${biome.getModElement().getName()}Biome.init();
-        </#list>
-		});
-	}
-
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
-	@Mod.EventBusSubscriber public static class BiomeInjector {
 
 		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 			MinecraftServer server = event.getServer();
@@ -244,7 +238,6 @@ import com.mojang.datafixers.util.Pair;
 		}
 		</#if>
 
-	}
 	</#if>
 
 }
