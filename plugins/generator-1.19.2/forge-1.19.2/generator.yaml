@@ -58,6 +58,7 @@ base_templates:
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
       - ${w.hasElementsOfType('dimension')}
+      - ${w.hasElementsOfType('biome')}
 #  - template: elementinits/javamodels.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
 #    condition: hasJavaModels()

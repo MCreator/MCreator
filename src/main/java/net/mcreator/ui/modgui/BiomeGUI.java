@@ -130,7 +130,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
 
-	private final JComboBox<String> biomeCategory = new JComboBox<>(
+	// TODO: remove me
+	@Deprecated private final JComboBox<String> biomeCategory = new JComboBox<>(
 			new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA", "ICY", "THEEND",
 					"BEACH", "FOREST", "OCEAN", "DESERT", "RIVER", "SWAMP", "MUSHROOM", "NETHER", "UNDERGROUND",
 					"MOUNTAIN" });
@@ -141,7 +142,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
+	// TODO: remove me
+	@Deprecated private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
+
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
