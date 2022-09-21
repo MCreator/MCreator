@@ -108,7 +108,7 @@ public class ${name}Biome {
                     <#if data.hasVines() || data.hasFruits()>
                         <@vinesAndFruits/>
                     <#else>
-                        .decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
+                        .ignoreVines()
                     </#if>
                 <#elseif data.vanillaTreeType == "Savanna trees">
                     (
