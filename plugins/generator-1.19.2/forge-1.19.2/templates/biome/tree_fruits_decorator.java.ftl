@@ -42,8 +42,7 @@ public class ${name}FruitDecorator extends CocoaDecorator {
     static {
         codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
         tdt = new TreeDecoratorType<>(codec);
-        tdt.setRegistryName("${registryname}_tree_fruit_decorator");
-        ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
+        ForgeRegistries.TREE_DECORATOR_TYPES.register("${registryname}_tree_fruit_decorator", tdt);
     }
 
     public ${name}FruitDecorator() {

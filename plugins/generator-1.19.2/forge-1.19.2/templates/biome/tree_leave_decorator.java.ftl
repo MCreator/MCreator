@@ -34,45 +34,68 @@ package ${package}.world.features.treedecorators;
 
 public class ${name}LeaveDecorator extends LeaveVineDecorator {
 
-        public static final ${name}LeaveDecorator INSTANCE = new ${name}LeaveDecorator();
+    public static final ${name}LeaveDecorator INSTANCE = new ${name}LeaveDecorator();
 
-        public static com.mojang.serialization.Codec<LeaveVineDecorator> codec;
-        public static TreeDecoratorType<?> tdt;
+    public static com.mojang.serialization.Codec<LeaveVineDecorator> codec;
+    public static TreeDecoratorType<?> tdt;
 
-        static {
-            codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-            tdt = new TreeDecoratorType<>(codec);
-            tdt.setRegistryName("${registryname}_tree_leave_decorator");
-            ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
-        }
+    static {
+        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+        tdt = new TreeDecoratorType<>(codec);
+        ForgeRegistries.TREE_DECORATOR_TYPES.register("${registryname}_tree_leave_decorator", tdt);
+    }
 
-        @Override
-        protected TreeDecoratorType<?> type() {
-            return tdt;
-        }
+	public ${name}LeaveDecorator() {
+		super(0.25f);
+	}
 
-        @Override
-        public void place(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
-            listBlockPos2.forEach((blockpos) -> {
-                if (random.nextInt(4) == 0) {
-                    BlockPos bp = blockpos.below();
-                    if (Feature.isAir(level, bp)) {
-                        addVine(level, bp, biConsumer);
-                    }
+    @Override
+    protected TreeDecoratorType<?> type() {
+        return tdt;
+    }
+
+    @Override
+    public void place(TreeDecorator.Context context) {
+        context.leaves().forEach((blockpos) -> {
+            if (context.random().nextFloat() <  0.25f) {
+                BlockPos pos = blockpos.west();
+                if (context.isAir(pos)) {
+                    addVine(pos, context);
                 }
-
-            });
-        }
-
-        private static void addVine(LevelSimulatedReader levelReader, BlockPos blockPos, BiConsumer<BlockPos, BlockState> biConsumer) {
-            biConsumer.accept(blockPos, ${mappedBlockToBlockStateCode(data.treeVines)});
-            int i = 4;
-            for(BlockPos blockpos = blockPos.below(); Feature.isAir(levelReader, blockpos) && i > 0; --i) {
-                biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
-                blockpos = blockpos.below();
             }
 
+			if (context.random().nextFloat() <  0.25f) {
+				BlockPos pos = blockpos.east();
+				if (context.isAir(pos)) {
+					addVine(pos, context);
+				}
+			}
+
+			if (context.random().nextFloat() <  0.25f) {
+				BlockPos pos = blockpos.north();
+				if (context.isAir(pos)) {
+					addVine(pos, context);
+				}
+			}
+
+			if (context.random().nextFloat() <  0.25f) {
+				BlockPos pos = blockpos.south();
+				if (context.isAir(pos)) {
+					addVine(pos, context);
+				}
+			}
+        });
+    }
+
+    private static void addVine(BlockPos pos, TreeDecorator.Context context) {
+		context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
+        int i = 4;
+        for(BlockPos blockpos = pos.below(); context.isAir(blockpos) && i > 0; --i) {
+			context.setBlock(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
+            blockpos = blockpos.below();
         }
+
+    }
 
 }
 <#-- @formatter:on -->

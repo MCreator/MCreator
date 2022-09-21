@@ -37,6 +37,7 @@ package ${package}.world.biome;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 
 public class ${name}Biome {
 
@@ -263,9 +264,10 @@ public class ${name}Biome {
         <#if (data.sandPatchesPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
 			    PlacementUtils.register("${modid}:disk_sand_${registryname}", FeatureUtils.register("${modid}:disk_sand_${registryname}",
-                        Feature.DISK, new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
-                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
-                    ), List.of(
+                        Feature.DISK, new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.SAND),
+                        BlockPredicate.matchesBlocks(List.of(${mappedBlockToBlock(data.groundBlock)}, ${mappedBlockToBlock(data.undergroundBlock)})),
+                        UniformInt.of(2, 6), 2
+                    )), List.of(
 				        CountPlacement.of(${data.sandPatchesPerChunk}),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP_TOP_SOLID,
@@ -276,9 +278,10 @@ public class ${name}Biome {
         <#if (data.gravelPatchesPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
 			    PlacementUtils.register("${modid}:disk_gravel_${registryname}", FeatureUtils.register("${modid}:disk_gravel_${registryname}",
-			        Feature.DISK, new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
-			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
-			    ), List.of(
+			        Feature.DISK, new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.GRAVEL),
+                    BlockPredicate.matchesBlocks(List.of(${mappedBlockToBlock(data.groundBlock)}, ${mappedBlockToBlock(data.undergroundBlock)})),
+                    UniformInt.of(2, 5), 2
+			    )), List.of(
 			        CountPlacement.of(${data.gravelPatchesPerChunk}),
 			        InSquarePlacement.spread(),
 			        PlacementUtils.HEIGHTMAP_TOP_SOLID,

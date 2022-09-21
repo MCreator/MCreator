@@ -43,6 +43,18 @@ import com.mojang.datafixers.util.Pair;
 <#assign spawn_overworld_caves = []>
 <#assign spawn_nether = []>
 
+<#list biomes as biome>
+	<#if biome.spawnBiome>
+		<#assign spawn_overworld += [biome]>
+	</#if>
+	<#if biome.spawnInCaves>
+		<#assign spawn_overworld_caves += [biome]>
+	</#if>
+	<#if biome.spawnBiomeNether>
+		<#assign spawn_nether += [biome]>
+	</#if>
+</#list>
+
 <#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
 @Mod.EventBusSubscriber
 </#if>
@@ -53,18 +65,6 @@ public class ${JavaModName}Biomes {
     <#list biomes as biome>
     public static final RegistryObject<Biome> ${biome.getModElement().getRegistryNameUpper()}
         = REGISTRY.register("${biome.getModElement().getRegistryName()}", () -> ${biome.getModElement().getName()}Biome.createBiome());
-
-		<#if biome.spawnBiome>
-			<#assign spawn_overworld += [biome]>
-		</#if>
-
-		<#if biome.spawnInCaves>
-			<#assign spawn_overworld_caves += [biome]>
-		</#if>
-
-		<#if biome.spawnBiomeNether>
-			<#assign spawn_nether += [biome]>
-		</#if>
     </#list>
 
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>

@@ -34,34 +34,55 @@ package ${package}.world.features.treedecorators;
 
 public class ${name}TrunkDecorator extends TrunkVineDecorator {
 
-        public static final ${name}TrunkDecorator INSTANCE = new ${name}TrunkDecorator();
+    public static final ${name}TrunkDecorator INSTANCE = new ${name}TrunkDecorator();
 
-        public static com.mojang.serialization.Codec<${name}TrunkDecorator> codec;
-        public static TreeDecoratorType<?> tdt;
+    public static com.mojang.serialization.Codec<${name}TrunkDecorator> codec;
+    public static TreeDecoratorType<?> tdt;
 
-        static {
-            codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-            tdt = new TreeDecoratorType<>(codec);
-            tdt.setRegistryName("${registryname}_tree_trunk_decorator");
-            ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
-        }
+    static {
+        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+        tdt = new TreeDecoratorType<>(codec);
+        ForgeRegistries.TREE_DECORATOR_TYPES.register("${registryname}_tree_trunk_decorator", tdt);
+    }
 
-        @Override
-        protected TreeDecoratorType<?> type() {
-            return tdt;
-        }
+    @Override
+    protected TreeDecoratorType<?> type() {
+        return tdt;
+    }
 
-        @Override
-        public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
-            listBlockPos.forEach(blockpos -> {
-                if (random.nextInt(3) > 0) {
-                    BlockPos bp = blockpos.below();
-                    if (Feature.isAir(levelReader, bp)) {
-                        biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
-                    }
+    @Override
+    public void place(TreeDecorator.Context context) {
+        context.logs().forEach(blockpos -> {
+            if (context.random().nextInt(3) > 0) {
+                BlockPos pos = blockpos.west();
+                if (context.isAir(pos)) {
+					context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
                 }
+            }
 
-            });
-        }
+			if (context.random().nextInt(3) > 0) {
+				BlockPos pos = blockpos.east();
+				if (context.isAir(pos)) {
+					context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
+				}
+			}
+
+			if (context.random().nextInt(3) > 0) {
+				BlockPos pos = blockpos.north();
+				if (context.isAir(pos)) {
+					context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
+				}
+			}
+
+			if (context.random().nextInt(3) > 0) {
+				BlockPos pos = blockpos.south();
+				if (context.isAir(pos)) {
+					context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
+				}
+			}
+
+        });
+    }
+
 }
 <#-- @formatter:on -->

@@ -71,7 +71,6 @@ import java.util.Locale;
 	public boolean spawnInCaves;
 
 	public int biomeWeight;
-	public List<String> biomeDictionaryTypes;
 
 	public int grassPerChunk;
 	public int seagrassPerChunk;
@@ -138,7 +137,6 @@ import java.util.Locale;
 		oceanRuinType = "NONE";
 		spawnRuinedPortal = "NONE";
 		biomeCategory = "NONE";
-		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 	}
