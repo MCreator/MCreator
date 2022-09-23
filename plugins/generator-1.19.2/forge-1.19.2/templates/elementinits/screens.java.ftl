@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 
 /*
- *    MCreator note: This file will be REGENERATED on each build.
+ *	MCreator note: This file will be REGENERATED on each build.
  */
 
 package ${package}.init;
@@ -40,10 +40,10 @@ package ${package}.init;
 
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-            <#list guis as gui>
-            MenuScreens.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
-            </#list>
-        });
+			<#list guis as gui>
+			MenuScreens.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
+			</#list>
+		});
 	}
 
 }

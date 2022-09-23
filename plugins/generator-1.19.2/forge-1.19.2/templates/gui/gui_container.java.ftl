@@ -109,53 +109,53 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName()?ends_with("Slot")>
 					<#assign slotnum += 1>
-                    this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
-                        ${(component.x - mx)?int + 1},
-                        ${(component.y - my)?int + 1}) {
+					this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
+						${(component.x - mx)?int + 1},
+						${(component.y - my)?int + 1}) {
 
-                        <#if component.disableStackInteraction>
-                        @Override public boolean mayPickup(Player player) {
-                            return false;
-                        }
-                        </#if>
+						<#if component.disableStackInteraction>
+						@Override public boolean mayPickup(Player player) {
+							return false;
+						}
+						</#if>
 
-                        <#if hasProcedure(component.onSlotChanged)>
-                        @Override public void setChanged() {
-                            super.setChanged();
-                            slotChanged(${component.id}, 0, 0);
-                        }
-                        </#if>
+						<#if hasProcedure(component.onSlotChanged)>
+						@Override public void setChanged() {
+							super.setChanged();
+							slotChanged(${component.id}, 0, 0);
+						}
+						</#if>
 
-                        <#if hasProcedure(component.onTakenFromSlot)>
-                        @Override public void onTake(Player entity, ItemStack stack) {
-                            super.onTake(entity, stack);
-                            slotChanged(${component.id}, 1, 0);
-                        }
-                        </#if>
+						<#if hasProcedure(component.onTakenFromSlot)>
+						@Override public void onTake(Player entity, ItemStack stack) {
+							super.onTake(entity, stack);
+							slotChanged(${component.id}, 1, 0);
+						}
+						</#if>
 
-                        <#if hasProcedure(component.onStackTransfer)>
-                        @Override public void onQuickCraft(ItemStack a, ItemStack b) {
-                            super.onQuickCraft(a, b);
-                            slotChanged(${component.id}, 2, b.getCount() - a.getCount());
-                        }
-                        </#if>
+						<#if hasProcedure(component.onStackTransfer)>
+						@Override public void onQuickCraft(ItemStack a, ItemStack b) {
+							super.onQuickCraft(a, b);
+							slotChanged(${component.id}, 2, b.getCount() - a.getCount());
+						}
+						</#if>
 
-                        <#if component.disableStackInteraction>
-                            @Override public boolean mayPlace(ItemStack stack) {
-                                return false;
-                            }
-                        <#elseif component.getClass().getSimpleName() == "InputSlot">
-                            <#if component.inputLimit.toString()?has_content>
-                             @Override public boolean mayPlace(ItemStack stack) {
-                                 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
-                             }
-                            </#if>
-                        <#elseif component.getClass().getSimpleName() == "OutputSlot">
-                            @Override public boolean mayPlace(ItemStack stack) {
-                                return false;
-                            }
-                        </#if>
-                    }));
+						<#if component.disableStackInteraction>
+							@Override public boolean mayPlace(ItemStack stack) {
+								return false;
+							}
+						<#elseif component.getClass().getSimpleName() == "InputSlot">
+							<#if component.inputLimit.toString()?has_content>
+							 @Override public boolean mayPlace(ItemStack stack) {
+								 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
+							 }
+							</#if>
+						<#elseif component.getClass().getSimpleName() == "OutputSlot">
+							@Override public boolean mayPlace(ItemStack stack) {
+								return false;
+							}
+						</#if>
+					}));
 				</#if>
 			</#list>
 
@@ -252,22 +252,22 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		}
 
 		<#if data.hasSlotEvents()>
-            private void slotChanged(int slotid, int ctype, int meta) {
-                if(this.world != null && this.world.isClientSide()) {
-                    ${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
-                    ${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
-                }
-            }
+			private void slotChanged(int slotid, int ctype, int meta) {
+				if(this.world != null && this.world.isClientSide()) {
+					${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
+					${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
+				}
+			}
 		</#if>
 	<#else>
 		@Override public ItemStack quickMoveStack(Player playerIn, int index) {
 			return ItemStack.EMPTY;
 		}
 		<#if hasProcedure(data.onClosed)>
-            @Override public void removed(Player playerIn) {
-                super.removed(playerIn);
-                <@procedureOBJToCode data.onClosed/>
-            }
+			@Override public void removed(Player playerIn) {
+				super.removed(playerIn);
+				<@procedureOBJToCode data.onClosed/>
+			}
 		</#if>
 	</#if>
 
@@ -276,16 +276,16 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	}
 
 	<#if hasProcedure(data.onTick)>
-        @SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-            Player entity = event.player;
-            if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu) {
-                Level world = entity.level;
-                double x = entity.getX();
-                double y = entity.getY();
-                double z = entity.getZ();
-                <@procedureOBJToCode data.onTick/>
-            }
-        }
+		@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+			Player entity = event.player;
+			if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu) {
+				Level world = entity.level;
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
+				<@procedureOBJToCode data.onTick/>
+			}
+		}
 	</#if>
 
 }
