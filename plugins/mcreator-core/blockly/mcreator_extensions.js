@@ -4,12 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('biome_dictionary_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biomedictionarytypes"))), 'biomedict');
-    });
-
 Blockly.Extensions.register('gamemode_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(

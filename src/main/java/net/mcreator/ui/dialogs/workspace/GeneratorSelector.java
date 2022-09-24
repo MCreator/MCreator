@@ -153,9 +153,6 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
 
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
-				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
-
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
 
