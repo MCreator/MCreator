@@ -287,9 +287,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	}
 
 	private boolean enableBlocklyPanel() {
-		if (((List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-				.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases")).contains(
-				aiBase.getSelectedItem())) {
+		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+				.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
+		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem())) {
 			compileNotesPanel.addCompileNote(0,
 					new BlocklyCompileNote(Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases")));
 			return false;

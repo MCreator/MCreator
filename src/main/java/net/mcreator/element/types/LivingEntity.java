@@ -223,10 +223,11 @@ import java.util.Locale;
 					this.aixml, this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
-			additionalData.put("aicode",
-					!((List<?>) getModElement().getWorkspace().getGenerator().getGeneratorConfiguration()
-							.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
-							.get("unmodifiable_ai_bases")).contains(aiBase) ? blocklyToJava.getGeneratedCode() : "");
+			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
+					.getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
+			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
+					blocklyToJava.getGeneratedCode() : "");
 		};
 	}
 
