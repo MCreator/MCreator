@@ -408,9 +408,6 @@ public class TestWorkspaceDataProvider {
 			}
 			biome.spawnEntries = entities;
 			biome.minHeight = 2;
-			List<String> biomeDictTypes = new ArrayList<>();
-			if (!emptyLists)
-				biomeDictTypes.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
 			List<String> biomeDefaultFeatures = new ArrayList<>();
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));

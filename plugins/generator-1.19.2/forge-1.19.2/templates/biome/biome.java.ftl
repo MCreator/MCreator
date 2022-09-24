@@ -290,6 +290,17 @@ public class ${name}Biome {
         </#if>
 
         <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
+            <#-- Some features don't work well with nether biomes -->
+            <#if data.spawnBiomeNether &&
+                    (defaultFeature == "Caves" ||
+                     defaultFeature == "ExtraEmeraldOre" ||
+                     defaultFeature == "ExtraGoldOre" ||
+                     defaultFeature == "Ores" ||
+                     defaultFeature == "MonsterRooms" ||
+                     defaultFeature == "Fossils")>
+                <#continue>
+            </#if>
+
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         	<#if mfeat != "null">
             BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
