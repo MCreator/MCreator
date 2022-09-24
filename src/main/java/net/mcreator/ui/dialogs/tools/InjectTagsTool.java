@@ -122,14 +122,17 @@ public class InjectTagsTool {
 		box.setSelected(checked);
 
 		JLabel icon = new JLabel();
-		if (type.equals("Blocks"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
-		if (type.equals("Items"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
-		if (type.equals("Functions"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
-		if (type.equals("Entities"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
+		switch (type) {
+		case "Blocks" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
+		case "Items" -> icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
+		case "Functions" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
+		case "Entities" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
+		case "Biomes" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BIOME.getIcon().getImage(), 32)));
+		}
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 
@@ -163,6 +166,7 @@ public class InjectTagsTool {
 			tag.items = Collections.emptyList();
 			tag.functions = Collections.emptyList();
 			tag.entities = Collections.emptyList();
+			tag.biomes = Collections.emptyList();
 
 			workspace.getModElementManager().storeModElementPicture(tag);
 			workspace.addModElement(tag.getModElement());

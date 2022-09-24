@@ -1422,6 +1422,7 @@ public class TestWorkspaceDataProvider {
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
+			tag.biomes = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.addAll(
 						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
@@ -1430,6 +1431,8 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
 						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
+				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
+						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
