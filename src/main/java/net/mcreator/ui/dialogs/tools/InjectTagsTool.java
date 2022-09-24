@@ -88,14 +88,24 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "flowers", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", "Items", false));
 
-		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
-		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
-
 		callables.add(addTag(mcreator, props, "arrows", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "impact_projectiles", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "beehive_inhabitors", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
+
+		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_nether", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_end", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_ocean", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_mountain", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_river", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_hill", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_forest", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_savanna", "minecraft", "Biomes", false));
+
+		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
+		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
 
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
