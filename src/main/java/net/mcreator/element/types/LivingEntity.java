@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
@@ -223,8 +224,9 @@ import java.util.Locale;
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("aicode",
-					!getModElement().getWorkspace().getGenerator().getGeneratorConfiguration().getUnmodifiableAIBases()
-							.contains(aiBase) ? blocklyToJava.getGeneratedCode() : "");
+					!((List<?>) getModElement().getWorkspace().getGenerator().getGeneratorConfiguration()
+							.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
+							.get("unmodifiable_ai_bases")).contains(aiBase) ? blocklyToJava.getGeneratedCode() : "");
 		};
 	}
 
