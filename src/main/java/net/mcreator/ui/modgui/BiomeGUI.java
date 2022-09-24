@@ -128,7 +128,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
-	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
+	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 128, 1));
 
 	// TODO: remove me
 	@Deprecated private final JComboBox<String> biomeCategory = new JComboBox<>(

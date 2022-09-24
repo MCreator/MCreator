@@ -26,7 +26,7 @@
 </#function>
 
 <#function normalizeWeight biomeWeight, float_sfx="">
-    <#return (biomeWeight / 70.0)>
+    <#return (biomeWeight / 60.0)>
 </#function>
 
 <#function normalizeWeightUnderground biomeWeight, float_sfx="">
