@@ -304,7 +304,7 @@ public class ${name}Biome {
 
         return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
+            .biomeCategory(Biome.BiomeCategory.NONE)
             .temperature(${data.temperature}f)
             .downfall(${data.rainingPossibility}f)
             .specialEffects(effects)

@@ -365,8 +365,6 @@ public class TestWorkspaceDataProvider {
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
-			biome.biomeCategory = getRandomItem(random,
-					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
