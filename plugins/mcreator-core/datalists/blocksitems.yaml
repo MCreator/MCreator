@@ -2003,7 +2003,7 @@
 - Blocks.MANGROVE_SIGN:
   readable_name: "Mangrove Sign"
   type: block
-  texture: MANGROVE_SIGN
+  texture: STANDING_MANGROVE_SIGN
 
 - Blocks.WALL_SIGN:
   readable_name: "Oak Wall Sign"
