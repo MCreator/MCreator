@@ -1514,6 +1514,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onItemInUseTick = new Procedure("procedure6");
 			musicDisc.onStoppedUsing = new Procedure("procedure7");
 			musicDisc.onEntitySwing = new Procedure("procedure8");
+			musicDisc.lengthInTicks = 13;
+			musicDisc.analogOutput = 6;
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
