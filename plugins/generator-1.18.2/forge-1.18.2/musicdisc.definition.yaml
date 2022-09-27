@@ -10,3 +10,5 @@ localizationkeys:
     mapto: name
   - key: item.@modid.@registryname.desc
     mapto: description
+
+field_exclusions: [lengthInTicks]
