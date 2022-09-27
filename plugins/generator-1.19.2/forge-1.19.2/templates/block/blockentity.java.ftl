@@ -98,7 +98,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public Component getDefaultName() {
-		return new TextComponent("${registryname}");
+		return Component.literal("${registryname}");
 	}
 
 	@Override public int getMaxStackSize() {
@@ -114,7 +114,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public Component getDisplayName() {
-		return new TextComponent("${data.name}");
+		return Component.literal("${data.name}");
 	}
 
 	@Override protected NonNullList<ItemStack> getItems() {
@@ -205,16 +205,16 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
     </#if>
 
 	@Override public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER)
 			return handlers[facing.ordinal()].cast();
 
 			<#if data.hasEnergyStorage>
-			if (!this.remove && capability == CapabilityEnergy.ENERGY)
+			if (!this.remove && capability == ForgeCapabilities.ENERGY)
 				return LazyOptional.of(() -> energyStorage).cast();
             </#if>
 
 			<#if data.isFluidTank>
-			if (!this.remove && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+			if (!this.remove && capability == ForgeCapabilities.FLUID_HANDLER)
 				return LazyOptional.of(() -> fluidTank).cast();
             </#if>
 

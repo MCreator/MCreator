@@ -177,7 +177,7 @@ public class ${name}Block extends
 		   return ${data.resistance}f;
    	}
 
-   	@Override public boolean isRandomlyTicking(BlockState p_56947_) {
+   	@Override public boolean isRandomlyTicking(BlockState state) {
 		   return ${data.tickRandomly?c};
    	}
 	</#if>

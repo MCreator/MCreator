@@ -57,17 +57,6 @@ public class ${name}Feature extends OreFeature {
 		return PLACED_FEATURE;
 	}
 
-	public static final Set<ResourceLocation> GENERATE_BIOMES =
-	<#if data.restrictionBiomes?has_content>
-	Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#sep>,
-		</#list>
-	);
-	<#else>
-	null;
-	</#if>
-
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType == "Surface">
@@ -116,7 +105,7 @@ public class ${name}Feature extends OreFeature {
 
 		private List<Block> base_blocks = null;
 
-		public boolean test(BlockState blockAt, Random random) {
+		public boolean test(BlockState blockAt, RandomSource random) {
 			if (base_blocks == null) {
 				base_blocks = List.of(
 					<#list data.blocksToReplace as replacementBlock>
