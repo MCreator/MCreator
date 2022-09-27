@@ -79,7 +79,7 @@ public class ${JavaModName}Biomes {
 				DimensionType dimensionType = entry.getValue().typeHolder().value();
 
 				<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-				if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.OVERWORLD_LOCATION)) {
+				if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.OVERWORLD)) {
 					ChunkGenerator chunkGenerator = entry.getValue().generator();
 
 					// Inject biomes to biome source
@@ -88,17 +88,15 @@ public class ${JavaModName}Biomes {
 
 						<#list spawn_overworld as biome>
 						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT, 
-							biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+							biomeRegistry.getOrCreateHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						</#list>
 
 						<#list spawn_overworld_caves as biome>
 						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT_UNDERGROUND,
-								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+								biomeRegistry.getOrCreateHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						</#list>
 						
-						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
-						chunkGenerator.biomeSource = moddedNoiseSource;
-						chunkGenerator.runtimeBiomeSource = moddedNoiseSource;
+						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
 					}
 
 					// Inject surface rules
@@ -132,6 +130,7 @@ public class ${JavaModName}Biomes {
 								noiseGeneratorSettings.defaultFluid(),
 								noiseGeneratorSettings.noiseRouter(),
 								SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i])),
+								noiseGeneratorSettings.spawnTarget(),
 								noiseGeneratorSettings.seaLevel(),
 								noiseGeneratorSettings.disableMobGeneration(),
 								noiseGeneratorSettings.aquifersEnabled(),
@@ -145,7 +144,7 @@ public class ${JavaModName}Biomes {
 				</#if>
 				
 				<#if spawn_nether?has_content>
-				if(dimensionType == dimensionTypeRegistry.getOrThrow(DimensionType.NETHER_LOCATION)) {
+				if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.NETHER)) {
 					ChunkGenerator chunkGenerator = entry.getValue().generator();
 
 					// Inject biomes to biome source
@@ -154,12 +153,10 @@ public class ${JavaModName}Biomes {
 
 						<#list spawn_nether as biome>
 						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT,
-								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+								biomeRegistry.getOrCreateHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						</#list>
 
-						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
-						chunkGenerator.biomeSource = moddedNoiseSource;
-						chunkGenerator.runtimeBiomeSource = moddedNoiseSource;
+						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
 					}
 
 					// Inject surface rules
@@ -184,6 +181,7 @@ public class ${JavaModName}Biomes {
 									noiseGeneratorSettings.defaultFluid(),
 									noiseGeneratorSettings.noiseRouter(),
 									SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i])),
+									noiseGeneratorSettings.spawnTarget(),
 									noiseGeneratorSettings.seaLevel(),
 									noiseGeneratorSettings.disableMobGeneration(),
 									noiseGeneratorSettings.aquifersEnabled(),
