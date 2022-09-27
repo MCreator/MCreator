@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ package ${package}.world.biome;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 
 public class ${name}Biome {
 
@@ -263,9 +264,10 @@ public class ${name}Biome {
         <#if (data.sandPatchesPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
 			    PlacementUtils.register("${modid}:disk_sand_${registryname}", FeatureUtils.register("${modid}:disk_sand_${registryname}",
-                        Feature.DISK, new DiskConfiguration(Blocks.SAND.defaultBlockState(), UniformInt.of(2, 6), 2,
-                                List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
-                    ), List.of(
+                        Feature.DISK, new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.SAND),
+                        BlockPredicate.matchesBlocks(List.of(${mappedBlockToBlock(data.groundBlock)}, ${mappedBlockToBlock(data.undergroundBlock)})),
+                        UniformInt.of(2, 6), 2
+                    )), List.of(
 				        CountPlacement.of(${data.sandPatchesPerChunk}),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP_TOP_SOLID,
@@ -276,9 +278,10 @@ public class ${name}Biome {
         <#if (data.gravelPatchesPerChunk > 0)>
             biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
 			    PlacementUtils.register("${modid}:disk_gravel_${registryname}", FeatureUtils.register("${modid}:disk_gravel_${registryname}",
-			        Feature.DISK, new DiskConfiguration(Blocks.GRAVEL.defaultBlockState(), UniformInt.of(2, 5), 2,
-			            List.of(${mappedBlockToBlockStateCode(data.groundBlock)}, ${mappedBlockToBlockStateCode(data.undergroundBlock)}))
-			    ), List.of(
+			        Feature.DISK, new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.GRAVEL),
+                    BlockPredicate.matchesBlocks(List.of(${mappedBlockToBlock(data.groundBlock)}, ${mappedBlockToBlock(data.undergroundBlock)})),
+                    UniformInt.of(2, 5), 2
+			    )), List.of(
 			        CountPlacement.of(${data.gravelPatchesPerChunk}),
 			        InSquarePlacement.spread(),
 			        PlacementUtils.HEIGHTMAP_TOP_SOLID,
@@ -287,6 +290,17 @@ public class ${name}Biome {
         </#if>
 
         <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
+            <#-- Some features don't work well with nether biomes -->
+            <#if data.spawnBiomeNether &&
+                    (defaultFeature == "Caves" ||
+                     defaultFeature == "ExtraEmeraldOre" ||
+                     defaultFeature == "ExtraGoldOre" ||
+                     defaultFeature == "Ores" ||
+                     defaultFeature == "MonsterRooms" ||
+                     defaultFeature == "Fossils")>
+                <#continue>
+            </#if>
+
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         	<#if mfeat != "null">
             BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
@@ -304,7 +318,6 @@ public class ${name}Biome {
 
         return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .biomeCategory(Biome.BiomeCategory.NONE)
             .temperature(${data.temperature}f)
             .downfall(${data.rainingPossibility}f)
             .specialEffects(effects)
