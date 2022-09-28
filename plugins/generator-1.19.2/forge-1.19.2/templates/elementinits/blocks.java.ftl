@@ -36,14 +36,10 @@
 
 package ${package}.init;
 
-<#assign hasTransparentBlocks = false>
 <#assign hasTintedBlocks = false>
 <#assign hasTintedBlockItems = false>
 <#list blocks as block>
 	<#if block.getModElement().getTypeString() == "block">
-		<#if block.transparencyType != "SOLID" || block.hasTransparency || block.tintType != "No tint">
-			<#assign hasTransparentBlocks = true>
-		</#if>
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
 			<#if block.isItemTinted>
@@ -51,7 +47,6 @@ package ${package}.init;
 			</#if>
 		</#if>
 	<#elseif block.getModElement().getTypeString() == "plant">
-		<#assign hasTransparentBlocks = true> <#-- Plants always have cutout transparency -->
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
 			<#if block.isItemTinted>
@@ -75,7 +70,7 @@ public class ${JavaModName}Blocks {
 		</#if>
 	</#list>
 
-	<#if hasTransparentBlocks || hasTintedBlocks || hasTintedBlockItems>
+	<#if hasTintedBlocks || hasTintedBlockItems>
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
 		<#if hasTintedBlocks>
 		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {

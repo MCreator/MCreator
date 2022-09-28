@@ -106,11 +106,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public AbstractContainerMenu createMenu(int id, Inventory inventory) {
-			<#if !data.guiBoundTo?has_content || data.guiBoundTo == "<NONE>" || !(data.guiBoundTo)?has_content>
-				return ChestMenu.threeRows(id, inventory);
-            <#else>
-				return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));
-            </#if>
+		<#if !data.guiBoundTo?has_content || data.guiBoundTo == "<NONE>" || !(data.guiBoundTo)?has_content>
+		return ChestMenu.threeRows(id, inventory);
+		<#else>
+		return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));
+		</#if>
 	}
 
 	@Override public Component getDisplayName() {
@@ -126,10 +126,10 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public boolean canPlaceItem(int index, ItemStack stack) {
-			<#list data.inventoryOutSlotIDs as id>
-			    if (index == ${id})
-					return false;
-            </#list>
+		<#list data.inventoryOutSlotIDs as id>
+		if (index == ${id})
+			return false;
+		</#list>
 		return true;
 	}
 
@@ -143,10 +143,10 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-			<#list data.inventoryInSlotIDs as id>
-			    if (index == ${id})
-					return false;
-            </#list>
+		<#list data.inventoryInSlotIDs as id>
+		if (index == ${id})
+			return false;
+        </#list>
 		return true;
 	}
 	<#-- END: ISidedInventory -->
@@ -208,15 +208,15 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER)
 			return handlers[facing.ordinal()].cast();
 
-			<#if data.hasEnergyStorage>
-			if (!this.remove && capability == ForgeCapabilities.ENERGY)
-				return LazyOptional.of(() -> energyStorage).cast();
-            </#if>
+		<#if data.hasEnergyStorage>
+		if (!this.remove && capability == ForgeCapabilities.ENERGY)
+			return LazyOptional.of(() -> energyStorage).cast();
+        </#if>
 
-			<#if data.isFluidTank>
-			if (!this.remove && capability == ForgeCapabilities.FLUID_HANDLER)
-				return LazyOptional.of(() -> fluidTank).cast();
-            </#if>
+		<#if data.isFluidTank>
+		if (!this.remove && capability == ForgeCapabilities.FLUID_HANDLER)
+			return LazyOptional.of(() -> fluidTank).cast();
+        </#if>
 
 		return super.getCapability(capability, facing);
 	}

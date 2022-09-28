@@ -42,34 +42,35 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Material;
 
 public class ${name}Block extends
-			<#if data.hasGravity>
-					FallingBlock
-			<#elseif data.blockBase?has_content && data.blockBase == "Button">
-				<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
-			<#elseif data.blockBase?has_content>
-				${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
-			<#else>
-				Block
-			</#if>
-			<#if data.isWaterloggable || data.hasInventory>
-            implements
-				<#if data.isWaterloggable>SimpleWaterloggedBlock</#if>
-				<#if data.hasInventory><#if data.isWaterloggable>,</#if>EntityBlock</#if>
-			</#if>
+	<#if data.hasGravity>
+		FallingBlock
+	<#elseif data.blockBase?has_content && data.blockBase == "Button">
+		<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
+	<#elseif data.blockBase?has_content>
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
+	<#else>
+		Block
+	</#if>
+
+	<#if data.isWaterloggable || data.hasInventory>
+	implements
+		<#if data.isWaterloggable>SimpleWaterloggedBlock</#if>
+		<#if data.hasInventory><#if data.isWaterloggable>,</#if>EntityBlock</#if>
+	</#if>
 {
 
 	<#if data.rotationMode == 1 || data.rotationMode == 3>
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+		public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 		<#if data.enablePitch>
 		public static final EnumProperty<AttachFace> FACE = FaceAttachedHorizontalDirectionalBlock.FACE;
 		</#if>
 	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
-	public static final DirectionProperty FACING = DirectionalBlock.FACING;
+		public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	<#elseif data.rotationMode == 5>
-	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
+		public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 	</#if>
 	<#if data.isWaterloggable>
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
 
 	<#macro blockProperties>
@@ -150,35 +151,35 @@ public class ${name}Block extends
 		<#else>
 		super(
 		</#if>
-		<@blockProperties/>
+			<@blockProperties/>
 		);
 
 	    <#if data.rotationMode != 0 || data.isWaterloggable>
 	    this.registerDefaultState(this.stateDefinition.any()
-	                             <#if data.rotationMode == 1 || data.rotationMode == 3>
-	                             .setValue(FACING, Direction.NORTH)
-	                                 <#if data.enablePitch>
-	                                 .setValue(FACE, AttachFace.WALL)
-	                                 </#if>
-	                             <#elseif data.rotationMode == 2 || data.rotationMode == 4>
-	                             .setValue(FACING, Direction.NORTH)
-	                             <#elseif data.rotationMode == 5>
-	                             .setValue(AXIS, Direction.Axis.Y)
-	                             </#if>
-	                             <#if data.isWaterloggable>
-	                             .setValue(WATERLOGGED, false)
-	                             </#if>
+	    	<#if data.rotationMode == 1 || data.rotationMode == 3>
+	    	.setValue(FACING, Direction.NORTH)
+	    	    <#if data.enablePitch>
+	    	    .setValue(FACE, AttachFace.WALL)
+	    	    </#if>
+	    	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
+	    	.setValue(FACING, Direction.NORTH)
+	    	<#elseif data.rotationMode == 5>
+	    	.setValue(AXIS, Direction.Axis.Y)
+	    	</#if>
+	    	<#if data.isWaterloggable>
+	    	.setValue(WATERLOGGED, false)
+	    	</#if>
 	    );
 		</#if>
 	}
 
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">
    	@Override public float getExplosionResistance() {
-		   return ${data.resistance}f;
+		return ${data.resistance}f;
    	}
 
    	@Override public boolean isRandomlyTicking(BlockState state) {
-		   return ${data.tickRandomly?c};
+		return ${data.tickRandomly?c};
    	}
 	</#if>
 
@@ -234,19 +235,19 @@ public class ${name}Block extends
 
 	<#if data.rotationMode != 0 || data.isWaterloggable>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-			<#assign props = []>
-			<#if data.rotationMode == 5>
-				<#assign props += ["AXIS"]>
-			<#elseif data.rotationMode != 0>
-				<#assign props += ["FACING"]>
-				<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
-					<#assign props += ["FACE"]>
-				</#if>
+		<#assign props = []>
+		<#if data.rotationMode == 5>
+			<#assign props += ["AXIS"]>
+		<#elseif data.rotationMode != 0>
+			<#assign props += ["FACING"]>
+			<#if (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
+				<#assign props += ["FACE"]>
 			</#if>
-			<#if data.isWaterloggable>
-				<#assign props += ["WATERLOGGED"]>
-			</#if>
-			builder.add(${props?join(", ")});
+		</#if>
+		<#if data.isWaterloggable>
+			<#assign props += ["WATERLOGGED"]>
+		</#if>
+		builder.add(${props?join(", ")});
 	}
 
 	@Override
@@ -256,41 +257,42 @@ public class ${name}Block extends
 		</#if>
 		<#if data.rotationMode != 3>
 		return this.defaultBlockState()
-		        <#if data.rotationMode == 1>
-		            <#if data.enablePitch>
-		            .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
-		            </#if>
-		        .setValue(FACING, context.getHorizontalDirection().getOpposite())
-		        <#elseif data.rotationMode == 2>
-		        .setValue(FACING, context.getNearestLookingDirection().getOpposite())
-	            <#elseif data.rotationMode == 4>
-		        .setValue(FACING, context.getClickedFace())
-	            <#elseif data.rotationMode == 5>
-	            .setValue(AXIS, context.getClickedFace().getAxis())
-		        </#if>
-		        <#if data.isWaterloggable>
-		        .setValue(WATERLOGGED, flag)
-		        </#if>;
+			<#if data.rotationMode == 1>
+			    <#if data.enablePitch>
+			    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
+			    </#if>
+			.setValue(FACING, context.getHorizontalDirection().getOpposite())
+			<#elseif data.rotationMode == 2>
+			.setValue(FACING, context.getNearestLookingDirection().getOpposite())
+			<#elseif data.rotationMode == 4>
+			.setValue(FACING, context.getClickedFace())
+			<#elseif data.rotationMode == 5>
+			.setValue(AXIS, context.getClickedFace().getAxis())
+			</#if>
+			<#if data.isWaterloggable>
+			.setValue(WATERLOGGED, flag)
+			</#if>;
 		<#elseif data.rotationMode == 3>
 	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
 	        return this.defaultBlockState()
-	                <#if data.enablePitch>
-	                    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
-	                    .setValue(FACING, context.getHorizontalDirection())
-	                <#else>
-	                    .setValue(FACING, Direction.NORTH)
-	                </#if>
-	                <#if data.isWaterloggable>
-	                .setValue(WATERLOGGED, flag)
-	                </#if>;
+	    		<#if data.enablePitch>
+	    		    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+	    		    .setValue(FACING, context.getHorizontalDirection())
+	    		<#else>
+	    		    .setValue(FACING, Direction.NORTH)
+	    		</#if>
+	    		<#if data.isWaterloggable>
+	    		.setValue(WATERLOGGED, flag)
+	    		</#if>;
+
 	    return this.defaultBlockState()
-	            <#if data.enablePitch>
-	                .setValue(FACE, AttachFace.WALL)
-	            </#if>
-	            .setValue(FACING, context.getClickedFace())
-	            <#if data.isWaterloggable>
-	            .setValue(WATERLOGGED, flag)
-	            </#if>;
+	    	<#if data.enablePitch>
+	    	    .setValue(FACE, AttachFace.WALL)
+	    	</#if>
+	    	.setValue(FACING, context.getClickedFace())
+	    	<#if data.isWaterloggable>
+	    	.setValue(WATERLOGGED, flag)
+	    	</#if>;
 		</#if>
 	}
 	</#if>
