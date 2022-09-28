@@ -553,7 +553,7 @@ public class ${name}Block extends
 		super.use(blockstate, world, pos, entity, hand, hit);
 		<#if data.shouldOpenGUIOnRightClick()>
 		if(entity instanceof ServerPlayer player) {
-			NetworkHooks.openGui(player, new MenuProvider() {
+			NetworkHooks.openScreen(player, new MenuProvider() {
 				@Override public Component getDisplayName() {
 					return Component.literal("${data.name}");
 				}
