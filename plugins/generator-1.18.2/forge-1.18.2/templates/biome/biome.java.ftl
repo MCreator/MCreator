@@ -107,7 +107,7 @@ public class ${name}Biome {
                     <#if data.hasVines() || data.hasFruits()>
                         <@vinesAndFruits/>
                     <#else>
-                        .decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
+                        .ignoreVines()
                     </#if>
                 <#elseif data.vanillaTreeType == "Savanna trees">
                     (
@@ -304,23 +304,13 @@ public class ${name}Biome {
 
         return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
+            .biomeCategory(Biome.BiomeCategory.NONE)
             .temperature(${data.temperature}f)
             .downfall(${data.rainingPossibility}f)
             .specialEffects(effects)
             .mobSpawnSettings(mobSpawnInfo.build())
             .generationSettings(biomeGenerationSettings.build())
             .build();
-    }
-
-    public static void init() {
-        <#if data.biomeDictionaryTypes?has_content>
-            BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case}.get())),
-            <#list data.biomeDictionaryTypes as biomeDictionaryType>
-                BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
-        	</#list>
-        	);
-        </#if>
     }
 
 }

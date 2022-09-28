@@ -1431,6 +1431,9 @@ public class MinecraftImageGenerator {
 				case "Functions" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
 								.getImage());
+				case "Biomes" -> ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("world"), false)
+								.getImage());
 				default -> null;
 			};
 		}

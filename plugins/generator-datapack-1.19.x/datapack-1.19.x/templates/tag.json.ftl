@@ -24,6 +24,10 @@
               </#if>
               <#if value?has_next>,</#if>
           </#list>
+      <#elseif data.type == "Biomes">
+          <#list w.filterBrokenReferences(data.biomes) as value>
+            "${value}"<#if value?has_next>,</#if>
+          </#list>
       </#if>
     ]
 }

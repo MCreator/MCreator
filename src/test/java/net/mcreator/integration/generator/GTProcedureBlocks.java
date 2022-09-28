@@ -179,14 +179,7 @@ public class GTProcedureBlocks {
 							suggestedFieldName = "dimension";
 							suggestedDataListName = "dimension_custom";
 							break;
-						case "biome_dictionary_list_provider":
-							suggestedFieldName = "biomedict";
-							suggestedDataListName = "biomedictionary";
-							break;
 						}
-
-						if (suggestedDataListName.equals("biomedictionary"))
-							suggestedDataListName = "biomedictionarytypes";
 
 						if (suggestedDataListName.equals("sound_category")) {
 							suggestedDataListName = "soundcategories";

@@ -14,10 +14,12 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "tag",
+      "check": "String"
     }
-  ],
-  "extensions": [
-    "biome_dictionary_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",
@@ -27,15 +29,14 @@
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
-    ],
-    "fields": [
-      "biomedict"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">minecraft:is_overworld</field></block></value>"
     ],
     "inputs": [
       "x",
       "y",
-      "z"
+      "z",
+      "tag"
     ],
     "dependencies": [
       {
