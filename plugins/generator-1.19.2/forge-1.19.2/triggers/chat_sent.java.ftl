@@ -8,7 +8,7 @@
 			"z": "event.getPlayer().getZ()",
 			"world": "event.getPlayer().level",
 			"entity": "event.getPlayer()",
-			"text": "event.getMessage()",
+			"text": "event.getRawText()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

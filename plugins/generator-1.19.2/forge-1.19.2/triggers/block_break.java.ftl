@@ -11,7 +11,7 @@
 			"py": "event.getEntity().getY()",
 			"pz": "event.getEntity().getZ()",
 			"world": "event.getLevel()",
-			"entity": "event.getEntity()",
+			"entity": "event.getPlayer()",
 			"blockstate": "event.getState()"
 			}/>
 		</#compress></#assign>
