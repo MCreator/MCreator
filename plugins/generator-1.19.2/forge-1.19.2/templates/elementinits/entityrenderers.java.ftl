@@ -46,6 +46,11 @@ package ${package}.init;
 				<#else>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
 				</#if>
+			<#else>
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
+				<#if entity.hasCustomProjectile()>
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
+				</#if>
 			</#if>
 		</#list>
 	}
