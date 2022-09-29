@@ -3,12 +3,12 @@
 	@SubscribeEvent public static void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntityLiving().getX()",
-			"y": "event.getEntityLiving().getY()",
-			"z": "event.getEntityLiving().getZ()",
-			"world": "event.getEntityLiving().level",
+			"x": "event.getEntity().getX()",
+			"y": "event.getEntity().getY()",
+			"z": "event.getEntity().getZ()",
+			"world": "event.getEntity().level",
 			"entity": "event.getTarget()",
-			"sourceentity": "event.getEntityLiving()",
+			"sourceentity": "event.getEntity()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

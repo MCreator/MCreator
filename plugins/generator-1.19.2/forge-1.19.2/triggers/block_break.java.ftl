@@ -7,11 +7,11 @@
 			"x": "event.getPos().getX()",
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",
-			"px": "event.getPlayer().getX()",
-			"py": "event.getPlayer().getY()",
-			"pz": "event.getPlayer().getZ()",
-			"world": "event.getWorld()",
-			"entity": "event.getPlayer()",
+			"px": "event.getEntity().getX()",
+			"py": "event.getEntity().getY()",
+			"pz": "event.getEntity().getZ()",
+			"world": "event.getLevel()",
+			"entity": "event.getEntity()",
 			"blockstate": "event.getState()"
 			}/>
 		</#compress></#assign>

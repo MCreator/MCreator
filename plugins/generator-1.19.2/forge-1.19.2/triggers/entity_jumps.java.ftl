@@ -3,11 +3,11 @@
 	@SubscribeEvent public static void onEntityJump(LivingEvent.LivingJumpEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getEntityLiving().getX()",
-			"y": "event.getEntityLiving().getY()",
-			"z": "event.getEntityLiving().getZ()",
-			"world": "event.getEntityLiving().level",
-			"entity": "event.getEntityLiving()",
+			"x": "event.getEntity().getX()",
+			"y": "event.getEntity().getY()",
+			"z": "event.getEntity().getZ()",
+			"world": "event.getEntity().level",
+			"entity": "event.getEntity()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

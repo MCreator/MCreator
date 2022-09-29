@@ -9,7 +9,7 @@
 			"px": "event.getEntity().getX()",
 			"py": "event.getEntity().getY()",
 			"pz": "event.getEntity().getZ()",
-			"world": "event.getWorld()",
+			"world": "event.getLevel()",
 			"entity": "event.getEntity()",
 			"blockstate": "event.getState()",
 			"placedagainst": "event.getPlacedAgainst()",

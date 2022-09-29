@@ -3,13 +3,13 @@
 	@SubscribeEvent public static void onBucketFill(FillBucketEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getPlayer().getX()",
-			"y": "event.getPlayer().getY()",
-			"z": "event.getPlayer().getZ()",
-			"world": "event.getWorld()",
+			"x": "event.getEntity().getX()",
+			"y": "event.getEntity().getY()",
+			"z": "event.getEntity().getZ()",
+			"world": "event.getLevel()",
 			"itemstack": "event.getFilledBucket()",
 			"originalitemstack": "event.getEmptyBucket()",
-			"entity": "event.getPlayer()",
+			"entity": "event.getEntity()",
 			"event": "event"
 			}/>
 		</#compress></#assign>

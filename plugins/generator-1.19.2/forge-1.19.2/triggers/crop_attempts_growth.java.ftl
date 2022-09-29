@@ -7,7 +7,7 @@
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",
 			"blockstate": "event.getState()",
-			"world": "event.getWorld()",
+			"world": "event.getLevel()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
