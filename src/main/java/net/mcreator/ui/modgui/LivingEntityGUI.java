@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyCompileNote.Type;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalBlockLoader;
@@ -198,8 +197,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
-	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(Type.INFO,
-			L10N.t("blockly.warnings.unmodifiable_ai_bases"));
+	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
+			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
@@ -287,7 +286,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			hasErrors = false;
 
 			for (BlocklyCompileNote note : finalCompileNotesArrayList) {
-				if (note.type() == Type.ERROR) {
+				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
 				}
