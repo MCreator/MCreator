@@ -47,26 +47,26 @@ public class ${JavaModName}Items {
 		<#if item.getModElement().getTypeString() == "armor">
 			<#if item.enableHelmet>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
-					REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
 			</#if>
 			<#if item.enableBody>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
-					REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
 			</#if>
 			<#if item.enableLeggings>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
-					REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
 			</#if>
 			<#if item.enableBoots>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
-					REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
 			</#if>
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
 		<#elseif item.getModElement().getTypeString() == "dimension">
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-					REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
 		<#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
 			<#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
 				<#assign hasDoubleBlocks = true>
@@ -77,6 +77,11 @@ public class ${JavaModName}Items {
 				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
 					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
 			</#if>
+		<#elseif item.getModElement().getTypeString() == "livingentity">
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+					${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
+                    .tab(CreativeModeTab.TAB_MISC)</#if>));
 		<#else>
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
 				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
