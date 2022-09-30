@@ -198,7 +198,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
-	//mob bases
+	private static final BlocklyCompileNote compileNote = new BlocklyCompileNote(Type.INFO,
+			L10N.t("blockly.warnings.unmodifiable_ai_bases"));
+
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
@@ -273,33 +275,24 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			hasErrors = false;
-			if (enableBlocklyPanel())
-				for (BlocklyCompileNote note : compileNotesArrayList) {
-					if (note.type() == Type.ERROR) {
-						hasErrors = true;
-						break;
-					}
-				}
-		});
-	}
+		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+				.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
+				.get("unmodifiable_ai_bases");
+		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem()))
+			compileNotesArrayList = List.of(compileNote);
 
-	private boolean enableBlocklyPanel() {
-		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-				.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
-		List<BlocklyCompileNote> notes = compileNotesPanel.getCompileNotes();
-		BlocklyCompileNote compileNote = new BlocklyCompileNote(Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
-		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem())) {
-			notes.add(0, compileNote); // We force it to be at the top, so the user can directly see it.
-			compileNotesPanel.updateCompileNotes(notes);
-			return false;
-		} else {
-			notes.remove(compileNote);
-			compileNotesPanel.updateCompileNotes(notes);
-		}
-		return true;
+		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
+			hasErrors = false;
+
+			for (BlocklyCompileNote note : finalCompileNotesArrayList) {
+				if (note.type() == Type.ERROR) {
+					hasErrors = true;
+					break;
+				}
+			}
+		});
 	}
 
 	@Override protected void initGUI() {
@@ -453,7 +446,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0,2, PanelUtils.totalCenterInPanel(
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 2, PanelUtils.totalCenterInPanel(
 				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
 						equipmentBody, equipmentLeggings, equipmentBoots))));
 
