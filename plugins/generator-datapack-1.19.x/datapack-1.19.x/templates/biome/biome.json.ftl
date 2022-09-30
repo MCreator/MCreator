@@ -4,7 +4,6 @@
     "precipitation": <#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>"rain"<#else>"snow"</#if><#else>"none"</#if>,
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
-    "category": "${data.biomeCategory?replace("THEEND", "THE_END")?lower_case}",
     "effects": {
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},

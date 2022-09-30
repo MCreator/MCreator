@@ -40,64 +40,64 @@ public class ${name}Enchantment extends Enchantment {
 	}
 
 	<#if data.minLevel != 1>
-        @Override public int getMinLevel() {
-            return ${data.minLevel};
-        }
+		@Override public int getMinLevel() {
+			return ${data.minLevel};
+		}
 	</#if>
 
 	<#if data.maxLevel != 1>
-        @Override public int getMaxLevel() {
-            return ${data.maxLevel};
-        }
+		@Override public int getMaxLevel() {
+			return ${data.maxLevel};
+		}
 	</#if>
 
 	<#if data.damageModifier != 0>
-        @Override public int getDamageProtection(int level, DamageSource source) {
-            return level * ${data.damageModifier};
-        }
+		@Override public int getDamageProtection(int level, DamageSource source) {
+			return level * ${data.damageModifier};
+		}
 	</#if>
 
 	<#if data.compatibleEnchantments?has_content>
-        @Override protected boolean checkCompatibility(Enchantment ench) {
-            return <#list data.compatibleEnchantments as compatibleEnchantment>ench == ${compatibleEnchantment}<#sep>||</#list>;
-        }
+		@Override protected boolean checkCompatibility(Enchantment ench) {
+			return <#list data.compatibleEnchantments as compatibleEnchantment>ench == ${compatibleEnchantment}<#sep>||</#list>;
+		}
 	</#if>
 
 	<#if data.compatibleItems?has_content>
-        @Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
-            Item item = stack.getItem();
-            return <#list data.compatibleItems as compatibleItem>item == ${mappedMCItemToItem(compatibleItem)}<#sep>||</#list>;
-        }
+		@Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+			Item item = stack.getItem();
+			return <#list data.compatibleItems as compatibleItem>item == ${mappedMCItemToItem(compatibleItem)}<#sep>||</#list>;
+		}
 	</#if>
 
 	<#if data.isTreasureEnchantment>
-        @Override public boolean isTreasureOnly() {
-            return true;
-        }
+		@Override public boolean isTreasureOnly() {
+			return true;
+		}
 	</#if>
 
 	<#if data.isCurse>
-        @Override public boolean isCurse() {
-            return true;
-        }
+		@Override public boolean isCurse() {
+			return true;
+		}
 	</#if>
 
 	<#if !data.isAllowedOnBooks>
-        @Override public boolean isAllowedOnBooks() {
-            return false;
-        }
+		@Override public boolean isAllowedOnBooks() {
+			return false;
+		}
 	</#if>
 
 	<#if !data.canGenerateInLootTables>
-        @Override public boolean isDiscoverable() {
-            return false;
-        }
+		@Override public boolean isDiscoverable() {
+			return false;
+		}
 	</#if>
 
 	<#if !data.canVillagerTrade>
-        @Override public boolean isTradeable() {
-            return false;
-        }
+		@Override public boolean isTradeable() {
+			return false;
+		}
 	</#if>
 }
 <#-- @formatter:on -->

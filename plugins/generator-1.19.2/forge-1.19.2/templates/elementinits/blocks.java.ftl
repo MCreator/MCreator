@@ -39,8 +39,14 @@ package ${package}.init;
 <#assign hasTintedBlocks = false>
 <#assign hasTintedBlockItems = false>
 <#list blocks as block>
-	<#assign elementType = block.getModElement().getTypeString()>
-	<#if elementType == "block" || elementType == "plant">
+	<#if block.getModElement().getTypeString() == "block">
+		<#if block.tintType != "No tint">
+			<#assign hasTintedBlocks = true>
+			<#if block.isItemTinted>
+				<#assign hasTintedBlockItems = true>
+			</#if>
+		</#if>
+	<#elseif block.getModElement().getTypeString() == "plant">
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
 			<#if block.isItemTinted>

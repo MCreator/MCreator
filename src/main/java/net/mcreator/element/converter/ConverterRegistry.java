@@ -55,6 +55,7 @@ import net.mcreator.element.converter.fv31.OverlayTexturesConverter;
 import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
 import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
+import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -91,7 +92,7 @@ public class ConverterRegistry {
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(),
-				new ProcedureShootArrowFixer(), new LegacyShootArrowProcedureRemover()));
+				new ProcedureShootArrowFixer(), new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));

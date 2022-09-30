@@ -1,0 +1,26 @@
+templates:
+  - template: rangeditem/rangeditem.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: rangeditem/projectile_entity.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
+  - template: rangeditem/projectile_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
+    condition: isCustomModel()
+    deleteWhenConditionFalse: true
+  - template: json/rangeditem.json.ftl
+    writer: json
+    condition: "renderType #= 0"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel.json.ftl
+    writer: json
+    condition: "renderType #= 1"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel_obj.json.ftl
+    writer: json
+    condition: "renderType #= 2"
+    variables: "type=item"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name
