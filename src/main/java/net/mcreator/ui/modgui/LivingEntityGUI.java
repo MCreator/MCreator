@@ -289,12 +289,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private boolean enableBlocklyPanel() {
 		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 				.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
+		List<BlocklyCompileNote> notes = compileNotesPanel.getCompileNotes();
+		BlocklyCompileNote compileNote = new BlocklyCompileNote(Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem())) {
-			compileNotesPanel.addCompileNote(0,
-					new BlocklyCompileNote(Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases")));
+			notes.add(0, compileNote); // We force it to be at the top, so the user can directly see it.
+			compileNotesPanel.updateCompileNotes(notes);
 			return false;
-		} else if (!compileNotesPanel.getCompileNotes().isEmpty()) {
-			compileNotesPanel.getCompileNotes().remove(0);
+		} else {
+			notes.remove(compileNote);
+			compileNotesPanel.updateCompileNotes(notes);
 		}
 		return true;
 	}
