@@ -198,7 +198,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
-	private static final BlocklyCompileNote compileNote = new BlocklyCompileNote(Type.INFO,
+	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(Type.INFO,
 			L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
 	private final JComboBox<String> aiBase = new JComboBox<>(
@@ -279,7 +279,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
 				.get("unmodifiable_ai_bases");
 		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem()))
-			compileNotesArrayList = List.of(compileNote);
+			compileNotesArrayList = List.of(aiUnmodifiableCompileNote);
 
 		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
 		SwingUtilities.invokeLater(() -> {
