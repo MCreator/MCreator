@@ -19,6 +19,8 @@ templates:
     condition: spawnThisMob
     name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
 
+unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
+
 localizationkeys:
   - key: item.@modid.@registryname_spawn_egg
     mapto: mobName
