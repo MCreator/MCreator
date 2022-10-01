@@ -63,7 +63,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JCheckBox canVillagerTrade = L10N.checkbox("elementgui.common.enable");
 
 	private MCItemListField compatibleItems;
+	private MCItemListField incompatibleItems;
 	private EnchantmentListField compatibleEnchantments;
+	private EnchantmentListField incompatibleEnchantments;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -75,7 +77,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	@Override protected void initGUI() {
 		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		incompatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		compatibleEnchantments = new EnchantmentListField(mcreator);
+		incompatibleEnchantments = new EnchantmentListField(mcreator);
 
 		JPanel pane1 = new JPanel(new BorderLayout());
 
@@ -93,7 +97,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		JPanel selp = new JPanel(new GridLayout(13, 2, 100, 2));
+		JPanel selp = new JPanel(new GridLayout(15, 2, 100, 2));
 		selp.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
@@ -144,9 +148,17 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				L10N.label("elementgui.enchantment.compatible_enchantments")));
 		selp.add(compatibleEnchantments);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/incompatible_enchantments"),
+				L10N.label("elementgui.enchantment.incompatible_enchantments")));
+		selp.add(incompatibleEnchantments);
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/can_apply_to"),
 				L10N.label("elementgui.enchantment.can_apply_to")));
 		selp.add(compatibleItems);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/can_not_apply_to"),
+				L10N.label("elementgui.enchantment.can_not_apply_to")));
+		selp.add(incompatibleItems);
 
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
 
@@ -182,7 +194,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		maxLevel.setValue(enchantment.maxLevel);
 		damageModifier.setValue(enchantment.damageModifier);
 		compatibleEnchantments.setListElements(enchantment.compatibleEnchantments);
+		incompatibleEnchantments.setListElements(enchantment.incompatibleEnchantments);
 		compatibleItems.setListElements(enchantment.compatibleItems);
+		incompatibleItems.setListElements(enchantment.incompatibleItems);
 		isTreasureEnchantment.setSelected(enchantment.isTreasureEnchantment);
 		isCurse.setSelected(enchantment.isCurse);
 		isAllowedOnBooks.setSelected(enchantment.isAllowedOnBooks);
@@ -199,7 +213,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.maxLevel = (int) maxLevel.getValue();
 		enchantment.damageModifier = (int) damageModifier.getValue();
 		enchantment.compatibleEnchantments = compatibleEnchantments.getListElements();
+		enchantment.incompatibleEnchantments = incompatibleEnchantments.getListElements();
 		enchantment.compatibleItems = compatibleItems.getListElements();
+		enchantment.incompatibleItems = incompatibleItems.getListElements();
 		enchantment.isTreasureEnchantment = isTreasureEnchantment.isSelected();
 		enchantment.isCurse = isCurse.isSelected();
 		enchantment.isAllowedOnBooks = isAllowedOnBooks.isSelected();

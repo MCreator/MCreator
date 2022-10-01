@@ -36,7 +36,9 @@ import java.util.List;
 	public int damageModifier;
 
 	public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;
+	public List<net.mcreator.element.parts.Enchantment> incompatibleEnchantments;
 	public List<MItemBlock> compatibleItems;
+	public List<MItemBlock> incompatibleItems;
 
 	public boolean isTreasureEnchantment;
 	public boolean isCurse;
