@@ -9,7 +9,7 @@
 				"z": "event.getContext().getClickedPos().getZ()",
 				"world": "event.getPlayer().level",
 				"entity": "event.getPlayer()",
-				"blockstate": "event.getEntity().level.getBlockState(event.getContext().getClickedPos())",
+				"blockstate": "event.getPlayer().level.getBlockState(event.getContext().getClickedPos())",
 				"event": "event"
 				}/>
 			</#compress></#assign>
