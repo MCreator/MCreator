@@ -365,8 +365,6 @@ public class TestWorkspaceDataProvider {
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
-			biome.biomeCategory = getRandomItem(random,
-					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
@@ -408,10 +406,6 @@ public class TestWorkspaceDataProvider {
 			}
 			biome.spawnEntries = entities;
 			biome.minHeight = 2;
-			List<String> biomeDictTypes = new ArrayList<>();
-			if (!emptyLists)
-				biomeDictTypes.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-			biome.biomeDictionaryTypes = biomeDictTypes;
 			List<String> biomeDefaultFeatures = new ArrayList<>();
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
@@ -453,7 +447,6 @@ public class TestWorkspaceDataProvider {
 			fluid.density = 5;
 			fluid.viscosity = 10;
 			fluid.temperature = 375;
-			fluid.isGas = _true;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
 			fluid.textureBucket = emptyLists ? "" : "itest";
@@ -1429,6 +1422,7 @@ public class TestWorkspaceDataProvider {
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
+			tag.biomes = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.addAll(
 						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
@@ -1437,6 +1431,8 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
 						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
+				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
+						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1515,6 +1511,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onItemInUseTick = new Procedure("procedure6");
 			musicDisc.onStoppedUsing = new Procedure("procedure7");
 			musicDisc.onEntitySwing = new Procedure("procedure8");
+			musicDisc.lengthInTicks = 13;
+			musicDisc.analogOutput = 6;
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {

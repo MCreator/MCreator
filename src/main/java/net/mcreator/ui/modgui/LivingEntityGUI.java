@@ -197,7 +197,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
-	//mob bases
+	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
+			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
+
 	private final JComboBox<String> aiBase = new JComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
@@ -272,10 +274,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
+		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+				.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
+				.get("unmodifiable_ai_bases");
+		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem()))
+			compileNotesArrayList = List.of(aiUnmodifiableCompileNote);
+
+		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
 		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
 			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
+
+			for (BlocklyCompileNote note : finalCompileNotesArrayList) {
 				if (note.type() == BlocklyCompileNote.Type.ERROR) {
 					hasErrors = true;
 					break;
@@ -435,7 +445,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
 				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0,2, PanelUtils.totalCenterInPanel(
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 2, PanelUtils.totalCenterInPanel(
 				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
 						equipmentBody, equipmentLeggings, equipmentBoots))));
 
@@ -650,6 +660,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		breedTriggerItems.setPreferredSize(new Dimension(300, 32));
 		aiBase.setPreferredSize(new Dimension(250, 32));
+		aiBase.addActionListener(e -> regenerateAITasks());
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),

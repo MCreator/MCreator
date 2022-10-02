@@ -55,7 +55,6 @@ import java.util.List;
 	public int luminosity;
 	public int density;
 	public int viscosity;
-	public boolean isGas;
 	public int temperature;
 	public String type;
 

@@ -52,9 +52,9 @@ public class UITestUtil {
 				throw throwableAtomic.get();
 		}
 
+		Arrays.stream(Window.getWindows()).filter(w -> w != master).forEach(Window::dispose);
+
 		if (throwableAtomic.get() != null)
 			throw throwableAtomic.get();
-
-		Arrays.stream(Window.getWindows()).filter(w -> w != master).forEach(Window::dispose);
 	}
 }

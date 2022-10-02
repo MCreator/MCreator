@@ -2,10 +2,10 @@ name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
 buildfileversion: 43.1.1
 
-#java_models:
-#  key: mojmap-1.19.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
+java_models:
+  key: mojmap-1.19.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
 gradle:
@@ -57,16 +57,18 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
+      - ${w.hasElementsOfType('dimension')}
+      - ${w.hasElementsOfType('biome')}
       - ${w.hasElementsOfType('villagerprofession')}
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
 language_file:
   format: json

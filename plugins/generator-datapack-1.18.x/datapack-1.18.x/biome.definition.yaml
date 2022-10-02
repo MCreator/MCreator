@@ -191,8 +191,8 @@ global_templates:
     deleteWhenConditionFalse: true
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
 
-field_inclusions: [heightVariation, baseHeight, rainingPossibility, temperature, biomeCategory,
-                   parent, foliageColor, grassColor, airColor, waterColor, waterFogColor, spawnEntries,
+field_inclusions: [heightVariation, baseHeight, rainingPossibility, temperature,
+                   foliageColor, grassColor, airColor, waterColor, waterFogColor, spawnEntries,
                    defaultFeatures, name, groundBlock, undergroundBlock, spawnStronghold, spawnMineshaft,
                    spawnMineshaftMesa, spawnPillagerOutpost, villageType, spawnWoodlandMansion,
                    spawnJungleTemple, spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument,
