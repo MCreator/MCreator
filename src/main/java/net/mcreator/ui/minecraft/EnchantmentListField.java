@@ -30,7 +30,7 @@ import java.util.List;
 public class EnchantmentListField extends JItemListField<Enchantment> {
 
 	public EnchantmentListField(MCreator mcreator) {
-		super(mcreator, true);
+		super(mcreator);
 	}
 
 	@Override protected List<Enchantment> getElementsToAdd() {

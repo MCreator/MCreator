@@ -35,11 +35,7 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 	private final MCItem.ListProvider supplier;
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier) {
-		this(mcreator, supplier, false);
-	}
-
-	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier, boolean excludeButton) {
-		super(mcreator, excludeButton);
+		super(mcreator);
 		this.supplier = supplier;
 
 		elementsList.setCellRenderer(new CustomListCellRenderer());

@@ -22,7 +22,6 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -47,8 +46,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JButton bt2 = new JButton(UIRES.get("18px.remove"));
 	private final JButton bt3 = new JButton(UIRES.get("18px.removeall"));
 
-	private final JCheckBox exclude = L10N.checkbox("elementgui.common.exclude");
-
 	private Validator validator = null;
 	private Validator.ValidationResult currentValidationResult = null;
 
@@ -61,10 +58,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final List<ChangeListener> listeners = new ArrayList<>();
 
 	protected JItemListField(MCreator mcreator) {
-		this(mcreator, false);
-	}
-
-	protected JItemListField(MCreator mcreator, boolean excludeButton) {
 		this.mcreator = mcreator;
 
 		setLayout(new BorderLayout());
@@ -146,8 +139,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttons.setOpaque(true);
 		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		if (excludeButton)
-			add(exclude, BorderLayout.WEST);
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
 	}
@@ -183,14 +174,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		elementsListModel.removeAllElements();
 		for (T el : elements)
 			elementsListModel.addElement(el);
-	}
-
-	public boolean areExcluded() {
-		return exclude.isSelected();
-	}
-
-	public void setExcluded(boolean isExcluded) {
-		exclude.setSelected(isExcluded);
 	}
 
 	@Override public void paint(Graphics g) {
