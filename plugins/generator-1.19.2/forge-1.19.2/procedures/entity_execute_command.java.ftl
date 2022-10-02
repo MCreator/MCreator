@@ -1,6 +1,5 @@
 {
 	Entity _ent = ${input$entity};
 	if(!_ent.level.isClientSide() && _ent.getServer() != null)
-		_ent.getServer().getCommands().performCommand(new CommandDispatcher<CommandSourceStack>().parse(${input$command},
-		    _ent.createCommandSourceStack().withSuppressedOutput().withPermission(4)), ${input$command});
+		_ent.getServer().getCommands().performPrefixedCommand(_ent.createCommandSourceStack().withSuppressedOutput().withPermission(4), ${input$command});
 }
