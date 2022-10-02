@@ -61,7 +61,7 @@ public class ${name}Enchantment extends Enchantment {
 		@Override protected boolean checkCompatibility(Enchantment ench) {
 		    return <#if data.compatibleEnchantments?has_content>List.of(
                 <#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench)</#if>
-                <#if data.incompatibleEnchantments?has_content><#if data.compatibleEnchantments?has_content>&& </#if>!List.of(
+                <#if data.incompatibleEnchantments?has_content><#if data.compatibleEnchantments?has_content>|| </#if>!List.of(
                 <#list data.incompatibleEnchantments as incompatibleEnchantment>${incompatibleEnchantment}<#sep>,</#list>).contains(ench)</#if>;
 		}
 	</#if>
@@ -72,7 +72,7 @@ public class ${name}Enchantment extends Enchantment {
 
 			return <#if data.compatibleItems?has_content>List.of(
                 <#list data.compatibleItems as compatibleItem>${mappedMCItemToItem(compatibleItem)}<#sep>,</#list>).contains(item)</#if>
-                <#if data.incompatibleItems?has_content><#if data.compatibleItems?has_content>&& </#if>!List.of(
+                <#if data.incompatibleItems?has_content><#if data.compatibleItems?has_content>|| </#if>!List.of(
                 <#list data.incompatibleItems as incompatibleItem>${mappedMCItemToItem(incompatibleItem)}<#sep>,</#list>).contains(item)</#if>;
 		}
 	</#if>
