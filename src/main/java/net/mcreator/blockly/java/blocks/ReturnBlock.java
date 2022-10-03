@@ -38,7 +38,7 @@ public class ReturnBlock implements IBlockGenerator {
 
 	public ReturnBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.map(s -> s = "return_" + s).toArray(String[]::new);
+				.map(s -> "return_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {

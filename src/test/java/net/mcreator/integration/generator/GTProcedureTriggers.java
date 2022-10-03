@@ -79,11 +79,11 @@ public class GTProcedureTriggers {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating external trigger: " + externalTrigger.getID());
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating external trigger: " + externalTrigger.getID());
 			}
 		}
 

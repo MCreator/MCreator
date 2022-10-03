@@ -179,11 +179,11 @@ public class GTCommandArgBlocks {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(command));
+				workspace.getGenerator().generateElement(command, true);
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.machine_name);
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.machine_name);
 			}
 		}
 

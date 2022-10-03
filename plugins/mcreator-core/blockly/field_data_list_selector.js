@@ -7,6 +7,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         super(javabridge.t('blockly.extension.data_list_selector.no_entry'), 'entry-label');
         this.type = datalist;
         this.entry = FieldDataListSelector.getDefaultEntry();
+        this.setTooltip(this.getText_());
 
         this.EDITABLE = true;
 
@@ -114,6 +115,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         } else {
             this.setValue('');
         }
+        this.setTooltip(this.getText_()); // Update the field tooltip
         this.forceRerender(); // Update the selected text and shape
     };
 }
