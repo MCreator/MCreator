@@ -1,7 +1,7 @@
 plugins {
     id "java"
     id "idea"
-    id "de.undercouch.download" version "5.2.0"
+    id "de.undercouch.download" version "5.2.1"
     id 'edu.sc.seis.launch4j' version '2.5.3'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.6'
     id 'org.openjfx.javafxplugin' version '0.0.13'
