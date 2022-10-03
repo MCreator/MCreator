@@ -105,14 +105,20 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
-<div class="col-second even-row-color"><code><a href="#creativeTab" class="member-name-link">creativeTab</a></code></div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#analogOutput" class="member-name-link">analogOutput</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
+<div class="col-first odd-row-color"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#creativeTab" class="member-name-link">creativeTab</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#hasGlow" class="member-name-link">hasGlow</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#hasGlow" class="member-name-link">hasGlow</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#lengthInTicks" class="member-name-link">lengthInTicks</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#music" class="member-name-link">music</a></code></div>
@@ -210,15 +216,15 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="texture">
-<h3>texture</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">texture</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="name">
 <h3>name</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">name</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="texture">
+<h3>texture</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">texture</span></div>
 </section>
 </li>
 <li>
@@ -234,12 +240,6 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 </section>
 </li>
 <li>
-<section class="detail" id="music">
-<h3>music</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></span>&nbsp;<span class="element-name">music</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="specialInfo">
 <h3>specialInfo</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">specialInfo</span></div>
@@ -249,6 +249,24 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <section class="detail" id="hasGlow">
 <h3>hasGlow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasGlow</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="music">
+<h3>music</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></span>&nbsp;<span class="element-name">music</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="lengthInTicks">
+<h3>lengthInTicks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">lengthInTicks</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="analogOutput">
+<h3>analogOutput</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">analogOutput</span></div>
 </section>
 </li>
 <li>
