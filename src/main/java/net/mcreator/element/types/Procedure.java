@@ -109,7 +109,8 @@ public class Procedure extends GeneratableElement {
 			// If there are any compile notes of type ERROR, throw an exception
 			for (BlocklyCompileNote compileNote : blocklyToJava.getCompileNotes()) {
 				if (compileNote.type() == BlocklyCompileNote.Type.ERROR)
-					throw new TemplateGeneratorException("Failed to parse procedure XML. Compile notes: " + blocklyToJava.getCompileNotes());
+					throw new TemplateGeneratorException(
+							"Failed to parse procedure XML. Compile notes: " + blocklyToJava.getCompileNotes());
 			}
 
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()

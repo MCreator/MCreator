@@ -219,15 +219,17 @@ import java.util.Locale;
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), BlocklyEditorType.AI_TASK,
-					this.aixml, this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(),
+					BlocklyEditorType.AI_TASK, this.aixml,
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
 					.getGeneratorConfiguration().getDefinitionsProvider()
 					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
 			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
-					blocklyToJava.getGeneratedCode() : "");
+					blocklyToJava.getGeneratedCode() :
+					"");
 		};
 	}
 

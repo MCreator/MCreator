@@ -33,7 +33,8 @@ public class AdvancementTextureConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Achievement advancement = (Achievement) input;
 
-		if (advancement.background != null && !advancement.background.isEmpty() && !advancement.background.equals("Default")) {
+		if (advancement.background != null && !advancement.background.isEmpty() && !advancement.background.equals(
+				"Default")) {
 			FileIO.copyFile(workspace.getFolderManager()
 							.getTextureFile(FilenameUtilsPatched.removeExtension(advancement.background), TextureType.OTHER),
 					workspace.getFolderManager()
