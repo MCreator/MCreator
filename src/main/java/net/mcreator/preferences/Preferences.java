@@ -79,7 +79,7 @@ public class Preferences {
 	public NumberEntry minScale;
 	public NumberEntry scaleSpeed;
 	public PreferenceEntry<Boolean> legacyFont;
-	
+
 	// IDE
 	public StringEntry editorTheme;
 	public NumberEntry fontSize;
@@ -151,7 +151,8 @@ public class Preferences {
 		legacyFont = register(new PreferenceEntry<>("legacyFont", false, BLOCKLY));
 
 		// IDE
-		editorTheme = register(new StringEntry("editorTheme", "Thrasos", IDE, "Geras", "Thrasos"));
+		editorTheme = register(new StringEntry("editorTheme", "MCreator", IDE, "MCreator", "Default", "Default-Alt",
+				"Dark", "Eclipse", "Idea", "Monokai", "VS"));
 		fontSize = register(new NumberEntry("fontSize", 12, IDE, 5, 48));
 		autocomplete = register(new PreferenceEntry<>("autocomplete", true, IDE));
 		autocompleteMode = register(new StringEntry("autocompleteMode", "Smart", IDE, "Manual", "Trigger on dot", "Smart"));
@@ -179,7 +180,7 @@ public class Preferences {
 		uiTheme = register(new PreferenceEntry<>("uiTheme", "default_dark", HIDDEN));
 		enableJavaPlugins = register(new PreferenceEntry<>("fullScreen", false, HIDDEN));
 	}
-	
+
 	private static <T, S extends PreferenceEntry<T>> S register(S entry) {
 		PreferencesManager.register("mcreator", entry);
 		return entry;
