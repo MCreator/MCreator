@@ -499,8 +499,10 @@ public class TestWorkspaceDataProvider {
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = "key.categories.misc";
-			keyBinding.onKeyPressed = new Procedure("procedure3");
-			keyBinding.onKeyReleased = new Procedure("procedure2");
+			if (!emptyLists)
+				keyBinding.onKeyPressed = new Procedure("procedure3");
+			if (_true)
+				keyBinding.onKeyReleased = new Procedure("procedure2");
 			return keyBinding;
 		} else if (ModElementType.TAB.equals(modElement.getType())) {
 			Tab tab = new Tab(modElement);
