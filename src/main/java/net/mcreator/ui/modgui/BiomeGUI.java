@@ -110,7 +110,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder undergroundBlock;
 	private MCItemHolder underwaterBlock;
 
-	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 1000, 1));
+	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 32, 1));
 	private MCItemHolder treeVines;
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
