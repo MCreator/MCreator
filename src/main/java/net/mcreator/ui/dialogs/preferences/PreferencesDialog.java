@@ -58,11 +58,17 @@ public class PreferencesDialog extends MCreatorDialog {
 	private final JButton apply = L10N.button("action.common.apply");
 
 	private final Window parent;
+	private final boolean isTestEnv;
 
 	public PreferencesDialog(Window parent, @Nullable String selectedTab) {
+		this(parent, selectedTab, false);
+	}
+
+	public PreferencesDialog(Window parent, @Nullable String selectedTab, boolean isTestEnv) {
 		super(parent);
 
 		this.parent = parent;
+		this.isTestEnv = isTestEnv;
 
 		setModal(true);
 		setTitle(L10N.t("dialog.preferences.title_mcreator"));
@@ -159,11 +165,13 @@ public class PreferencesDialog extends MCreatorDialog {
 	private void loadSections() {
 		// Add preference entries
 		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> {
-			preferences.stream().filter(e -> !e.getSection().equals(Preferences.HIDDEN)).toList().forEach(entry -> {
-				if (!sectionPanels.containsKey(entry.getSection()))
-					createPreferenceSection(entry.getSection());
-				entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
-			});
+			preferences.stream().filter(e -> !e.getSection().equals(Preferences.HIDDEN)).toList().stream()
+					.filter(entry -> !isTestEnv || (entry != PreferencesManager.PREFERENCES.xms
+							&& entry != PreferencesManager.PREFERENCES.xmx)).forEach(entry -> {
+						if (!sectionPanels.containsKey(entry.getSection()))
+							createPreferenceSection(entry.getSection());
+						entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
+					});
 		});
 
 		sections.setSelectedIndex(0);
