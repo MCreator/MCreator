@@ -40,7 +40,7 @@ public class ${name}Enchantment extends Enchantment {
 	}
 
 	<#if data.minLevel != 1>
-	@Override public int getMinLevel() {-*
+	@Override public int getMinLevel() {
 		return ${data.minLevel};
 	}
 	</#if>
