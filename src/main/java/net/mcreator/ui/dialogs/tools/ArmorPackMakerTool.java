@@ -107,8 +107,8 @@ public class ArmorPackMakerTool {
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
 		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR &&
-					base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+					&& base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addArmorPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());

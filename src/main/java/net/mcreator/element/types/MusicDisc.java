@@ -34,13 +34,16 @@ import java.awt.image.BufferedImage;
 
 public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement, ISpecialInformationHolder {
 
-	public String texture;
 	public String name;
+	public String texture;
 	public String description;
 	public TabEntry creativeTab;
-	public Sound music;
 	public TextProcedure specialInformation;
 	public boolean hasGlow;
+
+	public Sound music;
+	public int lengthInTicks;
+	public int analogOutput;
 
 	public Procedure onRightClickedInAir;
 	public Procedure onRightClickedOnBlock;

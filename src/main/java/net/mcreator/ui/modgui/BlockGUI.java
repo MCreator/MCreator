@@ -138,7 +138,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog" });
+			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+					"Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -316,9 +317,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_redstone_off"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
-				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));

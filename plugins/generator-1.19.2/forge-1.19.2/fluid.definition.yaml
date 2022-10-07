@@ -1,0 +1,45 @@
+templates:
+  - template: fluid/fluid.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/fluid/@NAMEFluid.java"
+  - template: fluid/fluidblock.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: fluid/fluidtype.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/fluid/types/@NAMEFluidType.java"
+  - template: fluid/fluidbucket.java.ftl
+    deleteWhenConditionFalse: true
+    condition: generateBucket
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: fluid/fluidgen.java.ftl
+    deleteWhenConditionFalse: true
+    condition: doesGenerateInWorld()
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/lakes/@NAMEFeature.java"
+
+  - template: json/bucket.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
+  - template: json/fluid_states.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/fluid.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_feature_biome_modifier.json.ftl
+    writer: json
+    deleteWhenConditionFalse: true
+    condition: doesGenerateInWorld()
+    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+    variables: "step=lakes"
+
+global_templates:
+  - template: elementinits/fluids.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFluids.java"
+  - template: elementinits/fluidtypes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFluidTypes.java"
+
+localizationkeys:
+  - key: fluid.@modid.@registryname
+    mapto: name
+  - key: block.@modid.@registryname
+    mapto: name
+  - key: item.@modid.@registryname_bucket
+    mapto: bucketName

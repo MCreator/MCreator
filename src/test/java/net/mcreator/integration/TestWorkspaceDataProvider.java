@@ -365,14 +365,12 @@ public class TestWorkspaceDataProvider {
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
 			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
-			biome.biomeCategory = getRandomItem(random,
-					new String[] { "NONE", "TAIGA", "EXTREME_HILLS", "JUNGLE", "MESA", "PLAINS", "SAVANNA" });
 
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
-				entry1.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry1.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry1.minGroup = 10;
 				entry1.maxGroup = 134;
 				entry1.weight = 13;
@@ -380,8 +378,8 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
-				entry2.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry2.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry2.minGroup = 23;
 				entry2.maxGroup = 145;
 				entry2.weight = 11;
@@ -389,8 +387,8 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry2);
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
-				entry3.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry3.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry3.minGroup = 23;
 				entry3.maxGroup = 145;
 				entry3.weight = 11;
@@ -398,8 +396,8 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry3);
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
-				entry4.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry4.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry4.minGroup = 23;
 				entry4.maxGroup = 145;
 				entry4.weight = 11;
@@ -408,10 +406,6 @@ public class TestWorkspaceDataProvider {
 			}
 			biome.spawnEntries = entities;
 			biome.minHeight = 2;
-			List<String> biomeDictTypes = new ArrayList<>();
-			if (!emptyLists)
-				biomeDictTypes.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("biomedictionarytypes")));
-			biome.biomeDictionaryTypes = biomeDictTypes;
 			List<String> biomeDefaultFeatures = new ArrayList<>();
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
@@ -453,7 +447,6 @@ public class TestWorkspaceDataProvider {
 			fluid.density = 5;
 			fluid.viscosity = 10;
 			fluid.temperature = 375;
-			fluid.isGas = _true;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
 			fluid.textureBucket = emptyLists ? "" : "itest";
@@ -501,8 +494,10 @@ public class TestWorkspaceDataProvider {
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = "key.categories.misc";
-			keyBinding.onKeyPressed = new Procedure("procedure3");
-			keyBinding.onKeyReleased = new Procedure("procedure2");
+			if (!emptyLists)
+				keyBinding.onKeyPressed = new Procedure("procedure3");
+			if (_true)
+				keyBinding.onKeyReleased = new Procedure("procedure2");
 			return keyBinding;
 		} else if (ModElementType.TAB.equals(modElement.getType())) {
 			Tab tab = new Tab(modElement);
@@ -1059,7 +1054,8 @@ public class TestWorkspaceDataProvider {
 			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -1115,14 +1111,15 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
-		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())){
+		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
-			itemExtension.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			itemExtension.item = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number1" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
-			itemExtension.compostLayerChance = new double[] {0d, 0.3d, 0.5d, 1d}[valueIndex];
+			itemExtension.compostLayerChance = new double[] { 0d, 0.3d, 0.5d, 1d }[valueIndex];
 			itemExtension.hasDispenseBehavior = emptyLists;
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
@@ -1381,7 +1378,8 @@ public class TestWorkspaceDataProvider {
 			block.specialInformation = new TextProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			block.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
@@ -1397,6 +1395,7 @@ public class TestWorkspaceDataProvider {
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
+			tag.biomes = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.addAll(
 						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
@@ -1405,6 +1404,8 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
 						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
+				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
+						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1483,6 +1484,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onItemInUseTick = new Procedure("procedure6");
 			musicDisc.onStoppedUsing = new Procedure("procedure7");
 			musicDisc.onEntitySwing = new Procedure("procedure8");
+			musicDisc.lengthInTicks = 13;
+			musicDisc.analogOutput = 6;
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			musicDisc.specialInformation = new TextProcedure(emptyLists ? null : "text1",
@@ -1589,7 +1592,8 @@ public class TestWorkspaceDataProvider {
 						trade.entries.add(entry);
 					}
 					VillagerTrade.CustomTradeEntry wanderingTrade = new VillagerTrade.CustomTradeEntry();
-					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(), "WANDERING_TRADER");
+					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(),
+							"WANDERING_TRADER");
 					wanderingTrade.entries = new ArrayList<>();
 
 					int wanderingEntries = random.nextInt(10) + 1;

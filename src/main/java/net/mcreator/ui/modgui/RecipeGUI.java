@@ -196,6 +196,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				if (!isEditingMode() && cookingTime.isEnabled()) {
 					if (recipeType.getSelectedItem().equals("Smelting")) {
 						cookingTime.setValue(200);
+					} else if (recipeType.getSelectedItem().equals("Campfire cooking")) {
+						cookingTime.setValue(600);
 					} else {
 						cookingTime.setValue(100);
 					}

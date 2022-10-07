@@ -36,8 +36,8 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
@@ -246,6 +246,15 @@ import java.util.stream.Collectors;
 		return disableOffset || offsetType.equals("NONE");
 	}
 
+	@Override public boolean isFullCube() {
+		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
+				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
+				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase))
+			return false;
+
+		return IBlockWithBoundingBox.super.isFullCube();
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
@@ -318,6 +327,10 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public String getRenderType() {
+		if (hasTransparency && transparencyType.equals(
+				"solid")) // if hasTransparency is enabled but transparencyType is left solid, we assume cutout
+			return "cutout";
+
 		return transparencyType.toLowerCase(Locale.ENGLISH);
 	}
 

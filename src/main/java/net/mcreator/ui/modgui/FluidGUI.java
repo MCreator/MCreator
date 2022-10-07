@@ -70,8 +70,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
 	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
 	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-					"Water", "Sky", "Fog", "Water fog" });
+			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+					"Sky", "Fog", "Water fog" });
 
 	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
@@ -86,7 +86,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 	private TextProcedureSelector specialInformation;
 
-	private final JCheckBox isGas = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(100, 0, Integer.MAX_VALUE, 0.5));
@@ -345,14 +344,13 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.block_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel forgeProperties = new JPanel(new GridLayout(5, 2, 20, 2));
+		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
 
 		luminosity.setOpaque(false);
 		density.setOpaque(false);
 		viscosity.setOpaque(false);
 		temperature.setOpaque(false);
-		isGas.setOpaque(false);
 		ComponentUtils.deriveFont(luminosity, 16);
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
@@ -373,10 +371,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/temperature"),
 				L10N.label("elementgui.fluid.temperature")));
 		forgeProperties.add(temperature);
-
-		forgeProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
-		forgeProperties.add(PanelUtils.centerInPanel(isGas));
 
 		forgeProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -503,7 +497,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
 		temperature.setValue(fluid.temperature);
-		isGas.setSelected(fluid.isGas);
 		generateBucket.setSelected(fluid.generateBucket);
 		textureBucket.setTextureFromTextureName(fluid.textureBucket);
 		emptySound.setSound(fluid.emptySound);
@@ -559,7 +552,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
 		fluid.temperature = (int) temperature.getValue();
-		fluid.isGas = isGas.isSelected();
 		fluid.generateBucket = generateBucket.isSelected();
 		fluid.textureBucket = textureBucket.getID();
 		fluid.emptySound = emptySound.getSound();

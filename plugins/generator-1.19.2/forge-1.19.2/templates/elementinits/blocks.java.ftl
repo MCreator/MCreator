@@ -39,8 +39,14 @@ package ${package}.init;
 <#assign hasTintedBlocks = false>
 <#assign hasTintedBlockItems = false>
 <#list blocks as block>
-	<#assign elementType = block.getModElement().getTypeString()>
-	<#if elementType == "block" || elementType == "plant">
+	<#if block.getModElement().getTypeString() == "block">
+		<#if block.tintType != "No tint">
+			<#assign hasTintedBlocks = true>
+			<#if block.isItemTinted>
+				<#assign hasTintedBlockItems = true>
+			</#if>
+		</#if>
+	<#elseif block.getModElement().getTypeString() == "plant">
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
 			<#if block.isItemTinted>
@@ -55,8 +61,13 @@ public class ${JavaModName}Blocks {
 	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
 
 	<#list blocks as block>
-		public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
+		<#if block.getModElement().getTypeString() == "dimension">
+            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
+				REGISTRY.register("${block.getModElement().getRegistryName()}_portal", () -> new ${block.getModElement().getName()}PortalBlock());
+		<#else>
+			public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
+		</#if>
 	</#list>
 
 	<#if hasTintedBlocks || hasTintedBlockItems>

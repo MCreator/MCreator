@@ -48,8 +48,9 @@ import net.mcreator.element.converter.fv31.*;
 import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
 import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
-import net.mcreator.element.converter.fv34.ArmorSpecialInformationConverter;
-import net.mcreator.element.converter.fv34.SpecialInformationConverter;
+import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
+import net.mcreator.element.converter.fv35.ArmorSpecialInformationConverter;
+import net.mcreator.element.converter.fv35.SpecialInformationConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -77,7 +78,8 @@ public class ConverterRegistry {
 				new SpecialInformationConverter<Fluid>()));
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.GUI, Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
+		put(ModElementType.GUI,
+				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
@@ -88,7 +90,7 @@ public class ConverterRegistry {
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
-				new LegacyShootArrowProcedureRemover()));
+				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter()));
 		put(ModElementType.RANGEDITEM,
 				Arrays.asList(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));

@@ -25,7 +25,6 @@ MonsterRooms: DefaultMonsterRoom
 ReedsAndPumpkins: DefaultExtraVegetation
 TaigaRocks: MossyStoneBlock
 TallSeagrassLush: DefaultSeagrass
-MangroveSwampVegetation: MangroveSwampVegetation
 Sculk: Sculk
 
 # These are now part of other default features
