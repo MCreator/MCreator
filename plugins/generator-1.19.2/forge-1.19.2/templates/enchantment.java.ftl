@@ -57,23 +57,18 @@ public class ${name}Enchantment extends Enchantment {
 		}
 	</#if>
 
-	<#if data.compatibleEnchantments?has_content || data.incompatibleEnchantments?has_content>
+	<#if data.compatibleEnchantments?has_content>
 		@Override protected boolean checkCompatibility(Enchantment ench) {
-		    return <#if data.compatibleEnchantments?has_content>List.of(
-                <#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench)</#if>
-                <#if data.incompatibleEnchantments?has_content><#if data.compatibleEnchantments?has_content>|| </#if>!List.of(
-                <#list data.incompatibleEnchantments as incompatibleEnchantment>${incompatibleEnchantment}<#sep>,</#list>).contains(ench)</#if>;
+		    return <#if data.excludeEnchantments>!</#if>List.of(
+                <#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
 		}
 	</#if>
 
-	<#if data.compatibleItems?has_content || data.incompatibleItems?has_content>
+	<#if data.compatibleItems?has_content>
 		@Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
 			Item item = stack.getItem();
-
-			return <#if data.compatibleItems?has_content>List.of(
-                <#list data.compatibleItems as compatibleItem>${mappedMCItemToItem(compatibleItem)}<#sep>,</#list>).contains(item)</#if>
-                <#if data.incompatibleItems?has_content><#if data.compatibleItems?has_content>|| </#if>!List.of(
-                <#list data.incompatibleItems as incompatibleItem>${mappedMCItemToItem(incompatibleItem)}<#sep>,</#list>).contains(item)</#if>;
+			return <#if data.excludeItems>!</#if>List.of(
+                <#list data.compatibleItems as compatibleItem>${mappedMCItemToItem(compatibleItem)}<#sep>,</#list>).contains(item);
 		}
 	</#if>
 

@@ -1539,28 +1539,20 @@ public class TestWorkspaceDataProvider {
 			enchantment.canGenerateInLootTables = !_true;
 			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
-			enchantment.incompatibleItems = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleItems.addAll(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				enchantment.incompatibleItems.addAll(
-						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
-								.limit(blocksAndItems.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				enchantment.excludeEnchantments = _true;
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
-			enchantment.incompatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
 				enchantment.compatibleEnchantments.addAll(
 						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
 								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 										e.getName())).toList());
-				enchantment.incompatibleEnchantments.addAll(
-						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
-								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
-										e.getName())).toList());
+				enchantment.excludeItems = _true;
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
