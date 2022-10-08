@@ -1,29 +1,31 @@
 <#-- @formatter:off -->
-new Object() {
+class WaitHandler${customBlockIndex} {
+	private int ticks = 0;
+	private float waitTicks;
+	private LevelAccessor world;
 
-    private int ticks = 0;
-    private float waitTicks;
-    private LevelAccessor world;
-
-    public void start(LevelAccessor world, int waitTicks) {
+	public void start(LevelAccessor world, int waitTicks) {
 		this.waitTicks = waitTicks;
-		MinecraftForge.EVENT_BUS.register(this);
 		this.world = world;
+
+		MinecraftForge.EVENT_BUS.register(WaitHandler${customBlockIndex}.this);
 	}
 
-    @SubscribeEvent
-    public void tick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            this.ticks += 1;
-            if (this.ticks >= this.waitTicks)
-                run();
-        }
-    }
+	@SubscribeEvent
+	public void tick(TickEvent.ServerTickEvent event) {
+		if (event.phase == TickEvent.Phase.END) {
+			WaitHandler${customBlockIndex}.this.ticks += 1;
+			if (WaitHandler${customBlockIndex}.this.ticks >= WaitHandler${customBlockIndex}.this.waitTicks)
+				run();
+		}
+	}
 
-    private void run() {
+	private void run() {
+		MinecraftForge.EVENT_BUS.unregister(WaitHandler${customBlockIndex}.this);
+
         ${statement$do}
-        MinecraftForge.EVENT_BUS.unregister(this);
-    }
+	}
+}
 
-}.start(world, ${opt.toInt(input$ticks)});
+new WaitHandler${customBlockIndex}().start(world, ${opt.toInt(input$ticks)});
 <#-- @formatter:on -->
