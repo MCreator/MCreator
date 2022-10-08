@@ -10,6 +10,8 @@
   readable_name: "Forest"
 - taiga:
   readable_name: "Taiga"
+- mangrove_swamp:
+  readable_name: "Mangrove swamp"
 - swamp:
   readable_name: "Swamp"
 - river:
@@ -160,6 +162,8 @@
   readable_name: "Dripstone caves"
 - lush_caves:
   readable_name: "Lush caves"
+- deep_dark:
+  readable_name: "Deep dark"
 - meadow:
   readable_name: "Meadow"
 - grove:

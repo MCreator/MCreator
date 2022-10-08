@@ -33,7 +33,7 @@ public class TextBlock implements IBlockGenerator {
 		if (element != null) {
 			master.append("\"").append(JavaConventions.escapeStringForJava(element.getTextContent())).append("\"");
 		} else {
-			master.append("null");
+			master.append("\"\"");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.empty_text_block")));
 		}

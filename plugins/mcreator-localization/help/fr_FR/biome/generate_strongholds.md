@@ -1,1 +1,1 @@
-Utilisez ce paramètre pour avoir des Forts dans votre biome.
+Sélectionner ce paramètre pour avoir des forts (Strongholds).

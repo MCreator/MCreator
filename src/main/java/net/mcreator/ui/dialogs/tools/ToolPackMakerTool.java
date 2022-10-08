@@ -42,6 +42,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -78,6 +79,7 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
+		base.setValidator(new MCItemHolderValidator(base));
 		base.addBlockSelectedListener(e -> {
 			try {
 				if (base.getBlock() != null) {
@@ -112,7 +114,8 @@ public class ToolPackMakerTool {
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
 		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+					&& base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());

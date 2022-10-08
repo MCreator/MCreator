@@ -301,7 +301,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		localVarsList.setOpaque(false);
 		localVarsList.setCellRenderer(new LocalVariableListRenderer());
 		localVarsList.setBorder(BorderFactory.createEmptyBorder());
-		localVarsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		localVarsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		JList<Dependency> dependenciesList = new JList<>(dependencies);
 		dependenciesList.setOpaque(false);
@@ -416,13 +416,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		});
 
 		remvar.addActionListener(e -> {
-			VariableElement element = localVarsList.getSelectedValue();
-			if (element != null) {
+			List<VariableElement> elements = localVarsList.getSelectedValuesList();
+			if (!elements.isEmpty()) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
-					blocklyPanel.removeLocalVariable(element.getName());
-					localVars.removeElement(element);
+					for (var element : elements) {
+						blocklyPanel.removeLocalVariable(element.getName());
+						localVars.removeElement(element);
+					}
 				}
 			}
 		});
@@ -627,7 +629,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 								break;
 							}
 						}
-						if (procedureUsedByGUI)
+						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
+								modElement.getName()))
 							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
