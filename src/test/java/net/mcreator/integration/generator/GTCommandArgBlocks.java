@@ -38,7 +38,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTCommandArgBlocks {
@@ -179,11 +178,11 @@ public class GTCommandArgBlocks {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(command));
+				workspace.getGenerator().generateElement(command, true);
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.machine_name);
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.machine_name);
 			}
 		}
 

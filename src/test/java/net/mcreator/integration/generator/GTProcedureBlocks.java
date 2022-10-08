@@ -38,7 +38,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Random;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
@@ -179,14 +178,7 @@ public class GTProcedureBlocks {
 							suggestedFieldName = "dimension";
 							suggestedDataListName = "dimension_custom";
 							break;
-						case "biome_dictionary_list_provider":
-							suggestedFieldName = "biomedict";
-							suggestedDataListName = "biomedictionary";
-							break;
 						}
-
-						if (suggestedDataListName.equals("biomedictionary"))
-							suggestedDataListName = "biomedictionarytypes";
 
 						if (suggestedDataListName.equals("sound_category")) {
 							suggestedDataListName = "soundcategories";
@@ -291,7 +283,7 @@ public class GTProcedureBlocks {
 					break;
 				case "String":
 					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_text\"><value name=\"return\">" + testXML + "</value></block>");
+							"<block type=\"return_string\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
 				case "MCItem":
 					procedure.procedurexml = wrapWithBaseTestXML(
@@ -306,11 +298,11 @@ public class GTProcedureBlocks {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
 			}
 		}
 

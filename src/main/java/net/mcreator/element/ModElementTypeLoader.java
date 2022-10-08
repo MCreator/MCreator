@@ -65,7 +65,8 @@ public class ModElementTypeLoader {
 		ModElementType.ITEM = register(
 				new ModElementType<>("item", 'i', BaseType.ITEM, RecipeType.ITEM, ItemGUI::new, Item.class));
 		ModElementType.ITEMEXTENSION = register(
-				new ModElementType<>("itemextension", null, BaseType.OTHER, RecipeType.NONE, ItemExtensionGUI::new, ItemExtension.class));
+				new ModElementType<>("itemextension", null, BaseType.OTHER, RecipeType.NONE, ItemExtensionGUI::new,
+						ItemExtension.class));
 		ModElementType.KEYBIND = register(
 				new ModElementType<>("keybind", 'k', BaseType.OTHER, RecipeType.NONE, KeyBindGUI::new,
 						KeyBinding.class));

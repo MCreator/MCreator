@@ -142,10 +142,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			for (IBlockGenerator generator : blockGenerators) {
 				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 						generator.getSupportedBlocks()).contains(type)) {
-					int compile_notes_num = compile_notes.size();
 					generator.generateBlock(this, block);
-					if (compile_notes_num == compile_notes.size()) // no errors in generation
-						lastProceduralBlockType = type; // update last block type generated
+
+					lastProceduralBlockType = type; // update last block type generated
 
 					generated = true;
 					break;

@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import com.google.common.annotations.VisibleForTesting;
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
@@ -143,7 +144,7 @@ public class Procedure extends GeneratableElement {
 				BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks(),
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
 
-		// load blocklytojava with custom generators loaded
+		// load BlocklyToProcedure with custom generators loaded
 		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.procedurexml,
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),

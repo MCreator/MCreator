@@ -22,7 +22,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.MCreatorDialog;
@@ -228,7 +227,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			TextureType textureType = (TextureType) types.getSelectedItem();
 
 			if (name.getText() != null && !name.getText().isEmpty() && textureType != null) {
-				File exportFile = mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(name.getText()), textureType);
+				File exportFile = mcreator.getFolderManager()
+						.getTextureFile(RegistryNameFixer.fix(name.getText()), textureType);
 
 				if (exportFile.isFile())
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
@@ -248,7 +248,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		buttonsPanel.add(cancel);
 		buttonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel), PanelUtils.totalCenterInPanel(buttonsPanel)));
+		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel),
+				PanelUtils.totalCenterInPanel(buttonsPanel)));
 
 		typeDialog.setSize(550, 150);
 		typeDialog.setLocationRelativeTo(null);

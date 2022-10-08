@@ -68,7 +68,8 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 		editor.ovst.add(displayCondition);
 
-		editor.overlayBaseTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
+		editor.overlayBaseTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
 
 		editor.setPreferredSize(new Dimension(5, 550));
 

@@ -44,27 +44,30 @@ package ${package}.init;
 	public static final KeyMapping ${keybind.getModElement().getRegistryNameUpper()} = new KeyMapping(
 			"key.${modid}.${keybind.getModElement().getRegistryName()}", GLFW.GLFW_KEY_${generator.map(keybind.triggerKey, "keybuttons")},
 			"key.categories.${keybind.keyBindingCategoryKey}")
-				<#if hasProcedure(keybind.onKeyReleased)>
+				<#if hasProcedure(keybind.onKeyReleased) || hasProcedure(keybind.onKeyPressed)>
 				{
 					private boolean isDownOld = false;
 
 					@Override public void setDown(boolean isDown) {
 						super.setDown(isDown);
 
-						if (isDownOld != isDown && !isDown) {
-							int dt = (int) (System.currentTimeMillis() - ${keybind.getModElement().getRegistryNameUpper()}_LASTPRESS);
-							${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(1, dt));
-							${keybind.getModElement().getName()}Message.pressAction(Minecraft.getInstance().player, 1, dt);
-						} else if (isDownOld != isDown && isDown) {
+						if (isDownOld != isDown && isDown) {
 							<#if hasProcedure(keybind.onKeyPressed)>
-							${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(0, 0));
-							${keybind.getModElement().getName()}Message.pressAction(Minecraft.getInstance().player, 0, 0);
+								${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(0, 0));
+								${keybind.getModElement().getName()}Message.pressAction(Minecraft.getInstance().player, 0, 0);
 							</#if>
 
 							<#if hasProcedure(keybind.onKeyReleased)>
-							${keybind.getModElement().getRegistryNameUpper()}_LASTPRESS = System.currentTimeMillis();
+								${keybind.getModElement().getRegistryNameUpper()}_LASTPRESS = System.currentTimeMillis();
 							</#if>
 						}
+						<#if hasProcedure(keybind.onKeyReleased)>
+						else if (isDownOld != isDown && !isDown) {
+							int dt = (int) (System.currentTimeMillis() - ${keybind.getModElement().getRegistryNameUpper()}_LASTPRESS);
+							${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(1, dt));
+							${keybind.getModElement().getName()}Message.pressAction(Minecraft.getInstance().player, 1, dt);
+						}
+						</#if>
 
 						isDownOld = isDown;
 					}

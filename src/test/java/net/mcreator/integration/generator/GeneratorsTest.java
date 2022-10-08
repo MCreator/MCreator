@@ -18,7 +18,6 @@
 
 package net.mcreator.integration.generator;
 
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;

@@ -48,7 +48,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.toArray(String[]::new));
-		textureSelector.setRenderer(new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
+		textureSelector.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));

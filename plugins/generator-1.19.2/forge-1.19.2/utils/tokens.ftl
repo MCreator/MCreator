@@ -12,7 +12,7 @@
                                             	AtomicInteger _retval = new AtomicInteger(0);
                                             	BlockEntity _ent = world.getBlockEntity(pos);
                                             	if (_ent != null)
-                                            		_ent.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(capability -\\\\> _retval.set(capability.getEnergyStored()));
+                                            		_ent.getCapability(ForgeCapabilities.ENERGY, null).ifPresent(capability -\\\\> _retval.set(capability.getEnergyStored()));
                                             	return _retval.get();
                                             }
                                         }.getEnergyStored(new BlockPos((int) x, (int) y, (int) z)))>">
@@ -22,7 +22,7 @@
                                             	AtomicInteger _retval = new AtomicInteger(0);
                                             	BlockEntity _ent = world.getBlockEntity(pos);
                                             	if (_ent != null)
-                                            		_ent.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).ifPresent(capability -\\\\>
+                                            		_ent.getCapability(ForgeCapabilities.FLUID_HANDLER, null).ifPresent(capability -\\\\>
                                             			_retval.set(capability.getFluidInTank(tank).getAmount()));
                                             	return _retval.get();
                                             }

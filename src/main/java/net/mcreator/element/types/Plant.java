@@ -202,6 +202,10 @@ import java.util.stream.Collectors;
 		return spawnWorldTypes.size() > 0;
 	}
 
+	@Override public String getRenderType() {
+		return "cutout";
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
