@@ -159,7 +159,6 @@ public class PreferencesDialog extends MCreatorDialog {
 		// Add preference entries
 		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.stream()
 				.filter(e -> !e.getSection().equals(Preferences.HIDDEN)).toList().forEach(entry -> {
-					LOG.debug(entry);
 					if (!sectionPanels.containsKey(entry.getSection()))
 						createPreferenceSection(entry.getSection());
 					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
