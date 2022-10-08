@@ -134,7 +134,7 @@ public class Preferences {
 		checkAndNotifyForPluginUpdates = register(new PreferenceEntry<>("checkAndNotifyForPluginUpdates", false, NOTIFICATIONS));
 
 		// Backups
-		workspaceAutosaveInterval = register(new NumberEntry("workspaceAutosaveInterval", 30, BACKUPS, 10, 1800));
+		workspaceAutosaveInterval = register(new NumberEntry("workspaceAutosaveInterval", 30, BACKUPS, 10, 2000));
 		automatedBackupInterval = register(new NumberEntry("automatedBackupInterval", 5, BACKUPS, 3, 120));
 		numberOfBackupsToStore = register(new NumberEntry("numberOfBackupsToStore", 10, BACKUPS, 2, 20));
 		backupOnVersionSwitch = register(new PreferenceEntry<>("backupOnVersionSwitch", true, BACKUPS));
