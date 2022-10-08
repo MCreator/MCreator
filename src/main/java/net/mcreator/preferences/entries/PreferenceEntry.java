@@ -102,7 +102,7 @@ public class PreferenceEntry<T> {
 	}
 
 	@Override public String toString() {
-		return id + ": value: " + value + ",";
+		return id + ": value: " + value;
 	}
 
 }
