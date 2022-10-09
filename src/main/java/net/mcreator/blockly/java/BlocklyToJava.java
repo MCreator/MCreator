@@ -68,7 +68,7 @@ public class BlocklyToJava extends BlocklyToCode {
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.startBlockName());
 
 				// if there is no start block, we return empty string
 				if (start_block == null)

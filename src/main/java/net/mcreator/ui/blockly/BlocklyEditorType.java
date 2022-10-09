@@ -19,30 +19,10 @@
 
 package net.mcreator.ui.blockly;
 
-public enum BlocklyEditorType {
+public record BlocklyEditorType(String translationKey, String extension, String startBlockName) {
 
-	PROCEDURE("procedures", "ptpl", "event_trigger"), AI_TASK("ai_setup", "aitpl", "aitasks_container"), COMMAND_ARG(
-			"cmd_setup", "cmdtpl", "args_start");
+	public static BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");
+	public static BlocklyEditorType AI_TASK = new BlocklyEditorType("ai_setup", "aitpl", "aitasks_container");
+	public static BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmd_setup", "cmdtpl", "args_start");
 
-	private final String translationKey;
-	private final String extension;
-	private final String startBlockName;
-
-	BlocklyEditorType(String translationKey, String extension, String startBlockName) {
-		this.translationKey = translationKey;
-		this.extension = extension;
-		this.startBlockName = startBlockName;
-	}
-
-	public String getTranslationKey() {
-		return translationKey;
-	}
-
-	public String getExtension() {
-		return extension;
-	}
-
-	public String getStartBlockName() {
-		return startBlockName;
-	}
 }
