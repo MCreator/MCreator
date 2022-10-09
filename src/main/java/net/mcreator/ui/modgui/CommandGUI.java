@@ -86,11 +86,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		enderpanel.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs").getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
+			BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.COMMAND);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
@@ -130,7 +130,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), BlocklyEditorType.COMMAND_ARG,
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(
-					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getGeneratorCmdArgs())));
+					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getBlocklyBlocks("cmdargs"))));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}

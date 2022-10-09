@@ -121,7 +121,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 						Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures").getDefinedBlocks()
 								.values()) {
 							if (block.getName().toLowerCase(Locale.ENGLISH)
 									.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
@@ -129,7 +129,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							}
 						}
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures").getDefinedBlocks()
 								.values()) {
 							for (String keyWord : keyWords) {
 								if (block.getName().toLowerCase(Locale.ENGLISH)

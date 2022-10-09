@@ -209,10 +209,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		page1group.addValidationElement(achievementName);
 		page1group.addValidationElement(achievementDescription);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("jsontriggers").getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getJSONTriggerLoader()
+			BlocklyLoader.INSTANCE.getSpecificBlockLoader("jsontriggers")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger).start());
@@ -246,7 +246,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	private void regenerateTrigger() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getJsonTriggers());
+				mcreator.getGeneratorStats().getBlocklyBlocks("jsontriggers"));
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {

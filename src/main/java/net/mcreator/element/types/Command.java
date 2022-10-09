@@ -57,7 +57,7 @@ import java.util.Locale;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks(),
+					BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs").getDefinedBlocks(),
 					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()

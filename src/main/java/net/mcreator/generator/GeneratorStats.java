@@ -44,15 +44,12 @@ public class GeneratorStats {
 
 	private final Status status;
 
-	private Set<String> generatorProcedures;
-	private Set<String> generatorTriggers;
-	private Set<String> jsonTriggers;
-	private Set<String> generatorAITasks;
-	private Set<String> generatorCmdArgs;
+	private final Map<String, Set<String>> generatorBlocklyBlocks;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
 		this.status = Status.valueOf(
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
+		this.generatorBlocklyBlocks = new LinkedHashMap<>();
 
 		// determine supported mod element types
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
@@ -93,45 +90,8 @@ public class GeneratorStats {
 
 		// lazy load actual values
 		new Thread(() -> {
-			generatorProcedures = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".procedures", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet());
-			coverageInfo.put("procedures", Math.min(
-					(((double) generatorProcedures.size()) / (BlocklyLoader.INSTANCE.getProcedureBlockLoader()
-							.getDefinedBlocks().size())) * 100, 100));
-
-			generatorTriggers = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".triggers", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet());
-			coverageInfo.put("triggers", Math.min(
-					(((double) generatorTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-							.getExternalTrigers().size()) * 100, 100));
-
-			jsonTriggers = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".jsontriggers", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet());
-			coverageInfo.put("jsontriggers", Math.min(
-					(((double) jsonTriggers.size()) / (BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks()
-							.size())) * 100, 100));
-
-			generatorAITasks = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".aitasks", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.collect(Collectors.toSet());
-			coverageInfo.put("aitasks", Math.min(
-					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
-							.getDefinedBlocks().size()) * 100, 100));
-
-			generatorCmdArgs = PluginLoader.INSTANCE.getResources(
-							generatorConfiguration.getGeneratorName() + ".cmdargs", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.collect(Collectors.toSet());
-			coverageInfo.put("cmdargs", Math.min(
-					(((double) generatorCmdArgs.size()) / BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
-							.getDefinedBlocks().size()) * 100, 100));
+			BlocklyLoader.INSTANCE.getBlockLoaders().forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
+			addBlocklyFolder(generatorConfiguration, "triggers");
 		}).start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -175,6 +135,30 @@ public class GeneratorStats {
 				CoverageStatus.FULL);
 	}
 
+	/**
+	 * Load all Blockly files of a {@link Generator} inside the provided folder.
+	 *
+	 * @param genConfig The current generator's config to use
+	 * @param name The name of the folder to load
+	 */
+	public void addBlocklyFolder(GeneratorConfiguration genConfig, String name) {
+		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + name, ftlFile)
+				.stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+				.collect(Collectors.toSet());
+		coverageInfo.put(name, Math.min(
+				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs").getDefinedBlocks().size())
+						* 100, 100));
+		generatorBlocklyBlocks.put(name, blocks);
+	}
+
+	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
+		return generatorBlocklyBlocks;
+	}
+
+	public Set<String> getBlocklyBlocks(String name) {
+		return generatorBlocklyBlocks.get(name);
+	}
+
 	private CoverageStatus forElement(List<?> features, String feature) {
 		if (features == null)
 			return CoverageStatus.NONE;
@@ -198,26 +182,6 @@ public class GeneratorStats {
 
 	public Status getStatus() {
 		return status;
-	}
-
-	public Set<String> getGeneratorProcedures() {
-		return generatorProcedures;
-	}
-
-	public Set<String> getGeneratorTriggers() {
-		return generatorTriggers;
-	}
-
-	public Set<String> getJsonTriggers() {
-		return jsonTriggers;
-	}
-
-	public Set<String> getGeneratorAITasks() {
-		return generatorAITasks;
-	}
-
-	public Set<String> getGeneratorCmdArgs() {
-		return generatorCmdArgs;
 	}
 
 	public enum CoverageStatus {

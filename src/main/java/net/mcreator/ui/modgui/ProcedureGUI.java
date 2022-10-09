@@ -105,7 +105,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private void regenerateProcedure() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getGeneratorProcedures());
+				mcreator.getGeneratorStats().getBlocklyBlocks("procedures"));
 		BlocklyToProcedure blocklyToJava;
 
 		try {
@@ -220,7 +220,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						sideTriggerLabel.setIcon(UIRES.get("16px.server"));
 					}
 
-					if (!mcreator.getGeneratorStats().getGeneratorTriggers().contains(trigger.getID())) {
+					if (!mcreator.getGeneratorStats().getBlocklyBlocks("triggers").contains(trigger.getID())) {
 						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 								L10N.t("elementgui.procedure.global_trigger_unsupported")));
 					}
@@ -562,11 +562,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		pane5.add("East", PanelUtils.centerAndSouthElement(eastPan, returnType));
 		pane5.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
-		externalBlocks = BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures").getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getProcedureBlockLoader()
+			BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.PROCEDURE);
 
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()

@@ -18,6 +18,9 @@
 
 package net.mcreator.blockly.data;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class BlocklyLoader {
 
 	public static BlocklyLoader INSTANCE;
@@ -26,36 +29,31 @@ public class BlocklyLoader {
 		INSTANCE = new BlocklyLoader();
 	}
 
-	private final ExternalBlockLoader procedureBlockLoader;
-	private final ExternalBlockLoader jsonTriggerLoader;
-	private final ExternalBlockLoader aitaskBlockLoader;
-	private final ExternalBlockLoader cmdargsBlockLoader;
+	private final Map<String, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
 	private BlocklyLoader() {
-		procedureBlockLoader = new ExternalBlockLoader("procedures");
-		aitaskBlockLoader = new ExternalBlockLoader("aitasks");
-		cmdargsBlockLoader = new ExternalBlockLoader("cmdargs");
+		blockLoaders = new LinkedHashMap<>();
+		addBlockLoader("procedures");
+		addBlockLoader("aitasks");
+		addBlockLoader("cmdargs");
+		addBlockLoader("jsontriggers");
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
-		jsonTriggerLoader = new ExternalBlockLoader("jsontriggers");
 	}
 
-	public ExternalBlockLoader getProcedureBlockLoader() {
-		return procedureBlockLoader;
+	public void addBlockLoader(String name) {
+		blockLoaders.put(name, new ExternalBlockLoader(name));
 	}
 
-	public ExternalBlockLoader getAITaskBlockLoader() {
-		return aitaskBlockLoader;
+	public Map<String, ExternalBlockLoader> getBlockLoaders() {
+		return blockLoaders;
 	}
 
-	public ExternalBlockLoader getCmdArgsBlockLoader() {return cmdargsBlockLoader;}
+	public ExternalBlockLoader getSpecificBlockLoader(String name) {
+		return blockLoaders.get(name);
+	}
 
 	public ExternalTriggerLoader getExternalTriggerLoader() {
 		return externalTriggerLoader;
 	}
-
-	public ExternalBlockLoader getJSONTriggerLoader() {
-		return jsonTriggerLoader;
-	}
-
 }
