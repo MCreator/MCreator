@@ -19,37 +19,48 @@
 
 package net.mcreator.ui.init;
 
+import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
-public class BlocklyJavaScriptsLoader {
+public class BlocklySpecialFilesLoader {
 
-	private static final Logger LOG = LogManager.getLogger("Blockly JS loader");
+	private static final Logger LOG = LogManager.getLogger("Blockly Special Files loader");
 
-	public static BlocklyJavaScriptsLoader INSTANCE;
+	public static BlocklySpecialFilesLoader INSTANCE;
 
 	public static void init() {
-		INSTANCE = new BlocklyJavaScriptsLoader();
+		INSTANCE = new BlocklySpecialFilesLoader();
 	}
 
 	private final List<String> SCRIPTS = new ArrayList<>();
 
-	public BlocklyJavaScriptsLoader() {
+	private final Map<String, String> TOOLBOXES = new HashMap<>();
+
+	public BlocklySpecialFilesLoader() {
 		LOG.debug("Loading Blockly JavaScript files from plugins");
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.js"));
 		for (String fileName : fileNames)
 			SCRIPTS.add(FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
+
+		LOG.debug("Loading Blockly XML files from plugins");
+
+		Set<String> xmlFiles = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.xml"));
+		for (String fileName : xmlFiles)
+			TOOLBOXES.put(fileName, FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
 	}
 
 	public List<String> getScripts() {
 		return SCRIPTS;
+	}
+
+	public String getSpecificToolBox(String name) {
+		return TOOLBOXES.get(name);
 	}
 }

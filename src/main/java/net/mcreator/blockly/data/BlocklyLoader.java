@@ -18,7 +18,9 @@
 
 package net.mcreator.blockly.data;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BlocklyLoader {
@@ -29,6 +31,20 @@ public class BlocklyLoader {
 		INSTANCE = new BlocklyLoader();
 	}
 
+	private static final List<String> builtinCategories = new ArrayList<>() {{
+		add("others");
+		add("apis");
+		add("mcelements");
+		add("mcvariables");
+		add("customvariables");
+		add("logicloops");
+		add("logicoperations");
+		add("math");
+		add("text");
+		add("time");
+		add("advanced");
+		add("action");
+	}};
 	private final Map<String, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
@@ -41,12 +57,31 @@ public class BlocklyLoader {
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
 	}
 
+	/**
+	 * Create a new {@link ExternalBlockLoader} to load blocks for a specific Blockly panel.
+	 *
+	 * @param name The folder's name where to load files
+	 */
 	public void addBlockLoader(String name) {
 		blockLoaders.put(name, new ExternalBlockLoader(name));
 	}
 
+	/**
+	 * Add a usable category for JSON file blocks that has been created inside the custom XML {@link ToolboxType} file.
+	 * All custom categories used by a {@link ToolboxType} have to be added before blocks are loaded.
+	 *
+	 * @param name The category's name as written inside the XML file (e.g. <i>&lt;custom-thisName/&gt;</i>).
+	 */
+	public static void addBuiltinCategory(String name) {
+		builtinCategories.add(name);
+	}
+
 	public Map<String, ExternalBlockLoader> getBlockLoaders() {
 		return blockLoaders;
+	}
+
+	public static List<String> getBuiltinCategories() {
+		return builtinCategories;
 	}
 
 	public ExternalBlockLoader getSpecificBlockLoader(String name) {
