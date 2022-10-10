@@ -22,12 +22,14 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.w3c.dom.Element;
 
 import javax.annotation.Nonnull;
@@ -39,8 +41,10 @@ import java.util.stream.Collectors;
 public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final StringBuilder code;
-	private final List<BlocklyCompileNote> compile_notes;
+	private final List<BlocklyCompileNote> compileNotes;
 	private final Set<Dependency> dependencies;
+
+	private final ModElement parent;
 
 	@Nullable private final TemplateGenerator templateGenerator;
 	private final Workspace workspace;
@@ -51,13 +55,14 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Stack<DependencyProviderInput> dependencyProviderInputStack = new Stack<>();
 
-	public BlocklyToCode(Workspace workspace, @Nullable TemplateGenerator templateGenerator,
+	public BlocklyToCode(Workspace workspace, ModElement parent, @Nullable TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) {
 		this.templateGenerator = templateGenerator;
 		this.workspace = workspace;
+		this.parent = parent;
 
 		code = new StringBuilder();
-		compile_notes = new ArrayList<>();
+		compileNotes = new ArrayList<>();
 		dependencies = new HashSet<>();
 
 		blockGenerators = new ArrayList<>();
@@ -71,7 +76,11 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final List<BlocklyCompileNote> getCompileNotes() {
-		return compile_notes;
+		return compileNotes;
+	}
+
+	public ModElement getParent() {
+		return parent;
 	}
 
 	public final List<Dependency> getDependencies() {
@@ -94,7 +103,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final void addCompileNote(BlocklyCompileNote compileNote) {
-		compile_notes.add(compileNote);
+		compileNotes.add(compileNote);
 	}
 
 	public final void addDependency(Dependency dependency) {
