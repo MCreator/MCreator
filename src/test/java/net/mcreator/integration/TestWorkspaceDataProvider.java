@@ -772,7 +772,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.hasAI = _true;
 			livingEntity.aiBase = "(none)";
 			if (!emptyLists) {
-				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
+				Set<String> aiTasks = modElement.getGeneratorStats().getBlocklyBlocks("aitasks");
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
 						"panic_when_attacked") && aiTasks.contains("attack_action") && aiTasks.contains(
 						"swim_in_water")) {

@@ -40,7 +40,7 @@ public class GTProcedureTriggers {
 			return;
 		}
 
-		Set<String> generatorTriggers = workspace.getGeneratorStats().getGeneratorTriggers();
+		Set<String> generatorTriggers = workspace.getGeneratorStats().getBlocklyBlocks("triggers");
 
 		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
