@@ -144,7 +144,7 @@ public class ExternalBlockLoader {
 		// setup toolbox
 
 		// add default "built-in" categories
-		BlocklyLoader.INSTANCE.getBuiltinCategories().forEach(name -> toolbox.put(name, new ArrayList<>()));
+		BlocklyLoader.getBuiltinCategories().forEach(name -> toolbox.put(name, new ArrayList<>()));
 
 		// Handle built-in categories
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
