@@ -26,6 +26,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
@@ -236,18 +237,23 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 			setIcon(null);
 
-			if (value instanceof MappableElement) {
-				setText(((MappableElement) value).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
-						.replace("Items.", ""));
-				if (((MappableElement) value).getUnmappedValue().contains("CUSTOM:"))
+			if (value instanceof MappableElement mappableElement) {
+				mappableElement.getDataListEntry()
+						.ifPresentOrElse(dataListEntry -> setText(dataListEntry.getReadableName()), () -> setText(
+								(mappableElement).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
+										.replace("Items.", "")));
+
+				if ((mappableElement).getUnmappedValue().contains("CUSTOM:"))
 					setIcon(new ImageIcon(ImageUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
-							((MappableElement) value).getUnmappedValue()).getImage(), 18)));
-				if (!((MappableElement) value).canProperlyMap())
+							(mappableElement).getUnmappedValue()).getImage(), 18)));
+
+				if (!(mappableElement).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));
 			} else if (value instanceof File) {
 				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
-				setText(value.toString().replace("CUSTOM:", ""));
+				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
+
 				if (value.toString().contains("CUSTOM:"))
 					setIcon(new ImageIcon(ImageUtils.resize(
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));

@@ -33,13 +33,16 @@ import java.util.List;
 
 public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement {
 
-	public String texture;
 	public String name;
+	public String texture;
 	public String description;
 	public TabEntry creativeTab;
-	public Sound music;
 	public List<String> specialInfo;
 	public boolean hasGlow;
+
+	public Sound music;
+	public int lengthInTicks;
+	public int analogOutput;
 
 	public Procedure onRightClickedInAir;
 	public Procedure onRightClickedOnBlock;

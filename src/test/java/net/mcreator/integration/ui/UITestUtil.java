@@ -45,16 +45,16 @@ public class UITestUtil {
 			//noinspection BusyWait
 			Thread.sleep(5);
 
-			if (System.currentTimeMillis() - start > 4000)
+			if (System.currentTimeMillis() - start > 5000)
 				throw new TimeoutException();
 
 			if (throwableAtomic.get() != null)
 				throw throwableAtomic.get();
 		}
 
+		Arrays.stream(Window.getWindows()).filter(w -> w != master).forEach(Window::dispose);
+
 		if (throwableAtomic.get() != null)
 			throw throwableAtomic.get();
-
-		Arrays.stream(Window.getWindows()).filter(w -> w != master).forEach(Window::dispose);
 	}
 }

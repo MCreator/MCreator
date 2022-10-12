@@ -138,8 +138,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
 
-		portalParticles.setSelectedItem("PORTAL");
-
 		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		fluidBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -346,7 +344,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ComboBoxUtil.updateComboBoxContents(igniterTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
 
-		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()),
+				new DataListEntry.Dummy("PORTAL"));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

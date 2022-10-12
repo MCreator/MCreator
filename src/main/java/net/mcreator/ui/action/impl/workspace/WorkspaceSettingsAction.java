@@ -35,6 +35,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.vcs.diff.DiffResult;
 import net.mcreator.vcs.diff.ListDiff;
+import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
@@ -60,6 +61,12 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 	public static void refactorWorkspace(MCreator mcreator, WorkspaceSettingsChange change) {
 		if (change.refactorNeeded() && change.oldSettings != null) {
+			if (change.generatorFlavorChanged) {
+				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
+						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
+								"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator, true);
+			}
+
 			if (change.packagechanged) { // we need to copy all source files to new package and remove the old one
 				File originalPackage = new File(mcreator.getGenerator().getSourceRoot(),
 						change.oldSettings.getModElementsPackage().replace(".", "/"));

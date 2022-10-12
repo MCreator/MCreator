@@ -25,6 +25,9 @@
 - EntityBoat:
   readable_name: "Boat"
   type: spawnable
+- EntityChestBoat:
+  readable_name: "Boat with chest"
+  type: spawnable
 - EntityCat:
   readable_name: "Cat"
   type: spawnable
@@ -346,7 +349,6 @@
   type: spawnable
 - EntityFishHook:
   readable_name: "Fishing bobber"
-  type: spawnable
 - EntityMonster:
   readable_name: "Monster entity"
 - EntityPiglin:
@@ -369,4 +371,16 @@
   type: spawnable
 - EntityMarker:
   readable_name: "Marker"
+  type: spawnable
+- EntityAllay:
+  readable_name: "Allay"
+  type: spawnable
+- EntityFrog:
+  readable_name: "Frog"
+  type: spawnable
+- EntityTadpole:
+  readable_name: "Tadpole"
+  type: spawnable
+- EntityWarden:
+  readable_name: "Warden"
   type: spawnable

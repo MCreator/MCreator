@@ -161,7 +161,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-		customBulletModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		customBulletModelTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		bulletModel.setPreferredSize(new Dimension(400, 42));
 		bulletModel.setRenderer(new ModelComboBoxRenderer());
