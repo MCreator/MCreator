@@ -59,7 +59,6 @@ import java.util.Locale;
 	public Particle particleToSpawn;
 	public double particlesProbability;
 
-	public String biomeCategory;
 	public double rainingPossibility;
 	public double temperature;
 	public double baseHeight;
@@ -71,7 +70,6 @@ import java.util.Locale;
 	public boolean spawnInCaves;
 
 	public int biomeWeight;
-	public List<String> biomeDictionaryTypes;
 
 	public int grassPerChunk;
 	public int seagrassPerChunk;
@@ -137,8 +135,6 @@ import java.util.Locale;
 		villageType = "none";
 		oceanRuinType = "NONE";
 		spawnRuinedPortal = "NONE";
-		biomeCategory = "NONE";
-		biomeDictionaryTypes = new ArrayList<>();
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 	}

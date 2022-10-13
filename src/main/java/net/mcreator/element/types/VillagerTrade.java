@@ -27,7 +27,7 @@ import net.mcreator.workspace.elements.ModElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VillagerTrade extends GeneratableElement {
+@SuppressWarnings("unused") public class VillagerTrade extends GeneratableElement {
 
 	public List<CustomTradeEntry> tradeEntries;
 
@@ -62,5 +62,15 @@ public class VillagerTrade extends GeneratableElement {
 
 			public double priceMultiplier;
 		}
+	}
+
+	public boolean hasVillagerTrades(boolean wandering) {
+		for (CustomTradeEntry tradeEntry : tradeEntries) {
+			if (wandering && "WANDERING_TRADER".equals(tradeEntry.villagerProfession.getUnmappedValue()))
+				return true;
+			if (!wandering && !"WANDERING_TRADER".equals(tradeEntry.villagerProfession.getUnmappedValue()))
+				return true;
+		}
+		return false;
 	}
 }

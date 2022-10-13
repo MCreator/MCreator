@@ -262,6 +262,13 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			}
 		}
 		</#if>
+	<#else>
+		<#if hasProcedure(data.onClosed)>
+		@Override public void removed(Player playerIn) {
+			super.removed(playerIn);
+			<@procedureOBJToCode data.onClosed/>
+		}
+		</#if>
 	</#if>
 
 	public Map<Integer, Slot> get() {

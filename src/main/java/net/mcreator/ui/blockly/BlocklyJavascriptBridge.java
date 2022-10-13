@@ -130,6 +130,10 @@ public class BlocklyJavascriptBridge {
 			case "entity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
+			case "spawnableEntity" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), L10N.t("dialog.selector.entity.message"),
+					L10N.t("dialog.selector.entity.title"));
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
@@ -154,6 +158,17 @@ public class BlocklyJavascriptBridge {
 			case "enchantment" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEnchantments(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.enchantment.message"), L10N.t("dialog.selector.enchantment.title"));
+			case "arrowProjectile" -> openDataListEntrySelector(
+					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
+			case "fireballProjectile" -> openDataListEntrySelector(
+					w -> ElementUtil.loadFireballProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), L10N.t("dialog.selector.projectile.message"),
+					L10N.t("dialog.selector.projectile.title"));
+			case "throwableProjectile" -> openDataListEntrySelector(
+					w -> ElementUtil.loadThrowableProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), L10N.t("dialog.selector.projectile.message"),
+					L10N.t("dialog.selector.projectile.title"));
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -287,6 +302,9 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "spawnableEntity":
+			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
@@ -375,12 +393,15 @@ public class BlocklyJavascriptBridge {
 					.toArray(String[]::new);
 			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
-			case "rangeditem" -> ElementUtil.loadArrowProjectiles(workspace).stream()
-					.map(DataListEntry::getReadableName).toArray(String[]::new);
-			case "fireballprojectile" -> ElementUtil.loadFireballProjectiles().stream()
-					.map(DataListEntry::getReadableName).toArray(String[]::new);
-			case "throwableprojectile" -> ElementUtil.loadThrowableProjectiles().stream()
-					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "rangeditem" ->
+					ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getReadableName)
+							.toArray(String[]::new);
+			case "fireballprojectile" ->
+					ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getReadableName)
+							.toArray(String[]::new);
+			case "throwableprojectile" ->
+					ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getReadableName)
+							.toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
 		};
 	}
@@ -399,8 +420,9 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
 		String datalist;
 		switch (type) {
-		case "entity" -> datalist = "entities";
+		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
+		case "arrowProjectile", "fireballProjectile", "throwableProjectile" -> datalist = "projectiles";
 		default -> {
 			return "";
 		}

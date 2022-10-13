@@ -125,4 +125,8 @@ public class JModLibraryInfo extends LibraryInfo {
 		return jmodFile.hashCode();
 	}
 
+	@Override public int hashCodeImpl() {
+		return jmodFile.hashCode();
+	}
+
 }

@@ -27,6 +27,8 @@ import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
+import javax.swing.*;
+
 public class DesaturateTool extends AbstractTool {
 
 	private final MCreator window;
@@ -41,7 +43,7 @@ public class DesaturateTool extends AbstractTool {
 
 	@Override public boolean process(ZoomedMouseEvent mouseEvent) {
 		DesaturateDialog dialog = new DesaturateDialog(window, canvas, layer, versionManager);
-		dialog.setVisible(true);
+		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
 		return true;
 	}
 }

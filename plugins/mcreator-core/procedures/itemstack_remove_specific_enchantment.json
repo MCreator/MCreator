@@ -4,15 +4,17 @@
       "type": "input_value",
       "name": "item",
       "check": "MCItem"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "enhancement",
+      "datalist": "enchantment"
     }
   ],
   "inputsInline": true,
   "colour": 350,
   "previousStatement": null,
   "nextStatement": null,
-  "extensions": [
-    "enhancement_list_provider"
-  ],
   "mcreator": {
     "group": "enchanting",
     "toolbox_id": "itemmanagement",

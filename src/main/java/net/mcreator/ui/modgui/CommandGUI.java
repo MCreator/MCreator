@@ -18,16 +18,25 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalBlockLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.types.Command;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.procedure.AbstractProcedureSelector;
-import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -36,21 +45,25 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CommandGUI extends ModElementGUI<Command> {
 
-	private ProcedureSelector onCommandExecuted;
-
 	private final VTextField commandName = new VTextField(25);
-
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
-
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
+	private BlocklyPanel blocklyPanel;
+	private boolean hasErrors = false;
+	private Map<String, ToolboxBlock> externalBlocks;
 
 	public CommandGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -59,12 +72,6 @@ public class CommandGUI extends ModElementGUI<Command> {
 	}
 
 	@Override protected void initGUI() {
-		onCommandExecuted = new ProcedureSelector(this.withEntry("command/when_executed"), mcreator,
-				L10N.t("elementgui.command.when_command_executed"), AbstractProcedureSelector.Side.SERVER,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/cmdparams:map"));
-
-		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
-
 		ComponentUtils.deriveFont(commandName, 16);
 
 		JPanel enderpanel = new JPanel(new GridLayout(2, 2, 10, 2));
@@ -78,22 +85,31 @@ public class CommandGUI extends ModElementGUI<Command> {
 		enderpanel.add(permissionLevel);
 
 		enderpanel.setOpaque(false);
-		pane5.setOpaque(false);
 
-		JPanel evente = new JPanel();
-		evente.setOpaque(false);
-		evente.setBorder(BorderFactory.createTitledBorder(
+		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
+
+		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.COMMAND);
+			blocklyPanel.getJSBridge()
+					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
+			if (!isEditingMode()) {
+				blocklyPanel.setXML(
+						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"></block></next></block></xml>");
+			}
+		});
+
+		blocklyPanel.setPreferredSize(new Dimension(450, 440));
+
+		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
+						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel), blocklyPanel),
+				compileNotesPanel);
+		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.command.on_command_executed"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		evente.add(onCommandExecuted);
-
-		JPanel merge = new JPanel(new BorderLayout(25, 25));
-		merge.setOpaque(false);
-		merge.add("North", PanelUtils.centerInPanel(enderpanel));
-		merge.add("South", evente);
-
-		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
+		args.setOpaque(false);
 
 		commandName.setValidator(
 				new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
@@ -101,33 +117,58 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		page1group.addValidationElement(commandName);
 
-		addPage(pane5);
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel),
+				PanelUtils.maxMargin(args, 10, true, true, true, true)));
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
 		}
 	}
 
-	@Override public void reloadDataLists() {
-		super.reloadDataLists();
-		onCommandExecuted.refreshListKeepSelected();
+	private void regenerateArgs() {
+		BlocklyToJava blocklyToJava;
+		try {
+			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(
+					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getGeneratorCmdArgs())));
+		} catch (TemplateGeneratorException e) {
+			return;
+		}
+
+		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
+
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			hasErrors = compileNotesArrayList.stream().anyMatch(note -> note.type() == BlocklyCompileNote.Type.ERROR);
+		});
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
+		if (!hasErrors)
+			return new AggregatedValidationResult(page1group);
+		else
+			return new AggregatedValidationResult.MULTIFAIL(
+					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
+							.collect(Collectors.toList()));
 	}
 
 	@Override public void openInEditingMode(Command command) {
-		onCommandExecuted.setSelectedProcedure(command.onCommandExecuted);
 		commandName.setText(command.commandName);
 		permissionLevel.setSelectedItem(command.permissionLevel);
+
+		blocklyPanel.setXMLDataOnly(command.argsxml);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			blocklyPanel.clearWorkspace();
+			blocklyPanel.setXML(command.argsxml);
+			regenerateArgs();
+		});
 	}
 
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
-		command.onCommandExecuted = onCommandExecuted.getSelectedProcedure();
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
+		command.argsxml = blocklyPanel.getXML();
 		return command;
 	}
 

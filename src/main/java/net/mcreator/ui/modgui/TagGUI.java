@@ -27,11 +27,13 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.EntityListField;
+import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.validators.NamespaceValidator;
 import net.mcreator.ui.validation.validators.TagsNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -44,14 +46,17 @@ import java.util.Objects;
 
 public class TagGUI extends ModElementGUI<Tag> {
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "forge", "minecraft", "mod" });
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Entities", "Functions" });
+	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
+	private final JComboBox<String> type = new JComboBox<>(
+			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
 
 	private ModElementListField functions;
-	private EntityListField entities;
+	private SpawnableEntityListField entities;
+
+	private BiomeListField biomes;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -68,10 +73,14 @@ public class TagGUI extends ModElementGUI<Tag> {
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
-		entities = new EntityListField(mcreator);
+		entities = new SpawnableEntityListField(mcreator);
+		biomes = new BiomeListField(mcreator);
 
 		name.setValidator(new TagsNameValidator<>(name, false));
 		name.enableRealtimeValidation();
+
+		namespace.setValidator(new NamespaceValidator<>(namespace));
+		namespace.enableRealtimeValidation();
 
 		name.addItem("tag");
 		name.addItem("category/tag");
@@ -92,6 +101,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		valuesPan.add(blocks, "Blocks");
 		valuesPan.add(functions, "Functions");
 		valuesPan.add(entities, "Entities");
+		valuesPan.add(biomes, "Biomes");
 
 		if (isEditingMode()) {
 			type.setEnabled(false);
@@ -133,7 +143,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(name);
+		return new AggregatedValidationResult(name, namespace);
 	}
 
 	@Override public void openInEditingMode(Tag tag) {
@@ -143,10 +153,9 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items.setListElements(tag.items);
 		blocks.setListElements(tag.blocks);
-
 		functions.setListElements(tag.functions);
-
 		entities.setListElements(tag.entities);
+		biomes.setListElements(tag.biomes);
 	}
 
 	@Override public Tag getElementFromGUI() {
@@ -158,6 +167,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		tag.blocks = blocks.getListElements();
 		tag.functions = functions.getListElements();
 		tag.entities = entities.getListElements();
+		tag.biomes = biomes.getListElements();
 
 		tag.name = name.getEditor().getItem().toString();
 		return tag;

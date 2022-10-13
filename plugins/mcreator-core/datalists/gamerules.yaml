@@ -68,3 +68,5 @@
   type: number
 - FREEZE_DAMAGE:
   type: logic
+- DO_WARDEN_SPAWNING:
+  type: logic

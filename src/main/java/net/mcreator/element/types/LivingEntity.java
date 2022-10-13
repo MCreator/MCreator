@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
@@ -32,6 +33,7 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -83,6 +85,7 @@ import java.util.Locale;
 	public double movementSpeed;
 	public double armorBaseValue;
 	public int trackingRange;
+	public int followRange;
 	public int health;
 	public int xpAmount;
 	public boolean waterMob;
@@ -170,6 +173,8 @@ import java.util.Locale;
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
 
+		this.followRange = 16;
+
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}
@@ -214,11 +219,17 @@ import java.util.Locale;
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), "aitasks_container",
-					this.aixml, this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
+					BlocklyEditorType.AI_TASK, this.aixml,
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
-			additionalData.put("aicode", blocklyToJava.getGeneratedCode());
+			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
+					.getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
+			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
+					blocklyToJava.getGeneratedCode() :
+					"");
 		};
 	}
 

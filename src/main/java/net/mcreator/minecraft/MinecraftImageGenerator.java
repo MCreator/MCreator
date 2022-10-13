@@ -107,11 +107,11 @@ public class MinecraftImageGenerator {
 		g.fillRect(1, height - 3, width - 2, 2);
 		g.drawLine(width - 2, 1, width - 2, height - 4);
 
-		g.setColor(new Color(0, 0, 0)); //outer border color
-		g.drawLine(0, 0, width - 1, 0); //upper edge
-		g.drawLine(width - 1, 1, width - 1, height - 2); //edge right
-		g.drawLine(0, height - 1, width - 1, height - 1); //edge bottom
-		g.drawLine(0, 1, 0, height - 2); //edge left
+		g.setColor(new Color(0, 0, 0)); // outer border color
+		g.drawLine(0, 0, width - 1, 0); // upper edge
+		g.drawLine(width - 1, 1, width - 1, height - 2); // edge right
+		g.drawLine(0, height - 1, width - 1, height - 1); // edge bottom
+		g.drawLine(0, 1, 0, height - 2); // edge left
 
 		return bi;
 	}
@@ -124,14 +124,14 @@ public class MinecraftImageGenerator {
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) bi.getGraphics();
 
-		g.setColor(new Color(0, 0, 0)); //filler color
+		g.setColor(new Color(0, 0, 0)); // filler color
 		g.fillRect(1, 1, width - 2, height - 2);
 
-		g.setColor(new Color(162, 162, 162)); //outer border color
-		g.drawLine(0, 0, width - 1, 0); //rob zgornji
-		g.drawLine(width - 1, 1, width - 1, height - 2); //rob desno
-		g.drawLine(0, height - 1, width - 1, height - 1); //rob spodaj
-		g.drawLine(0, 1, 0, height - 2); //rob levi
+		g.setColor(new Color(162, 162, 162)); // outer border color
+		g.drawLine(0, 0, width - 1, 0);
+		g.drawLine(width - 1, 1, width - 1, height - 2);
+		g.drawLine(0, height - 1, width - 1, height - 1);
+		g.drawLine(0, 1, 0, height - 2);
 
 		return bi;
 	}
@@ -141,16 +141,20 @@ public class MinecraftImageGenerator {
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) bi.getGraphics();
 
-		g.setColor(new Color(139, 139, 139)); //filler color
+		g.setColor(new Color(139, 139, 139)); // filler color
 		g.fillRect(0, 0, width, height);
 
-		g.setColor(new Color(0, 0, 0, 135)); //top border color
-		g.drawLine(0, 0, width - 1, 0); //rob zgornji
-		g.drawLine(0, 1, 0, height - 1); //rob levi
+		g.setColor(new Color(55, 55, 55)); // top border color
+		g.drawLine(0, 0, width - 1, 0);
+		g.drawLine(0, 1, 0, height - 1);
 
-		g.setColor(new Color(255, 255, 255, 210)); //bottom border color
-		g.drawLine(width - 1, 0, width - 1, height - 1); //rob desno
-		g.drawLine(0, height - 1, width - 2, height - 1); //rob spodaj
+		g.setColor(new Color(255, 255, 255)); // bottom border color
+		g.drawLine(width - 1, 0, width - 1, height - 1);
+		g.drawLine(0, height - 1, width - 2, height - 1);
+
+		g.setColor(new Color(140, 140, 140)); // corner color
+		g.fillRect(width - 1, 0, 1, 1);
+		g.fillRect(0, height - 1, 1, 1);
 
 		return bi;
 	}
@@ -554,21 +558,42 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates command images.</p>
+		 * <p>This method generates the command image preview.</p>
 		 *
 		 * @param command <p>The command.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateCommandPreviewPicture(String command) {
+		public static BufferedImage generateCommandPreviewPicture(String command, String procedurexml) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-			graphics2D.setColor(new Color(255, 255, 255, 180));
+			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
 
+			graphics2D.setColor(new Color(255, 255, 255, 180));
 			graphics2D.drawLine(3, 16, 6, 10);
 
-			graphics2D.setFont(new Font(null, Font.PLAIN, 9));
-			graphics2D.setPaint(
-					new GradientPaint(16, 14, new Color(255, 255, 255, 180), 24, 14, new Color(255, 255, 255, 0)));
+			Color blockColor = Color.white;
+			if (procedurexml.contains("<block type=\"literal")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(280);
+			} else if (procedurexml.contains("<block type=\"item")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(350);
+			} else if (procedurexml.contains("<block type=\"blockstate")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (procedurexml.contains("<block type=\"blockpos")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(60);
+			} else if (procedurexml.contains("<block type=\"entity")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(195);
+			} else if (procedurexml.contains("<block type=\"string")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(170);
+			} else if (procedurexml.contains("<block type=\"logic")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(210);
+			} else if (procedurexml.contains("<block type=\"double")) {
+				blockColor = BlocklyBlockUtil.getBlockColorFromHUE(230);
+			}
+
+			graphics2D.setPaint(new GradientPaint(16, 14,
+					new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 180), 24, 14,
+					new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 0)));
+			graphics2D.setColor(new Color(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue(), 180));
 			graphics2D.drawString(StringUtils.abbreviateString(command, 4, false).toUpperCase(Locale.ENGLISH), 7, 17);
 
 			graphics2D.dispose();
@@ -1192,7 +1217,7 @@ public class MinecraftImageGenerator {
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
 					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.OTHER)
+							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.ENTITY)
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(
@@ -1275,7 +1300,7 @@ public class MinecraftImageGenerator {
 						returnColor = Dependency.getColor("logic");
 					} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("number");
-					} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+					} else if (procedurexml.contains("<block type=\"return_string\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("text");
 					} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("itemstack");
@@ -1405,6 +1430,9 @@ public class MinecraftImageGenerator {
 								.getImage());
 				case "Functions" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
+								.getImage());
+				case "Biomes" -> ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("world"), false)
 								.getImage());
 				default -> null;
 			};

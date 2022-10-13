@@ -19,6 +19,7 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -74,8 +75,15 @@ public class DataListEntry implements Comparable<DataListEntry> {
 	}
 
 	public String getReadableName() {
-		if (readableName == null)
-			return name;
+		if (readableName == null) {
+			if (name.startsWith("CUSTOM:")) {
+				return StringUtils.machineToReadableName(name.replace("CUSTOM:", ""));
+			} else if (name.startsWith("TAG:")) {
+				return name;
+			} else {
+				return StringUtils.machineToReadableName(name);
+			}
+		}
 		return readableName;
 	}
 
@@ -116,9 +124,13 @@ public class DataListEntry implements Comparable<DataListEntry> {
 	@Override public int compareTo(DataListEntry o) {
 		String a = this.getReadableName();
 		String b = o.getReadableName();
-		if (a.startsWith("CUSTOM:") && !b.startsWith("CUSTOM:"))
+
+		String a_ = this.getName();
+		String b_ = o.getName();
+
+		if (a_.startsWith("CUSTOM:") && !b_.startsWith("CUSTOM:"))
 			return -1;
-		else if (!a.startsWith("CUSTOM:") && b.startsWith("CUSTOM:"))
+		else if (!a_.startsWith("CUSTOM:") && b_.startsWith("CUSTOM:"))
 			return 1;
 		return a.compareToIgnoreCase(b);
 	}

@@ -39,7 +39,7 @@ import java.util.List;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 28;
+	public static final int formatVersion = 34;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -149,7 +149,7 @@ public abstract class GeneratableElement {
 					IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
 					if (converter != null) {
 						LOG.debug("Converting mod element " + this.lastModElement.getName() + " of type " + newType
-								+ " to potential alternative.");
+								+ " to a potential alternative.");
 
 						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement),
 								jsonElement);

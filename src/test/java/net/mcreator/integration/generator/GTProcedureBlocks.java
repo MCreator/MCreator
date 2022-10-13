@@ -38,7 +38,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Random;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
@@ -67,11 +66,11 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (!procedureBlock.getInputs().isEmpty()) {
+			if (!procedureBlock.getAllInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
-					for (String input : procedureBlock.getInputs()) {
+					for (String input : procedureBlock.getAllInputs()) {
 						boolean match = false;
 						for (String toolboxtemplate : procedureBlock.toolbox_init) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
@@ -167,26 +166,37 @@ public class GTProcedureBlocks {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
-								case "field_checkbox":
+								case "field_checkbox" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
 									processed++;
-									break;
-								case "field_number":
+								}
+								case "field_number" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
 									processed++;
-									break;
-								case "field_input":
-								case "field_javaname":
+								}
+								case "field_input", "field_javaname" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
 									processed++;
-									break;
-								case "field_dropdown":
+								}
+								case "field_dropdown" -> {
 									JsonArray opts = arg.get("options").getAsJsonArray();
 									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
 									additionalXML.append("<field name=\"").append(field).append("\">")
 											.append(opt.get(1).getAsString()).append("</field>");
 									processed++;
-									break;
+								}
+								case "field_data_list_selector" -> {
+									String type = arg.get("datalist").getAsString();
+									if (type.equals("enchantment"))
+										type = "enhancement";
+									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
+									if (values.length > 0 && !values[0].equals("")) {
+										String value = ListUtils.getRandomItem(random, values);
+										additionalXML.append("<field name=\"").append(field).append("\">").append(value)
+												.append("</field>");
+										processed++;
+									}
+								}
 								}
 								break;
 							}
@@ -213,17 +223,7 @@ public class GTProcedureBlocks {
 							suggestedFieldName = "dimension";
 							suggestedDataListName = "dimension_custom";
 							break;
-						case "biome_dictionary_list_provider":
-							suggestedFieldName = "biomedict";
-							suggestedDataListName = "biomedictionary";
-							break;
 						}
-
-						if (procedureBlock.machine_name.contains("potion") && suggestedFieldName.equals("effect"))
-							suggestedFieldName = "potion";
-
-						if (suggestedDataListName.equals("biomedictionary"))
-							suggestedDataListName = "biomedictionarytypes";
 
 						if (suggestedDataListName.equals("sound_category")) {
 							suggestedDataListName = "soundcategories";
@@ -244,12 +244,8 @@ public class GTProcedureBlocks {
 										suggestedDataListName + "s");
 
 							if (values.length > 0 && !values[0].equals("")) {
-								if (suggestedFieldName.equals("entity")) {
-									additionalXML.append("<field name=\"entity\">EntityZombie</field>");
-								} else {
-									additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-											.append(ListUtils.getRandomItem(random, values)).append("</field>");
-								}
+								additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
+										.append(ListUtils.getRandomItem(random, values)).append("</field>");
 								processed++;
 							}
 						}
@@ -351,7 +347,7 @@ public class GTProcedureBlocks {
 					break;
 				case "String":
 					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_text\"><value name=\"return\">" + testXML + "</value></block>");
+							"<block type=\"return_string\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
 				case "MCItem":
 					procedure.procedurexml = wrapWithBaseTestXML(
@@ -366,11 +362,11 @@ public class GTProcedureBlocks {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
 			}
 		}
 

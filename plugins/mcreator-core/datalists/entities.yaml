@@ -6,255 +6,381 @@
   readable_name: "Animal entity"
 - EntityAreaEffectCloud:
   readable_name: "Area of effect cloud"
+  type: spawnable
 - EntityArmorStand:
   readable_name: "Armor stand"
+  type: spawnable
 - EntityArrow:
   readable_name: "Arrow"
+  type: spawnable
 - EntityBat:
   readable_name: "Bat"
+  type: spawnable
 - EntityBee:
   readable_name: "Bee"
+  type: spawnable
 - EntityBlaze:
   readable_name: "Blaze"
+  type: spawnable
 - EntityBoat:
   readable_name: "Boat"
+  type: spawnable
+- EntityChestBoat:
+  readable_name: "Boat with chest"
+  type: spawnable
 - EntityCat:
   readable_name: "Cat"
+  type: spawnable
 - EntityCaveSpider:
   readable_name: "Cave spider"
+  type: spawnable
 - EntityChicken:
   readable_name: "Chicken"
+  type: spawnable
 - EntityCod:
   readable_name: "Cod"
+  type: spawnable
 - EntityCow:
   readable_name: "Cow"
+  type: spawnable
 - EntityCreature:
   readable_name: "Creature entity"
 - EntityCreeper:
   readable_name: "Creeper"
+  type: spawnable
 - EntityDonkey:
   readable_name: "Donkey"
+  type: spawnable
 - EntityDolphin:
   readable_name: "Dolphin"
+  type: spawnable
 - EntityDrowned:
   readable_name: "Drowned"
+  type: spawnable
 - EntityDragon:
   readable_name: "Dragon"
+  type: spawnable
 - EntityDragonFireball:
   readable_name: "Dragon fireball"
+  type: spawnable
 - EntityEgg:
   readable_name: "Egg"
+  type: spawnable
 - EntityElderGuardian:
   readable_name: "Elder guardian"
+  type: spawnable
 - EntityEnderCrystal:
   readable_name: "Ender crystal"
+  type: spawnable
 - EntityEnderEye:
   readable_name: "Eye of ender"
+  type: spawnable
 - EntityEnderman:
   readable_name: "Enderman"
+  type: spawnable
 - EntityEndermite:
   readable_name: "Endermite"
+  type: spawnable
 - EntityEnderPearl:
   readable_name: "Ender pearl"
+  type: spawnable
 - EntityEvoker:
   readable_name: "Evoker"
+  type: spawnable
 - EntityEvokerFangs:
   readable_name: "Evoker fangs"
+  type: spawnable
 - EntityExpBottle:
   readable_name: "Experience bottle"
+  type: spawnable
 - EntityFallingBlock:
   readable_name: "Falling block"
+  type: spawnable
 - EntityFireball:
   readable_name: "Fireball"
+  type: spawnable
 - EntityFireworkRocket:
   readable_name: "Firework rocket"
+  type: spawnable
 - EntityFlying:
   readable_name: "Flying entity"
 - EntityFox:
   readable_name: "Fox"
+  type: spawnable
 - EntityGhast:
   readable_name: "Ghast"
+  type: spawnable
 - EntityGiantZombie:
   readable_name: "Giant"
+  type: spawnable
 - EntityGolem:
   readable_name: "Golem entity"
 - EntityGuardian:
   readable_name: "Guardian"
+  type: spawnable
 - EntityHanging:
   readable_name: "Hanging entity"
 - EntityHoglin:
   readable_name: "Hoglin"
+  type: spawnable
 - EntityHorse:
   readable_name: "Horse"
+  type: spawnable
 - EntityHusk:
   readable_name: "Husk"
+  type: spawnable
 - EntityIllusionIllager:
   readable_name: "Illusioner"
+  type: spawnable
 - EntityIronGolem:
   readable_name: "Iron golem"
+  type: spawnable
 - EntityItem:
   readable_name: "Item"
+  type: spawnable
 - EntityItemFrame:
   readable_name: "Item frame"
+  type: spawnable
 - EntityGlowItemFrame:
   readable_name: "Glow item frame"
+  type: spawnable
 - EntityLeashKnot:
   readable_name: "Leash knot"
+  type: spawnable
 - EntityLightningBolt:
   readable_name: "Lightning bolt"
+  type: spawnable
 - EntityLiving:
   readable_name: "Living entity"
 - EntityLlama:
   readable_name: "Llama"
+  type: spawnable
 - EntityLlamaSpit:
   readable_name: "Llama spit"
+  type: spawnable
 - EntityMagmaCube:
   readable_name: "Magma cube"
+  type: spawnable
 - EntityMinecart:
   readable_name: "Minecart"
+  type: spawnable
 - EntityMinecartChest:
   readable_name: "Minecart with chest"
+  type: spawnable
 - EntityMinecartCommandBlock:
   readable_name: "Minecart with command block"
+  type: spawnable
 - EntityMinecartContainer:
   readable_name: "Minecart with container"
 - EntityMinecartFurnace:
   readable_name: "Minecart with furnace"
+  type: spawnable
 - EntityMinecartHopper:
   readable_name: "Minecart with hopper"
+  type: spawnable
 - EntityMinecartMobSpawner:
   readable_name: "Minecart with spawner"
+  type: spawnable
 - EntityMinecartTNT:
   readable_name: "Minecart with TNT"
+  type: spawnable
 - EntityMob:
   readable_name: "Mob entity"
 - EntityMooshroom:
   readable_name: "Mooshroom"
+  type: spawnable
 - EntityMule:
   readable_name: "Mule"
+  type: spawnable
 - EntityOcelot:
   readable_name: "Ocelot"
+  type: spawnable
 - EntityPainting:
   readable_name: "Painting"
+  type: spawnable
 - EntityPanda:
   readable_name: "Panda"
+  type: spawnable
 - EntityParrot:
   readable_name: "Parrot"
+  type: spawnable
 - EntityPig:
   readable_name: "Pig"
+  type: spawnable
 - EntityPillager:
   readable_name: "Pillager"
+  type: spawnable
 - EntityPufferfish:
   readable_name: "Pufferfish"
+  type: spawnable
 - EntityPigZombie:
   readable_name: "Zombified piglin"
+  type: spawnable
 - EntityPlayer:
   readable_name: "Player"
 - EntityPlayerMP:
   readable_name: "Server player"
 - EntityPolarBear:
   readable_name: "Polar bear"
+  type: spawnable
 - EntityPotion:
   readable_name: "Potion"
+  type: spawnable
 - EntityRabbit:
   readable_name: "Rabbit"
+  type: spawnable
 - EntitySalmon:
   readable_name: "Salmon"
+  type: spawnable
 - EntitySheep:
   readable_name: "Sheep"
+  type: spawnable
 - EntityShoulderRiding:
   readable_name: "Shoulder riding entity"
 - EntityShulker:
   readable_name: "Shulker"
+  type: spawnable
 - EntityShulkerBullet:
   readable_name: "Shulker bullet"
+  type: spawnable
 - EntitySilverfish:
   readable_name: "Silverfish"
+  type: spawnable
 - EntitySkeleton:
   readable_name: "Skeleton"
+  type: spawnable
 - EntitySkeletonHorse:
   readable_name: "Skeleton horse"
+  type: spawnable
 - EntitySlime:
   readable_name: "Slime"
+  type: spawnable
 - EntitySmallFireball:
   readable_name: "Small fireball"
+  type: spawnable
 - EntitySnowball:
   readable_name: "Snowball"
+  type: spawnable
 - EntitySnowman:
   readable_name: "Snow golem"
+  type: spawnable
 - EntitySpectralArrow:
   readable_name: "Spectral arrow"
+  type: spawnable
 - EntitySpellcasterIllager:
   readable_name: "Spellcasting illager entity"
 - EntitySpider:
   readable_name: "Spider"
+  type: spawnable
 - EntitySquid:
   readable_name: "Squid"
+  type: spawnable
 - EntityGlowSquid:
   readable_name: "Glow squid"
+  type: spawnable
 - EntityStray:
   readable_name: "Stray"
+  type: spawnable
 - EntityTraderLlama:
   readable_name: "Trader llama"
+  type: spawnable
 - EntityTameable:
   readable_name: "Tameable entity"
 - EntityThrowable:
   readable_name: "Throwable entity"
 - EntityTropicalFish:
   readable_name: "Tropical fish"
+  type: spawnable
 - EntityTurtle:
   readable_name: "Turtle"
+  type: spawnable
 - EntityTrident:
   readable_name: "Trident"
+  type: spawnable
 - EntityTNTPrimed:
   readable_name: "TNT"
+  type: spawnable
 - EntityVex:
   readable_name: "Vex"
+  type: spawnable
 - EntityVillager:
   readable_name: "Villager"
+  type: spawnable
 - EntityVindicator:
   readable_name: "Vindicator"
+  type: spawnable
 - EntityWaterMob:
   readable_name: "Water mob entity"
 - EntityWanderingTrader:
   readable_name: "Wandering trader"
+  type: spawnable
 - EntityWitch:
   readable_name: "Witch"
+  type: spawnable
 - EntityWither:
   readable_name: "Wither"
+  type: spawnable
 - EntityWitherSkeleton:
   readable_name: "Wither skeleton"
+  type: spawnable
 - EntityWitherSkull:
   readable_name: "Wither skull"
+  type: spawnable
 - EntityWolf:
   readable_name: "Wolf"
+  type: spawnable
 - EntityXPOrb:
   readable_name: "Experience orb"
+  type: spawnable
 - EntityZombie:
   readable_name: "Zombie"
+  type: spawnable
 - EntityZombieHorse:
   readable_name: "Zombie horse"
+  type: spawnable
 - EntityZombieVillager:
   readable_name: "Zombie villager"
+  type: spawnable
 - EntityPhantom:
   readable_name: "Phantom"
+  type: spawnable
 - EntityRavager:
   readable_name: "Ravager"
+  type: spawnable
 - EntityFishHook:
   readable_name: "Fishing bobber"
 - EntityMonster:
   readable_name: "Monster entity"
 - EntityPiglin:
   readable_name: "Piglin"
+  type: spawnable
 - EntityPiglinBrute:
   readable_name: "Piglin brute"
+  type: spawnable
 - EntityStrider:
   readable_name: "Strider"
+  type: spawnable
 - EntityZoglin:
   readable_name: "Zoglin"
+  type: spawnable
 - EntityAxolotl:
   readable_name: "Axolotl"
+  type: spawnable
 - EntityGoat:
   readable_name: "Goat"
+  type: spawnable
 - EntityMarker:
   readable_name: "Marker"
+  type: spawnable
+- EntityAllay:
+  readable_name: "Allay"
+  type: spawnable
+- EntityFrog:
+  readable_name: "Frog"
+  type: spawnable
+- EntityTadpole:
+  readable_name: "Tadpole"
+  type: spawnable
+- EntityWarden:
+  readable_name: "Warden"
+  type: spawnable

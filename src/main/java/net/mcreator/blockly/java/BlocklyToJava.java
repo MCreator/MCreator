@@ -24,16 +24,20 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.*;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
+import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.text.ParseException;
@@ -44,16 +48,20 @@ public class BlocklyToJava extends BlocklyToCode {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
 	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 
+	private final BlocklyEditorType editorType;
+
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
-	 * @param firstBlockName    <p>The name of the start block</p>
+	 * @param blocklyEditorType <p>Blockly editor type</p>
 	 * @param sourceXML         <p>The XML code used by Blockly</p>
 	 * @param templateGenerator <p>The folder location in each {@link net.mcreator.generator.Generator} containing the code template files<p>
 	 */
-	public BlocklyToJava(Workspace workspace, String firstBlockName, String sourceXML,
-			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType,
+			String sourceXML, TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
-		super(workspace, templateGenerator, externalGenerators);
+		super(workspace, parent, templateGenerator, externalGenerators);
+
+		this.editorType = blocklyEditorType;
 
 		addJavaBlocks();
 
@@ -63,7 +71,7 @@ public class BlocklyToJava extends BlocklyToCode {
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, firstBlockName);
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
 
 				// if there is no start block, we return empty string
 				if (start_block == null)
@@ -129,6 +137,12 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TextSubstring());
 		blockGenerators.add(new TextJoinBlock());
 		blockGenerators.add(new TextLengthBlock());
+		blockGenerators.add(new TextIsEmptyBlock());
+		blockGenerators.add(new TextTrimBlock());
+		blockGenerators.add(new TextUppercaseBlock());
+		blockGenerators.add(new TextLowercaseBlock());
+		blockGenerators.add(new TextStartsWithBlock());
+		blockGenerators.add(new TextEndsWithBlock());
 		blockGenerators.add(new CustomDependencyBlock());
 		blockGenerators.add(new JavaCodeOutputBlock());
 		blockGenerators.add(new TernaryOperatorBlock());
@@ -158,5 +172,9 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
+	}
+
+	public BlocklyEditorType getEditorType() {
+		return editorType;
 	}
 }

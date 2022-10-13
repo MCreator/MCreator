@@ -4,12 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('biome_dictionary_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biomedictionarytypes"))), 'biomedict');
-    });
-
 Blockly.Extensions.register('gamemode_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
@@ -105,62 +99,16 @@ Blockly.Extensions.registerMutator('variable_entity_input',
         }
     });
 
-Blockly.Extensions.register('biome_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('biome'), 'biome');
-    });
-
-Blockly.Extensions.register('entity_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('entity'), 'entity');
-    });
-
 Blockly.Extensions.register('gui_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("gui"))), 'guiname');
     });
 
-Blockly.Extensions.register('rangeditem_list_provider', // name is rangeditem for legacy reasons, is actually arrow list
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("rangeditem"),
-                javabridge.getReadableListOf("rangeditem"))), 'rangeditem');
-    });
-
-Blockly.Extensions.register('throwableprojectile_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("throwableprojectile"),
-                javabridge.getReadableListOf("throwableprojectile"))), 'throwableprojectile');
-    });
-
-Blockly.Extensions.register('fireballprojectile_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("fireballprojectile"),
-                javabridge.getReadableListOf("fireballprojectile"))), 'fireballprojectile');
-    });
-
 Blockly.Extensions.register('dimension_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension"))), 'dimension');
-    });
-
-Blockly.Extensions.register('achievement_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('achievement'), 'achievement');
-    });
-
-Blockly.Extensions.register('effect_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('effect'), 'potion'); // field name is potion for legacy reasons
-    });
-
-Blockly.Extensions.register('potion_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('potion'), 'potionitem');
     });
 
 Blockly.Extensions.register('gamerulesboolean_list_provider',
@@ -173,22 +121,6 @@ Blockly.Extensions.register('gamerulesnumber_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesnumber"))), 'gamerulesnumber');
-    });
-
-Blockly.Extensions.register('enhancement_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector("enchantment"), 'enhancement');
-    });
-
-Blockly.Extensions.register('sound_list_provider',
-    function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_list"))
-            .appendField(new FieldDataListSelector('sound'), 'sound');
-    });
-
-Blockly.Extensions.register('particle_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new FieldDataListSelector('particle'), 'particle');
     });
 
 Blockly.Extensions.register('schematic_list_provider',

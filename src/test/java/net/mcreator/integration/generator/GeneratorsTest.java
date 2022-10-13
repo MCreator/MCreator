@@ -141,6 +141,9 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing procedure blocks");
 				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
 
+				LOG.info("[" + generator + "] ----- Testing command argument blocks");
+				GTCommandArgBlocks.runTest(LOG, generator, random, workspace);
+
 				LOG.info("[" + generator + "] ----- Re-generating base to include generated mod elements");
 				assertTrue(workspace.getGenerator().generateBase());
 
@@ -151,6 +154,7 @@ public class GeneratorsTest {
 
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
 				GTBuild.runTest(LOG, generator, workspace);
+
 			});
 		});
 	}

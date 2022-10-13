@@ -43,6 +43,14 @@ public class GeneratorSelector {
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
 
+	/**
+	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
+	 *
+	 * @param parent        <p>The  window to attach the dialog</p>
+	 * @param current       <p>The current generator settings used</p>
+	 * @param currentFlavor <p>This is the current type of generator to use for the generator list.</p>
+	 * @return <p>The {@link GeneratorConfiguration} to use</p>
+	 */
 	public static GeneratorConfiguration getGeneratorSelector(Window parent, @Nullable GeneratorConfiguration current,
 			@Nullable GeneratorFlavor currentFlavor, boolean newWorkspace) {
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
@@ -59,6 +67,11 @@ public class GeneratorSelector {
 			GeneratorStats stats = generatorConfiguration.getGeneratorStats();
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
+				generator.addItem(generatorConfiguration);
+			} else if ((currentFlavor == GeneratorFlavor.FORGE
+					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC
+					|| currentFlavor == GeneratorFlavor.FABRIC
+					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -138,9 +151,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
-
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
-				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
@@ -150,6 +161,7 @@ public class GeneratorSelector {
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 			addStatsBar(L10N.t(covpfx + "procedure_blocks"), "procedures", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "ai_tasks"), "aitasks", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "cmd_args"), "cmdargs", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "global_triggers"), "triggers", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "advancement_triggers"), "jsontriggers", supportedProcedures, stats);
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),

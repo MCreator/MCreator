@@ -41,7 +41,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -67,7 +68,7 @@ public class ToolPackMakerTool {
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
 
 		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator);
+		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -77,6 +78,7 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
+		base.setValidator(new MCItemHolderValidator(base));
 		base.addBlockSelectedListener(e -> {
 			try {
 				if (base.getBlock() != null) {
@@ -101,7 +103,8 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name));
+		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+				L10N.t("dialog.tools.tool_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
@@ -110,7 +113,8 @@ public class ToolPackMakerTool {
 		dialog.add("South", PanelUtils.join(ok, canecel));
 
 		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+					&& base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());

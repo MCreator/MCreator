@@ -104,6 +104,8 @@ public class BlocklyBlockCodeGenerator {
 
 		Map<String, Object> dataModel = new HashMap<>();
 
+		dataModel.put("parent", master.getParent());
+
 		// we get the list of all elements present in the actual xml
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 

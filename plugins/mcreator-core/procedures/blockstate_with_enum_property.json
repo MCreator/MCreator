@@ -1,0 +1,41 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "property",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "String"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/b.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
+  "inputsInline": true,
+  "output": "MCItemBlock",
+  "colour": "60",
+  "mcreator": {
+    "toolbox_id": "blockdata",
+    "toolbox_init": [
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"property\"><block type=\"text\"><field name=\"TEXT\">half</field></block></value>",
+      "<value name=\"value\"><block type=\"text\"><field name=\"TEXT\">upper</field></block></value>"
+    ],
+    "inputs": [
+      "block",
+      "property",
+      "value"
+    ]
+  }
+}

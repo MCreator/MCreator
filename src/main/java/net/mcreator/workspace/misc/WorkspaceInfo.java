@@ -178,6 +178,16 @@ import java.util.stream.Collectors;
 		return false;
 	}
 
+	public boolean hasVillagerTrades(boolean wandering) {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.VILLAGERTRADE) {
+				if (element.getGeneratableElement() instanceof VillagerTrade vt)
+					if (vt.hasVillagerTrades(wandering))
+						return true;
+			}
+		return false;
+	}
+
 	public boolean hasBlocksMineableWith(String tool) {
 		for (ModElement element : workspace.getModElements())
 			if (element.getType() == ModElementType.BLOCK) {
@@ -213,6 +223,26 @@ import java.util.stream.Collectors;
 			if (element.getType() == ModElementType.BIOME) {
 				if (element.getGeneratableElement() instanceof Biome biome)
 					if (biome.hasStructure(type))
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasFuels() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.ITEMEXTENSION) {
+				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
+					if (itemExtension.enableFuel)
+						return true;
+			}
+		return false;
+	}
+
+	public boolean hasCompostableItems() {
+		for (ModElement element : workspace.getModElements())
+			if (element.getType() == ModElementType.ITEMEXTENSION) {
+				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
+					if (itemExtension.compostLayerChance > 0)
 						return true;
 			}
 		return false;

@@ -197,6 +197,28 @@
 </#if>
 </#macro>
 
+<#macro hasGlow procedure="">
+@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
+   	<#if hasProcedure(procedure)>
+    <#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+    <#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+   	Entity entity = Minecraft.getInstance().player;
+   	</#if>
+   	return <@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"entity": "entity",
+		"world": "entity.level",
+		"itemstack": "itemstack"
+   	}/>
+	<#else>
+   	return true;
+	</#if>
+}
+</#macro>
+
+
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
 	<#if hasProcedure(procedure)>
@@ -414,6 +436,25 @@
 	"x": "pos.getX()",
 	"y": "pos.getY()",
 	"z": "pos.getZ()",
+	"world": "world",
+	"blockstate": "blockstate",
+	"entity": "entity",
+	"direction": "hit.getDirection()",
+	"hitX": "hit.getLocation().x()",
+	"hitY": "hit.getLocation().y()",
+	"hitZ": "hit.getLocation().z()"
+	}/>
+}
+	</#if>
+</#macro>
+
+<#macro onHitByProjectile procedure="">
+	<#if hasProcedure(procedure)>
+@Override public void onProjectileHit(Level world, BlockState blockstate, BlockHitResult hit, Projectile entity) {
+	<@procedureCode procedure, {
+	"x": "hit.getBlockPos().getX()",
+	"y": "hit.getBlockPos().getY()",
+	"z": "hit.getBlockPos().getZ()",
 	"world": "world",
 	"blockstate": "blockstate",
 	"entity": "entity",

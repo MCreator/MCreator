@@ -117,6 +117,10 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		entity.changeDimension(entity.getServer().getLevel(destinationType), new ${name}Teleporter(entity.getServer().getLevel(destinationType), pos));
 	}
 
+	@OnlyIn(Dist.CLIENT) public static void registerRenderLayer() {
+		ItemBlockRenderTypes.setRenderLayer(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}_PORTAL.get(), renderType -> renderType == RenderType.translucent());
+	}
+
 }
 
 <#-- @formatter:on -->

@@ -117,7 +117,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		ComponentUtils.deriveFont(achievementDescription, 16);
 
 		background.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		background.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		background.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
 
 		showPopup.setOpaque(false);
 		announceToChat.setOpaque(false);
@@ -250,8 +250,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {
-			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), this.modElement,
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
@@ -286,7 +286,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
 		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.collect(Collectors.toList())), "Default");
 	}
 

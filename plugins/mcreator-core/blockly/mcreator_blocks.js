@@ -34,6 +34,17 @@ Blockly.Blocks['set_event_result'] = {
     }
 };
 
+Blockly.Blocks['old_command'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.old_command"))
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(160);
+    }
+};
+
 Blockly.Blocks['call_procedure'] = {
     init: function () {
         this.appendDummyInput()
@@ -69,6 +80,16 @@ Blockly.Blocks['aitasks_container'] = {
         this.setNextStatement(true);
         this.setColour(350);
         this.setTooltip(javabridge.t("blockly.block.aitasks_container.tooltip"));
+    }
+};
+
+Blockly.Blocks['args_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.cmdargs_start"));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true);
+        this.setColour(120);
+        this.setTooltip(javabridge.t("blockly.block.cmdargs_start.tooltip"));
     }
 };
 
@@ -128,6 +149,34 @@ Blockly.Blocks['text_contains'] = {
     }
 };
 
+Blockly.Blocks['text_starts_with'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_starts_with.in"));
+        this.appendValueInput('starts').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_starts_with.check"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour(210);
+    }
+};
+
+Blockly.Blocks['text_ends_with'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_ends_with.in"));
+        this.appendValueInput('ends').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_ends_with.check"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour(210);
+    }
+};
+
 Blockly.Blocks['text_substring'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
@@ -166,6 +215,54 @@ Blockly.Blocks['text_format_number'] = {
             .appendField(javabridge.t("blockly.block.text_format_number.format"));
         this.appendValueInput('format').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_format_number.as"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour(160);
+    }
+};
+
+Blockly.Blocks['text_is_empty'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_is_empty"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour(210);
+    }
+};
+
+Blockly.Blocks['text_trim'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_trim"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour(160);
+    }
+};
+
+Blockly.Blocks['text_uppercase'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_uppercase"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour(160);
+    }
+};
+
+Blockly.Blocks['text_lowercase'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_lowercase"));
         this.setInputsInline(true);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
@@ -449,6 +546,20 @@ Blockly.defineBlocksWithJsonArray([
     {
         "type": "immediate_source_entity_from_deps",
         "message0": "Immediate source entity",
+        "output": "Entity",
+        "colour": "195"
+    },
+    {
+        "type": "entity_none",
+        "message0": "%1 No entity",
+        "args0": [
+            {
+                "type": "field_image",
+                "src": "./res/null.png",
+                "width": 8,
+                "height": 24
+            }
+        ],
         "output": "Entity",
         "colour": "195"
     },

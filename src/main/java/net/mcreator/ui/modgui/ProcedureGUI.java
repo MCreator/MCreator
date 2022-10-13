@@ -24,6 +24,7 @@ import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.types.Command;
 import net.mcreator.element.types.GUI;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -108,8 +109,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		BlocklyToProcedure blocklyToJava;
 
 		try {
-			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), this.modElement, blocklyPanel.getXML(),
+					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
@@ -300,7 +301,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		localVarsList.setOpaque(false);
 		localVarsList.setCellRenderer(new LocalVariableListRenderer());
 		localVarsList.setBorder(BorderFactory.createEmptyBorder());
-		localVarsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		localVarsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		JList<Dependency> dependenciesList = new JList<>(dependencies);
 		dependenciesList.setOpaque(false);
@@ -415,13 +416,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		});
 
 		remvar.addActionListener(e -> {
-			VariableElement element = localVarsList.getSelectedValue();
-			if (element != null) {
+			List<VariableElement> elements = localVarsList.getSelectedValuesList();
+			if (!elements.isEmpty()) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
-					blocklyPanel.removeLocalVariable(element.getName());
-					localVars.removeElement(element);
+					for (var element : elements) {
+						blocklyPanel.removeLocalVariable(element.getName());
+						localVars.removeElement(element);
+					}
 				}
 			}
 		});
@@ -618,18 +621,29 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {
 					GeneratableElement generatableElement = element.getGeneratableElement();
-					if (generatableElement instanceof GUI) {
+					if (generatableElement instanceof GUI gui) {
 						boolean procedureUsedByGUI = false;
-						for (GUIComponent component : ((GUI) generatableElement).components) {
+						for (GUIComponent component : gui.components) {
 							if (Procedure.isElementUsingProcedure(component, modElement.getName())) {
 								procedureUsedByGUI = true;
 								break;
 							}
 						}
-						if (procedureUsedByGUI)
+						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
+								modElement.getName()))
 							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
+							mcreator.getGenerator().generateElement(generatableElement);
+						}
+					} else if (generatableElement instanceof Command command) {
+						if (command.argsxml != null && command.argsxml.contains(
+								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
+							mcreator.getGenerator().generateElement(generatableElement);
+						}
+					} else if (generatableElement instanceof net.mcreator.element.types.Procedure procedure) {
+						if (procedure.procedurexml != null && procedure.procedurexml.contains(
+								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
 							mcreator.getGenerator().generateElement(generatableElement);
 						}
 					}
