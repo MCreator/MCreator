@@ -274,10 +274,7 @@ public class BlocklyBlockCodeGenerator {
 							}
 						}
 
-						AdvancedInput input = new AdvancedInput(advancedInput.name() + idx);
-						input.provides = advancedInput.provides;
-
-						master.pushDepProviderInputStack(input);
+						master.pushDepProviderInputStack(advancedInput);
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
 								matchingElements.remove(advancedInput.name() + idx));
 						master.popDepProviderInputStack();
@@ -321,11 +318,7 @@ public class BlocklyBlockCodeGenerator {
 							}
 						}
 
-						StatementInput input = new StatementInput(statementInput.name + idx);
-						input.provides = statementInput.provides;
-						input.disable_local_variables = statementInput.disable_local_variables;
-
-						master.pushDepProviderInputStack(input);
+						master.pushDepProviderInputStack(statementInput);
 						String generatedCode = BlocklyToCode.directProcessStatementBlock(master,
 								matchingElements.remove(statementInput.name + idx));
 						master.popDepProviderInputStack();
