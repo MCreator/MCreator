@@ -227,8 +227,8 @@ public class BlocklyBlockCodeGenerator {
 			for (String inputName : toolboxBlock.getRepeatingInputs()) {
 				Map<String, Element> matchingElements = elements.stream()
 						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name").startsWith(inputName)
-								&& e.getAttribute("name").substring(inputName.length()).replaceAll("\\d", "")
-								.equals("")).collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+								&& !e.getAttribute("name").substring(inputName.length()).matches("\\D"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<Integer, String> processedElements = new HashMap<>();
 				int idx = 0;
 				while (!matchingElements.isEmpty()) {
@@ -254,8 +254,8 @@ public class BlocklyBlockCodeGenerator {
 			for (AdvancedInput advancedInput : toolboxBlock.getRepeatingAdvancedInputs()) {
 				Map<String, Element> matchingElements = elements.stream()
 						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
-								.startsWith(advancedInput.name()) && e.getAttribute("name")
-								.substring(advancedInput.name().length()).replaceAll("\\d", "").equals(""))
+								.startsWith(advancedInput.name()) && !e.getAttribute("name")
+								.substring(advancedInput.name().length()).matches("\\D"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<Integer, String> processedElements = new HashMap<>();
 				int idx = 0;
