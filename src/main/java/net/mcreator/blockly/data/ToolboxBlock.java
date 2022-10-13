@@ -67,9 +67,7 @@ import java.util.List;
 	}
 
 	public List<String> getAllInputs() {
-		return inputs != null ?
-				inputs.stream().map(IInput::name).collect(Collectors.toList()) :
-				Collections.emptyList();
+		return inputs != null ? inputs.stream().map(IInput::name).toList() : Collections.emptyList();
 	}
 
 	@Nullable public List<StatementInput> getStatements() {
