@@ -101,7 +101,7 @@ public class GTModElements {
 
 				// testing if all element files were properly deleted
 				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
-						.map(GeneratorTemplate::getFile).toList();
+						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
