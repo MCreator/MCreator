@@ -25,7 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
@@ -87,7 +87,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		alwaysShow.setOpaque(false);
 		animate.setOpaque(false);
 
-		texture = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.PARTICLE));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.PARTICLE));
 		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
