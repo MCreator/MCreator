@@ -257,6 +257,8 @@ public class Generator implements IGenerator, Closeable {
 		// generate all source files
 		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element.getModElement(),
 				performFSTasks, element);
+		List<GeneratorTemplatesList> templateLists = getModElementListTemplates(element.getModElement(), performFSTasks,
+				element);
 		if (generatorTemplateList != null) {
 			for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
@@ -264,8 +266,21 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				String code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
-						templateFileName, dataModel, element.getAdditionalTemplateData());
+				String code = "";
+				if (generatorTemplate.isListTemplate() && templateLists != null) {
+					for (GeneratorTemplatesList gtl : templateLists) {
+						for (int i = 0; i < gtl.listData().size(); i++) {
+							if (gtl.processTokens(generatorTemplate, i).getPath()
+									.equals(generatorTemplate.getFile().getPath())) {
+								code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
+										gtl.listData().get(i), i, element, templateFileName, dataModel);
+							}
+						}
+					}
+				} else {
+					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
+							templateFileName, dataModel, element.getAdditionalTemplateData());
+				}
 
 				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
 						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
