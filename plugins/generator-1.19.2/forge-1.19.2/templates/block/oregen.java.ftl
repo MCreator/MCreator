@@ -43,18 +43,25 @@ public class ${name}Feature extends OreFeature {
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
 		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
-				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), ${data.frequencyOnChunk})
+			new OreConfiguration(
+				List.of(
+					<#list data.blocksToReplace as replacementBlock>
+						OreConfiguration.target(
+							new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}),
+							${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState()
+						)<#sep>,
+					</#list>
+				),
+				${data.frequencyOnChunk}
+			)
 		);
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
-				CountPlacement.of(${data.frequencyPerChunks}), InSquarePlacement.spread(),
-				HeightRangePlacement.${data.generationShape?lower_case}(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight})),
-				BiomeFilter.biome()
+			CountPlacement.of(${data.frequencyPerChunks}),
+			InSquarePlacement.spread(),
+			HeightRangePlacement.${data.generationShape?lower_case}(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight})),
+			BiomeFilter.biome()
 		));
 		return FEATURE;
-	}
-
-	public static Holder<PlacedFeature> placedFeature() {
-		return PLACED_FEATURE;
 	}
 
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
@@ -90,37 +97,6 @@ public class ${name}Feature extends OreFeature {
 		</#if>
 
 		return super.place(context);
-	}
-
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRuleTest extends RuleTest {
-
-		static final ${name}FeatureRuleTest INSTANCE = new ${name}FeatureRuleTest();
-
-		private static final com.mojang.serialization.Codec<${name}FeatureRuleTest> CODEC = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-		private static final RuleTestType<${name}FeatureRuleTest> CUSTOM_MATCH = () -> CODEC;
-
-		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-			Registry.register(Registry.RULE_TEST, new ResourceLocation("${modid}:${registryname}_match"), CUSTOM_MATCH);
-		}
-
-		private List<Block> base_blocks = null;
-
-		public boolean test(BlockState blockAt, RandomSource random) {
-			if (base_blocks == null) {
-				base_blocks = List.of(
-					<#list data.blocksToReplace as replacementBlock>
-						${mappedBlockToBlock(replacementBlock)}<#sep>,
-					</#list>
-				);
-			}
-
-			return base_blocks.contains(blockAt.getBlock());
-		}
-
-		protected RuleTestType<?> getType() {
-			return CUSTOM_MATCH;
-		}
-
 	}
 
 }
