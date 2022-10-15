@@ -35,6 +35,7 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -147,7 +148,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
 				PanelUtils.centerAndSouthElement(spo2, PanelUtils.westAndCenterElement(new JEmptyBox(3, 3),
-						additionalExpiryCondition), 5, 10))));
+						additionalExpiryCondition), 5, 10), 15, 15)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -167,7 +168,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	}
 
 	@Override public void openInEditingMode(Particle particle) {
-		texture.setTextureFromTextureName(particle.texture);
+		texture.setTextureFromTextureName(StringUtils.removeEnd(particle.texture, ".png")); // legacy, old workspaces stored name with extension
 		width.setValue(particle.width);
 		height.setValue(particle.height);
 		scale.setValue(particle.scale);
@@ -187,7 +188,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override public Particle getElementFromGUI() {
 		Particle particle = new Particle(modElement);
-		particle.texture = texture.getID() + ".png";
+		particle.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
 		particle.scale = (double) scale.getValue();

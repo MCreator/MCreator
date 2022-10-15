@@ -32,6 +32,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -76,7 +77,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 				L10N.label("elementgui.painting.painting_height")));
 		selp.add(height);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp)));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 		page1group.addValidationElement(texture);
@@ -93,14 +94,14 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	@Override public void openInEditingMode(Painting painting) {
 		width.setValue(painting.width);
 		height.setValue(painting.height);
-		texture.setTextureFromTextureName(painting.texture);
+		texture.setTextureFromTextureName(StringUtils.removeEnd(painting.texture, ".png")); // legacy, old workspaces stored name with extension
 	}
 
 	@Override public Painting getElementFromGUI() {
 		Painting painting = new Painting(modElement);
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
-		painting.texture = texture.getID() + ".png";
+		painting.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
 		return painting;
 	}
 

@@ -123,7 +123,7 @@ public class TextureHolder extends VButton {
 
 	public void setTextureFromTextureName(String texture) {
 		if (texture != null && !texture.equals("")) {
-			id = FileUtils.removeExtension(texture);
+			id = texture;
 			setToolTipText(texture);
 			setIcon(new ImageIcon(ImageUtils.resize(
 					td.getMCreator().getFolderManager().getTextureImageIcon(id, td.getTextureType()).getImage(), this.size)));
