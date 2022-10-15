@@ -26,7 +26,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.GeneralTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
@@ -102,7 +102,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 
-		icon = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.EFFECT));
+		icon = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.EFFECT));
 		icon.setOpaque(false);
 
 		JComponent iconComponent = PanelUtils.totalCenterInPanel(

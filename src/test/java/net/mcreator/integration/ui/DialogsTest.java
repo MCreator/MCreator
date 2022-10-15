@@ -192,7 +192,7 @@ public class DialogsTest {
 	@Test public void testGeneralTextureSelector() throws Throwable {
 		for (TextureType type : TextureType.values()) {
 			UITestUtil.waitUntilWindowIsOpen(mcreator,
-					() -> new GeneralTextureSelector(mcreator, type).setVisible(true));
+					() -> new TypedTextureSelector(mcreator, type).setVisible(true));
 		}
 	}
 

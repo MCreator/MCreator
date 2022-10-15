@@ -43,7 +43,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.GeneralTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -286,10 +286,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.ITEM));
-		textureBody = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.ITEM));
-		textureLeggings = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.ITEM));
-		textureBoots = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.ITEM));
+		textureHelmet = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.ITEM));
+		textureBody = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.ITEM));
+		textureLeggings = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.ITEM));
+		textureBoots = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.ITEM));
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);

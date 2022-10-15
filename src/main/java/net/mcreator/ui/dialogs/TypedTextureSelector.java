@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GeneralTextureSelector extends MCreatorDialog {
+public class TypedTextureSelector extends MCreatorDialog {
 
 	private final JButton select = L10N.button("dialog.textures_selector.select");
 	private final FilterModel model = new FilterModel();
@@ -52,7 +52,7 @@ public class GeneralTextureSelector extends MCreatorDialog {
 
 	private final MCreator mcreator;
 
-	public GeneralTextureSelector(MCreator mcreator, TextureType type) {
+	public TypedTextureSelector(MCreator mcreator, TextureType type) {
 		super(mcreator);
 		this.type = type;
 		this.mcreator = mcreator;

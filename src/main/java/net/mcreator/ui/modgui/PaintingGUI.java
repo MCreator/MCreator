@@ -23,7 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.GeneralTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelector;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
@@ -55,7 +55,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture = new TextureHolder(new GeneralTextureSelector(mcreator, TextureType.OTHER));
+		texture = new TextureHolder(new TypedTextureSelector(mcreator, TextureType.OTHER));
 		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
