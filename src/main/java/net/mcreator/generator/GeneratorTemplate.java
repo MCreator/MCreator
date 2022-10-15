@@ -29,13 +29,20 @@ public final class GeneratorTemplate {
 
 	private final String templateIdentificator;
 
+	private final boolean listTemplate;
+
 	private final Map<String, Object> dataModel = new HashMap<>();
 
-	GeneratorTemplate(File file, String templateIdentificator, Object templateData) {
+	GeneratorTemplate(File file, String templateIdentificator, boolean listTemplate, Object templateData) {
 		this.file = file;
 		this.templateData = templateData;
+		this.listTemplate = listTemplate;
 
 		this.templateIdentificator = templateIdentificator;
+	}
+
+	public boolean isListTemplate() {
+		return listTemplate;
 	}
 
 	public File getFile() {

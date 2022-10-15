@@ -33,7 +33,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
-import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
@@ -43,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -74,16 +72,7 @@ public class GTModElements {
 				workspace.getModElementManager().storeModElement(generatableElement);
 
 				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
-						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
-				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
-					for (int i = 0; i < list.listData().size(); i++) {
-						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-							if (list.templates().get(generatorTemplate).get(i)
-									&& list.forIndex(generatorTemplate, i) != null)
-								modElementFiles.add(list.processTokens(generatorTemplate, i));
-						}
-					}
-				}
+						.stream().map(GeneratorTemplate::getFile).toList();
 
 				// test generated JSON syntax (Java is tested later in the build)
 				for (File modElementFile : modElementFiles) {
@@ -112,16 +101,7 @@ public class GTModElements {
 
 				// testing if all element files were properly deleted
 				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
-						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
-				for (GeneratorTemplatesList list : workspace.getGenerator().getModElementListTemplates(modElement)) {
-					for (int i = 0; i < list.listData().size(); i++) {
-						for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-							if (list.templates().get(generatorTemplate).get(i)
-									&& list.forIndex(generatorTemplate, i) != null)
-								modElementFiles.add(list.processTokens(generatorTemplate, i));
-						}
-					}
-				}
+						.map(GeneratorTemplate::getFile).toList();
 
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);

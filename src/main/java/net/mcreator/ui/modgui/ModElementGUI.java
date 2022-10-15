@@ -500,6 +500,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
+		// after mod element is updated, references to its files generated earlier may become invalid
+		// delete outdated mod element files before regeneration
+		if (editingMode)
+			mcreator.getGenerator().removeElementFiles(modElement);
+
 		GE element = getElementFromGUI();
 
 		// if new element, and if we are not in the root folder, specify the folder of the mod element
@@ -558,16 +563,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected abstract AggregatedValidationResult validatePage(int page);
 
 	protected void beforeGeneratableElementGenerated() {
-		// we delete mod element list templates (if any) to prevent outdated mod files from being present
-		// in case size of a list have changed
-		if (editingMode) {
-			Objects.requireNonNull(modElement.getGenerator().getModElementListTemplates(modElement)).forEach(el -> {
-				for (int i = 0; i < el.listData().size(); i++) {
-					for (var generatorTemplate : el.templates().keySet())
-						el.processTokens(generatorTemplate, i).delete();
-				}
-			});
-		}
 	}
 
 	protected void afterGeneratableElementStored() {
@@ -578,9 +573,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	protected boolean allowCodePreview() {
 		return !modElement.getWorkspace().getGenerator()
-				.getModElementGeneratorTemplatesList(modElement, getElementFromGUI()).isEmpty()
-				|| !modElement.getWorkspace().getGenerator().getModElementListTemplates(modElement, getElementFromGUI())
-				.isEmpty();
+				.getModElementGeneratorTemplatesList(modElement, getElementFromGUI()).isEmpty();
 	}
 
 	public void reloadDataLists() {

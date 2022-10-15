@@ -1163,27 +1163,8 @@ import java.util.stream.Collectors;
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(mu);
-							mcreator.getGenerator().getModElementListTemplates(mu).forEach(list -> {
-								for (int i = 0; i < list.listData().size(); i++) {
-									for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-										if (list.templates().get(generatorTemplate).get(i)
-												&& list.forIndex(generatorTemplate, i) != null)
-											originalFiles.add(list.forIndex(generatorTemplate, i));
-									}
-								}
-							});
-
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
 									.getModElementGeneratorTemplatesList(duplicateModElement);
-							mcreator.getGenerator().getModElementListTemplates(duplicateModElement).forEach(list -> {
-								for (int i = 0; i < list.listData().size(); i++) {
-									for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-										if (list.templates().get(generatorTemplate).get(i)
-												&& list.forIndex(generatorTemplate, i) != null)
-											duplicateFiles.add(list.forIndex(generatorTemplate, i));
-									}
-								}
-							});
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
 								File originalFile = originalTemplate.getFile();
@@ -1236,15 +1217,13 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		GeneratableElement ge = mu.getGeneratableElement();
-
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger());
-		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu, ge);
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu);
 
-		if (ge instanceof ICommonType) {
-			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
+		if (mu.getGeneratableElement() instanceof ICommonType) {
+			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
 			for (BaseType baseType : baseTypes) {
 				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
 						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
@@ -1252,15 +1231,17 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0) {
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-			int[] counter = new int[] { 0, 0, 0 };
+			int[] counter = new int[] { 0, 0 };
 
 			for (GeneratorTemplate modElementFile : modElementFiles) {
-				counter[0]++;
-				codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
+				if (!modElementFile.isListTemplate()) {
+					counter[0]++;
+					codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
+				}
 			}
 
 			if (modElementGlobalFiles.size() > 0) {
@@ -1274,36 +1255,34 @@ import java.util.stream.Collectors;
 			}
 
 			if (modElementListFiles.size() > 0) {
+				if (counter[0] + counter[1] > 0)
+					codeDropdown.addSeparator();
+
 				for (GeneratorTemplatesList fileList : modElementListFiles) {
 					if (fileList.templates().size() > 0) {
-						JMenu listItem = new JMenu(fileList.groupName());
-						listItem.setIcon(UIRES.get("16px.list.gif"));
-						listItem.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-						listItem.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-						listItem.setIconTextGap(8);
-						listItem.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
+						JMenu listMenu = new JMenu(fileList.groupName());
+						listMenu.setIcon(UIRES.get("16px.list.gif"));
+						listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+						listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+						listMenu.setIconTextGap(8);
+						listMenu.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
 
 						int listFilesFound = 0;
 						for (int i = 0; i < fileList.listData().size(); i++) {
 							if (i > 0)
-								listItem.addSeparator();
+								listMenu.addSeparator();
 
 							for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
 								if (fileList.templates().get(modElementListFile).get(i)) {
 									listFilesFound++;
 									File indexedFile = fileList.processTokens(modElementListFile, i);
-									listItem.add(newModElementTemplateItem(indexedFile));
+									listMenu.add(newModElementTemplateItem(indexedFile));
 								}
 							}
 						}
 
-						if (listFilesFound > 0) {
-							if (counter[0] + counter[1] + counter[2] > 0)
-								codeDropdown.addSeparator();
-
-							counter[2]++;
-							codeDropdown.add(listItem);
-						}
+						if (listFilesFound > 0)
+							codeDropdown.add(listMenu);
 					}
 				}
 			}

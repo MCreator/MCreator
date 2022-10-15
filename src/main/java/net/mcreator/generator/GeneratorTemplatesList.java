@@ -50,11 +50,8 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 		for (GeneratorTemplate listTemplate : templates.keySet()) {
 			for (int i = 0; i < listData.size(); i++) {
 				if (processTokens(listTemplate, i).getPath().equals(generatorFile.getPath())) {
-					try {
-						if (ignoreConditions || templates.get(listTemplate).get(i))
-							return listTemplate;
-					} catch (IndexOutOfBoundsException | NumberFormatException ignored) {
-					}
+					if (ignoreConditions || templates.get(listTemplate).get(i))
+						return listTemplate;
 				}
 			}
 		}
@@ -63,34 +60,21 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	}
 
 	/**
-	 * Extracts one of list templates for specified index and returns it.
-	 *
-	 * @param listTemplate One of templates in this list instance.
-	 * @param index        Index of listData element for which to acquire the template.
-	 * @return List template for given index, or {@code null} if it is greater or equal then list data size.
-	 */
-	public GeneratorTemplate forIndex(GeneratorTemplate listTemplate, int index) {
-		try {
-			return new GeneratorTemplate(processTokens(listTemplate, index), listTemplate.getTemplateIdentificator(),
-					listTemplate.getTemplateData());
-		} catch (IndexOutOfBoundsException ignored) {
-			return null;
-		}
-	}
-
-	/**
 	 * Replaces tokens on name of provided list template with appropriate values from
 	 * {@link GeneratorTemplatesList#element} and returns the target file.
 	 *
-	 * @param listTemplate One of templates in this list instance.
-	 * @param index        Index of listData element for which to acquire the output file path.
+	 * @param generatorTemplate One of templates in this list instance.
+	 * @param index             Index of listData element for which to acquire the output file path.
 	 * @return The file generated from given list template with given token values.
 	 */
-	public File processTokens(GeneratorTemplate listTemplate, int index) {
-		return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
-				GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
-						listTemplate.getFile().getPath().replace("@NAME", element.getModElement().getName())
-								.replace("@registryname", element.getModElement().getRegistryName())
-								.replace("@elementindex", Integer.toString(index)))));
+	public File processTokens(GeneratorTemplate generatorTemplate, int index) {
+		if (generatorTemplate.isListTemplate() && templates.containsKey(generatorTemplate)) {
+			return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
+					GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
+							generatorTemplate.getFile().getPath().replace("@NAME", element.getModElement().getName())
+									.replace("@registryname", element.getModElement().getRegistryName())
+									.replace("@elementindex", Integer.toString(index)))));
+		}
+		return generatorTemplate.getFile();
 	}
 }

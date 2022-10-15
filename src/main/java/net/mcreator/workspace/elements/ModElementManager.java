@@ -27,7 +27,6 @@ import net.mcreator.element.parts.NumberProcedure;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorTemplate;
-import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -146,20 +145,6 @@ public class ModElementManager {
 				generatableElement.getModElement());
 		if (elementTemplates != null)
 			templates.addAll(elementTemplates);
-
-		List<GeneratorTemplatesList> elementListTemplates = generator.getModElementListTemplates(
-				generatableElement.getModElement());
-		if (elementListTemplates != null) {
-			elementListTemplates.forEach(list -> {
-				for (int i = 0; i < list.listData().size(); i++) {
-					for (GeneratorTemplate generatorTemplate : list.templates().keySet()) {
-						if (list.templates().get(generatorTemplate).get(i)
-								&& list.forIndex(generatorTemplate, i) != null)
-							templates.add(list.forIndex(generatorTemplate, i));
-					}
-				}
-			});
-		}
 
 		for (GeneratorTemplate template : templates) {
 			String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");
