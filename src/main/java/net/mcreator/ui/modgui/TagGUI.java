@@ -34,7 +34,7 @@ import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
-import net.mcreator.ui.validation.validators.TagsNameValidator;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -76,7 +76,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		entities = new SpawnableEntityListField(mcreator);
 		biomes = new BiomeListField(mcreator);
 
-		name.setValidator(new TagsNameValidator<>(name, false));
+		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();
 
 		namespace.setValidator(new NamespaceValidator<>(namespace));
