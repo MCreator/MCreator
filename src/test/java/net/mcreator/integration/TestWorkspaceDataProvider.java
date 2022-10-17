@@ -70,7 +70,6 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getRecipeExample(me(workspace, type, "1"), "Crafting", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "2"), "Crafting", random, false));
 			generatableElements.add(getRecipeExample(me(workspace, type, "3"), "Smelting", random, true));
-			generatableElements.add(getRecipeExample(me(workspace, type, "3"), "Smelting", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "4"), "Blasting", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "5"), "Smoking", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "6"), "Stone cutting", random, true));
