@@ -43,7 +43,7 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			<#if data.density != 1000>.density(${data.density})</#if>
 			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
 			<#if data.temperature != 300>.temperature(${data.temperature})</#if>
-			<#if data.isGas>.gaseous()</#if>
+			<#if data.density lt 0>.gaseous()</#if>
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 			.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
@@ -51,8 +51,12 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			<#if data.isFluidTinted()>
 			.color(<#if data.tintType == "Grass">
 				-6506636
-				<#elseif data.tintType == "Foliage">
+				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 				-12012264
+				<#elseif data.tintType == "Birch foliage">
+				-8345771
+				<#elseif data.tintType == "Spruce foliage">
+				-10380959
 				<#elseif data.tintType == "Water">
 				-13083194
 				<#elseif data.tintType == "Sky">

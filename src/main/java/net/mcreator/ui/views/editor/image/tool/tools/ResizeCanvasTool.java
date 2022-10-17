@@ -27,6 +27,7 @@ import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 public class ResizeCanvasTool extends AbstractTool {
@@ -44,7 +45,7 @@ public class ResizeCanvasTool extends AbstractTool {
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		ResizeCanvasDialog dialog = new ResizeCanvasDialog(window, canvas);
-		dialog.setVisible(true);
+		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
 		return true;
 	}
 

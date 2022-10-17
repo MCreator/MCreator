@@ -227,6 +227,7 @@ public class Generator implements IGenerator, Closeable {
 			this.generateElement(element, true);
 			return true;
 		} catch (TemplateGeneratorException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -757,7 +758,7 @@ public class Generator implements IGenerator, Closeable {
 				// if this is GUI, we check for generated UI texture file too
 				if (element.getType() == ModElementType.GUI) {
 					File guiTextureFile = workspace.getFolderManager()
-							.getTextureFile(element.getName().toLowerCase(Locale.ENGLISH), TextureType.OTHER);
+							.getTextureFile(element.getName().toLowerCase(Locale.ENGLISH), TextureType.SCREEN);
 					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))
 						return element;
 				}

@@ -1,0 +1,1 @@
+Este parámetro define qué tipo de loot table harás.

@@ -1217,7 +1217,7 @@ public class MinecraftImageGenerator {
 
 			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
 					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.OTHER)
+							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.ENTITY)
 							.getAbsolutePath()).getImage()));
 
 			graphics2D.drawImage(
@@ -1300,7 +1300,7 @@ public class MinecraftImageGenerator {
 						returnColor = Dependency.getColor("logic");
 					} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("number");
-					} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+					} else if (procedurexml.contains("<block type=\"return_string\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("text");
 					} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("itemstack");
@@ -1430,6 +1430,9 @@ public class MinecraftImageGenerator {
 								.getImage());
 				case "Functions" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
+								.getImage());
+				case "Biomes" -> ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("world"), false)
 								.getImage());
 				default -> null;
 			};

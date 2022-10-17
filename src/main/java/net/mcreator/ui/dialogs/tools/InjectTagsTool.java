@@ -65,7 +65,7 @@ public class InjectTagsTool {
 
 		List<Consumer<Boolean>> callables = new ArrayList<>();
 
-		callables.add(addTag(mcreator, props, "dirt", "forge", "Blocks", true));
+		callables.add(addTag(mcreator, props, "dirt", "minecraft", "Blocks", true));
 		callables.add(addTag(mcreator, props, "logs", "minecraft", "Blocks", true));
 		callables.add(addTag(mcreator, props, "fences", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "wooden_fences", "minecraft", "Blocks", false));
@@ -80,17 +80,32 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "fire", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "dragon_immune", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "wither_immune", "minecraft", "Blocks", false));
+		callables.add(addTag(mcreator, props, "animals_spawnable_on", "minecraft", "Blocks", false));
+		callables.add(addTag(mcreator, props, "prevent_mob_spawning_inside", "minecraft", "Blocks", false));
+
 		callables.add(addTag(mcreator, props, "arrows", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "planks", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "flowers", "minecraft", "Items", false));
 		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", "Items", false));
-		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
-		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
+
 		callables.add(addTag(mcreator, props, "arrows", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "impact_projectiles", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "beehive_inhabitors", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
+
+		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_nether", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_end", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_ocean", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_mountain", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_river", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_hill", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_forest", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_savanna", "minecraft", "Biomes", false));
+
+		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
+		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
 
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -117,14 +132,17 @@ public class InjectTagsTool {
 		box.setSelected(checked);
 
 		JLabel icon = new JLabel();
-		if (type.equals("Blocks"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
-		if (type.equals("Items"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
-		if (type.equals("Functions"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
-		if (type.equals("Entities"))
-			icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
+		switch (type) {
+		case "Blocks" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BLOCK.getIcon().getImage(), 32)));
+		case "Items" -> icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.ITEM.getIcon().getImage(), 32)));
+		case "Functions" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
+		case "Entities" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
+		case "Biomes" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BIOME.getIcon().getImage(), 32)));
+		}
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
 
@@ -158,6 +176,7 @@ public class InjectTagsTool {
 			tag.items = Collections.emptyList();
 			tag.functions = Collections.emptyList();
 			tag.entities = Collections.emptyList();
+			tag.biomes = Collections.emptyList();
 
 			workspace.getModElementManager().storeModElementPicture(tag);
 			workspace.addModElement(tag.getModElement());

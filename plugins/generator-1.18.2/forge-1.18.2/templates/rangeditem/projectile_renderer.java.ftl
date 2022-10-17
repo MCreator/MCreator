@@ -33,7 +33,7 @@ package ${package}.client.renderer;
 
 public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/${data.customBulletModelTexture}");
+	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
 
 	private final ${data.bulletModel} model;
 

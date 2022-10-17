@@ -46,7 +46,6 @@ public class MCItem extends DataListEntry {
 
 	private MCItem(String name) {
 		super(name);
-		setReadableName(name);
 	}
 
 	public MCItem(DataListEntry entry) {

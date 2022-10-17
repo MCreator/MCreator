@@ -72,15 +72,20 @@ public class NameMapper {
 
 		String mcreator_prefix = (String) mapping.get("_mcreator_prefix");
 		if (mcreator_prefix != null && origName.startsWith(mcreator_prefix)) {
-			String mcreator_map_template = (String) mapping.get("_mcreator_map_template");
-			if (mcreator_map_template != null) {
+			Object mcreator_map_template = mapping.get("_mcreator_map_template");
+			String toMapTemplate = null;
+			if (mcreator_map_template instanceof String)
+				toMapTemplate = (String) mcreator_map_template;
+			else if (mcreator_map_template instanceof List<?> mappingValuesList
+					&& mappingTable < mappingValuesList.size())
+				toMapTemplate = (String) mappingValuesList.get(mappingTable);
+
+			if (toMapTemplate != null) {
 				origName = origName.replace(mcreator_prefix, "");
-				String retval = GeneratorTokens.replaceTokens(workspace,
-						mcreator_map_template.replace("@NAME", origName)
-								.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
-								.replace("@name", origName.toLowerCase(Locale.ENGLISH)).replace("@NAME", origName));
-				if (mcreator_map_template.contains("@registryname") || mcreator_map_template.contains(
-						"@REGISTRYNAME")) {
+				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
+						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
+						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
+				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
 						retval = retval.replace("@registryname", element.getRegistryName())

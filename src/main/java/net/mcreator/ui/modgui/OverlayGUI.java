@@ -68,7 +68,8 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 		editor.ovst.add(displayCondition);
 
-		editor.overlayBaseTexture.setRenderer(new WTextureComboBoxRenderer.OtherTextures(mcreator.getWorkspace()));
+		editor.overlayBaseTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
 
 		editor.setPreferredSize(new Dimension(5, 550));
 
@@ -86,7 +87,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(editor.overlayBaseTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
+				mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
 		displayCondition.refreshListKeepSelected();

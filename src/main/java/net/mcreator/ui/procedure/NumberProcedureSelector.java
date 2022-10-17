@@ -38,7 +38,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -60,7 +60,8 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
 			int width, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width, providedDependencies);
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
+				providedDependencies);
 	}
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
@@ -151,8 +152,8 @@ public class NumberProcedureSelector extends AbstractProcedureSelector {
 			procedureNameString = VOptionPane.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
 					L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							return new ModElementNameValidator(mcreator.getWorkspace(),
-									(VTextField) component).validate();
+							return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
+									(VTextField) component, L10N.t("common.mod_element_name")).validate();
 						}
 					}, L10N.t("action.procedure.create_procedure"), UIManager.getString("OptionPane.cancelButtonText"),
 					procedureNameString);

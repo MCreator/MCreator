@@ -99,7 +99,7 @@ public class ${name}Biome {
         	    <#if data.vanillaTreeType == "Big trees">
         	        (
 			    	    BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
-			    		new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
+			    		new MegaJungleTrunkPlacer(${ct?then([data.minHeight, 32]?min, 10)}, 2, 19),
 			    		BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
 			    		new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
 			    		new TwoLayersFeatureSize(1, 1, 2)
@@ -107,12 +107,12 @@ public class ${name}Biome {
                     <#if data.hasVines() || data.hasFruits()>
                         <@vinesAndFruits/>
                     <#else>
-                        .decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
+                        .ignoreVines()
                     </#if>
                 <#elseif data.vanillaTreeType == "Savanna trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
-                        new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
+                        new ForkingTrunkPlacer(${ct?then([data.minHeight, 32]?min, 5)}, 2, 2),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
                         new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
@@ -125,7 +125,7 @@ public class ${name}Biome {
                 <#elseif data.vanillaTreeType == "Mega pine trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
-                        new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+                        new GiantTrunkPlacer(${ct?then([data.minHeight, 32]?min, 13)}, 2, 14),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
                         new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
                         new TwoLayersFeatureSize(1, 1, 2)
@@ -136,7 +136,7 @@ public class ${name}Biome {
                 <#elseif data.vanillaTreeType == "Mega spruce trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
-                        new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+                        new GiantTrunkPlacer(${ct?then([data.minHeight, 32]?min, 13)}, 2, 14),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
                         new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
                         new TwoLayersFeatureSize(1, 1, 2)
@@ -148,7 +148,7 @@ public class ${name}Biome {
                 <#elseif data.vanillaTreeType == "Birch trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
-                        new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
+                        new StraightTrunkPlacer(${ct?then([data.minHeight, 32]?min, 5)}, 2, 0),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                         new TwoLayersFeatureSize(1, 0, 1)
@@ -161,7 +161,7 @@ public class ${name}Biome {
                 <#else>
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
-                        new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
+                        new StraightTrunkPlacer(${ct?then([data.minHeight, 32]?min, 4)}, 2, 0),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                         new TwoLayersFeatureSize(1, 0, 1)
@@ -295,39 +295,22 @@ public class ${name}Biome {
 
         MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder();
         <#list data.spawnEntries as spawnEntry>
-            <#if !spawnEntry.entity.getUnmappedValue().contains("CUSTOM:")>
-                <#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
-                <#if entity != "null">
-                mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-		    	    new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-                </#if>
-            <#else>
-            mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-                new MobSpawnSettings.SpawnerData(
-                    ${JavaModName}Entities.${generator.getRegistryNameForModElement(spawnEntry.entity.getUnmappedValue()?replace("CUSTOM:", ""))?upper_case}.get(),
-                    ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-            </#if>
+			<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
+			<#if entity != "null">
+			mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
+				new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+			</#if>
         </#list>
 
         return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
+            .biomeCategory(Biome.BiomeCategory.NONE)
             .temperature(${data.temperature}f)
             .downfall(${data.rainingPossibility}f)
             .specialEffects(effects)
             .mobSpawnSettings(mobSpawnInfo.build())
             .generationSettings(biomeGenerationSettings.build())
             .build();
-    }
-
-    public static void init() {
-        <#if data.biomeDictionaryTypes?has_content>
-            BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case}.get())),
-            <#list data.biomeDictionaryTypes as biomeDictionaryType>
-                BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
-        	</#list>
-        	);
-        </#if>
     }
 
 }

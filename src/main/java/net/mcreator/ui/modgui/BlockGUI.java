@@ -122,11 +122,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
 
 	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
 
-	private final JColor beaconColorModifier = new JColor(mcreator, true);
+	private final JColor beaconColorModifier = new JColor(mcreator, true, false);
 
 	private final JCheckBox hasGravity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
@@ -136,7 +136,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Water", "Sky", "Fog", "Water fog" });
+			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+					"Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -316,9 +317,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_redstone_off"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
-				L10N.t("elementgui.common.event_on_block_hit_by_projectile"),
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
+				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
 				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -537,13 +537,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel transparencySettings = new JPanel(new GridLayout(4, 2, 0, 2));
 		transparencySettings.setOpaque(false);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
-				L10N.label("elementgui.block.transparency_type")));
-		transparencySettings.add(transparencyType);
-
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
 				L10N.label("elementgui.block.has_trasparency")));
 		transparencySettings.add(hasTransparency);
+
+		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
+				L10N.label("elementgui.block.transparency_type")));
+		transparencySettings.add(transparencyType);
 
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
@@ -1051,8 +1051,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 						PanelUtils.westAndEastElement(energyStorage,
 								PanelUtils.northAndCenterElement(fluidTank, new JEmptyBox())), 10, 10)));
 
-		hasInventory.addActionListener(e -> refreshFiledsTileEntity());
-		refreshFiledsTileEntity();
+		hasInventory.addActionListener(e -> refreshFieldsTileEntity());
+		refreshFieldsTileEntity();
 
 		props.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -1230,7 +1230,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 	}
 
-	private void refreshFiledsTileEntity() {
+	private void refreshFieldsTileEntity() {
 		inventorySize.setEnabled(hasInventory.isSelected());
 		inventoryStackSize.setEnabled(hasInventory.isSelected());
 		inventoryDropWhenDestroyed.setEnabled(hasInventory.isSelected());
@@ -1494,7 +1494,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
-		refreshFiledsTileEntity();
+		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());

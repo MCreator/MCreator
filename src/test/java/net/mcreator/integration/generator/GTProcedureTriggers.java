@@ -29,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureTriggers {
@@ -79,11 +78,11 @@ public class GTProcedureTriggers {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating external trigger: " + externalTrigger.getID());
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating external trigger: " + externalTrigger.getID());
 			}
 		}
 

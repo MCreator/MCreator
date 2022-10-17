@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -36,6 +37,7 @@ import java.util.Locale;
 	public List<MItemBlock> blocks;
 	public List<String> functions;
 	public List<EntityEntry> entities;
+	public List<BiomeEntry> biomes;
 
 	public Tag(ModElement element) {
 		super(element);
@@ -44,6 +46,9 @@ import java.util.Locale;
 	public String tagType() {
 		if (type.equals("Entities"))
 			return "entity_types";
+
+		if (type.equals("Biomes"))
+			return "worldgen/biome";
 
 		return type.toLowerCase(Locale.ENGLISH);
 	}

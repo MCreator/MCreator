@@ -24,11 +24,10 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
+import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
@@ -207,31 +206,54 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		Image image = canvasRenderer.render();
-		Object[] options = TextureType.getTypes(false);
-		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.texture_kind"),
-				L10N.t("dialog.image_maker.texture_type"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		String namec = VOptionPane.showInputDialog(mcreator, L10N.t("dialog.image_maker.enter_name"),
-				L10N.t("dialog.image_maker.image_name"), null, new OptionPaneValidatior() {
 
-					@Override public ValidationResult validate(JComponent component) {
-						return new RegistryNameValidator((VTextField) component,
-								L10N.t("dialog.image_maker.texture_name")).validate();
-					}
-				});
-		if (namec != null && n != -1) {
-			File exportFile = mcreator.getFolderManager()
-					.getTextureFile(RegistryNameFixer.fix(namec), TextureType.getTextureType(n, false));
+		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
+		VTextField name = new VTextField(20);
+		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
+		name.enableRealtimeValidation();
 
-			if (exportFile.isFile())
-				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
-						L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
-			else
-				FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
-			this.image = exportFile;
-			this.name = this.image.getName();
-			refreshTab();
-		}
+		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
+
+		JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+
+		panel.add(L10N.label("dialog.image_maker.enter_name"));
+		panel.add(name);
+		panel.add(L10N.label("dialog.image_maker.texture_type.message"));
+		panel.add(types);
+
+		JButton ok = L10N.button("dialog.image_maker.save");
+		ok.addActionListener(e -> {
+			typeDialog.setVisible(false);
+			TextureType textureType = (TextureType) types.getSelectedItem();
+
+			if (name.getText() != null && !name.getText().isEmpty() && textureType != null) {
+				File exportFile = mcreator.getFolderManager()
+						.getTextureFile(RegistryNameFixer.fix(name.getText()), textureType);
+
+				if (exportFile.isFile())
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
+							L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
+				else
+					FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
+				this.image = exportFile;
+				this.name = this.image.getName();
+				refreshTab();
+			}
+		});
+		JButton cancel = L10N.button("common.cancel");
+		cancel.addActionListener(e -> typeDialog.dispose());
+
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(ok);
+		buttonsPanel.add(cancel);
+		buttonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel),
+				PanelUtils.totalCenterInPanel(buttonsPanel)));
+
+		typeDialog.setSize(550, 150);
+		typeDialog.setLocationRelativeTo(null);
+		typeDialog.setVisible(true);
 	}
 
 	public void newImage(int width, int height, String name) {

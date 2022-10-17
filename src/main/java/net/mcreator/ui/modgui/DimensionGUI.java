@@ -80,7 +80,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
-	private final JColor airColor = new JColor(mcreator, true);
+	private final JColor airColor = new JColor(mcreator, true, false);
 
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
@@ -137,8 +137,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
-
-		portalParticles.setSelectedItem("PORTAL");
 
 		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -346,7 +344,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ComboBoxUtil.updateComboBoxContents(igniterTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
 
-		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()),
+				new DataListEntry.Dummy("PORTAL"));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

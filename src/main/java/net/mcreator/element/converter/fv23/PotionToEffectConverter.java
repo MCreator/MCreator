@@ -27,6 +27,9 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.EffectEntry;
 import net.mcreator.element.types.Potion;
 import net.mcreator.element.types.PotionEffect;
+import net.mcreator.io.FileIO;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -76,6 +79,18 @@ public class PotionToEffectConverter implements IConverter {
 
 				PotionEffect potionEffect = new Gson().fromJson(jsonElementInput.getAsJsonObject().get("definition"),
 						PotionEffect.class);
+
+				// Pre-update for FV31 - new texture types
+				try {
+					FileIO.copyFile(workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.OTHER),
+							workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon),
+											TextureType.EFFECT));
+				} catch (Exception e) {
+					LOG.warn("Failed to copy image for potion effect " + potionEffect.getModElement().getType() + ": "
+							+ e.getMessage());
+				}
 
 				potionEffect.setModElement(new ModElement(workspace, originalName, ModElementType.POTIONEFFECT));
 

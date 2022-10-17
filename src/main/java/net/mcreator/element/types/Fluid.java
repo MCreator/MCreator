@@ -55,7 +55,6 @@ import java.util.List;
 	public int luminosity;
 	public int density;
 	public int viscosity;
-	public boolean isGas;
 	public int temperature;
 	public String type;
 
@@ -142,6 +141,10 @@ import java.util.List;
 
 	public boolean doesGenerateInWorld() {
 		return spawnWorldTypes.size() > 0;
+	}
+
+	@Override public String getRenderType() {
+		return "translucent";
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

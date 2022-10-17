@@ -40,8 +40,8 @@ public final class FileIO {
 	private static final Logger LOG = LogManager.getLogger("File System");
 
 	public static void touchFile(File f) {
-		if (!f.getParentFile().isDirectory())
-			f.getParentFile().mkdirs();
+		if (!f.getAbsoluteFile().getParentFile().isDirectory())
+			f.getAbsoluteFile().getParentFile().mkdirs();
 
 		try {
 			f.createNewFile();
@@ -111,8 +111,8 @@ public final class FileIO {
 	}
 
 	public static void writeStringToFile(String c, File f) {
-		if (!f.getParentFile().isDirectory())
-			f.getParentFile().mkdirs();
+		if (!f.getAbsoluteFile().getParentFile().isDirectory())
+			f.getAbsoluteFile().getParentFile().mkdirs();
 
 		try (BufferedWriter out = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
@@ -123,8 +123,8 @@ public final class FileIO {
 	}
 
 	public static void writeBytesToFile(byte[] c, File f) {
-		if (!f.getParentFile().isDirectory())
-			f.getParentFile().mkdirs();
+		if (!f.getAbsoluteFile().getParentFile().isDirectory())
+			f.getAbsoluteFile().getParentFile().mkdirs();
 
 		try (FileOutputStream out = new FileOutputStream(f)) {
 			out.write(c);
@@ -134,8 +134,8 @@ public final class FileIO {
 	}
 
 	public static void writeImageToPNGFile(RenderedImage image, File f) {
-		if (!f.getParentFile().isDirectory())
-			f.getParentFile().mkdirs();
+		if (!f.getAbsoluteFile().getParentFile().isDirectory())
+			f.getAbsoluteFile().getParentFile().mkdirs();
 
 		try {
 			ImageIO.write(image, "png", f);
