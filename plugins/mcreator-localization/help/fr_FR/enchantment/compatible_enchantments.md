@@ -1,4 +1,6 @@
-Si votre enchantement ne peut être combiné qu'avec des enchantements spécifiques,
-vous devez les sélectionner dans cette propriété.
+Détermine la compatibilité avec d'autres enchantements spécifiques.
 
-Laissez vide ainsi que "Ne peut pas être combiné avec" pour permettre la combinaison avec n'importe quel enchantement.
+Laissez vide pour permettre la combinaison avec n'importe quel enchantement.
+
+**Inclure** rendra les enchantements sélectionnés compatibles.
+**Exclure** rendra les enchantements sélectionnés incompatibles.
