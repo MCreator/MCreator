@@ -1252,5 +1252,50 @@
     ],
     "depth": 1.1,
     "offset": 0
+  },
+  "minecraft:nether_wastes": {
+    "temperature": 0,
+    "humidity": 0,
+    "continentalness": 0,
+    "erosion": 0,
+    "weirdness": 0,
+    "depth": 0,
+    "offset": 0
+  },
+  "minecraft:soul_sand_valley": {
+    "temperature": 0,
+    "humidity": -0.5,
+    "continentalness": 0,
+    "erosion": 0,
+    "weirdness": 0,
+    "depth": 0,
+    "offset": 0
+  },
+  "minecraft:crimson_forest": {
+    "temperature": 0.4,
+    "humidity": 0,
+    "continentalness": 0,
+    "erosion": 0,
+    "weirdness": 0,
+    "depth": 0,
+    "offset": 0
+  },
+  "minecraft:warped_forest": {
+    "temperature": 0,
+    "humidity": 0.5,
+    "continentalness": 0,
+    "erosion": 0,
+    "weirdness": 0,
+    "depth": 0,
+    "offset": 0.375
+  },
+  "minecraft:basalt_deltas": {
+    "temperature": -0.5,
+    "humidity": 0,
+    "continentalness": 0,
+    "erosion": 0,
+    "weirdness": 0,
+    "depth": 0,
+    "offset": 0.175
   }
 }

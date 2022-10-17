@@ -132,7 +132,7 @@ public class ${name}Block extends
 			.dynamicShape()
 		</#if>
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-			.noDrops()
+			.noLootTable()
 		</#if>
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})

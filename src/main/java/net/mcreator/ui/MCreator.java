@@ -26,7 +26,6 @@ import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;

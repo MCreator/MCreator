@@ -35,7 +35,19 @@
                       "offset": 0
                     }
               <#else>
-                ${thelper.obj2str(biomesmap["minecraft:" + biome.toString()])}
+                <#if biomesmap["minecraft:" + biome.toString()]??>
+                    ${thelper.obj2str(biomesmap["minecraft:" + biome.toString()])}
+                <#else>
+                    {
+                      "temperature": 0,
+                      "humidity": 0,
+                      "continentalness": 0,
+                      "weirdness": 0,
+                      "erosion": 0,
+                      "depth": 0,
+                      "offset": 0
+                    }
+                </#if>
               </#if>
           </#if>
         }

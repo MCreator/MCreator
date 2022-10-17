@@ -1300,7 +1300,7 @@ public class MinecraftImageGenerator {
 						returnColor = Dependency.getColor("logic");
 					} else if (procedurexml.contains("<block type=\"return_number\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("number");
-					} else if (procedurexml.contains("<block type=\"return_text\"><value name=\"return\">")) {
+					} else if (procedurexml.contains("<block type=\"return_string\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("text");
 					} else if (procedurexml.contains("<block type=\"return_itemstack\"><value name=\"return\">")) {
 						returnColor = Dependency.getColor("itemstack");
