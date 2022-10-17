@@ -152,8 +152,15 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			group.add(include);
 			group.add(exclude);
 
-			add(PanelUtils.join(include, exclude), BorderLayout.WEST);
+			include.setMargin(new Insets(0, 1, 0, 1));
+			exclude.setMargin(new Insets(0, 1, 0, 1));
+
+			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
+			incexc.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+
+			add(incexc, BorderLayout.WEST);
 		}
+
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
 	}
@@ -193,11 +200,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			elementsListModel.addElement(el);
 	}
 
-	public boolean areExcluded() {
+	public boolean isExclusionMode() {
 		return exclude.isSelected();
 	}
 
-	public void setExcluded(boolean isExcluded) {
+	public void setExclusionMode(boolean isExcluded) {
 		exclude.setSelected(isExcluded);
 		include.setSelected(!isExcluded);
 	}

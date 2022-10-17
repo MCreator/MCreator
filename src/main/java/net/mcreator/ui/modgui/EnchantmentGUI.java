@@ -93,7 +93,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		JPanel selp = new JPanel(new GridLayout(15, 2, 100, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 100, 2));
 		selp.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
@@ -182,9 +182,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		maxLevel.setValue(enchantment.maxLevel);
 		damageModifier.setValue(enchantment.damageModifier);
 		compatibleEnchantments.setListElements(enchantment.compatibleEnchantments);
-		compatibleEnchantments.setExcluded(enchantment.excludeEnchantments);
+		compatibleEnchantments.setExclusionMode(enchantment.excludeEnchantments);
 		compatibleItems.setListElements(enchantment.compatibleItems);
-		compatibleItems.setExcluded(enchantment.excludeItems);
+		compatibleItems.setExclusionMode(enchantment.excludeItems);
 		isTreasureEnchantment.setSelected(enchantment.isTreasureEnchantment);
 		isCurse.setSelected(enchantment.isCurse);
 		isAllowedOnBooks.setSelected(enchantment.isAllowedOnBooks);
@@ -201,9 +201,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.maxLevel = (int) maxLevel.getValue();
 		enchantment.damageModifier = (int) damageModifier.getValue();
 		enchantment.compatibleEnchantments = compatibleEnchantments.getListElements();
-		enchantment.excludeEnchantments = compatibleEnchantments.areExcluded();
+		enchantment.excludeEnchantments = compatibleEnchantments.isExclusionMode();
 		enchantment.compatibleItems = compatibleItems.getListElements();
-		enchantment.excludeItems = compatibleItems.areExcluded();
+		enchantment.excludeItems = compatibleItems.isExclusionMode();
 		enchantment.isTreasureEnchantment = isTreasureEnchantment.isSelected();
 		enchantment.isCurse = isCurse.isSelected();
 		enchantment.isAllowedOnBooks = isAllowedOnBooks.isSelected();
