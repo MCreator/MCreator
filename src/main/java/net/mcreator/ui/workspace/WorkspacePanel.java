@@ -1217,7 +1217,8 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu)
+				.stream().filter(e -> !e.isListTemplate()).toList();
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger());
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu);
@@ -1235,27 +1236,20 @@ import java.util.stream.Collectors;
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-			int[] counter = new int[] { 0, 0 };
 
-			for (GeneratorTemplate modElementFile : modElementFiles) {
-				if (!modElementFile.isListTemplate()) {
-					counter[0]++;
-					codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
-				}
-			}
+			for (GeneratorTemplate modElementFile : modElementFiles)
+				codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
 
 			if (modElementGlobalFiles.size() > 0) {
-				if (counter[0] > 0)
+				if (modElementFiles.size() > 0)
 					codeDropdown.addSeparator();
 
-				for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles) {
-					counter[1]++;
+				for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
 					codeDropdown.add(newModElementTemplateItem(modElementGlobalFile.getFile()));
-				}
 			}
 
 			if (modElementListFiles.size() > 0) {
-				if (counter[0] + counter[1] > 0)
+				if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
 					codeDropdown.addSeparator();
 
 				for (GeneratorTemplatesList fileList : modElementListFiles) {

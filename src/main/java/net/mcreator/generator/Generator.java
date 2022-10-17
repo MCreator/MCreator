@@ -268,14 +268,21 @@ public class Generator implements IGenerator, Closeable {
 
 				String code = "";
 				if (generatorTemplate.isListTemplate() && templateLists != null) {
+					boolean listItemFound = false;
 					for (GeneratorTemplatesList gtl : templateLists) {
 						for (int i = 0; i < gtl.listData().size(); i++) {
-							if (gtl.processTokens(generatorTemplate, i).getPath()
-									.equals(generatorTemplate.getFile().getPath())) {
+							GeneratorTemplate listTemplate = gtl.getCorrespondingListTemplate(
+									generatorTemplate.getFile(), false);
+							if (listTemplate != null && gtl.processTokens(listTemplate, i).getAbsolutePath()
+									.equals(generatorTemplate.getFile().getAbsolutePath())) {
+								listItemFound = true;
 								code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
 										gtl.listData().get(i), i, element, templateFileName, dataModel);
+								break;
 							}
 						}
+						if (listItemFound)
+							break;
 					}
 				} else {
 					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
@@ -292,6 +299,14 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		if (performFSTasks) {
+			GeneratableElement oldElement = element.getModElement().getPreviousGeneratableElement();
+			if (oldElement != null) {
+				List<GeneratorTemplate> oldGeneratorTemplateList = getModElementGeneratorTemplatesList(
+						element.getModElement(), performFSTasks, oldElement);
+				if (oldGeneratorTemplateList != null)
+					oldGeneratorTemplateList.forEach(template -> template.getFile().delete());
+			}
+
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// extract all localization keys
@@ -348,18 +363,6 @@ public class Generator implements IGenerator, Closeable {
 			} catch (Exception ignored) {
 			}
 		}
-	}
-
-	public void removeElementFiles(ModElement element) {
-		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
-
-		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getType().getRegistryName());
-			return;
-		}
-
-		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null))
-				.forEach(template -> template.getFile().delete());
 	}
 
 	public void removeElementFilesAndLangKeys(ModElement element) {

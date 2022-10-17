@@ -500,11 +500,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
-		// after mod element is updated, references to its files generated earlier may become invalid
-		// delete outdated mod element files before regeneration
-		if (editingMode)
-			mcreator.getGenerator().removeElementFiles(modElement);
-
 		GE element = getElementFromGUI();
 
 		// if new element, and if we are not in the root folder, specify the folder of the mod element

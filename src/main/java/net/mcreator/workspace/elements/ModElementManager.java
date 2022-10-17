@@ -53,6 +53,7 @@ public class ModElementManager {
 	private final GeneratableElement.GSONAdapter gsonAdapter;
 
 	private final Map<ModElement, GeneratableElement> cache = new ConcurrentHashMap<>();
+	private final Map<ModElement, GeneratableElement> cachePrevious = new ConcurrentHashMap<>();
 
 	@Nonnull private final Workspace workspace;
 
@@ -67,9 +68,12 @@ public class ModElementManager {
 
 	public void invalidateCache() {
 		cache.clear();
+		cachePrevious.clear();
 	}
 
 	public void storeModElement(GeneratableElement element) {
+		if (cache.containsKey(element.getModElement()))
+			cachePrevious.put(element.getModElement(), cache.get(element.getModElement()));
 		cache.put(element.getModElement(), element);
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
@@ -78,9 +82,8 @@ public class ModElementManager {
 	}
 
 	GeneratableElement loadGeneratableElement(ModElement element) {
-		if (element.getType() == ModElementType.CODE) {
+		if (element.getType() == ModElementType.CODE)
 			return new CustomElement(element);
-		}
 
 		if (cache.containsKey(element))
 			return cache.get(element);
@@ -97,10 +100,22 @@ public class ModElementManager {
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
 
+			if (cache.containsKey(element))
+				cachePrevious.put(element, cache.get(element));
 			cache.put(element, generatableElement);
 		}
 
 		return generatableElement;
+	}
+
+	GeneratableElement loadPreviousGeneratableElement(ModElement element) {
+		if (element.getType() == ModElementType.CODE)
+			return new CustomElement(element);
+
+		if (cachePrevious.containsKey(element))
+			return cachePrevious.get(element);
+
+		return null;
 	}
 
 	public String generatableElementToJSON(GeneratableElement element) {

@@ -94,6 +94,10 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return this.workspace.getModElementManager().loadGeneratableElement(this);
 	}
 
+	@Nullable public GeneratableElement getPreviousGeneratableElement() {
+		return this.workspace.getModElementManager().loadPreviousGeneratableElement(this);
+	}
+
 	public void loadDataFrom(ModElement other) {
 		this.type = other.type;
 		this.compiles = other.compiles;
