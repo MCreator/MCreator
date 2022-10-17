@@ -538,13 +538,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel transparencySettings = new JPanel(new GridLayout(4, 2, 0, 2));
 		transparencySettings.setOpaque(false);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
-				L10N.label("elementgui.block.transparency_type")));
-		transparencySettings.add(transparencyType);
-
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
 				L10N.label("elementgui.block.has_trasparency")));
 		transparencySettings.add(hasTransparency);
+
+		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
+				L10N.label("elementgui.block.transparency_type")));
+		transparencySettings.add(transparencyType);
 
 		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
