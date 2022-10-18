@@ -228,8 +228,8 @@ public class BlocklyBlockCodeGenerator {
 		if (!toolboxBlock.getRepeatingInputs().isEmpty()) {
 			for (String inputName : toolboxBlock.getRepeatingInputs()) {
 				Map<String, Element> matchingElements = elements.stream()
-						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name").startsWith(inputName)
-								&& !e.getAttribute("name").substring(inputName.length()).matches("\\D"))
+						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
+								.matches(inputName + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<Integer, String> processedElements = new HashMap<>();
 				int idx = 0;
@@ -256,8 +256,7 @@ public class BlocklyBlockCodeGenerator {
 			for (AdvancedInput advancedInput : toolboxBlock.getRepeatingAdvancedInputs()) {
 				Map<String, Element> matchingElements = elements.stream()
 						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
-								.startsWith(advancedInput.name()) && !e.getAttribute("name")
-								.substring(advancedInput.name().length()).matches("\\D"))
+								.matches(advancedInput.name() + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<Integer, String> processedElements = new HashMap<>();
 				int idx = 0;
@@ -300,8 +299,7 @@ public class BlocklyBlockCodeGenerator {
 			for (StatementInput statementInput : toolboxBlock.getRepeatingStatements()) {
 				Map<String, Element> matchingElements = elements.stream()
 						.filter(e -> e.getNodeName().equals("statement") && e.getAttribute("name")
-								.startsWith(statementInput.name) && e.getAttribute("name")
-								.substring(statementInput.name.length()).replaceAll("\\d", "").equals(""))
+								.matches(statementInput.name() + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<Integer, String> processedElements = new HashMap<>();
 				int idx = 0;
