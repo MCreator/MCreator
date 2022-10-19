@@ -1,4 +1,4 @@
-Specify the items that can receive or not the enchantment in the enchanting table here.
+Specify the items that can receive the enchantment (or not if in exlcude mode) in the enchanting table here.
 
 You can also add items that aren't in the enchantment type you have defined.
 
