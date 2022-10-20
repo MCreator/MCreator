@@ -40,7 +40,7 @@ import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -433,16 +433,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
-		textureTop = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK)).flipOnX();
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).flipOnX();
+		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).flipOnX();
 
-		textureLeft = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
-		textureFront = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
-		textureRight = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
-		textureBack = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureLeft = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureRight = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureBack = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 
-		itemTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
-		particleTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK), 32);
+		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
