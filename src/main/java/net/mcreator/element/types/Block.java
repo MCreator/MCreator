@@ -39,8 +39,8 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
@@ -330,7 +330,8 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public String getRenderType() {
-		if (hasTransparency && transparencyType.equals("solid")) // if hasTransparency is enabled but transparencyType is left solid, we assume cutout
+		if (hasTransparency && transparencyType.equals(
+				"solid")) // if hasTransparency is enabled but transparencyType is left solid, we assume cutout
 			return "cutout";
 
 		return transparencyType.toLowerCase(Locale.ENGLISH);

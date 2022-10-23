@@ -21,37 +21,31 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.Painting;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class PaintingGUI extends ModElementGUI<Painting> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 
-	private final VComboBox<String> texture = new SearchableComboBox<>();
+	private TextureHolder texture;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -62,28 +56,18 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.OTHER));
-		texture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		texture.setOpaque(false);
+
+		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
+				HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), texture),
+				L10N.t("elementgui.common.texture")));
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(3, 2, 50, 2));
+		JPanel selp = new JPanel(new GridLayout(2, 2, 50, 2));
 		selp.setOpaque(false);
-
-		JButton importicontexture = new JButton(UIRES.get("18px.add"));
-		importicontexture.setToolTipText(L10N.t("elementgui.painting.import_painting"));
-		importicontexture.setOpaque(false);
-		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER);
-			texture.removeAllItems();
-			texture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.OTHER).forEach(el -> texture.addItem(el.getName()));
-		});
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"),
-				L10N.label("elementgui.painting.painting_texture")));
-		selp.add(PanelUtils.centerAndEastElement(texture, importicontexture));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/width"),
 				L10N.label("elementgui.painting.painting_width")));
@@ -93,25 +77,12 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 				L10N.label("elementgui.painting.painting_height")));
 		selp.add(height);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(selp));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
 
-		texture.setValidator(() -> {
-			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.painting.error_painting_needs_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
+		texture.setValidator(new TileHolderValidator(texture));
 		page1group.addValidationElement(texture);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-	}
-
-	@Override public void reloadDataLists() {
-		super.reloadDataLists();
-
-		ComboBoxUtil.updateComboBoxContents(texture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.OTHER).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -123,14 +94,14 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	@Override public void openInEditingMode(Painting painting) {
 		width.setValue(painting.width);
 		height.setValue(painting.height);
-		texture.setSelectedItem(painting.texture);
+		texture.setTextureFromTextureName(StringUtils.removeEnd(painting.texture, ".png")); // legacy, old workspaces stored name with extension
 	}
 
 	@Override public Painting getElementFromGUI() {
 		Painting painting = new Painting(modElement);
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
-		painting.texture = texture.getSelectedItem();
+		painting.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
 		return painting;
 	}
 

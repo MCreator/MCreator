@@ -369,8 +369,8 @@ public class TestWorkspaceDataProvider {
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
 				Biome.SpawnEntry entry1 = new Biome.SpawnEntry();
-				entry1.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry1.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry1.minGroup = 10;
 				entry1.maxGroup = 134;
 				entry1.weight = 13;
@@ -378,8 +378,8 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
-				entry2.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry2.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry2.minGroup = 23;
 				entry2.maxGroup = 145;
 				entry2.weight = 11;
@@ -387,8 +387,8 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry2);
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
-				entry3.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry3.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry3.minGroup = 23;
 				entry3.maxGroup = 145;
 				entry3.weight = 11;
@@ -396,8 +396,8 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry3);
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
-				entry4.entity = new EntityEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+				entry4.entity = new EntityEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+						ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 				entry4.minGroup = 23;
 				entry4.maxGroup = 145;
 				entry4.weight = 11;
@@ -499,8 +499,10 @@ public class TestWorkspaceDataProvider {
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = "key.categories.misc";
-			keyBinding.onKeyPressed = new Procedure("procedure3");
-			keyBinding.onKeyReleased = new Procedure("procedure2");
+			if (!emptyLists)
+				keyBinding.onKeyPressed = new Procedure("procedure3");
+			if (_true)
+				keyBinding.onKeyReleased = new Procedure("procedure2");
 			return keyBinding;
 		} else if (ModElementType.TAB.equals(modElement.getType())) {
 			Tab tab = new Tab(modElement);
@@ -1069,7 +1071,8 @@ public class TestWorkspaceDataProvider {
 			plant.placingCondition = _true ? null : new Procedure("condition2");
 			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
 					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
@@ -1130,14 +1133,15 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
-		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())){
+		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
-			itemExtension.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			itemExtension.item = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number1" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
-			itemExtension.compostLayerChance = new double[] {0d, 0.3d, 0.5d, 1d}[valueIndex];
+			itemExtension.compostLayerChance = new double[] { 0d, 0.3d, 0.5d, 1d }[valueIndex];
 			itemExtension.hasDispenseBehavior = emptyLists;
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
@@ -1406,7 +1410,8 @@ public class TestWorkspaceDataProvider {
 				block.specialInfo = new ArrayList<>();
 			}
 			block.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"));
+					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
+							"Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
 			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
 					14 }[valueIndex];
@@ -1543,6 +1548,7 @@ public class TestWorkspaceDataProvider {
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				enchantment.excludeEnchantments = _true;
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
@@ -1550,6 +1556,7 @@ public class TestWorkspaceDataProvider {
 						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
 								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 										e.getName())).toList());
+				enchantment.excludeItems = _true;
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {

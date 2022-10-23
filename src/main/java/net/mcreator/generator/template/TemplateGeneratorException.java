@@ -18,4 +18,13 @@
 
 package net.mcreator.generator.template;
 
-public class TemplateGeneratorException extends Exception {}
+public class TemplateGeneratorException extends Exception {
+
+	public TemplateGeneratorException() {
+	}
+
+	public TemplateGeneratorException(String s) {
+		super(s);
+	}
+
+}

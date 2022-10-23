@@ -241,8 +241,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.setFixedCellWidth(57);
 		listElement.addMouseListener(mouseAdapter);
 		listGroup.addList(listElement);
-		listElement.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
-				listElement.getFont().deriveFont(24.0f), Color.white));
+		listElement.setBorder(
+				BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
+						listElement.getFont().deriveFont(24.0f), Color.white));
 		return new JComponentWithList<>(PanelUtils.gridElements(1, 1, listElement), listElement);
 	}
 

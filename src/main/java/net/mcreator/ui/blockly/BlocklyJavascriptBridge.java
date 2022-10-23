@@ -132,8 +132,9 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
 			case "spawnableEntity" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.entity.message"), L10N.t("dialog.selector.entity.title"));
+					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), L10N.t("dialog.selector.entity.message"),
+					L10N.t("dialog.selector.entity.title"));
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
@@ -162,11 +163,13 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
 			case "fireballProjectile" -> openDataListEntrySelector(
-					w -> ElementUtil.loadFireballProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
+					w -> ElementUtil.loadFireballProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), L10N.t("dialog.selector.projectile.message"),
+					L10N.t("dialog.selector.projectile.title"));
 			case "throwableProjectile" -> openDataListEntrySelector(
-					w -> ElementUtil.loadThrowableProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
+					w -> ElementUtil.loadThrowableProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), L10N.t("dialog.selector.projectile.message"),
+					L10N.t("dialog.selector.projectile.title"));
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -397,12 +400,15 @@ public class BlocklyJavascriptBridge {
 					.toArray(String[]::new);
 			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
 					.toArray(String[]::new);
-			case "rangeditem" -> ElementUtil.loadArrowProjectiles(workspace).stream()
-					.map(DataListEntry::getReadableName).toArray(String[]::new);
-			case "fireballprojectile" -> ElementUtil.loadFireballProjectiles().stream()
-					.map(DataListEntry::getReadableName).toArray(String[]::new);
-			case "throwableprojectile" -> ElementUtil.loadThrowableProjectiles().stream()
-					.map(DataListEntry::getReadableName).toArray(String[]::new);
+			case "rangeditem" ->
+					ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getReadableName)
+							.toArray(String[]::new);
+			case "fireballprojectile" ->
+					ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getReadableName)
+							.toArray(String[]::new);
+			case "throwableprojectile" ->
+					ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getReadableName)
+							.toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
 		};
 	}

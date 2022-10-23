@@ -30,7 +30,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
@@ -70,8 +70,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
 	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
 	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-					"Water", "Sky", "Fog", "Water fog" });
+			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+					"Sky", "Fog", "Water fog" });
 
 	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
@@ -165,9 +165,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		destalx.setOpaque(false);
 
-		textureStill = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureStill = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
+		textureFlowing = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -229,7 +229,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
-		textureBucket = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM), 32);
+		textureBucket = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		generateBucket.setOpaque(false);
 		textureBucket.setOpaque(false);
 

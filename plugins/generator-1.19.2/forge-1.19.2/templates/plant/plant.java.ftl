@@ -81,7 +81,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		.lightLevel(s -> ${data.luminance})
 		</#if>
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-		.noDrops()
+		.noLootTable()
 		</#if>
 		<#if data.isSolid>
 		.noOcclusion()

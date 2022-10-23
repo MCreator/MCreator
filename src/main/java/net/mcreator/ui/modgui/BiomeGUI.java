@@ -34,7 +34,10 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.DefaultFeaturesListField;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -107,7 +110,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder undergroundBlock;
 	private MCItemHolder underwaterBlock;
 
-	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 1000, 1));
+	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 32, 1));
 	private MCItemHolder treeVines;
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
