@@ -48,7 +48,7 @@ public class BlocklyLoader {
 		return aitaskBlockLoader;
 	}
 
-	public ExternalBlockLoader getCmdArgsBlockLoader() { return cmdargsBlockLoader;}
+	public ExternalBlockLoader getCmdArgsBlockLoader() {return cmdargsBlockLoader;}
 
 	public ExternalTriggerLoader getExternalTriggerLoader() {
 		return externalTriggerLoader;

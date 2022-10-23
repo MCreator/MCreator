@@ -28,7 +28,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -59,6 +59,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private final JTextField specialInfo = new JTextField(20);
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
+
+	private final JSpinner lengthInTicks = new JSpinner(new SpinnerNumberModel(100, 0, 20 * 3600, 1));
+	private final JSpinner analogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 
@@ -110,7 +113,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		texture.setOpaque(false);
 		hasGlow.setOpaque(false);
@@ -121,7 +124,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(8, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -133,6 +136,14 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/length"),
+				L10N.label("elementgui.music_disc.disc_length")));
+		subpane2.add(lengthInTicks);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/analog_output"),
+				L10N.label("elementgui.music_disc.disc_analog_output")));
+		subpane2.add(analogOutput);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
 				L10N.label("elementgui.music_disc.disc_description")));
@@ -239,6 +250,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		creativeTab.setSelectedItem(musicDisc.creativeTab);
 		hasGlow.setSelected(musicDisc.hasGlow);
 		music.setSound(musicDisc.music);
+		lengthInTicks.setValue(musicDisc.lengthInTicks);
+		analogOutput.setValue(musicDisc.analogOutput);
 	}
 
 	@Override public MusicDisc getElementFromGUI() {
@@ -258,6 +271,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		musicDisc.texture = texture.getID();
 		musicDisc.music = music.getSound();
+		musicDisc.lengthInTicks = (int) lengthInTicks.getValue();
+		musicDisc.analogOutput = (int) analogOutput.getValue();
 		return musicDisc;
 	}
 

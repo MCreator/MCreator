@@ -152,6 +152,7 @@
 - Blocks.REINFORCED_DEEPSLATE:
   readable_name: "Reinforced Deepslate"
   type: block
+  texture: REINFORCED_DEEPSLATE
 
 - Blocks.COBBLED_DEEPSLATE:
   readable_name: "Cobbled Deepslate"
@@ -312,26 +313,32 @@
 - Blocks.MUD:
   readable_name: "Mud"
   type: block
+  texture: MUD
 
 - Blocks.PACKED_MUD:
   readable_name: "Packed Mud"
   type: block
+  texture: PACKED_MUD
 
 - Blocks.MUD_BRICKS:
   readable_name: "Mud Bricks"
   type: block
+  texture: MUD_BRICKS
 
 - Blocks.MUD_BRICK_STAIRS:
   readable_name: "Mud Brick Stairs"
   type: block
+  texture: MUD_BRICK_STAIRS
 
 - Blocks.MUD_BRICK_SLAB:
   readable_name: "Mud Brick Slab"
   type: block
+  texture: MUD_BRICK_SLAB
 
 - Blocks.MUD_BRICK_WALL:
   readable_name: "Mud Brick Wall"
   type: block
+  texture: MUD_BRICK_WALL
 
 - Blocks.COBBLESTONE:
   readable_name: "Cobblestone"
@@ -412,6 +419,7 @@
 - Blocks.MANGROVE_PLANKS:
   readable_name: "Mangrove Planks"
   type: block
+  texture: MANGROVE_PLANKS
 
 - Blocks.SAPLING:
   readable_name: "Any Sapling"
@@ -452,6 +460,7 @@
 - Blocks.MANGROVE_PROPAGULE:
   readable_name: "Mangrove Propagule"
   type: block
+  texture: MANGROVE_PROPAGULE
 
 - Blocks.REEDS:
   readable_name: "Sugar Cane"
@@ -1043,14 +1052,17 @@
 - Blocks.MANGROVE_LOG:
   readable_name: "Mangrove Log"
   type: block
+  texture: MANGROVE_LOG
 
 - Blocks.MANGROVE_ROOTS:
   readable_name: "Mangrove Roots"
   type: block
+  texture: MANGROVE_ROOTS
 
 - Blocks.MUDDY_MANGROVE_ROOTS:
-  readable_name: "Muddy Mangrove Toots"
+  readable_name: "Muddy Mangrove Roots"
   type: block
+  texture: MUDDY_MANGROVE_ROOTS
 
 - Blocks.STRIPPED_OAK_LOG:
   readable_name: "Stripped Oak Log"
@@ -1095,6 +1107,7 @@
 - Blocks.STRIPPED_MANGROVE_LOG:
   readable_name: "Stripped Mangrove Log"
   type: block
+  texture: STRIPPED_MANGROVE_LOG
 
 - Blocks.OAK_WOOD:
   readable_name: "Oak Wood"
@@ -1139,6 +1152,7 @@
 - Blocks.MANGROVE_WOOD:
   readable_name: "Mangrove Wood"
   type: block
+  texture: MANGROVE_WOOD
 
 - Blocks.STRIPPED_OAK_WOOD:
   readable_name: "Stripped Oak Wood"
@@ -1183,6 +1197,7 @@
 - Blocks.STRIPPED_MANGROVE_WOOD:
   readable_name: "Stripped Mangrove Wood"
   type: block
+  texture: STRIPPED_MANGROVE_WOOD
 
 - Blocks.LEAVES:
   readable_name: "Oak/Spruce/Birch/Jungle Leaves"
@@ -1227,6 +1242,7 @@
 - Blocks.MANGROVE_LEAVES:
   readable_name: "Mangrove Leaves"
   type: block
+  texture: MANGROVE_LEAVES
 
 - Blocks.AZALEA_LEAVES:
   readable_name: "Azalea Leaves"
@@ -1877,6 +1893,7 @@
 - Blocks.MANGROVE_STAIRS:
   readable_name: "Mangrove Stairs"
   type: block
+  texture: MANGROVE_STAIRS
 
 - Blocks.STONE_STAIRS:
   readable_name: "Cobblestone Stairs"
@@ -1983,6 +2000,11 @@
   type: block
   texture: STANDING_WARPED_SIGN
 
+- Blocks.MANGROVE_SIGN:
+  readable_name: "Mangrove Sign"
+  type: block
+  texture: STANDING_MANGROVE_SIGN
+
 - Blocks.WALL_SIGN:
   readable_name: "Oak Wall Sign"
   type: block
@@ -2026,6 +2048,7 @@
 - Blocks.MANGROVE_WALL_SIGN:
   readable_name: "Mangrove Wall Sign"
   type: block
+  texture: MANGROVE_WALL_SIGN
 
 - Blocks.OAK_DOOR:
   readable_name: "Oak Door"
@@ -2070,6 +2093,7 @@
 - Blocks.MANGROVE_DOOR:
   readable_name: "Mangrove Door"
   type: block
+  texture: MANGROVE_DOOR
 
 - Blocks.IRON_DOOR:
   readable_name: "Iron Door"
@@ -2119,6 +2143,7 @@
 - Blocks.MANGROVE_TRAPDOOR:
   readable_name: "Mangrove Trapdoor"
   type: block
+  texture: MANGROVE_TRAPDOOR
 
 - Blocks.IRON_TRAPDOOR:
   readable_name: "Iron Trapdoor"
@@ -2188,6 +2213,7 @@
 - Blocks.MANGROVE_BUTTON:
   readable_name: "Mangrove Button"
   type: block
+  texture: MANGROVE_BUTTON
 
 - Blocks.WOODEN_PRESSURE_PLATE:
   readable_name: "Oak Pressure Plate"
@@ -2232,6 +2258,7 @@
 - Blocks.MANGROVE_PRESSURE_PLATE:
   readable_name: "Mangrove Pressure Plate"
   type: block
+  texture: MANGROVE_PRESSURE_PLATE
 
 - Blocks.STONE_PRESSURE_PLATE:
   readable_name: "Stone Pressure Plate"
@@ -2361,18 +2388,22 @@
 - Blocks.SCULK:
   readable_name: "Sculk"
   type: block
+  texture: SCULK
 
 - Blocks.SCULK_CATALYST:
   readable_name: "Sculk Catalyst"
   type: block
+  texture: SCULK_CATALYST
 
 - Blocks.SCULK_VEIN:
   readable_name: "Sculk Vein"
   type: block
+  texture: SCULK_VEIN
 
 - Blocks.SCULK_SHRIEKER:
   readable_name: "Sculk Shrieker"
   type: block
+  texture: SCULK_SHRIEKER
 
 - Blocks.COMMAND_BLOCK:
   readable_name: "Command Block"
@@ -2482,6 +2513,7 @@
 - Blocks.MANGROVE_FENCE:
   readable_name: "Mangrove Fence"
   type: block
+  texture: MANGROVE_FENCE
 
 - Blocks.OAK_FENCE_GATE:
   readable_name: "Oak Fence Gate"
@@ -2526,6 +2558,7 @@
 - Blocks.MANGROVE_FENCE_GATE:
   readable_name: "Mangrove Fence Gate"
   type: block
+  texture: MANGROVE_FENCE_GATE
 
 - Blocks.NETHER_BRICK_FENCE:
   readable_name: "Nether Brick Fence"
@@ -2943,6 +2976,7 @@
 - Blocks.MANGROVE_SLAB:
   readable_name: "Mangrove Slab"
   type: block
+  texture: MANGROVE_SLAB
 
 - Blocks.STONE_SLAB:
   readable_name: "Any Stone Slab"
@@ -3085,6 +3119,7 @@
 - Blocks.POTTED_MANGROVE_PROPAGULE:
   readable_name: "Potted Mangrove Propagule"
   type: block
+  texture: POTTED_MANGROVE_PROPAGULE
 
 - Blocks.POTTED_FERN:
   readable_name: "Potted Fern"
@@ -4793,18 +4828,22 @@
 - Blocks.OCHRE_FROGLIGHT:
   readable_name: "Ochre Froglight"
   type: block
+  texture: OCHRE_FROGLIGHT
 
 - Blocks.VERDANT_FROGLIGHT:
   readable_name: "Verdant Froglight"
   type: block
+  texture: VERDANT_FROGLIGHT
 
 - Blocks.PEARLESCENT_FROGLIGHT:
   readable_name: "Pearlscent Froglight"
   type: block
+  texture: PEARLESCENT_FROGLIGHT
 
 - Blocks.FROGSPAWN:
   readable_name: "Frogspawn"
   type: block
+  texture: FROGSPAWN
 
 - Items.DYE:
   readable_name: "Any Dye"
@@ -5043,6 +5082,11 @@
   type: item
   texture: AMETHYST_SHARD
 
+- Items.ECHO_SHARD:
+  readable_name: "Echo Shard"
+  type: item
+  texture: ECHO_SHARD
+
 - Items.BOW:
   readable_name: "Bow"
   type: item
@@ -5091,6 +5135,7 @@
 - Items.RECOVERY_COMPASS:
   readable_name: "Recovery Compass"
   type: item
+  texture: RECOVERY_COMPASS
 
 - Items.CLOCK:
   readable_name: "Clock"
@@ -5642,6 +5687,7 @@
 - Items.MANGROVE_SIGN:
   readable_name: "Mangrove Sign"
   type: item
+  texture: MANGROVE_SIGN
 
 - Items.OAK_DOOR:
   readable_name: "Oak Door"
@@ -5691,6 +5737,7 @@
 - Items.MANGROVE_DOOR:
   readable_name: "Mangrove Door"
   type: item
+  texture: MANGROVE_DOOR
 
 - Items.BUCKET:
   readable_name: "Bucket"
@@ -5730,6 +5777,7 @@
 - Items.TADPOLE_BUCKET:
   readable_name: "Tadpole Bucket"
   type: item
+  texture: TADPOLE_BUCKET
 
 - Items.LAVA_BUCKET:
   readable_name: "Lava Bucket"
@@ -5809,6 +5857,42 @@
 - Items.MANGROVE_BOAT:
   readable_name: "Mangrove Boat"
   type: item
+  texture: MANGROVE_BOAT
+
+- Items.OAK_CHEST_BOAT:
+  readable_name: "Oak Boat with Chest"
+  type: item
+  texture: OAK_CHEST_BOAT
+
+- Items.SPRUCE_CHEST_BOAT:
+  readable_name: "Spruce Boat with Chest"
+  type: item
+  texture: SPRUCE_CHEST_BOAT
+
+- Items.BIRCH_CHEST_BOAT:
+  readable_name: "Birch Boat with Chest"
+  type: item
+  texture: BIRCH_CHEST_BOAT
+
+- Items.JUNGLE_CHEST_BOAT:
+  readable_name: "Jungle Boat with Chest"
+  type: item
+  texture: JUNGLE_CHEST_BOAT
+
+- Items.ACACIA_CHEST_BOAT:
+  readable_name: "Acacia Boat with Chest"
+  type: item
+  texture: ACACIA_CHEST_BOAT
+
+- Items.DARK_OAK_CHEST_BOAT:
+  readable_name: "Dark Oak Boat with Chest"
+  type: item
+  texture: DARK_OAK_CHEST_BOAT
+
+- Items.MANGROVE_CHEST_BOAT:
+  readable_name: "Mangrove Boat with Chest"
+  type: item
+  texture: MANGROVE_CHEST_BOAT
 
 - Items.REPEATER:
   readable_name: "Redstone Repeater"
@@ -6693,18 +6777,22 @@
 - Items.ALLAY_SPAWN_EGG:
   readable_name: "Allay Spawn Egg"
   type: item
+  texture: ALLAY_SPAWN_EGG
 
 - Items.FROG_SPAWN_EGG:
   readable_name: "Frog Spawn Egg"
   type: item
+  texture: FROG_SPAWN_EGG
 
 - Items.TADPOLE_SPAWN_EGG:
   readable_name: "Tadpole Spawn Egg"
   type: item
+  texture: TADPOLE_SPAWN_EGG
 
 - Items.WARDEN_SPAWN_EGG:
   readable_name: "Warden Spawn Egg"
   type: item
+  texture: WARDEN_SPAWN_EGG
 
 - Items.GOAT_SPAWN_EGG:
   readable_name: "Goat Spawn Egg"
@@ -6836,8 +6924,9 @@
 
 - Items.MUSIC_DISC_5:
   readable_name: "Music Disc"
-  type: item
   description: "Samuel Åberg - 5"
+  type: item
+  texture: MUSIC_DISC_5
 
 - Items.MUSIC_DISC_PIGSTEP:
   readable_name: "Music Disc"
@@ -6848,7 +6937,7 @@
 - Items.DISC_FRAGMENT_5:
   readable_name: "Disc Fragment 5"
   type: item
-  texture: HONEY_BOTTLE
+  texture: DISC_FRAGMENT_5
 
 - Items.SKULL:
   readable_name: "Any Skull"
@@ -6909,7 +6998,4 @@
 - Items.GOAT_HORN:
   readable_name: "Goat Horn"
   type: item
-
-- Items.ECHO_SHARD:
-  readable_name: "Echo Shard"
-  type: item
+  texture: GOAT_HORN

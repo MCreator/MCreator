@@ -74,7 +74,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected void initGUI() {
-		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems, true);
 		compatibleEnchantments = new EnchantmentListField(mcreator);
 
 		JPanel pane1 = new JPanel(new BorderLayout());
@@ -182,7 +182,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		maxLevel.setValue(enchantment.maxLevel);
 		damageModifier.setValue(enchantment.damageModifier);
 		compatibleEnchantments.setListElements(enchantment.compatibleEnchantments);
+		compatibleEnchantments.setExclusionMode(enchantment.excludeEnchantments);
 		compatibleItems.setListElements(enchantment.compatibleItems);
+		compatibleItems.setExclusionMode(enchantment.excludeItems);
 		isTreasureEnchantment.setSelected(enchantment.isTreasureEnchantment);
 		isCurse.setSelected(enchantment.isCurse);
 		isAllowedOnBooks.setSelected(enchantment.isAllowedOnBooks);
@@ -199,7 +201,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.maxLevel = (int) maxLevel.getValue();
 		enchantment.damageModifier = (int) damageModifier.getValue();
 		enchantment.compatibleEnchantments = compatibleEnchantments.getListElements();
+		enchantment.excludeEnchantments = compatibleEnchantments.isExclusionMode();
 		enchantment.compatibleItems = compatibleItems.getListElements();
+		enchantment.excludeItems = compatibleItems.isExclusionMode();
 		enchantment.isTreasureEnchantment = isTreasureEnchantment.isSelected();
 		enchantment.isCurse = isCurse.isSelected();
 		enchantment.isAllowedOnBooks = isAllowedOnBooks.isSelected();
