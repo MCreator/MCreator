@@ -1601,8 +1601,10 @@ public class TestWorkspaceDataProvider {
 			VillagerProfession profession = new VillagerProfession(modElement);
 			profession.name = modElement.getName();
 			profession.displayName = modElement.getName();
-			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(),
+			MItemBlock poi = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
+			profession.oldPOI = poi;
+			profession.pointOfInterest = poi;
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			profession.hat = getRandomString(random, Arrays.asList("None", "Partial", "Full"));
