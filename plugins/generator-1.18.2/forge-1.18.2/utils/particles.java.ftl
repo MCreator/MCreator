@@ -17,7 +17,7 @@ for(int l=0;l< ${amount}; ++l) {
 	double x0 = x + 0.5 + (random.nextFloat() - 0.5) * ${radius}D * 20;
 	double y0 = y + 1.2 + (random.nextFloat() - 0.5) * ${radius}D;
 	double z0 = z + 0.5 + (random.nextFloat() - 0.5) * ${radius}D * 20;
-	world.addParticle(${particleObj.toString()}, x0, y0, z0, 0, 0, 0);
+	world.addParticle(${particleObj.toString()}, x0-0.5, y0, z0-0.5, 0, 0, 0);
 }
 </#macro>
 
@@ -29,7 +29,7 @@ for (int l = 0; l < ${amount}; ++l) {
 	double dx = (random.nextFloat() - 0.5D) * ${radius}D;
 	double dy = (random.nextFloat() - 0.5D) * ${radius}D;
 	double dz = (random.nextFloat() - 0.5D) * ${radius}D;
-	world.addParticle(${particleObj.toString()}, x0, y0, z0, dx, dy, dz);
+	world.addParticle(${particleObj.toString()}, x0-0.5, y0, z0-0.5, dx, dy, dz);
 }
 </#macro>
 
@@ -38,7 +38,7 @@ for (int l = 0; l < ${amount}; ++l) {
 	double x0 = x + 0.5 + (random.nextFloat() - 0.5) * ${radius}D;
 	double y0 = y + 1.2 + (random.nextFloat() - 0.5) * ${radius}D;
 	double z0 = z + 0.5 + (random.nextFloat() - 0.5) * ${radius}D;
-	world.addParticle(${particleObj.toString()}, x0, y0, z0, 0, 0, 0);
+	world.addParticle(${particleObj.toString()}, x0-0.5, y0-0.5, z0, 0, 0, 0);
 }
 </#macro>
 
@@ -47,6 +47,6 @@ for (int l = 0; l < ${amount}; ++l){
 	double x0 = x + 0.5 + (random.nextFloat()-0.5)* ${radius}D;
 	double y0 = y + 1.2 + (random.nextFloat()-0.5)* ${radius}D*100;
 	double z0 = z + 0.5 +(random.nextFloat()-0.5)* ${radius}D;
-	world.addParticle(${particleObj.toString()},x0,y0,z0,0,0,0);
+	world.addParticle(${particleObj.toString()},x0-0.5,y0,z0-0.5,0,0,0);
 }
 </#macro>
