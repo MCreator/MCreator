@@ -162,6 +162,10 @@ implements <a href="../validation/IValidable.html" title="interface in net.mcrea
 <div class="col-first even-row-color"><code>protected </code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator)" class="member-name-link">JItemListField</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected </code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,boolean)" class="member-name-link">JItemListField</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ boolean&nbsp;excludeButton)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -191,11 +195,17 @@ implements <a href="../validation/IValidable.html" title="interface in net.mcrea
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../validation/Validator.html" title="interface in net.mcreator.ui.validation">Validator</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidator()" class="member-name-link">getValidator</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#paint(java.awt.Graphics)" class="member-name-link">paint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isExclusionMode()" class="member-name-link">isExclusionMode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#paint(java.awt.Graphics)" class="member-name-link">paint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExclusionMode(boolean)" class="member-name-link">setExclusionMode</a><wbr>(boolean&nbsp;isExcluded)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setListElements(java.util.List)" class="member-name-link">setListElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JItemListField.html" title="type parameter in JItemListField">T</a>&gt;&nbsp;elements)</code></div>
@@ -261,6 +271,13 @@ implements <a href="../validation/IValidable.html" title="interface in net.mcrea
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">JItemListField</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,boolean)">
+<h3>JItemListField</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">JItemListField</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ boolean&nbsp;excludeButton)</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -302,6 +319,18 @@ implements <a href="../validation/IValidable.html" title="interface in net.mcrea
 <h3>setListElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setListElements</span><wbr><span class="parameters">(@Nullable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JItemListField.html" title="type parameter in JItemListField">T</a>&gt;&nbsp;elements)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="isExclusionMode()">
+<h3>isExclusionMode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isExclusionMode</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setExclusionMode(boolean)">
+<h3>setExclusionMode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExclusionMode</span><wbr><span class="parameters">(boolean&nbsp;isExcluded)</span></div>
 </section>
 </li>
 <li>
