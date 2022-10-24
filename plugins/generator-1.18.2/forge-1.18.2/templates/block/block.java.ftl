@@ -33,7 +33,7 @@
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
-<#include "../particles.java.ftl">
+<#include "../blockparticles.java.ftl">
 
 package ${package}.block;
 
