@@ -50,8 +50,8 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>
-			${JavaModName}Professions.POI.register(bus);
-			${JavaModName}Professions.PROFESSIONS.register(bus);
+			${JavaModName}VillagerProfessions.POI.register(bus);
+			${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);
 		</#if>
 	}
 

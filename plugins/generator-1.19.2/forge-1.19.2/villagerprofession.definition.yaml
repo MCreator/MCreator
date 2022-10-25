@@ -8,8 +8,6 @@ templates:
 global_templates:
   - template: elementinits/villagerprofessions.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/village/@JavaModNameVillagerProfessions.java"
-  - template: elementinits/professions.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameProfessions.java"
 
 localizationkeys:
   - key: entity.minecraft.villager.@modid.@registryname

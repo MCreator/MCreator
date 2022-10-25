@@ -20,5 +20,5 @@ public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
 
 <#if w.hasElementsOfType("villagerprofession")>
-public net.minecraft.world.entity.ai.village.poi.PoiType m_27367_(Lnet/minecraft/world/entity/ai/village/poi/PoiType;)Lnet/minecraft/world/entity/ai/village/poi/PoiType; # registerBlockStates
+public-f net.minecraft.world.entity.npc.VillagerProfession
 </#if>
