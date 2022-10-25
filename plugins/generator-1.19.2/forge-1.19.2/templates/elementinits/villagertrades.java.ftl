@@ -66,7 +66,11 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 		<#list villagertrades as trade>
 			<#list trade.tradeEntries as tradeEntry>
 				<#if tradeEntry.villagerProfession != "WanderingTrader">
-					if (event.getType() == ${tradeEntry.villagerProfession}<#if !tradeEntry.villagerProfession?starts_with("VillagerProfession.")>.get()</#if>) {
+					<#if tradeEntry.villagerProfession?starts_with("VillagerProfession.")>
+						if (event.getType() == ${tradeEntry.villagerProfession}) {
+					<#else>
+						if (event.getType() == ${JavaModName}VillagerProfessions.${tradeEntry.villagerProfession?split("Profession.profession")[0]?upper_case}.get()) {
+					</#if>
 					<#list tradeEntry.entries as entry>
 						event.getTrades().get(${entry.level}).add(
 						new BasicItemListing(
