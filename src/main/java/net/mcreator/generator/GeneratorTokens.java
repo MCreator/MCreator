@@ -50,8 +50,8 @@ public class GeneratorTokens {
 
 		return rawname.replace("@WORKSPACEROOT", workspace.getWorkspaceFolder().getAbsolutePath())
 				.replace("@modid", workspaceSettings.getModID())
-				.replace("@JavaModName", workspaceSettings.getJavaModName()).replace("@modpicture",
-						workspaceSettings.getModPicture() != null ? workspaceSettings.getModPicture() : "")
+				.replace("@JavaModName", workspaceSettings.getJavaModName())
+				.replace("@modpicture", workspaceSettings.getModPicture() != null ? workspaceSettings.getModPicture() : "")
 				.replace("@BASEPACKAGEPATH", workspaceSettings.getModElementsPackage().replace(".", "/"))
 				.replace("@BASEPACKAGE", workspaceSettings.getModElementsPackage());
 	}

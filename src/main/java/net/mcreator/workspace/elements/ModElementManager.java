@@ -78,9 +78,6 @@ public class ModElementManager {
 	}
 
 	GeneratableElement loadGeneratableElement(ModElement element) {
-		if (element.getType() == ModElementType.CODE) {
-			return new CustomElement(element);
-		}
 
 		if (cache.containsKey(element))
 			return cache.get(element);

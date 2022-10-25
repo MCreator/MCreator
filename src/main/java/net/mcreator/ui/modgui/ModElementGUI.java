@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.CustomElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.ModElementGUIEvent;
@@ -551,6 +552,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
+
+		if (element instanceof CustomElement) modElement.setCodeLock(true);
 	}
 
 	public @Nonnull ModElement getModElement() {

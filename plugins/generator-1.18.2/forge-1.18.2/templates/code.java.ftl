@@ -44,7 +44,7 @@
  * This class will be added in the mod root package.
 */
 
-package ${package};
+package ${package}${data.getPackage()};
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ${name} {

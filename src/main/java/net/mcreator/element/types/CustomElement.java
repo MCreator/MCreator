@@ -23,8 +23,25 @@ import net.mcreator.workspace.elements.ModElement;
 
 public class CustomElement extends GeneratableElement {
 
+	public String location;
+
 	public CustomElement(ModElement element) {
 		super(element);
+	}
+
+	public String getLocation() {
+		if(location.isBlank() || location.isEmpty()) return "";
+		if(location.startsWith("/")) location.replaceFirst("/", "");
+		if(location.endsWith("/")) return location;
+		return location + "/";
+	}
+
+	public String getPackage() {
+		if(location.isBlank() || location.isEmpty()) return "";
+		String output = location;
+		if(location.endsWith("/")) output = location.substring(0,location.length() - 2);
+		if(output.startsWith("/")) return output.replace("/", ".");
+		return "." + output.replace("/", ".");
 	}
 
 }
