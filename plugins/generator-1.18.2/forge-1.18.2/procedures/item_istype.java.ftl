@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedMCItemToItem(input$item)} instanceof ${field$tool_type}Item)
+(${mappedMCItemToItem(input$item)} instanceof ${field$item_type}Item)
