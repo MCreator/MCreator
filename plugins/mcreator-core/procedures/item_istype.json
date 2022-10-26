@@ -6,90 +6,9 @@
       "check": "MCItem"
     },
     {
-      "type": "field_dropdown",
-      "name": "tool_type",
-      "options": [
-        [
-          "Sword",
-          "Sword"
-        ],
-        [
-          "Pickaxe",
-          "Pickaxe"
-        ],
-        [
-          "Axe",
-          "Axe"
-        ],
-        [
-          "Shovel",
-          "Shovel"
-        ],
-        [
-          "Hoe",
-          "Hoe"
-        ],
-        [
-          "Armor",
-          "Armor"
-        ],
-        [
-          "Arrow",
-          "Arrow"
-        ],
-        [
-          "Banner",
-          "Banner"
-        ],
-        [
-          "Bed",
-          "Bed"
-        ],
-        [
-          "Block",
-          "Block"
-        ],
-        [
-          "Boat",
-          "Boat"
-        ],
-        [
-          "Bow",
-          "Bow"
-        ],
-        [
-          "Crossbow",
-          "Crossbow"
-        ],
-        [
-          "Dye",
-          "Dye"
-        ],
-        [
-          "EnchantedBook",
-          "EnchantedBook"
-        ],
-        [
-          "Potion",
-          "Potion"
-        ],
-        [
-          "Record",
-          "Record"
-        ],
-        [
-          "Shield",
-          "Shield"
-        ],
-        [
-          "SpawnEgg",
-          "SpawnEgg"
-        ],
-        [
-          "Trident",
-          "Trident"
-        ]
-      ]
+      "type": "field_data_list_selector",
+      "name": "item_type",
+      "datalist": "itemtypes"
     }
   ],
   "inputsInline": true,
@@ -104,7 +23,7 @@
       "item"
     ],
     "fields": [
-      "tool_type"
+      "item_type"
     ]
   }
 }
