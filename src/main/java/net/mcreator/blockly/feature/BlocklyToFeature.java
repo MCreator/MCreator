@@ -28,6 +28,7 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -41,9 +42,9 @@ public class BlocklyToFeature extends BlocklyToJava {
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
 
-	public BlocklyToFeature(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
+	public BlocklyToFeature(Workspace workspace, ModElement parent, String sourceXML, TemplateGenerator templateGenerator,
 			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, BlocklyEditorType.FEATURE, sourceXML, templateGenerator,
+		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator,
 				externalGenerators);
 	}
 

@@ -60,8 +60,8 @@ import java.util.List;
 					BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks(),
 					this.getModElement().getGenerator().getTemplateGeneratorFromName("features"), additionalData);
 
-			var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.featurexml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("features"),
+			var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
+					this.featurexml, this.getModElement().getGenerator().getTemplateGeneratorFromName("features"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
