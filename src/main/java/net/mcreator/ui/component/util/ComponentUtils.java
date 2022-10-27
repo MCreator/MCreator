@@ -109,7 +109,7 @@ public class ComponentUtils {
 		p.setOpaque(false);
 		p.setPreferredSize(new Dimension(100, 100));
 		p.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 2), text, TitledBorder.LEADING,
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 1), text, TitledBorder.LEADING,
 						TitledBorder.BOTTOM, gor.getFont(), color));
 		return p;
 	}

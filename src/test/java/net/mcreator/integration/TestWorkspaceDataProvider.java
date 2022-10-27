@@ -1548,6 +1548,7 @@ public class TestWorkspaceDataProvider {
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				enchantment.excludeEnchantments = _true;
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
@@ -1555,6 +1556,7 @@ public class TestWorkspaceDataProvider {
 						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
 								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 										e.getName())).toList());
+				enchantment.excludeItems = _true;
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {

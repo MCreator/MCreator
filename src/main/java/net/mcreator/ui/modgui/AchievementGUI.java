@@ -250,8 +250,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {
-			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), this.modElement,
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}

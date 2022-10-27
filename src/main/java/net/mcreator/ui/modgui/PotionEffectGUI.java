@@ -24,41 +24,34 @@ import net.mcreator.element.types.PotionEffect;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final VTextField effectName = new VTextField(20);
 	private final JColor color = new JColor(mcreator, false, false);
-	private final VComboBox<String> icon = new SearchableComboBox<>();
+	private TextureHolder icon;
 
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
 	private final JCheckBox isBad = L10N.checkbox("elementgui.potioneffect.is_bad");
@@ -97,14 +90,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setSelected(true);
 		renderStatusInHUD.setSelected(true);
 
-		icon.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.EFFECT));
-
-		icon.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 50, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 50, 2));
 
 		ComponentUtils.deriveFont(effectName, 16);
 
@@ -114,23 +103,16 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 
+		icon = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT));
+		icon.setOpaque(false);
+
+		JComponent iconComponent = PanelUtils.totalCenterInPanel(
+				ComponentUtils.squareAndBorder(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"), icon),
+						L10N.t("elementgui.potioneffect.icon")));
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/effect_display_name"),
 				L10N.label("elementgui.potioneffect.display_name")));
 		selp.add(effectName);
-
-		JButton importicontexture = new JButton(UIRES.get("18px.add"));
-		importicontexture.setToolTipText(L10N.t("elementgui.potioneffect.import_icon"));
-		importicontexture.setOpaque(false);
-		importicontexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.EFFECT);
-			icon.removeAllItems();
-			icon.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.EFFECT).forEach(el -> icon.addItem(el.getName()));
-		});
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"),
-				L10N.label("elementgui.potioneffect.icon")));
-		selp.add(PanelUtils.centerAndEastElement(icon, importicontexture));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/instant"),
 				L10N.label("elementgui.potioneffect.instant")));
@@ -158,7 +140,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		selp.setOpaque(false);
 
-		pane3.add(PanelUtils.totalCenterInPanel(selp));
+		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel();
@@ -175,13 +157,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane4.setOpaque(false);
 		pane4.setOpaque(false);
 
-		icon.setValidator(() -> {
-			if (icon.getSelectedItem() == null || icon.getSelectedItem().equals(""))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.potioneffect.error_effect_needs_icon"));
-			return Validator.ValidationResult.PASSED;
-		});
-
+		icon.setValidator(new TileHolderValidator(icon));
 		effectName.setValidator(
 				new TextFieldValidator(effectName, L10N.t("elementgui.potioneffect.error_effect_needs_display_name")));
 		effectName.enableRealtimeValidation();
@@ -200,10 +176,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.refreshListKeepSelected();
 		onExpired.refreshListKeepSelected();
 		activeTickCondition.refreshListKeepSelected();
-
-		ComboBoxUtil.updateComboBoxContents(icon, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.EFFECT).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -215,7 +187,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	@Override public void openInEditingMode(PotionEffect potion) {
 		effectName.setText(potion.effectName);
-		icon.setSelectedItem(potion.icon);
+		icon.setTextureFromTextureName(StringUtils.removeEnd(potion.icon, ".png")); // legacy, old workspaces stored name with extension
 		color.setColor(potion.color);
 		isInstant.setSelected(potion.isInstant);
 		isBad.setSelected(potion.isBad);
@@ -231,7 +203,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	@Override public PotionEffect getElementFromGUI() {
 		PotionEffect potion = new PotionEffect(modElement);
 		potion.effectName = effectName.getText();
-		potion.icon = icon.getSelectedItem();
+		potion.icon = icon.getID() + ".png"; // legacy, old workspaces stored name with extension
 		potion.color = color.getColor();
 		potion.isInstant = isInstant.isSelected();
 		potion.isBad = isBad.isSelected();

@@ -22,12 +22,14 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.ReturnBlock;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import org.apache.commons.lang3.ArrayUtils;
@@ -42,9 +44,10 @@ public class BlocklyToProcedure extends BlocklyToJava {
 	private List<VariableElement> variables;
 	private VariableType returnType;
 
-	public BlocklyToProcedure(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
-			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
+	public BlocklyToProcedure(Workspace workspace, ModElement parent, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+			throws TemplateGeneratorException {
+		super(workspace, parent, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
 	@Override public void preBlocksPlacement(Document doc, Element startBlock) {

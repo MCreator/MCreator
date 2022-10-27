@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-class WaitHandler${customBlockIndex} {
+class ${parent.getName()}Wait${customBlockIndex} {
 	private int ticks = 0;
 	private float waitTicks;
 	private LevelAccessor world;
@@ -8,24 +8,24 @@ class WaitHandler${customBlockIndex} {
 		this.waitTicks = waitTicks;
 		this.world = world;
 
-		MinecraftForge.EVENT_BUS.register(WaitHandler${customBlockIndex}.this);
+		MinecraftForge.EVENT_BUS.register(${parent.getName()}Wait${customBlockIndex}.this);
 	}
 
 	@SubscribeEvent
 	public void tick(TickEvent.ServerTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			WaitHandler${customBlockIndex}.this.ticks += 1;
-			if (WaitHandler${customBlockIndex}.this.ticks >= WaitHandler${customBlockIndex}.this.waitTicks)
+			${parent.getName()}Wait${customBlockIndex}.this.ticks += 1;
+			if (${parent.getName()}Wait${customBlockIndex}.this.ticks >= ${parent.getName()}Wait${customBlockIndex}.this.waitTicks)
 				run();
 		}
 	}
 
 	private void run() {
-		MinecraftForge.EVENT_BUS.unregister(WaitHandler${customBlockIndex}.this);
+		MinecraftForge.EVENT_BUS.unregister(${parent.getName()}Wait${customBlockIndex}.this);
 
         ${statement$do}
 	}
 }
 
-new WaitHandler${customBlockIndex}().start(world, ${opt.toInt(input$ticks)});
+new ${parent.getName()}Wait${customBlockIndex}().start(world, ${opt.toInt(input$ticks)});
 <#-- @formatter:on -->
