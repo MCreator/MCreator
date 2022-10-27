@@ -39,7 +39,7 @@ import java.util.List;
 public class CustomElementGUI extends ModElementGUI<CustomElement> {
 
 	private final CodeEditorView codeEditorView;
-	private final JTextField location = new JTextField(20);
+	private final JTextField location = new JTextField(26);
 
 	public CustomElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -70,7 +70,7 @@ public class CustomElementGUI extends ModElementGUI<CustomElement> {
 		JLabel ActualwarningText = L10N.label("elementgui.custom_element.warning_text");
 		warningText.setForeground(Color.red);
 		ActualwarningText.setForeground(Color.red);
-		final Font textFont = new Font("Sans-Serif", Font.PLAIN, 22);
+		final Font textFont = new Font("Sans-Serif", Font.PLAIN, 16);
 		warningText.setFont(textFont);
 		ActualwarningText.setFont(textFont);
 		warning.add(PanelUtils.northAndCenterElement(warningText, ActualwarningText));
