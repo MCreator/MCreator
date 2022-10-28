@@ -23,7 +23,6 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.util.BlocklyHelper;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -65,7 +64,6 @@ public class TooltypeProcedureConverter implements IConverter {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();
-		net.mcreator.util.BlocklyHelper bh = new net.mcreator.util.BlocklyHelper(doc);
 
 		NodeList nodeList = doc.getElementsByTagName("block");
 		for (int i = 0; i < nodeList.getLength(); i++) {
