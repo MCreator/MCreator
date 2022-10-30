@@ -22,7 +22,6 @@ package net.mcreator.preferences;
 import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -161,10 +159,10 @@ public class PreferencesManager {
 				entry.setValue(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
 			else if (entry.getValue() instanceof Color)
 				entry.setValue(new Color(value.getAsJsonObject().get("value").getAsInt()));
-			else if (entry.getValue() instanceof WorkspacePreferenceEnums.WorkspaceIconSize)
-				entry.setValue(WorkspacePreferenceEnums.WorkspaceIconSize.valueOf(value.getAsString()));
-			else if (entry.getValue() instanceof WorkspacePreferenceEnums.WorkspaceSortType)
-				entry.setValue(WorkspacePreferenceEnums.WorkspaceSortType.valueOf(value.getAsString()));
+			else if (entry.getValue() instanceof WorkspacePreferenceEnums.IconSize)
+				entry.setValue(WorkspacePreferenceEnums.IconSize.valueOf(value.getAsString()));
+			else if (entry.getValue() instanceof WorkspacePreferenceEnums.SortType)
+				entry.setValue(WorkspacePreferenceEnums.SortType.valueOf(value.getAsString()));
 		});
 		savePreferences("mcreator");
 	}

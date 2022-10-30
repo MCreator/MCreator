@@ -17,14 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.preferences;
+package net.mcreator.preferences.entries;
 
-public class WorkspacePreferenceEnums {
-	public enum SortType {
-		NAME, CREATED, TYPE, LOADORDER
+import javax.swing.*;
+import java.awt.*;
+import java.util.EventObject;
+import java.util.function.Consumer;
+
+public class BooleanEntry extends PreferenceEntry<Boolean> {
+
+	public BooleanEntry(String id, boolean value, String section) {
+		super(id, value, section);
 	}
 
-	public enum IconSize {
-		TILES, LARGE, MEDIUM, SMALL, LIST, DETAILS
+	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
+		JCheckBox box = new JCheckBox();
+		box.setSelected(this.value);
+		box.addActionListener(fct::accept);
+		return box;
 	}
 }
