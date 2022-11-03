@@ -48,7 +48,7 @@ package ${package}.client.screens;
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
-        public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
+        public static void eventHandler(RenderGuiEvent.Pre event) {
             int w = event.getWindow().getGuiScaledWidth();
             int h = event.getWindow().getGuiScaledHeight();
 	<#else>
