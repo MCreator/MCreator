@@ -48,13 +48,13 @@ public class BlocklyToFeature extends BlocklyToJava {
 				externalGenerators);
 	}
 
-	@Override public void preInitialization() {
+	@Override protected void preInitialization() {
 		super.preInitialization();
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
 	}
 
-	@Override public void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {
+	@Override protected void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {
 		super.preBlocksPlacement(doc, startBlock);
 
 		// Add the feature to the feature code
@@ -69,7 +69,7 @@ public class BlocklyToFeature extends BlocklyToJava {
 					L10N.t("blockly.errors.features.missing_feature")));
 	}
 
-	@Override public void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
+	@Override protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
 		if (baseBlocks.isEmpty())
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.features.missing_placement")));
