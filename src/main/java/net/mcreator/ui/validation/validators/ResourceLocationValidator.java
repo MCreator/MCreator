@@ -18,19 +18,34 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VComboBox;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 
-public class TagsNameValidator<T> extends RegistryNameValidator {
+public class ResourceLocationValidator<T> extends RegistryNameValidator {
 
-	public TagsNameValidator(VComboBox<T> holder, boolean allowNamespace) {
-		super(holder, "Tag");
+	public ResourceLocationValidator(String name, VComboBox<T> holder, boolean allowNamespace) {
+		super(holder, name);
+
 		if (allowNamespace) {
 			setValidChars(Arrays.asList('_', '/', '-', ':'));
 		} else {
 			setValidChars(Arrays.asList('_', '/', '-'));
 		}
+	}
+
+	@Override public ValidationResult validate() {
+		if (this.getText().endsWith(":"))
+			return new ValidationResult(ValidationResultType.ERROR,
+					L10N.t("validators.registry_name.invalid2", this.name));
+
+		if (StringUtils.countMatches(this.getText(), ':') > 1)
+			return new ValidationResult(ValidationResultType.ERROR,
+					L10N.t("validators.registry_name.invalid3", this.name));
+
+		return super.validate();
 	}
 
 }

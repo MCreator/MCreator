@@ -109,8 +109,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		BlocklyToProcedure blocklyToJava;
 
 		try {
-			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), this.modElement, blocklyPanel.getXML(),
+					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;

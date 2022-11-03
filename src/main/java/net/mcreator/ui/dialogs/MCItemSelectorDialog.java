@@ -25,7 +25,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.TagsNameValidator;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -85,7 +85,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 			VComboBox<String> tagName = new VComboBox<>();
 
-			tagName.setValidator(new TagsNameValidator<>(tagName, true));
+			tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
 
 			tagName.addItem("");
 			tagName.addItem("tag");
@@ -118,7 +118,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 						}
 					} else {
 						JOptionPane.showMessageDialog(this,
-								L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
+								tagName.getValidationStatus().getMessage(),
 								L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);
 					}
 				}
