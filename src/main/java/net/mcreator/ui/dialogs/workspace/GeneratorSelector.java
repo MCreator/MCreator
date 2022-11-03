@@ -153,6 +153,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "item_types"), "itemtypes", supportedElements, stats);
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
