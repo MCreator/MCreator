@@ -143,7 +143,8 @@ public final class MCreatorApplication {
 		VariableTypeLoader.loadVariableTypes();
 
 		// load special files for Blockly
-		BlocklySpecialFilesLoader.init();
+		BlocklyJavaScriptsLoader.init();
+		BlocklyToolboxesLoader.init();
 
 		// load blockly blocks after plugins are loaded
 		BlocklyLoader.init();

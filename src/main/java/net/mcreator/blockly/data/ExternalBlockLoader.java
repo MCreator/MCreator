@@ -24,7 +24,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.init.BlocklySpecialFilesLoader;
+import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
+import net.mcreator.ui.init.BlocklyToolboxesLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.Tuple;
@@ -199,7 +200,7 @@ public class ExternalBlockLoader {
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
 		pane.executeJavaScriptSynchronously("Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ")");
 
-		String toolbox_xml = BlocklySpecialFilesLoader.INSTANCE.getSpecificToolBox("blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
+		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getSpecificToolBox(toolboxType.name().toLowerCase(Locale.ENGLISH));
 
 		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {

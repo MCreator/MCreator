@@ -33,7 +33,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
-import net.mcreator.ui.init.BlocklySpecialFilesLoader;
+import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -153,7 +153,7 @@ public class BlocklyPanel extends JFXPanel {
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
 
 					// Load JavaScript files from plugins
-					for (String script : BlocklySpecialFilesLoader.INSTANCE.getScripts())
+					for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
 						webEngine.executeScript(script);
 
 					//JS code generation for custom variables

@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,48 +19,37 @@
 
 package net.mcreator.ui.init;
 
-import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
-public class BlocklySpecialFilesLoader {
+public class BlocklyToolboxesLoader {
 
-	private static final Logger LOG = LogManager.getLogger("Blockly Special Files loader");
+	private static final Logger LOG = LogManager.getLogger("Blockly Toolboxes loader");
 
-	public static BlocklySpecialFilesLoader INSTANCE;
-
-	public static void init() {
-		INSTANCE = new BlocklySpecialFilesLoader();
-	}
-
-	private final List<String> SCRIPTS = new ArrayList<>();
+	public static BlocklyToolboxesLoader INSTANCE;
 
 	private final Map<String, String> TOOLBOXES = new HashMap<>();
 
-	public BlocklySpecialFilesLoader() {
-		LOG.debug("Loading Blockly JavaScript files from plugins");
+	public static void init() {
+		INSTANCE = new BlocklyToolboxesLoader();
+	}
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.js"));
-		for (String fileName : fileNames)
-			SCRIPTS.add(FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
+	public BlocklyToolboxesLoader() {
+		LOG.debug("Loading Blockly toolboxes from plugins");
 
-		LOG.debug("Loading Blockly XML files from plugins");
-
-		Set<String> xmlFiles = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.xml"));
+		Set<String> xmlFiles = PluginLoader.INSTANCE.getResources("blockly.toolboxes", Pattern.compile("^[^$].*\\.xml"));
 		for (String fileName : xmlFiles)
 			TOOLBOXES.put(fileName, FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
 	}
 
-	public List<String> getScripts() {
-		return SCRIPTS;
-	}
-
 	public String getSpecificToolBox(String name) {
-		return TOOLBOXES.get(name);
+		return TOOLBOXES.get("blockly/toolboxes/toolbox_" + name + ".xml");
 	}
 }
