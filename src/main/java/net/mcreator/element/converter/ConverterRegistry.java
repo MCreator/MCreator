@@ -55,6 +55,7 @@ import net.mcreator.element.converter.fv6.GUIBindingInverter;
 import net.mcreator.element.converter.fv7.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.fv8.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
+import net.mcreator.element.converter.fv35.TooltypeProcedureConverter;
 
 import java.util.*;
 
@@ -86,7 +87,7 @@ public class ConverterRegistry {
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
-				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter()));
+				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(), new TooltypeProcedureConverter()));
 		put(ModElementType.RANGEDITEM, Collections.singletonList(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));

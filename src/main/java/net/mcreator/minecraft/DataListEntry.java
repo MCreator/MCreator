@@ -184,7 +184,6 @@ public class DataListEntry implements Comparable<DataListEntry> {
 
 			this.modElement = modElement;
 
-			setType("mcreator");
 			setDescription(modElement.getType().getDescription());
 		}
 
