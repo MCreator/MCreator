@@ -150,11 +150,11 @@ public class MCItem extends DataListEntry {
 
 	public static final class Custom extends MCItem {
 
-		public Custom(ModElement element, String fieldName) {
+		public Custom(ModElement element, String fieldName, String type) {
 			super("CUSTOM:" + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
 			setReadableName(element.getName() + " - " + element.getType().getReadableName());
 			setIcon(getBlockIconBasedOnName(element.getWorkspace(), getName()));
-			setType("mcreator");
+			setType(type);
 			setDescription(element.getType().getDescription());
 		}
 
