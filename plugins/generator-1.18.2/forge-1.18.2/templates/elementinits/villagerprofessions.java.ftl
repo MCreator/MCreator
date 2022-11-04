@@ -34,26 +34,46 @@
 *    MCreator note: This file will be REGENERATED on each build.
 */
 
-package ${package}.village;
+package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
 import javax.annotation.Nullable;
 
-public class ${JavaModName}VillagerProfessions extends VillagerProfession {
+public class ${JavaModName}VillagerProfessions {
 
-    private final List<Supplier<SoundEvent>> soundEventSuppliers;
+    public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
-    @SafeVarargs
-    public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
-        super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
-        this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
+    <#list villagerprofessions as villagerprofession>
+        public static final RegistryObject<PoiType> ${villagerprofession.getModElement().getRegistryNameUpper()}_POI = POI.register("${villagerprofession.getModElement().getRegistryName()}", () -> new PoiType("${villagerprofession.getModElement().getRegistryName()}", getAllStates(${mappedBlockToBlock(villagerprofession.pointOfInterest)}), 1, 1));
+        public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} = registerProfession("${villagerprofession.getModElement().getRegistryName()}", ${villagerprofession.getModElement().getRegistryNameUpper()}_POI, () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}")));
+    </#list>
+
+    @SuppressWarnings("SameParameterValue")
+    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent>... soundEventSuppliers) {
+        return PROFESSIONS.register(name, () -> new VillagerProfessions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
     }
 
-    @Nullable
-    @Override
-    public SoundEvent getWorkSound() {
-        int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
-        return soundEventSuppliers.get(n).get();
+    private static Set<BlockState> getAllStates(Block block) {
+        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
+    }
+
+    public static class VillagerProfessions extends VillagerProfession {
+
+        private final List<Supplier<SoundEvent>> soundEventSuppliers;
+
+        @SafeVarargs
+        public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+            super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
+            this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
+        }
+
+        @Nullable
+        @Override
+        public SoundEvent getWorkSound() {
+            int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
+            return soundEventSuppliers.get(n).get();
+        }
     }
 }
 <#-- @formatter:on -->

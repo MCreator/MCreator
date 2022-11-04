@@ -18,7 +18,3 @@ public-f net.minecraft.world.level.chunk.ChunkGenerator f_62137_ #biomeSource
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
-
-<#if w.hasElementsOfType("villagerprofession")>
-public-f net.minecraft.world.entity.npc.VillagerProfession
-</#if>
