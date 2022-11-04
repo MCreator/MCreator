@@ -24,13 +24,9 @@ import org.apache.logging.log4j.Logger;
 
 	public static final String MODID = "${modid}";
 
-	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID),
-		() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-
-	private static int messageID = 0;
-
 	public ${JavaModName}() {
+		MinecraftForge.EVENT_BUS.register(this);
+
 		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -55,10 +51,35 @@ import org.apache.logging.log4j.Logger;
 		</#if>
 	}
 
+	private static final String PROTOCOL_VERSION = "1";
+	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID),
+		() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+
+	private static int messageID = 0;
+
 	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
 										BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
 		PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
 		messageID++;
+	}
+
+	private static final List<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ArrayList<>();
+
+	public static void queueServerWork(int tick, Runnable action) {
+		workQueue.add(new AbstractMap.SimpleEntry(action, tick));
+	}
+
+	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
+		if (event.phase == TickEvent.Phase.END) {
+			List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList<>();
+			workQueue.forEach(work -> {
+				work.setValue(work.getValue() - 1);
+				if (work.getValue() == 0)
+					actions.add(work);
+			});
+			actions.forEach(e -> e.getKey().run());
+			workQueue.removeAll(actions);
+		}
 	}
 
 }
