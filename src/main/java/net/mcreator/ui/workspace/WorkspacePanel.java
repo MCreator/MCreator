@@ -1234,7 +1234,7 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		if (modElementFiles.size() + modElementGlobalFiles.size() > 1) {
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0) {
 			JPopupMenu codeDropdown = new JPopupMenu();
 			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
 			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());

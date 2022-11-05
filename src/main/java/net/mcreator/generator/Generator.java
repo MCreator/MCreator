@@ -300,12 +300,10 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		if (performFSTasks) {
-			GeneratableElement oldElement = element.getModElement().getPreviousGeneratableElement();
-			if (oldElement != null) {
-				List<GeneratorTemplate> oldGeneratorTemplateList = getModElementGeneratorTemplatesList(
-						element.getModElement(), performFSTasks, oldElement);
-				if (oldGeneratorTemplateList != null)
-					oldGeneratorTemplateList.forEach(template -> template.getFile().delete());
+			Object oldFiles = element.getModElement().getMetadata("files");
+			if (oldFiles instanceof List<?>) {
+				for (Object file : (List<?>) oldFiles)
+					new File(getWorkspaceFolder(), (String) file).delete();
 			}
 
 			generateFiles(generatorFiles, formatAndOrganiseImports);
@@ -338,6 +336,11 @@ public class Generator implements IGenerator, Closeable {
 					}
 				}
 			}
+
+			List<String> files = new ArrayList<>();
+			for (GeneratorFile file : generatorFiles)
+				files.add(getWorkspaceFolder().toPath().relativize(file.file().toPath()).toString());
+			element.getModElement().putMetadata("files", files);
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
