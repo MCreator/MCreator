@@ -39,9 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class BlockItemTextureSelector extends MCreatorDialog {
+public class TypedTextureSelectorDialog extends MCreatorDialog {
 
-	private final JButton naprej = L10N.button("dialog.textures_selector.select");
+	private final JButton select = L10N.button("dialog.textures_selector.select");
 	private final FilterModel model = new FilterModel();
 	public JList<File> list = new JList<>(model);
 	private final TextureType type;
@@ -52,7 +52,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 
 	private final MCreator mcreator;
 
-	public BlockItemTextureSelector(MCreator mcreator, TextureType type) {
+	public TypedTextureSelectorDialog(MCreator mcreator, TextureType type) {
 		super(mcreator);
 		this.type = type;
 		this.mcreator = mcreator;
@@ -76,7 +76,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				super.mouseClicked(mouseEvent);
 				if (mouseEvent.getClickCount() == 2)
-					naprej.doClick();
+					select.doClick();
 			}
 		});
 
@@ -89,11 +89,11 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 
 		JPanel buttons = new JPanel();
 
-		naprej.setFont(naprej.getFont().deriveFont(16.0f));
+		select.setFont(select.getFont().deriveFont(16.0f));
 		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		naprej2.setFont(naprej2.getFont().deriveFont(16.0f));
 
-		buttons.add(naprej);
+		buttons.add(select);
 		buttons.add(naprej2);
 
 		naprej2.addActionListener(event -> setVisible(false));
@@ -121,7 +121,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		JPanel pno = new JPanel();
 
 		JButton createTx2 = L10N.button("dialog.textures_selector.create_from_scratch");
-		createTx2.setFont(naprej.getFont());
+		createTx2.setFont(select.getFont());
 		createTx2.setIcon(UIRES.get("18px.add"));
 		createTx2.addActionListener(event -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
@@ -131,7 +131,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 		pno.add(createTx2);
 
 		JButton importTx = L10N.button("dialog.textures_selector.import", type.name().toLowerCase(Locale.ENGLISH));
-		importTx.setFont(naprej.getFont());
+		importTx.setFont(select.getFont());
 		importTx.setIcon(UIRES.get("18px.add"));
 		importTx.addActionListener(event -> {
 
@@ -170,7 +170,7 @@ public class BlockItemTextureSelector extends MCreatorDialog {
 	}
 
 	public JButton getConfirmButton() {
-		return naprej;
+		return select;
 	}
 
 	public MCreator getMCreator() {

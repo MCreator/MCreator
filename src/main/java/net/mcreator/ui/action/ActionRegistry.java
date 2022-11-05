@@ -260,7 +260,7 @@ public class ActionRegistry {
 			newImageDialog.setVisible(true);
 		}, new ActionAccelerator("create_texture", KeyEvent.VK_9, CTRL_SHIFT)).setIcon(UIRES.get("16px.newtexture"));
 		this.createArmorTexture = new TextureAction(this, L10N.t("action.create_armor_texture"),
-				actionEvent -> new ArmorImageMakerView(mcreator).showView(), null);
+				actionEvent -> new ArmorImageMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newarmor"));
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
 				actionEvent -> new AnimationMakerView(mcreator).showView(), new ActionAccelerator("create_animated_texture",
 				KeyEvent.VK_8, CTRL_SHIFT)).setIcon(UIRES.get("16px.newanimation"));
@@ -272,17 +272,21 @@ public class ActionRegistry {
 				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ITEM), new ActionAccelerator("import_item_texture")).setIcon(
 				UIRES.get("16px.importitem"));
 		this.importEntityTexture = new TextureAction(this, L10N.t("action.import_entity_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY), new ActionAccelerator("import_entity_texture"));
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY)).setIcon(
+				UIRES.get("16px.importentity"));
 		this.importEffectTexture = new TextureAction(this, L10N.t("action.import_effect_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.EFFECT), new ActionAccelerator("import_effect_texture"));
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.EFFECT)).setIcon(
+				UIRES.get("16px.importeffect"));
 		this.importParticleTexture = new TextureAction(this, L10N.t("action.import_particle_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.PARTICLE), new ActionAccelerator("import_particle_texture"));
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.PARTICLE)).setIcon(
+				UIRES.get("16px.importparticle"));
 		this.importScreenTexture = new TextureAction(this, L10N.t("action.import_screen_texture"),
-				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.SCREEN), new ActionAccelerator("import_screen_texture"));
+				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.SCREEN)).setIcon(
+				UIRES.get("16px.importgui"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		}, new ActionAccelerator("import_armor_texture"));
+		}).setIcon(UIRES.get("16px.importarmor"));
 		this.importOtherTexture = new TextureAction(this, L10N.t("action.import_other_texture"),
 				actionEvent -> TextureImportDialogs.importMultipleTextures(mcreator, TextureType.OTHER),
 				new ActionAccelerator("import_other_texture", KeyEvent.VK_7, CTRL_SHIFT)).setIcon(
