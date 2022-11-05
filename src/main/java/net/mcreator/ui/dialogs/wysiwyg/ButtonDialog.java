@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class ButtonDialog extends AbstractWYSIWYGDialog {
+public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
 		super(editor.mcreator, button);

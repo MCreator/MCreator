@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class CheckboxDialog extends AbstractWYSIWYGDialog {
+public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
 		super(editor.mcreator, checkbox);

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,28 +17,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.dialogs.wysiwyg;
+package net.mcreator.ui.wysiwyg;
 
 import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 
-import javax.annotation.Nullable;
-import java.awt.*;
+public record WYSIWYGComponentRegistration<T extends GUIComponent>(String machineName, String icon,
+																   boolean worksInOverlay, Class<T> component,
+																   Class<? extends AbstractWYSIWYGDialog<T>> editor) {
 
-public class AbstractWYSIWYGDialog<T extends GUIComponent> extends MCreatorDialog {
-
-	@Nullable private T editingComponent;
-
-	public AbstractWYSIWYGDialog(Window w, @Nullable T editingComponent) {
-		super(w);
-		this.editingComponent = editingComponent;
-	}
-
-	public @Nullable T getEditingComponent() {
-		return editingComponent;
-	}
-
-	public T setEditingComponent(@Nullable T editingComponent) {
-		return this.editingComponent = editingComponent;
-	}
 }

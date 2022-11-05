@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFieldDialog extends AbstractWYSIWYGDialog {
+public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
 		super(editor.mcreator, textField);

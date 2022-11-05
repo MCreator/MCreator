@@ -45,10 +45,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WYSIWYGEditor extends JPanel {
+
+	public static final List<WYSIWYGComponentRegistration<?>> COMPONENT_REGISTRY = new ArrayList<>() {{
+		add(new WYSIWYGComponentRegistration<>("text_label", "addlabel", true, Label.class, LabelDialog.class));
+		add(new WYSIWYGComponentRegistration<>("image", "addimage", true, Image.class, ImageDialog.class));
+		add(new WYSIWYGComponentRegistration<>("button", "addbutton", false, Button.class, ButtonDialog.class));
+		add(new WYSIWYGComponentRegistration<>("checkbox", "addcheckbox", false, Checkbox.class, CheckboxDialog.class));
+		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class, TextFieldDialog.class));
+		add(new WYSIWYGComponentRegistration<>("input_slot", "addinslot", false, InputSlot.class, InputSlotDialog.class));
+		add(new WYSIWYGComponentRegistration<>("output_slot", "addoutslot", false, OutputSlot.class, OutputSlotDialog.class));
+	}};
 
 	public WYSIWYG editor = new WYSIWYG(this);
 
@@ -74,12 +87,6 @@ public class WYSIWYGEditor extends JPanel {
 
 	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public JButton button = new JButton(UIRES.get("32px.addbutton"));
-	public JButton text = new JButton(UIRES.get("32px.addtextinput"));
-	public JButton slot1 = new JButton(UIRES.get("32px.addinslot"));
-	public JButton slot2 = new JButton(UIRES.get("32px.addoutslot"));
-	public JButton checkbox = new JButton(UIRES.get("32px.addcheckbox"));
-
 	public JComboBox<String> lol = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
 
 	private boolean opening = false;
@@ -96,6 +103,8 @@ public class WYSIWYGEditor extends JPanel {
 	public JPanel ovst = new JPanel();
 
 	public JPanel sidebar = new JPanel(new BorderLayout(0, 0));
+
+	private final Map<WYSIWYGComponentRegistration<?>, JButton> addComponentButtonsMap = new HashMap<>();
 
 	public WYSIWYGEditor(final MCreator mcreator, boolean isNotOverlayType) {
 		super(new BorderLayout(5, 0));
@@ -225,47 +234,25 @@ public class WYSIWYGEditor extends JPanel {
 		add.setOpaque(false);
 		add.setLayout(new BoxLayout(add, BoxLayout.PAGE_AXIS));
 
-		button.addActionListener(event -> new ButtonDialog(this, null));
-
-		JButton image = new JButton(UIRES.get("32px.addimage"));
-		JButton label = new JButton(UIRES.get("32px.addlabel"));
-
-		label.addActionListener(event -> new LabelDialog(this, null));
-		image.addActionListener(event -> new ImageDialog(this, null));
-
-		button.setMargin(new Insets(0, 0, 0, 0));
-		button.setToolTipText((L10N.t("elementgui.gui.add_button")));
-
-		label.setMargin(new Insets(0, 0, 0, 0));
-		label.setToolTipText((L10N.t("elementgui.gui.add_text_label")));
-
-		image.setMargin(new Insets(0, 0, 0, 0));
-		image.setToolTipText((L10N.t("elementgui.gui.add_image")));
-
-		text.setMargin(new Insets(0, 0, 0, 0));
-		text.setToolTipText((L10N.t("elementgui.gui.add_text_input")));
-
-		slot1.setMargin(new Insets(0, 0, 0, 0));
-		slot1.setToolTipText((L10N.t("elementgui.gui.add_input_slot")));
-
-		slot2.setMargin(new Insets(0, 0, 0, 0));
-		slot2.setToolTipText((L10N.t("elementgui.gui.add_output_slot")));
-
-		checkbox.setMargin(new Insets(0, 0, 0, 0));
-		checkbox.setToolTipText((L10N.t("elementgui.gui.add_checkbox")));
-
-		add.add(label);
-		add.add(button);
-		add.add(image);
-		add.add(checkbox);
-		add.add(text);
-		add.add(slot1);
-		add.add(slot2);
-
-		text.addActionListener(event -> new TextFieldDialog(this, null));
-		slot1.addActionListener(e -> new InputSlotDialog(this, null));
-		slot2.addActionListener(e -> new OutputSlotDialog(this, null));
-		checkbox.addActionListener(e -> new CheckboxDialog(this, null));
+		for (WYSIWYGComponentRegistration<?> componentRegistration : COMPONENT_REGISTRY) {
+			if (isNotOverlayType || componentRegistration.worksInOverlay()) {
+				JButton componentButton = new JButton(UIRES.get("32px." + componentRegistration.icon()));
+				componentButton.setToolTipText((L10N.t("elementgui.gui.add_" + componentRegistration.machineName())));
+				componentButton.setMargin(new Insets(0, 0, 0, 0));
+				componentButton.addActionListener(e -> {
+					try {
+						componentRegistration.editor()
+								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
+								.newInstance(this, null);
+					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+							 InvocationTargetException ex) {
+						throw new RuntimeException(ex);
+					}
+				});
+				add.add(componentButton);
+				addComponentButtonsMap.put(componentRegistration, componentButton);
+			}
+		}
 
 		snapOnGrid.setOpaque(false);
 		snapOnGrid.addActionListener(event -> {
@@ -346,8 +333,7 @@ public class WYSIWYGEditor extends JPanel {
 					int n = JOptionPane.showConfirmDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
 							(L10N.t("common.warning")), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
 					if (n == 0) {
-						slot1.setEnabled(false);
-						slot2.setEnabled(false);
+						setSlotComponentsEnabled(false);
 
 						List<GUIComponent> tmplist = new ArrayList<>(components);
 						List<GUIComponent> deathNote = new ArrayList<>();
@@ -367,8 +353,7 @@ public class WYSIWYGEditor extends JPanel {
 					if ((int) spa2.getValue() < 166)
 						spa2.setValue(166);
 
-					slot1.setEnabled(true);
-					slot2.setEnabled(true);
+					setSlotComponentsEnabled(true);
 				}
 			});
 
@@ -462,26 +447,30 @@ public class WYSIWYGEditor extends JPanel {
 	protected void editCurrentlySelectedComponent() {
 		if (list.getSelectedValue() != null) {
 			GUIComponent component = list.getSelectedValue();
-			if (component instanceof Label) {
-				component = new LabelDialog(this, (Label) component).getEditingComponent();
-			} else if (component instanceof Button) {
-				component = new ButtonDialog(this, (Button) component).getEditingComponent();
-			} else if (component instanceof TextField) {
-				component = new TextFieldDialog(this, (TextField) component).getEditingComponent();
-			} else if (component instanceof InputSlot) {
-				component = new InputSlotDialog(this, (InputSlot) component).getEditingComponent();
-			} else if (component instanceof OutputSlot) {
-				component = new OutputSlotDialog(this, (OutputSlot) component).getEditingComponent();
-			} else if (component instanceof Image) {
-				component = new ImageDialog(this, (Image) component).getEditingComponent();
-			} else if (component instanceof Checkbox) {
-				component = new CheckboxDialog(this, (Checkbox) component).getEditingComponent();
-			} else {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.gui.edit_component_message"),
-						L10N.t("elementgui.gui.edit_component_title"), JOptionPane.WARNING_MESSAGE);
+
+			for (WYSIWYGComponentRegistration<?> componentRegistration : COMPONENT_REGISTRY) {
+				if (componentRegistration.component() == component.getClass() && componentRegistration.editor() != null) {
+					try {
+						component = componentRegistration.editor()
+								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
+								.newInstance(this, component).getEditingComponent();
+					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+							 InvocationTargetException ex) {
+						throw new RuntimeException(ex);
+					}
+					break;
+				}
 			}
 
 			list.setSelectedValue(component, true);
+		}
+	}
+
+	public void setSlotComponentsEnabled(boolean enable) {
+		for (Map.Entry<WYSIWYGComponentRegistration<?>, JButton> entry : addComponentButtonsMap.entrySet()) {
+			if (Slot.class.isAssignableFrom(entry.getKey().component())) {
+				entry.getValue().setEnabled(enable);
+			}
 		}
 	}
 

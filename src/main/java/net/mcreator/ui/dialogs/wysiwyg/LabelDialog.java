@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class LabelDialog extends AbstractWYSIWYGDialog {
+public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
 		super(editor.mcreator, label);

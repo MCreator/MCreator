@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class OutputSlotDialog extends AbstractWYSIWYGDialog {
+public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
 		super(editor.mcreator, slot);
