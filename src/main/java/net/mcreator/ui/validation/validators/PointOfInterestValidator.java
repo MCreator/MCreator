@@ -39,7 +39,7 @@ public class PointOfInterestValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.containsItem()) {
-			if (exception.containsItem() && holder == exception)
+			if (exception.containsItem() && holder.getBlock().equals(exception.getBlock()))
 				return ValidationResult.PASSED;
 			if (ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream().toList()
 					.contains(holder.getBlock()))
