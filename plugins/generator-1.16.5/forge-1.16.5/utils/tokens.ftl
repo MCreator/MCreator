@@ -1,11 +1,5 @@
 <#function translateTokens source>
-    <#if source?starts_with("<t:") && source?ends_with(">")>
-        <#assign keyCandidate = source.substring(3, source.length() - 1)>
-        <#if keyCandidate.replaceAll("[A-Za-z0-9._]*", "") == "">
-            <#return "new TranslationTextComponent(\"" + keyCandidate + "\")">
-        </#if>
-    </#if>
-    <#local varTokens = source.toString().split("(?=<(VAR|ENBT|BNBT|energy|fluidlevel|t)|(?<=>))")>
+    <#local varTokens = source.toString().split("(?=<(VAR|ENBT|BNBT|energy|fluidlevel)|(?<=>))")>
     <#assign sourceNew = "">
     <#list varTokens as token>
         <#if token.toString()?starts_with("<VAR:integer:")>
@@ -73,15 +67,14 @@
                                             return \"\";
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:text:", "").replace(">", "").toString()) + "\"))>">
-        <#elseif token.toString()?starts_with("<t:")>
-            <#assign sourceNew += "<(new TranslationTextComponent(\"" + token.replace("<t:", "").replace(">", "").toString() + "\").getString())>">
         <#else>
             <#assign sourceNew += token>
         </#if>
     </#list>
-    <#return "\"" + sourceNew?replace(":text>", ".getText()+\"")
+    <#return sourceNew?replace(":text>", ".getText()+\"")
                 ?replace("(?<!\\\\)<", "\"+", "r")?replace("(?<!\\\\)>", "+\"", "r")
-                ?replace("\\\\<", "<")?replace("\\\\>", ">") + "\"">
+                ?replace("\\\\<", "<")?replace("\\\\>", ">")
+    >
 </#function>
 
 <#function translateGlobalVarName varName>
