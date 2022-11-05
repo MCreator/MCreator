@@ -655,6 +655,9 @@ public class TestWorkspaceDataProvider {
 								null, null, new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, blocksAndItems).getName())));
 				components.add(
+						new InputSlot(4, "slot3", 20, 30, Color.green, !_true, _true, new Procedure("procedure5"),
+								null, null, new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
+				components.add(
 						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
 								new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, "sot", 243, 563, Color.black, _true, _true, null, null, null));
