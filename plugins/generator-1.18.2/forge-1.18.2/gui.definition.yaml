@@ -21,9 +21,6 @@ global_templates:
 localizationkeys:
   - fromlist: data.getComponentsOfType('textfield')
     key: gui.@modid.@registryname.@[name]
-    mapto: text
-  - fromlist: data.getComponentsOfType('textfield')
-    key: gui.@modid.@registryname.@[name].placeholder
     mapto: placeholder
   - fromlist: data.getComponentsOfType('button')
     key: gui.@modid.@registryname.@[name]

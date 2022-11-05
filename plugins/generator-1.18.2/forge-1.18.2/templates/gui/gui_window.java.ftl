@@ -160,18 +160,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
 				${component.name} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder"))
+				${component.width}, ${component.height}, new TranslatableComponent("gui.${modid}.${registryname}.${component.name}"))
 				<#if component.placeholder?has_content>
 				{
 					{
-						setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder").getString());
+						setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}").getString());
 					}
 
 					@Override public void insertText(String text) {
 						super.insertText(text);
 
 						if (getValue().isEmpty())
-							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder").getString());
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}").getString());
 						else
 							setSuggestion(null);
 					}
@@ -180,7 +180,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 						super.moveCursorTo(pos);
 
 						if (getValue().isEmpty())
-							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder").getString());
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}").getString());
 						else
 							setSuggestion(null);
 					}
