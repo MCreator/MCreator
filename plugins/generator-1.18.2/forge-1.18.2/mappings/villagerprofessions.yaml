@@ -1,7 +1,7 @@
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
-  - "@JavaModNameProfessions.@REGISTRYNAME"
-  - "@JavaModNameProfessions.@REGISTRYNAME_POI"
+  - "@JavaModNameVillagerProfessions.@REGISTRYNAME.get()"
+  - "@JavaModNameVillagerProfessions.@REGISTRYNAME_POI.get()"
 _default:
   - VillagerProfession.ARMORER
   - Blocks.BLAST_FURNACE
