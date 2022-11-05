@@ -74,7 +74,7 @@
                                         }
                                         }.getValue(new BlockPos((int) x, (int) y, (int) z), \"" + (token.replace("<BNBT:text:", "").replace(">", "").toString()) + "\"))>">
         <#elseif token.toString()?starts_with("<t:")>
-            <#assign sourceNew += "<(Component.translatable(\"" + token.substring(3, token.length() - 1).toString() + "\").getString())>">
+            <#assign sourceNew += "<(Component.translatable(\"" + token.replace("<t:", "").replace(">", "").toString() + "\").getString())>">
         <#else>
             <#assign sourceNew += token>
         </#if>

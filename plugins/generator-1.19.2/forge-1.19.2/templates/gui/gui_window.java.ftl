@@ -161,7 +161,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
 				${component.name} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, Component.literal("${component.placeholder}"))
+				${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.name}.placeholder"))
 				<#if component.placeholder?has_content>
 				{
 					{
