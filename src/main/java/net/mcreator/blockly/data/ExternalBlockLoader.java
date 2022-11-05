@@ -154,6 +154,7 @@ public class ExternalBlockLoader {
 		toolbox.put("text", new ArrayList<>());
 		toolbox.put("time", new ArrayList<>());
 		toolbox.put("advanced", new ArrayList<>());
+		toolbox.put("emptyadvanced", new ArrayList<>());
 		toolbox.put("actions", new ArrayList<>());
 
 		// Handle built-in categories
