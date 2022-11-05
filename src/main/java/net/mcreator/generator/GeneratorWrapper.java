@@ -20,10 +20,8 @@ package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
-import net.mcreator.element.RecipeType;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
@@ -72,49 +70,28 @@ import java.util.stream.Collectors;
 		}).collect(Collectors.toList());
 	}
 
-	public RecipeType getRecipeElementType(String elementName) {
-		try {
-			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getType()
-					.getRecipeType();
-		} catch (Exception e) {
-			generator.getLogger().warn("Failed to determine recipe type for: " + elementName, e);
-			return RecipeType.NONE;
-		}
-	}
-
 	public String getRegistryNameFromFullName(String elementName) {
 		try {
 			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getRegistryName();
 		} catch (Exception e) {
-			generator.getLogger().warn("Failed to determine recipe type for: " + elementName, e);
+			generator.getLogger().warn("Failed to determine registry name for: " + elementName, e);
 			return NameMapper.UNKNOWN_ELEMENT;
 		}
 	}
 
 	public boolean isBlock(String elementName) {
-		String ext = getElementExtension(elementName);
-		if (ext.equals("helmet") || ext.equals("body") || ext.equals("legs") || ext.equals("boots") || ext.equals(
-				"bucket"))
+		ModElement element = getWorkspace().getModElementByName(getElementPlainName(elementName));
+		if (element != null)
+			return element.getMCItems().stream().anyMatch(e -> e.getName().equals(elementName) && e.getType().equals("block"));
+		else {
+			generator.getLogger().warn("Failed to determine mod element for: " + elementName);
 			return false;
-
-		return this.isRecipeTypeBlockOrBucket(elementName);
-	}
-
-	public boolean isRecipeTypeBlockOrBucket(String elementName) {
-		RecipeType recipeType = this.getRecipeElementType(elementName);
-		return recipeType == RecipeType.BLOCK || recipeType == RecipeType.BUCKET;
+		}
 	}
 
 	public String getElementPlainName(String elementName) {
 		return elementName.replace("CUSTOM:", "").replace(".block", "").replace(".helmet", "").replace(".body", "")
 				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");
-	}
-
-	public String getElementExtension(String elementName) {
-		if (elementName.contains(".")) {
-			return FilenameUtilsPatched.getExtension(elementName);
-		}
-		return elementName;
 	}
 
 	public String getRegistryNameForModElement(String modElement) {
