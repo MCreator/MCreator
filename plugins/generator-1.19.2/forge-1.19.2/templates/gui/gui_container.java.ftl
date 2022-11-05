@@ -146,8 +146,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 							}
 						<#elseif component.getClass().getSimpleName() == "InputSlot">
 							<#if component.inputLimit.toString()?has_content>
-							 @Override public boolean mayPlace(ItemStack stack) {
-								 return (${mappedMCItemToItem(component.inputLimit)} == stack.getItem());
+							 @Override public boolean mayPlace(ItemStack itemstack) {
+								 return (${mappedMCItemToItemOrTag(component.inputLimit, "ITEM")}
+								 <#if !component.inputLimit.getUnmappedValue().startsWith("TAG:")> == itemstack.getItem()</#if>);
 							 }
 							</#if>
 						<#elseif component.getClass().getSimpleName() == "OutputSlot">
