@@ -49,7 +49,7 @@ import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
 import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
 import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
-import net.mcreator.element.converter.fv34.GUIButtonNameFixer;
+import net.mcreator.element.converter.fv35.GUIButtonNameFixer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;

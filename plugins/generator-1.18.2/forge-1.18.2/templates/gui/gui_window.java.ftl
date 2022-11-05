@@ -164,14 +164,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if component.placeholder?has_content>
 				{
 					{
-						setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}").getString());
+						setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder").getString());
 					}
 
 					@Override public void insertText(String text) {
 						super.insertText(text);
 
 						if (getValue().isEmpty())
-							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}").getString());
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder").getString());
 						else
 							setSuggestion(null);
 					}
@@ -180,7 +180,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 						super.moveCursorTo(pos);
 
 						if (getValue().isEmpty())
-							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}").getString());
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.name}.placeholder").getString());
 						else
 							setSuggestion(null);
 					}

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv34;
+package net.mcreator.element.converter.fv35;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -57,6 +57,6 @@ public class GUIButtonNameFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 33;
+		return 35;
 	}
 }
