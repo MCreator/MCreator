@@ -1,1 +1,1 @@
-(${input$entity}.isFreezing())
+/*@int*/(${input$entity}.getTicksFrozen())
