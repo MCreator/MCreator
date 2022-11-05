@@ -65,7 +65,7 @@ public class ${JavaModName}VillagerProfessions {
         private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
         @SafeVarargs
-        public ${JavaModName}VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        public VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
             super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
             this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
         }
