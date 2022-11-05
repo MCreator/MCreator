@@ -41,7 +41,6 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -1234,75 +1233,13 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0) {
-			JPopupMenu codeDropdown = new JPopupMenu();
-			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-
-			for (GeneratorTemplate modElementFile : modElementFiles)
-				codeDropdown.add(newModElementTemplateItem(modElementFile.getFile()));
-
-			if (modElementGlobalFiles.size() > 0) {
-				if (modElementFiles.size() > 0)
-					codeDropdown.addSeparator();
-
-				for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
-					codeDropdown.add(newModElementTemplateItem(modElementGlobalFile.getFile()));
-			}
-
-			if (modElementListFiles.size() > 0) {
-				if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
-					codeDropdown.addSeparator();
-
-				for (GeneratorTemplatesList fileList : modElementListFiles) {
-					if (fileList.templates().size() > 0) {
-						JMenu listMenu = new JMenu(fileList.groupName());
-						listMenu.setIcon(UIRES.get("16px.list.gif"));
-						listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-						listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-						listMenu.setIconTextGap(8);
-						listMenu.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-
-						int listFilesFound = 0;
-						for (int i = 0; i < fileList.listData().size(); i++) {
-							if (i > 0)
-								listMenu.addSeparator();
-
-							for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
-								if (fileList.templates().get(modElementListFile).get(i)) {
-									listFilesFound++;
-									File indexedFile = fileList.processTokens(modElementListFile, i);
-									listMenu.add(newModElementTemplateItem(indexedFile));
-								}
-							}
-						}
-
-						if (listFilesFound > 0)
-							codeDropdown.add(listMenu);
-					}
-				}
-			}
-
-			codeDropdown.show(component, x, y);
-		} else {
-			if (modElementFiles.size() == 1)
-				ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
-			else if (modElementGlobalFiles.size() == 1)
-				ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
-		}
-	}
-
-	private JMenuItem newModElementTemplateItem(File template) {
-		JMenuItem item = new JMenuItem(
-				"<html>" + template.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-						.getWorkspaceFolder().toPath().relativize(template.toPath()));
-		item.setIcon(FileIcons.getIconForFile(template));
-		item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-		item.setIconTextGap(8);
-		item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template));
-		return item;
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0)
+			new ModElementCodeDropdown(mcreator, modElementFiles, modElementGlobalFiles, modElementListFiles).show(
+					component, x, y);
+		else if (modElementFiles.size() == 1)
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
+		else if (modElementGlobalFiles.size() == 1)
+			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
 	}
 
 	private void deleteCurrentlySelectedModElement() {
