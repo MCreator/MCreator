@@ -1599,11 +1599,10 @@ public class TestWorkspaceDataProvider {
 			return gamerule;
 		} else if (ModElementType.VILLAGERPROFESSION.equals(modElement.getType())) {
 			VillagerProfession profession = new VillagerProfession(modElement);
-			profession.name = modElement.getName();
 			profession.displayName = modElement.getName();
 			MItemBlock poi = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
-			profession.oldPOI = poi;
+			profession.savedPointOfInterest = poi;
 			profession.pointOfInterest = poi;
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
