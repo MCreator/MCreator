@@ -1,1 +1,0 @@
-(world.getWorldInfo().getDayTime())

@@ -30,7 +30,7 @@ import java.util.List;
 
 public class RegistryNameValidator implements Validator {
 
-	private final String name;
+	protected final String name;
 	private final JTextField holder;
 
 	private boolean allowEmpty = false;
@@ -62,6 +62,10 @@ public class RegistryNameValidator implements Validator {
 	public RegistryNameValidator setAllowEmpty(boolean allowEmpty) {
 		this.allowEmpty = allowEmpty;
 		return this;
+	}
+
+	protected String getText() {
+		return holder.getText();
 	}
 
 	@Override public ValidationResult validate() {

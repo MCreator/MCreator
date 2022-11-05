@@ -226,6 +226,7 @@ public class Generator implements IGenerator, Closeable {
 			this.generateElement(element, true);
 			return true;
 		} catch (TemplateGeneratorException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

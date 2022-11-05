@@ -62,8 +62,9 @@ import java.util.Locale;
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), BlocklyEditorType.COMMAND_ARG,
-					this.argsxml, this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
+					BlocklyEditorType.COMMAND_ARG, this.argsxml,
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());

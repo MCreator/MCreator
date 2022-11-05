@@ -33,4 +33,9 @@ public record GeneratorFile(String contents, File file, String writer) {
 	@Override public int hashCode() {
 		return file.hashCode();
 	}
+
+	@Override public String toString() {
+		return file.toString();
+	}
+
 }

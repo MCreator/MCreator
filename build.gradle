@@ -1,9 +1,9 @@
 plugins {
     id "java"
     id "idea"
-    id "de.undercouch.download" version "5.1.0"
+    id "de.undercouch.download" version "5.3.0"
     id 'edu.sc.seis.launch4j' version '2.5.3'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.5'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.6'
     id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
@@ -61,7 +61,7 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
     implementation group: 'foxtrot', name: 'foxtrot-core', version: '4.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.26.0.Final'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.26.0.Final'
@@ -70,51 +70,51 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.18.0'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '6.2.0.202206071550-r'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.36'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '6.3.0.202209071007-r'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.3'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.1.1'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.2.0'
-    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.2.0'
-    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.1.4') {
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.0'
+    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.0'
+    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.2'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.1'
 
     // JFX natives
-    win64 group: 'org.openjfx', name: 'javafx-base', version: '18.0.2', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-controls', version: '18.0.2', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '18.0.2', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-media', version: '18.0.2', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.2', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-swing', version: '18.0.2', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'win'
+    win64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'win'
 
-    mac64 group: 'org.openjfx', name: 'javafx-base', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-media', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.2', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '18.0.2', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac'
+    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac'
 
-    linux64 group: 'org.openjfx', name: 'javafx-base', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-media', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-web', version: '18.0.2', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '18.0.2', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'linux'
+    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'linux'
 }
 
 javafx {
-    version = "18.0.2"
+    version = "19"
     modules = ['javafx.web', 'javafx.swing']
     configuration = 'provided' // we provide natives during deployment or with SDK
 }

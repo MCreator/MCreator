@@ -43,7 +43,7 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			<#if data.density != 1000>.density(${data.density})</#if>
 			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
 			<#if data.temperature != 300>.temperature(${data.temperature})</#if>
-			<#if data.isGas>.gaseous()</#if>
+			<#if data.density lt 0>.gaseous()</#if>
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
 			.sound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))

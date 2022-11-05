@@ -43,7 +43,7 @@ public class SetVariableBlock implements IBlockGenerator {
 
 	public SetVariableBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.map(s -> s = "variables_set_" + s).toArray(String[]::new);
+				.map(s -> "variables_set_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {

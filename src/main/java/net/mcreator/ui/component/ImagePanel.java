@@ -69,21 +69,22 @@ public class ImagePanel extends JPanel {
 	}
 
 	@Override public void paintComponent(Graphics g) {
-		g.setColor(defaultColor);
-		g.fillRect(0, 0, getSize().width, getSize().height);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(defaultColor);
+		g2d.fillRect(0, 0, getSize().width, getSize().height);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
 		if (img != null) {
 			if (original)
-				g.drawImage(img, 0, offsetY, this);
+				g2d.drawImage(img, 0, offsetY, this);
 			else if (fitToWidth)
-				g.drawImage(img, 0, offsetY, getSize().width,
+				g2d.drawImage(img, 0, offsetY, getSize().width,
 						(int) ((float) getSize().width * ((float) img.getHeight(this) / (float) img.getWidth(this))),
 						this);
 			else if (!keepRatio)
-				g.drawImage(img, 0, offsetY, getSize().width, getSize().height, this);
+				g2d.drawImage(img, 0, offsetY, getSize().width, getSize().height, this);
 			else
-				g.drawImage(ImageUtils.cover(img, getSize()), 0, offsetY, this);
-
+				g2d.drawImage(ImageUtils.cover(img, getSize()), 0, offsetY, this);
 		}
 	}
 

@@ -1,0 +1,1 @@
+if (${input$entity} instanceof Player _player) _player.giveExperienceLevels(-(${opt.toInt(input$xpamount)}));
