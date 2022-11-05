@@ -53,17 +53,11 @@ public class ${JavaModName}VillagerProfessions {
 
     @SuppressWarnings("SameParameterValue")
     private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent> soundEventSuppliers) {
-        return PROFESSIONS.register(name, () -> new Profession(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
+        return PROFESSIONS.register(name, () -> new VillagerProfession(${JavaModName}.MODID + ":" + name, (typeHolder) -> typeHolder.get() == poiType.get(), (secTypeHolder) -> secTypeHolder.get() == poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers.get()));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
-    }
-
-    public static class Profession extends VillagerProfession {
-        public Profession(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent> soundEventSuppliers) {
-            super(name, (typeHolder) -> typeHolder.get() == pointOfInterest, (secTypeHolder) -> secTypeHolder.get() == pointOfInterest, specificItems, relatedWorldBlocks, soundEventSuppliers.get());
-        }
     }
 }
 <#-- @formatter:on -->
