@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../mcelements.ftl">
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 
@@ -146,9 +147,14 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 							}
 						<#elseif component.getClass().getSimpleName() == "InputSlot">
 							<#if component.inputLimit.toString()?has_content>
-							 @Override public boolean mayPlace(ItemStack itemstack) {
-								 return (${mappedMCItemToItemOrTag(component.inputLimit, "ITEM")}
-								 <#if !component.inputLimit.getUnmappedValue().startsWith("TAG:")> == itemstack.getItem()</#if>);
+							 @Override public boolean mayPlace(ItemStack stack) {
+                                <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+                                    <#assign tag = "\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\"">
+                                    return stack.is(TagKey.create(Registry.ITEM_REGISTRY," + ${toResourceLocation(component.inputLimit)}));
+                                <#else>
+                                    return ${mappedMCItemToItem(component.inputLimit)}
+                                </#if>
+								 return (${mappedMCItemToItemOrTag(component.inputLimit, "ITEM")} == itemstack.getItem());
 							 }
 							</#if>
 						<#elseif component.getClass().getSimpleName() == "OutputSlot">
