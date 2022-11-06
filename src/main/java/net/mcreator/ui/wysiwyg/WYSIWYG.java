@@ -45,16 +45,12 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	public final static int W = 427;
 	public final static int H = 240;
 
-	private static final AffineTransform affinetransform = new AffineTransform();
-	public static final FontRenderContext frc = new FontRenderContext(affinetransform, true, false);
+	public static final FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, false);
 
 	public static Font fontMC;
 
-	private ActionListener positionDefinedListener = null;
-
 	boolean isNotOverlayType = true;
 
-	private boolean positioningMode = false;
 	private boolean positioningModeSettingWidth = false;
 	private boolean componentMoveMode;
 	private boolean componentDragMode;
@@ -63,9 +59,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	@Nullable private GUIComponent selected;
 
-	public int newlyAddedComponentPosX, newlyAddedComponentPosY;
 	private int ox, oy;
-	public int ow, oh;
+	private int ow, oh;
 	private int dragOffsetX, dragOffsetY;
 
 	private final WYSIWYGEditor wysiwygEditor;
@@ -133,18 +128,6 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		repaint();
 	}
 
-	public void setPositionDefinedListener(ActionListener positionDefinedListener) {
-		this.positionDefinedListener = positionDefinedListener;
-	}
-
-	public void setPositioningMode(int ow, int oh) {
-		positioningMode = true;
-		this.ow = ow;
-		this.oh = oh;
-		owner.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-		repaint();
-	}
-
 	@Override public void paint(Graphics gx) {
 		Graphics2D g = (Graphics2D) gx;
 
@@ -188,7 +171,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			g.setStroke(original);
 		}
 
-		if (positioningMode || componentMoveMode) {
+		if (componentMoveMode) {
 			float[] dash = { 2.0f };
 			g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
 			g.setColor(new Color(255, 255, 255, 150));
@@ -196,7 +179,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			g.drawLine(0, oy * 2, getWidth(), oy * 2);
 			g.drawLine(ox * 2, 0, ox * 2, getHeight());
 
-			if (positioningMode || positioningModeSettingWidth) {
+			if (positioningModeSettingWidth) {
 				if ((ow != 0 || oh != 0) && (selected == null || selected.isSizeKnown())) {
 					g.drawLine(0, oy * 2 + oh * 2, getWidth(), oy * 2 + oh * 2);
 					g.drawLine(ox * 2 + ow * 2, 0, ox * 2 + ow * 2, getHeight());
@@ -318,7 +301,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 		if (positioningModeSettingWidth) {
 			ow = Math.abs(ox - ex);
-		} else if (positioningMode || componentMoveMode) {
+		} else if (componentMoveMode) {
 			ox = ex;
 			oy = ey;
 		}
@@ -334,34 +317,13 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		ex = (int) Math.round(ex / 2.0);
 		ey = (int) Math.round(ey / 2.0);
 
-		if (positioningMode && (e.getButton() == 1 || !(selected instanceof SizedComponent))) {
-			positioningMode = false;
-			positioningModeSettingWidth = false;
-
-			owner.setCursor(Cursor.getDefaultCursor());
-
-			newlyAddedComponentPosX = ox;
-			newlyAddedComponentPosY = oy;
-
-			if (positionDefinedListener != null)
-				positionDefinedListener.actionPerformed(new ActionEvent("a", ActionEvent.ACTION_PERFORMED, "a"));
-		} else if (positioningMode) {
-			newlyAddedComponentPosX = ox;
-			newlyAddedComponentPosY = oy;
-
-			positioningModeSettingWidth = true;
-		} else if (componentMoveMode) {
-			if (e.getButton() == 1 || !(selected instanceof SizedComponent)) {
+		if (componentMoveMode) {
+			if (e.getButton() == 1 || !(selected instanceof SizedComponent) || positioningModeSettingWidth) {
 				finishGUIComponentMove();
 			} else {
-				newlyAddedComponentPosX = ox;
-				newlyAddedComponentPosY = oy;
-
 				positioningModeSettingWidth = true;
 			}
 		} else { // "click-on-component" mode
-			owner.setCursor(Cursor.getDefaultCursor());
-
 			GUIComponent component = getGUIComponentAt(ex, ey);
 			if (component != null) {
 				if (e.getClickCount() > 1) {
@@ -468,16 +430,18 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				component.x = ox;
 				component.y = oy;
 				if (positioningModeSettingWidth && component instanceof net.mcreator.element.parts.gui.SizedComponent) {
-					((net.mcreator.element.parts.gui.SizedComponent) component).width = ow;
-					((net.mcreator.element.parts.gui.SizedComponent) component).height = oh;
+					((SizedComponent) component).width = ow;
+					((SizedComponent) component).height = oh;
 				}
 				break;
 			}
 		}
 		componentMoveMode = false;
 		positioningModeSettingWidth = false;
+
+		owner.setCursor(Cursor.getDefaultCursor());
+
 		repaint();
-		setCursor(Cursor.getDefaultCursor());
 	}
 
 }

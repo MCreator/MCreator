@@ -95,11 +95,12 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			String text = (String) name.getSelectedItem();
 			if (text != null) {
 				if (label == null) {
-					editor.editor.setPositioningMode(0, 0);
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-							new Label(text, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, text, cola.getColor(),
-									displayCondition.getSelectedProcedure()))));
+					Label component = new Label(text, 0, 0, text, cola.getColor(), displayCondition.getSelectedProcedure());
+
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(label);
 					editor.components.remove(label);
