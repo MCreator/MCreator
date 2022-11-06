@@ -87,7 +87,7 @@ public class WYSIWYGEditor extends JPanel {
 
 	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public JComboBox<String> lol = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
 
 	private boolean opening = false;
 
@@ -323,13 +323,13 @@ public class WYSIWYGEditor extends JPanel {
 				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), lol);
+		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
 		if (isNotOverlayType)
-			lol.addActionListener(event -> {
-				invOffX.setEnabled(lol.getSelectedIndex() == 1);
-				invOffY.setEnabled(lol.getSelectedIndex() == 1);
-				if (lol.getSelectedIndex() == 0 && !isOpening()) {
+			guiType.addActionListener(event -> {
+				invOffX.setEnabled(guiType.getSelectedIndex() == 1);
+				invOffY.setEnabled(guiType.getSelectedIndex() == 1);
+				if (guiType.getSelectedIndex() == 0 && !isOpening()) {
 					int n = JOptionPane.showConfirmDialog(mcreator, (L10N.t("elementgui.gui.warning_switch_gui")),
 							(L10N.t("common.warning")), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
 					if (n == 0) {
@@ -345,9 +345,9 @@ public class WYSIWYGEditor extends JPanel {
 						components.clear();
 						components.addAll(tmplist);
 					} else {
-						lol.setSelectedIndex(1);
+						guiType.setSelectedIndex(1);
 					}
-				} else if (lol.getSelectedIndex() == 1) {
+				} else if (guiType.getSelectedIndex() == 1) {
 					if ((int) spa1.getValue() < 176)
 						spa1.setValue(176);
 					if ((int) spa2.getValue() < 166)
@@ -366,7 +366,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		spa1.addChangeListener(event -> checkAndUpdateGUISize());
 		spa2.addChangeListener(event -> checkAndUpdateGUISize());
-		lol.addActionListener(e -> checkAndUpdateGUISize());
+		guiType.addActionListener(e -> checkAndUpdateGUISize());
 		renderBgLayer.addActionListener(e -> checkAndUpdateGUISize());
 
 		if (isNotOverlayType) {
@@ -479,7 +479,7 @@ public class WYSIWYGEditor extends JPanel {
 	}
 
 	public JComboBox<String> getGUITypeSelector() {
-		return lol;
+		return guiType;
 	}
 
 	private boolean isOpening() {
