@@ -37,7 +37,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class ImageDialog extends AbstractWYSIWYGDialog {
+public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
 		super(editor.mcreator, image);
