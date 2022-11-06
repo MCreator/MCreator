@@ -37,7 +37,10 @@ package ${package}.world.features;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-public class ${name}Feature extends ${featuretype} {
+<#assign configuration = generator.map(featuretype, "features", 1)>
+
+<#compress>
+public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 	public static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<${configuration}, ?>> CONFIGURED_FEATURE = null;
@@ -91,4 +94,4 @@ public class ${name}Feature extends ${featuretype} {
 		return super.place(context);
 	}
 	</#if>
-}
+}</#compress>
