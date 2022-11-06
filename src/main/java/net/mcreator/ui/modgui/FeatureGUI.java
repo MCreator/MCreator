@@ -105,10 +105,6 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
 
 		propertiesAndCondition.setOpaque(false);
-		propertiesAndCondition.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.feature.properties"), 0, 0, properties.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		externalBlocks = BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator);
@@ -131,8 +127,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		featureProcedure.setPreferredSize(new Dimension(0,460));
 
-		page1.add("Center", PanelUtils.northAndCenterElement(
-				PanelUtils.totalCenterInPanel(propertiesAndCondition), featureProcedure));
+		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndCondition), featureProcedure));
 
 		page1.setOpaque(false);
 		addPage(page1);
