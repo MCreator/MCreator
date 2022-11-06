@@ -56,8 +56,8 @@ import java.util.stream.Collectors;
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	private final VTextField displayName = new VTextField(30);
-	private final MCItemHolder savedPointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+	private final MCItemHolder savedPointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
@@ -157,7 +157,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(mainPanel));
 
 		if (!isEditingMode()) {
-			displayName.setText(StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT)));
+			displayName.setText(StringUtils.machineToReadableName(modElement.getName()));
 		}
 	}
 
@@ -179,7 +179,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public void openInEditingMode(VillagerProfession profession) {
 		displayName.setText(profession.displayName);
-		savedPointOfInterest.setBlock(profession.savedPointOfInterest);
+		savedPointOfInterest.setBlock(profession.pointOfInterest);
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		hat.setSelectedItem(profession.hat);
@@ -190,7 +190,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	@Override public VillagerProfession getElementFromGUI() {
 		VillagerProfession profession = new VillagerProfession(modElement);
 		profession.displayName = displayName.getText();
-		profession.savedPointOfInterest = pointOfInterest.getBlock();
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();

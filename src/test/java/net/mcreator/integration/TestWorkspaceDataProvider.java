@@ -1602,7 +1602,6 @@ public class TestWorkspaceDataProvider {
 			profession.displayName = modElement.getName();
 			MItemBlock poi = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
-			profession.savedPointOfInterest = poi;
 			profession.pointOfInterest = poi;
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
