@@ -112,7 +112,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		repaint();
 	}
 
-	void moveMode() {
+	public void moveMode() {
 		owner.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		componentMoveMode = true;
 
@@ -175,12 +175,15 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			g.fillRect(cx * 2, cy * 2, cw * 2, ch * 2);
 
 			Stroke original = g.getStroke();
-			Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 }, 0);
-
-			g.setStroke(dashed);
-
+			g.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 }, 0));
 			g.setColor(Color.white);
-			g.drawRect(cx * 2, cy * 2, cw * 2, ch * 2);
+
+			if (selected.isSizeKnown()) {
+				g.drawRect(cx * 2, cy * 2, cw * 2, ch * 2);
+			} else {
+				g.drawLine(cx * 2, cy * 2 + ch * 2, cx * 2 + 20, cy * 2 + ch * 2);
+				g.drawLine(cx * 2, cy * 2, cx * 2, cy * 2 + ch * 2);
+			}
 
 			g.setStroke(original);
 		}
@@ -194,13 +197,15 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			g.drawLine(ox * 2, 0, ox * 2, getHeight());
 
 			if (positioningMode || positioningModeSettingWidth) {
-				g.drawLine(0, oy * 2 + oh * 2, getWidth(), oy * 2 + oh * 2);
-				g.drawLine(ox * 2 + ow * 2, 0, ox * 2 + ow * 2, getHeight());
+				if ((ow != 0 || oh != 0) && (selected == null || selected.isSizeKnown())) {
+					g.drawLine(0, oy * 2 + oh * 2, getWidth(), oy * 2 + oh * 2);
+					g.drawLine(ox * 2 + ow * 2, 0, ox * 2 + ow * 2, getHeight());
 
-				g.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 }, 0));
-				g.setColor(Color.white);
-				g.drawRect(ox * 2, oy * 2, ow * 2, oh * 2);
-			} else if (selected != null) {
+					g.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 }, 0));
+					g.setColor(Color.white);
+					g.drawRect(ox * 2, oy * 2, ow * 2, oh * 2);
+				}
+			} else if (selected != null && selected.isSizeKnown()) {
 				g.drawLine(0, oy * 2 + selected.getHeight(wysiwygEditor.mcreator.getWorkspace()) * 2, getWidth(),
 						oy * 2 + selected.getHeight(wysiwygEditor.mcreator.getWorkspace()) * 2);
 				g.drawLine(ox * 2 + selected.getWidth(wysiwygEditor.mcreator.getWorkspace()) * 2, 0,
@@ -250,7 +255,11 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			}
 		}
 
-		wysiwygEditor.components.stream().sorted().forEach(component -> {
+		List<GUIComponent> toDraw = new ArrayList<>(wysiwygEditor.components);
+		if (selected != null && !toDraw.contains(selected))
+			toDraw.add(selected);
+
+		toDraw.stream().sorted().forEach(component -> {
 			g.setColor(Color.gray.brighter().brighter());
 			Font tmp = g.getFont();
 
@@ -325,7 +334,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		ex = (int) Math.round(ex / 2.0);
 		ey = (int) Math.round(ey / 2.0);
 
-		if (positioningMode && e.getButton() == 1) {
+		if (positioningMode && (e.getButton() == 1 || !(selected instanceof SizedComponent))) {
 			positioningMode = false;
 			positioningModeSettingWidth = false;
 
@@ -342,7 +351,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 			positioningModeSettingWidth = true;
 		} else if (componentMoveMode) {
-			if (e.getButton() == 1 || !(selected instanceof net.mcreator.element.parts.gui.SizedComponent)) {
+			if (e.getButton() == 1 || !(selected instanceof SizedComponent)) {
 				finishGUIComponentMove();
 			} else {
 				newlyAddedComponentPosX = ox;
@@ -351,6 +360,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				positioningModeSettingWidth = true;
 			}
 		} else { // "click-on-component" mode
+			owner.setCursor(Cursor.getDefaultCursor());
+
 			GUIComponent component = getGUIComponentAt(ex, ey);
 			if (component != null) {
 				if (e.getClickCount() > 1) {

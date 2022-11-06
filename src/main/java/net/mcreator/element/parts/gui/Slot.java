@@ -40,7 +40,7 @@ public abstract class Slot extends GUIComponent {
 	public Procedure onTakenFromSlot;
 	public Procedure onStackTransfer;
 
-	private static transient final Image itemSlot = MinecraftImageGenerator.generateItemSlot();
+	private static final Image itemSlot = MinecraftImageGenerator.generateItemSlot();
 
 	// for deserialization use only, to specify default values
 	@SuppressWarnings("unused") Slot() {

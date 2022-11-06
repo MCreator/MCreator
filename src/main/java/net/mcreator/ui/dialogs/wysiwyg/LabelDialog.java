@@ -25,7 +25,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -96,8 +95,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			String text = (String) name.getSelectedItem();
 			if (text != null) {
 				if (label == null) {
-					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
-					editor.editor.setPositioningMode(textwidth, 16);
+					editor.editor.setPositioningMode(0, 0);
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 							new Label(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text, cola.getColor(),

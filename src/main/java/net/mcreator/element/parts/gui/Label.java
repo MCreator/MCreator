@@ -51,6 +51,10 @@ public class Label extends GUIComponent {
 		return 0;
 	}
 
+	@Override public boolean isSizeKnown() {
+		return false; // one could be using tokens in the label
+	}
+
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) - 1;
 		g.setColor(this.color);

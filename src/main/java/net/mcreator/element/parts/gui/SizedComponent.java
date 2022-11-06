@@ -20,6 +20,9 @@ package net.mcreator.element.parts.gui;
 
 import net.mcreator.workspace.Workspace;
 
+/**
+ * This class is used to represent a GUI component that can have size defined by the user
+ */
 public abstract class SizedComponent extends GUIComponent {
 
 	public int width, height;
