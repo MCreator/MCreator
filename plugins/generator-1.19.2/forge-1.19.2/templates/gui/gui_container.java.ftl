@@ -146,16 +146,15 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 								return false;
 							}
 						<#elseif component.getClass().getSimpleName() == "InputSlot">
-							<#if component.inputLimit.toString()?has_content>
-							 @Override public boolean mayPlace(ItemStack stack) {
-                                <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-                                    <#assign tag = "\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\"">
-                                    return stack.is(TagKey.create(Registry.ITEM_REGISTRY," + ${toResourceLocation(component.inputLimit)}));
-                                <#else>
-                                    return ${mappedMCItemToItem(component.inputLimit)}
-                                </#if>
-								 return (${mappedMCItemToItemOrTag(component.inputLimit, "ITEM")} == itemstack.getItem());
-							 }
+						    <#if component.inputLimit.toString()?has_content>
+                                @Override public boolean mayPlace(ItemStack stack) {
+                                    <#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
+                                        <#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "") + "\"">
+                                        return stack.is(TagKey.create(Registry.ITEM_REGISTRY, ${toResourceLocation(tag)}));
+                                    <#else>
+                                        return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();
+                                    </#if>
+                                }
 							</#if>
 						<#elseif component.getClass().getSimpleName() == "OutputSlot">
 							@Override public boolean mayPlace(ItemStack stack) {

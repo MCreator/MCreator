@@ -1,4 +1,3 @@
-<#include "mcelements.ftl">
 <#function mappedBlockToBlockStateCode mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
@@ -58,15 +57,6 @@
         <#return mappedElementToRegistryEntry(mappedBlock) + generator.isBlock(mappedBlock)?then(".asItem()", "")>
     <#else>
         <#return mappedBlock + mappedBlock?contains("Blocks.")?then(".asItem()","")>
-    </#if>
-</#function>
-
-<#function mappedMCItemToItemOrTag mappedBlock tagType="ITEM">
-    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#assign tag = "\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\"">
-        <#return "itemstack.is(TagKey.create(Registry." + tagType + "_REGISTRY," + toResourceLocation(tag) + "))" >
-    <#else>
-        <#return mappedMCItemToItem(mappedBlock)>
     </#if>
 </#function>
 
