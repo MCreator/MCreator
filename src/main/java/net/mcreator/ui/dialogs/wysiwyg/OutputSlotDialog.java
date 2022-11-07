@@ -26,6 +26,7 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -70,9 +71,6 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
 
-		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
-		options.add(PanelUtils.join(FlowLayout.LEFT, disableStackInteraction));
-
 		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
 		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
 
@@ -97,9 +95,25 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
 
+		LogicProcedureSelector disablePickupCondition = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
+				editor.mcreator, L10N.t("dialog.gui.slot_pickup_condition"), ProcedureSelector.Side.BOTH,
+				L10N.checkbox("condition.common.disable"), 87,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+		disablePickupCondition.refreshList();
+		disablePickupCondition.setOpaque(false);
+
+		LogicProcedureSelector disablePlaceCondition = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_place_condition"),
+				editor.mcreator, L10N.t("dialog.gui.slot_place_condition"), ProcedureSelector.Side.BOTH,
+				L10N.checkbox("condition.common.disable"), 87,
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map"));
+		disablePlaceCondition.refreshList();
+		disablePlaceCondition.setOpaque(false);
+
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, options));
+		add("North", PanelUtils.join(FlowLayout.LEFT, PanelUtils.westAndEastElement(options,
+				PanelUtils.gridElements(2, 1, disablePickupCondition, disablePlaceCondition))));
+
 		setTitle(L10N.t("dialog.gui.slot_output_editor_title"));
 		JButton ok = L10N.button("dialog.gui.save_slot");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -114,7 +128,8 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 			eh.setSelectedProcedure(slot.onSlotChanged);
 			eh2.setSelectedProcedure(slot.onTakenFromSlot);
 			eh3.setSelectedProcedure(slot.onStackTransfer);
-			disableStackInteraction.setSelected(slot.disableStackInteraction);
+			disablePickupCondition.setSelectedProcedure(slot.disablePickupCondition);
+			disablePlaceCondition.setSelectedProcedure(slot.disablePlaceCondition);
 			dropItemsWhenNotBound.setSelected(slot.dropItemsWhenNotBound);
 		} else {
 			int freeslotid = -1;
@@ -139,8 +154,8 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 
 					OutputSlot component = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, 0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-							eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
+							disablePickupCondition.getSelectedProcedure(), disablePlaceCondition.getSelectedProcedure(),
+							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
 							eh3.getSelectedProcedure());
 
 					setEditingComponent(component);
@@ -152,8 +167,9 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 					editor.components.remove(slot);
 					OutputSlot slotNew = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, slot.getX(), slot.getY(),
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
+							disablePickupCondition.getSelectedProcedure(), disablePlaceCondition.getSelectedProcedure(),
+							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
+							eh3.getSelectedProcedure());
 					editor.components.add(idx, slotNew);
 					setEditingComponent(slotNew);
 				}

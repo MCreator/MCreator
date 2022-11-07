@@ -54,17 +54,6 @@ public class LogicProcedureSelector extends AbstractProcedureSelector {
 
 	@Nullable private final JCheckBox fixedValue;
 
-	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JCheckBox fixedValue,
-			Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 50, providedDependencies);
-	}
-
-	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JCheckBox fixedValue,
-			int width, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
-				providedDependencies);
-	}
-
 	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			@Nullable JCheckBox fixedValue, int width, Dependency... providedDependencies) {
 		super(mcreator, VariableTypeLoader.BuiltInTypes.LOGIC, providedDependencies);
@@ -93,11 +82,10 @@ public class LogicProcedureSelector extends AbstractProcedureSelector {
 		procedures.addActionListener(e -> {
 			CBoxEntry selectedItem = procedures.getSelectedItem();
 			if (selectedItem != null) {
-				if (!selectedItem.correctDependencies) {
+				if (!selectedItem.correctDependencies)
 					procedures.setSelectedItem(oldItem);
-				} else {
+				else
 					oldItem = selectedItem;
-				}
 			}
 			updateDepsList(true);
 		});
@@ -145,9 +133,8 @@ public class LogicProcedureSelector extends AbstractProcedureSelector {
 						((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
 								.getName());
 				String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
-				for (String part : parts) {
+				for (String part : parts)
 					procedureName.append(StringUtils.uppercaseFirstLetter(part));
-				}
 				procedureNameString = JavaConventions.convertToValidClassName(
 						procedureName.toString().replace("When", ""));
 			}
@@ -233,11 +220,10 @@ public class LogicProcedureSelector extends AbstractProcedureSelector {
 		if (fixedValue != null)
 			fixedValue.setEnabled(enabled);
 
-		if (enabled) {
+		if (enabled)
 			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		} else {
+		else
 			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		}
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
 		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)

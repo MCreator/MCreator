@@ -18,6 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
+import net.mcreator.element.parts.LogicProcedure;
 import net.mcreator.element.parts.Procedure;
 
 import java.awt.*;
@@ -29,10 +30,10 @@ public class OutputSlot extends Slot {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public OutputSlot(int id, String name, int x, int y, Color color, boolean canTakeStack,
-			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot,
-			Procedure onStackTransfer) {
-		super(id, name, x, y, color, canTakeStack, dropItemsWhenNotBound, onSlotChanged, onTakenFromSlot,
-				onStackTransfer);
+	public OutputSlot(int id, String name, int x, int y, Color color, LogicProcedure disablePickupCondition,
+			LogicProcedure disablePlaceCondition, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
+			Procedure onTakenFromSlot, Procedure onStackTransfer) {
+		super(id, name, x, y, color, disablePickupCondition, disablePlaceCondition, dropItemsWhenNotBound,
+				onSlotChanged, onTakenFromSlot, onStackTransfer);
 	}
 }
