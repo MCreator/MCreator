@@ -31,9 +31,9 @@ public class OutputSlot extends Slot {
 	}
 
 	public OutputSlot(int id, String name, int x, int y, Color color, LogicProcedure disablePickupCondition,
-			LogicProcedure disablePlaceCondition, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
+			LogicProcedure disablePlacementCondition, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
 			Procedure onTakenFromSlot, Procedure onStackTransfer) {
-		super(id, name, x, y, color, disablePickupCondition, disablePlaceCondition, dropItemsWhenNotBound,
+		super(id, name, x, y, color, disablePickupCondition, disablePlacementCondition, dropItemsWhenNotBound,
 				onSlotChanged, onTakenFromSlot, onStackTransfer);
 	}
 }

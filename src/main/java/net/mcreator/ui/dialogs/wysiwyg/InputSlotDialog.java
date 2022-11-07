@@ -108,17 +108,17 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 		disablePickupCondition.refreshList();
 		disablePickupCondition.setOpaque(false);
 
-		LogicProcedureSelector disablePlaceCondition = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/disable_place_condition"),
-				editor.mcreator, L10N.t("dialog.gui.disable_place_condition"), ProcedureSelector.Side.BOTH,
+		LogicProcedureSelector disablePlacementCondition = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/disable_placement_condition"),
+				editor.mcreator, L10N.t("dialog.gui.disable_placement_condition"), ProcedureSelector.Side.BOTH,
 				L10N.checkbox("condition.common.disable"), 87,
 				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map"));
-		disablePlaceCondition.refreshList();
-		disablePlaceCondition.setOpaque(false);
+		disablePlacementCondition.refreshList();
+		disablePlacementCondition.setOpaque(false);
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, PanelUtils.westAndEastElement(options,
-				PanelUtils.gridElements(2, 1, disablePickupCondition, disablePlaceCondition))));
+				PanelUtils.gridElements(2, 1, disablePickupCondition, disablePlacementCondition))));
 
 		setTitle(L10N.t("dialog.gui.slot_input_editor_title"));
 		JButton ok = L10N.button("dialog.gui.save_slot");
@@ -136,7 +136,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 			eh2.setSelectedProcedure(slot.onTakenFromSlot);
 			eh3.setSelectedProcedure(slot.onStackTransfer);
 			disablePickupCondition.setSelectedProcedure(slot.disablePickupCondition);
-			disablePlaceCondition.setSelectedProcedure(slot.disablePlaceCondition);
+			disablePlacementCondition.setSelectedProcedure(slot.disablePlacementCondition);
 			dropItemsWhenNotBound.setSelected(slot.dropItemsWhenNotBound);
 		} else {
 			int freeslotid = -1;
@@ -162,7 +162,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 
 					InputSlot component = new InputSlot(slotIDnum, "Slot #" + slotIDnum, 0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disablePickupCondition.getSelectedProcedure(), disablePlaceCondition.getSelectedProcedure(),
+							disablePickupCondition.getSelectedProcedure(), disablePlacementCondition.getSelectedProcedure(),
 							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
 							eh3.getSelectedProcedure(), limit.getBlock());
 
@@ -175,7 +175,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 					editor.components.remove(slot);
 					InputSlot slotNew = new InputSlot(slotIDnum, "Slot #" + slotIDnum, slot.getX(), slot.getY(),
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disablePickupCondition.getSelectedProcedure(), disablePlaceCondition.getSelectedProcedure(),
+							disablePickupCondition.getSelectedProcedure(), disablePlacementCondition.getSelectedProcedure(),
 							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
 							eh3.getSelectedProcedure(), limit.getBlock());
 					editor.components.add(idx, slotNew);

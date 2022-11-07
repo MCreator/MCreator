@@ -34,7 +34,7 @@ public abstract class Slot extends GUIComponent {
 	public Color color;
 	public int id;
 	public LogicProcedure disablePickupCondition;
-	public LogicProcedure disablePlaceCondition;
+	public LogicProcedure disablePlacementCondition;
 
 	public boolean dropItemsWhenNotBound;
 
@@ -51,13 +51,13 @@ public abstract class Slot extends GUIComponent {
 	}
 
 	public Slot(int id, String name, int x, int y, Color color, LogicProcedure disablePickupCondition,
-			LogicProcedure disablePlaceCondition, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
+			LogicProcedure disablePlacementCondition, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
 			Procedure onTakenFromSlot, Procedure onStackTransfer) {
 		super(name, x, y);
 		this.color = color;
 		this.id = id;
 		this.disablePickupCondition = disablePickupCondition;
-		this.disablePlaceCondition = disablePlaceCondition;
+		this.disablePlacementCondition = disablePlacementCondition;
 		this.dropItemsWhenNotBound = dropItemsWhenNotBound;
 		this.onSlotChanged = onSlotChanged;
 		this.onTakenFromSlot = onTakenFromSlot;
