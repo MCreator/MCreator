@@ -29,7 +29,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-<#include "../tokens.ftl">
 
 package ${package}.client.gui;
 

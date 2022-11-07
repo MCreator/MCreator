@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "tokens.ftl">
 <#include "procedures.java.ftl">
 
 <#assign hasTextures = data.baseTexture?has_content>

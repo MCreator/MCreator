@@ -27,12 +27,12 @@ import java.awt.*;
 
 public class Label extends GUIComponent {
 
-	public String text;
+	public StringProcedure text;
 	public Color color;
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, String text, Color color, Procedure displayCondition) {
+	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
 		super(name, x, y);
 		this.text = text;
 		this.color = color;
@@ -40,11 +40,11 @@ public class Label extends GUIComponent {
 	}
 
 	@Override public final int getWidth(Workspace workspace) {
-		return (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getWidth());
+		return (int) (WYSIWYG.fontMC.getStringBounds(this.getRenderText(), WYSIWYG.frc).getWidth());
 	}
 
 	@Override public final int getHeight(Workspace workspace) {
-		return (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) + 1;
+		return (int) (WYSIWYG.fontMC.getStringBounds(this.getRenderText(), WYSIWYG.frc).getHeight()) + 1;
 	}
 
 	@Override public int getWeight() {
@@ -55,10 +55,21 @@ public class Label extends GUIComponent {
 		return false; // one could be using tokens in the label
 	}
 
+	private String getRenderText() {
+		if (text.getName() == null)
+			return text.getFixedValue();
+		else
+			return text.getName();
+	}
+
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) - 1;
+		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.getRenderText(), WYSIWYG.frc).getHeight()) - 1;
 		g.setColor(this.color);
-		g.drawString(this.text, cx, cy + textheight);
+		g.drawString(this.getRenderText(), cx, cy + textheight);
+
+		if (text.getName() != null) {
+			// TODO: different handling if string
+		}
 	}
 
 }
