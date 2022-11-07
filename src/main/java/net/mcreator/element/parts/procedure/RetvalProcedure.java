@@ -55,6 +55,10 @@ public abstract class RetvalProcedure<T> extends Procedure {
 	public RetvalProcedure(String name, T fixedValue) {
 		super(name);
 		this.fixedValue = fixedValue;
+
+		// A check to make sure tests fail if a procedure type is not registered
+		if (!GSON_ADAPTERS.containsKey(this.getClass()))
+			throw new RuntimeException("Retval procedure " + this.getClass().getSimpleName() + " is not registered!");
 	}
 
 	public T getFixedValue() {
