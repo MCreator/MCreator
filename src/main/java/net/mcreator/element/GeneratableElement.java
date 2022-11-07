@@ -21,6 +21,7 @@ package net.mcreator.element;
 import com.google.gson.*;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.Workspace;
@@ -36,6 +37,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 public abstract class GeneratableElement {
 
@@ -90,8 +92,17 @@ public abstract class GeneratableElement {
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 
-		protected static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson;
+
+		static {
+			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
+
+			for (Map.Entry<Class<? extends RetvalProcedure<?>>, JsonDeserializer<? extends RetvalProcedure<?>>> entry : RetvalProcedure.GSON_ADAPTERS.entrySet()) {
+				gsonBuilder.registerTypeAdapter(entry.getKey(), entry.getValue());
+			}
+
+			gson = gsonBuilder.create();
+		}
 
 		@Nonnull private final Workspace workspace;
 
