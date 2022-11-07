@@ -157,7 +157,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						 }
 						</#if>
 					<#elseif component.getClass().getSimpleName() == "OutputSlot">
-	    	            @Override public boolean mayPlace(ItemStack stack) {
+        	            @Override public boolean mayPlace(ItemStack stack) {
 							return false;
 						}
 					</#if>
