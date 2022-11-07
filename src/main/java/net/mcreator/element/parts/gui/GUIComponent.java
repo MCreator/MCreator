@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 	public transient UUID uuid;
 
-	private static transient final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
+	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
 		put("button", Button.class);
 		put("image", Image.class);
 		put("inputslot", InputSlot.class);
@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 		put("checkbox", Checkbox.class);
 	}};
 
-	private static transient final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
+	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
 			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
 	GUIComponent() {
@@ -70,6 +70,10 @@ import java.util.stream.Collectors;
 	public abstract int getHeight(Workspace workspace);
 
 	public abstract int getWeight();
+
+	public boolean isSizeKnown() {
+		return true;
+	}
 
 	public final int getX() {
 		return x;

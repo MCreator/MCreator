@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class OutputSlotDialog extends AbstractWYSIWYGDialog {
+public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
 		super(editor.mcreator, slot);
@@ -135,15 +135,18 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog {
 				setVisible(false);
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 				if (slot == null) {
-					editor.lol.setSelectedIndex(1);
-					editor.editor.setPositioningMode(18, 18);
-					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(setEditingComponent(
-							new OutputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY,
-									color.getColor().equals(Color.white) ? null : color.getColor(),
-									disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-									eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
-									eh3.getSelectedProcedure()))));
+					editor.guiType.setSelectedIndex(1);
+
+					OutputSlot component = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, 0, 0,
+							color.getColor().equals(Color.white) ? null : color.getColor(),
+							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
+							eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
+							eh3.getSelectedProcedure());
+
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(slot);
 					editor.components.remove(slot);
