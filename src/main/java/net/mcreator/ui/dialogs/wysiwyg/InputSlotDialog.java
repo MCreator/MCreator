@@ -76,7 +76,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 		JColor color = new JColor(editor.mcreator, false, false);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
 
-		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItems);
+		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItemsAndTags, true);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_limit_stack_input"), limit));
 
 		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
