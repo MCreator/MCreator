@@ -1218,8 +1218,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu)
-				.stream().filter(e -> !e.isListTemplate()).toList();
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger());
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu);
@@ -1233,9 +1232,9 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		if (modElementFiles.size() + modElementGlobalFiles.size() > 1 || modElementListFiles.size() > 0)
-			new ModElementCodeDropdown(mcreator, modElementFiles, modElementGlobalFiles, modElementListFiles).show(
-					component, x, y);
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
+			new ModElementCodeDropdown(mcreator, modElementFiles.stream().filter(e -> !e.isListTemplate()).toList(),
+					modElementGlobalFiles, modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
 		else if (modElementGlobalFiles.size() == 1)

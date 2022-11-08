@@ -40,6 +40,14 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
 	/**
+	 * The sole constructor.
+	 */
+	public GeneratorTemplatesList {
+		for (GeneratorTemplate listTemplate : templates.keySet())
+			listTemplate.setTemplatesList(this);
+	}
+
+	/**
 	 * Attempts to locate the source generator template used to create given file.
 	 *
 	 * @param generatorFile    The input file claimed to be generated from a template from this list.
@@ -49,7 +57,7 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
 		for (GeneratorTemplate listTemplate : templates.keySet()) {
 			for (int i = 0; i < listData.size(); i++) {
-				if (processTokens(listTemplate, i).getPath().equals(generatorFile.getPath())) {
+				if (processTokens(listTemplate, i).getAbsolutePath().equals(generatorFile.getAbsolutePath())) {
 					if (ignoreConditions || templates.get(listTemplate).get(i))
 						return listTemplate;
 				}
@@ -68,10 +76,11 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	 * @return The file generated from given list template with given token values.
 	 */
 	public File processTokens(GeneratorTemplate generatorTemplate, int index) {
-		if (generatorTemplate.isListTemplate() && templates.containsKey(generatorTemplate)) {
+		if (generatorTemplate.getTemplatesList() == this) {
 			return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
 					GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
-							generatorTemplate.getFile().getPath().replace("@NAME", element.getModElement().getName())
+							generatorTemplate.getFile().getAbsolutePath()
+									.replace("@NAME", element.getModElement().getName())
 									.replace("@registryname", element.getModElement().getRegistryName())
 									.replace("@elementindex", Integer.toString(index)))));
 		}
