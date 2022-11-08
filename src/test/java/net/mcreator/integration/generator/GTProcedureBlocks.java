@@ -53,6 +53,9 @@ public class GTProcedureBlocks {
 
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
+			JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().has("args0") ?
+					procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray() :
+					new JsonArray();
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip procedure blocks not supported by this generator
@@ -66,7 +69,7 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (!procedureBlock.getAllInputs().isEmpty()) {
+			if (!procedureBlock.getAllInputs().isEmpty() || !procedureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
@@ -79,54 +82,36 @@ public class GTProcedureBlocks {
 							}
 						}
 
-						if (!match) {
+						if (!match && procedureBlock.getAllRepeatingInputs().stream()
+								.noneMatch(e -> input.matches(e + "\\d+"))) {
 							templatesDefined = false;
 							break;
 						}
 					}
-				} else {
-					templatesDefined = false;
-				}
 
-				if (!templatesDefined) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
-							+ procedureBlock.machine_name);
-					continue;
-				}
-			}
-
-			if (!procedureBlock.getRepeatingInputs().isEmpty()) {
-				boolean templatesDefined = true;
-
-				if (procedureBlock.toolbox_init != null) {
-					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
-					for (String input : procedureBlock.getRepeatingInputs()) {
-						boolean allFound = true;
-						try {
-							for (int i = 0; i < args0.size(); i++) {
-								boolean match = false;
-								String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-								if (name.startsWith(input) && name.substring(input.length()).replaceAll("\\d", "")
-										.equals("")) {
+					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
+						for (int i = 0; i < args0.size(); i++) {
+							if (!args0.get(i).getAsJsonObject().has("name"))
+								continue; // skip input if unnamed (e.g. input_dummy or definition problem)
+							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+							boolean match = false;
+							for (String input : procedureBlock.getAllRepeatingInputs()) {
+								if (name != null && name.matches(input + "\\d+")) {
 									for (String toolboxtemplate : procedureBlock.toolbox_init) {
 										if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
 											match = true;
 											break;
 										}
 									}
-
-									if (!match) {
-										allFound = false;
+									if (match)
 										break;
-									}
 								}
 							}
-						} catch (Exception ignored) {
-						}
 
-						if (!allFound) {
-							templatesDefined = false;
-							break;
+							if (!match) {
+								templatesDefined = false;
+								break;
+							}
 						}
 					}
 				} else {
@@ -161,7 +146,6 @@ public class GTProcedureBlocks {
 
 				for (String field : procedureBlock.getFields()) {
 					try {
-						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
@@ -269,13 +253,11 @@ public class GTProcedureBlocks {
 			}
 
 			if (procedureBlock.getRepeatingStatements() != null) {
-				try {
-					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
-					for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
-						for (int i = 0; i < args0.size(); i++) {
-							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-							if (name.startsWith(statement.name) && name.substring(statement.name.length())
-									.replaceAll("\\d", "").equals("")) {
+				for (int i = 0; i < args0.size(); i++) {
+					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
+						String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+						for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
+							if (name.matches(statement.name + "\\d+")) {
 								additionalXML.append("<statement name=\"").append(name).append("\">")
 										.append("<block type=\"text_print\"><value name=\"TEXT\">"
 												+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
@@ -283,7 +265,6 @@ public class GTProcedureBlocks {
 							}
 						}
 					}
-				} catch (Exception ignored) {
 				}
 			}
 

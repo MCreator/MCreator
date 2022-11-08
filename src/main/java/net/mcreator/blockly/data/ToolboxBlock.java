@@ -86,6 +86,12 @@ import java.util.List;
 				Collections.emptyList();
 	}
 
+	public List<String> getAllRepeatingInputs() {
+		return repeating_inputs != null ?
+				repeating_inputs.stream().map(IInput::name).toList() :
+				Collections.emptyList();
+	}
+
 	@Nullable public List<StatementInput> getRepeatingStatements() {
 		return repeating_statements;
 	}
