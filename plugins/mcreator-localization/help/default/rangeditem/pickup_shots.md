@@ -1,0 +1,1 @@
+If checked, the projectile can be picked up after it is shot.

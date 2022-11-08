@@ -49,6 +49,9 @@ import java.util.Map;
 	public int stackSize;
 	public MItemBlock ammoItem;
 	public boolean shootConstantly;
+
+	public boolean preserveShots;
+	public boolean pickupShots;
 	public int usageCount;
 	public Sound actionSound;
 	public boolean hasGlow;

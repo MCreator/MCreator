@@ -101,6 +101,8 @@ public class BlockItemIcons {
 		put("crossbow",				"CROSSBOW");
 		put("none",					"BARRIER");
 		put("spear",				"ARROW");
+		put("spyglass",             "SPYGLASS");
+		put("swing",                "WOODEN_SWORD");
 
 		//Other
 		put("Not specified", 		"BLANK");

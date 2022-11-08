@@ -46,7 +46,7 @@ public class ${name}Item extends Item {
 
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		entity.startUsingItem(hand);
-		return new InteractionResultHolder(InteractionResult.SUCCESS, entity.getItemInHand(hand));
+		return new InteractionResultHolder(<#if data.animation != "none">InteractionResult.SUCCESS<#else>InteractionResult.FAIL</#if>, entity.getItemInHand(hand));
 	}
 
 	<@onEntitySwing data.onEntitySwing/>
@@ -61,7 +61,11 @@ public class ${name}Item extends Item {
 	</#if>
 
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
+	<#if data.animation != "swing">
 		return UseAnim.${data.animation?upper_case};
+	<#else>
+	    return UseAnim.NONE;
+	</#if>
 	}
 
 	@Override public int getUseDuration(ItemStack itemstack) {
@@ -137,7 +141,7 @@ public class ${name}Item extends Item {
 
 	<#if !data.ammoItem.isEmpty()>
 	if (entity.getAbilities().instabuild) {
-		entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+		entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupShots>CREATIVE_ONLY<#else>ALLOWED</#if>;
 	} else {
 		if (${mappedMCItemToItemStackCode(data.ammoItem, 1)}.isDamageableItem()){
 			if (stack.hurt(1, world.getRandom(), entity)) {
@@ -153,7 +157,7 @@ public class ${name}Item extends Item {
 		}
 	}
 	<#else>
-	entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
+	entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupShots>DISALLOWED<#else>ALLOWED</#if>;
 	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>
