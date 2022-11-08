@@ -20,7 +20,9 @@ Icon=${pwd}/icon.png
 EOL
 
 chmod +x mcreator.desktop
-cp mcreator.desktop ~/Desktop/mcreator.desktop
+
+userdesktop=$(xdg-user-dir DESKTOP)
+cp mcreator.desktop ${userdesktop}/mcreator.desktop
 
 fi
 
