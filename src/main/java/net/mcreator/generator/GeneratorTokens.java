@@ -85,8 +85,8 @@ public class GeneratorTokens {
 			while (m.find()) {
 				String match = m.group(1);
 				Object value = null;
-				if (match.startsWith("element.")) {
-					if (listItem != null) {
+				if (match.startsWith("element.")) { // a value on list item is requested
+					if (listItem != null) { // get it if available
 						try {
 							String ref = match.substring(8);
 							value = match.contains("()") ?
@@ -96,7 +96,7 @@ public class GeneratorTokens {
 							LOG.warn("Failed to load token value " + match, e);
 						}
 					}
-				} else if (element != null) {
+				} else if (element != null) { // get a value from the mod element
 					try {
 						value = match.contains("()") ?
 								element.getClass().getMethod(match.replace("()", "").trim()).invoke(element) :
