@@ -111,10 +111,10 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					${(component.x - mx)?int + 1},
 					${(component.y - my)?int + 1}) {
 
-					<#if hasProcedure(component.disablePickupCondition) || component.disablePickupCondition.getFixedValue()>
+					<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
-							<#if hasProcedure(component.disablePickupCondition)>
-								return !<@procedureOBJToLogicCode component.disablePickupCondition/>;
+							<#if hasProcedure(component.disablePickup)>
+								return !<@procedureOBJToLogicCode component.disablePickup/>;
 							<#else>
 								return false;
 							</#if>
@@ -142,10 +142,10 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					}
 					</#if>
 
-					<#if hasProcedure(component.disablePlaceCondition) || component.disablePlaceCondition.getFixedValue()>
+					<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
 						@Override public boolean mayPlace(ItemStack itemstack) {
-							<#if hasProcedure(component.disablePlaceCondition)>
-								return !<@procedureOBJToLogicCode component.disablePlaceCondition/>;
+							<#if hasProcedure(component.disablePlacement)>
+								return !<@procedureOBJToLogicCode component.disablePlacement/>;
 							<#else>
 								return false;
 							</#if>

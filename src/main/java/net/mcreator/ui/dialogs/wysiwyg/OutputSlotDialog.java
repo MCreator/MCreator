@@ -95,24 +95,17 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
 
-		LogicProcedureSelector disablePickupCondition = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
-				editor.mcreator, L10N.t("dialog.gui.slot_pickup_condition"), ProcedureSelector.Side.BOTH,
+		LogicProcedureSelector disablePickup = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
+				editor.mcreator, L10N.t("dialog.gui.slot_pickup"), ProcedureSelector.Side.BOTH,
 				L10N.checkbox("condition.common.disable"), 87,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		disablePickupCondition.refreshList();
-		disablePickupCondition.setOpaque(false);
-
-		LogicProcedureSelector disablePlacementCondition = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_place_condition"),
-				editor.mcreator, L10N.t("dialog.gui.slot_place_condition"), ProcedureSelector.Side.BOTH,
-				L10N.checkbox("condition.common.disable"), 87,
-				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map"));
-		disablePlacementCondition.refreshList();
-		disablePlacementCondition.setOpaque(false);
+		disablePickup.refreshList();
+		disablePickup.setOpaque(false);
+		disablePickup.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, PanelUtils.westAndEastElement(options,
-				PanelUtils.gridElements(2, 1, disablePickupCondition, disablePlacementCondition))));
+		add("North", PanelUtils.join(FlowLayout.LEFT, PanelUtils.westAndEastElement(options, disablePickup)));
 
 		setTitle(L10N.t("dialog.gui.slot_output_editor_title"));
 		JButton ok = L10N.button("dialog.gui.save_slot");
@@ -128,8 +121,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 			eh.setSelectedProcedure(slot.onSlotChanged);
 			eh2.setSelectedProcedure(slot.onTakenFromSlot);
 			eh3.setSelectedProcedure(slot.onStackTransfer);
-			disablePickupCondition.setSelectedProcedure(slot.disablePickupCondition);
-			disablePlacementCondition.setSelectedProcedure(slot.disablePlacementCondition);
+			disablePickup.setSelectedProcedure(slot.disablePickup);
 			dropItemsWhenNotBound.setSelected(slot.dropItemsWhenNotBound);
 		} else {
 			int freeslotid = -1;
@@ -154,9 +146,8 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 
 					OutputSlot component = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, 0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disablePickupCondition.getSelectedProcedure(), disablePlacementCondition.getSelectedProcedure(),
-							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
-							eh3.getSelectedProcedure());
+							disablePickup.getSelectedProcedure(), dropItemsWhenNotBound.isSelected(),
+							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
@@ -167,9 +158,8 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 					editor.components.remove(slot);
 					OutputSlot slotNew = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, slot.getX(), slot.getY(),
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disablePickupCondition.getSelectedProcedure(), disablePlacementCondition.getSelectedProcedure(),
-							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
-							eh3.getSelectedProcedure());
+							disablePickup.getSelectedProcedure(), dropItemsWhenNotBound.isSelected(),
+							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
 					editor.components.add(idx, slotNew);
 					setEditingComponent(slotNew);
 				}

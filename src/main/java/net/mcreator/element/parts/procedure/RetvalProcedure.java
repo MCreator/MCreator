@@ -29,6 +29,7 @@ public abstract class RetvalProcedure<T> extends Procedure {
 	public static final Map<Class<? extends RetvalProcedure<?>>, JsonDeserializer<? extends RetvalProcedure<?>>> GSON_ADAPTERS = new HashMap<>() {{
 		put(NumberProcedure.class, new NumberProcedure.GSONAdapter());
 		put(StringProcedure.class, new StringProcedure.GSONAdapter());
+		put(LogicProcedure.class, new LogicProcedure.GSONAdapter());
 	}};
 
 	private final T fixedValue;

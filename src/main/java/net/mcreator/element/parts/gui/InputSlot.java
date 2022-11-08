@@ -18,8 +18,8 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.LogicProcedure;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 
 import java.awt.*;
@@ -27,6 +27,7 @@ import java.awt.*;
 public class InputSlot extends Slot {
 
 	public MItemBlock inputLimit;
+	public LogicProcedure disablePlacement;
 
 	// for deserialization use only, to specify default values
 	@SuppressWarnings("unused") private InputSlot() {
@@ -34,10 +35,11 @@ public class InputSlot extends Slot {
 	}
 
 	public InputSlot(int id, String name, int x, int y, Color color, LogicProcedure disablePickupCondition,
-			LogicProcedure disablePlacementCondition, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
+			LogicProcedure disablePlacement, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
 			Procedure onTakenFromSlot, Procedure onStackTransfer, MItemBlock inputLimit) {
-		super(id, name, x, y, color, disablePickupCondition, disablePlacementCondition, dropItemsWhenNotBound,
+		super(id, name, x, y, color, disablePickupCondition, dropItemsWhenNotBound,
 				onSlotChanged, onTakenFromSlot, onStackTransfer);
 		this.inputLimit = inputLimit;
+		this.disablePlacement = disablePlacement;
 	}
 }

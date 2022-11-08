@@ -17,30 +17,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.parts;
+package net.mcreator.element.parts.procedure;
 
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
 
-public class LogicProcedure extends Procedure {
-
-	private boolean fixedValue;
+public class LogicProcedure extends RetvalProcedure<Boolean> {
 
 	public LogicProcedure(String name, boolean fixedValue) {
-		super(name);
-		this.fixedValue = fixedValue;
+		super(name, fixedValue);
 	}
 
-	public boolean getFixedValue() {
-		return fixedValue;
-	}
-
-	@Override public String toString() {
-		return "" + fixedValue;
-	}
-
-	public static class GSONAdapter implements JsonDeserializer<LogicProcedure> {
+	protected static class GSONAdapter implements JsonDeserializer<LogicProcedure> {
 
 		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 				.create();
