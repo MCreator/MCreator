@@ -33,14 +33,26 @@ public class XMLUtil {
 	}
 
 	public static List<Element> getChildrenWithName(Element element, String... names) {
+		return getChildrenWithName(element, names, null);
+	}
+
+	public static List<Element> getChildrenWithName(Element element, String[] names, String fallback) {
 		List<Element> elements = new ArrayList<>();
 		NodeList nodeList = element.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				if (names == null || (names.length == 1 && names[0].equals(node.getNodeName())) || ArrayUtils.contains(
-						names, node.getNodeName()))
+				if (names == null || ArrayUtils.contains(names, node.getNodeName()))
 					elements.add((Element) node);
+			}
+		}
+		if (elements.isEmpty() && fallback != null) {
+			for (int i = 0; i < nodeList.getLength(); i++) {
+				Node node = nodeList.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					if (fallback.equals(node.getNodeName()))
+						elements.add((Element) node);
+				}
 			}
 		}
 		return elements;

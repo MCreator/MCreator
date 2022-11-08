@@ -168,7 +168,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
-		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, "block", "shadow");
+		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, new String[] { "block" }, "shadow");
 		if (conditionBlocks.size() < 1)
 			return;
 		Element block = conditionBlocks.get(0);

@@ -124,7 +124,7 @@ public class BlocklyBlockUtil {
 	 * @return The type of the block attached to the input, or null if no block is attached
 	 */
 	public static String getInputBlockType(Element input) {
-		List<Element> outputBlocks = XMLUtil.getChildrenWithName(input, "block", "shadow");
+		List<Element> outputBlocks = XMLUtil.getChildrenWithName(input, new String[] { "block" }, "shadow");
 		return outputBlocks.size() < 1 ? null : outputBlocks.get(0).getAttribute("type");
 	}
 
