@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,29 +17,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.data;
+package net.mcreator.element.parts.procedure;
 
 import com.google.gson.*;
-import com.google.gson.annotations.JsonAdapter;
 
 import java.lang.reflect.Type;
 
-@JsonAdapter(IInput.GSONAdapter.class) public interface IInput {
+public class NumberProcedure extends RetvalProcedure<Double> {
 
-	String name();
+	public NumberProcedure(String name, double fixedValue) {
+		super(name, fixedValue);
+	}
 
-	class GSONAdapter implements JsonDeserializer<IInput> {
+	protected static class GSONAdapter implements JsonDeserializer<NumberProcedure> {
 
 		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 				.create();
 
 		@Override
-		public IInput deserialize(JsonElement jsonElement, Type type,
+		public NumberProcedure deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-			if (jsonElement.isJsonObject()) {
-				return gson.fromJson(jsonElement, AdvancedInput.class);
-			} else {
-				return new NamedInput(jsonElement.getAsString());
+			try {
+				return gson.fromJson(jsonElement, NumberProcedure.class);
+			} catch (Exception e) {
+				return new NumberProcedure(null, jsonElement.getAsDouble());
 			}
 		}
 

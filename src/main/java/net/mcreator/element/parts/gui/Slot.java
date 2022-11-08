@@ -18,8 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.LogicProcedure;
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.image.ImageUtils;

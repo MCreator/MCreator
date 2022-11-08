@@ -22,6 +22,8 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.NumberProcedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -651,10 +653,16 @@ public class TestWorkspaceDataProvider {
 						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"), new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
-						new InputSlot(4, "slot2", 20, 30, Color.white, new LogicProcedure("condition1", true),
-								new LogicProcedure(null, true), !_true, new Procedure("procedure4"),
+						new InputSlot(3, "slot2", 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
 								null, null, new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, blocksAndItems).getName())));
+				new InputSlot(5, "slot5", 20, 30, Color.white, new LogicProcedure("condition1", true),
+						new LogicProcedure(null, true), !_true, new Procedure("procedure4"),
+						null, null, new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItems).getName())));
+				components.add(
+						new InputSlot(4, "slot3", 20, 30, Color.green, !_true, _true, new Procedure("procedure5"),
+								null, null, new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
 				components.add(
 						new OutputSlot(5, "slot out", 10, 20, Color.black, new LogicProcedure(null, true),
 								new LogicProcedure("condition2", true), _true, new Procedure("procedure10"),

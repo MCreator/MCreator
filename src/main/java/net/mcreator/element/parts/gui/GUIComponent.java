@@ -20,6 +20,7 @@ package net.mcreator.element.parts.gui;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
+import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
@@ -101,8 +102,15 @@ import java.util.stream.Collectors;
 
 	public static class GSONAdapter implements JsonSerializer<GUIComponent>, JsonDeserializer<GUIComponent> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson;
+
+		static {
+			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
+
+			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
+
+			gson = gsonBuilder.create();
+		}
 
 		@Override
 		public GUIComponent deserialize(JsonElement jsonElement, Type type,
