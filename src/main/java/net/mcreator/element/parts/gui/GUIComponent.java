@@ -107,9 +107,7 @@ import java.util.stream.Collectors;
 		static {
 			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
 
-			for (Map.Entry<Class<? extends RetvalProcedure<?>>, JsonDeserializer<? extends RetvalProcedure<?>>> entry : RetvalProcedure.GSON_ADAPTERS.entrySet()) {
-				gsonBuilder.registerTypeAdapter(entry.getKey(), entry.getValue());
-			}
+			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 
 			gson = gsonBuilder.create();
 		}

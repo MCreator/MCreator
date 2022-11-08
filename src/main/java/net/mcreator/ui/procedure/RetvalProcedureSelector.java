@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -242,5 +243,9 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 	@Override public abstract T getSelectedProcedure();
 
 	@Override public abstract void setSelectedProcedure(Procedure procedure);
+
+	public abstract E getFixedValue();
+
+	public abstract void setFixedValue(E value);
 
 }

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,6 +54,22 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	}
 
 	@Override public NumberProcedure getSelectedProcedure() {
+		CBoxEntry selected = procedures.getSelectedItem();
+		if (selected == null || selected.string.equals(defaultName))
+			return new NumberProcedure(null, getFixedValue());
+		return new NumberProcedure(selected.string, getFixedValue());
+	}
+
+	@Override public void setSelectedProcedure(Procedure procedure) {
+		if (procedure instanceof NumberProcedure numberProcedure) {
+			if (numberProcedure.getName() != null)
+				procedures.setSelectedItem(new CBoxEntry(numberProcedure.getName(), null));
+
+			setFixedValue(numberProcedure.getFixedValue());
+		}
+	}
+
+	@Override public Double getFixedValue() {
 		Double value = (double) 0;
 
 		if (fixedValue != null) {
@@ -69,20 +86,12 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 				value = Double.valueOf((Byte) rawValue);
 		}
 
-		CBoxEntry selected = procedures.getSelectedItem();
-		if (selected == null || selected.string.equals(defaultName))
-			return new NumberProcedure(null, value);
-		return new NumberProcedure(selected.string, value);
+		return value;
 	}
 
-	@Override public void setSelectedProcedure(Procedure procedure) {
-		if (procedure instanceof NumberProcedure numberProcedure) {
-			if (numberProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(numberProcedure.getName(), null));
-
-			if (fixedValue != null)
-				fixedValue.setValue(numberProcedure.getFixedValue());
-		}
+	@Override public void setFixedValue(Double value) {
+		if (fixedValue != null)
+			fixedValue.setValue(value);
 	}
 
 }

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +34,9 @@ import java.awt.*;
 
 public class StringProcedureSelector extends RetvalProcedureSelector<String, StringProcedure> {
 
-	@Nullable private final JTextComponent fixedValue;
+	@Nullable private final JComponent fixedValue;
+
+	// JTextComponent variants
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
 			@Nullable JTextComponent fixedValue, Dependency... providedDependencies) {
@@ -54,26 +57,46 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 
 		this.fixedValue = fixedValue;
 
-		if (this.fixedValue != null) {
-			this.fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			this.fixedValue.setBorder(BorderFactory.createCompoundBorder(
+		if (fixedValue != null) {
+			fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			fixedValue.setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 5, 1, 5, this.getBackground()),
-					BorderFactory.createMatteBorder(0, 5, 0, 5, this.fixedValue.getBackground())
+					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())
 			));
 		}
 	}
 
-	@Override public StringProcedure getSelectedProcedure() {
-		String value = "";
+	// JComboBox<String> variants
 
-		if (fixedValue != null) {
-			value = fixedValue.getText();
+	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
+			@Nullable JComboBox<String> fixedValue, Dependency... providedDependencies) {
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 200,
+				providedDependencies);
+	}
+
+	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
+			@Nullable JComboBox<String> fixedValue, int width, Dependency... providedDependencies) {
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
+				providedDependencies);
+	}
+
+	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
+			@Nullable JComboBox<String> fixedValue, int width, Dependency... providedDependencies) {
+		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, fixedValue, width,
+				providedDependencies);
+
+		this.fixedValue = fixedValue;
+
+		if(fixedValue != null) {
+			fixedValue.setEditable(true);
 		}
+	}
 
+	@Override public StringProcedure getSelectedProcedure() {
 		CBoxEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
-			return new StringProcedure(null, value);
-		return new StringProcedure(selected.string, value);
+			return new StringProcedure(null, getFixedValue());
+		return new StringProcedure(selected.string, getFixedValue());
 	}
 
 	@Override public void setSelectedProcedure(Procedure procedure) {
@@ -81,8 +104,27 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 			if (stringProcedure.getName() != null)
 				procedures.setSelectedItem(new CBoxEntry(stringProcedure.getName(), null));
 
-			if (fixedValue != null)
-				fixedValue.setText(stringProcedure.getFixedValue());
+			setFixedValue(stringProcedure.getFixedValue());
+		}
+	}
+
+	@Override public String getFixedValue() {
+		String value = "";
+
+		if (fixedValue instanceof JTextComponent textComponent) {
+			value = textComponent.getText();
+		} else if (fixedValue instanceof JComboBox<?> comboBox) {
+			value = comboBox.getEditor().getItem().toString();
+		}
+
+		return value;
+	}
+
+	@Override public void setFixedValue(String value) {
+		if (fixedValue instanceof JTextComponent textComponent) {
+			textComponent.setText(value);
+		} else if (fixedValue instanceof JComboBox<?> comboBox) {
+			comboBox.getEditor().setItem(value);
 		}
 	}
 

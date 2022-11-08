@@ -65,10 +65,7 @@ public class ModElementManager {
 		GsonBuilder gsonBuilder = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class,
 				this.gsonAdapter).disableHtmlEscaping().setPrettyPrinting().setLenient();
 
-		for (Map.Entry<Class<? extends RetvalProcedure<?>>, JsonDeserializer<? extends RetvalProcedure<?>>> entry : RetvalProcedure.GSON_ADAPTERS
-				.entrySet()) {
-			gsonBuilder.registerTypeAdapter(entry.getKey(), entry.getValue());
-		}
+		RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 
 		this.gson = gsonBuilder.create();
 	}
