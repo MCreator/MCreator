@@ -25,7 +25,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -34,7 +33,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class LabelDialog extends AbstractWYSIWYGDialog {
+public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
 		super(editor.mcreator, label);
@@ -96,12 +95,12 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 			String text = (String) name.getSelectedItem();
 			if (text != null) {
 				if (label == null) {
-					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
-					editor.editor.setPositioningMode(textwidth, 16);
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-							new Label(text, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, text, cola.getColor(),
-									displayCondition.getSelectedProcedure()))));
+					Label component = new Label(text, 0, 0, text, cola.getColor(), displayCondition.getSelectedProcedure());
+
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(label);
 					editor.components.remove(label);

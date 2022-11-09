@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFieldDialog extends AbstractWYSIWYGDialog {
+public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
 		super(editor.mcreator, textField);
@@ -85,11 +85,12 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 				String text = Transliteration.transliterateString(nameField.getText());
 				if (!text.equals("")) {
 					if (textField == null) {
-						editor.editor.setPositioningMode(120, 20);
-						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-								new TextField(text, editor.editor.newlyAddedComponentPosX,
-										editor.editor.newlyAddedComponentPosY, editor.editor.ow, editor.editor.oh,
-										deft.getText()))));
+						TextField component = new TextField(text, 0, 0, 120, 20, deft.getText());
+
+						setEditingComponent(component);
+						editor.editor.addComponent(component);
+						editor.list.setSelectedValue(component, true);
+						editor.editor.moveMode();
 					} else {
 						int idx = editor.components.indexOf(textField);
 						editor.components.remove(textField);

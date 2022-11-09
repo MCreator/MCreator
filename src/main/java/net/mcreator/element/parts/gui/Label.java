@@ -18,7 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
@@ -49,6 +49,10 @@ public class Label extends GUIComponent {
 
 	@Override public int getWeight() {
 		return 0;
+	}
+
+	@Override public boolean isSizeKnown() {
+		return false; // one could be using tokens in the label
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
