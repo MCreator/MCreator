@@ -24,12 +24,11 @@ import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.elements.ModElement;
 
