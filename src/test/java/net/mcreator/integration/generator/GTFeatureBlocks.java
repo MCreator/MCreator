@@ -142,7 +142,7 @@ public class GTFeatureBlocks {
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestBlock" + featureBlock.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestFeatureBlock" + featureBlock.machine_name,
 					ModElementType.FEATURE);
 
 			String testXML = featureBlock.toolboxXML;
