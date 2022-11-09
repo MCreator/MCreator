@@ -70,10 +70,6 @@
     <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 
-<#function removePrefixAndExtension mappedBlock>
-    <#return mappedBlock?keep_after(":")?keep_before_last(".")>
-</#function>
-
 <#function mappedMCItemToIngameItemName mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
@@ -123,7 +119,7 @@
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign mcitemresourcepath = mappedMCItemToIngameNameNoTags(mappedBlock)/>
-        <#assign ge = w.getWorkspace().getModElementByName(removePrefixAndExtension(mappedBlock.getUnmappedValue()))/>
+        <#assign ge = w.getWorkspace().getModElementByName(generator.getElementPlainName(mappedBlock.getUnmappedValue()))/>
         <#if ge??>
             <#assign ge = ge.getGeneratableElement() />
 
