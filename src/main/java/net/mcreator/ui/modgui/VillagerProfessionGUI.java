@@ -43,7 +43,6 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
