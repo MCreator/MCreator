@@ -86,7 +86,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "bow", "block", "crossbow", "drink", "eat", "none", "spear", "spyglass", "swing" });
+			new String[] { "bow", "swing", "block", "crossbow", "drink", "eat", "none", "spear", "spyglass"});
 
 	private ProcedureSelector onBulletHitsBlock;
 	private ProcedureSelector onBulletHitsPlayer;

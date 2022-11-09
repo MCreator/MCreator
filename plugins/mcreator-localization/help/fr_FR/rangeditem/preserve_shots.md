@@ -1,0 +1,1 @@
+Si coché, le projectile restera sur le bloc où il a atterri après avoir été tiré.

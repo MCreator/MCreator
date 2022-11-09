@@ -1,0 +1,1 @@
+Si coché, le projectile pourra être récupéré après avoir été tiré.

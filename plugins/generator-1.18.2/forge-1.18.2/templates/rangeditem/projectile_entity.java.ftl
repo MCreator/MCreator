@@ -60,17 +60,17 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
 		<#if !data.bulletItemTexture.isEmpty()>
 		return ${mappedMCItemToItemStackCode(data.bulletItemTexture, 1)};
-    	<#else>
+		<#else>
 		return ItemStack.EMPTY;
-    	</#if>
+		</#if>
 	}
 
 	@Override protected ItemStack getPickupItem() {
 		<#if !data.ammoItem.isEmpty()>
 		return ${mappedMCItemToItemStackCode(data.ammoItem, 1)};
-    	<#else>
+		<#else>
 		return ItemStack.EMPTY;
-    	</#if>
+		</#if>
 	}
 
 	@Override protected void doPostHurtEffects(LivingEntity entity) {
@@ -91,7 +91,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			"world": "this.level"
 		}/>
 	}
-    </#if>
+	</#if>
 
 	<#if hasProcedure(data.onBulletHitsEntity)>
 	@Override public void onHitEntity(EntityHitResult entityHitResult) {
