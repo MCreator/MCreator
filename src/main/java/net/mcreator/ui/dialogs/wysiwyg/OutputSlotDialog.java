@@ -71,13 +71,20 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
 
-		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
-		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
-
-		dropItemsWhenNotBound.setSelected(true);
-
 		final JColor color = new JColor(editor.mcreator, false, false);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
+
+		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
+		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
+		dropItemsWhenNotBound.setSelected(true);
+
+		LogicProcedureSelector disablePickup = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
+				editor.mcreator, L10N.t("dialog.gui.slot_pickup"), ProcedureSelector.Side.BOTH,
+				L10N.checkbox("condition.common.disable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+		disablePickup.refreshList();
+
+		options.add(PanelUtils.join(FlowLayout.LEFT, disablePickup));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
 				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH,
@@ -95,17 +102,9 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
 		eh3.refreshList();
 
-		LogicProcedureSelector disablePickup = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
-				editor.mcreator, L10N.t("dialog.gui.slot_pickup"), ProcedureSelector.Side.BOTH,
-				L10N.checkbox("condition.common.disable"), 87,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		disablePickup.refreshList();
-		disablePickup.setOpaque(false);
-		disablePickup.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
-
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, PanelUtils.westAndEastElement(options, disablePickup)));
+		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 
 		setTitle(L10N.t("dialog.gui.slot_output_editor_title"));
 		JButton ok = L10N.button("dialog.gui.save_slot");
