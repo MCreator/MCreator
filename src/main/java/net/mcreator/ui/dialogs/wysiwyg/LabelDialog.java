@@ -38,7 +38,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
 		super(editor.mcreator, label);
-		setSize(560, 280);
+		setSize(590, 190);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 
@@ -59,8 +59,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), textSelector));
 
-		add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(options, PanelUtils.join(FlowLayout.LEFT, displayCondition), 20, 5)));
+		add("Center", PanelUtils.westAndEastElement(options, PanelUtils.join(FlowLayout.LEFT, displayCondition)));
 
 		setTitle(L10N.t("dialog.gui.label_component_title"));
 

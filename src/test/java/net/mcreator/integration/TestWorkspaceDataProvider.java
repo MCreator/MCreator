@@ -516,7 +516,7 @@ public class TestWorkspaceDataProvider {
 			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
-			// TODO: add back
+			// TODO: add back, one with string procedure
 			//components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition1")));
 			//components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition4")));
 
@@ -546,7 +546,7 @@ public class TestWorkspaceDataProvider {
 			}
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				// TODO: add back
+				// TODO: add back, one with string procedure
 				//components.add(new Label("text", 100, 150, "text", Color.red, new Procedure("condition2")));
 				//components.add(new Label("text2", 100, 150, "text2", Color.white, new Procedure("condition1")));
 
