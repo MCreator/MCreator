@@ -1127,7 +1127,7 @@ public class TestWorkspaceDataProvider {
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "spyglass" });
 			item.eatResultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
 					"" :
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
@@ -1161,8 +1161,10 @@ public class TestWorkspaceDataProvider {
 				rangedItem.specialInfo = new ArrayList<>();
 			}
 			rangedItem.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
+					new String[] { "bow", "swing", "block", "crossbow", "drink", "eat", "none", "spear", "spyglass" });
 			rangedItem.shootConstantly = _true;
+			rangedItem.pickupProjectiles = _true;
+			rangedItem.preserveProjectiles = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;
 			rangedItem.actionSound = new Sound(modElement.getWorkspace(),
