@@ -139,7 +139,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
         <#if !data.preserveShots>
 		if (this.inGround)
 			this.discard();
-		</#if>
+        </#if>
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {

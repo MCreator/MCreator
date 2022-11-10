@@ -73,9 +73,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox preserveShots = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox preserveProjectiles = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox pickupShots = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox pickupProjectiles = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(13);
 
@@ -215,9 +215,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		shootConstantly.setOpaque(false);
 
-		preserveShots.setOpaque(false);
+		preserveProjectiles.setOpaque(false);
 
-		pickupShots.setOpaque(false);
+		pickupProjectiles.setOpaque(false);
 
 		selp.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
@@ -283,13 +283,13 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.label("elementgui.ranged_item.bullet_ignite_fire")));
 		selp2.add(bulletIgnitesFire);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/preserve_shots"),
-				L10N.label("elementgui.ranged_item.preserve_shots")));
-		selp2.add(preserveShots);
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/preserve_projectiles"),
+				L10N.label("elementgui.ranged_item.preserve_projectiles")));
+		selp2.add(preserveProjectiles);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/pickup_shots"),
-				L10N.label("elementgui.ranged_item.pickup_shots")));
-		selp2.add(pickupShots);
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/pickup_projectiles"),
+				L10N.label("elementgui.ranged_item.pickup_projectiles")));
+		selp2.add(pickupProjectiles);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_item_texture"),
 				L10N.label("elementgui.ranged_item.bullet_item_texture")));
@@ -471,8 +471,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	@Override public void openInEditingMode(RangedItem rangedItem) {
 		creativeTab.setSelectedItem(rangedItem.creativeTab);
 		shootConstantly.setSelected(rangedItem.shootConstantly);
-		preserveShots.setSelected(rangedItem.preserveShots);
-		pickupShots.setSelected(rangedItem.pickupShots);
+		preserveProjectiles.setSelected(rangedItem.preserveProjectiles);
+		pickupProjectiles.setSelected(rangedItem.pickupProjectiles);
 		name.setText(rangedItem.name);
 		shootSound.setSound(rangedItem.actionSound);
 		stackSize.setValue(rangedItem.stackSize);
@@ -519,8 +519,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		rangedItem.ammoItem = ammoItem.getBlock();
 		rangedItem.shootConstantly = shootConstantly.isSelected();
-		rangedItem.preserveShots = preserveShots.isSelected();
-		rangedItem.pickupShots = pickupShots.isSelected();
+		rangedItem.preserveProjectiles = preserveProjectiles.isSelected();
+		rangedItem.pickupProjectiles = pickupProjectiles.isSelected();
 		rangedItem.usageCount = (int) usageCount.getValue();
 		rangedItem.actionSound = shootSound.getSound();
 		rangedItem.bulletPower = (double) bulletPower.getValue();
