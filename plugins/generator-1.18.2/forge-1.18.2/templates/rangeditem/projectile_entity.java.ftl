@@ -136,7 +136,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			}/>
 		</#if>
 
-        <#if !data.preserveShots>
+        <#if !data.preserveProjectiles>
 		if (this.inGround)
 			this.discard();
         </#if>
