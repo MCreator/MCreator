@@ -23,6 +23,8 @@ import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
 
@@ -68,8 +70,9 @@ public class Label extends GUIComponent {
 		g.setColor(this.color);
 		g.drawString(this.getRenderText(), cx, cy + textheight);
 
-		if (text.getName() != null) {
-			// TODO: different handling if string
+		if (text.getName() != null) { // we have a procedure-based text
+			g.setColor(VariableTypeLoader.BuiltInTypes.STRING.getBlocklyColor());
+			g.drawLine(cx, cy + getHeight(null), cx + this.getWidth(null), cy + getHeight(null));
 		}
 	}
 

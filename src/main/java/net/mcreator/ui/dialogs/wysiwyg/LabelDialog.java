@@ -33,6 +33,8 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
@@ -42,8 +44,16 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 
+		JTextField textField = new JTextField();
+
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowActivated(WindowEvent e) {
+				SwingUtilities.invokeLater(textField::grabFocus);
+			}
+		});
+
 		StringProcedureSelector textSelector = new StringProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/label_text"), editor.mcreator, new JTextField(),
+				IHelpContext.NONE.withEntry("gui/label_text"), editor.mcreator, textField,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		textSelector.refreshList();
 
