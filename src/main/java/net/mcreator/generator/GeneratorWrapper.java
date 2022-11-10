@@ -25,6 +25,7 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,12 +72,7 @@ import java.util.stream.Collectors;
 	}
 
 	public String getRegistryNameFromFullName(String elementName) {
-		try {
-			return generator.getWorkspace().getModElementByName(getElementPlainName(elementName)).getRegistryName();
-		} catch (Exception e) {
-			generator.getLogger().warn("Failed to determine registry name for: " + elementName, e);
-			return NameMapper.UNKNOWN_ELEMENT;
-		}
+		return getRegistryNameForModElement(getElementPlainName(elementName));
 	}
 
 	public boolean isBlock(String elementName) {
@@ -89,9 +85,13 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	/**
+	 * Removes the "CUSTOM:" prefix and any eventual suffix (if present, it's after the last .)
+	 * @param elementName The name to convert
+	 * @return The plain name of the element
+	 */
 	public String getElementPlainName(String elementName) {
-		return elementName.replace("CUSTOM:", "").replace(".block", "").replace(".helmet", "").replace(".body", "")
-				.replace(".legs", "").replace(".boots", "").replace(".bucket", "");
+		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:",""), ".");
 	}
 
 	public String getRegistryNameForModElement(String modElement) {
