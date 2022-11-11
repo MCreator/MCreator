@@ -49,19 +49,11 @@
     </#if>
 </#macro>
 
-<#macro procedureOBJToConditionCode object="">
+<#macro procedureOBJToConditionCode object="" defaultValue=true>
     <#if hasProcedure(object)>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        true
-    </#if>
-</#macro>
-
-<#macro procedureOBJToLogicCode object="">
-    <#if hasProcedure(object)>
-        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
-    <#else>
-        false
+        defaultValue
     </#if>
 </#macro>
 

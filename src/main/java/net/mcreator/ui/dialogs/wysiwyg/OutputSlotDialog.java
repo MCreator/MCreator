@@ -79,7 +79,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 		dropItemsWhenNotBound.setSelected(true);
 
 		LogicProcedureSelector disablePickup = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
-				editor.mcreator, L10N.t("dialog.gui.slot_pickup"), ProcedureSelector.Side.BOTH,
+				editor.mcreator, L10N.t("dialog.gui.disable_pickup"), ProcedureSelector.Side.BOTH,
 				L10N.checkbox("condition.common.disable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		disablePickup.refreshList();
