@@ -143,7 +143,7 @@ public class ${name}Item extends Item {
 
 	<#if !data.ammoItem.isEmpty()>
 	if (entity.getAbilities().instabuild) {
-		entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>CREATIVE_ONLY<#else>ALLOWED</#if>;
+		entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 	} else {
 		if (${mappedMCItemToItemStackCode(data.ammoItem, 1)}.isDamageableItem()){
 			if (stack.hurt(1, world.getRandom(), entity)) {
