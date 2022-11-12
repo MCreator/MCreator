@@ -131,4 +131,8 @@ import java.util.Map;
 		return specialInformation;
 	}
 
+	@Override public void setSpecialInformation(String name, String fixedValue) {
+		specialInformation = new StringProcedure(name, fixedValue);
+	}
+
 }

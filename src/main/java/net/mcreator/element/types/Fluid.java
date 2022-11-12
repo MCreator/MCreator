@@ -165,4 +165,8 @@ import java.util.List;
 		return specialInformation;
 	}
 
+	@Override public void setSpecialInformation(String name, String fixedValue) {
+		specialInformation = new StringProcedure(name, fixedValue);
+	}
+
 }

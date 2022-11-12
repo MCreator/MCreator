@@ -24,4 +24,5 @@ import net.mcreator.element.parts.procedure.StringProcedure;
 public interface ISpecialInformationHolder {
 
 	StringProcedure getSpecialInformation();
+	void setSpecialInformation(String name, String fixedValue);
 }

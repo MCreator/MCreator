@@ -71,4 +71,8 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 		return specialInformation;
 	}
 
+	@Override public void setSpecialInformation(String name, String fixedValue) {
+		specialInformation = new StringProcedure(name, fixedValue);
+	}
+
 }

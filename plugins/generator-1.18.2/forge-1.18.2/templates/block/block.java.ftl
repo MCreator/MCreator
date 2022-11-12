@@ -190,7 +190,7 @@ public class ${name}Block extends
 			double z = entity != null ? entity.getZ() : 0.0;
 			list.add(new TextComponent(<@procedureOBJToStringCode data.specialInformation/>));
 		<#else>
-			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
+			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedValue()) as entry>
 			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
 			</#list>
 		</#if>

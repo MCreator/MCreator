@@ -12,7 +12,7 @@
 		double z = entity != null ? entity.getZ() : 0.0;
 		list.add(new TextComponent(<@procedureOBJToStringCode procedure/>));
 	<#else>
-		<#list thelper.splitCommaSeparatedStringListWithEscapes(procedure.getFixedText()) as entry>
+		<#list thelper.splitCommaSeparatedStringListWithEscapes(procedure.getFixedValue()) as entry>
 		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
 		</#list>
 	</#if>

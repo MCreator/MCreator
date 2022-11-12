@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.Armor;
 import net.mcreator.workspace.Workspace;
 
@@ -54,13 +55,13 @@ public class ArmorSpecialInformationConverter implements IConverter {
 			oldArmor.getAsJsonArray("bootsSpecialInfo").iterator()
 					.forEachRemaining(jsonElement -> bootsSpecialInfo.add(jsonElement.getAsString()));
 
-		armor.helmetSpecialInformation.setFixedValue(
+		armor.helmetSpecialInformation = new StringProcedure(null,
 				helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		armor.bodySpecialInformation.setFixedValue(
+		armor.bodySpecialInformation = new StringProcedure(null,
 				bodySpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		armor.leggingsSpecialInformation.setFixedValue(
+		armor.leggingsSpecialInformation = new StringProcedure(null,
 				leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		armor.bootsSpecialInformation.setFixedValue(
+		armor.bootsSpecialInformation = new StringProcedure(null,
 				bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
 		return armor;
