@@ -42,7 +42,7 @@ public class SpecialInformationConverter<T extends ISpecialInformationHolder> im
 			oldObject.getAsJsonArray("specialInfo").iterator()
 					.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
 
-		object.getSpecialInformation().setFixedText(
+		object.getSpecialInformation().setFixedValue(
 				specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		return (GeneratableElement) object;
 	}

@@ -60,7 +60,7 @@ public class FoodToItemConverter implements IConverter {
 			if (food.get("specialInfo") != null)
 				food.getAsJsonArray("specialInfo").iterator()
 						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
-			item.specialInformation.setFixedText(
+			item.specialInformation.setFixedValue(
 					specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 			item.stackSize = food.get("stackSize").getAsInt();
 			item.isFood = true;

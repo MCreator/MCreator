@@ -19,9 +19,9 @@
 
 package net.mcreator.element.types.interfaces;
 
-import net.mcreator.element.parts.TextProcedure;
+import net.mcreator.element.parts.procedure.StringProcedure;
 
 public interface ISpecialInformationHolder {
 
-	TextProcedure getSpecialInformation();
+	StringProcedure getSpecialInformation();
 }

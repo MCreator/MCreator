@@ -40,7 +40,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -97,7 +97,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final VTextField name = new VTextField(18);
 
-	private TextProcedureSelector specialInformation;
+	private StringProcedureSelector specialInformation;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
@@ -219,7 +219,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
-		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,

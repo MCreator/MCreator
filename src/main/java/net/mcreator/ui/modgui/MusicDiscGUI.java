@@ -35,7 +35,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -56,7 +56,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private TextureHolder texture;
 
-	private TextProcedureSelector specialInformation;
+	private StringProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
@@ -112,7 +112,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));

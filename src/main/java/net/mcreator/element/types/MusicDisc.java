@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextProcedure;
+import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -38,7 +38,7 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 	public String texture;
 	public String description;
 	public TabEntry creativeTab;
-	public TextProcedure specialInformation;
+	public StringProcedure specialInformation;
 	public boolean hasGlow;
 
 	public Sound music;
@@ -67,7 +67,7 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 		return creativeTab;
 	}
 
-	@Override public TextProcedure getSpecialInformation() {
+	@Override public StringProcedure getSpecialInformation() {
 		return specialInformation;
 	}
 

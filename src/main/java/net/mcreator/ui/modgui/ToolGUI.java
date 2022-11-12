@@ -38,7 +38,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -87,7 +87,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
-	private TextProcedureSelector specialInformation;
+	private StringProcedureSelector specialInformation;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -145,7 +145,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
 				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);

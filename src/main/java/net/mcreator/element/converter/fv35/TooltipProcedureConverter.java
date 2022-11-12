@@ -41,7 +41,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class TooltypeProcedureConverter implements IConverter {
+public class TooltipProcedureConverter implements IConverter {
 	private static final Logger LOG = LogManager.getLogger("TooltypeProcedureConverter");
 
 	@Override

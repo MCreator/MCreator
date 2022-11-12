@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextProcedure;
+import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -42,7 +42,7 @@ import java.util.Map;
 	public String customModelName;
 
 	public String name;
-	public TextProcedure specialInformation;
+	public StringProcedure specialInformation;
 	public TabEntry creativeTab;
 	public String toolType;
 	public int harvestLevel;
@@ -109,7 +109,7 @@ import java.util.Map;
 		return texture;
 	}
 
-	@Override public TextProcedure getSpecialInformation() {
+	@Override public StringProcedure getSpecialInformation() {
 		return specialInformation;
 	}
 

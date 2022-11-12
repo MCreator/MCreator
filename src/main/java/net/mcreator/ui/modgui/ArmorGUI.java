@@ -53,7 +53,7 @@ import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -105,10 +105,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 	private final VComboBox<Model> bootsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 
-	private TextProcedureSelector helmetSpecialInformation;
-	private TextProcedureSelector bodySpecialInformation;
-	private TextProcedureSelector leggingsSpecialInformation;
-	private TextProcedureSelector bootsSpecialInformation;
+	private StringProcedureSelector helmetSpecialInformation;
+	private StringProcedureSelector bodySpecialInformation;
+	private StringProcedureSelector leggingsSpecialInformation;
+	private StringProcedureSelector bootsSpecialInformation;
 
 	private ActionListener helmetModelListener = null;
 	private ActionListener bodyModelListener = null;
@@ -194,13 +194,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		helmetSpecialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		helmetSpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		bodySpecialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		bodySpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		leggingsSpecialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		leggingsSpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		bootsSpecialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		bootsSpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -857,14 +857,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModelPartR.setSelectedItem(armor.bootsModelPartR);
 
 		helmetModelPanel.toggleVisibility(
-				helmetModel.getSelectedItem() != defaultModel || !helmetSpecialInformation.getFixedText().isEmpty());
+				helmetModel.getSelectedItem() != defaultModel || helmetSpecialInformation.getSelectedProcedure() != null);
 		bodyModelPanel.toggleVisibility(
-				bodyModel.getSelectedItem() != defaultModel || !bodySpecialInformation.getFixedText().isEmpty());
+				bodyModel.getSelectedItem() != defaultModel || bodySpecialInformation.getSelectedProcedure() != null);
 		leggingsModelPanel.toggleVisibility(
-				leggingsModel.getSelectedItem() != defaultModel || !leggingsSpecialInformation.getFixedText()
-						.isEmpty());
+				leggingsModel.getSelectedItem() != defaultModel || leggingsSpecialInformation.getSelectedProcedure() != null);
 		bootsModelPanel.toggleVisibility(
-				bootsModel.getSelectedItem() != defaultModel || !bootsSpecialInformation.getFixedText().isEmpty());
+				bootsModel.getSelectedItem() != defaultModel || bootsSpecialInformation.getSelectedProcedure() != null);
 
 		helmetImmuneToFire.setSelected(armor.helmetImmuneToFire);
 		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);

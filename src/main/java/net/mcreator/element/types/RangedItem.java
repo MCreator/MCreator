@@ -24,7 +24,9 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -44,7 +46,7 @@ import java.util.Map;
 	public String texture;
 	public String customModelName;
 	public String name;
-	public TextProcedure specialInformation;
+	public StringProcedure specialInformation;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public MItemBlock ammoItem;
@@ -125,7 +127,7 @@ import java.util.Map;
 		return List.of(BaseType.ITEM, BaseType.ENTITY);
 	}
 
-	@Override public TextProcedure getSpecialInformation() {
+	@Override public StringProcedure getSpecialInformation() {
 		return specialInformation;
 	}
 

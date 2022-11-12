@@ -42,7 +42,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -94,7 +94,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final SoundSelector shootSound = new SoundSelector(mcreator);
 
-	public TextProcedureSelector specialInformation;
+	public StringProcedureSelector specialInformation;
 
 	private MCItemHolder ammoItem;
 	private MCItemHolder bulletItemTexture;
@@ -152,7 +152,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.swinged_by_entity"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
 				L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,

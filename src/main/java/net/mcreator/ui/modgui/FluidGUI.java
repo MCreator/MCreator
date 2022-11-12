@@ -36,7 +36,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -84,7 +84,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
-	private TextProcedureSelector specialInformation;
+	private StringProcedureSelector specialInformation;
 
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
@@ -149,7 +149,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
-		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,

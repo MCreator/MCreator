@@ -31,7 +31,7 @@ public abstract class RetvalProcedure<T> extends Procedure {
 		put(StringProcedure.class, new StringProcedure.GSONAdapter());
 	}};
 
-	private final T fixedValue;
+	private T fixedValue;
 
 	public RetvalProcedure(String name, T fixedValue) {
 		super(name);
@@ -44,6 +44,10 @@ public abstract class RetvalProcedure<T> extends Procedure {
 
 	public T getFixedValue() {
 		return fixedValue;
+	}
+
+	public void setFixedValue(T newFixedValue) {
+		this.fixedValue = newFixedValue;
 	}
 
 	@Override public String toString() {

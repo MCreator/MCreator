@@ -25,6 +25,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -73,7 +74,7 @@ import java.util.stream.Collectors;
 	public List<BoxEntry> boundingBoxes;
 
 	public String name;
-	public TextProcedure specialInformation;
+	public StringProcedure specialInformation;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
@@ -347,7 +348,7 @@ import java.util.stream.Collectors;
 		return baseTypes;
 	}
 
-	@Override public TextProcedure getSpecialInformation() {
+	@Override public StringProcedure getSpecialInformation() {
 		return specialInformation;
 	}
 

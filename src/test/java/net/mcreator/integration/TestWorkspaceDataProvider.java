@@ -459,7 +459,7 @@ public class TestWorkspaceDataProvider {
 					new Sound(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			fluid.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+			fluid.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
@@ -810,13 +810,13 @@ public class TestWorkspaceDataProvider {
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
-			armor.helmetSpecialInformation = new TextProcedure(emptyLists ? null : "text1",
+			armor.helmetSpecialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
-			armor.bodySpecialInformation = new TextProcedure(emptyLists ? null : "text2",
+			armor.bodySpecialInformation = new StringProcedure(emptyLists ? null : "text2",
 					"info 1, info 2, test \\, is this, another one");
-			armor.leggingsSpecialInformation = new TextProcedure(emptyLists ? null : "text3",
+			armor.leggingsSpecialInformation = new StringProcedure(emptyLists ? null : "text3",
 					"info 1, info 2, test \\, is this, another one");
-			armor.bootsSpecialInformation = new TextProcedure(emptyLists ? null : "text4",
+			armor.bootsSpecialInformation = new StringProcedure(emptyLists ? null : "text4",
 					"info 1, info 2, test \\, is this, another one");
 			armor.helmetImmuneToFire = _true;
 			armor.bodyImmuneToFire = !_true;
@@ -900,7 +900,7 @@ public class TestWorkspaceDataProvider {
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
 			plant.isSolid = _true;
-			plant.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+			plant.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
@@ -999,7 +999,7 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
-			item.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+			item.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			item.texture = "test2";
 			item.renderType = 0;
@@ -1036,7 +1036,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+			rangedItem.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			rangedItem.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
@@ -1280,7 +1280,7 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
-			block.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+			block.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			block.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
@@ -1393,7 +1393,7 @@ public class TestWorkspaceDataProvider {
 			musicDisc.analogOutput = 6;
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			musicDisc.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+			musicDisc.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 					"info 1, info 2, test \\, is this, another one");
 			musicDisc.texture = "itest";
 			return musicDisc;
@@ -1551,7 +1551,7 @@ public class TestWorkspaceDataProvider {
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
-		tool.specialInformation = new TextProcedure(emptyLists ? null : "text1",
+		tool.specialInformation = new StringProcedure(emptyLists ? null : "text1",
 				"info 1, info 2, test \\, is this, another one");
 		if (!emptyLists) {
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),

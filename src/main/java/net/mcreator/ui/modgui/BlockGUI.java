@@ -50,7 +50,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.TextProcedureSelector;
+import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -110,7 +110,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 	private ProcedureSelector onHitByProjectile;
 
-	private TextProcedureSelector specialInformation;
+	private StringProcedureSelector specialInformation;
 	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
@@ -320,7 +320,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
-		specialInformation = new TextProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,

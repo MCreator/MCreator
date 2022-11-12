@@ -54,13 +54,13 @@ public class ArmorSpecialInformationConverter implements IConverter {
 			oldArmor.getAsJsonArray("bootsSpecialInfo").iterator()
 					.forEachRemaining(jsonElement -> bootsSpecialInfo.add(jsonElement.getAsString()));
 
-		armor.helmetSpecialInformation.setFixedText(
+		armor.helmetSpecialInformation.setFixedValue(
 				helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		armor.bodySpecialInformation.setFixedText(
+		armor.bodySpecialInformation.setFixedValue(
 				bodySpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		armor.leggingsSpecialInformation.setFixedText(
+		armor.leggingsSpecialInformation.setFixedValue(
 				leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		armor.bootsSpecialInformation.setFixedText(
+		armor.bootsSpecialInformation.setFixedValue(
 				bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
 		return armor;

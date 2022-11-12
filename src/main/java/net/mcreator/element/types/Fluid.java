@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -65,7 +66,7 @@ import java.util.List;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;
-	public TextProcedure specialInformation;
+	public StringProcedure specialInformation;
 
 	public double resistance;
 	public int luminance;
@@ -160,7 +161,7 @@ import java.util.List;
 		return baseTypes;
 	}
 
-	@Override public TextProcedure getSpecialInformation() {
+	@Override public StringProcedure getSpecialInformation() {
 		return specialInformation;
 	}
 
