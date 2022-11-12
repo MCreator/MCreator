@@ -141,7 +141,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				this.font.draw(poseStack, ${translateTokens(JavaConventions.escapeStringForJava(component.text))},
+				this.font.draw(poseStack, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>

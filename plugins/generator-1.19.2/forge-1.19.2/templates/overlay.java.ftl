@@ -102,7 +102,7 @@ package ${package}.client.screens;
                     <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-                    Minecraft.getInstance().font.draw(event.getPoseStack(), ${translateTokens(JavaConventions.escapeStringForJava(component.text))},
+                    Minecraft.getInstance().font.draw(event.getPoseStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
                         posX + ${x}, posY + ${y}, ${component.color.getRGB()});
                 <#elseif component.getClass().getSimpleName() == "Image">
                     <#if hasProcedure(component.displayCondition)>
