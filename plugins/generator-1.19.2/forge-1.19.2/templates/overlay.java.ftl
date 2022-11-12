@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "tokens.ftl">
 <#include "procedures.java.ftl">
 
 <#assign hasTextures = data.baseTexture?has_content>
@@ -102,7 +101,8 @@ package ${package}.client.screens;
                     <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-                    Minecraft.getInstance().font.draw(event.getPoseStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+                    Minecraft.getInstance().font.draw(event.getPoseStack(),
+                        <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
                         posX + ${x}, posY + ${y}, ${component.color.getRGB()});
                 <#elseif component.getClass().getSimpleName() == "Image">
                     <#if hasProcedure(component.displayCondition)>
