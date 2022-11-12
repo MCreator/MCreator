@@ -24,20 +24,20 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import javax.annotation.Nullable;
 import java.awt.*;
 
-public class AbstractWYSIWYGDialog extends MCreatorDialog {
+public class AbstractWYSIWYGDialog<T extends GUIComponent> extends MCreatorDialog {
 
-	@Nullable private GUIComponent editingComponent;
+	@Nullable private T editingComponent;
 
-	public AbstractWYSIWYGDialog(Window w, @Nullable GUIComponent editingComponent) {
+	public AbstractWYSIWYGDialog(Window w, @Nullable T editingComponent) {
 		super(w);
 		this.editingComponent = editingComponent;
 	}
 
-	public @Nullable GUIComponent getEditingComponent() {
+	public @Nullable T getEditingComponent() {
 		return editingComponent;
 	}
 
-	public GUIComponent setEditingComponent(@Nullable GUIComponent editingComponent) {
+	public T setEditingComponent(@Nullable T editingComponent) {
 		return this.editingComponent = editingComponent;
 	}
 }

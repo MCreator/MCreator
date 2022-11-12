@@ -21,6 +21,7 @@ package net.mcreator.ui.action.impl.vcs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.vcs.VCSInfo;
 import net.mcreator.vcs.WorkspaceNotEmptyException;
@@ -33,6 +34,7 @@ public class SetupVCSAction extends VCSAction {
 	public SetupVCSAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.setup"),
 				e -> setupVCSForWorkspaceIfNotYet(actionRegistry.getMCreator()));
+		setIcon(UIRES.get("16px.setupvcs"));
 	}
 
 	@Override public void setEnabled(boolean b) {
@@ -51,8 +53,8 @@ public class SetupVCSAction extends VCSAction {
 			if (vcsInfo != null) {
 				try {
 					mcreator.getWorkspace().setVCS(WorkspaceVCS.initNewVCSWorkspace(mcreator.getWorkspace(), vcsInfo));
-					mcreator.actionRegistry.getActions().stream().filter(action -> action instanceof VCSAction)
-							.forEach(action -> ((VCSAction) action).vcsStateChanged());
+					mcreator.actionRegistry.getActions().stream().filter(action -> action instanceof VCSStateChangeListener)
+							.forEach(action -> ((VCSStateChangeListener) action).vcsStateChanged());
 					mcreator.statusBar.reloadVCSStatus();
 				} catch (WorkspaceNotEmptyException e) {
 					JOptionPane.showMessageDialog(mcreator,

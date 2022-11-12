@@ -75,7 +75,7 @@ public class GTSampleElements {
 				workspace.getModElementManager().storeModElement(procedure);
 			}
 
-			for (int i = 1; i <= 1; i++) {
+			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
 				workspace.addModElement(me);
@@ -98,6 +98,20 @@ public class GTSampleElements {
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_string\"><value name=\"return\">"
 								+ "<block type=\"text\"><field name=\"TEXT\">Message</field></block>"
+								+ "</value></block>");
+				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getModElementManager().storeModElement(procedure);
+			}
+
+			for (int i = 1; i <= 2; i++) {
+				ModElement me = new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata(
+						"dependencies", new ArrayList<String>()).putMetadata("return_type", "STRING");
+				workspace.addModElement(me);
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_string\"><value name=\"return\">"
+								+ "<block type=\"text\"><field name=\"TEXT\">demo text</field></block>"
 								+ "</value></block>");
 				assertTrue(workspace.getGenerator().generateElement(procedure));
 				workspace.getModElementManager().storeModElement(procedure);

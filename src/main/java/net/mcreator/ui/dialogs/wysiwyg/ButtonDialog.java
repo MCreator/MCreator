@@ -20,6 +20,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Button;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -32,7 +33,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class ButtonDialog extends AbstractWYSIWYGDialog {
+public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
 		super(editor.mcreator, button);
@@ -88,11 +89,14 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			if (text != null && !text.equals("")) {
 				if (button == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
-					editor.editor.setPositioningMode(textwidth + 25, 20);
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
-							new Button(text, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, text, editor.editor.ow, editor.editor.oh,
-									eh.getSelectedProcedure(), displayCondition.getSelectedProcedure())));
+
+					Button component = new Button(text, 0, 0, text, textwidth + 25, 20,
+							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);

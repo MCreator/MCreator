@@ -20,11 +20,11 @@ package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSyntaxException;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.NumberProcedure;
-import net.mcreator.element.parts.TextProcedure;
+import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorTemplate;
@@ -61,10 +61,13 @@ public class ModElementManager {
 		this.workspace = workspace;
 
 		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);
-		this.gson = new GsonBuilder().registerTypeAdapter(NumberProcedure.class, new NumberProcedure.GSONAdapter())
-				.registerTypeAdapter(TextProcedure.class, new TextProcedure.GSONAdapter())
-				.registerTypeHierarchyAdapter(GeneratableElement.class, this.gsonAdapter).disableHtmlEscaping()
-				.setPrettyPrinting().setLenient().create();
+
+		GsonBuilder gsonBuilder = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class,
+				this.gsonAdapter).disableHtmlEscaping().setPrettyPrinting().setLenient();
+
+		RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
+
+		this.gson = gsonBuilder.create();
 	}
 
 	public void invalidateCache() {
