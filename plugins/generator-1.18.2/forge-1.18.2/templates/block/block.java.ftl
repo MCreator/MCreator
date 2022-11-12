@@ -188,7 +188,7 @@ public class ${name}Block extends
 			double x = entity != null ? entity.getX() : 0.0;
 			double y = entity != null ? entity.getY() : 0.0;
 			double z = entity != null ? entity.getZ() : 0.0;
-			list.add(new TextComponent(<@procedureOBJToTextCode data.specialInformation/>));
+			list.add(new TextComponent(<@procedureOBJToStringCode data.specialInformation/>));
 		<#else>
 			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
 			list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));

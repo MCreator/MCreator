@@ -141,7 +141,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
  			double x = entity != null ? entity.getX() : 0.0;
  			double y = entity != null ? entity.getY() : 0.0;
  			double z = entity != null ? entity.getZ() : 0.0;
- 			list.add(Component.literal(<@procedureOBJToTextCode data.specialInformation/>));
+ 			list.add(Component.literal(<@procedureOBJToStringCode data.specialInformation/>));
  		<#else>
  			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedText()) as entry>
  			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
