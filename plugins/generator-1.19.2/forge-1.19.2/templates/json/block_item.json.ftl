@@ -5,6 +5,9 @@
   "textures": {
     "layer0": "${modid}:items/${data.itemTexture}"
   }
+  <#if !(data.blockBase?has_content && data.blockBase == "Leaves")>
+  ,"render_type": "${data.getRenderType()}"
+  </#if>
 }
 <#else>
 {
