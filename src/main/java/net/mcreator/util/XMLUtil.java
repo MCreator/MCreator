@@ -18,6 +18,7 @@
 
 package net.mcreator.util;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -27,45 +28,22 @@ import java.util.List;
 
 public class XMLUtil {
 
-	/**
-	 * Returns a list of all child elements of the given element with the given name
-	 *
-	 * @param element Element to list children for
-	 * @param names Names of children to consider. If null, all children will be listed. If multiple names are provided, only
-	 *              the first name that matches any children will be considered and children with other names will be discarded.
-	 * @return List of child elements
-	 */
+	public static List<Element> getDirectChildren(Element element) {
+		return getChildrenWithName(element, (String[]) null);
+	}
+
 	public static List<Element> getChildrenWithName(Element element, String... names) {
 		List<Element> elements = new ArrayList<>();
 		NodeList nodeList = element.getChildNodes();
-
-		if (names == null) {
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				Node node = nodeList.item(i);
-				if (node.getNodeType() == Node.ELEMENT_NODE) {
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node node = nodeList.item(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				if (names == null || (names.length == 1 && names[0].equals(node.getNodeName())) || ArrayUtils.contains(
+						names, node.getNodeName()))
 					elements.add((Element) node);
-				}
-			}
-		} else {
-			for (String name : names) {
-				boolean foundMatch = false;
-				for (int i = 0; i < nodeList.getLength(); i++) {
-					Node node = nodeList.item(i);
-					if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(name)) {
-						elements.add((Element) node);
-						foundMatch = true;
-					}
-				}
-				if (foundMatch)
-					break; // we only process the first name the match was found under
 			}
 		}
-
 		return elements;
-	}
-
-	public static List<Element> getDirectChildren(Element element) {
-		return getChildrenWithName(element, (String[]) null);
 	}
 
 	public static Element getFirstChildrenWithName(Element element, String... names) {
