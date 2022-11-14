@@ -1,1 +1,1 @@
-(ForgeRegistries.ENTITIES.getKey(${input$entity}.getType()).toString())
+(ForgeRegistries.ENTITY_TYPES.getKey(${input$entity}.getType()).toString())
