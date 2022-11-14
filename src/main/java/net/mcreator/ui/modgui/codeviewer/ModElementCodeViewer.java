@@ -97,9 +97,9 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				try {
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
-					files.sort(
-							Comparator.comparing(e -> FilenameUtils.getExtension(((GeneratorFile) e).file().getName()))
-									.thenComparing(e -> ((GeneratorFile) e).file().getName()));
+					files.sort(Comparator.<GeneratorFile, String>comparing(
+									e -> FilenameUtils.getExtension(e.file().getName()))
+							.thenComparing(e -> e.file().getName()));
 
 					List<GeneratorTemplatesList> lists = modElementGUI.getModElement().getGenerator()
 							.getModElementListTemplates(modElementGUI.getModElement(),
