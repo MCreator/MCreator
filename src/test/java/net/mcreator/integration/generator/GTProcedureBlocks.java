@@ -91,8 +91,8 @@ public class GTProcedureBlocks {
 
 					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
 						for (int i = 0; i < args0.size(); i++) {
-							if (!args0.get(i).getAsJsonObject().has("name"))
-								continue; // skip input if unnamed (e.g. input_dummy or definition problem)
+							if (!args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value"))
+								continue;
 							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
 							boolean match = false;
 							for (String input : procedureBlock.getAllRepeatingInputs()) {
