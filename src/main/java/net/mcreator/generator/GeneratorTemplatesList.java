@@ -57,7 +57,7 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
 		for (GeneratorTemplate listTemplate : templates.keySet()) {
 			for (int i = 0; i < listData.size(); i++) {
-				if (processTokens(listTemplate, i).getAbsolutePath().equals(generatorFile.getAbsolutePath())) {
+				if (processTokens(listTemplate, i).getPath().equals(generatorFile.getPath())) {
 					if (ignoreConditions || templates.get(listTemplate).get(i))
 						return listTemplate;
 				}
@@ -79,7 +79,7 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 		if (generatorTemplate.getTemplatesList() == this) {
 			return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
 					GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
-							generatorTemplate.getFile().getAbsolutePath()
+							generatorTemplate.getFile().getPath()
 									.replace("@NAME", element.getModElement().getName())
 									.replace("@registryname", element.getModElement().getRegistryName())
 									.replace("@elementindex", Integer.toString(index)))));
