@@ -200,7 +200,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends MCItem> list, MCItem value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setToolTipText("<html>" + value.getReadableName() + "<br><small>" + value.getDescription());
+			setToolTipText("<html>" + value.getReadableName() +
+					(value.getDescription().isEmpty() ? "" : ("<br><small>" + value.getDescription())));
 			if (value.icon.getIconWidth() != 32)
 				setIcon(new ImageIcon(ImageUtils.resize(value.icon.getImage(), 32)));
 			else

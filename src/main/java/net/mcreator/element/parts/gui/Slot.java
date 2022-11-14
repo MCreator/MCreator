@@ -18,7 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.image.ImageUtils;
@@ -40,7 +40,7 @@ public abstract class Slot extends GUIComponent {
 	public Procedure onTakenFromSlot;
 	public Procedure onStackTransfer;
 
-	private static transient final Image itemSlot = MinecraftImageGenerator.generateItemSlot();
+	private static final Image itemSlot = MinecraftImageGenerator.generateItemSlot();
 
 	// for deserialization use only, to specify default values
 	@SuppressWarnings("unused") Slot() {

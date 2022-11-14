@@ -37,7 +37,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class ImageDialog extends AbstractWYSIWYGDialog {
+public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
 		super(editor.mcreator, image);
@@ -89,19 +89,12 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					ImageIcon a = new ImageIcon(editor.mcreator.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(imageTxt), TextureType.SCREEN)
-							.getAbsolutePath());
+					Image component = new Image(imageTxt, 0, 0, imageTxt, scale1x.isSelected(), displayCondition.getSelectedProcedure());
 
-					if (scale1x.isSelected())
-						editor.editor.setPositioningMode(a.getIconWidth() / 2, a.getIconHeight() / 2);
-					else
-						editor.editor.setPositioningMode(a.getIconWidth(), a.getIconHeight());
-
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-							new Image(imageTxt, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, imageTxt, scale1x.isSelected(),
-									displayCondition.getSelectedProcedure()))));
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
