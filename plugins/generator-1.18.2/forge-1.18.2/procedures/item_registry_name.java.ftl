@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(${mappedMCItemToItem(input$item)}.getRegistryName())
+(ForgeRegistries.ITEMS.getKey(${mappedMCItemToItem(input$item)}).toString())
