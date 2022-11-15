@@ -218,6 +218,14 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		preserveProjectiles.setOpaque(false);
 
 		pickupProjectiles.setOpaque(false);
+		pickupProjectiles.setEnabled(false);
+
+		preserveProjectiles.addActionListener(e -> {
+			if(!pickupProjectiles.isEnabled())
+				pickupProjectiles.setEnabled(true);
+			else
+				pickupProjectiles.setEnabled(false);
+				});
 
 		selp.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
