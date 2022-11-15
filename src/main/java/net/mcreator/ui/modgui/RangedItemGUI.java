@@ -221,9 +221,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		pickupProjectiles.setEnabled(false);
 
 		preserveProjectiles.addActionListener(e -> {
-			if(!pickupProjectiles.isEnabled()) {
+			if(!pickupProjectiles.isEnabled())
 				pickupProjectiles.setEnabled(true);
-			}
 			else {
 				pickupProjectiles.setEnabled(false);
 				pickupProjectiles.setSelected(false);

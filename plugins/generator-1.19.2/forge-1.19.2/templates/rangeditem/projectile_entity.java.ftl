@@ -184,6 +184,12 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		return entityarrow;
 	}
 
+	@Override
+	protected boolean tryPickup(Player entity) {
+		super.tryPickup(entity);
+		return <#if data.pickupProjectiles>true<#else>false</#if>;
+	}
+
 }
 </#compress>
 

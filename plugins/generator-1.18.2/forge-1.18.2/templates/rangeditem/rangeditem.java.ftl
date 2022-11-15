@@ -157,7 +157,7 @@ public class ${name}Item extends Item {
 		}
 	}
 	<#else>
-	entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
+	entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
 	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>
