@@ -221,10 +221,13 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		pickupProjectiles.setEnabled(false);
 
 		preserveProjectiles.addActionListener(e -> {
-			if(!pickupProjectiles.isEnabled())
+			if(!pickupProjectiles.isEnabled()) {
 				pickupProjectiles.setEnabled(true);
-			else
+			}
+			else {
 				pickupProjectiles.setEnabled(false);
+				pickupProjectiles.setSelected(false);
+			}
 				});
 
 		selp.add(
@@ -519,6 +522,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		Model model2 = rangedItem.getItemModel();
 		if (model2 != null)
 			renderType.setSelectedItem(model2);
+
+		if(preserveProjectiles.isSelected())
+			pickupProjectiles.setEnabled(true);
 	}
 
 	@Override public RangedItem getElementFromGUI() {
