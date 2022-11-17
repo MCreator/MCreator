@@ -82,8 +82,7 @@ public class GTProcedureBlocks {
 							}
 						}
 
-						if (!match && procedureBlock.getAllRepeatingInputs().stream()
-								.noneMatch(e -> input.matches(e + "\\d+"))) {
+						if (!match) {
 							templatesDefined = false;
 							break;
 						}
@@ -91,26 +90,27 @@ public class GTProcedureBlocks {
 
 					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
 						for (int i = 0; i < args0.size(); i++) {
-							if (!args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value"))
-								continue;
-							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-							boolean match = false;
-							for (String input : procedureBlock.getAllRepeatingInputs()) {
-								if (name != null && name.matches(input + "\\d+")) {
-									for (String toolboxtemplate : procedureBlock.toolbox_init) {
-										if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
-											match = true;
-											break;
-										}
-									}
-									if (match)
-										break;
-								}
-							}
+							if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
+								String name = args0.get(i).getAsJsonObject().get("name").getAsString();
 
-							if (!match) {
-								templatesDefined = false;
-								break;
+								boolean match = false;
+								for (String input : procedureBlock.getAllRepeatingInputs()) {
+									if (name.matches(input + "\\d+")) {
+										for (String toolboxtemplate : procedureBlock.toolbox_init) {
+											if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
+												match = true;
+												break;
+											}
+										}
+										if (match)
+											break;
+									}
+								}
+
+								if (!match) {
+									templatesDefined = false;
+									break;
+								}
 							}
 						}
 					}
