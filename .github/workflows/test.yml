@@ -5,12 +5,10 @@ on:
     branches:
       - master
       - "feature/*"
-      - "dev/*"
   pull_request:
     branches:
       - master
       - "feature/*"
-      - "dev/*"
 
 jobs:
   build:

@@ -1,29 +1,31 @@
 <#-- @formatter:off -->
-new Object() {
+class ${parent.getName()}Wait${customBlockIndex} {
+	private int ticks = 0;
+	private float waitTicks;
+	private LevelAccessor world;
 
-    private int ticks = 0;
-    private float waitTicks;
-    private LevelAccessor world;
-
-    public void start(LevelAccessor world, int waitTicks) {
+	public void start(LevelAccessor world, int waitTicks) {
 		this.waitTicks = waitTicks;
-		MinecraftForge.EVENT_BUS.register(this);
 		this.world = world;
+
+		MinecraftForge.EVENT_BUS.register(${parent.getName()}Wait${customBlockIndex}.this);
 	}
 
-    @SubscribeEvent
+	@SubscribeEvent
 	public void tick(TickEvent.ServerTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			this.ticks += 1;
-			if (this.ticks >= this.waitTicks)
+			${parent.getName()}Wait${customBlockIndex}.this.ticks += 1;
+			if (${parent.getName()}Wait${customBlockIndex}.this.ticks >= ${parent.getName()}Wait${customBlockIndex}.this.waitTicks)
 				run();
 		}
 	}
 
-    private void run() {
-		${statement$do}
-		MinecraftForge.EVENT_BUS.unregister(this);
-	}
+	private void run() {
+		MinecraftForge.EVENT_BUS.unregister(${parent.getName()}Wait${customBlockIndex}.this);
 
-}.start(world, ${opt.toInt(input$ticks)});
+        ${statement$do}
+	}
+}
+
+new ${parent.getName()}Wait${customBlockIndex}().start(world, ${opt.toInt(input$ticks)});
 <#-- @formatter:on -->

@@ -173,10 +173,7 @@ public class GeneratorSelector {
 			statsPan.add(genStatsW, generatorConfiguration.getGeneratorName());
 		}
 
-		JScrollPane pane = new JScrollPane(statsPan);
-		pane.getVerticalScrollBar().setUnitIncrement(10);
-
-		mainPanel.add("Center", pane);
+		mainPanel.add("Center", statsPan);
 
 		generator.addActionListener(e -> {
 			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)
@@ -198,15 +195,6 @@ public class GeneratorSelector {
 					} else {
 						oldItem = generatorConfiguration;
 					}
-				}
-			}
-		});
-
-		mainPanel.addHierarchyListener(e -> {
-			if (SwingUtilities.getWindowAncestor(mainPanel) instanceof Dialog dialog) {
-				if (dialog.getHeight() > dialog.getGraphicsConfiguration().getBounds().height - 32) {
-					dialog.setSize(dialog.getWidth(), dialog.getGraphicsConfiguration().getBounds().height - 32);
-					dialog.setLocationRelativeTo(parent);
 				}
 			}
 		});

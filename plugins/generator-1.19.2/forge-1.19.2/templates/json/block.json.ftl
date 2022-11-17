@@ -5,6 +5,6 @@
     "particle": "${modid}:blocks/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
   }
   <#if !(data.blockBase?has_content && data.blockBase == "Leaves")>
-  ,"render_type": "${data.getRenderType()}"
+  , "render_type": "${data.getRenderType()}"
   </#if>
 }
