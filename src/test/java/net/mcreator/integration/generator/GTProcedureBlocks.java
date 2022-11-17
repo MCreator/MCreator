@@ -53,9 +53,6 @@ public class GTProcedureBlocks {
 
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
 				.values()) {
-			JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().has("args0") ?
-					procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray() :
-					new JsonArray();
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip procedure blocks not supported by this generator
@@ -68,6 +65,8 @@ public class GTProcedureBlocks {
 						+ procedureBlock.machine_name);
 				continue;
 			}
+
+			JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 
 			if (!procedureBlock.getAllInputs().isEmpty() || !procedureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
