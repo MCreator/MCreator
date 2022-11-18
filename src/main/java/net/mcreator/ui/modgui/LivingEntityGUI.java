@@ -113,6 +113,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 0, 2048, 1));
 
+    private final JSpinner rangedAttackDelay = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
+
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
@@ -550,6 +552,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		followRange.setPreferredSize(new Dimension(250, 32));
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
+		rangedAttackDelay.setPreferredSize(new Dimension(85, 32));
 
 		mobModel.addActionListener(e -> {
 			if (disableMobModelCheckBoxListener)
@@ -664,7 +667,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-				L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem));
+				L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem, rangedAttackDelay));
 
 		rangedAttackItem.setEnabled(false);
 
@@ -1038,6 +1041,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		tameable.setSelected(livingEntity.tameable);
 		ranged.setSelected(livingEntity.ranged);
 		rangedAttackItem.setBlock(livingEntity.rangedAttackItem);
+		rangedAttackDelay.setValue(livingEntity.rangedAttackDelay);
 		spawnThisMob.setSelected(livingEntity.spawnThisMob);
 		doesDespawnWhenIdle.setSelected(livingEntity.doesDespawnWhenIdle);
 		modelWidth.setValue(livingEntity.modelWidth);
@@ -1160,6 +1164,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.breedTriggerItems = breedTriggerItems.getListElements();
 		livingEntity.ranged = ranged.isSelected();
 		livingEntity.rangedAttackItem = rangedAttackItem.getBlock();
+		livingEntity.rangedAttackDelay = (int) rangedAttackDelay.getValue();
 		livingEntity.spawnThisMob = spawnThisMob.isSelected();
 		livingEntity.doesDespawnWhenIdle = doesDespawnWhenIdle.isSelected();
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();

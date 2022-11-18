@@ -56,6 +56,7 @@ import net.mcreator.element.converter.fv7.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.fv8.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
 import net.mcreator.element.converter.fv35.TooltypeProcedureConverter;
+import net.mcreator.element.converter.fv35.LivingEntityRangedAttackDelaySetter;
 
 import java.util.*;
 
@@ -77,7 +78,7 @@ public class ConverterRegistry {
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
 				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
-		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
+		put(ModElementType.LIVINGENTITY, Arrays.asList(new EntityTexturesConverter(), new LivingEntityRangedAttackDelaySetter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));

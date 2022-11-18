@@ -170,7 +170,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
         </#if>
 
         <#if data.ranged>
-            this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, 20, 10) {
+            this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, ${data.rangedAttackDelay}, 10) {
 				@Override public boolean canContinueToUse() {
 					return this.canUse();
 				}

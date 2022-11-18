@@ -150,6 +150,7 @@ import java.util.Locale;
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
 	public String rangedItemType;
+	public int rangedAttackDelay;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
