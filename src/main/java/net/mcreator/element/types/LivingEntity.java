@@ -122,13 +122,6 @@ import java.util.Locale;
 	public Sound deathSound;
 	public Sound stepSound;
 
-	public boolean spawnParticles;
-	public Particle particleToSpawn;
-	public String particleSpawningShape;
-	public double particleSpawningRadious;
-	public int particleAmount;
-	public Procedure particleCondition;
-
 	public Procedure onStruckByLightning;
 	public Procedure whenMobFalls;
 	public Procedure whenMobDies;

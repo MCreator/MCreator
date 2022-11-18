@@ -652,15 +652,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.stepSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.spawnParticles = _true;
-			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			livingEntity.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			livingEntity.rangedItemType = "Default item";
-			livingEntity.particleSpawningRadious = 4;
-			livingEntity.particleAmount = 13;
 			if (!emptyLists) {
-				livingEntity.particleCondition = new Procedure("condition2");
 				livingEntity.spawningCondition = new Procedure("condition3");
 				livingEntity.onStruckByLightning = new Procedure("procedure1");
 				livingEntity.whenMobFalls = new Procedure("procedure2");
@@ -1220,13 +1213,7 @@ public class TestWorkspaceDataProvider {
 			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
 			block.breakHarvestLevel = 4;
-			block.spawnParticles = _true;
 			block.tickRandomly = _true;
-			block.particleToSpawn = new Particle(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			block.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
-			block.particleSpawningRadious = 4;
-			block.particleAmount = 13;
 			block.hasInventory = _true;
 			block.guiBoundTo = "<NONE>";
 			block.openGUIOnRightClick = !_true;
@@ -1297,7 +1284,6 @@ public class TestWorkspaceDataProvider {
 				block.onHitByProjectile = new Procedure("procedure14");
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
-				block.particleCondition = new Procedure("condition4");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
 			block.particleTexture = emptyLists ? "" : "test7";

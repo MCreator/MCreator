@@ -26,7 +26,6 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
@@ -91,7 +90,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private ProcedureSelector onPlayerCollidesWith;
 	private ProcedureSelector onInitialSpawn;
 
-	private ProcedureSelector particleCondition;
 	private ProcedureSelector spawningCondition;
 	private ProcedureSelector transparentModelCondition;
 	private ProcedureSelector isShakingCondition;
@@ -141,8 +139,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JCheckBox immuneToAnvil = L10N.checkbox("elementgui.living_entity.immune_anvil");
 	private final JCheckBox immuneToWither = L10N.checkbox("elementgui.living_entity.immune_wither");
 	private final JCheckBox immuneToDragonBreath = L10N.checkbox("elementgui.living_entity.immune_dragon_breath");
-
-	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.living_entity.spawn_particles_around");
 
 	private final JCheckBox waterMob = L10N.checkbox("elementgui.living_entity.is_water_mob");
 	private final JCheckBox flyingMob = L10N.checkbox("elementgui.living_entity.is_flying_mob");
@@ -212,12 +208,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 	private final JComboBox<String> bossBarType = new JComboBox<>(
 			new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
-
-	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
-	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
-			new String[] { "Spread", "Top", "Tube", "Plane" });
-	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
-	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 
 	private final JCheckBox ridable = L10N.checkbox("elementgui.living_entity.is_rideable");
 
@@ -324,10 +314,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.event_initial_spawn"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		particleCondition = new ProcedureSelector(this.withEntry("entity/particle_condition"), mcreator,
-				L10N.t("elementgui.living_entity.condition_particle_spawn"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
@@ -383,7 +369,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane3 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(0, 0));
-		JPanel pane6 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
@@ -755,38 +740,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 
-		JPanel particles = new JPanel(new BorderLayout());
-		particles.setOpaque(false);
-
-		spawnParticles.setOpaque(false);
-
-		JPanel options = new JPanel(new GridLayout(5, 2, 0, 2));
-
-		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_particles"), spawnParticles));
-		options.add(new JLabel());
-
-		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_type"),
-				L10N.label("elementgui.living_entity.particle_type")));
-		options.add(particleToSpawn);
-
-		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_shape"),
-				L10N.label("elementgui.living_entity.particle_shape")));
-		options.add(particleSpawningShape);
-
-		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_spawn_radius"),
-				L10N.label("elementgui.living_entity.particle_spawn_radius")));
-		options.add(particleSpawningRadious);
-
-		options.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_average_amount"),
-				L10N.label("elementgui.living_entity.particle_average_amount")));
-		options.add(particleAmount);
-
-		options.setOpaque(false);
-
 		isBoss.setOpaque(false);
-
-		particles.add("West", PanelUtils.join(PanelUtils.northAndCenterElement(options, particleCondition, 5, 5)));
-		pane6.add("Center", PanelUtils.totalCenterInPanel(particles));
 
 		pane4.setOpaque(false);
 
@@ -875,11 +829,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobName.enableRealtimeValidation();
 
 		pane1.setOpaque(false);
-		pane6.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
-		addPage(L10N.t("elementgui.living_entity.page_particles"), pane6);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
@@ -905,7 +857,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		onPlayerCollidesWith.refreshListKeepSelected();
 		onInitialSpawn.refreshListKeepSelected();
 
-		particleCondition.refreshListKeepSelected();
 		spawningCondition.refreshListKeepSelected();
 		transparentModelCondition.refreshListKeepSelected();
 		isShakingCondition.refreshListKeepSelected();
@@ -934,8 +885,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
-
-		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
 		disableMobModelCheckBoxListener = false;
 	}
@@ -1020,13 +969,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		maxNumberOfMobsPerGroup.setValue(livingEntity.maxNumberOfMobsPerGroup);
 		spawnInDungeons.setSelected(livingEntity.spawnInDungeons);
 		restrictionBiomes.setListElements(livingEntity.restrictionBiomes);
-		spawnParticles.setSelected(livingEntity.spawnParticles);
-		particleToSpawn.setSelectedItem(livingEntity.particleToSpawn);
-		particleSpawningShape.setSelectedItem(livingEntity.particleSpawningShape);
-		particleCondition.setSelectedProcedure(livingEntity.particleCondition);
 		spawningCondition.setSelectedProcedure(livingEntity.spawningCondition);
-		particleSpawningRadious.setValue(livingEntity.particleSpawningRadious);
-		particleAmount.setValue(livingEntity.particleAmount);
 		breedTriggerItems.setListElements(livingEntity.breedTriggerItems);
 		bossBarColor.setSelectedItem(livingEntity.bossBarColor);
 		bossBarType.setSelectedItem(livingEntity.bossBarType);
@@ -1136,12 +1079,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.hurtSound = hurtSound.getSound();
 		livingEntity.deathSound = deathSound.getSound();
 		livingEntity.stepSound = stepSound.getSound();
-		livingEntity.spawnParticles = spawnParticles.isSelected();
-		livingEntity.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
-		livingEntity.particleSpawningShape = (String) particleSpawningShape.getSelectedItem();
-		livingEntity.particleSpawningRadious = (double) particleSpawningRadious.getValue();
-		livingEntity.particleAmount = (int) particleAmount.getValue();
-		livingEntity.particleCondition = particleCondition.getSelectedProcedure();
 		livingEntity.spawningCondition = spawningCondition.getSelectedProcedure();
 		livingEntity.onStruckByLightning = onStruckByLightning.getSelectedProcedure();
 		livingEntity.whenMobFalls = whenMobFalls.getSelectedProcedure();

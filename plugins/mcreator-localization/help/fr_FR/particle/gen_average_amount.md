@@ -1,1 +1,0 @@
-Un nombre moyen de particules à faire apparaitre lors de l'itération des apparitions.
