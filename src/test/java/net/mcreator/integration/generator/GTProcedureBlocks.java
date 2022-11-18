@@ -85,7 +85,8 @@ public class GTProcedureBlocks {
 						}
 					}
 
-					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
+					if (!procedureBlock.getAllRepeatingInputs().isEmpty()
+							&& procedureBlock.blocklyJSON.getAsJsonObject().has("args0")) {
 						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
@@ -139,7 +140,7 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.getFields() != null) {
+			if (procedureBlock.getFields() != null && procedureBlock.blocklyJSON.getAsJsonObject().has("args0")) {
 				int processed = 0;
 
 				JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
@@ -251,7 +252,8 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.getRepeatingStatements() != null) {
+			if (procedureBlock.getRepeatingStatements() != null && procedureBlock.blocklyJSON.getAsJsonObject()
+					.has("args0")) {
 				JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 				for (int i = 0; i < args0.size(); i++) {
 					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
