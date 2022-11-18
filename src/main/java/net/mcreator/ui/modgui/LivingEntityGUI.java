@@ -113,7 +113,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 0, 2048, 1));
 
-    private final JSpinner rangedAttackDelay = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
+	private final JSpinner rangedAttackDelay = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
