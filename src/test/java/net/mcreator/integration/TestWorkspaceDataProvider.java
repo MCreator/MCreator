@@ -709,7 +709,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.ranged = _true;
 			livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.rangedAttackDelay = 15;
+			livingEntity.rangedAttackInterval = 15;
+			livingEntity.rangedAttackRadius = 8;
 			livingEntity.spawnThisMob = !_true;
 			livingEntity.doesDespawnWhenIdle = _true;
 			livingEntity.spawningProbability = 23;
