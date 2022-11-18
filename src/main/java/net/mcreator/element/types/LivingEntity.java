@@ -173,6 +173,7 @@ import java.util.Locale;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
+		this.rangedAttackDelay = 20;
 
 		this.followRange = 16;
 
