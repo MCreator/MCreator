@@ -85,32 +85,35 @@ public class GTProcedureBlocks {
 						}
 					}
 
-					if (!procedureBlock.getAllRepeatingInputs().isEmpty()
-							&& procedureBlock.blocklyJSON.getAsJsonObject().has("args0")) {
-						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
-						for (int i = 0; i < args0.size(); i++) {
-							if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
-								String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
+						try {
+							JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0")
+									.getAsJsonArray();
+							for (int i = 0; i < args0.size(); i++) {
+								if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
+									String name = args0.get(i).getAsJsonObject().get("name").getAsString();
 
-								boolean match = false;
-								for (String input : procedureBlock.getAllRepeatingInputs()) {
-									if (name.matches(input + "\\d+")) {
-										for (String toolboxtemplate : procedureBlock.toolbox_init) {
-											if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
-												match = true;
-												break;
+									boolean match = false;
+									for (String input : procedureBlock.getAllRepeatingInputs()) {
+										if (name.matches(input + "\\d+")) {
+											for (String toolboxtemplate : procedureBlock.toolbox_init) {
+												if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
+													match = true;
+													break;
+												}
 											}
+											if (match)
+												break;
 										}
-										if (match)
-											break;
+									}
+
+									if (!match) {
+										templatesDefined = false;
+										break;
 									}
 								}
-
-								if (!match) {
-									templatesDefined = false;
-									break;
-								}
 							}
+						} catch (Exception ignored) {
 						}
 					}
 				} else {
@@ -140,12 +143,12 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.getFields() != null && procedureBlock.blocklyJSON.getAsJsonObject().has("args0")) {
+			if (procedureBlock.getFields() != null) {
 				int processed = 0;
 
-				JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 				for (String field : procedureBlock.getFields()) {
 					try {
+						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
@@ -252,21 +255,23 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			if (procedureBlock.getRepeatingStatements() != null && procedureBlock.blocklyJSON.getAsJsonObject()
-					.has("args0")) {
-				JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
-				for (int i = 0; i < args0.size(); i++) {
-					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
-						String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-						for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
-							if (name.matches(statement.name + "\\d+")) {
-								additionalXML.append("<statement name=\"").append(name).append("\">")
-										.append("<block type=\"text_print\"><value name=\"TEXT\">"
-												+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
-										.append("</block></value></block></statement>\n");
+			if (procedureBlock.getRepeatingStatements() != null) {
+				try {
+					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+					for (int i = 0; i < args0.size(); i++) {
+						if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
+							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+							for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
+								if (name.matches(statement.name + "\\d+")) {
+									additionalXML.append("<statement name=\"").append(name).append("\">")
+											.append("<block type=\"text_print\"><value name=\"TEXT\">"
+													+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
+											.append("</block></value></block></statement>\n");
+								}
 							}
 						}
 					}
+				} catch (Exception ignored) {
 				}
 			}
 
