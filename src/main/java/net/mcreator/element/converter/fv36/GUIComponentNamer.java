@@ -25,7 +25,7 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Label;
-import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.workspace.Workspace;
@@ -34,22 +34,23 @@ public class GUIComponentNamer implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GUI gui = (GUI) input;
-
-		for (GUIComponent component : gui.components) {
-			if (component instanceof Button button) {
-				button.name = AbstractWYSIWYGDialog.textToMachineName(gui.components, "button_", button.text);
-			} else if (component instanceof Label label) {
-				String baseName;
-				if (label.text.getName() != null) { // string procedure
-					baseName = "proc_" + RegistryNameFixer.fromCamelCase(label.text.getName());
-				} else { // fixed text
-					baseName = label.text.getFixedValue();
+		if (input instanceof IGUI gui) {
+			for (GUIComponent component : gui.getComponents()) {
+				if (component instanceof Button button) {
+					button.name = AbstractWYSIWYGDialog.textToMachineName(gui.getComponents(), "button_", button.text);
+				} else if (component instanceof Label label) {
+					String baseName;
+					if (label.text.getName() != null) { // string procedure
+						baseName = "proc_" + RegistryNameFixer.fromCamelCase(label.text.getName());
+					} else { // fixed text
+						baseName = label.text.getFixedValue();
+					}
+					label.name = AbstractWYSIWYGDialog.textToMachineName(gui.getComponents(), "label_", baseName);
 				}
-				label.name = AbstractWYSIWYGDialog.textToMachineName(gui.components, "label_", baseName);
 			}
 		}
-		return gui;
+
+		return input;
 	}
 
 	@Override public int getVersionConvertingTo() {

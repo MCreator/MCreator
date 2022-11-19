@@ -51,7 +51,6 @@ import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
 import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.fv35.ToolToItemTypeProcedureConverter;
 import net.mcreator.element.converter.fv36.GUIComponentNamer;
-import net.mcreator.element.converter.fv36.OverlayComponentNamer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -82,7 +81,7 @@ public class ConverterRegistry {
 						new GUIComponentNamer()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
-				new OverlayComponentNamer()));
+				new GUIComponentNamer()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));

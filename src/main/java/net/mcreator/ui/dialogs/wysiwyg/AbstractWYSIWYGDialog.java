@@ -75,6 +75,9 @@ public class AbstractWYSIWYGDialog<T extends GUIComponent> extends MCreatorDialo
 				.replace("-", "")
 				.replace("/", "");
 
+		// remove multiple underscores
+		name = name.replaceAll("_{2,}", "");
+
 		// remove underscore from start and end if present
 		name = StringUtils.stripStart(name, "_");
 		name = StringUtils.stripEnd(name, "_");
