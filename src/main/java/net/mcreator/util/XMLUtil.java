@@ -31,8 +31,8 @@ public class XMLUtil {
 	 * Returns a list of all child elements of the given element with the given name
 	 *
 	 * @param element Element to list children for
-	 * @param names Names of children to consider. If null, all children will be listed. If multiple names are provided, only
-	 *              the first name that matches any children will be considered and children with other names will be discarded.
+	 * @param names   Names of children to consider. If null, all children will be listed. If multiple names are provided, only
+	 *                the first name that matches any children will be considered and children with other names will be discarded.
 	 * @return List of child elements
 	 */
 	public static List<Element> getChildrenWithName(Element element, String... names) {

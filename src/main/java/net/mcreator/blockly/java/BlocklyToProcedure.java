@@ -22,7 +22,6 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.ReturnBlock;
-import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
