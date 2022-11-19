@@ -40,7 +40,7 @@ import java.awt.*;
 public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
-		super(editor.mcreator, slot);
+		super(editor, slot);
 		setModal(true);
 		setSize(850, 370);
 		setLocationRelativeTo(editor.mcreator);
@@ -60,7 +60,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 					if (slot != null && component instanceof Slot
 							&& ((Slot) component).id == slot.id) // skip current element if edit mode
 						continue;
-					if (component instanceof Slot && component.name.equals("Slot #" + slotIDnum))
+					if (component instanceof Slot slotOther && slotOther.id == slotIDnum)
 						return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 								L10N.t("dialog.gui.slot_id_already_used"));
 				}
@@ -146,7 +146,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 				if (slot == null) {
 					editor.guiType.setSelectedIndex(1);
 
-					InputSlot component = new InputSlot(slotIDnum, "Slot #" + slotIDnum, 0, 0,
+					InputSlot component = new InputSlot(slotIDnum,0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),
@@ -159,7 +159,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 				} else {
 					int idx = editor.components.indexOf(slot);
 					editor.components.remove(slot);
-					InputSlot slotNew = new InputSlot(slotIDnum, "Slot #" + slotIDnum, slot.getX(), slot.getY(),
+					InputSlot slotNew = new InputSlot(slotIDnum, slot.getX(), slot.getY(),
 							color.getColor().equals(Color.white) ? null : color.getColor(),
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),

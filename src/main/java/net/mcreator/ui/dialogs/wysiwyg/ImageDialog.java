@@ -40,7 +40,7 @@ import java.io.File;
 public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
-		super(editor.mcreator, image);
+		super(editor, image);
 		setSize(560, 180);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
@@ -89,7 +89,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					Image component = new Image(imageTxt, 0, 0, imageTxt, scale1x.isSelected(), displayCondition.getSelectedProcedure());
+					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(), displayCondition.getSelectedProcedure());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
@@ -98,7 +98,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
-					Image labelNew = new Image(imageTxt, image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
+					Image labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);

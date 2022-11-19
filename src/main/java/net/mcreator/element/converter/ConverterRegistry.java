@@ -49,6 +49,8 @@ import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
 import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
 import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
+import net.mcreator.element.converter.fv36.GUIComponentNamer;
+import net.mcreator.element.converter.fv36.OverlayComponentNamer;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
@@ -76,9 +78,11 @@ public class ConverterRegistry {
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
-				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
+				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
+						new GUIComponentNamer()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
-		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
+		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
+				new OverlayComponentNamer()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));

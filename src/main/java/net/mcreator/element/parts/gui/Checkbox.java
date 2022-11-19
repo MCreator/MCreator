@@ -25,14 +25,22 @@ import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
 
-public class Checkbox extends GUIComponent implements IMachineNamedComponent {
+public class Checkbox extends GUIComponent {
+
+	public String name;
 	public String text;
 	public Procedure isCheckedProcedure;
 
 	public Checkbox(String name, int x, int y, String text, Procedure isCheckedProcedure) {
-		super(name, x, y);
+		super(x, y);
 		this.text = text;
 		this.isCheckedProcedure = isCheckedProcedure;
+
+		this.name = name;
+	}
+
+	@Override public String getName() {
+		return name;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {

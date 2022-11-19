@@ -23,12 +23,13 @@ import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
 
 public class Label extends GUIComponent {
+
+	public String name;
 
 	public StringProcedure text;
 	public Color color;
@@ -36,10 +37,15 @@ public class Label extends GUIComponent {
 	public Procedure displayCondition;
 
 	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
-		super(name, x, y);
+		super(x, y);
 		this.text = text;
 		this.color = color;
 		this.displayCondition = displayCondition;
+		this.name = name;
+	}
+
+	@Override public String getName() {
+		return name;
 	}
 
 	@Override public final int getWidth(Workspace workspace) {
