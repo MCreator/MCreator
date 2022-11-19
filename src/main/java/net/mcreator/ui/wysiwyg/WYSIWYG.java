@@ -32,7 +32,9 @@ import org.eclipse.jgit.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -184,7 +186,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					g.drawLine(0, oy * 2 + oh * 2, getWidth(), oy * 2 + oh * 2);
 					g.drawLine(ox * 2 + ow * 2, 0, ox * 2 + ow * 2, getHeight());
 
-					g.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 }, 0));
+					g.setStroke(
+							new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 }, 0));
 					g.setColor(Color.white);
 					g.drawRect(ox * 2, oy * 2, ow * 2, oh * 2);
 				}

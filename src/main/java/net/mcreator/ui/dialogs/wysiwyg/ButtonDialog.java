@@ -20,7 +20,6 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Button;
-import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -90,8 +89,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				if (button == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 
-					Button component = new Button(text, 0, 0, text, textwidth + 25, 20,
-							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+					Button component = new Button(text, 0, 0, text, textwidth + 25, 20, eh.getSelectedProcedure(),
+							displayCondition.getSelectedProcedure());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);

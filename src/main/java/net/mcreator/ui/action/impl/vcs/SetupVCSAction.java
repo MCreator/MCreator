@@ -53,7 +53,8 @@ public class SetupVCSAction extends VCSAction {
 			if (vcsInfo != null) {
 				try {
 					mcreator.getWorkspace().setVCS(WorkspaceVCS.initNewVCSWorkspace(mcreator.getWorkspace(), vcsInfo));
-					mcreator.actionRegistry.getActions().stream().filter(action -> action instanceof VCSStateChangeListener)
+					mcreator.actionRegistry.getActions().stream()
+							.filter(action -> action instanceof VCSStateChangeListener)
 							.forEach(action -> ((VCSStateChangeListener) action).vcsStateChanged());
 					mcreator.statusBar.reloadVCSStatus();
 				} catch (WorkspaceNotEmptyException e) {

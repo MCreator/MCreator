@@ -140,8 +140,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 					OutputSlot component = new OutputSlot(slotIDnum, "Slot #" + slotIDnum, 0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-							eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
-							eh3.getSelectedProcedure());
+							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);

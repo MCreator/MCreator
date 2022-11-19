@@ -21,8 +21,6 @@ package net.mcreator.integration;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.procedure.NumberProcedure;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -30,6 +28,8 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
+import net.mcreator.element.parts.procedure.NumberProcedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
@@ -517,8 +517,10 @@ public class TestWorkspaceDataProvider {
 			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
-			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red, new Procedure("condition1")));
-			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white, new Procedure("condition4")));
+			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
+					Color.red, new Procedure("condition1")));
+			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
+					Color.white, new Procedure("condition4")));
 
 			components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
 			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
@@ -546,8 +548,12 @@ public class TestWorkspaceDataProvider {
 			}
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red, new Procedure("condition1")));
-				components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white, new Procedure("condition4")));
+				components.add(
+						new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
+								Color.red, new Procedure("condition1")));
+				components.add(
+						new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
+								Color.white, new Procedure("condition4")));
 
 				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
@@ -564,8 +570,8 @@ public class TestWorkspaceDataProvider {
 								null, null, new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, blocksAndItems).getName())));
 				components.add(
-						new InputSlot(4, "slot3", 20, 30, Color.green, !_true, _true, new Procedure("procedure5"),
-								null, null, new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
+						new InputSlot(4, "slot3", 20, 30, Color.green, !_true, _true, new Procedure("procedure5"), null,
+								null, new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
 				components.add(
 						new OutputSlot(5, "slot out", 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
 								new Procedure("procedure2"), new Procedure("procedure3")));

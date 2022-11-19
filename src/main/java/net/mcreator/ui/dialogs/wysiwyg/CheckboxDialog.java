@@ -95,7 +95,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 				String text = Transliteration.transliterateString(nameField.getText());
 				if (!text.equals("")) {
 					if (checkbox == null) {
-						Checkbox component = new Checkbox(text, 0, 0, checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
+						Checkbox component = new Checkbox(text, 0, 0, checkboxText.getText(),
+								isCheckedProcedure.getSelectedProcedure());
 
 						setEditingComponent(component);
 						editor.editor.addComponent(component);
