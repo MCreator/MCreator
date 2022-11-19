@@ -41,7 +41,7 @@ public class InputSlot extends Slot {
 	}
 
 	@Override public String getName() {
-		return "output_slot_" + id;
+		return "input_slot_" + id;
 	}
 
 }
