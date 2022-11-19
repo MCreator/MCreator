@@ -30,7 +30,7 @@ else
     # Fall back to hardcoded ~/Desktop
     userdesktop=~/Desktop
 fi
-cp mcreator.desktop ${userdesktop}/mcreator.desktop
+cp mcreator.desktop "${userdesktop}"/mcreator.desktop
 
 fi
 
