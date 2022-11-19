@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-<#include "../tokens.ftl">
 
 package ${package}.client.gui;
 
@@ -141,7 +140,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				this.font.draw(poseStack, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+				this.font.draw(poseStack,
+					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>

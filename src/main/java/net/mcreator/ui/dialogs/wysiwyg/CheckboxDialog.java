@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class CheckboxDialog extends AbstractWYSIWYGDialog {
+public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
 		super(editor.mcreator, checkbox);
@@ -95,11 +95,12 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 				String text = Transliteration.transliterateString(nameField.getText());
 				if (!text.equals("")) {
 					if (checkbox == null) {
-						editor.editor.setPositioningMode(20, 20);
-						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-								new Checkbox(text, editor.editor.newlyAddedComponentPosX,
-										editor.editor.newlyAddedComponentPosY, checkboxText.getText(),
-										isCheckedProcedure.getSelectedProcedure()))));
+						Checkbox component = new Checkbox(text, 0, 0, checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
+
+						setEditingComponent(component);
+						editor.editor.addComponent(component);
+						editor.list.setSelectedValue(component, true);
+						editor.editor.moveMode();
 					} else {
 						int idx = editor.components.indexOf(checkbox);
 						editor.components.remove(checkbox);
