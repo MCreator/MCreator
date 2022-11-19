@@ -85,7 +85,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		JPanel properties = new JPanel(new GridLayout(3, 2, 15, 2));
+		JPanel properties = new JPanel(new GridLayout(3, 2, 4, 2));
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/generation_stage"),
 				L10N.label("elementgui.feature.generation_stage")));
