@@ -21,8 +21,6 @@ package net.mcreator.integration;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.procedure.NumberProcedure;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -30,6 +28,8 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
+import net.mcreator.element.parts.procedure.NumberProcedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
@@ -518,8 +518,10 @@ public class TestWorkspaceDataProvider {
 			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
-			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red, new Procedure("condition1")));
-			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white, new Procedure("condition4")));
+			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
+					Color.red, new Procedure("condition1")));
+			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
+					Color.white, new Procedure("condition4")));
 
 			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
 			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
@@ -547,35 +549,35 @@ public class TestWorkspaceDataProvider {
 			}
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(new Label(
-						AbstractWYSIWYGDialog.textToMachineName(components, null, "This is --...p a test string ŽĐĆ @ /test//\" tes___"),
-						100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red, new Procedure("condition1")));
-				components.add(new Label(
-						AbstractWYSIWYGDialog.textToMachineName(components, null, "This is --...p a test string ŽĐĆ @ /test//\" tes___"),
-						100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white, new Procedure("condition4")));
+				components.add(new Label(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 100, 150,
+						new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red,
+						new Procedure("condition1")));
+				components.add(new Label(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 100, 150,
+						new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white,
+						new Procedure("condition4")));
 
-				components.add(new Image( 20, 30, "picture1", true, new Procedure("condition1")));
+				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"),
-						10, 10, "button1", 100, 200, new Procedure("procedure10"), null));
+				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
+						"button1", 100, 200, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
-				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"),
-						10, 10, "button4", 100, 200, new Procedure("procedure2"),
-						new Procedure("condition4")));
+				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
+						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(new InputSlot(0, 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"),
 						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
-						new InputSlot(3, 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"),
-								null, null, new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, blocksAndItems).getName())));
+						new InputSlot(3, 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"), null, null,
+								new MItemBlock(modElement.getWorkspace(),
+										getRandomMCItem(random, blocksAndItems).getName())));
 				components.add(
-						new InputSlot(4, 20, 30, Color.green, !_true, _true, new Procedure("procedure5"),
-								null, null, new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
-				components.add(
-						new OutputSlot(5, 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
-								new Procedure("procedure2"), new Procedure("procedure3")));
+						new InputSlot(4, 20, 30, Color.green, !_true, _true, new Procedure("procedure5"), null, null,
+								new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
+				components.add(new OutputSlot(5, 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
+						new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, 243, 563, Color.black, _true, _true, null, null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
