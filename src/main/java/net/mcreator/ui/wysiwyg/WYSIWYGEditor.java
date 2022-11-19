@@ -106,11 +106,14 @@ public class WYSIWYGEditor extends JPanel {
 
 	private final Map<WYSIWYGComponentRegistration<?>, JButton> addComponentButtonsMap = new HashMap<>();
 
+	public final boolean isNotOverlayType;
+
 	public WYSIWYGEditor(final MCreator mcreator, boolean isNotOverlayType) {
 		super(new BorderLayout(5, 0));
 		setOpaque(false);
 
 		this.mcreator = mcreator;
+		this.isNotOverlayType = isNotOverlayType;
 
 		editor.isNotOverlayType = isNotOverlayType;
 
