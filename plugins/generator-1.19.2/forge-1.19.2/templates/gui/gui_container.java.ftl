@@ -141,7 +141,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						</#if>
 
 						<#if component.getClass().getSimpleName() == "InputSlot">
-							<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()
+							<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
 								@Override public boolean mayPlace(ItemStack itemstack) {
 									return <@procedureOBJToConditionCode component.disablePlacement false true/>;
 								}
