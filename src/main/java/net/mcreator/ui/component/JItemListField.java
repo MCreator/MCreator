@@ -156,7 +156,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			exclude.setMargin(new Insets(0, 1, 0, 1));
 
 			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
-			incexc.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+			incexc.setBorder(
+					BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
 			add(incexc, BorderLayout.WEST);
 		}

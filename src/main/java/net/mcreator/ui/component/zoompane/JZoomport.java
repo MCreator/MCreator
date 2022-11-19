@@ -382,7 +382,8 @@ public class JZoomport extends JComponent {
 		Graphics2D graphics2D = (Graphics2D) g;
 		graphics2D.translate(canvasX - viewPosX, canvasY - viewPosY);
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
 		if (toZoom instanceof IZoomable)
 			((IZoomable) toZoom).paintPreZoom(g, new Dimension(width, height));

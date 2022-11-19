@@ -20,7 +20,6 @@ package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSyntaxException;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;

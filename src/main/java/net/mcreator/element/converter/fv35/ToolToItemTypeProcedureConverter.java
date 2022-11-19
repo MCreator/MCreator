@@ -41,8 +41,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class TooltypeProcedureConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("TooltypeProcedureConverter");
+public class ToolToItemTypeProcedureConverter implements IConverter {
+	private static final Logger LOG = LogManager.getLogger("ToolToItemTypeProcedureConverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -50,7 +50,7 @@ public class TooltypeProcedureConverter implements IConverter {
 		try {
 			procedure.procedurexml = fixXML(procedure.procedurexml);
 		} catch (Exception e) {
-			LOG.warn("Failed to convert replaced procedure " + input.getModElement().getName());
+			LOG.warn("Failed to convert procedure " + input.getModElement().getName());
 		}
 		return procedure;
 	}
@@ -80,7 +80,6 @@ public class TooltypeProcedureConverter implements IConverter {
 				element.appendChild(itemType);
 
 			}
-
 
 		}
 
