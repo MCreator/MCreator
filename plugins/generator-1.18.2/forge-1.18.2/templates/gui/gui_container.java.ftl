@@ -138,23 +138,23 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					}
 					</#if>
 
-					<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
-						@Override public boolean mayPlace(ItemStack itemstack) {
-							return <@procedureOBJToConditionCode component.disablePlacement false true/>;
-						}
-					<#elseif component.getClass().getSimpleName() == "InputSlot">
-						<#if component.inputLimit.toString()?has_content>
+					<#if component.getClass().getSimpleName() == "InputSlot">
+						<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
 							@Override public boolean mayPlace(ItemStack itemstack) {
+								return <@procedureOBJToConditionCode component.disablePlacement false true/>;
+							}
+						<#elseif component.inputLimit.toString()?has_content>
+							@Override public boolean mayPlace(ItemStack stack) {
 								<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
 									<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "") + "\"">
-									return itemstack.is(ItemTags.create(new ResourceLocation(${tag})));
+									return stack.is(ItemTags.create(new ResourceLocation(${tag})));
 								<#else>
-									return ${mappedMCItemToItem(component.inputLimit)} == itemstack.getItem();
+									return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();
 								</#if>
 							}
 						</#if>
 					<#elseif component.getClass().getSimpleName() == "OutputSlot">
-        	            @Override public boolean mayPlace(ItemStack stack) {
+						@Override public boolean mayPlace(ItemStack stack) {
 							return false;
 						}
 					</#if>
