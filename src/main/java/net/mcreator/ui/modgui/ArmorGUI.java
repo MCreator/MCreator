@@ -78,10 +78,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ArmorGUI extends ModElementGUI<Armor> {
@@ -134,6 +132,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<String> bodyModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> leggingsModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> bootsModelTexture = new SearchableComboBox<>();
+
+
+	private final Model normal = new Model.BuiltInModel("Normal");
+	private final Model tool = new Model.BuiltInModel("Tool");
+	private final SearchableComboBox<Model> helmetItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private final SearchableComboBox<Model> bodyItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private final SearchableComboBox<Model> leggingsItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private final SearchableComboBox<Model> bootsItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
 
 	private final JCheckBox helmetImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bodyImmuneToFire = L10N.checkbox("elementgui.common.enable");
@@ -270,6 +276,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsName.setPreferredSize(new Dimension(350, 36));
 		bootsName.setPreferredSize(new Dimension(350, 36));
 
+		ComponentUtils.deriveFont(helmetItemRenderType, 16);
+		helmetItemRenderType.setPreferredSize(new Dimension(350, 42));
+		helmetItemRenderType.setRenderer(new ModelComboBoxRenderer());
+
+		ComponentUtils.deriveFont(bodyItemRenderType, 16);
+		bodyItemRenderType.setPreferredSize(new Dimension(350, 42));
+		bodyItemRenderType.setRenderer(new ModelComboBoxRenderer());
+
+		ComponentUtils.deriveFont(leggingsItemRenderType, 16);
+		leggingsItemRenderType.setPreferredSize(new Dimension(350, 42));
+		leggingsItemRenderType.setRenderer(new ModelComboBoxRenderer());
+
+		ComponentUtils.deriveFont(bootsItemRenderType, 16);
+		bootsItemRenderType.setPreferredSize(new Dimension(350, 42));
+		bootsItemRenderType.setRenderer(new ModelComboBoxRenderer());
+
 		ComponentUtils.deriveFont(helmetName, 16);
 		ComponentUtils.deriveFont(bodyName, 16);
 		ComponentUtils.deriveFont(leggingsName, 16);
@@ -311,16 +333,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
-		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
-				PanelUtils.northAndCenterElement(
-						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
-								new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
-								helmetModelTexture), PanelUtils.join(FlowLayout.LEFT,
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-										helmetSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
-										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-												L10N.label("elementgui.item.is_immune_to_fire")),
-										helmetImmuneToFire))));
+		helmetModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), PanelUtils.northAndCenterElement(
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), helmetModel,
+						new JLabel(":"), helmetModelPart, L10N.label("elementgui.armor.texture"),
+						helmetModelTexture), PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
+						L10N.label("elementgui.common.item_model")), PanelUtils.join(helmetItemRenderType))),
+				PanelUtils.join(FlowLayout.LEFT, PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"), helmetSpecialInfo),
+						PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+										L10N.label("elementgui.item.is_immune_to_fire")), helmetImmuneToFire))));
 		helmetModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
@@ -341,17 +361,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
 
-		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"),
+		bodyModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"), PanelUtils.northAndCenterElement(
 				PanelUtils.northAndCenterElement(
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bodyModel,
 								new JLabel(":"), bodyModelPart, L10N.label("elementgui.armor.part_arm_left"),
 								armsModelPartL, L10N.label("elementgui.armor.part_arm_right"), armsModelPartR,
 								L10N.label("elementgui.armor.texture"), bodyModelTexture),
-						PanelUtils.join(FlowLayout.LEFT,
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-										bodySpecialInfo), PanelUtils.join(FlowLayout.LEFT,
-										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-												L10N.label("elementgui.item.is_immune_to_fire")), bodyImmuneToFire))));
+						PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
+								L10N.label("elementgui.common.item_model")), PanelUtils.join(bodyItemRenderType))),
+				PanelUtils.join(FlowLayout.LEFT,
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								bodySpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+								HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+										L10N.label("elementgui.item.is_immune_to_fire")), bodyImmuneToFire))));
 		bodyModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
@@ -366,17 +388,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
 
-		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
+		leggingsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), PanelUtils.northAndCenterElement(
 				PanelUtils.northAndCenterElement(
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), leggingsModel,
 								new JLabel(": L"), leggingsModelPartL, new JLabel("R"), leggingsModelPartR,
 								L10N.label("elementgui.armor.texture"), leggingsModelTexture),
-						PanelUtils.join(FlowLayout.LEFT,
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-										leggingsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
-										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-												L10N.label("elementgui.item.is_immune_to_fire")),
-										leggingsImmuneToFire))));
+						PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
+								L10N.label("elementgui.common.item_model")), PanelUtils.join(leggingsItemRenderType))),
+				PanelUtils.join(FlowLayout.LEFT,
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								leggingsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+								HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+										L10N.label("elementgui.item.is_immune_to_fire")),
+								leggingsImmuneToFire))));
 		leggingsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
@@ -391,16 +415,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
 
-		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
+		bootsModelPanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), PanelUtils.northAndCenterElement(
 				PanelUtils.northAndCenterElement(
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java"), bootsModel,
 								new JLabel(": L"), bootsModelPartL, new JLabel("R"), bootsModelPartR,
 								L10N.label("elementgui.armor.texture"), bootsModelTexture),
-						PanelUtils.join(FlowLayout.LEFT,
-								PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
-										bootsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
-										HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-												L10N.label("elementgui.item.is_immune_to_fire")), bootsImmuneToFire))));
+						PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
+										L10N.label("elementgui.common.item_model")), PanelUtils.join(bootsItemRenderType))),
+				PanelUtils.join(FlowLayout.LEFT,
+						PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information"),
+								bootsSpecialInfo), PanelUtils.join(FlowLayout.LEFT,
+								HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+										L10N.label("elementgui.item.is_immune_to_fire")), bootsImmuneToFire))));
 		bootsModelPanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
@@ -410,21 +436,25 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableHelmet.addActionListener(event -> {
 			textureHelmet.setEnabled(enableHelmet.isSelected());
 			helmetName.setEnabled(enableHelmet.isSelected());
+			helmetItemRenderType.setEnabled(enableHelmet.isSelected());
 		});
 
 		enableBody.addActionListener(event -> {
 			textureBody.setEnabled(enableBody.isSelected());
 			bodyName.setEnabled(enableBody.isSelected());
+			bodyItemRenderType.setEnabled(enableBody.isSelected());
 		});
 
 		enableLeggings.addActionListener(event -> {
 			textureLeggings.setEnabled(enableLeggings.isSelected());
 			leggingsName.setEnabled(enableLeggings.isSelected());
+			leggingsItemRenderType.setEnabled(enableLeggings.isSelected());
 		});
 
 		enableBoots.addActionListener(event -> {
 			textureBoots.setEnabled(enableBoots.isSelected());
 			bootsName.setEnabled(enableBoots.isSelected());
+			bootsItemRenderType.setEnabled(enableBoots.isSelected());
 		});
 
 		armorTextureFile.addActionListener(e -> updateArmorTexturePreview());
@@ -738,6 +768,26 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
 
+		ComboBoxUtil.updateComboBoxContents(helmetItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList())));
+
+		ComboBoxUtil.updateComboBoxContents(bodyItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList())));
+
+		ComboBoxUtil.updateComboBoxContents(leggingsItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList())));
+
+		ComboBoxUtil.updateComboBoxContents(bootsItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList())));
+
 		List<File> armors = mcreator.getFolderManager().getTexturesList(TextureType.ARMOR);
 		List<String> armorPart1s = new ArrayList<>();
 		for (File texture : armors)
@@ -866,6 +916,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
+		Model helmetJSON = armor.getHelmetItemJSONModel();
+		if (helmetJSON != null)
+			helmetItemRenderType.setSelectedItem(helmetJSON);
+		Model bodyJSON = armor.getBodyItemJSONModel();
+		if (bodyJSON != null)
+			bodyItemRenderType.setSelectedItem(bodyJSON);
+		Model leggingsJSON = armor.getLeggingsItemJSONModel();
+		if (leggingsJSON != null)
+			leggingsItemRenderType.setSelectedItem(leggingsJSON);
+		Model bootsJSON = armor.getBootsItemJSONModel();
+		if (bootsJSON != null)
+			bootsItemRenderType.setSelectedItem(bootsJSON);
+
 		updateArmorTexturePreview();
 	}
 
@@ -923,6 +986,39 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
+
+		Model.Type helmetModelType = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getType();
+		armor.helmetItemRenderType = 0;
+		if (helmetModelType == Model.Type.JSON)
+			armor.helmetItemRenderType = 1;
+		else if (helmetModelType == Model.Type.OBJ)
+			armor.helmetItemRenderType = 2;
+		armor.helmetItemCustomModelName = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getReadableName();
+
+		Model.Type bodyModelType = Objects.requireNonNull(bodyItemRenderType.getSelectedItem()).getType();
+		armor.bodyItemRenderType = 0;
+		if (bodyModelType == Model.Type.JSON)
+			armor.bodyItemRenderType = 1;
+		else if (bodyModelType == Model.Type.OBJ)
+			armor.bodyItemRenderType = 2;
+		armor.bodyItemCustomModelName = Objects.requireNonNull(bodyItemRenderType.getSelectedItem()).getReadableName();
+
+		Model.Type leggingsModelType = Objects.requireNonNull(leggingsItemRenderType.getSelectedItem()).getType();
+		armor.leggingsItemRenderType = 0;
+		if (leggingsModelType == Model.Type.JSON)
+			armor.leggingsItemRenderType = 1;
+		else if (leggingsModelType == Model.Type.OBJ)
+			armor.leggingsItemRenderType = 2;
+		armor.leggingsItemCustomModelName = Objects.requireNonNull(leggingsItemRenderType.getSelectedItem()).getReadableName();
+
+		Model.Type bootsModelType = Objects.requireNonNull(bootsItemRenderType.getSelectedItem()).getType();
+		armor.bootsItemRenderType = 0;
+		if (bootsModelType == Model.Type.JSON)
+			armor.bootsItemRenderType = 1;
+		else if (bootsModelType == Model.Type.OBJ)
+			armor.bootsItemRenderType = 2;
+		armor.bootsItemCustomModelName = Objects.requireNonNull(bootsItemRenderType.getSelectedItem()).getReadableName();
+
 		return armor;
 	}
 
