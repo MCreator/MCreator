@@ -4,11 +4,12 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "${modid}:items/${data.itemTexture}"
-  }
+  },
+  "render_type": "${data.getRenderType()}"
 }
 <#else>
 {
-    "parent": "${modid}:block/${registryname}_inventory"
+  "parent": "${modid}:block/${registryname}_inventory"
 }
 </#if>
 <#-- @formatter:on -->
