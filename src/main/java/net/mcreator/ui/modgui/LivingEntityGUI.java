@@ -651,26 +651,32 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
-		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
+		JPanel aitop = new JPanel(new GridLayout(3, 1, 0, 2));
 		aitop.setOpaque(false);
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_ai"), hasAI)));
-
-		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(20, 5),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/base"),
-						L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/breedable"), breedable), breedTriggerItems,
 				tameable));
 
-		breedTriggerItems.setPreferredSize(new Dimension(300, 32));
+		breedTriggerItems.setPreferredSize(new Dimension(230, 32));
+
+		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(5, 5),
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/base"),
+				L10N.label("elementgui.living_entity.mob_base")), aiBase));
+
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> regenerateAITasks());
 
-		aitop.add(PanelUtils.join(FlowLayout.LEFT,
+		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
+		aitopoveral.setOpaque(false);
+
+		aitopoveral.add("West", aitop);
+
+		aitopoveral.add("Center", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-				L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
+				rangedItemType, rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
 
 		rangedAttackItem.setEnabled(false);
 
@@ -681,8 +687,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		canControlStrafe.setOpaque(false);
 		canControlForward.setOpaque(false);
 
-		JPanel aitopwrp = PanelUtils.maxMargin(aitop, 2, true, true, true, true);
-		aitopwrp.setBorder(BorderFactory.createTitledBorder(
+		aitopoveral.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.ai_parameters"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -703,7 +708,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			}
 		});
 
-		aipan.add("North", aitopwrp);
+		aipan.add("North", aitopoveral);
 
 		JPanel bpb = new JPanel(new GridLayout());
 		bpb.setOpaque(false);
