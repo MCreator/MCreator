@@ -1,1 +1,1 @@
-(ForgeRegistries.ENTITY_TYPES.getKey(${input$entity}.getType()).toString())
+(${input$entity} != null ? ForgeRegistries.ENTITY_TYPES.getKey(${input$entity}.getType()).toString() : ForgeRegistries.ENTITY_TYPES.getDefaultKey())
