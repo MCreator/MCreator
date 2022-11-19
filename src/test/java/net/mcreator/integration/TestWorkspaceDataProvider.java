@@ -566,8 +566,9 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
 						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, new LogicProcedure("condition1", true),
-						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
-						new Procedure("procedure10"), new Procedure("procedure2"), new MItemBlock(modElement.getWorkspace(), "")));
+						new LogicProcedure("condition1", true) , _true, new Procedure("procedure3"),
+						new Procedure("procedure10"), new Procedure("procedure2"),
+						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(
 						new InputSlot(3, "slot2", 20, 30, Color.white, new LogicProcedure(null, true),
 								new LogicProcedure("condition1", true), !_true, new Procedure("procedure4"),
