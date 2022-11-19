@@ -147,8 +147,9 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		spo2.add(canCollide);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
-				PanelUtils.centerAndSouthElement(spo2, PanelUtils.westAndCenterElement(new JEmptyBox(3, 3),
-						additionalExpiryCondition), 5, 10), 15, 15)));
+				PanelUtils.centerAndSouthElement(spo2,
+						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 10), 15,
+				15)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -168,7 +169,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	}
 
 	@Override public void openInEditingMode(Particle particle) {
-		texture.setTextureFromTextureName(StringUtils.removeEnd(particle.texture, ".png")); // legacy, old workspaces stored name with extension
+		texture.setTextureFromTextureName(
+				StringUtils.removeEnd(particle.texture, ".png")); // legacy, old workspaces stored name with extension
 		width.setValue(particle.width);
 		height.setValue(particle.height);
 		scale.setValue(particle.scale);
