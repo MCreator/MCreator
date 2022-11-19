@@ -20,8 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;

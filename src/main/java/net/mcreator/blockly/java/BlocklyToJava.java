@@ -24,7 +24,6 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.*;
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -37,7 +36,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.text.ParseException;
@@ -56,8 +54,8 @@ public class BlocklyToJava extends BlocklyToCode {
 	 * @param sourceXML         <p>The XML code used by Blockly</p>
 	 * @param templateGenerator <p>The folder location in each {@link net.mcreator.generator.Generator} containing the code template files<p>
 	 */
-	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType,
-			String sourceXML, TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, parent, templateGenerator, externalGenerators);
 

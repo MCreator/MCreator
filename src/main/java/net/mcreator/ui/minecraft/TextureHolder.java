@@ -23,7 +23,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
-import org.gradle.internal.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -126,7 +125,8 @@ public class TextureHolder extends VButton {
 			id = texture;
 			setToolTipText(texture);
 			setIcon(new ImageIcon(ImageUtils.resize(
-					td.getMCreator().getFolderManager().getTextureImageIcon(id, td.getTextureType()).getImage(), this.size)));
+					td.getMCreator().getFolderManager().getTextureImageIcon(id, td.getTextureType()).getImage(),
+					this.size)));
 		}
 	}
 

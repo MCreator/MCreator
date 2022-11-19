@@ -64,7 +64,7 @@ public class ${JavaModName}Biomes {
 
     <#list biomes as biome>
     public static final RegistryObject<Biome> ${biome.getModElement().getRegistryNameUpper()}
-        = REGISTRY.register("${biome.getModElement().getRegistryName()}", () -> ${biome.getModElement().getName()}Biome.createBiome());
+        = REGISTRY.register("${biome.getModElement().getRegistryName()}", ${biome.getModElement().getName()}Biome::createBiome);
     </#list>
 
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
@@ -97,6 +97,9 @@ public class ${JavaModName}Biomes {
 						</#list>
 						
 						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
+						chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
+								FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
+										chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
 					}
 
 					// Inject surface rules
@@ -129,7 +132,7 @@ public class ${JavaModName}Biomes {
 								noiseGeneratorSettings.defaultBlock(),
 								noiseGeneratorSettings.defaultFluid(),
 								noiseGeneratorSettings.noiseRouter(),
-								SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i])),
+								SurfaceRules.sequence(surfaceRules.toArray(SurfaceRules.RuleSource[]::new)),
 								noiseGeneratorSettings.spawnTarget(),
 								noiseGeneratorSettings.seaLevel(),
 								noiseGeneratorSettings.disableMobGeneration(),
@@ -137,7 +140,7 @@ public class ${JavaModName}Biomes {
 								noiseGeneratorSettings.oreVeinsEnabled(),
 								noiseGeneratorSettings.useLegacyRandomSource()
 							);
-							noiseGenerator.settings = new Holder.Direct(moddedNoiseGeneratorSettings);
+							noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
 						}
 					}
 				}
@@ -157,6 +160,9 @@ public class ${JavaModName}Biomes {
 						</#list>
 
 						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
+						chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
+								FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
+										chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
 					}
 
 					// Inject surface rules
@@ -180,7 +186,7 @@ public class ${JavaModName}Biomes {
 									noiseGeneratorSettings.defaultBlock(),
 									noiseGeneratorSettings.defaultFluid(),
 									noiseGeneratorSettings.noiseRouter(),
-									SurfaceRules.sequence(surfaceRules.toArray(i -> new SurfaceRules.RuleSource[i])),
+									SurfaceRules.sequence(surfaceRules.toArray(SurfaceRules.RuleSource[]::new)),
 									noiseGeneratorSettings.spawnTarget(),
 									noiseGeneratorSettings.seaLevel(),
 									noiseGeneratorSettings.disableMobGeneration(),
@@ -188,7 +194,7 @@ public class ${JavaModName}Biomes {
 									noiseGeneratorSettings.oreVeinsEnabled(),
 									noiseGeneratorSettings.useLegacyRandomSource()
 							);
-							noiseGenerator.settings = new Holder.Direct(moddedNoiseGeneratorSettings);
+							noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
 						}
 					}
 				}
