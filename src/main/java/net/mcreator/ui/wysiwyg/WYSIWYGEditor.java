@@ -58,9 +58,12 @@ public class WYSIWYGEditor extends JPanel {
 		add(new WYSIWYGComponentRegistration<>("image", "addimage", true, Image.class, ImageDialog.class));
 		add(new WYSIWYGComponentRegistration<>("button", "addbutton", false, Button.class, ButtonDialog.class));
 		add(new WYSIWYGComponentRegistration<>("checkbox", "addcheckbox", false, Checkbox.class, CheckboxDialog.class));
-		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class, TextFieldDialog.class));
-		add(new WYSIWYGComponentRegistration<>("input_slot", "addinslot", false, InputSlot.class, InputSlotDialog.class));
-		add(new WYSIWYGComponentRegistration<>("output_slot", "addoutslot", false, OutputSlot.class, OutputSlotDialog.class));
+		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class,
+				TextFieldDialog.class));
+		add(new WYSIWYGComponentRegistration<>("input_slot", "addinslot", false, InputSlot.class,
+				InputSlotDialog.class));
+		add(new WYSIWYGComponentRegistration<>("output_slot", "addoutslot", false, OutputSlot.class,
+				OutputSlotDialog.class));
 	}};
 
 	public WYSIWYG editor = new WYSIWYG(this);
@@ -106,11 +109,14 @@ public class WYSIWYGEditor extends JPanel {
 
 	private final Map<WYSIWYGComponentRegistration<?>, JButton> addComponentButtonsMap = new HashMap<>();
 
+	public final boolean isNotOverlayType;
+
 	public WYSIWYGEditor(final MCreator mcreator, boolean isNotOverlayType) {
 		super(new BorderLayout(5, 0));
 		setOpaque(false);
 
 		this.mcreator = mcreator;
+		this.isNotOverlayType = isNotOverlayType;
 
 		editor.isNotOverlayType = isNotOverlayType;
 
@@ -449,7 +455,8 @@ public class WYSIWYGEditor extends JPanel {
 			GUIComponent component = list.getSelectedValue();
 
 			for (WYSIWYGComponentRegistration<?> componentRegistration : COMPONENT_REGISTRY) {
-				if (componentRegistration.component() == component.getClass() && componentRegistration.editor() != null) {
+				if (componentRegistration.component() == component.getClass()
+						&& componentRegistration.editor() != null) {
 					try {
 						component = componentRegistration.editor()
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())

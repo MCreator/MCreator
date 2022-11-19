@@ -61,8 +61,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 			fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 5, 1, 5, this.getBackground()),
-					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())
-			));
+					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
 		}
 	}
 
@@ -87,7 +86,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 
 		this.fixedValue = fixedValue;
 
-		if(fixedValue != null) {
+		if (fixedValue != null) {
 			fixedValue.setEditable(true);
 		}
 	}
