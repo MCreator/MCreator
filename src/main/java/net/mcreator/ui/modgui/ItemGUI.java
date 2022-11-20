@@ -120,7 +120,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
+			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear", "spyglass" });
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {

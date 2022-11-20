@@ -60,17 +60,17 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
 		<#if !data.bulletItemTexture.isEmpty()>
 		return ${mappedMCItemToItemStackCode(data.bulletItemTexture, 1)};
-    	<#else>
+		<#else>
 		return ItemStack.EMPTY;
-    	</#if>
+		</#if>
 	}
 
 	@Override protected ItemStack getPickupItem() {
 		<#if !data.ammoItem.isEmpty()>
 		return ${mappedMCItemToItemStackCode(data.ammoItem, 1)};
-    	<#else>
+		<#else>
 		return ItemStack.EMPTY;
-    	</#if>
+		</#if>
 	}
 
 	@Override protected void doPostHurtEffects(LivingEntity entity) {
@@ -91,7 +91,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			"world": "this.level"
 		}/>
 	}
-    </#if>
+	</#if>
 
 	<#if hasProcedure(data.onBulletHitsEntity)>
 	@Override public void onHitEntity(EntityHitResult entityHitResult) {
@@ -122,6 +122,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 	</#if>
 
+	<#if hasProcedure(data.onBulletFlyingTick) || !data.preserveProjectiles>
 	@Override public void tick() {
 		super.tick();
 
@@ -136,9 +137,12 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			}/>
 		</#if>
 
+		<#if !data.preserveProjectiles>
 		if (this.inGround)
 			this.discard();
+		</#if>
 	}
+	</#if>
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
@@ -178,6 +182,19 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 		return entityarrow;
 	}
+
+	<#if data.ammoItem.isEmpty()>
+	@Override
+	protected boolean tryPickup(Player entity) {
+		super.tryPickup(entity);
+		switch (this.pickup) {
+					case ALLOWED :
+						return entity.getInventory().add(this.getPickupItem());
+					default:
+						return false;
+		}
+	}
+	</#if>
 
 }
 

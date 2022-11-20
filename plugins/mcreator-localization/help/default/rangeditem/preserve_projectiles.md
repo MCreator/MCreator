@@ -1,0 +1,1 @@
+If checked, the projectile will remain on the block it lands on after it is shot.
