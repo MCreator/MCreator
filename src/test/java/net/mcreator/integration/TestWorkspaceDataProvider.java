@@ -523,8 +523,8 @@ public class TestWorkspaceDataProvider {
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
 					Color.white, new Procedure("condition4")));
 
-			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
-			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
+			components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
+			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";
