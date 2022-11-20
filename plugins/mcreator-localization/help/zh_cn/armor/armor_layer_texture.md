@@ -1,0 +1,1 @@
+The armor layer texture are the textures displayed on the player when he has the armor on him.

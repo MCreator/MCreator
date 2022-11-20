@@ -1,0 +1,1 @@
+The amount of damage the mob deals to entities when attacking.

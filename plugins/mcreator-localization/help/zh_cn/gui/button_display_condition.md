@@ -1,0 +1,1 @@
+If the condition is specified, the button is only visible (displayed/shown) in case the condition is passed.

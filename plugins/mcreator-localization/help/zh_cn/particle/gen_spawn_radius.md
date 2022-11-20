@@ -1,0 +1,1 @@
+The radius is the diameter in blocks where the particles will spawn.

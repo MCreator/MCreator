@@ -1,0 +1,1 @@
+This procedure will be executed when an entity loses the potion effect.

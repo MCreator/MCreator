@@ -1,0 +1,1 @@
+This parameter defines which type of the loot table you make.

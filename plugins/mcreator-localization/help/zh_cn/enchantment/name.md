@@ -1,0 +1,1 @@
+The name of the enchantment as used in-game.

@@ -1,0 +1,1 @@
+The sound when the player equips a piece of the armor.

@@ -1,0 +1,1 @@
+This procedure will be executed when the potion effect is applied to an entity. 

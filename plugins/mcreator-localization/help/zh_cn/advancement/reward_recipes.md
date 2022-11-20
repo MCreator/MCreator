@@ -1,0 +1,1 @@
+Recipes to unlock when the player completes the advancement.

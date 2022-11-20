@@ -1,0 +1,1 @@
+This is the game rule display name. It is used on the game rules setting screen.

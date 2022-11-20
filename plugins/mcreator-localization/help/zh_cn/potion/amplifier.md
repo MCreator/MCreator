@@ -1,0 +1,1 @@
+This parameter defines how strong this effect entry is.

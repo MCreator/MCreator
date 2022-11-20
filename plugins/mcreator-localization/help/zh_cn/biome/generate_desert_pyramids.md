@@ -1,0 +1,1 @@
+Select this setting to have Desert Pyramids in your biome.

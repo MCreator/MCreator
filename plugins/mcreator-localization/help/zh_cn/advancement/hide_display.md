@@ -1,0 +1,1 @@
+Check this parameter to hide the advancement in the advancement tab until it's completed.

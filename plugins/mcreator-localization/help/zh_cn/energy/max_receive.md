@@ -1,0 +1,1 @@
+This value is the maximal value of energy the energy element (block, item, ...) can receive from another energy element.

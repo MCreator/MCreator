@@ -1,0 +1,1 @@
+Repair items parameter controls which items can be used to repair the armor inside the anvil.
