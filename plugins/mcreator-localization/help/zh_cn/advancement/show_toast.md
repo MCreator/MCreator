@@ -1,1 +1,1 @@
-Show the advancement top right of the screen when the player completes the advancement.
+当玩家完成进度时，在屏幕右上方显示进度。

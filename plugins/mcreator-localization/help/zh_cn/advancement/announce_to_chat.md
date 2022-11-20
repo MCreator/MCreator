@@ -1,1 +1,1 @@
-Writes a message in the chat when the player completes the advancement.
+当玩家完成升级时在聊天中发送一条信息。

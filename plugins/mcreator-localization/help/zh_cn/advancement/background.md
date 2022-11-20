@@ -1,1 +1,1 @@
-If your advancement is the first of a new path, you can choose the background of the advancement tab with this option.
+如果你的进度是新路径的第一个，你可以用这个选项选择进度选项卡的背景。

@@ -1,5 +1,5 @@
-This is the type of achievement
+成就的种类
 
-* Task is a basic achievement type and is most common.
-* Goal is a long term goal which you strive to achieve.
-* Challenge is to test a player or challenge them to something.
+* ”任务“是一种基本的成就类型，也是最常见的。
+* “目标”是一个需要努力实现的长期目标。
+* “挑战”是为了测试玩家或让他们挑战某些内容。

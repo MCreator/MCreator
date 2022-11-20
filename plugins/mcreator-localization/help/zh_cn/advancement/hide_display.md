@@ -1,1 +1,1 @@
-Check this parameter to hide the advancement in the advancement tab until it's completed.
+选中此参数可以在进度选项卡中隐藏进度，直到完成为止。

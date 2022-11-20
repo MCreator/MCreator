@@ -1,3 +1,3 @@
-This is the advancement after which your achievement will be listed.
+在此之后，你的成就将被列出。
 
-You can use "No parent: root" will make a new path (new advancement tab).
+你可以使用“No parent: root”将创建一个新的路径(新的进度选项卡)。

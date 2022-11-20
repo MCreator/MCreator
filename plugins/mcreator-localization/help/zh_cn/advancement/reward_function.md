@@ -1,1 +1,1 @@
-You can choose a function to execute when the player completes the advancement with this parameter.
+你可以通过这个参数选择当玩家完成进度时要执行的函数。

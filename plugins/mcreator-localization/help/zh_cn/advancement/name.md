@@ -1,2 +1,3 @@
-The name of the advancement.
-If it has not parent (root advancement) then it will be the name of the path.
+成就的名称。
+
+如果它没有父级(根级)，那么它将是路径的名称。

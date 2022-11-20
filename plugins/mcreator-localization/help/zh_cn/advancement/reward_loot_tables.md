@@ -1,2 +1,1 @@
-The player will receive some items from the selected loot table defined in this field 
-when the advancement is completed.
+当升级完成时，玩家将从这个字段中定义的战利品表中获得一些物品。

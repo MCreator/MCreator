@@ -1,1 +1,1 @@
-Recipes to unlock when the player completes the advancement.
+当玩家获得成就时解锁的合成表。

@@ -1,1 +1,1 @@
-This is how many experience the player will receive after completing the advancement.
+这是玩家在完成升级后将获得的经验值数量。
