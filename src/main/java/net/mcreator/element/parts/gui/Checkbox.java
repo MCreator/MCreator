@@ -18,21 +18,29 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
 
-public class Checkbox extends GUIComponent implements IMachineNamedComponent {
+public class Checkbox extends GUIComponent {
+
+	public String name;
 	public String text;
 	public Procedure isCheckedProcedure;
 
 	public Checkbox(String name, int x, int y, String text, Procedure isCheckedProcedure) {
-		super(name, x, y);
+		super(x, y);
 		this.text = text;
 		this.isCheckedProcedure = isCheckedProcedure;
+
+		this.name = name;
+	}
+
+	@Override public String getName() {
+		return name;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {

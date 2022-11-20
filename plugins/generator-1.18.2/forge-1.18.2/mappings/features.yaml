@@ -1,0 +1,9 @@
+_default:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+feature_lake:
+  - LakeFeature
+  - LakeFeature.Configuration
+feature_simple_block:
+  - SimpleBlockFeature
+  - SimpleBlockConfiguration

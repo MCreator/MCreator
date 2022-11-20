@@ -101,10 +101,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		onClosed.setSelectedProcedure(gui.onClosed);
 
 		editor.getGUITypeSelector().setSelectedIndex(gui.type);
-		if (editor.getGUITypeSelector().getSelectedIndex() == 1) {
-			editor.slot1.setEnabled(true);
-			editor.slot2.setEnabled(true);
-		}
+		editor.setSlotComponentsEnabled(editor.getGUITypeSelector().getSelectedIndex() == 1);
 
 		editor.sx.setValue(gui.gridSettings.sx);
 		editor.sy.setValue(gui.gridSettings.sy);

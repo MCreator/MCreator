@@ -22,7 +22,6 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.ReturnBlock;
-import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -50,7 +49,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		super(workspace, parent, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
-	@Override public void preBlocksPlacement(Document doc) {
+	@Override protected void preBlocksPlacement(Document doc, Element startBlock) {
 		if (doc != null) {
 			// first we load data from startblock
 			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, "event_trigger"),
@@ -65,7 +64,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		}
 	}
 
-	@Override public void postBlocksPlacement(Document doc) {
+	@Override protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
 		if (getReturnType() != null) {
 			if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

@@ -19,7 +19,7 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 
 import java.awt.*;
 
@@ -32,11 +32,16 @@ public class InputSlot extends Slot {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public InputSlot(int id, String name, int x, int y, Color color, boolean canTakeStack,
+	public InputSlot(int id, int x, int y, Color color, boolean canTakeStack,
 			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot,
 			Procedure onStackTransfer, MItemBlock inputLimit) {
-		super(id, name, x, y, color, canTakeStack, dropItemsWhenNotBound, onSlotChanged, onTakenFromSlot,
+		super(id, x, y, color, canTakeStack, dropItemsWhenNotBound, onSlotChanged, onTakenFromSlot,
 				onStackTransfer);
 		this.inputLimit = inputLimit;
 	}
+
+	@Override public String getName() {
+		return "input_slot_" + id;
+	}
+
 }

@@ -140,6 +140,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "fluids"), "fluids", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "game_modes"), "gamemodes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "game_rules"), "gamerules", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "generation_steps"), "generationsteps", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "map_colors"), "mapcolors", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "materials"), "materials", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "particles"), "particles", supportedElements, stats);
@@ -152,6 +153,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "item_types"), "itemtypes", supportedElements, stats);
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
@@ -164,6 +166,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "cmd_args"), "cmdargs", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "global_triggers"), "triggers", supportedProcedures, stats);
 			addStatsBar(L10N.t(covpfx + "advancement_triggers"), "jsontriggers", supportedProcedures, stats);
+			addStatsBar(L10N.t(covpfx + "feature_blocks"), "features", supportedProcedures, stats);
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),
 					supportedProcedures, 10, 10));
 

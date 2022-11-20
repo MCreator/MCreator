@@ -121,7 +121,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
 	private final JSpinner mountedYOffset = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.1));
 	private final JSpinner modelShadowSize = new JSpinner(new SpinnerNumberModel(0.5, 0, 20, 0.1));
-	private final JCheckBox disableCollisions = new JCheckBox("Disable collision box");
+	private final JCheckBox disableCollisions = L10N.checkbox("elementgui.living_entity.disable_collisions");
 
 	private final JSpinner xpAmount = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 
@@ -689,7 +689,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getAITaskBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());
 			if (!isEditingMode()) {

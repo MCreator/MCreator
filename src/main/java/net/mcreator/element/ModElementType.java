@@ -19,6 +19,7 @@
 
 package net.mcreator.element;
 
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -60,7 +61,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
 		for (Field field : modElementStorageClass.getFields())
-			if (field.getType().isAssignableFrom(net.mcreator.element.parts.Procedure.class)) {
+			if (field.getType().isAssignableFrom(Procedure.class)) {
 				hasProcedureTriggers = true;
 				break;
 			}
@@ -139,6 +140,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> DIMENSION;
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;
+	public static ModElementType<?> FEATURE;
 	public static ModElementType<?> FLUID;
 	public static ModElementType<?> FUNCTION;
 	public static ModElementType<?> GAMERULE;

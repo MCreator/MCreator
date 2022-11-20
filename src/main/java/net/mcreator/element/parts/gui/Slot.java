@@ -18,7 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.image.ImageUtils;
@@ -40,7 +40,7 @@ public abstract class Slot extends GUIComponent {
 	public Procedure onTakenFromSlot;
 	public Procedure onStackTransfer;
 
-	private static transient final Image itemSlot = MinecraftImageGenerator.generateItemSlot();
+	private static final Image itemSlot = MinecraftImageGenerator.generateItemSlot();
 
 	// for deserialization use only, to specify default values
 	@SuppressWarnings("unused") Slot() {
@@ -48,10 +48,10 @@ public abstract class Slot extends GUIComponent {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public Slot(int id, String name, int x, int y, Color color, boolean disableStackInteraction,
+	public Slot(int id, int x, int y, Color color, boolean disableStackInteraction,
 			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot,
 			Procedure onStackTransfer) {
-		super(name, x, y);
+		super(x, y);
 		this.color = color;
 		this.id = id;
 		this.disableStackInteraction = disableStackInteraction;
