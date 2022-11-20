@@ -46,9 +46,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	<#list data.components as component>
 		<#if component.getClass().getSimpleName() == "TextField">
-		EditBox ${component.name};
+		EditBox ${component.getName()};
 		<#elseif component.getClass().getSimpleName() == "Checkbox">
-		Checkbox ${component.name};
+		Checkbox ${component.getName()};
 		</#if>
 	</#list>
 
@@ -80,7 +80,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.render(ms, mouseX, mouseY, partialTicks);
+				${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
 			</#if>
 		</#list>
 	}
@@ -117,8 +117,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				if(${component.name}.isFocused())
-					return ${component.name}.keyPressed(key, b, c);
+				if(${component.getName()}.isFocused())
+					return ${component.getName()}.keyPressed(key, b, c);
 			</#if>
 		</#list>
 
@@ -129,7 +129,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.containerTick();
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.tick();
+				${component.getName()}.tick();
 			</#if>
 		</#list>
 	}
@@ -160,7 +160,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, Component.literal("${component.placeholder}"))
 				<#if component.placeholder?has_content>
 				{
@@ -187,9 +187,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					}
 				}
 				</#if>;
-				guistate.put("text:${component.name}", ${component.name});
-				${component.name}.setMaxLength(32767);
-				this.addWidget(this.${component.name});
+				guistate.put("text:${component.getName()}", ${component.getName()});
+				${component.getName()}.setMaxLength(32767);
+				this.addWidget(this.${component.getName()});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, Component.literal("${component.text}"), e -> {
@@ -211,11 +211,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				</#if>);
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
-				${component.name} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 						20, 20, Component.literal("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
 					<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-				guistate.put("checkbox:${component.name}", ${component.name});
-				this.addRenderableWidget(${component.name});
+				guistate.put("checkbox:${component.getName()}", ${component.getName()});
+				this.addRenderableWidget(${component.getName()});
 			</#if>
 		</#list>
 	}
