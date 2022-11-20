@@ -29,7 +29,7 @@ import java.util.List;
 	List<GUIComponent> getComponents();
 
 	default Collection<GUIComponent> getComponentsOfType(String type) {
-		return getComponents().stream().filter(c -> c.getClass().getName().equals(type)).toList();
+		return getComponents().stream().filter(c -> c.getClass().getSimpleName().equals(type)).toList();
 	}
 
 }

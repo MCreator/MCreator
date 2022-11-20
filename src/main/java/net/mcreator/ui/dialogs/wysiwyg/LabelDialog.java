@@ -110,7 +110,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 					nameBase = textProcedure.getFixedValue();
 				}
 
-				String name = textToMachineName( editor.getComponentList(), "label_", nameBase);
+				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
 
 				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
 

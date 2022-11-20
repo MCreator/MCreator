@@ -70,13 +70,13 @@ public class AbstractWYSIWYGDialog<T extends GUIComponent> extends MCreatorDialo
 
 		// cleanup the text (transliterate, lowercase, remove spaces)
 		String name = RegistryNameFixer.fix(text)
-				// then remove non-Java compatible parts that could remain
+				// then remove Java-incompatible parts that could remain
 				.replace(".", "")
 				.replace("-", "")
 				.replace("/", "");
 
 		// remove multiple underscores
-		name = name.replaceAll("_{2,}", "");
+		name = name.replaceAll("_{2,}", "_");
 
 		// remove underscore from start and end if present
 		name = StringUtils.stripStart(name, "_");
