@@ -57,7 +57,7 @@ Blockly.Blocks['mcitem_allblocks'] = {
         this.appendDummyInput()
             .appendField(new FieldMCItem("allblocks"), "value")
             .appendField(new Blockly.FieldImage("./res/b.png", 8, 36));
-        this.setOutput(true, 'MCItemBlock');
+        this.setOutput(true, ['MCItemBlock','BlockStateProvider']);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setColour(60);
