@@ -20,50 +20,30 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Button;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.IMachineNamedComponent;
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
 		super(editor.mcreator, button);
 		setModal(true);
-		setSize(480, 260);
+		setSize(480, 200);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
-
+		JTextField nameField = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
-		VTextField nameField = new VTextField(20);
-		nameField.setPreferredSize(new Dimension(200, 28));
-		UniqueNameValidator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.button_name_validator"),
-				Transliteration::transliterateString,
-				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
-						.map(e -> e.name), new JavaMemberNameValidator(nameField, false));
-		validator.setIsPresentOnList(button != null);
-		nameField.setValidator(validator);
-		nameField.enableRealtimeValidation();
-		options.add(PanelUtils.join(L10N.label("dialog.gui.button_name"), nameField));
-
-		JTextField fieldText = new JTextField(20);
-		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), fieldText));
-		fieldText.setPreferredSize(new Dimension(200, 28));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -80,9 +60,9 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		add("Center",
 				new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
 
-		add("North", PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(button == null ?
-				L10N.label("dialog.gui.button_change_width") :
-				L10N.label("dialog.gui.button_resize")), PanelUtils.centerInPanel(options)));
+		add("North", PanelUtils.northAndCenterElement(button == null ?
+				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")) :
+				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")), PanelUtils.centerInPanel(options)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -100,12 +80,12 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
 			setVisible(false);
-			String text = Transliteration.transliterateString(nameField.getText());
-			if (!text.equals("")) {
+			String text = nameField.getText();
+			if (text != null && !text.equals("")) {
 				if (button == null) {
-					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(fieldText.getText(), WYSIWYG.frc).getWidth());
+					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 
-					Button component = new Button(text, 0, 0, fieldText.getText(), textwidth + 25, 20,
+					Button component = new Button(text, 0, 0, text, textwidth + 25, 20,
 							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 
 					setEditingComponent(component);
@@ -115,8 +95,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				} else {
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);
-					Button buttonNew = new Button(text, button.getX(), button.getY(), fieldText.getText(), button.width,
-							button.height, eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
+							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 					editor.components.add(idx, buttonNew);
 					setEditingComponent(buttonNew);
 				}

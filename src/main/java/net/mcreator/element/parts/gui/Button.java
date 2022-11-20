@@ -25,7 +25,7 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
 import java.awt.*;
 
-public class Button extends SizedComponent implements IMachineNamedComponent {
+public class Button extends SizedComponent {
 
 	public String text;
 	public Procedure onClick;

@@ -19,12 +19,12 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameScreens.java"
 
 localizationkeys:
-  - fromlist: data.getComponentsOfType('textfield')
+  - fromlist: data.getComponentsOfType('TextField')
     key: gui.@modid.@registryname.@[name]
     mapto: placeholder
-  - fromlist: data.getComponentsOfType('button')
+  - fromlist: data.getComponentsOfType('Button')
     key: gui.@modid.@registryname.@[name]
     mapto: text
-  - fromlist: data.getComponentsOfType('checkbox')
+  - fromlist: data.getComponentsOfType('Checkbox')
     key: gui.@modid.@registryname.@[name]
     mapto: text

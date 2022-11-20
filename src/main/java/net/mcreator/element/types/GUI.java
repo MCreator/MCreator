@@ -71,10 +71,6 @@ import java.util.List;
 		this.gridSettings = new GridSettings();
 	}
 
-	public List<GUIComponent> getComponentsOfType(String type) {
-		return GUIComponent.filterComponentsByType(components, type);
-	}
-
 	public int getMaxSlotID() {
 		int currentMax = -1;
 		for (GUIComponent component : components) {

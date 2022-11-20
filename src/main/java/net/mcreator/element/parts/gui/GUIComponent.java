@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,10 +52,6 @@ import java.util.stream.Collectors;
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
 			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
-
-	public static List<GUIComponent> filterComponentsByType(List<GUIComponent> components, String type) {
-		return components.stream().filter(typeMappings.get(type)::isInstance).toList();
-	}
 
 	GUIComponent() {
 		uuid = UUID.randomUUID();
