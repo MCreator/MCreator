@@ -43,7 +43,6 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -55,10 +54,9 @@ import java.util.stream.Collectors;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
-	private final VTextField name = new VTextField(30);
 	private final VTextField displayName = new VTextField(30);
-	private final MCItemHolder oldPOI = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+	private final MCItemHolder savedPointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
@@ -80,18 +78,11 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 		zombifiedProfessionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(displayName, 16);
 		ComponentUtils.deriveFont(hat, 16);
 
-		JPanel subpanel = new JPanel(new GridLayout(7, 2, 0, 2));
+		JPanel subpanel = new JPanel(new GridLayout(6, 2, 0, 2));
 		subpanel.setOpaque(false);
-
-		name.setEnabled(false);
-
-		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/name"),
-				L10N.label("elementgui.villager_profession.name")));
-		subpanel.add(name);
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/display_name"),
 				L10N.label("elementgui.villager_profession.display_name")));
@@ -140,18 +131,15 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				L10N.label("elementgui.villager_profession.zombified_profession_texture")));
 		subpanel.add(PanelUtils.centerAndEastElement(zombifiedProfessionTextureFile, importZombifiedProfessionTexture));
 
-		page1group.addValidationElement(name);
 		page1group.addValidationElement(displayName);
 		page1group.addValidationElement(pointOfInterest);
 		page1group.addValidationElement(actionSound.getVTextField());
 		page1group.addValidationElement(professionTextureFile);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.villager_profession.profession_needs_name")));
-		name.enableRealtimeValidation();
 		displayName.setValidator(new TextFieldValidator(displayName,
 				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
 		displayName.enableRealtimeValidation();
-		pointOfInterest.setValidator(new PointOfInterestValidator(mcreator, pointOfInterest, oldPOI));
+		pointOfInterest.setValidator(new PointOfInterestValidator(mcreator, pointOfInterest, savedPointOfInterest));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
@@ -168,8 +156,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(mainPanel));
 
 		if (!isEditingMode()) {
-			name.setText(modElement.getName().toUpperCase(Locale.ROOT));
-			displayName.setText(StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT)));
+			displayName.setText(StringUtils.machineToReadableName(modElement.getName()));
 		}
 	}
 
@@ -190,9 +177,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	}
 
 	@Override public void openInEditingMode(VillagerProfession profession) {
-		name.setText(modElement.getName().toUpperCase(Locale.ROOT));
 		displayName.setText(profession.displayName);
-		oldPOI.setBlock(profession.oldPOI);
+		savedPointOfInterest.setBlock(profession.pointOfInterest);
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		hat.setSelectedItem(profession.hat);
@@ -202,9 +188,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public VillagerProfession getElementFromGUI() {
 		VillagerProfession profession = new VillagerProfession(modElement);
-		profession.name = StringUtils.uppercaseFirstLetter(modElement.getName().toLowerCase(Locale.ROOT));
 		profession.displayName = displayName.getText();
-		profession.oldPOI = pointOfInterest.getBlock();
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();

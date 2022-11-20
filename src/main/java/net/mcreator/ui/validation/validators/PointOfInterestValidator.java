@@ -19,22 +19,32 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PointOfInterestValidator implements Validator {
 
 	private final MCreator mcreator;
 	private final MCItemHolder holder;
 	private final MCItemHolder exception;
+	private final List<MItemBlock> vanillaPointOfInterest;
 
 	public PointOfInterestValidator(MCreator mcreator, MCItemHolder holder, MCItemHolder exception) {
 		this.mcreator = mcreator;
 		this.holder = holder;
 		this.exception = exception;
+		this.vanillaPointOfInterest = Arrays.asList(new MItemBlock(mcreator.getWorkspace(), "bee_nest"),
+				new MItemBlock(mcreator.getWorkspace(), "beehive"), new MItemBlock(mcreator.getWorkspace(), "bed"),
+				new MItemBlock(mcreator.getWorkspace(), "lightning_rod"),
+				new MItemBlock(mcreator.getWorkspace(), "lodestone"), new MItemBlock(mcreator.getWorkspace(), "bell"),
+				new MItemBlock(mcreator.getWorkspace(), "nether_portal"));
 	}
 
 	@Override public ValidationResult validate() {
@@ -42,7 +52,7 @@ public class PointOfInterestValidator implements Validator {
 			if (exception.containsItem() && holder.getBlock().equals(exception.getBlock()))
 				return ValidationResult.PASSED;
 			if (ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream().toList()
-					.contains(holder.getBlock()))
+					.contains(holder.getBlock()) || (vanillaPointOfInterest.contains(holder.getBlock())))
 				return new Validator.ValidationResult(ValidationResultType.ERROR,
 						L10N.t("validator.point_of_interest.unique"));
 			return ValidationResult.PASSED;
