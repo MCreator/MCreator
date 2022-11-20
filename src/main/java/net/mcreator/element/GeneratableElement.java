@@ -37,11 +37,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 35;
+	public static final int formatVersion = 36;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 

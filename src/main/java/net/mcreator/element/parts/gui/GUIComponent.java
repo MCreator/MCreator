@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 
 @JsonAdapter(GUIComponent.GSONAdapter.class) public abstract class GUIComponent implements Comparable<GUIComponent> {
 
-	public String name;
 	public int x;
 	public int y;
 
@@ -57,12 +56,20 @@ import java.util.stream.Collectors;
 		uuid = UUID.randomUUID();
 	}
 
-	GUIComponent(String name, int x, int y) {
+	GUIComponent(int x, int y) {
 		this();
-		this.name = name;
 		this.x = x;
 		this.y = y;
 	}
+
+	/**
+	 * Returns the name of the component. Name should be Java and registry name compatible.
+	 * <p>
+	 * The name should be unique for the components that need it.
+	 *
+	 * @return Component name
+	 */
+	public abstract String getName();
 
 	public abstract void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g);
 
@@ -97,7 +104,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public String toString() {
-		return name;
+		return getName();
 	}
 
 	public static class GSONAdapter implements JsonSerializer<GUIComponent>, JsonDeserializer<GUIComponent> {
