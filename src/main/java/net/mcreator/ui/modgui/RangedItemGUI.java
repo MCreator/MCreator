@@ -220,14 +220,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		pickupProjectiles.setOpaque(false);
 		pickupProjectiles.setEnabled(false);
 
-		preserveProjectiles.addActionListener(e -> {
-			if(!pickupProjectiles.isEnabled())
-				pickupProjectiles.setEnabled(true);
-			else {
-				pickupProjectiles.setEnabled(false);
-				pickupProjectiles.setSelected(false);
-			}
-				});
+		preserveProjectiles.addActionListener(e -> pickupProjectiles.setEnabled(preserveProjectiles.isSelected()));
 
 		selp.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
@@ -513,6 +506,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		useCondition.setSelectedProcedure(rangedItem.useCondition);
 
 		updateGlowElements();
+		pickupProjectiles.setEnabled(preserveProjectiles.isSelected());
 
 		Model model = rangedItem.getEntityModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -521,9 +515,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		Model model2 = rangedItem.getItemModel();
 		if (model2 != null)
 			renderType.setSelectedItem(model2);
-
-		if(preserveProjectiles.isSelected())
-			pickupProjectiles.setEnabled(true);
 	}
 
 	@Override public RangedItem getElementFromGUI() {
