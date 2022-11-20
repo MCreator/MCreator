@@ -42,7 +42,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
