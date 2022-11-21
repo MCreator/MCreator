@@ -296,7 +296,9 @@ public class Generator implements IGenerator, Closeable {
 													.replace("@registryname",
 															element.getModElement().getRegistryName())));
 							try {
-								String value = (String) entry.getClass().getField(mapto.trim()).get(entry);
+								String value = (String) (mapto.contains("()") ?
+										element.getClass().getMethod(mapto.replace("()", "").trim()).invoke(element) :
+										element.getClass().getField(mapto.trim()).get(element));
 
 								String suffix = (String) ((Map<?, ?>) template).get("suffix");
 								if (suffix != null)
@@ -307,7 +309,7 @@ public class Generator implements IGenerator, Closeable {
 									value = prefix + value;
 
 								workspace.setLocalization(key, value);
-							} catch (IllegalAccessException | NoSuchFieldException e) {
+							} catch (ReflectiveOperationException e) {
 								LOG.error(e.getMessage(), e);
 								LOG.error("[" + generatorName + "] " + e.getMessage());
 							}
@@ -318,7 +320,9 @@ public class Generator implements IGenerator, Closeable {
 										.replace("@modid", workspace.getWorkspaceSettings().getModID())
 										.replace("@registryname", element.getModElement().getRegistryName()));
 						try {
-							String value = (String) element.getClass().getField(mapto.trim()).get(element);
+							String value = (String) (mapto.contains("()") ?
+									element.getClass().getMethod(mapto.replace("()", "").trim()).invoke(element) :
+									element.getClass().getField(mapto.trim()).get(element));
 
 							String suffix = (String) ((Map<?, ?>) template).get("suffix");
 							if (suffix != null)
@@ -329,7 +333,7 @@ public class Generator implements IGenerator, Closeable {
 								value = prefix + value;
 
 							workspace.setLocalization(key, value);
-						} catch (IllegalAccessException | NoSuchFieldException e) {
+						} catch (ReflectiveOperationException e) {
 							LOG.error(e.getMessage(), e);
 							LOG.error("[" + generatorName + "] " + e.getMessage());
 						}

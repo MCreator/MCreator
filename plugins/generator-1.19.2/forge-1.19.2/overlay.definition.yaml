@@ -5,4 +5,4 @@ templates:
 localizationkeys:
   - fromlist: data.getFixedTextLabels()
     key: gui.@modid.@registryname.@[getName()]
-    mapto: text
+    mapto: getRenderText()

@@ -21,7 +21,7 @@ global_templates:
 localizationkeys:
   - fromlist: data.getFixedTextLabels()
     key: gui.@modid.@registryname.@[getName()]
-    mapto: text
+    mapto: getRenderText()
   - fromlist: data.getComponentsOfType('TextField')
     key: gui.@modid.@registryname.@[getName()]
     mapto: placeholder
