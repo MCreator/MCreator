@@ -565,31 +565,24 @@ public class TestWorkspaceDataProvider {
 						"button1", 100, 200, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
-				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10, "button4", 100, 200, new Procedure("procedure2"),
-						new Procedure("condition4")));
+				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
+						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
-						new LogicProcedure("condition1", true) , _true, new Procedure("procedure3"),
-						new Procedure("procedure10"), new Procedure("procedure2"),
-						new MItemBlock(modElement.getWorkspace(), "")));
-				components.add(
-						new InputSlot(3, 20, 30, Color.white, new LogicProcedure(null, true),
-								new LogicProcedure("condition1", true), !_true, new Procedure("procedure4"),
-								null, null, new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, blocksAndItems).getName())));
-				new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true),
-						new LogicProcedure(null, true), !_true, new Procedure("procedure4"),
-						null, null, new MItemBlock(modElement.getWorkspace(),
+						new LogicProcedure("condition1", true) , _true, new Procedure("procedure3"), new Procedure("procedure10"),
+						new Procedure("procedure2"), new MItemBlock(modElement.getWorkspace(), "")));
+				components.add(new InputSlot(3, 20, 30, Color.white, new LogicProcedure(null, true),
+						new LogicProcedure("condition1", true), !_true, new Procedure("procedure4"), null, null,
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName())));
+				new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true), new LogicProcedure(null, true),
+						!_true, new Procedure("procedure4"), null, null, new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, blocksAndItems).getName()));
-				components.add(
-						new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, true),
-								new LogicProcedure("condition1", true), _true, new Procedure("procedure5"),
-								null, null, new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
-				components.add(
-						new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", true),
-								_true, new Procedure("procedure10"),
-								new Procedure("procedure2"), new Procedure("procedure3")));
-				components.add(new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true),
-						_true, null, null, null));
+				components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, true),
+						new LogicProcedure("condition1", true), _true, new Procedure("procedure5"), null, null,
+						new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
+				components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", true), _true,
+						new Procedure("procedure10"), new Procedure("procedure2"), new Procedure("procedure3")));
+				components.add(new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true, null,
+						null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
