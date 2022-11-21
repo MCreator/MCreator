@@ -102,7 +102,7 @@ package ${package}.client.screens;
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
                     Minecraft.getInstance().font.draw(event.getPoseStack(),
-                        <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
+                        <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
                         posX + ${x}, posY + ${y}, ${component.color.getRGB()});
                 <#elseif component.getClass().getSimpleName() == "Image">
                     <#if hasProcedure(component.displayCondition)>
