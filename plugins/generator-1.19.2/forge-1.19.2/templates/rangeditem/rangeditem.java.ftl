@@ -159,7 +159,10 @@ public class ${name}Item extends Item {
 		}
 	}
 	<#else>
-	entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
+	if (entity.gameMode.getGameModeForPlayer() == GameType.CREATIVE)
+    entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+    else
+    entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
 	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>
