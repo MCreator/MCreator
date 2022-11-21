@@ -191,7 +191,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			case ALLOWED :
 				return true;
 			default:
-				return super;
+				return super.tryPickup(entity);
 		}
 	}
 	</#if>
