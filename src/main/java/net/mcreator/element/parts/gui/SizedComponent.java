@@ -27,8 +27,8 @@ public abstract class SizedComponent extends GUIComponent {
 
 	public int width, height;
 
-	public SizedComponent(String name, int x, int y, int width, int height) {
-		super(name, x, y);
+	public SizedComponent(int x, int y, int width, int height) {
+		super(x, y);
 		this.width = width;
 		this.height = height;
 	}

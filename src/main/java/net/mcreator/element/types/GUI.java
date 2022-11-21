@@ -24,6 +24,7 @@ import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -37,7 +38,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
-@SuppressWarnings("unused") public class GUI extends GeneratableElement {
+@SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
 
 	public int type;
 	public int width, height;
@@ -137,4 +138,9 @@ import java.util.List;
 			guiTextureFile.delete();
 		}
 	}
+
+	@Override public List<GUIComponent> getComponents() {
+		return components;
+	}
+
 }
