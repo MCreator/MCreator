@@ -36,7 +36,7 @@
 *    MCreator note: This file will be REGENERATED on each build.
 */
 
-package ${package}.village;
+package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
 import javax.annotation.Nullable;
