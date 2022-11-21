@@ -338,7 +338,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(L10N.label("elementgui.armor.supported_java"));
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, helmetModel, helmetModelPart));
 
-		helmetSubPanel.add(L10N.label("elementgui.armor.texture"));
+		helmetSubPanel.add(L10N.label("elementgui.common.texture"));
 		helmetSubPanel.add(helmetModelTexture);
 
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
@@ -375,14 +375,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
 
 		JComponent bodyModelComponent = PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.supported_java"),
-				PanelUtils.join(FlowLayout.LEFT, bodyModel, new JLabel(":"), bodyModelPart,
-						L10N.label("elementgui.armor.part_arm_left"), armsModelPartL,
-						L10N.label("elementgui.armor.part_arm_right"), armsModelPartR));
+				PanelUtils.northAndCenterElement(
+						PanelUtils.join(FlowLayout.RIGHT, bodyModel, new JLabel(":"), bodyModelPart),
+						PanelUtils.join(FlowLayout.RIGHT, L10N.label("elementgui.armor.part_arm_left"), armsModelPartL,
+								L10N.label("elementgui.armor.part_arm_right"), armsModelPartR)));
 
 		JPanel bodySubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bodySubPanel.setOpaque(false);
 
-		bodySubPanel.add(L10N.label("elementgui.armor.texture"));
+		bodySubPanel.add(L10N.label("elementgui.common.texture"));
 		bodySubPanel.add(bodyModelTexture);
 
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
@@ -413,13 +414,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
 
 		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.supported_java"),
-				PanelUtils.join(FlowLayout.LEFT, leggingsModel, new JLabel(": L"), leggingsModelPartL,
+				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL,
 						new JLabel("R"), leggingsModelPartR));
 
 		JPanel leggingsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		leggingsSubPanel.setOpaque(false);
 
-		leggingsSubPanel.add(L10N.label("elementgui.armor.texture"));
+		leggingsSubPanel.add(L10N.label("elementgui.common.texture"));
 		leggingsSubPanel.add(leggingsModelTexture);
 
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
@@ -450,13 +451,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
 
 		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.supported_java"),
-				PanelUtils.join(FlowLayout.LEFT, bootsModel, new JLabel(": L"), bootsModelPartL,
+				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL,
 						new JLabel("R"), bootsModelPartR));
 
 		JPanel bootsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bootsSubPanel.setOpaque(false);
 
-		bootsSubPanel.add(L10N.label("elementgui.armor.texture"));
+		bootsSubPanel.add(L10N.label("elementgui.common.texture"));
 		bootsSubPanel.add(bootsModelTexture);
 
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
