@@ -297,8 +297,8 @@ public class Generator implements IGenerator, Closeable {
 															element.getModElement().getRegistryName())));
 							try {
 								String value = (String) (mapto.contains("()") ?
-										element.getClass().getMethod(mapto.replace("()", "").trim()).invoke(element) :
-										element.getClass().getField(mapto.trim()).get(element));
+										entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
+										entry.getClass().getField(mapto.trim()).get(entry));
 
 								String suffix = (String) ((Map<?, ?>) template).get("suffix");
 								if (suffix != null)
