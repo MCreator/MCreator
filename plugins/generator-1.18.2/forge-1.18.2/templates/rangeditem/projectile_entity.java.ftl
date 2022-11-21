@@ -183,7 +183,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		return entityarrow;
 	}
 
-	<#if data.ammoItem.isEmpty() && data.preserveProjectiles && data.pickupProjectiles>
+	<#if data.ammoItem.isEmpty() || data.preserveProjectiles && data.pickupProjectiles>
 	@Override
 	protected boolean tryPickup(Player entity) {
 		super.tryPickup(entity);
