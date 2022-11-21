@@ -43,6 +43,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -523,8 +524,8 @@ public class TestWorkspaceDataProvider {
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
 					Color.white, new Procedure("condition4")));
 
-			components.add(new Image("picture1", 20, 30, "pricture1", true, new Procedure("condition1")));
-			components.add(new Image("picture2", 22, 31, "pricture2", false, new Procedure("condition2")));
+			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
+			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";
@@ -549,19 +550,22 @@ public class TestWorkspaceDataProvider {
 			}
 			ArrayList<GUIComponent> components = new ArrayList<>();
 			if (!emptyLists) {
-				components.add(
-						new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
-								Color.red, new Procedure("condition1")));
-				components.add(
-						new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
-								Color.white, new Procedure("condition4")));
+				components.add(new Label(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 100, 150,
+						new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red,
+						new Procedure("condition1")));
+				components.add(new Label(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 100, 150,
+						new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white,
+						new Procedure("condition4")));
 
-				components.add(new Image("picture1", 20, 30, "picture1", true, new Procedure("condition1")));
-				components.add(new Image("picture2", 22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Button("button1", 10, 10, "button1", 100, 200, new Procedure("procedure10"), null));
+				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
+				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
+				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
+						"button1", 100, 200, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
-				components.add(new Button("button4", 10, 10, "button4", 100, 200, new Procedure("procedure2"),
+				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10, "button4", 100, 200, new Procedure("procedure2"),
 						new Procedure("condition4")));
 				components.add(new InputSlot(0, "slot1", 20, 30, Color.red, new LogicProcedure("condition1", true),
 						new LogicProcedure("condition1", true) , _true, new Procedure("procedure3"),

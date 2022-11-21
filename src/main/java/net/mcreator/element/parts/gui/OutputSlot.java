@@ -36,4 +36,9 @@ public class OutputSlot extends Slot {
 				onSlotChanged, onTakenFromSlot, onStackTransfer);
 
 	}
+
+	@Override public String getName() {
+		return "output_slot_" + id;
+	}
+
 }

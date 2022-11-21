@@ -42,4 +42,9 @@ public class InputSlot extends Slot {
 		this.inputLimit = inputLimit;
 		this.disablePlacement = disablePlacement;
 	}
+
+	@Override public String getName() {
+		return "input_slot_" + id;
+	}
+
 }

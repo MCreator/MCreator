@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.parts.gui;
+package net.mcreator.element.types.interfaces;
 
-public interface IMachineNamedComponent {}
+import net.mcreator.element.parts.gui.GUIComponent;
+
+import java.util.Collection;
+import java.util.List;
+
+@SuppressWarnings("unused") public interface IGUI {
+
+	List<GUIComponent> getComponents();
+
+	default Collection<GUIComponent> getComponentsOfType(String type) {
+		return getComponents().stream().filter(c -> c.getClass().getSimpleName().equals(type)).toList();
+	}
+
+}
