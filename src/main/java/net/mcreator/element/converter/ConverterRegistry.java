@@ -51,7 +51,7 @@ import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
 import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.fv35.ToolToItemTypeProcedureConverter;
 import net.mcreator.element.converter.fv36.GUIComponentNamer;
-import net.mcreator.element.converter.fv36.SlotInteractionsConverter;
+import net.mcreator.element.converter.fv37.SlotInteractionsConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
