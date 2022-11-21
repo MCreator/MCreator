@@ -65,7 +65,7 @@ public class ${name}Item extends Item {
 	<#if data.animation != "swing">
 		return UseAnim.${data.animation?upper_case};
 	<#else>
-	    return UseAnim.NONE;
+		return UseAnim.NONE;
 	</#if>
 	}
 
@@ -160,9 +160,9 @@ public class ${name}Item extends Item {
 	}
 	<#else>
 	if (entity.gameMode.getGameModeForPlayer() == GameType.CREATIVE)
-    entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-    else
-    entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
+	entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+	else
+	entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
 	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>
