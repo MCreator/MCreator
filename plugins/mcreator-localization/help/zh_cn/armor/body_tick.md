@@ -1,3 +1,3 @@
-When an entity has the body/chestplate equipped, the procedure will be executed each tick.
+当一个实体装备了胸甲时，该程序将每tick执行一次。
 
-Passed entity is the entity wearing the armor, passed itemstack is the itemstack of the armor.
+传递的实体是穿盔甲的实体，传递的itemstack是盔甲的itemstack。
