@@ -1,3 +1,3 @@
-When an entity has the leggings equipped, the procedure will be executed each tick.
+当一个实体装备了护腿时，该过程将在每个tick执行一次。
 
-Passed entity is the entity wearing the armor, passed itemstack is the itemstack of the armor.
+传递的实体是穿盔甲的实体，传递的itemstack是盔甲的itemstack。
