@@ -1,11 +1,10 @@
-How common rare enchantments can be enchanted on this armor. 
-The higher the enchantability, the better enchantments you will get when enchanting the armor.
+不同等级的常见附魔可以被施在这件盔甲上。附魔值越高，附魔护甲时的附魔值越高。
 
-Vanilla values:
+Vanilla值:
 
-* Leather armor: 15
-* Chainmail armor: 12
-* Iron armor: 9
-* Gold armor: 25
-* Diamond armor: 10
-* Netherite armor: 15
+* 皮革盔甲: 15
+* 锁链盔甲: 12
+* 铁盔甲: 9
+* 金盔甲: 25
+* 钻石盔甲: 10
+* 下界合金盔甲: 15
