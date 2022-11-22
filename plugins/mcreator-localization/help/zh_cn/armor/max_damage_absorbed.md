@@ -1,14 +1,14 @@
 该参数定义装甲耐久性，有效应用为:
 
-* 头盔: max_damage_absorbed * 13
-* 胸甲: max_damage_absorbed * 15
-* 护腿: max_damage_absorbed * 16
-* 靴子:  max_damage_absorbed * 11
+* 头盔: 最大伤害 * 13
+* 胸甲: 最大伤害 * 15
+* 护腿: 最大伤害 * 16
+* 靴子:  最大伤害 * 11
 
-Vanilla armor uses the following factors:
+Vanilla装甲使用以下因素:
 
 * 皮革盔甲: 5
-* Chainmail armor: 15
-* Gold armor: 7
-* Diamond armor: 33
-* Netherite armor: 37
+* 锁链盔甲: 15
+* 金盔甲: 7
+* 钻石盔甲: 33
+* 下界合金盔甲: 37
