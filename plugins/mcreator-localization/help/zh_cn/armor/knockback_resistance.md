@@ -1,1 +1,1 @@
-This parameter controls the knockback resistance of the armor.
+这个参数控制装甲的抗击退能力。
