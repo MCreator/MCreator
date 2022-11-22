@@ -1,4 +1,4 @@
-Toughness is a value that will increase the protection of the armor. 
+韧性是一个可以增加护甲保护的值。
 
-The Diamond armor has a toughness of 2.0 (for a total of 8.0) 
-and the Netherite armor has a toughness of 3.0 (for a total of 12.0).
+钻石盔甲的韧性为2.0(共8.0)
+下界合金盔甲的韧性为3.0(共12.0)。
