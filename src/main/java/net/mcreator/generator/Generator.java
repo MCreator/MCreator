@@ -207,7 +207,7 @@ public class Generator implements IGenerator, Closeable {
 			runSetupTasks(generatorConfiguration.getSourceSetupTasks());
 
 			// generate lang files
-			LanguageFilesGenerator.generateLanguageFiles(this, workspace,
+			LocalizationUtils.generateLanguageFiles(this, workspace,
 					generatorConfiguration.getLanguageFileSpecification());
 		}
 
@@ -279,67 +279,7 @@ public class Generator implements IGenerator, Closeable {
 		if (performFSTasks) {
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
-			// extract all localization keys
-			List<?> localizationkeys = (List<?>) map.get("localizationkeys");
-			if (localizationkeys != null) {
-				for (Object template : localizationkeys) {
-					String keytpl = (String) ((Map<?, ?>) template).get("key");
-					String mapto = (String) ((Map<?, ?>) template).get("mapto");
-					Object fromlist = TemplateExpressionParser.processFTLExpression(this,
-							(String) ((Map<?, ?>) template).get("fromlist"), element);
-					if (fromlist instanceof Collection<?>) {
-						for (Object entry : (Collection<?>) fromlist) {
-							String key = GeneratorTokens.replaceVariableTokens(entry,
-									GeneratorTokens.replaceTokens(workspace,
-											keytpl.replace("@NAME", element.getModElement().getName())
-													.replace("@modid", workspace.getWorkspaceSettings().getModID())
-													.replace("@registryname",
-															element.getModElement().getRegistryName())));
-							try {
-								String value = (String) (mapto.contains("()") ?
-										entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
-										entry.getClass().getField(mapto.trim()).get(entry));
-
-								String suffix = (String) ((Map<?, ?>) template).get("suffix");
-								if (suffix != null)
-									value += suffix;
-
-								String prefix = (String) ((Map<?, ?>) template).get("prefix");
-								if (prefix != null)
-									value = prefix + value;
-
-								workspace.setLocalization(key, value);
-							} catch (ReflectiveOperationException e) {
-								LOG.error(e.getMessage(), e);
-								LOG.error("[" + generatorName + "] " + e.getMessage());
-							}
-						}
-					} else {
-						String key = GeneratorTokens.replaceTokens(workspace,
-								keytpl.replace("@NAME", element.getModElement().getName())
-										.replace("@modid", workspace.getWorkspaceSettings().getModID())
-										.replace("@registryname", element.getModElement().getRegistryName()));
-						try {
-							String value = (String) (mapto.contains("()") ?
-									element.getClass().getMethod(mapto.replace("()", "").trim()).invoke(element) :
-									element.getClass().getField(mapto.trim()).get(element));
-
-							String suffix = (String) ((Map<?, ?>) template).get("suffix");
-							if (suffix != null)
-								value += suffix;
-
-							String prefix = (String) ((Map<?, ?>) template).get("prefix");
-							if (prefix != null)
-								value = prefix + value;
-
-							workspace.setLocalization(key, value);
-						} catch (ReflectiveOperationException e) {
-							LOG.error(e.getMessage(), e);
-							LOG.error("[" + generatorName + "] " + e.getMessage());
-						}
-					}
-				}
-			}
+			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
@@ -379,29 +319,8 @@ public class Generator implements IGenerator, Closeable {
 		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null)).stream()
 				.map(GeneratorTemplate::getFile).forEach(File::delete);
 
-		// delete all localization keys
-		List<?> localizationkeys = (List<?>) map.get("localizationkeys");
-		if (localizationkeys != null) {
-			for (Object template : localizationkeys) {
-				String keytpl = (String) ((Map<?, ?>) template).get("key");
-				Object fromlist = TemplateExpressionParser.processFTLExpression(this,
-						(String) ((Map<?, ?>) template).get("fromlist"), element);
-				if (fromlist instanceof Collection<?>) {
-					for (Object entry : (Collection<?>) fromlist) {
-						String key = GeneratorTokens.replaceVariableTokens(entry,
-								GeneratorTokens.replaceTokens(workspace, keytpl.replace("@NAME", element.getName())
-										.replace("@modid", workspace.getWorkspaceSettings().getModID())
-										.replace("@registryname", element.getRegistryName())));
-						workspace.removeLocalizationEntryByKey(key);
-					}
-				} else {
-					String key = GeneratorTokens.replaceTokens(workspace, keytpl.replace("@NAME", element.getName())
-							.replace("@modid", workspace.getWorkspaceSettings().getModID())
-							.replace("@registryname", element.getRegistryName()));
-					workspace.removeLocalizationEntryByKey(key);
-				}
-			}
-		}
+		// delete localization keys associated with the mod element
+		LocalizationUtils.deleteLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 	}
 
 	public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
