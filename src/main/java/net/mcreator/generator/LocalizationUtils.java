@@ -148,8 +148,8 @@ public class LocalizationUtils {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
 				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
 						(String) ((Map<?, ?>) template).get("fromlist"), element);
-				if (fromlist instanceof Collection<?>) {
-					for (Object entry : (Collection<?>) fromlist) {
+				if (fromlist instanceof Collection<?> listEntries) {
+					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
 								GeneratorTokens.replaceTokens(generator.getWorkspace(),
 										keytpl.replace("@NAME", element.getName()).replace("@modid",
