@@ -1,2 +1,1 @@
-These numbers define how well the damage to the entity
-will be reduced by a given armor part.
+这些数字定义了特定装甲部件对实体的伤害降低的程度。
