@@ -1,1 +1,1 @@
-The armor layer texture are the textures displayed on the player when he has the armor on him.
+盔甲层纹理是当玩家身上有盔甲时显示在他身上的纹理。
