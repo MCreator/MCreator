@@ -5,7 +5,7 @@
   "textures": {
     "layer0": "${modid}:items/${data.itemTexture}"
   },
-  "render_type": "${data.getRenderType()}"
+  "render_type": "translucent"
 }
 <#else>
 {
