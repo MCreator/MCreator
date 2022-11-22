@@ -1,1 +1,0 @@
-This parameter sets the initial (and maximal base) health of the mob. 2 health = 1 heart

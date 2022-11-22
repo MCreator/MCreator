@@ -1,1 +1,0 @@
-Defines the price increase when the player trades the same item multiple times.

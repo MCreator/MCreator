@@ -1,1 +1,0 @@
-The item you obtain in result of the trade.

@@ -1,1 +1,0 @@
-This parameter enables custom colors for your biome.

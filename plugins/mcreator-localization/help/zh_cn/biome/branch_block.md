@@ -1,1 +1,0 @@
-This parameter controls the block used for the leaves in case custom trees are selected

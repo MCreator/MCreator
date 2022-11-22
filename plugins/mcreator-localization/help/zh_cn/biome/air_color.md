@@ -1,1 +1,0 @@
-This parameter controls the color of the sky in this biome.

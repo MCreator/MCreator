@@ -1,1 +1,0 @@
-The name shown in the creative menu tab.

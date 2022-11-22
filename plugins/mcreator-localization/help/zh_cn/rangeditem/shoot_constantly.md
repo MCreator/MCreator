@@ -1,1 +1,0 @@
-If checked, the ranged item will constantly shoot when the player right-clicks it.

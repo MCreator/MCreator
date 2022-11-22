@@ -1,1 +1,0 @@
-Portal frame block is the block used to make the portal frame for the dimension if the portal is enabled.

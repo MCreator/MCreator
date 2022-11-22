@@ -1,1 +1,0 @@
-This parameter defines how much the particle texture should be scaled.

@@ -1,1 +1,0 @@
-This parameter controls how quickly the fire spreads to other blocks.

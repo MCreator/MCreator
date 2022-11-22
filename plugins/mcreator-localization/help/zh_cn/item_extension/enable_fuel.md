@@ -1,1 +1,0 @@
-Check this box to make the selected item a fuel for furnaces (like coal, planks, etc.).

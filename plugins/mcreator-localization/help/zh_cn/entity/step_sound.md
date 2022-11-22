@@ -1,1 +1,0 @@
-The sound played when the entity walks.

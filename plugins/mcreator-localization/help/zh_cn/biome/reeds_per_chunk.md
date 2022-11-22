@@ -1,1 +1,0 @@
-This parameter controls the number of reeds (plants like sugar canes) in custom biome per chunk.

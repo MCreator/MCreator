@@ -1,1 +1,0 @@
-The potion effects in the list below will be applied to the entities affected by your potion item.

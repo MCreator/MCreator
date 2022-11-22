@@ -1,1 +1,0 @@
-Select this setting to have Strongholds in your biome.

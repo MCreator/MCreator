@@ -1,1 +1,0 @@
-Follow range defines from which distance will mob notice/continue chasing player/target

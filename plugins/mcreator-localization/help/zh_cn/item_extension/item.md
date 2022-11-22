@@ -1,1 +1,0 @@
-This is the target item of this extension.

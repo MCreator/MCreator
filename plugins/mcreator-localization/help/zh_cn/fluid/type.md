@@ -1,1 +1,0 @@
-Choose the fluid type between Water and Lava

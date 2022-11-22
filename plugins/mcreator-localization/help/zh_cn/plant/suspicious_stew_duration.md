@@ -1,1 +1,0 @@
-This parameter determines the duration of the effect of the suspicious stew crafted with this plant.

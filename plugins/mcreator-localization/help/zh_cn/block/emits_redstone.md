@@ -1,1 +1,0 @@
-If you check this parameter, this block will be able to emit redstone power.

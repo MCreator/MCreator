@@ -1,1 +1,0 @@
-This parameter controls how high this particle is (in block units).

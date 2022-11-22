@@ -1,1 +1,0 @@
-Triggers a procedure when a projectile hits the block.

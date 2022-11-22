@@ -1,1 +1,0 @@
-This parameter controls the number of dead bushes in one biome chunk

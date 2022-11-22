@@ -1,1 +1,0 @@
-Number of experience the Villager gets.

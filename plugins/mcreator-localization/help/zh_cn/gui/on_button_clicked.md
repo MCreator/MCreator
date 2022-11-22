@@ -1,1 +1,0 @@
-Triggers a procedure when this button is clicked.

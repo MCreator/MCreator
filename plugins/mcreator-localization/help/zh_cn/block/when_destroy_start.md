@@ -1,1 +1,0 @@
-Triggers a procedure when a player starts to destroy the block.

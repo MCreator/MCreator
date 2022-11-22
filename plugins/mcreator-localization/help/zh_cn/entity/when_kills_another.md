@@ -1,1 +1,0 @@
-This trigger triggers the procedure when this entity kills another entity.

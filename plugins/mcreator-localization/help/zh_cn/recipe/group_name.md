@@ -1,1 +1,0 @@
-This parameter defines the group inside the recipe book under which this recipe will be shown.

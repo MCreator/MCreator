@@ -1,1 +1,0 @@
-This trigger triggers the procedure when the player collides with this entity.

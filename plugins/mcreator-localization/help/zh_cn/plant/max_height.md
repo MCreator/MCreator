@@ -1,1 +1,0 @@
-The growable plant will grow until it reaches this height.

@@ -1,1 +1,0 @@
-Triggers a procedure when the block is destroyed by an explosion.

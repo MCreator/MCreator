@@ -1,1 +1,0 @@
-This is the game rule default value. The game rule will have this value until something in the game (player or command) changes it.

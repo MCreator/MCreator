@@ -1,1 +1,0 @@
-If condition is specified, the selected item can only be used as fuel if the condition passes.

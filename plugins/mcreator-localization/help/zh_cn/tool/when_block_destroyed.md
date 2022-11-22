@@ -1,1 +1,0 @@
-If the tool destroys a block, this procedure will be executed.

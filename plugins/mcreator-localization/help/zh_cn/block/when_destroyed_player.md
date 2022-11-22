@@ -1,1 +1,0 @@
-Triggers a procedure when the player breaks the block.

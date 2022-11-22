@@ -1,1 +1,0 @@
-This setting allows you to generate Minecraft Villages inside your biome.

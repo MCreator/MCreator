@@ -1,1 +1,0 @@
-Animation is the animation used when the player does an action with the item.

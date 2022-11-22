@@ -1,1 +1,0 @@
-Check this parameter if you want it to destroy any block with this item or tool, even bedrock.

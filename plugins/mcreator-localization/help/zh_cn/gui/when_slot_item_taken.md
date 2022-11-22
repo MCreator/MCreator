@@ -1,1 +1,0 @@
-Triggers a procedure when an item is put into/taken from this slot.

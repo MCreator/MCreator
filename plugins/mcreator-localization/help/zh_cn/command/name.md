@@ -1,1 +1,0 @@
-The word after the / that the player has to write to define the command, like gamemode, give, setblock, etc.

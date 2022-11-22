@@ -1,1 +1,0 @@
-This parameter controls the name of the tipped arrow.

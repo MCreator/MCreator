@@ -1,1 +1,0 @@
-The item(s) which the tool can be repaired in an anvil with.

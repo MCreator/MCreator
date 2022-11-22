@@ -1,1 +1,0 @@
-If this parameter is checked, this block will open the bound GUI on right-click.

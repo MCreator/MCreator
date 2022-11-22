@@ -1,1 +1,0 @@
-This procedure is called when the player stops using this item (usually when the right-click is released).

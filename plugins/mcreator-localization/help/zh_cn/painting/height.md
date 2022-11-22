@@ -1,1 +1,0 @@
-This parameter controls how high this painting is (in block units).

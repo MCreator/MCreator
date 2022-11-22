@@ -1,1 +1,0 @@
-The items used to breed the entity with another one if breedable parameter is enabled.

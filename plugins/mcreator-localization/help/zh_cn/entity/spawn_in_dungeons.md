@@ -1,1 +1,0 @@
-If checked, dungeons (structures with mob spawner) might spawn with your entity in a mob spawner.

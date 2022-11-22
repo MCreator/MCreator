@@ -1,1 +1,0 @@
-The texture of the portal igniter used to create the portal from the portal frame.

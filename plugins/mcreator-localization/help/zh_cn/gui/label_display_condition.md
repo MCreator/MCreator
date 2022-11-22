@@ -1,1 +1,0 @@
-If condition is specified, this label can only be displayed in case the condition is passed.

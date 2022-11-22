@@ -1,1 +1,0 @@
-Triggers the procedure each tick the entity exists in the world.

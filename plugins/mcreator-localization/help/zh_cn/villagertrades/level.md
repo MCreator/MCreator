@@ -1,1 +1,0 @@
-Minimal level required for the Villager to offer the trade.

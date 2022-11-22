@@ -1,1 +1,0 @@
-This parameter defines if the effect is applied as ambient.

@@ -1,1 +1,0 @@
-Some plant types naturally tick but some don't. Check this parameter to force ticking in all cases.

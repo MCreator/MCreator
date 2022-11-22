@@ -1,1 +1,0 @@
-Triggers a procedure when an entity is inside the block.

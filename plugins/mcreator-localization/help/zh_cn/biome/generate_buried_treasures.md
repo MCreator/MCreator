@@ -1,1 +1,0 @@
-Select this setting to have buried treasures in your biome.

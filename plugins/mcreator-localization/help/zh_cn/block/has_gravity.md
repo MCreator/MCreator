@@ -1,1 +1,0 @@
-If this parameter is checked, the block will fall down like sand.

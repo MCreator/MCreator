@@ -1,1 +1,0 @@
-If this option is enabled, the block will drop only when broken with the specified harvest tool.

@@ -1,1 +1,0 @@
-Triggers a procedure when the block is powered by the redstone power.

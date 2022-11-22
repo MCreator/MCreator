@@ -1,1 +1,0 @@
-The viscosity is how difficult it is to walk in the fluid.

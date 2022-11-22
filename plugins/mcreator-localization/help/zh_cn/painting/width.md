@@ -1,1 +1,0 @@
-This parameter controls how wide this painting is (in block units).

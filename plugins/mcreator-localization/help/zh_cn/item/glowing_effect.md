@@ -1,1 +1,0 @@
-Glowing effect makes the item glow like golden apple or enchanted items, except the glow is permanent.

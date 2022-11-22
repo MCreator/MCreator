@@ -1,1 +1,0 @@
-This procedure will be executed when the selected key is pressed.
