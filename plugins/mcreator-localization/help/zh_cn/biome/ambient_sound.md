@@ -1,3 +1,3 @@
-The ambient sound is constantly played in the biome.
+环境声音在生物群系中重复播放。
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:只在Minecraft 1.16.x及更高版本中中可用
