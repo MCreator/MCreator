@@ -1,1 +1,1 @@
-Select this setting to have Desert Pyramids in your biome.
+选择此设置在您的生物群系中有沙漠金字塔。
