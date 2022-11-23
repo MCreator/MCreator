@@ -1,1 +1,1 @@
-Select this setting to have buried treasures in your biome.
+选择此设置在您的生物群系中埋藏宝藏。
