@@ -1,1 +1,1 @@
-This parameter controls the number of vanilla flowers (poppy and dandelion only) per biome chunk
+这个参数控制每个生物群系区块原版花(仅罂粟和蒲公英)的数量
