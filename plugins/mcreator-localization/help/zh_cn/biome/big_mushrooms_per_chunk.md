@@ -1,1 +1,1 @@
-This parameter controls how many big mushrooms should be spawned per biome chunk.
+这个参数控制每个生物群系区块应该产生多少巨型蘑菇。
