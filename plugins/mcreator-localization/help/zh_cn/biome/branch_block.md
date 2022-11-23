@@ -1,1 +1,1 @@
-This parameter controls the block used for the leaves in case custom trees are selected
+这个参数控制在选择自定义树的情况下用于叶子的方块
