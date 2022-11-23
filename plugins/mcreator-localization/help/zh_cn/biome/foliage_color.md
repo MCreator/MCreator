@@ -1,1 +1,1 @@
-This parameter controls the color of the foliage (leaves) in this biome.
+这个参数控制这个生物群系中叶子的颜色。
