@@ -34,11 +34,10 @@ public class InputSlot extends Slot {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public InputSlot(int id, int x, int y, Color color, LogicProcedure disablePickupCondition,
-			LogicProcedure disablePlacement, boolean dropItemsWhenNotBound, Procedure onSlotChanged,
-			Procedure onTakenFromSlot, Procedure onStackTransfer, MItemBlock inputLimit) {
-		super(id, x, y, color, disablePickupCondition, dropItemsWhenNotBound,
-				onSlotChanged, onTakenFromSlot, onStackTransfer);
+	public InputSlot(int id, int x, int y, Color color, LogicProcedure disablePickup, LogicProcedure disablePlacement,
+			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot,
+			Procedure onStackTransfer, MItemBlock inputLimit) {
+		super(id, x, y, color, disablePickup, dropItemsWhenNotBound, onSlotChanged, onTakenFromSlot, onStackTransfer);
 		this.inputLimit = inputLimit;
 		this.disablePlacement = disablePlacement;
 	}
