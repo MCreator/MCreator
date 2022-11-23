@@ -1,1 +1,1 @@
-This parameter controls the color of the sky in this biome.
+这个参数控制着这个生物群系中天空的颜色。
