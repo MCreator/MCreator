@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LocalizationUtils {
 
 	public static void generateLanguageFiles(Generator generator, Workspace workspace, Map<?, ?> config) {
-		if (workspace.getFolderManager().isFileInWorkspace(generator.getLangFilesRoot()) && config.size() > 0) {
+		if (config.size() > 0 && workspace.getFolderManager().isFileInWorkspace(generator.getLangFilesRoot())) {
 			switch ((String) config.get("format")) {
 			case "keyvalue" -> generateKeyValueLanguageFiles(generator, workspace, config);
 			case "json" -> generateJSONLanguageFiles(generator, workspace, config);
