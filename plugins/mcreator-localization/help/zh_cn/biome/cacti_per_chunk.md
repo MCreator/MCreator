@@ -1,1 +1,1 @@
-This parameter controls the number of cacti in one biome chunk
+该参数控制一个生物群系区块中仙人掌的数量
