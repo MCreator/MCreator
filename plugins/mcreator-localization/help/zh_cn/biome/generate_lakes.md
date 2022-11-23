@@ -1,1 +1,1 @@
-This parameter controls if lakes should be generated in this biome.
+这个参数控制是否应该在这个生物群系中生成湖泊。
