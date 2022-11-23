@@ -1,3 +1,3 @@
-This parameter controls the block used for fruit like the Cocoa Beans with the Jungle trees in case custom trees are enabled.
+这个参数控制用于可可豆和丛林树等水果的块，以防自定义树被启用。
 
-Select air block to disable tree fruits.
+选择空气阻塞禁用树果实。
