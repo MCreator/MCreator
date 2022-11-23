@@ -201,9 +201,20 @@ public class BlocklyPanel extends JFXPanel {
 	}
 
 	public void addBlocksFromXML(String xml) {
-		executeJavaScriptSynchronously(
-				"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + escapeXML(cleanupXML(xml))
-						+ "'), workspace)");
+		String cleanXML = escapeXML(cleanupXML(xml));
+		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
+		if (index == -1) { // The separator wasn't found
+			executeJavaScriptSynchronously(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)");
+		} else { // We add the blocks separately so that they don't overlap
+			index += 8; //We add the length of "</block>" to the index
+			executeJavaScriptSynchronously(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
+							+ "</xml>'), workspace)");
+			executeJavaScriptSynchronously(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
+							+ "'), workspace)");
+		}
 	}
 
 	public void setXML(String xml) {
