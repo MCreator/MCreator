@@ -8,6 +8,9 @@ templates:
 global_templates:
   - template: elementinits/villagerprofessions.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
+  - template: json/pois_tag.json.ftl
+    name: "@RESROOT/data/minecraft/tags/point_of_interest_type/acquirable_job_site.json"
+    writer: json
 
 localizationkeys:
   - key: entity.minecraft.villager.@modid.@registryname
