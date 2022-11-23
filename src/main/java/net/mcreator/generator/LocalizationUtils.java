@@ -36,24 +36,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LocalizationUtils {
 
 	public static void generateLanguageFiles(Generator generator, Workspace workspace, Map<?, ?> config) {
-		if (config.size() > 0)
+		if (workspace.getFolderManager().isFileInWorkspace(generator.getLangFilesRoot()) && config.size() > 0) {
 			switch ((String) config.get("format")) {
-			case "keyvalue":
-				generateKeyValueLanguageFiles(generator, workspace, config);
-				break;
-			case "json":
-				generateJSONLanguageFiles(generator, workspace, config);
-				break;
-			default:
-				break;
+			case "keyvalue" -> generateKeyValueLanguageFiles(generator, workspace, config);
+			case "json" -> generateJSONLanguageFiles(generator, workspace, config);
+			default -> {
 			}
+			}
+		}
 	}
 
 	private static void generateKeyValueLanguageFiles(Generator generator, Workspace workspace, Map<?, ?> config) {
 		String rawName = (String) config.get("langfile_name");
-
-		if (!workspace.getFolderManager().isFileInWorkspace(generator.getLangFilesRoot()))
-			return;
 
 		generator.getLangFilesRoot().mkdirs();
 		FileIO.emptyDirectory(generator.getLangFilesRoot()); // remove old localizations
@@ -77,9 +71,6 @@ public class LocalizationUtils {
 	private static void generateJSONLanguageFiles(Generator generator, Workspace workspace, Map<?, ?> config) {
 		String rawName = (String) config.get("langfile_name");
 
-		if (!workspace.getFolderManager().isFileInWorkspace(generator.getLangFilesRoot()))
-			return;
-
 		generator.getLangFilesRoot().mkdirs();
 		FileIO.emptyDirectory(generator.getLangFilesRoot()); // remove old localizations
 
@@ -96,9 +87,9 @@ public class LocalizationUtils {
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
-				String mapto = (String) ((Map<?, ?>) template).get("mapto");
 				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
 						(String) ((Map<?, ?>) template).get("fromlist"), element);
+
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
@@ -106,22 +97,22 @@ public class LocalizationUtils {
 										keytpl.replace("@NAME", element.getModElement().getName()).replace("@modid",
 														generator.getWorkspace().getWorkspaceSettings().getModID())
 												.replace("@registryname", element.getModElement().getRegistryName())));
-						addLocalizationEntry(generator, template, mapto, entry, key);
+						addLocalizationEntry(generator, template, entry, key);
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 							keytpl.replace("@NAME", element.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 									.replace("@registryname", element.getModElement().getRegistryName()));
-					addLocalizationEntry(generator, template, mapto, element, key);
+					addLocalizationEntry(generator, template, element, key);
 				}
 			}
 		}
 	}
 
-	private static void addLocalizationEntry(Generator generator, Object template, String mapto, Object entry,
-			String key) {
+	private static void addLocalizationEntry(Generator generator, Object template, Object entry, String key) {
 		try {
+			String mapto = (String) ((Map<?, ?>) template).get("mapto");
 			String value = (String) (mapto.contains("()") ?
 					entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
 					entry.getClass().getField(mapto.trim()).get(entry));
@@ -137,7 +128,6 @@ public class LocalizationUtils {
 			generator.getWorkspace().setLocalization(key, value);
 		} catch (ReflectiveOperationException e) {
 			generator.LOG.error("Failed to parse values", e);
-
 		}
 	}
 
@@ -148,6 +138,7 @@ public class LocalizationUtils {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
 				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
 						(String) ((Map<?, ?>) template).get("fromlist"), element);
+
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
@@ -167,5 +158,4 @@ public class LocalizationUtils {
 			}
 		}
 	}
-
 }
