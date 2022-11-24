@@ -150,6 +150,8 @@ import java.util.Locale;
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
 	public String rangedItemType;
+	public int rangedAttackInterval;
+	public double rangedAttackRadius;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
@@ -172,6 +174,8 @@ import java.util.Locale;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
+		this.rangedAttackInterval = 20;
+		this.rangedAttackRadius = 10;
 
 		this.followRange = 16;
 
