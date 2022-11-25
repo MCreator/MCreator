@@ -1,1 +1,1 @@
-Check this to make this biome spawn in the nether dimension.
+检查这个可以使这个生物群系在下界中生成。
