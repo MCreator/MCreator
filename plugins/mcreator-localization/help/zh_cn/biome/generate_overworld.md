@@ -1,1 +1,1 @@
-If you want to use this biome in custom dimensions only, disable this option.
+如果您只想在自定义维度中使用此生物群系，请禁用此选项。
