@@ -576,10 +576,10 @@ public class TestWorkspaceDataProvider {
 				new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true), new LogicProcedure(null, true),
 						!_true, new Procedure("procedure4"), null, null, new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, blocksAndItems).getName()));
-				components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, true),
-						new LogicProcedure("condition1", true), _true, new Procedure("procedure5"), null, null,
+				components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, _true),
+						new LogicProcedure("condition1", !_true), _true, new Procedure("procedure5"), null, null,
 						new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
-				components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", true), _true,
+				components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", _true), !_true,
 						new Procedure("procedure10"), new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true, null,
 						null, null));
