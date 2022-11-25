@@ -1,1 +1,1 @@
-This paremeter controls the color of the water inside the biome
+这个参数控制着生物群系中水的颜色。

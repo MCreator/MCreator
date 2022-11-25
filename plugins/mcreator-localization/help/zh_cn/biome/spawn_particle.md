@@ -1,3 +1,3 @@
-Check this parameter to enable the spawn of ambient particles in the biome.
+勾选此参数可启用生物群系中环境粒子的生成。
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:只在Minecraft 1.16.x及更高版本中可用。

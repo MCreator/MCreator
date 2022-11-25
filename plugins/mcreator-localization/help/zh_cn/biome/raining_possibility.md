@@ -1,6 +1,6 @@
-This parameter controls the possibility of raining inside the biome.
+这个参数控制着生物群落内下雨的可能性。
 
-This parameter also controls placement of the biomes.
-Biomes with similar raining possibility will generate closer together.
+该参数还控制生物群落的位置。
+具有类似降雨可能性的生物群系将更紧密地聚集在一起。
 
-Biomes with the same raining possibility will compete for the same spot in the world when generating.
+具有相同降雨可能性的生物群系在生成时将争夺世界上相同的位置。

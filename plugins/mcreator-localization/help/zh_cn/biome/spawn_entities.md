@@ -1,4 +1,4 @@
-Select the entities to spawn naturally inside your biome. 
+选择在你的生物群系中自然生成的实体。
 
-Select only passive or hostile mobs. Don't select the player or special entities here as this might
-cause the world to crash when trying to spawn such entities.
+只选择被动或敌对的生物。不要在这里选择玩家或特殊实体，因为当尝试生成这些实体时，这可能会导
+致世界崩溃。

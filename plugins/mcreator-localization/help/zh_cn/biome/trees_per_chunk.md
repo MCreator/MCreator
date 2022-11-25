@@ -1,3 +1,3 @@
-This parameter controls the number of trees (the type you selected) per biome chunk.
+这个参数控制每个生物群落区块的树的数量(您选择的类型)。
 
-Set to 0 to disable trees.
+设置为0禁用树。

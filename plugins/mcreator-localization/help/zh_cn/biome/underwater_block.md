@@ -1,1 +1,1 @@
-This parameter controls the block that generates under the water. Most vanilla biomes use dirt or gravel block for this.
+这个参数控制在水下产生的块。大多数原版生物群系使用泥土或砾石块来实现这一点。

@@ -1,1 +1,1 @@
-The biome's name is the name used by some mods or by Minecraft itself with the Buffet (Single Biome), for example. However, it won't change the name into the F3 menu.
+例如，生物群系的名称是一些模组或游戏本身与自选世界类型(单一生物群落)使用的名称。但是，它不会在F3菜单中更改名称。

@@ -1,3 +1,3 @@
-This is the music of the biome. This sound will be randomly played.
+这是生物群系的音乐。这个声音将随机播放。
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:只在Minecraft 1.16.x及更高版本中可用。

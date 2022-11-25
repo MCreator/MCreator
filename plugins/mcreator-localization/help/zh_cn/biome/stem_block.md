@@ -1,1 +1,1 @@
-This parameter controls the block used to make the stem of your tree if custom trees are selected.
+如果选择了自定义树，则此参数控制用于制作树的主干的块。

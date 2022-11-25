@@ -1,1 +1,1 @@
-This parameter controls the number of sand block groups per biome chunk.
+该参数控制每个生物群落区块的沙子数量。

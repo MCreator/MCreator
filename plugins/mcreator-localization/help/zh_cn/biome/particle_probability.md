@@ -1,3 +1,3 @@
-The probability to spawn particles.
+生成粒子的概率。
 
-NOTE: This value is divided by 100 in the code.
+注意:该值在代码中除以100。

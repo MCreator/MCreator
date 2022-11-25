@@ -1,1 +1,1 @@
-This paremeter controls the color of the water fog inside the biome
+这个参数控制生物群系内水雾的颜色。

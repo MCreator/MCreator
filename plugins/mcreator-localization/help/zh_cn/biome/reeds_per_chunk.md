@@ -1,1 +1,1 @@
-This parameter controls the number of reeds (plants like sugar canes) in custom biome per chunk.
+该参数控制自定义生物群系中每区块芦苇(甘蔗等植物)的数量。

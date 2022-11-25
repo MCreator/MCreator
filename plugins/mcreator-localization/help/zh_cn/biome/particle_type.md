@@ -1,3 +1,3 @@
-The particle to spawn in this biome.
+在这个生物群系中生成的粒子。
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:只在Minecraft 1.16.x及更高版本中可用。

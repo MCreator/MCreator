@@ -1,3 +1,3 @@
-The ambient sound is the sound used for caves (e.g. Ambient Caves)
+环境声音是用于洞穴的声音(如洞穴音效，即字幕中怪异的噪声)
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:只在Minecraft 1.16.x及更高版本中可用。

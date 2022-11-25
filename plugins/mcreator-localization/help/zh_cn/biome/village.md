@@ -1,1 +1,1 @@
-This setting allows you to generate Minecraft Villages inside your biome.
+这个设置允许你在你的生物群系中生成原版村庄。

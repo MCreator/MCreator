@@ -1,12 +1,12 @@
-This parameter controls the temperature of the biome.
+该参数控制生物群系的温度。
 
-0.0 is like the Snowy Tundra, and 2.0 is like the Desert.
+0.0就像积雪平原，2.0就像沙漠。
 
-* Values less than 0.15 will make custom biome snow when downfall is happening
-* Values between 0.15 and 1.5 make the biome rain
-* Values larger than 1.5 will make the biome dry (disable rain, deserts for example)
+* 值低于0.15将使自定义生物群系在触发下雨时下雪
+* 值在0.15至1.5之间将会使群系下雪
+* 值大于1.5将使群系干燥(例如，禁止下雨、沙漠等)
 
-This parameter also controls placement of the biomes.
-Biomes with similar temperature will generate closer together.
+这个参数也控制着生物群系的位置。
+温度相近的生物群系会产生更紧密的联系。
 
-Biomes with the same temperature will compete for the same spot in the world when generating.
+具有相同温度的生物群系在生成时将争夺世界上相同的位置。

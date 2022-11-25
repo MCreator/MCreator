@@ -1,1 +1,1 @@
-This parameter controls the number of mushroom blocks (plants) per chunk in this biome
+这个参数控制了该生物群系中每区块蘑菇方块(植物)的数量
