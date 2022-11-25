@@ -1,1 +1,1 @@
-This parameter controls the number of tall grass per chunk in this biome
+这个参数控制着这个生物群系中每个区块高草的数量。
