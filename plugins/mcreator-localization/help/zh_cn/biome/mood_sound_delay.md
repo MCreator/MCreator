@@ -1,3 +1,3 @@
-This value defines the time, in ticks, before the sound is played (loop).
+这个值定义了声音播放(循环)之前的时间，以刻为单位。
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:只在Minecraft 1.16.x及更高版本中可用。
