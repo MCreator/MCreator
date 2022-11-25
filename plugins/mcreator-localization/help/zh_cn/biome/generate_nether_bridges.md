@@ -1,1 +1,1 @@
-Select this setting to have Nether fortresses in your biome.
+选择这个设置在你的生物群系中有下界堡垒。
