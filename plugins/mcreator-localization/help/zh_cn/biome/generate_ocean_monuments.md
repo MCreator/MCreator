@@ -1,1 +1,1 @@
-Select this setting to have Ocean Monuments in your biome.
+选择此设置在您的生物群系中生成海底神殿。
