@@ -1,1 +1,1 @@
-Select this setting to have Woodland Mansions in your biome.
+选择此设置在您的生物群系中有林地府邸。
