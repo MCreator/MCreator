@@ -1,1 +1,1 @@
-This paremeter controls how common/big this biome is. Leave at 10 to use standard biome weighting.
+这个参数控制这个生物群系是普通或大。保持为10，使用标准生物群系权重。
