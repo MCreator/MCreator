@@ -1,9 +1,8 @@
-This parameter controls the height variation of this biome.
+这个参数控制着这个生物群落的高度变化。
 
-Lower values will make this biome more even and flat, while big values will make this biome
-very dynamic in terrain.
+较低的值将使这个生物群落更均匀和平坦，而较大的值将使这个生物群落在地形起伏。
 
-This parameter also controls placement of the biomes.
-Biomes with similar height variation will generate closer together.
+这个参数也控制着生物群落的位置。
+高度变化相似的生物群系会产生更紧密的联系。
 
-Biomes with the same height variation will compete for the same spot in the world when generating.
+高度变化相同的生物群系在生成时将争夺世界上相同的位置。
