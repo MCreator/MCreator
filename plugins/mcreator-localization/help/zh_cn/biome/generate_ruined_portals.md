@@ -1,1 +1,1 @@
-This setting allows you to generate ruined portals inside your biome.
+这个设置允许你在你的生物群系中生成被破坏的传送门。
