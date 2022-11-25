@@ -1,1 +1,1 @@
-Select this setting to have swamp huts in your biome.
+选择此设置在您的生物群系中有沼泽小屋。
