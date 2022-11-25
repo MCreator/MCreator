@@ -1,1 +1,1 @@
-Check this box to make this biome spawn underground (in caves) in the overworld.
+勾选这个选项可以让这个生物群落在主世界的地下(洞穴中)生成。
