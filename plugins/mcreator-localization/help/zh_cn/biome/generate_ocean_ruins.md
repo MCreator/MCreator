@@ -1,4 +1,5 @@
-Select this setting to have Ocean Ruins in your biome.
-* NONE: No Ocean ruins will be generated.
-* COLD: Ocean Ruins made of stone will be generated
-* WARM: Ocean Ruins made of sandstone will be generated
+选择此设置在您的生物群系中有海底废墟。
+
+* NONE: 无海底废墟生成
+* COLD: 将生成由石头制成的海洋废墟
+* WARM: 将生成由沙石制成的海洋废墟
