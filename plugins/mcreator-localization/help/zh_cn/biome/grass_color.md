@@ -1,3 +1,3 @@
-This parameter controls the color of the grass in this biome.
+这个参数控制了这个生物群系中草的颜色。
 
-This parameter changes the color of other plants (foliage) too.
+这个参数也会改变其他植物(叶子)的颜色。
