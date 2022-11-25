@@ -1,1 +1,1 @@
-This parameter controls the number of gravel block groups per chunk in this biome.
+该参数控制该生物群落中每个区块的砾石块组的数量。
