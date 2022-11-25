@@ -157,7 +157,7 @@ public class ${name}Item extends Item {
 		}
 	}
 	<#else>
-	if (entity.gameMode.getGameModeForPlayer() == GameType.CREATIVE)
+	if (entity.getAbilities().instabuild)
 	entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 	else
 	entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
