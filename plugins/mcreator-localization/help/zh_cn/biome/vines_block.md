@@ -1,3 +1,3 @@
-This paremeter controls the block used to replace vines.
+这个参数控制用来替换藤蔓的方块。
 
-Select air block to don't have vines.
+选择空气，无藤蔓。
