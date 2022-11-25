@@ -1,1 +1,1 @@
-Select this setting to have mineshafts in your biome.
+选择此设置在你的生物群系中有矿井。
