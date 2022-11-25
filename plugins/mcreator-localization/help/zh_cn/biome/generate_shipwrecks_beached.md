@@ -1,1 +1,1 @@
-Select this setting to have beached shipwrecks in your biome.
+选择这个设置在你的生物群系中有搁浅的沉船。
