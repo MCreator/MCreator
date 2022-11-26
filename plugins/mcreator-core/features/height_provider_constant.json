@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "VerticalAnchor"
+    }
+  ],
+  "output": "HeightProvider",
+  "colour": 180,
+  "mcreator": {
+    "toolbox_id": "heightproviders",
+    "toolbox_init": [
+      "<value name=\"value\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value>"
+    ],
+    "inputs": [
+      "value"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "value",
+      "value": 64,
+      "precision": 1
+    }
+  ],
+  "output": "VerticalAnchor",
+  "colour": "#47B37D",
+  "mcreator": {
+    "toolbox_id": "heightproviders",
+    "fields": [
+      "value"
+    ]
+  }
+}
