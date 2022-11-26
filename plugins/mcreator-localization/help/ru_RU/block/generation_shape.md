@@ -5,6 +5,4 @@
   на средней между минимальной и максимальной высотами генерации. При этом граничные высоты
   могут находиться и за пределами мира.
 
-Генерацию ванильных миров MC 1.18.x можно посмотреть [здесь](https://static.wikia.nocookie.net/minecraft_gamepedia/images/e/e3/1-18-ore-distribution.jpg/revision/latest/scale-to-width-down/1000?cb=20211130163210).
-
 ВНИМАНИЕ: Только для Minecraft 1.18.x и выше.

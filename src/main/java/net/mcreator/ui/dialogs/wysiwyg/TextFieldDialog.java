@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
-import net.mcreator.element.parts.gui.IMachineNamedComponent;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -33,10 +33,10 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFieldDialog extends AbstractWYSIWYGDialog {
+public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
-		super(editor.mcreator, textField);
+		super(editor, textField);
 		setModal(true);
 		setSize(480, 150);
 		setLocationRelativeTo(editor.mcreator);
@@ -45,8 +45,8 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(nameField,
 				L10N.t("dialog.gui.textfield_name_validator"), Transliteration::transliterateString,
-				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
-						.map(e -> e.name), new JavaMemberNameValidator(nameField, false));
+				() -> editor.getComponentList().stream().map(GUIComponent::getName),
+				new JavaMemberNameValidator(nameField, false));
 		validator.setIsPresentOnList(textField != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
@@ -85,11 +85,12 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 				String text = Transliteration.transliterateString(nameField.getText());
 				if (!text.equals("")) {
 					if (textField == null) {
-						editor.editor.setPositioningMode(120, 20);
-						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-								new TextField(text, editor.editor.newlyAddedComponentPosX,
-										editor.editor.newlyAddedComponentPosY, editor.editor.ow, editor.editor.oh,
-										deft.getText()))));
+						TextField component = new TextField(text, 0, 0, 120, 20, deft.getText());
+
+						setEditingComponent(component);
+						editor.editor.addComponent(component);
+						editor.list.setSelectedValue(component, true);
+						editor.editor.moveMode();
 					} else {
 						int idx = editor.components.indexOf(textField);
 						editor.components.remove(textField);

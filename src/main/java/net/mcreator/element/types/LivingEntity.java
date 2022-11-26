@@ -24,8 +24,8 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -150,6 +150,8 @@ import java.util.Locale;
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
 	public String rangedItemType;
+	public int rangedAttackInterval;
+	public double rangedAttackRadius;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
@@ -172,6 +174,8 @@ import java.util.Locale;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
+		this.rangedAttackInterval = 20;
+		this.rangedAttackRadius = 10;
 
 		this.followRange = 16;
 

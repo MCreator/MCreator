@@ -1,0 +1,1 @@
+Cette option détermine à quel stade de la génération du monde la caractéristique de terrain doit être ajoutée.

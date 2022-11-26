@@ -113,6 +113,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 0, 2048, 1));
 
+	private final JSpinner rangedAttackInterval = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
+	private final JSpinner rangedAttackRadius = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 0.1));
+
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
@@ -121,7 +124,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
 	private final JSpinner mountedYOffset = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.1));
 	private final JSpinner modelShadowSize = new JSpinner(new SpinnerNumberModel(0.5, 0, 20, 0.1));
-	private final JCheckBox disableCollisions = new JCheckBox("Disable collision box");
+	private final JCheckBox disableCollisions = L10N.checkbox("elementgui.living_entity.disable_collisions");
 
 	private final JSpinner xpAmount = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 
@@ -550,6 +553,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		followRange.setPreferredSize(new Dimension(250, 32));
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
+		
+		rangedAttackInterval.setPreferredSize(new Dimension(85, 32));
+		rangedAttackRadius.setPreferredSize(new Dimension(85, 32));
 
 		mobModel.addActionListener(e -> {
 			if (disableMobModelCheckBoxListener)
@@ -645,26 +651,32 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
-		JPanel aitop = new JPanel(new GridLayout(2, 2, 10, 10));
+		JPanel aitop = new JPanel(new GridLayout(3, 1, 0, 2));
 		aitop.setOpaque(false);
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_ai"), hasAI)));
-
-		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(20, 5),
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/base"),
-						L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/breedable"), breedable), breedTriggerItems,
 				tameable));
 
-		breedTriggerItems.setPreferredSize(new Dimension(300, 32));
+		breedTriggerItems.setPreferredSize(new Dimension(230, 32));
+
+		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(5, 5),
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/base"),
+				L10N.label("elementgui.living_entity.mob_base")), aiBase));
+
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> regenerateAITasks());
 
-		aitop.add(PanelUtils.join(FlowLayout.LEFT,
+		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
+		aitopoveral.setOpaque(false);
+
+		aitopoveral.add("West", aitop);
+
+		aitopoveral.add("Center", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-				L10N.label("elementgui.living_entity.do_ranged_attacks"), rangedItemType, rangedAttackItem));
+				rangedItemType, rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
 
 		rangedAttackItem.setEnabled(false);
 
@@ -675,8 +687,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		canControlStrafe.setOpaque(false);
 		canControlForward.setOpaque(false);
 
-		JPanel aitopwrp = PanelUtils.maxMargin(aitop, 2, true, true, true, true);
-		aitopwrp.setBorder(BorderFactory.createTitledBorder(
+		aitopoveral.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.ai_parameters"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -689,7 +700,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getAITaskBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());
 			if (!isEditingMode()) {
@@ -697,7 +708,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			}
 		});
 
-		aipan.add("North", aitopwrp);
+		aipan.add("North", aitopoveral);
 
 		JPanel bpb = new JPanel(new GridLayout());
 		bpb.setOpaque(false);
@@ -1038,6 +1049,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		tameable.setSelected(livingEntity.tameable);
 		ranged.setSelected(livingEntity.ranged);
 		rangedAttackItem.setBlock(livingEntity.rangedAttackItem);
+		rangedAttackInterval.setValue(livingEntity.rangedAttackInterval);
+		rangedAttackRadius.setValue(livingEntity.rangedAttackRadius);
 		spawnThisMob.setSelected(livingEntity.spawnThisMob);
 		doesDespawnWhenIdle.setSelected(livingEntity.doesDespawnWhenIdle);
 		modelWidth.setValue(livingEntity.modelWidth);
@@ -1160,6 +1173,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.breedTriggerItems = breedTriggerItems.getListElements();
 		livingEntity.ranged = ranged.isSelected();
 		livingEntity.rangedAttackItem = rangedAttackItem.getBlock();
+		livingEntity.rangedAttackInterval = (int) rangedAttackInterval.getValue();
+		livingEntity.rangedAttackRadius = (double) rangedAttackRadius.getValue();
 		livingEntity.spawnThisMob = spawnThisMob.isSelected();
 		livingEntity.doesDespawnWhenIdle = doesDespawnWhenIdle.isSelected();
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();

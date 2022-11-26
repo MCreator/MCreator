@@ -21,8 +21,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.NumberProcedure;
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.NumberProcedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.workspace.elements.ModElement;
 
 public class ItemExtension extends GeneratableElement {

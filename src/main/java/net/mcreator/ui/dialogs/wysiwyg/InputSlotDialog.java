@@ -37,10 +37,10 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class InputSlotDialog extends AbstractWYSIWYGDialog {
+public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
-		super(editor.mcreator, slot);
+		super(editor, slot);
 		setModal(true);
 		setSize(850, 370);
 		setLocationRelativeTo(editor.mcreator);
@@ -60,7 +60,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog {
 					if (slot != null && component instanceof Slot
 							&& ((Slot) component).id == slot.id) // skip current element if edit mode
 						continue;
-					if (component instanceof Slot && component.name.equals("Slot #" + slotIDnum))
+					if (component instanceof Slot slotOther && slotOther.id == slotIDnum)
 						return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 								L10N.t("dialog.gui.slot_id_already_used"));
 				}
@@ -76,7 +76,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog {
 		JColor color = new JColor(editor.mcreator, false, false);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_custom_color"), color));
 
-		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItems);
+		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItemsAndTags, true);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_limit_stack_input"), limit));
 
 		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
@@ -144,19 +144,22 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog {
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 
 				if (slot == null) {
-					editor.lol.setSelectedIndex(1);
-					editor.editor.setPositioningMode(18, 18);
-					editor.editor.setPositionDefinedListener(e1 -> editor.editor.addComponent(setEditingComponent(
-							new InputSlot(slotIDnum, "Slot #" + slotIDnum, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY,
-									color.getColor().equals(Color.white) ? null : color.getColor(),
-									disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-									eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),
-									limit.getBlock()))));
+					editor.guiType.setSelectedIndex(1);
+
+					InputSlot component = new InputSlot(slotIDnum,0, 0,
+							color.getColor().equals(Color.white) ? null : color.getColor(),
+							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
+							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),
+							limit.getBlock());
+
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(slot);
 					editor.components.remove(slot);
-					InputSlot slotNew = new InputSlot(slotIDnum, "Slot #" + slotIDnum, slot.getX(), slot.getY(),
+					InputSlot slotNew = new InputSlot(slotIDnum, slot.getX(), slot.getY(),
 							color.getColor().equals(Color.white) ? null : color.getColor(),
 							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
 							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.parts;
+package net.mcreator.element.parts.procedure;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
@@ -77,11 +78,11 @@ import java.util.List;
 			field.setAccessible(true);
 			try {
 				Object value = field.get(element);
-				if (value instanceof net.mcreator.element.parts.Procedure) {
-					if (((net.mcreator.element.parts.Procedure) value).name == null)
+				if (value instanceof Procedure) {
+					if (((Procedure) value).name == null)
 						continue;
 
-					if (((net.mcreator.element.parts.Procedure) value).name.equals(procedureName)) {
+					if (((Procedure) value).name.equals(procedureName)) {
 						isCallingThisProcedure = true;
 						break;
 					}

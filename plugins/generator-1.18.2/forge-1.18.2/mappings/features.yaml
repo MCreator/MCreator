@@ -1,0 +1,18 @@
+_default:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+feature_lake:
+  - LakeFeature
+  - LakeFeature.Configuration
+feature_simple_block:
+  - SimpleBlockFeature
+  - SimpleBlockConfiguration
+feature_block_pile:
+  - BlockPileFeature
+  - BlockPileConfiguration
+feature_huge_brown_mushroom:
+  - HugeBrownMushroomFeature
+  - HugeMushroomFeatureConfiguration
+feature_huge_red_mushroom:
+  - HugeRedMushroomFeature
+  - HugeMushroomFeatureConfiguration

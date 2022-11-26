@@ -24,6 +24,10 @@ import java.nio.file.Files;
 public class UserFolderManager {
 
 	private static File getUserFolder() {
+		if (System.getenv("MCREATOR_HOME") != null) {
+			return new File(System.getenv("MCREATOR_HOME"));
+		}
+
 		return new File(System.getProperty("user.home") + "/.mcreator/");
 	}
 
