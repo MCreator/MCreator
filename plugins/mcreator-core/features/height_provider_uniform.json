@@ -22,7 +22,7 @@
     ],
     "inputs": [
       "min",
-	  "max"
+      "max"
     ]
   }
 }

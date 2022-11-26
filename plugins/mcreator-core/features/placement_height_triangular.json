@@ -22,8 +22,8 @@
       "<value name=\"max\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value>"
     ],
     "inputs": [
-	  "min",
-	  "max"
+      "min",
+      "max"
     ]
   }
 }
