@@ -53,7 +53,7 @@
     <#if hasProcedure(object)>
         <#if invertCondition>!</#if><@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) />
     <#else>
-        ${defaultValue}
+        ${defaultValue?c}
     </#if>
 </#macro>
 
