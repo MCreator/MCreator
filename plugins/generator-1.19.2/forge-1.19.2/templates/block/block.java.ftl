@@ -216,7 +216,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
+	<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity != 15>
 	@Override public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return ${data.lightOpacity};
 	}
