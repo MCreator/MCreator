@@ -112,9 +112,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					${(component.y - my)?int + 1}) {
 
 					<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
-						@Override public boolean mayPickup(Player entity) {
-							return <@procedureOBJToConditionCode component.disablePickup false true/>;
-						}
+					@Override public boolean mayPickup(Player entity) {
+						return <@procedureOBJToConditionCode component.disablePickup false true/>;
+					}
 					</#if>
 
 					<#if hasProcedure(component.onSlotChanged)>
