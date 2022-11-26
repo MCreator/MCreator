@@ -13,7 +13,7 @@
   ],
   "inputsInline": true,
   "output": "HeightProvider",
-  "colour": 180,
+  "colour": 190,
   "mcreator": {
     "toolbox_id": "heightproviders",
     "toolbox_init": [

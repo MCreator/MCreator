@@ -8,7 +8,7 @@
     }
   ],
   "output": "VerticalAnchor",
-  "colour": "#47B37D",
+  "colour": 165,
   "mcreator": {
     "toolbox_id": "heightproviders",
     "fields": [
