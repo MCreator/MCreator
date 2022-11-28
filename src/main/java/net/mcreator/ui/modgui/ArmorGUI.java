@@ -335,17 +335,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
 		helmetSubPanel.setOpaque(false);
 
-		helmetSubPanel.add(L10N.label("elementgui.armor.supported_java"));
+		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, helmetModel, helmetModelPart));
 
-		helmetSubPanel.add(L10N.label("elementgui.common.texture"));
+		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		helmetSubPanel.add(helmetModelTexture);
 
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
 				L10N.label("elementgui.common.item_model")));
 		helmetSubPanel.add(helmetItemRenderType);
 
-		helmetSubPanel.add(L10N.label("elementgui.armor.special_information"));
+		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		helmetSubPanel.add(helmetSpecialInfo);
 
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
@@ -374,7 +374,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
 
-		JComponent bodyModelComponent = PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.supported_java"),
+		JComponent bodyModelComponent = PanelUtils.westAndCenterElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
 				PanelUtils.northAndCenterElement(
 						PanelUtils.join(FlowLayout.RIGHT, bodyModel, new JLabel(":"), bodyModelPart),
 						PanelUtils.join(FlowLayout.RIGHT, L10N.label("elementgui.armor.part_arm_left"), armsModelPartL,
@@ -383,14 +384,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel bodySubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bodySubPanel.setOpaque(false);
 
-		bodySubPanel.add(L10N.label("elementgui.common.texture"));
+		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bodySubPanel.add(bodyModelTexture);
 
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
 				L10N.label("elementgui.common.item_model")));
 		bodySubPanel.add(bodyItemRenderType);
 
-		bodySubPanel.add(L10N.label("elementgui.armor.special_information"));
+		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bodySubPanel.add(bodySpecialInfo);
 
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
@@ -413,21 +414,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
 
-		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.supported_java"),
+		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
 				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL,
 						new JLabel("R"), leggingsModelPartR));
 
 		JPanel leggingsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		leggingsSubPanel.setOpaque(false);
 
-		leggingsSubPanel.add(L10N.label("elementgui.common.texture"));
+		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		leggingsSubPanel.add(leggingsModelTexture);
 
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
 				L10N.label("elementgui.common.item_model")));
 		leggingsSubPanel.add(leggingsItemRenderType);
 
-		leggingsSubPanel.add(L10N.label("elementgui.armor.special_information"));
+		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		leggingsSubPanel.add(leggingsSpecialInfo);
 
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
@@ -450,21 +452,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
 				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
 
-		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.supported_java"),
+		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
 				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL,
 						new JLabel("R"), bootsModelPartR));
 
 		JPanel bootsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bootsSubPanel.setOpaque(false);
 
-		bootsSubPanel.add(L10N.label("elementgui.common.texture"));
+		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bootsSubPanel.add(bootsModelTexture);
 
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
 				L10N.label("elementgui.common.item_model")));
 		bootsSubPanel.add(bootsItemRenderType);
 
-		bootsSubPanel.add(L10N.label("elementgui.armor.special_information"));
+		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bootsSubPanel.add(bootsSpecialInfo);
 
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
@@ -482,25 +485,21 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableHelmet.addActionListener(event -> {
 			textureHelmet.setEnabled(enableHelmet.isSelected());
 			helmetName.setEnabled(enableHelmet.isSelected());
-			helmetItemRenderType.setEnabled(enableHelmet.isSelected());
 		});
 
 		enableBody.addActionListener(event -> {
 			textureBody.setEnabled(enableBody.isSelected());
 			bodyName.setEnabled(enableBody.isSelected());
-			bodyItemRenderType.setEnabled(enableBody.isSelected());
 		});
 
 		enableLeggings.addActionListener(event -> {
 			textureLeggings.setEnabled(enableLeggings.isSelected());
 			leggingsName.setEnabled(enableLeggings.isSelected());
-			leggingsItemRenderType.setEnabled(enableLeggings.isSelected());
 		});
 
 		enableBoots.addActionListener(event -> {
 			textureBoots.setEnabled(enableBoots.isSelected());
 			bootsName.setEnabled(enableBoots.isSelected());
-			bootsItemRenderType.setEnabled(enableBoots.isSelected());
 		});
 
 		armorTextureFile.addActionListener(e -> updateArmorTexturePreview());
