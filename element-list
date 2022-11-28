@@ -3,6 +3,7 @@ net.mcreator.blockly
 net.mcreator.blockly.data
 net.mcreator.blockly.datapack
 net.mcreator.blockly.datapack.blocks
+net.mcreator.blockly.feature
 net.mcreator.blockly.java
 net.mcreator.blockly.java.blocks
 net.mcreator.element
@@ -32,6 +33,8 @@ net.mcreator.element.converter.fv31
 net.mcreator.element.converter.fv32
 net.mcreator.element.converter.fv33
 net.mcreator.element.converter.fv34
+net.mcreator.element.converter.fv35
+net.mcreator.element.converter.fv36
 net.mcreator.element.converter.fv4
 net.mcreator.element.converter.fv5
 net.mcreator.element.converter.fv6
@@ -40,6 +43,7 @@ net.mcreator.element.converter.fv8
 net.mcreator.element.converter.fv9
 net.mcreator.element.parts
 net.mcreator.element.parts.gui
+net.mcreator.element.parts.procedure
 net.mcreator.element.types
 net.mcreator.element.types.interfaces
 net.mcreator.generator
