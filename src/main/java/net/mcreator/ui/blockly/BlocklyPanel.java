@@ -206,7 +206,7 @@ public class BlocklyPanel extends JFXPanel {
 		if (index == -1) { // The separator wasn't found
 			executeJavaScriptSynchronously(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)");
-		} else { // We add the blocks separately so that they don't overlap
+		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
 			index += 8; //We add the length of "</block>" to the index
 			executeJavaScriptSynchronously(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
