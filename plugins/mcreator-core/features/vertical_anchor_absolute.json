@@ -4,6 +4,8 @@
       "type": "field_number",
       "name": "value",
       "value": 64,
+      "min": -2032,
+      "max": 2031,
       "precision": 1
     }
   ],
