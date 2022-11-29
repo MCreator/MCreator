@@ -9,7 +9,7 @@
   "output": "HeightProvider",
   "colour": 190,
   "mcreator": {
-    "toolbox_id": "heightproviders",
+    "toolbox_id": "heightplacements",
     "toolbox_init": [
       "<value name=\"value\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value>"
     ],

@@ -16,7 +16,7 @@
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {
-    "toolbox_id": "placements",
+    "toolbox_id": "heightplacements",
     "toolbox_init": [
       "<value name=\"min\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">0</field></block></value>",
       "<value name=\"max\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value>"

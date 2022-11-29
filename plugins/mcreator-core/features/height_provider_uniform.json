@@ -15,7 +15,7 @@
   "output": "HeightProvider",
   "colour": 190,
   "mcreator": {
-    "toolbox_id": "heightproviders",
+    "toolbox_id": "heightplacements",
     "toolbox_init": [
       "<value name=\"min\"><block type=\"vertical_anchor_above_bottom\"><field name=\"value\">0</field></block></value>",
       "<value name=\"max\"><block type=\"vertical_anchor_below_top\"><field name=\"value\">0</field></block></value>"
