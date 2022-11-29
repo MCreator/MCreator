@@ -30,7 +30,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
@@ -43,11 +42,6 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		JTextField buttonText = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-
-		if (button == null)
-			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")));
-		else
-			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), buttonText));
 
@@ -63,10 +57,12 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		add("Center",
-				new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
+		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.northAndCenterElement(options,
+				PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition)))));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, options));
+		add("North", button == null ?
+				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")) :
+				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -90,8 +86,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 				int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 
-				Button component = new Button(name, 0, 0, text, textwidth + 25, 20,
-						eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+				Button component = new Button(name, 0, 0, text, textwidth + 25, 20, eh.getSelectedProcedure(),
+						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
@@ -100,8 +96,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 			} else {
 				int idx = editor.components.indexOf(button);
 				editor.components.remove(button);
-				Button buttonNew = new Button(button.name, button.getX(), button.getY(), text, button.width, button.height,
-						eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+				Button buttonNew = new Button(button.name, button.getX(), button.getY(), text, button.width,
+						button.height, eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 				editor.components.add(idx, buttonNew);
 				setEditingComponent(buttonNew);
 			}
