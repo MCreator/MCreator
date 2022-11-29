@@ -40,16 +40,16 @@ public class BiomeGenParametersConverter implements IConverter {
 		try {
 			double normalizedWeight =
 					jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("biomeWeight")
-							.getAsDouble() / 50;
+							.getAsDouble() / 50.0;
 
-			double temperatureBase = ((biome.temperature + 1) / 3) * 2 - 1;
-			double humidityBase = (biome.rainingPossibility * 2) - 1;
+			double temperatureBase = ((biome.temperature + 1.0) / 3.0) * 2.0 - 1.0;
+			double humidityBase = (biome.rainingPossibility * 2.0) - 1.0;
 			double continentalnessBase =
 					(jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("baseHeight")
-							.getAsDouble() + 5) / 10.0;
+							.getAsDouble() + 5.0) / 10.0;
 			double erosionBase =
-					2 - jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("heightVariation")
-							.getAsDouble() - 1;
+					2.0 - jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("heightVariation")
+							.getAsDouble() - 1.0;
 			double weirdnessBase = (random(input.getModElement().getRegistryName()) * 2) - 1;
 
 			biome.genTemperature = new Biome.ClimatePoint(Math.max(-2, temperatureBase - normalizedWeight),
