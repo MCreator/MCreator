@@ -32,6 +32,8 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyEditorToolbar;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JEmptyBox;
@@ -119,7 +121,14 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 			}
 		});
 
-		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
+		blocklyAndToolbarPanel.setOpaque(false);
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
+				blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
+
+		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		featureProcedure.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.feature.feature_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,

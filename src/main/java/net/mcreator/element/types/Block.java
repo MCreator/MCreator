@@ -130,13 +130,6 @@ import java.util.stream.Collectors;
 	public boolean unbreakable;
 	public int breakHarvestLevel;
 
-	public boolean spawnParticles;
-	public Particle particleToSpawn;
-	public String particleSpawningShape;
-	public double particleSpawningRadious;
-	public int particleAmount;
-	public Procedure particleCondition;
-
 	public Procedure placingCondition;
 
 	public boolean hasInventory;

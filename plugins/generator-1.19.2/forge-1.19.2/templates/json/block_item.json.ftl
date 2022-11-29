@@ -4,10 +4,8 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "${modid}:items/${data.itemTexture}"
-  }
-  <#if !(data.blockBase?has_content && data.blockBase == "Leaves")>
-  ,"render_type": "${data.getRenderType()}"
-  </#if>
+  },
+  "render_type": "translucent"
 }
 <#else>
 {

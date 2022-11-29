@@ -1,0 +1,38 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "cap",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "stem",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "radius",
+      "value": 3,
+      "min": 0,
+      "precision": 1
+    }
+  ],
+  "inputsInline": true,
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"cap\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"stem\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "cap",
+      "stem"
+    ],
+    "fields": [
+      "radius"
+    ]
+  }
+}

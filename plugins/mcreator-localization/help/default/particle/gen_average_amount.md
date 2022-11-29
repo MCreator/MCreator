@@ -1,1 +1,0 @@
-An average number of particles to spawn on spawn iteration.
