@@ -43,6 +43,11 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
+		if (button == null)
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")));
+		else
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
+
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), buttonText));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
@@ -57,12 +62,9 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.northAndCenterElement(options,
-				PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition)))));
+		options.add(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition));
 
-		add("North", button == null ?
-				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")) :
-				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
+		add("Center", new JScrollPane(PanelUtils.centerInPanel(options)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -72,7 +74,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			buttonText.setText(button.name);
+			buttonText.setText(button.text);
 			eh.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
