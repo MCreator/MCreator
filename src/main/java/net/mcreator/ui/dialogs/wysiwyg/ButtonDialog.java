@@ -76,7 +76,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			buttonText.setText(button.name);
+			buttonText.setText(button.text);
 			eh.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
