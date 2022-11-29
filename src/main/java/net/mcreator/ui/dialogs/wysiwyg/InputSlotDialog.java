@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -42,7 +43,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
 		super(editor, slot);
 		setModal(true);
-		setSize(850, 370);
+		setSize(850, 435);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
@@ -79,11 +80,23 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 		MCItemHolder limit = new MCItemHolder(editor.mcreator, ElementUtil::loadBlocksAndItemsAndTags, true);
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_limit_stack_input"), limit));
 
-		JCheckBox disableStackInteraction = L10N.checkbox("dialog.gui.slot_disable_player_interaction");
-		options.add(PanelUtils.join(FlowLayout.LEFT, disableStackInteraction));
-
 		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
 		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
+
+		LogicProcedureSelector disablePickup = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
+				editor.mcreator, L10N.t("dialog.gui.disable_pickup"), ProcedureSelector.Side.BOTH,
+				L10N.checkbox("condition.common.disable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+		disablePickup.refreshList();
+
+		LogicProcedureSelector disablePlacement = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_placement_condition"),
+				editor.mcreator, L10N.t("dialog.gui.disable_placement"), ProcedureSelector.Side.BOTH,
+				L10N.checkbox("condition.common.disable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map"));
+		disablePlacement.refreshList();
+
+		options.add(PanelUtils.join(FlowLayout.LEFT, disablePickup));
+		options.add(PanelUtils.join(FlowLayout.LEFT, disablePlacement));
 
 		dropItemsWhenNotBound.setSelected(true);
 
@@ -122,7 +135,8 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 			eh.setSelectedProcedure(slot.onSlotChanged);
 			eh2.setSelectedProcedure(slot.onTakenFromSlot);
 			eh3.setSelectedProcedure(slot.onStackTransfer);
-			disableStackInteraction.setSelected(slot.disableStackInteraction);
+			disablePickup.setSelectedProcedure(slot.disablePickup);
+			disablePlacement.setSelectedProcedure(slot.disablePlacement);
 			dropItemsWhenNotBound.setSelected(slot.dropItemsWhenNotBound);
 		} else {
 			int freeslotid = -1;
@@ -148,9 +162,9 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 
 					InputSlot component = new InputSlot(slotIDnum,0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),
-							limit.getBlock());
+							disablePickup.getSelectedProcedure(), disablePlacement.getSelectedProcedure(),
+							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
+							eh3.getSelectedProcedure(), limit.getBlock());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
@@ -161,9 +175,9 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 					editor.components.remove(slot);
 					InputSlot slotNew = new InputSlot(slotIDnum, slot.getX(), slot.getY(),
 							color.getColor().equals(Color.white) ? null : color.getColor(),
-							disableStackInteraction.isSelected(), dropItemsWhenNotBound.isSelected(),
-							eh.getSelectedProcedure(), eh2.getSelectedProcedure(), eh3.getSelectedProcedure(),
-							limit.getBlock());
+							disablePickup.getSelectedProcedure(), disablePlacement.getSelectedProcedure(),
+							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),
+							eh3.getSelectedProcedure(), limit.getBlock());
 					editor.components.add(idx, slotNew);
 					setEditingComponent(slotNew);
 				}
