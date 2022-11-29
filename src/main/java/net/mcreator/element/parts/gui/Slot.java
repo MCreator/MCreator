@@ -18,6 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -32,7 +33,7 @@ public abstract class Slot extends GUIComponent {
 
 	public Color color;
 	public int id;
-	public boolean disableStackInteraction;
+	public LogicProcedure disablePickup;
 
 	public boolean dropItemsWhenNotBound;
 
@@ -48,13 +49,12 @@ public abstract class Slot extends GUIComponent {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public Slot(int id, int x, int y, Color color, boolean disableStackInteraction,
-			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot,
-			Procedure onStackTransfer) {
+	public Slot(int id, int x, int y, Color color, LogicProcedure disablePickup,
+			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot, Procedure onStackTransfer) {
 		super(x, y);
 		this.color = color;
 		this.id = id;
-		this.disableStackInteraction = disableStackInteraction;
+		this.disablePickup = disablePickup;
 		this.dropItemsWhenNotBound = dropItemsWhenNotBound;
 		this.onSlotChanged = onSlotChanged;
 		this.onTakenFromSlot = onTakenFromSlot;
