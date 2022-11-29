@@ -341,10 +341,6 @@ public class TestWorkspaceDataProvider {
 			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
 			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
 			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
-			biome.rainingPossibility = 3.5;
-			biome.baseHeight = -0.3;
-			biome.heightVariation = 0.7;
-			biome.temperature = 4.0;
 			biome.spawnShipwreck = _true;
 			biome.spawnShipwreckBeached = _true;
 			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
@@ -367,7 +363,14 @@ public class TestWorkspaceDataProvider {
 					new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
-			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
+			biome.genTemperature = new Biome.ClimatePoint(0.1, 0.4);
+			biome.genHumidity = new Biome.ClimatePoint(-0.1, 0.4);
+			biome.genContinentalness = new Biome.ClimatePoint(-2.0, 2.0);
+			biome.genErosion = new Biome.ClimatePoint(0.4, 1.4);
+			biome.genWeirdness = new Biome.ClimatePoint(1.0, 1.1);
+
+			biome.rainingPossibility = 1.1;
+			biome.temperature = 2.1;
 
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
