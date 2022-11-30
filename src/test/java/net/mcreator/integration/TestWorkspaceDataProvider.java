@@ -21,6 +21,9 @@ package net.mcreator.integration;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.procedure.LogicProcedure;
+import net.mcreator.element.parts.procedure.NumberProcedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -28,8 +31,6 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
-import net.mcreator.element.parts.procedure.NumberProcedure;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
@@ -566,19 +567,22 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
-				components.add(new InputSlot(0, 20, 30, Color.red, _true, _true, new Procedure("procedure3"),
-						new Procedure("procedure10"), new Procedure("procedure2"),
-						new MItemBlock(modElement.getWorkspace(), "")));
-				components.add(
-						new InputSlot(3, 20, 30, Color.white, !_true, !_true, new Procedure("procedure4"), null, null,
-								new MItemBlock(modElement.getWorkspace(),
-										getRandomMCItem(random, blocksAndItems).getName())));
-				components.add(
-						new InputSlot(4, 20, 30, Color.green, !_true, _true, new Procedure("procedure5"), null, null,
-								new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
-				components.add(new OutputSlot(5, 10, 20, Color.black, !_true, _true, new Procedure("procedure10"),
-						new Procedure("procedure2"), new Procedure("procedure3")));
-				components.add(new OutputSlot(6, 243, 563, Color.black, _true, _true, null, null, null));
+				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
+						new LogicProcedure("condition1", true) , _true, new Procedure("procedure3"), new Procedure("procedure10"),
+						new Procedure("procedure2"), new MItemBlock(modElement.getWorkspace(), "")));
+				components.add(new InputSlot(3, 20, 30, Color.white, new LogicProcedure(null, true),
+						new LogicProcedure("condition1", true), !_true, new Procedure("procedure4"), null, null,
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName())));
+				new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true), new LogicProcedure(null, true),
+						!_true, new Procedure("procedure4"), null, null, new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItems).getName()));
+				components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, _true),
+						new LogicProcedure("condition1", !_true), _true, new Procedure("procedure5"), null, null,
+						new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
+				components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", _true), !_true,
+						new Procedure("procedure10"), new Procedure("procedure2"), new Procedure("procedure3")));
+				components.add(new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true, null,
+						null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
@@ -661,15 +665,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.stepSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.spawnParticles = _true;
-			livingEntity.particleToSpawn = new Particle(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			livingEntity.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
 			livingEntity.rangedItemType = "Default item";
-			livingEntity.particleSpawningRadious = 4;
-			livingEntity.particleAmount = 13;
 			if (!emptyLists) {
-				livingEntity.particleCondition = new Procedure("condition2");
 				livingEntity.spawningCondition = new Procedure("condition3");
 				livingEntity.onStruckByLightning = new Procedure("procedure1");
 				livingEntity.whenMobFalls = new Procedure("procedure2");
@@ -1231,13 +1228,7 @@ public class TestWorkspaceDataProvider {
 			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
 			block.breakHarvestLevel = 4;
-			block.spawnParticles = _true;
 			block.tickRandomly = _true;
-			block.particleToSpawn = new Particle(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			block.particleSpawningShape = new String[] { "Spread", "Top", "Tube", "Plane" }[valueIndex];
-			block.particleSpawningRadious = 4;
-			block.particleAmount = 13;
 			block.hasInventory = _true;
 			block.guiBoundTo = "<NONE>";
 			block.openGUIOnRightClick = !_true;
@@ -1308,7 +1299,6 @@ public class TestWorkspaceDataProvider {
 				block.onHitByProjectile = new Procedure("procedure14");
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
-				block.particleCondition = new Procedure("condition4");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
 			block.particleTexture = emptyLists ? "" : "test7";

@@ -13,8 +13,8 @@ jobs:
     name: Build and Export
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Check Repository
+      - uses: actions/checkout@v2.5.0
+      - name: Checkout Repository
         if: github.repository != 'MCreator/MCreator'
         run: |
           cat << EOF
@@ -24,9 +24,9 @@ jobs:
           EOF
           exit 1
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3.6.0
         with:
-          java-version: '17.0.5+8'
+          java-version: '17.0'
           distribution: 'adopt'
       - name: Install Dependencies
         run: |
