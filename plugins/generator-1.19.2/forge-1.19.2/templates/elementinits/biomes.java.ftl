@@ -87,13 +87,17 @@ public class ${JavaModName}Biomes {
 						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
 
 						<#list spawn_overworld as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT, 
-							biomeRegistry.getOrCreateHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolderOrThrow(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 
 						<#list spawn_overworld_caves as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT_UNDERGROUND,
-								biomeRegistry.getOrCreateHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.UNDERGROUND_PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolderOrThrow(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 						
 						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
@@ -111,7 +115,7 @@ public class ${JavaModName}Biomes {
 
 							<#list spawn_overworld_caves as biome>
 							surfaceRules.add(1, anySurfaceRule(
-									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
+								ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
 								${mappedBlockToBlockStateCode(biome.groundBlock)},
 								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
@@ -155,8 +159,10 @@ public class ${JavaModName}Biomes {
 						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
 
 						<#list spawn_nether as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT,
-								biomeRegistry.getOrCreateHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolderOrThrow(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 
 						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
