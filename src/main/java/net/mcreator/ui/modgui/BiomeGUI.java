@@ -74,11 +74,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
 
-	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.001);
+	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.0001);
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
