@@ -74,10 +74,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
 
-	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.001);
-	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.001);
+	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.001);
+	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.001);
+	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.001);
+	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.001);
 	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.001);
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
@@ -603,20 +603,14 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	private void estimateGenCoverage() {
-		double temperatureCoverage = (genTemperature.getMaxValue() - genTemperature.getMinValue()) / 4.0;
-		double humidityCoverage = (genHumidity.getMaxValue() - genHumidity.getMinValue()) / 4.0;
-		double continentalnessCoverage = (genContinentalness.getMaxValue() - genContinentalness.getMinValue()) / 4.0;
-		double erosionCoverage = (genErosion.getMaxValue() - genErosion.getMinValue()) / 4.0;
-		double weirdnessCoverage = (genWeirdness.getMaxValue() - genWeirdness.getMinValue()) / 4.0;
+		double temperatureCoverage = (Math.min(genTemperature.getMaxValue(), 1.0) - Math.max(genTemperature.getMinValue(), -1.0)) / 2.0;
+		double humidityCoverage = (Math.min(genHumidity.getMaxValue(), 1.0) - Math.max(genHumidity.getMinValue(), -1.0)) / 2.0;
+		double continentalnessCoverage = (Math.min(genContinentalness.getMaxValue(), 1.0) - Math.max(genContinentalness.getMinValue(), -1.0)) / 2.0;
+		double erosionCoverage = (Math.min(genErosion.getMaxValue(), 1.0) - Math.max(genErosion.getMinValue(), -1.0)) / 2.0;
+		double weirdnessCoverage = (Math.min(genWeirdness.getMaxValue(), 1.0) - Math.max(genWeirdness.getMinValue(), -1.0)) / 2.0;
 
 		double totalCoverage = temperatureCoverage * humidityCoverage * continentalnessCoverage * erosionCoverage
 				* weirdnessCoverage * 100.0;
-
-		if (totalCoverage >= 99.999) {
-			totalCoverage = 99.999;
-		} else if (totalCoverage <= 0.001) {
-			totalCoverage = 0.001;
-		}
 
 		coverageEstimate.setText(new DecimalFormat("#0.000").format(totalCoverage) + " %");
 	}
