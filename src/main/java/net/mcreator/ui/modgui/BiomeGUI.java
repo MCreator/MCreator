@@ -612,13 +612,13 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		double totalCoverage = temperatureCoverage * humidityCoverage * continentalnessCoverage * erosionCoverage
 				* weirdnessCoverage * 100.0;
 
-		if (totalCoverage >= 100.0) {
+		if (totalCoverage >= 99.999) {
 			totalCoverage = 99.999;
-		} else if (totalCoverage <= 0.0) {
+		} else if (totalCoverage <= 0.001) {
 			totalCoverage = 0.001;
 		}
 
-		coverageEstimate.setText(new DecimalFormat("#.###").format(totalCoverage) + " %");
+		coverageEstimate.setText(new DecimalFormat("#0.000").format(totalCoverage) + " %");
 	}
 
 	@Override public void reloadDataLists() {
