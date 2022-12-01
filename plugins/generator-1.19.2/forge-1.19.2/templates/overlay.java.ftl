@@ -52,23 +52,18 @@ package ${package}.client.screens;
         int posX = w / 2;
         int posY = h / 2;
 
-        Level _world = null;
-        double _x = 0;
-        double _y = 0;
-        double _z = 0;
+        Level world = null;
+        double x = 0;
+        double y = 0;
+        double z = 0;
 
         Player entity = Minecraft.getInstance().player;
         if (entity != null) {
-            _world = entity.level;
-            _x = entity.getX();
-            _y = entity.getY();
-            _z = entity.getZ();
+            world = entity.level;
+            x = entity.getX();
+            y = entity.getY();
+            z = entity.getZ();
         }
-
-        Level world = _world;
-        double x = _x;
-        double y = _y;
-        double z = _z;
 
         <#if data.hasTextures()>
             RenderSystem.disableDepthTest();
@@ -96,6 +91,7 @@ package ${package}.client.screens;
                         <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
                         posX + ${x}, posY + ${y}, ${component.color.getRGB()});
             </#list>
+
             <#list data.getComponentsOfType("Image") as component>
                 <#assign x = component.x - 213>
                 <#assign y = component.y - 120>

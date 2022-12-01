@@ -47,6 +47,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	<#list data.getComponentsOfType("TextField") as component>
 		EditBox ${component.getName()};
 	</#list>
+
 	<#list data.getComponentsOfType("Checkbox") as component>
 		Checkbox ${component.getName()};
 	</#list>
@@ -179,6 +180,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				${component.getName()}.setMaxLength(32767);
 				this.addWidget(this.${component.getName()});
 		</#list>
+
 		<#list data.getComponentsOfType("Button") as component>
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, Component.literal("${component.text}"), e -> {
@@ -200,6 +202,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				</#if>);
 				<#assign btid +=1>
 		</#list>
+
 		<#list data.getComponentsOfType("Checkbox") as component>
 				${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 						20, 20, Component.literal("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>

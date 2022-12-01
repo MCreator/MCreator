@@ -59,7 +59,7 @@ import java.util.List;
 	}
 
 	public boolean hasTextures() {
-		return this.baseTexture != null && !this.baseTexture.equals("") || !getComponentsOfType("Image").isEmpty();
+		return (this.baseTexture != null && !this.baseTexture.equals("")) || !getComponentsOfType("Image").isEmpty();
 	}
 
 	public int getBaseTextureWidth() {
