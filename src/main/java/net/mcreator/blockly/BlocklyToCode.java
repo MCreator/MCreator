@@ -181,7 +181,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		if (block.getAttribute("disabled").equals("true")) { // Add compile error if block is disabled
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.warnings.disabled_block_type.remove", type)));
+					L10N.t("blockly.errors.disabled_block_type.remove", type)));
 		} else {
 			boolean generated = false;
 			for (IBlockGenerator generator : blockGenerators) {
@@ -196,7 +196,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 			if (!generated) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.warnings.unknown_block_type.remove", type)));
+						L10N.t("blockly.errors.unknown_block_type.remove", type)));
 			}
 		}
 	}
