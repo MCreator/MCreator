@@ -77,7 +77,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.renderTooltip(ms, mouseX, mouseY);
 
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
+				${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
 		</#list>
 	}
 

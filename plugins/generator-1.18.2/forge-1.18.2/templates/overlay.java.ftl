@@ -94,24 +94,24 @@ package ${package}.client.gui;
 				<#list data.getComponentsOfType("Label") as component>
 	                <#assign x = component.x - 213>
 	                <#assign y = component.y - 120>
-					<#if hasProcedure(component.displayCondition)>
-					if (<@procedureOBJToConditionCode component.displayCondition/>)
-					</#if>
-					Minecraft.getInstance().font.draw(event.${stackMethodName}(),
-						<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
-						posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+						<#if hasProcedure(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+						</#if>
+						Minecraft.getInstance().font.draw(event.${stackMethodName}(),
+							<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
+							posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	            </#list>
 				<#list data.getComponentsOfType("Image") as component>
 	                <#assign x = component.x - 213>
 	                <#assign y = component.y - 120>
-					<#if hasProcedure(component.displayCondition)>
-					if (<@procedureOBJToConditionCode component.displayCondition/>) {
-					</#if>
-					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), posX + ${x}, posY + ${y}, 0, 0,
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-					<#if hasProcedure(component.displayCondition)>}</#if>
+						<#if hasProcedure(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>) {
+						</#if>
+						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+						Minecraft.getInstance().gui.blit(event.${stackMethodName}(), posX + ${x}, posY + ${y}, 0, 0,
+							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+						<#if hasProcedure(component.displayCondition)>}</#if>
 	            </#list>
 			}
 
