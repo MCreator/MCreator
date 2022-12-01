@@ -44,10 +44,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	private final Player entity;
 
 	<#list data.getComponentsOfType("TextField") as component>
-		EditBox ${component.getName()};
+	    EditBox ${component.getName()};
 	</#list>
 	<#list data.getComponentsOfType("Checkbox") as component>
-		Checkbox ${component.getName()};
+	    Checkbox ${component.getName()};
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -92,12 +92,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
-			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-				this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
-					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-			<#if hasProcedure(component.displayCondition)>}</#if>
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+					this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+				<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
 		RenderSystem.disableBlend();
@@ -110,8 +110,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		}
 
 		<#list data.getComponentsOfType("TextField") as component>
-			if (${component.getName()}.isFocused())
-				return ${component.getName()}.keyPressed(key, b, c);
+		    if(${component.getName()}.isFocused())
+		    	return ${component.getName()}.keyPressed(key, b, c);
 		</#list>
 
 		return super.keyPressed(key, b, c);
@@ -120,18 +120,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	@Override public void containerTick() {
 		super.containerTick();
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()}.tick();
+				${component.getName()}.tick();
 		</#list>
 	}
 
 	@Override protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
 		<#list data.getComponentsOfType("Label") as component>
-			<#if hasProcedure(component.displayCondition)>
-			if (<@procedureOBJToConditionCode component.displayCondition/>)
-			</#if>
-			this.font.draw(poseStack,
-				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
-				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+				<#if hasProcedure(component.displayCondition)>
+				if (<@procedureOBJToConditionCode component.displayCondition/>)
+				</#if>
+		    	this.font.draw(poseStack,
+					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
+					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 		</#list>
 	}
 
@@ -147,64 +147,64 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#assign btid = 0>
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-			${component.width}, ${component.height}, new TextComponent("${component.placeholder}"))
-			<#if component.placeholder?has_content>
-			{
+				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.width}, ${component.height}, new TextComponent("${component.placeholder}"))
+				<#if component.placeholder?has_content>
 				{
-					setSuggestion("${component.placeholder}");
-				}
-
-				@Override public void insertText(String text) {
-					super.insertText(text);
-
-					if (getValue().isEmpty())
+					{
 						setSuggestion("${component.placeholder}");
-					else
-						setSuggestion(null);
-				}
+					}
 
-				@Override public void moveCursorTo(int pos) {
-					super.moveCursorTo(pos);
+					@Override public void insertText(String text) {
+						super.insertText(text);
 
-					if (getValue().isEmpty())
-						setSuggestion("${component.placeholder}");
-					else
-						setSuggestion(null);
+						if(getValue().isEmpty())
+							setSuggestion("${component.placeholder}");
+						else
+							setSuggestion(null);
+					}
+
+					@Override public void moveCursorTo(int pos) {
+						super.moveCursorTo(pos);
+
+						if(getValue().isEmpty())
+							setSuggestion("${component.placeholder}");
+						else
+							setSuggestion(null);
+					}
 				}
-			}
-			</#if>;
-			guistate.put("text:${component.getName()}", ${component.getName()});
-			${component.getName()}.setMaxLength(32767);
-			this.addWidget(this.${component.getName()});
+				</#if>;
+                guistate.put("text:${component.getName()}", ${component.getName()});
+				${component.getName()}.setMaxLength(32767);
+				this.addWidget(this.${component.getName()});
 		</#list>
 		<#list data.getComponentsOfType("Button") as component>
-			this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, new TextComponent("${component.text}"), e -> {
-						<#if hasProcedure(component.onClick)>
-						if (<@procedureOBJToConditionCode component.displayCondition/>) {
-							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
-							${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
-						}
-						</#if>
+				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height}, new TextComponent("${component.text}"), e -> {
+							<#if hasProcedure(component.onClick)>
+							if (<@procedureOBJToConditionCode component.displayCondition/>) {
+								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+								${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
+							}
+							</#if>
+					}
+				)
+                <#if hasProcedure(component.displayCondition)>
+                {
+					@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+							super.render(ms, gx, gy, ticks);
+					}
 				}
-			)
-			<#if hasProcedure(component.displayCondition)>
-			{
-				@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
-					if (<@procedureOBJToConditionCode component.displayCondition/>)
-						super.render(ms, gx, gy, ticks);
-				}
-			}
-			</#if>);
-			<#assign btid +=1>
+				</#if>);
+				<#assign btid +=1>
 		</#list>
 		<#list data.getComponentsOfType("Checkbox") as component>
-			${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					20, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
-				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-			guistate.put("checkbox:${component.getName()}", ${component.getName()});
-			this.addRenderableWidget(${component.getName()});
+            	${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+						20, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+            	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
+                guistate.put("checkbox:${component.getName()}", ${component.getName()});
+                this.addRenderableWidget(${component.getName()});
 		</#list>
 	}
 

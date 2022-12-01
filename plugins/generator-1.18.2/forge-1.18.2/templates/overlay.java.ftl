@@ -92,18 +92,18 @@ package ${package}.client.gui;
 				</#if>
 
 				<#list data.getComponentsOfType("Label") as component>
-					<#assign x = component.x - 213>
-					<#assign y = component.y - 120>
+	                <#assign x = component.x - 213>
+	                <#assign y = component.y - 120>
 					<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 					</#if>
 					Minecraft.getInstance().font.draw(event.${stackMethodName}(),
 						<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
 						posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-				</#list>
+	            </#list>
 				<#list data.getComponentsOfType("Image") as component>
-					<#assign x = component.x - 213>
-					<#assign y = component.y - 120>
+	                <#assign x = component.x - 213>
+	                <#assign y = component.y - 120>
 					<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>) {
 					</#if>
@@ -112,7 +112,7 @@ package ${package}.client.gui;
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 					<#if hasProcedure(component.displayCondition)>}</#if>
-				</#list>
+	            </#list>
 			}
 
 			<#if data.hasTextures()>
