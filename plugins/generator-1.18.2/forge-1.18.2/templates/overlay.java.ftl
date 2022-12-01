@@ -93,7 +93,7 @@ package ${package}.client.gui;
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
 						Minecraft.getInstance().font.draw(event.${stackMethodName}(),
-							<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
+							<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 							posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	            </#list>
 

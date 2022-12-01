@@ -64,7 +64,7 @@ public class Label extends GUIComponent {
 		return false; // one could be using tokens in the label
 	}
 
-	private String getRenderText() {
+	public String getRenderText() {
 		if (text.getName() == null)
 			return text.getFixedValue();
 		else
