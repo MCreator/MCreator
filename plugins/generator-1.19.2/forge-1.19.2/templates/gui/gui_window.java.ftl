@@ -171,7 +171,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					@Override public void insertText(String text) {
 						super.insertText(text);
 
-						if(getValue().isEmpty())
+						if (getValue().isEmpty())
 							setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
@@ -180,7 +180,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					@Override public void moveCursorTo(int pos) {
 						super.moveCursorTo(pos);
 
-						if(getValue().isEmpty())
+						if (getValue().isEmpty())
 							setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);

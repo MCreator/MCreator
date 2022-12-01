@@ -30,18 +30,24 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
 		super(editor, button);
 		setModal(true);
-		setSize(480, 220);
+		setSize(480, 200);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField buttonText = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+
+		if (button == null)
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")));
+		else
+			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), buttonText));
 
@@ -60,9 +66,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		add("Center",
 				new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
 
-		add("North", PanelUtils.northAndCenterElement(button == null ?
-				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")) :
-				PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")), PanelUtils.centerInPanel(options)));
+		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
