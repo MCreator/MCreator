@@ -20,6 +20,7 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.Label;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,4 +33,7 @@ import java.util.List;
 		return getComponents().stream().filter(c -> c.getClass().getSimpleName().equals(type)).toList();
 	}
 
+	default Collection<Label> getFixedTextLabels() {
+		return getComponentsOfType("Label").stream().map(c -> (Label) c).filter(c -> c.text.getName() == null).toList();
+	}
 }

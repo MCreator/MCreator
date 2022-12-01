@@ -140,7 +140,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
 		    	this.font.draw(poseStack,
-					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>"${component.text.getFixedValue()}"</#if>,
+					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>
@@ -160,18 +160,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
 				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, new TextComponent("${component.placeholder}"))
+				${component.width}, ${component.height}, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"))
 				<#if component.placeholder?has_content>
 				{
 					{
-						setSuggestion("${component.placeholder}");
+						setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 					}
 
 					@Override public void insertText(String text) {
 						super.insertText(text);
 
-						if(getValue().isEmpty())
-							setSuggestion("${component.placeholder}");
+						if (getValue().isEmpty())
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
 					}
@@ -179,8 +179,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					@Override public void moveCursorTo(int pos) {
 						super.moveCursorTo(pos);
 
-						if(getValue().isEmpty())
-							setSuggestion("${component.placeholder}");
+						if (getValue().isEmpty())
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
 					}
@@ -191,7 +191,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.addWidget(this.${component.getName()});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TextComponent("${component.text}"), e -> {
+					${component.width}, ${component.height}, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"), e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
@@ -211,7 +211,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
             	${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-						20, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+						20, 20, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
                 guistate.put("checkbox:${component.getName()}", ${component.getName()});
                 this.addRenderableWidget(${component.getName()});
