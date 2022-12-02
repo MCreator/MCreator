@@ -7,7 +7,7 @@
 <#elseif var_item?? && var_item=="body">
   "model": "${modid}:models/item/${data.bodyItemCustomModelName.split(":")[0]}.obj",
 <#elseif var_item?? && var_item=="leggings">
-  "model": "${modid}:models/item/${data.LeggingsItemCustomModelName.split(":")[0]}.obj",
+  "model": "${modid}:models/item/${data.leggingsItemCustomModelName.split(":")[0]}.obj",
 <#elseif var_item?? && var_item=="boots">
   "model": "${modid}:models/item/${data.bootsItemCustomModelName.split(":")[0]}.obj",
 <#else>
