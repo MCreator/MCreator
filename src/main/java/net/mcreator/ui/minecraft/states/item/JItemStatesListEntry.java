@@ -25,7 +25,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -67,7 +67,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		state.setOpaque(true);
 		state.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setValidator(new TileHolderValidator(texture));
 
 		edit.setOpaque(false);
