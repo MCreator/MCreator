@@ -143,36 +143,13 @@ public class BlocklyJavascriptBridge {
 					L10N.t("dialog.selector.biome.message"), L10N.t("dialog.selector.biome.title"));
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, L10N.t("dialog.selector.sound.message"),
 					L10N.t("dialog.selector.sound.title"));
-			case "effect" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllPotionEffects(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.potion_effect.message"), L10N.t("dialog.selector.potion_effect.title"));
-			case "potion" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllPotions(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.potion.message"), L10N.t("dialog.selector.potion.title"));
-			case "achievement" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllAchievements(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.advancement.message"), L10N.t("dialog.selector.advancement.title"));
-			case "particle" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllParticles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.particle.message"), L10N.t("dialog.selector.particle.title"));
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new),
 					L10N.t("dialog.selector.procedure.message"), L10N.t("dialog.selector.procedure.title"));
-			case "enchantment" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllEnchantments(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					L10N.t("dialog.selector.enchantment.message"), L10N.t("dialog.selector.enchantment.title"));
 			case "arrowProjectile" -> openDataListEntrySelector(
 					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					L10N.t("dialog.selector.projectile.message"), L10N.t("dialog.selector.projectile.title"));
-			case "fireballProjectile" -> openDataListEntrySelector(
-					w -> ElementUtil.loadFireballProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), L10N.t("dialog.selector.projectile.message"),
-					L10N.t("dialog.selector.projectile.title"));
-			case "throwableProjectile" -> openDataListEntrySelector(
-					w -> ElementUtil.loadThrowableProjectiles().stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), L10N.t("dialog.selector.projectile.message"),
-					L10N.t("dialog.selector.projectile.title"));
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(

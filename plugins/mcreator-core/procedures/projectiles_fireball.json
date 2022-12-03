@@ -3,7 +3,8 @@
     {
       "type": "field_data_list_selector",
       "name": "projectile",
-      "datalist": "fireballProjectile"
+      "datalist": "projectiles",
+      "typeFilter": "fireball"
     },
     {
       "type": "input_value",
