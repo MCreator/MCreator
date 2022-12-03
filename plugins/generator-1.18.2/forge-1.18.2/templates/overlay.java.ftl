@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "tokens.ftl">
 <#include "procedures.java.ftl">
 
 <#assign hasTextures = data.baseTexture?has_content>
@@ -66,23 +65,18 @@ package ${package}.client.gui;
 			int posX = w / 2;
 			int posY = h / 2;
 
-			Level _world = null;
-			double _x = 0;
-			double _y = 0;
-			double _z = 0;
+			Level world = null;
+			double x = 0;
+			double y = 0;
+			double z = 0;
 
 			Player entity = Minecraft.getInstance().player;
 			if (entity != null) {
-				_world = entity.level;
-				_x = entity.getX();
-				_y = entity.getY();
-				_z = entity.getZ();
+				world = entity.level;
+				x = entity.getX();
+				y = entity.getY();
+				z = entity.getZ();
 			}
-
-			Level world = _world;
-			double x = _x;
-			double y = _y;
-			double z = _z;
 
 			<#if hasTextures>
 				RenderSystem.disableDepthTest();
@@ -107,8 +101,9 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().font.draw(event.${stackMethodName}(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+						Minecraft.getInstance().font.draw(event.${stackMethodName}(),
+							<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+							posX + ${x}, posY + ${y}, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {

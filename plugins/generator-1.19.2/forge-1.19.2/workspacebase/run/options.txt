@@ -10,3 +10,4 @@ particles:0
 renderClouds:false
 ao:0
 mipmapLevels:2
+particles:0

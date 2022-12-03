@@ -29,7 +29,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-<#include "../tokens.ftl">
 
 package ${package}.client.gui;
 
@@ -46,9 +45,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	<#list data.components as component>
 		<#if component.getClass().getSimpleName() == "TextField">
-	    EditBox ${component.name};
+	    EditBox ${component.getName()};
 		<#elseif component.getClass().getSimpleName() == "Checkbox">
-	    Checkbox ${component.name};
+	    Checkbox ${component.getName()};
 		</#if>
 	</#list>
 
@@ -80,7 +79,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.render(ms, mouseX, mouseY, partialTicks);
+				${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
 			</#if>
 		</#list>
 	}
@@ -117,8 +116,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-		    if(${component.name}.isFocused())
-		    	return ${component.name}.keyPressed(key, b, c);
+		    if(${component.getName()}.isFocused())
+		    	return ${component.getName()}.keyPressed(key, b, c);
 			</#if>
 		</#list>
 
@@ -129,7 +128,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.containerTick();
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name}.tick();
+				${component.getName()}.tick();
 			</#if>
 		</#list>
 	}
@@ -140,7 +139,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-		    	this.font.draw(poseStack, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+		    	this.font.draw(poseStack,
+					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 			</#if>
 		</#list>
@@ -159,19 +159,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName() == "TextField">
-				${component.name} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, new TextComponent("${component.placeholder}"))
+				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.width}, ${component.height}, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"))
 				<#if component.placeholder?has_content>
 				{
 					{
-						setSuggestion("${component.placeholder}");
+						setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 					}
 
 					@Override public void insertText(String text) {
 						super.insertText(text);
 
-						if(getValue().isEmpty())
-							setSuggestion("${component.placeholder}");
+						if (getValue().isEmpty())
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
 					}
@@ -179,19 +179,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					@Override public void moveCursorTo(int pos) {
 						super.moveCursorTo(pos);
 
-						if(getValue().isEmpty())
-							setSuggestion("${component.placeholder}");
+						if (getValue().isEmpty())
+							setSuggestion(new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}").getString());
 						else
 							setSuggestion(null);
 					}
 				}
 				</#if>;
-                guistate.put("text:${component.name}", ${component.name});
-				${component.name}.setMaxLength(32767);
-				this.addWidget(this.${component.name});
+                guistate.put("text:${component.getName()}", ${component.getName()});
+				${component.getName()}.setMaxLength(32767);
+				this.addWidget(this.${component.getName()});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TextComponent("${component.text}"), e -> {
+					${component.width}, ${component.height}, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"), e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
@@ -210,11 +210,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				</#if>);
 				<#assign btid +=1>
 			<#elseif component.getClass().getSimpleName() == "Checkbox">
-            	${component.name} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-						20, 20, new TextComponent("${component.text}"), <#if hasProcedure(component.isCheckedProcedure)>
+            	${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+						20, 20, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
             	    <@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-                guistate.put("checkbox:${component.name}", ${component.name});
-                this.addRenderableWidget(${component.name});
+                guistate.put("checkbox:${component.getName()}", ${component.getName()});
+                this.addRenderableWidget(${component.getName()});
 			</#if>
 		</#list>
 	}
