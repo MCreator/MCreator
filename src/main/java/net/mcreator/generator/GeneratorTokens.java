@@ -18,6 +18,7 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
