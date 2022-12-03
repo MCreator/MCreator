@@ -64,31 +64,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 
 	public static class ItemCustom extends Item {
 
-		<#if data.customProperties?has_content>
-		static {
-			ItemCustom itemCustom = new ItemCustom();
-			<#list data.customProperties.entrySet() as property>
-			ItemModelsProperties.registerProperty(itemCustom, new ResourceLocation("${property.getKey()}"),
-					(itemStackToRender, clientWorld, livingEntity) ->
-				<#if hasProcedure(property.getValue())>{
-				Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getAttachedEntity();
-				if (entity == null)
-					return 0F;
-
-				ItemStack itemstack = itemStackToRender;
-				double x = entity.getPosX();
-				double y = entity.getPosY();
-				double z = entity.getPosZ();
-				World world = entity.world;
-				return (float) <@procedureOBJToNumberCode property.getValue()/>;
-        		}<#else>
-				0F
-        		</#if>
-			);
-			</#list>
-		}
-		</#if>
-
 		public ItemCustom() {
 			super(new Item.Properties()
 					.group(${data.creativeTab})
