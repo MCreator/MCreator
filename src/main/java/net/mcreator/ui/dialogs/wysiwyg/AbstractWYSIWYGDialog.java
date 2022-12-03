@@ -19,25 +19,93 @@
 package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class AbstractWYSIWYGDialog extends MCreatorDialog {
+public class AbstractWYSIWYGDialog<T extends GUIComponent> extends MCreatorDialog {
 
-	@Nullable private GUIComponent editingComponent;
+	private final WYSIWYGEditor editor;
 
-	public AbstractWYSIWYGDialog(Window w, @Nullable GUIComponent editingComponent) {
-		super(w);
+	@Nullable private T editingComponent;
+
+	public AbstractWYSIWYGDialog(WYSIWYGEditor editor, @Nullable T editingComponent) {
+		super(editor.mcreator);
 		this.editingComponent = editingComponent;
+		this.editor = editor;
 	}
 
-	public @Nullable GUIComponent getEditingComponent() {
+	public @Nullable T getEditingComponent() {
 		return editingComponent;
 	}
 
-	public GUIComponent setEditingComponent(@Nullable GUIComponent editingComponent) {
-		return this.editingComponent = editingComponent;
+	public void setEditingComponent(@Nullable T editingComponent) {
+		this.editingComponent = editingComponent;
 	}
+
+	public WYSIWYGEditor getEditor() {
+		return editor;
+	}
+
+	/**
+	 * A helper method to transform text to unique machine name when needed.
+	 * <p>
+	 * This method is not thread safe!
+	 *
+	 * @param componentList List of existing components to check for duplicates
+	 * @param prefix Optional prefix
+	 * @param text Input UI text to transform. Can be empty.
+	 * @return UI text transformed to a machine name
+	 */
+	@Nonnull public static String textToMachineName(Collection<GUIComponent> componentList, @Nullable String prefix, @Nonnull String text) {
+		// limit text length to 32 characters
+		text = StringUtils.left(text, 32);
+
+		// cleanup the text (transliterate, lowercase, remove spaces)
+		String name = RegistryNameFixer.fix(text)
+				// then remove Java-incompatible parts that could remain
+				.replace(".", "")
+				.replace("-", "")
+				.replace("/", "");
+
+		// remove multiple underscores
+		name = name.replaceAll("_{2,}", "_");
+
+		// remove underscore from start and end if present
+		name = StringUtils.stripStart(name, "_");
+		name = StringUtils.stripEnd(name, "_");
+
+		// trim string
+		name = name.trim();
+
+		// check if the name is empty
+		if (name.isEmpty()) {
+			name = "empty";
+		}
+
+		if (prefix != null) {
+			name = prefix + name;
+		}
+
+		// now we need to find a unique name if it is not already
+		Set<String> usedNames = componentList.stream().map(GUIComponent::getName).collect(Collectors.toSet());
+
+		if (usedNames.contains(name)) { // not unique
+			int i = 1;
+			while (usedNames.contains(name + i)) {
+				i++;
+			}
+			name = name + i;
+		}
+
+		return name;
+	}
+
 }

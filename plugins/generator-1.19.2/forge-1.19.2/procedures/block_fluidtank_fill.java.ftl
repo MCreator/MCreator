@@ -10,7 +10,7 @@
 			<#assign fluid = field$fluid?replace("CUSTOM:", "")>
 			capability.fill(new FluidStack(${JavaModName}Fluids.${fluid?ends_with(":Flowing")?then("FLOWING_","")}${generator.getRegistryNameForModElement(fluid?remove_ending(":Flowing"))?upper_case}.get(), _amount), IFluidHandler.FluidAction.EXECUTE)
 			<#else>
-			capability.fill(new FluidStack(Fluids.${generator.map(field$fluid, "fluid")}, _amount), IFluidHandler.FluidAction.EXECUTE)
+			capability.fill(new FluidStack(Fluids.${generator.map(field$fluid, "fluids")}, _amount), IFluidHandler.FluidAction.EXECUTE)
 			</#if>
 		);
 }

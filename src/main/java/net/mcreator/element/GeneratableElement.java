@@ -21,6 +21,7 @@ package net.mcreator.element;
 import com.google.gson.*;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.workspace.Workspace;
@@ -39,7 +40,7 @@ import java.util.List;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 35;
+	public static final int formatVersion = 37;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -90,8 +91,15 @@ public abstract class GeneratableElement {
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 
-		protected static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson;
+
+		static {
+			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
+
+			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
+
+			gson = gsonBuilder.create();
+		}
 
 		@Nonnull private final Workspace workspace;
 

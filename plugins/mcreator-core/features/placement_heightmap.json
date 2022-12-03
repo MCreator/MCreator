@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "heightmap",
+      "options": [
+        [
+          "Top solid block",
+          "OCEAN_FLOOR_WG"
+        ],
+        [
+          "World surface",
+          "WORLD_SURFACE_WG"
+        ],
+        [
+          "Ocean floor",
+          "OCEAN_FLOOR"
+        ],
+        [
+          "Top motion blocking",
+          "MOTION_BLOCKING"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "placements",
+    "fields": [
+      "heightmap"
+    ]
+  }
+}

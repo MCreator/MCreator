@@ -60,23 +60,27 @@
     </#if>
 </#function>
 
+<#function mappedBlockToBlockStateProvider mappedBlock>
+    <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
+        <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
+    <#else>
+        <#return "BlockStateProvider.simple(" + mappedBlockToBlockStateCode(mappedBlock) + ")">
+    </#if>
+</#function>
+
 <#function mappedElementToRegistryEntry mappedElement>
     <#return JavaModName + generator.isBlock(mappedElement)?then("Blocks", "Items") + "."
     + generator.getRegistryNameFromFullName(mappedElement)?upper_case + transformExtension(mappedElement)?upper_case + ".get()">
 </#function>
 
 <#function transformExtension mappedBlock>
-    <#return (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
-    + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
-    + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
-    + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
-    + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")>
+    <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
+    <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 
 <#function mappedMCItemToIngameItemName mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
             + transformExtension(mappedBlock)
@@ -100,8 +104,7 @@
 
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement + transformExtension(mappedBlock)>
         <#else>
@@ -124,8 +127,7 @@
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign mcitemresourcepath = mappedMCItemToIngameNameNoTags(mappedBlock)/>
-        <#assign ge = w.getWorkspace().getModElementByName(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))/>
+        <#assign ge = w.getWorkspace().getModElementByName(generator.getElementPlainName(mappedBlock.getUnmappedValue()))/>
         <#if ge??>
             <#assign ge = ge.getGeneratableElement() />
 

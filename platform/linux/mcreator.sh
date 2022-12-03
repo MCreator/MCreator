@@ -20,7 +20,17 @@ Icon=${pwd}/icon.png
 EOL
 
 chmod +x mcreator.desktop
-cp mcreator.desktop ~/Desktop/mcreator.desktop
+
+# Is xdg-user-dir available?
+if ! command -v xdg-user-dir &> /dev/null
+then
+    # Use dynamic desktop directory for other languages (#3123)
+    userdesktop=$(xdg-user-dir DESKTOP)
+else
+    # Fall back to hardcoded ~/Desktop
+    userdesktop=~/Desktop
+fi
+cp mcreator.desktop "${userdesktop}"/mcreator.desktop
 
 fi
 

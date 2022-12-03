@@ -137,14 +137,15 @@ public class BlocklyPanel extends JFXPanel {
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
 							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan + ","
-							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale / 100.0 + ","
-							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale / 100.0 + ","
-							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed / 100.0 + ","
+							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale/100.0 + ","
+							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale/100.0 + ","
+							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed/100.0 + ","
 							+ " };");
 					// @formatter:on
 
 					// Blockly core
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/messages.js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
@@ -200,9 +201,20 @@ public class BlocklyPanel extends JFXPanel {
 	}
 
 	public void addBlocksFromXML(String xml) {
-		executeJavaScriptSynchronously(
-				"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + escapeXML(cleanupXML(xml))
-						+ "'), workspace)");
+		String cleanXML = escapeXML(cleanupXML(xml));
+		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
+		if (index == -1) { // The separator wasn't found
+			executeJavaScriptSynchronously(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)");
+		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
+			index += 8; //We add the length of "</block>" to the index
+			executeJavaScriptSynchronously(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
+							+ "</xml>'), workspace)");
+			executeJavaScriptSynchronously(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
+							+ "'), workspace)");
+		}
 	}
 
 	public void setXML(String xml) {

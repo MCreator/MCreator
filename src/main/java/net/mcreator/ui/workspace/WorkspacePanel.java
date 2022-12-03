@@ -230,17 +230,17 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
-						duplicateElement.setEnabled(false);
-						codeElement.setEnabled(false);
-						lockElement.setEnabled(false);
-						idElement.setEnabled(false);
-						renameElementFolder.setEnabled(true);
+						duplicateElement.setVisible(false);
+						codeElement.setVisible(false);
+						lockElement.setVisible(false);
+						idElement.setVisible(false);
+						renameElementFolder.setVisible(true);
 					} else {
-						duplicateElement.setEnabled(true);
-						codeElement.setEnabled(true);
-						lockElement.setEnabled(true);
-						idElement.setEnabled(true);
-						renameElementFolder.setEnabled(false);
+						duplicateElement.setVisible(true);
+						codeElement.setVisible(true);
+						lockElement.setVisible(true);
+						idElement.setVisible(true);
+						renameElementFolder.setVisible(false);
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());

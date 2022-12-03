@@ -116,24 +116,24 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 		if (getType() == ModElementType.DIMENSION) {
 			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
-				mcItems.add(new MCItem.Custom(this, null, "item"));
+				mcItems.add(new MCItem.Custom(this, null, "item", "Portal igniter"));
 		} else if (getType().getRecipeType() == RecipeType.ITEM) {
 			mcItems.add(new MCItem.Custom(this, null, "item"));
 		} else if (getType().getRecipeType() == RecipeType.BLOCK) {
 			mcItems.add(new MCItem.Custom(this, null, "block"));
 		} else if (getType().getRecipeType() == RecipeType.BUCKET) {
-			mcItems.add(new MCItem.Custom(this, null, "block"));
+			mcItems.add(new MCItem.Custom(this, null, "block", "Fluid block"));
 			if (getMetadata("gb") != null && (Boolean) getMetadata("gb"))
-				mcItems.add(new MCItem.Custom(this, "bucket", "item"));
+				mcItems.add(new MCItem.Custom(this, "bucket", "item", "Fluid bucket"));
 		} else if (getType().getBaseType() == BaseType.ARMOR) {
 			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
-				mcItems.add(new MCItem.Custom(this, "helmet", "item"));
+				mcItems.add(new MCItem.Custom(this, "helmet", "item", "Helmet"));
 			if (getMetadata("ec") != null && (Boolean) getMetadata("ec"))
-				mcItems.add(new MCItem.Custom(this, "body", "item"));
+				mcItems.add(new MCItem.Custom(this, "body", "item", "Chestplate"));
 			if (getMetadata("el") != null && (Boolean) getMetadata("el"))
-				mcItems.add(new MCItem.Custom(this, "legs", "item"));
+				mcItems.add(new MCItem.Custom(this, "legs", "item", "Leggings"));
 			if (getMetadata("eb") != null && (Boolean) getMetadata("eb"))
-				mcItems.add(new MCItem.Custom(this, "boots", "item"));
+				mcItems.add(new MCItem.Custom(this, "boots", "item", "Boots"));
 		}
 	}
 

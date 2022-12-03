@@ -1,1 +1,0 @@
-Ce radius est le diamètre en blocs dans lequel les particules apparaitront.

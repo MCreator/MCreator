@@ -251,6 +251,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		typeDialog.add(PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(panel),
 				PanelUtils.totalCenterInPanel(buttonsPanel)));
 
+		typeDialog.getRootPane().setDefaultButton(ok);
+
 		typeDialog.setSize(550, 150);
 		typeDialog.setLocationRelativeTo(null);
 		typeDialog.setVisible(true);
