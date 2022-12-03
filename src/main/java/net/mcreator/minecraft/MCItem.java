@@ -30,6 +30,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -46,7 +47,6 @@ public class MCItem extends DataListEntry {
 
 	private MCItem(String name) {
 		super(name);
-		setReadableName(name);
 	}
 
 	public MCItem(DataListEntry entry) {
@@ -151,12 +151,16 @@ public class MCItem extends DataListEntry {
 
 	public static final class Custom extends MCItem {
 
-		public Custom(ModElement element, String fieldName) {
+		public Custom(ModElement element, String fieldName, String type) {
+			this(element, fieldName, type, null);
+		}
+
+		public Custom(ModElement element, String fieldName, String type, @Nullable String description) {
 			super("CUSTOM:" + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
 			setReadableName(element.getName() + " - " + element.getType().getReadableName());
 			setIcon(getBlockIconBasedOnName(element.getWorkspace(), getName()));
-			setType("mcreator");
-			setDescription(element.getType().getDescription());
+			setType(type);
+			setDescription(description);
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {

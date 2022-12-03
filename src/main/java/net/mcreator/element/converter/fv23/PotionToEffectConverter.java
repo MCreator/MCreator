@@ -85,9 +85,11 @@ public class PotionToEffectConverter implements IConverter {
 					FileIO.copyFile(workspace.getFolderManager()
 									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.OTHER),
 							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.EFFECT));
+									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon),
+											TextureType.EFFECT));
 				} catch (Exception e) {
-					LOG.warn("Failed to copy image for potion effect " + potionEffect.getModElement().getType() + ": " + e.getMessage());
+					LOG.warn("Failed to copy image for potion effect " + potionEffect.getModElement().getType() + ": "
+							+ e.getMessage());
 				}
 
 				potionEffect.setModElement(new ModElement(workspace, originalName, ModElementType.POTIONEFFECT));

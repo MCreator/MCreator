@@ -63,6 +63,7 @@ public class WorkspaceSettingsChange {
 	}
 
 	public boolean refactorNeeded() {
-		return gradleCachesRebuildNeeded() || generatorchanged || modidchanged || packagechanged || generatorFlavorChanged;
+		return gradleCachesRebuildNeeded() || generatorchanged || modidchanged || packagechanged
+				|| generatorFlavorChanged;
 	}
 }

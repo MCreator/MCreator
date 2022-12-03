@@ -38,7 +38,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Random;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
@@ -67,7 +66,7 @@ public class GTProcedureBlocks {
 				continue;
 			}
 
-			if (!procedureBlock.getAllInputs().isEmpty()) {
+			if (!procedureBlock.getAllInputs().isEmpty() || !procedureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (procedureBlock.toolbox_init != null) {
@@ -83,6 +82,38 @@ public class GTProcedureBlocks {
 						if (!match) {
 							templatesDefined = false;
 							break;
+						}
+					}
+
+					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
+						try {
+							JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0")
+									.getAsJsonArray();
+							for (int i = 0; i < args0.size(); i++) {
+								if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
+									String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+
+									boolean match = false;
+									for (String input : procedureBlock.getAllRepeatingInputs()) {
+										if (name.matches(input + "\\d+")) {
+											for (String toolboxtemplate : procedureBlock.toolbox_init) {
+												if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
+													match = true;
+													break;
+												}
+											}
+											if (match)
+												break;
+										}
+									}
+
+									if (!match) {
+										templatesDefined = false;
+										break;
+									}
+								}
+							}
+						} catch (Exception ignored) {
 						}
 					}
 				} else {
@@ -179,14 +210,7 @@ public class GTProcedureBlocks {
 							suggestedFieldName = "dimension";
 							suggestedDataListName = "dimension_custom";
 							break;
-						case "biome_dictionary_list_provider":
-							suggestedFieldName = "biomedict";
-							suggestedDataListName = "biomedictionary";
-							break;
 						}
-
-						if (suggestedDataListName.equals("biomedictionary"))
-							suggestedDataListName = "biomedictionarytypes";
 
 						if (suggestedDataListName.equals("sound_category")) {
 							suggestedDataListName = "soundcategories";
@@ -228,6 +252,26 @@ public class GTProcedureBlocks {
 							.append("<block type=\"text_print\"><value name=\"TEXT\"><block type=\"math_number\">"
 									+ "<field name=\"NUM\">123.456</field></block></value></block>")
 							.append("</statement>\n");
+				}
+			}
+
+			if (procedureBlock.getRepeatingStatements() != null) {
+				try {
+					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+					for (int i = 0; i < args0.size(); i++) {
+						if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
+							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+							for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
+								if (name.matches(statement.name + "\\d+")) {
+									additionalXML.append("<statement name=\"").append(name).append("\">")
+											.append("<block type=\"text_print\"><value name=\"TEXT\">"
+													+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
+											.append("</block></value></block></statement>\n");
+								}
+							}
+						}
+					}
+				} catch (Exception ignored) {
 				}
 			}
 
@@ -291,7 +335,7 @@ public class GTProcedureBlocks {
 					break;
 				case "String":
 					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_text\"><value name=\"return\">" + testXML + "</value></block>");
+							"<block type=\"return_string\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
 				case "MCItem":
 					procedure.procedurexml = wrapWithBaseTestXML(
@@ -306,11 +350,11 @@ public class GTProcedureBlocks {
 
 			try {
 				workspace.addModElement(modElement);
-				assertTrue(workspace.getGenerator().generateElement(procedure));
+				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
 				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
 			}
 		}
 

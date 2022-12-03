@@ -41,26 +41,39 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 public class ${name}Biome {
 
 	<#if data.spawnBiome || data.spawnBiomeNether>
-	public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-	    Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
-	    Climate.Parameter.point(0), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-	    Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
-	    0 <#-- offset -->
+	public static final List<Climate.ParameterPoint> PARAMETER_POINTS = List.of(
+        new Climate.ParameterPoint(
+            Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.point(0.0f),
+            Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
+            0 <#-- offset -->
+        ),
+        new Climate.ParameterPoint(
+            Climate.Parameter.span(${temperature2temperature(data.temperature, normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.span(${rainingPossibility2humidity(data.rainingPossibility, normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeight(data.biomeWeight), "f")}),
+            Climate.Parameter.point(1.0f),
+            Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeight(data.biomeWeight), "f")}),
+            0 <#-- offset -->
+        )
 	);
-	</#if>
+    </#if>
 
 	<#if data.spawnInCaves>
-	public static final Climate.ParameterPoint PARAMETER_POINT_UNDERGROUND = new Climate.ParameterPoint(
-			Climate.Parameter.span(-1, 1),
-			Climate.Parameter.span(-1, 1),
-			Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight), "f")}),
-			Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight), "f")}),
-			Climate.Parameter.span(0.2f, 0.9f), <#-- depth - 0 surface, 1 - 128 below surface - cave biome -->
-			Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight), "f")}),
-			0 <#-- offset -->
+	public static final List<Climate.ParameterPoint> UNDERGROUND_PARAMETER_POINTS = List.of(
+	    new Climate.ParameterPoint(
+	        Climate.Parameter.span(-1, 1),
+	        Climate.Parameter.span(-1, 1),
+	        Climate.Parameter.span(${baseHeight2continentalness(data.baseHeight normalizeWeightUnderground(data.biomeWeight), "f")}),
+	        Climate.Parameter.span(${heightVariation2erosion(data.heightVariation normalizeWeightUnderground(data.biomeWeight), "f")}),
+	        Climate.Parameter.span(0.2f, 0.9f),
+	        Climate.Parameter.span(${registryname2weirdness(registryname normalizeWeightUnderground(data.biomeWeight), "f")}),
+	        0 <#-- offset -->
+	    )
 	);
     </#if>
 
@@ -99,7 +112,7 @@ public class ${name}Biome {
         	    <#if data.vanillaTreeType == "Big trees">
         	        (
 			    	    BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.JUNGLE_LOG.defaultBlockState()")}),
-			    		new MegaJungleTrunkPlacer(${ct?then(data.minHeight, 10)}, 2, 19),
+			    		new MegaJungleTrunkPlacer(${ct?then([data.minHeight, 32]?min, 10)}, 2, 19),
 			    		BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.JUNGLE_LEAVES.defaultBlockState()")}),
 			    		new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
 			    		new TwoLayersFeatureSize(1, 1, 2)
@@ -107,12 +120,12 @@ public class ${name}Biome {
                     <#if data.hasVines() || data.hasFruits()>
                         <@vinesAndFruits/>
                     <#else>
-                        .decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, LeaveVineDecorator.INSTANCE))
+                        .ignoreVines()
                     </#if>
                 <#elseif data.vanillaTreeType == "Savanna trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.ACACIA_LOG.defaultBlockState()")}),
-                        new ForkingTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 2),
+                        new ForkingTrunkPlacer(${ct?then([data.minHeight, 32]?min, 5)}, 2, 2),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.ACACIA_LEAVES.defaultBlockState()")}),
                         new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
@@ -125,7 +138,7 @@ public class ${name}Biome {
                 <#elseif data.vanillaTreeType == "Mega pine trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
-                        new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+                        new GiantTrunkPlacer(${ct?then([data.minHeight, 32]?min, 13)}, 2, 14),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
                         new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(3, 4)),
                         new TwoLayersFeatureSize(1, 1, 2)
@@ -136,7 +149,7 @@ public class ${name}Biome {
                 <#elseif data.vanillaTreeType == "Mega spruce trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.SPRUCE_LOG.defaultBlockState()")}),
-                        new GiantTrunkPlacer(${ct?then(data.minHeight, 13)}, 2, 14),
+                        new GiantTrunkPlacer(${ct?then([data.minHeight, 32]?min, 13)}, 2, 14),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.SPRUCE_LEAVES.defaultBlockState()")}),
                         new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
                         new TwoLayersFeatureSize(1, 1, 2)
@@ -148,7 +161,7 @@ public class ${name}Biome {
                 <#elseif data.vanillaTreeType == "Birch trees">
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.BIRCH_LOG.defaultBlockState()")}),
-                        new StraightTrunkPlacer(${ct?then(data.minHeight, 5)}, 2, 0),
+                        new StraightTrunkPlacer(${ct?then([data.minHeight, 32]?min, 5)}, 2, 0),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.BIRCH_LEAVES.defaultBlockState()")}),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                         new TwoLayersFeatureSize(1, 0, 1)
@@ -161,7 +174,7 @@ public class ${name}Biome {
                 <#else>
                     (
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeStem), "Blocks.OAK_LOG.defaultBlockState()")}),
-                        new StraightTrunkPlacer(${ct?then(data.minHeight, 4)}, 2, 0),
+                        new StraightTrunkPlacer(${ct?then([data.minHeight, 32]?min, 4)}, 2, 0),
                         BlockStateProvider.simple(${ct?then(mappedBlockToBlockStateCode(data.treeBranch), "Blocks.OAK_LEAVES.defaultBlockState()")}),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                         new TwoLayersFeatureSize(1, 0, 1)
@@ -304,23 +317,13 @@ public class ${name}Biome {
 
         return new Biome.BiomeBuilder()
             .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .biomeCategory(Biome.BiomeCategory.${data.biomeCategory})
+            .biomeCategory(Biome.BiomeCategory.NONE)
             .temperature(${data.temperature}f)
             .downfall(${data.rainingPossibility}f)
             .specialEffects(effects)
             .mobSpawnSettings(mobSpawnInfo.build())
             .generationSettings(biomeGenerationSettings.build())
             .build();
-    }
-
-    public static void init() {
-        <#if data.biomeDictionaryTypes?has_content>
-            BiomeDictionary.addTypes(ResourceKey.create(Registry.BIOME_REGISTRY, BuiltinRegistries.BIOME.getKey(${JavaModName}Biomes.${registryname?upper_case}.get())),
-            <#list data.biomeDictionaryTypes as biomeDictionaryType>
-                BiomeDictionary.Type.${generator.map(biomeDictionaryType, "biomedictionarytypes")}<#if biomeDictionaryType?has_next>,</#if>
-        	</#list>
-        	);
-        </#if>
     }
 
 }

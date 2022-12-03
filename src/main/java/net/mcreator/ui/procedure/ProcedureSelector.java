@@ -157,7 +157,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		JComponent procwrap;
 		if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC) {
 			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
-		} else if (returnType == null) {
+		} else if (returnType == null || returnType == VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE) {
 			actionLabel.setText(L10N.t("procedure.common.do"));
 			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else {
@@ -275,7 +275,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-					BorderFactory.createMatteBorder(0, 1, 0, 0, returnType.getBlocklyColor())));
+					BorderFactory.createMatteBorder(0, 5, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;
 	}

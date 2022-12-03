@@ -76,15 +76,15 @@ public class NameMapper {
 			String toMapTemplate = null;
 			if (mcreator_map_template instanceof String)
 				toMapTemplate = (String) mcreator_map_template;
-			else if (mcreator_map_template instanceof List<?> mappingValuesList && mappingTable < mappingValuesList.size())
+			else if (mcreator_map_template instanceof List<?> mappingValuesList
+					&& mappingTable < mappingValuesList.size())
 				toMapTemplate = (String) mappingValuesList.get(mappingTable);
 
 			if (toMapTemplate != null) {
 				origName = origName.replace(mcreator_prefix, "");
-				String retval = GeneratorTokens.replaceTokens(workspace,
-						toMapTemplate.replace("@NAME", origName)
-								.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
-								.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
+				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
+						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
+						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
 				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {

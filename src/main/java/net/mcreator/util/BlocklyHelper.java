@@ -31,8 +31,9 @@ public class BlocklyHelper {
 
 	/**
 	 * Creates a block of the given block type and with the given children
+	 *
 	 * @param blockType The type of this block
-	 * @param children The children (fields, values...) that should be appended to this block
+	 * @param children  The children (fields, values...) that should be appended to this block
 	 * @return An {@link Element} representing this block
 	 */
 	public Element createBlock(String blockType, Element... children) {
@@ -48,7 +49,8 @@ public class BlocklyHelper {
 
 	/**
 	 * Creates a field with the given name and the given value
-	 * @param fieldName The name of this field
+	 *
+	 * @param fieldName  The name of this field
 	 * @param fieldValue If not null, the value of this field
 	 * @return An {@link Element} representing this field
 	 */
@@ -63,7 +65,8 @@ public class BlocklyHelper {
 
 	/**
 	 * Creates a value input with the given name and the given block
-	 * @param valueName The name of this value input
+	 *
+	 * @param valueName  The name of this value input
 	 * @param inputBlock If present, the block attached to this input
 	 * @return An {@link Element} representing this value input
 	 */

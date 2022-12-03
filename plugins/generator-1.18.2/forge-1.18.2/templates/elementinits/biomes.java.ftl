@@ -43,37 +43,31 @@ import com.mojang.datafixers.util.Pair;
 <#assign spawn_overworld_caves = []>
 <#assign spawn_nether = []>
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Biomes {
+<#list biomes as biome>
+	<#if biome.spawnBiome>
+		<#assign spawn_overworld += [biome]>
+	</#if>
+	<#if biome.spawnInCaves>
+		<#assign spawn_overworld_caves += [biome]>
+	</#if>
+	<#if biome.spawnBiomeNether>
+		<#assign spawn_nether += [biome]>
+	</#if>
+</#list>
+
+<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
+@Mod.EventBusSubscriber
+</#if>
+public class ${JavaModName}Biomes {
 
 	public static final DeferredRegister<Biome> REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
 
     <#list biomes as biome>
     public static final RegistryObject<Biome> ${biome.getModElement().getRegistryNameUpper()}
         = REGISTRY.register("${biome.getModElement().getRegistryName()}", () -> ${biome.getModElement().getName()}Biome.createBiome());
-
-		<#if biome.spawnBiome>
-			<#assign spawn_overworld += [biome]>
-		</#if>
-
-		<#if biome.spawnInCaves>
-			<#assign spawn_overworld_caves += [biome]>
-		</#if>
-
-		<#if biome.spawnBiomeNether>
-			<#assign spawn_nether += [biome]>
-		</#if>
     </#list>
 
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		event.enqueueWork(() -> {
-	    <#list biomes as biome>
-            ${biome.getModElement().getName()}Biome.init();
-        </#list>
-		});
-	}
-
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
-	@Mod.EventBusSubscriber public static class BiomeInjector {
 
 		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 			MinecraftServer server = event.getServer();
@@ -93,13 +87,17 @@ import com.mojang.datafixers.util.Pair;
 						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
 
 						<#list spawn_overworld as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT, 
-							biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolder(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 
 						<#list spawn_overworld_caves as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT_UNDERGROUND,
-								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.UNDERGROUND_PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolder(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 						
 						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
@@ -159,8 +157,10 @@ import com.mojang.datafixers.util.Pair;
 						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
 
 						<#list spawn_nether as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT,
-								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolder(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 
 						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
@@ -246,7 +246,6 @@ import com.mojang.datafixers.util.Pair;
 		}
 		</#if>
 
-	}
 	</#if>
 
 }

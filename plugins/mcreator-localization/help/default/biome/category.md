@@ -1,1 +1,0 @@
-This parameter controls the category of the biome

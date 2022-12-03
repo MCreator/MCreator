@@ -28,6 +28,7 @@ import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -50,9 +51,10 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 	private boolean hasTrigger;
 
-	public BlocklyToJSONTrigger(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
-			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, templateGenerator, externalGenerators);
+	public BlocklyToJSONTrigger(Workspace workspace, ModElement parent, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+			throws TemplateGeneratorException {
+		super(workspace, parent, templateGenerator, externalGenerators);
 
 		blockGenerators.add(new NumberBlock());
 		blockGenerators.add(new MCItemBlock());

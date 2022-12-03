@@ -18,8 +18,13 @@
 
 package net.mcreator.generator.mapping;
 
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
+import java.util.Optional;
 
 public abstract class MappableElement {
 
@@ -58,7 +63,18 @@ public abstract class MappableElement {
 	public boolean canProperlyMap() {
 		String mapped = mapper.getMapping(value);
 		return !mapped.contains("@") && !mapped.contains(
-				NameMapper.UNKNOWN_ELEMENT); // if there are still @tokens, we failed to map some of the values
+				NameMapper.UNKNOWN_ELEMENT); // if there are still @tokens, we failed to map some values
+	}
+
+	public Optional<DataListEntry> getDataListEntry() {
+		Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mapper.mappingSource);
+		if (dataListEntryMap != null) {
+			if (dataListEntryMap.containsKey(getUnmappedValue())) {
+				return Optional.of(dataListEntryMap.get(getUnmappedValue()));
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	@Override public int hashCode() {

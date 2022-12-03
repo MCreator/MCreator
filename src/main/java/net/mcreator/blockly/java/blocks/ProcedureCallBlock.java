@@ -23,7 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.java.BlocklyToJava;
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
@@ -107,7 +107,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				}
 				if (missingDependencies) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.call_procedure_missing_deps", procedure.getName(), missingdeps.toString())));
+							L10N.t("blockly.errors.call_procedure_missing_deps", procedure.getName(),
+									missingdeps.toString())));
 				}
 			}
 

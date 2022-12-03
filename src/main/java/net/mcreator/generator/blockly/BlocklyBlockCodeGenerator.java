@@ -21,6 +21,7 @@ package net.mcreator.generator.blockly;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.AdvancedInput;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BlocklyBlockCodeGenerator {
 
@@ -102,6 +104,8 @@ public class BlocklyBlockCodeGenerator {
 
 		Map<String, Object> dataModel = new HashMap<>();
 
+		dataModel.put("parent", master.getParent());
+
 		// we get the list of all elements present in the actual xml
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
@@ -145,7 +149,7 @@ public class BlocklyBlockCodeGenerator {
 
 		// next we check for advanced inputs if they exist, we process them and add to data model
 		if (!toolboxBlock.getAdvancedInputs().isEmpty()) {
-			for (var advancedInput : toolboxBlock.getAdvancedInputs()) {
+			for (AdvancedInput advancedInput : toolboxBlock.getAdvancedInputs()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("value") && element.getAttribute("name")
@@ -217,6 +221,119 @@ public class BlocklyBlockCodeGenerator {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("blockly.warnings.statement_input_empty", statementInput.name, type)));
 				}
+			}
+		}
+
+		// next we check for input groups if they are defined, we process them and add to data model
+		if (!toolboxBlock.getRepeatingInputs().isEmpty()) {
+			for (String inputName : toolboxBlock.getRepeatingInputs()) {
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
+								.matches(inputName + "\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					if (matchingElements.containsKey(inputName + idx)) {
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
+								matchingElements.remove(inputName + idx));
+						processedElements.put(idx, generatedCode);
+					} else {
+						processedElements.put(idx, null); // we add null at this index to not shift other elements
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.input_empty", inputName + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("input_list$" + inputName,
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+			}
+		}
+
+		// next we check for advanced input groups if they are defined, we process them and add to data model
+		if (!toolboxBlock.getRepeatingAdvancedInputs().isEmpty()) {
+			for (AdvancedInput advancedInput : toolboxBlock.getRepeatingAdvancedInputs()) {
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
+								.matches(advancedInput.name() + "\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					if (matchingElements.containsKey(advancedInput.name() + idx)) {
+						// check if nesting statement block that already provides any dependency with
+						// a same name, to avoid compile errors due to variable redefinitions
+						if (advancedInput.provides != null) {
+							for (Dependency dependency : advancedInput.provides) {
+								if (master.checkIfDepProviderInputsProvide(dependency)) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.duplicate_dependencies_provided",
+													advancedInput.name() + idx)));
+									return; // no need to do further processing, this needs to be resolved first by the user
+								}
+							}
+						}
+
+						master.pushDepProviderInputStack(advancedInput);
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
+								matchingElements.remove(advancedInput.name() + idx));
+						master.popDepProviderInputStack();
+
+						processedElements.put(idx, generatedCode);
+					} else {
+						processedElements.put(idx, null); // we add null at this index to not shift other elements
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.input_empty", advancedInput.name() + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("input_list$" + advancedInput.name(),
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+			}
+		}
+
+		// next we check for statement input groups if they are defined, we process them and add to data model
+		if (toolboxBlock.getRepeatingStatements() != null) {
+			for (StatementInput statementInput : toolboxBlock.getRepeatingStatements()) {
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> e.getNodeName().equals("statement") && e.getAttribute("name")
+								.matches(statementInput.name() + "\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					if (matchingElements.containsKey(statementInput.name + idx)) {
+						// check if nesting statement block that already provides any dependency with
+						// a same name, to avoid compile errors due to variable redefinitions
+						if (statementInput.provides != null) {
+							for (Dependency dependency : statementInput.provides) {
+								if (master.checkIfDepProviderInputsProvide(dependency)) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.duplicate_dependencies_provided.statement",
+													statementInput.name + idx)));
+									return; // no need to do further processing, this needs to be resolved first by the user
+								}
+							}
+						}
+
+						master.pushDepProviderInputStack(statementInput);
+						String generatedCode = BlocklyToCode.directProcessStatementBlock(master,
+								matchingElements.remove(statementInput.name + idx));
+						master.popDepProviderInputStack();
+
+						processedElements.put(idx, generatedCode);
+					} else {
+						processedElements.put(idx, "");
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+								L10N.t("blockly.warnings.statement_input_empty", statementInput.name + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("statement_list$" + statementInput.name,
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
 			}
 		}
 

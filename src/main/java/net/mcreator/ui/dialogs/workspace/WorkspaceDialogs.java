@@ -55,6 +55,7 @@ import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -246,7 +247,19 @@ public class WorkspaceDialogs {
 			});
 
 			version.setValidator(
-					new TextFieldValidatorJSON(version, L10N.t("dialog.workspace_settings.version.error"), false));
+					new TextFieldValidatorJSON(version, L10N.t("dialog.workspace_settings.version.error"), false) {
+						@Override public ValidationResult validate() {
+							try {
+								ModuleDescriptor.Version.parse(version.getText());
+							} catch (Exception e) {
+								return new ValidationResult(ValidationResultType.ERROR,
+										L10N.t("dialog.workspace_settings.version.error2", e.getMessage()));
+							}
+
+							return super.validate();
+						}
+					});
+
 			description.setValidator(
 					new TextFieldValidatorJSON(description, L10N.t("dialog.workspace_settings.description.error"),
 							true));

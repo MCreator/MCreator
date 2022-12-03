@@ -20,9 +20,11 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.Procedure;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -55,7 +57,6 @@ import java.util.List;
 	public int luminosity;
 	public int density;
 	public int viscosity;
-	public boolean isGas;
 	public int temperature;
 	public String type;
 
@@ -142,6 +143,10 @@ import java.util.List;
 
 	public boolean doesGenerateInWorld() {
 		return spawnWorldTypes.size() > 0;
+	}
+
+	@Override public String getRenderType() {
+		return "translucent";
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
