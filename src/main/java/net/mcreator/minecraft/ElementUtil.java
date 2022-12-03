@@ -27,7 +27,9 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -43,6 +45,33 @@ public class ElementUtil {
 	 */
 	public static Predicate<DataListEntry> typeMatches(String type) {
 		return e -> type.equals(e.getType());
+	}
+
+	/**
+	 * Loads a list of entries, with optional custom entries from the given mod element types,
+	 * and with an optional filter for the entry type.
+	 *
+	 * <p>NOTE: custom entries cannot specify a type yet, so the type filter will remove any custom entry</p>
+	 *
+	 * @param workspace The current workspace
+	 * @param dataList The datalist from which to load the entries
+	 * @param typeFilter If present, only entries whose type matches this parameter are loaded
+	 * @param customEntryProviders The string id of the mod element types that provide custom entries
+	 *
+	 * @return All entries from the given data list and the given mod element types, matching the optional filter
+	 */
+	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList,
+			@Nullable String typeFilter, @Nullable String... customEntryProviders) {
+		List<DataListEntry> retval = DataListLoader.loadDataList(dataList);
+
+		if (customEntryProviders != null)
+			retval.addAll(getCustomElements(workspace,
+					me -> Arrays.asList(customEntryProviders).contains(me.getTypeString())));
+
+		if (typeFilter != null)
+			return retval.stream().filter(typeMatches(typeFilter)).toList();
+
+		return retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).sorted().toList();
 	}
 
 	/**

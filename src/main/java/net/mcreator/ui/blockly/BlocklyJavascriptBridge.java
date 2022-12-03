@@ -41,6 +41,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
@@ -123,9 +124,12 @@ public class BlocklyJavascriptBridge {
 	 * Common method to open an entry selector of either data list entries or strings
 	 *
 	 * @param type     The type of selector to open
+	 * @param typeFilter If present, only entries whose type matches this parameter are loaded
+	 * @param customEntryProviders If present, the types of the mod elements that provide custom entries
 	 * @param callback The Javascript object that passes the "value,readableName" pair to the Blockly editor
 	 */
-	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, JSObject callback) {
+	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
+			@Nullable String customEntryProviders, JSObject callback) {
 		String retval = switch (type) {
 			case "entity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
@@ -179,8 +183,9 @@ public class BlocklyJavascriptBridge {
 
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
 					yield openDataListEntrySelector(
-							w -> DataListLoader.loadDataList(type).stream().filter(e -> e.isSupportedInWorkspace(w))
-									.toList(), L10N.t("dialog.selector." + type + ".message"),
+							w -> ElementUtil.loadDataListAndElements(w, type, typeFilter,
+									StringUtils.split(customEntryProviders, ',')),
+							L10N.t("dialog.selector." + type + ".message"),
 							L10N.t("dialog.selector." + type + ".title"));
 				}
 

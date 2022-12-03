@@ -3,14 +3,18 @@
  * The behaviour is similar to block/item selectors or condition selectors for entity AI blocks
  */
 class FieldDataListSelector extends Blockly.FieldLabelSerializable {
-    constructor(datalist = '', opt_validator) {
+    constructor(datalist = '', opt_validator, opt_config) {
         super(javabridge.t('blockly.extension.data_list_selector.no_entry'), 'entry-label');
         this.type = datalist;
+        this.typeFilter = null;
+        this.customEntryProviders = null;
         this.entry = FieldDataListSelector.getDefaultEntry();
         this.setTooltip(this.getText_());
 
         this.EDITABLE = true;
 
+        if (opt_config)
+            this.configure_(opt_config);
         if (opt_validator)
             this.setValidator(opt_validator);
     }
@@ -20,9 +24,24 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         return ',' + javabridge.t('blockly.extension.data_list_selector.no_entry');
     }
 
+    // Configure the field given a map of settings
+    configure_(config) {
+        super.configure_(config);
+
+        // If present, set the 'typeFilter' value
+        let opt_typeFilter = Blockly.utils.parsing.replaceMessageReferences(config['typeFilter']);
+        if (opt_typeFilter)
+            this.typeFilter = opt_typeFilter;
+
+        // If present, set the 'customEntryProviders' value
+        let opt_customEntryProviders = config['customEntryProviders'];
+        if (opt_customEntryProviders)
+            this.customEntryProviders = opt_customEntryProviders;
+    }
+
     // Create the field from the json definition
     static fromJson(options) {
-        return new FieldDataListSelector(Blockly.utils.parsing.replaceMessageReferences(options['datalist']), undefined);
+        return new this(Blockly.utils.parsing.replaceMessageReferences(options['datalist']), undefined, options);
     }
 
     // Initialize the field with a rectangle surrounding the text
@@ -56,7 +75,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
             if (this.lastClickTime !== -1 && ((new Date().getTime() - this.lastClickTime) < 500)) {
                 e.stopPropagation(); // fix so the block does not "stick" to the mouse when the field is clicked
                 let thisField = this; // reference to this field, to use in the callback function
-                javabridge.openEntrySelector(this.type, {
+                javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
                     'callback': function (data) {
                         if (data !== undefined) {
                             thisField.entry = data;
