@@ -146,7 +146,7 @@ public class BlocklyJavascriptBridge {
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
 			case "arrowProjectile" -> openDataListEntrySelector(
 					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					"projectile");
+					"projectiles");
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
