@@ -19,7 +19,7 @@ jobs:
       - name: Generate Javadoc
         run: ./gradlew javadoc
       - name: Deploy Javadoc
-        uses: Pylo/github-pages-deploy-action@4.4.1
+        uses: Pylo/github-pages-deploy-action@v4.4.1
         with:
           branch: javadoc
           clean: true
