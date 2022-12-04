@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../script-dir/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="../../../../../script-dir/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -111,8 +111,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></code></div>
 <div class="col-second even-row-color"><code><a href="#color" class="member-name-link">color</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#disableStackInteraction" class="member-name-link">disableStackInteraction</a></code></div>
+<div class="col-first odd-row-color"><code><a href="../procedure/LogicProcedure.html" title="class in net.mcreator.element.parts.procedure">LogicProcedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#disablePickup" class="member-name-link">disablePickup</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#dropItemsWhenNotBound" class="member-name-link">dropItemsWhenNotBound</a></code></div>
@@ -143,11 +143,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,int,int,java.awt.Color,boolean,boolean,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure)" class="member-name-link">Slot</a><wbr>(int&nbsp;id,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,int,int,java.awt.Color,net.mcreator.element.parts.procedure.LogicProcedure,boolean,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure)" class="member-name-link">Slot</a><wbr>(int&nbsp;id,
  int&nbsp;x,
  int&nbsp;y,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
- boolean&nbsp;disableStackInteraction,
+ <a href="../procedure/LogicProcedure.html" title="class in net.mcreator.element.parts.procedure">LogicProcedure</a>&nbsp;disablePickup,
  boolean&nbsp;dropItemsWhenNotBound,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;onSlotChanged,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;onTakenFromSlot,
@@ -215,9 +215,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="disableStackInteraction">
-<h3>disableStackInteraction</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">disableStackInteraction</span></div>
+<section class="detail" id="disablePickup">
+<h3>disablePickup</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../procedure/LogicProcedure.html" title="class in net.mcreator.element.parts.procedure">LogicProcedure</a></span>&nbsp;<span class="element-name">disablePickup</span></div>
 </section>
 </li>
 <li>
@@ -253,13 +253,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,int,int,java.awt.Color,boolean,boolean,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure)">
+<section class="detail" id="&lt;init&gt;(int,int,int,java.awt.Color,net.mcreator.element.parts.procedure.LogicProcedure,boolean,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.procedure.Procedure)">
 <h3>Slot</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Slot</span><wbr><span class="parameters">(int&nbsp;id,
  int&nbsp;x,
  int&nbsp;y,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
- boolean&nbsp;disableStackInteraction,
+ <a href="../procedure/LogicProcedure.html" title="class in net.mcreator.element.parts.procedure">LogicProcedure</a>&nbsp;disablePickup,
  boolean&nbsp;dropItemsWhenNotBound,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;onSlotChanged,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;onTakenFromSlot,
