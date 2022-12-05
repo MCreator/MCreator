@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 package net.mcreator.integration.generator;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
@@ -174,9 +176,17 @@ public class GTProcedureBlocks {
 								}
 								case "field_data_list_selector" -> {
 									String type = arg.get("datalist").getAsString();
-									if (type.equals("enchantment"))
-										type = "enhancement";
-									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
+
+									// Get the optional properties
+									JsonElement optTypeFilter = arg.get("typeFilter");
+									String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+
+									JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+									String customEntryProviders = optCustomEntryProviders == null ? null :
+											optCustomEntryProviders.getAsString();
+
+									String[] values = BlocklyJavascriptBridge.getDataListFieldValues(workspace, type,
+											typeFilter, customEntryProviders);
 									if (values.length > 0 && !values[0].equals("")) {
 										String value = ListUtils.getRandomItem(random, values);
 										additionalXML.append("<field name=\"").append(field).append("\">").append(value)
@@ -340,6 +350,15 @@ public class GTProcedureBlocks {
 				case "MCItem":
 					procedure.procedurexml = wrapWithBaseTestXML(
 							"<block type=\"return_itemstack\"><value name=\"return\">" + testXML + "</value></block>");
+					break;
+				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
+					procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="projectile_shoot_from_entity">
+							<value name="projectile">%s</value>
+							<value name="entity"><block type="entity_from_deps"></block></value>
+							<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
+						</block>""".formatted(testXML));
 					break;
 				default:
 					procedure.procedurexml = wrapWithBaseTestXML(

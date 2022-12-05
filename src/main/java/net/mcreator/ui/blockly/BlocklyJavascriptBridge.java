@@ -359,6 +359,37 @@ public class BlocklyJavascriptBridge {
 		return retval.toArray(new String[0]);
 	}
 
+	public static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
+			String customEntryProviders) {
+		switch (datalist) {
+		case "entity": return ElementUtil.loadAllEntities(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "spawnableEntity": return ElementUtil.loadAllSpawnableEntities(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "biome": return ElementUtil.loadAllBiomes(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "sound": return ElementUtil.getAllSounds(workspace);
+		case "procedure": return workspace.getModElements()
+				.stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+				.map(ModElement::getName).toArray(String[]::new);
+		case "arrowProjectile": return ElementUtil.loadArrowProjectiles(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		default: {
+			if (datalist.startsWith("procedure_retval_")) {
+				var variableType = VariableTypeLoader.INSTANCE.fromName(
+						StringUtils.removeStart(datalist, "procedure_retval_"));
+				return ElementUtil.getProceduresOfType(workspace, variableType);
+			}
+			if (!DataListLoader.loadDataList(datalist).isEmpty()) {
+				return ElementUtil.loadDataListAndElements(workspace, datalist, typeFilter,
+								StringUtils.split(customEntryProviders, ','))
+						.stream().map(DataListEntry::getName).toArray(String[]::new);
+			}
+		}
+		}
+		return new String[]{""};
+	}
+
 	@SuppressWarnings("unused") public String[] getReadableListOf(String type) {
 		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type);
 	}
@@ -399,7 +430,7 @@ public class BlocklyJavascriptBridge {
 		switch (type) {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
-		case "arrowProjectile", "fireballProjectile", "throwableProjectile" -> datalist = "projectiles";
+		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
 		default -> {
 			return "";
 		}
