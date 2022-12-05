@@ -31,33 +31,31 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
-	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
+	private final List<JItemPropertiesListEntry> propertiesList;
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 	private final AtomicInteger propertyId = new AtomicInteger(0);
 
 	private final List<String> builtinPropertyNames = List.of("damaged", "damage", "lefthanded", "cooldown",
 			"custom_model_data");
 	private final Map<String, PropertyData> builtinProperties = new LinkedHashMap<>();
-	private final PropertyData customNumber = new PropertyData(Float.class, 0F, 1000000F, null);
 
 	private final JPanel propertyEntries = new JPanel(new GridLayout(0, 1, 5, 5));
-	private final JPanel stateEntries = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JPanel stateEntries = new JPanel();
 
 	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
 	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
@@ -65,8 +63,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
 
-		PropertyData builtinNumber = new PropertyData(Float.class, 0F, 1F, null);
-		PropertyData builtinLogic = new PropertyData(Boolean.class, null, null, null) {
+		Function<String, PropertyData> builtinNumber = name -> new PropertyData(name, Float.class, 0F, 1F, null);
+		Function<String, PropertyData> builtinLogic = name -> new PropertyData(name, Boolean.class, null, null, null) {
 			@Override public Object getValueFromComponent(JComponent component) {
 				if (component instanceof JCheckBox check)
 					return check.isSelected() ? 1F : 0F;
@@ -83,31 +81,37 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			}
 		};
 
-		builtinProperties.put("damaged", builtinLogic);
-		builtinProperties.put("damage", builtinNumber);
-		builtinProperties.put("lefthanded", builtinLogic);
-		builtinProperties.put("cooldown", builtinNumber);
+		builtinProperties.put("damaged", builtinLogic.apply("damaged"));
+		builtinProperties.put("damage", builtinNumber.apply("damage"));
+		builtinProperties.put("lefthanded", builtinLogic.apply("lefthanded"));
+		builtinProperties.put("cooldown", builtinNumber.apply("cooldown"));
 
 		setOpaque(false);
 		propertyEntries.setOpaque(false);
 		stateEntries.setOpaque(false);
+		stateEntries.setLayout(new BoxLayout(stateEntries, BoxLayout.Y_AXIS));
 
-		propertyEntries.addContainerListener(new ContainerAdapter() {
-			@Override public void componentRemoved(ContainerEvent e) {
-				if (propertiesList.size() > 0) {
-					Map<String, PropertyData> propertiesMap = buildPropertiesMap();
-					statesList.forEach(s -> s.state.setText(Arrays.stream(s.state.getText().split(","))
-							.filter(el -> propertiesMap.containsKey(el.split("=")[0]))
-							.collect(Collectors.joining(","))));
-					Set<String> duplicates = new HashSet<>(); // when states are trimmed, we remove possible duplicates
-					statesList.stream().toList().forEach(entry -> {
-						if (entry.state.getText() == null || entry.state.getText().equals("") || !duplicates.add(
-								entry.state.getText()))
-							entry.removeState(stateEntries, statesList);
-					});
+		propertiesList = new ArrayList<>() {
+			@Override public boolean remove(Object o) {
+				if (o instanceof JItemPropertiesListEntry entry) {
+					if (!isEmpty()) {
+						PropertyData data = buildPropertiesMap().get(entry.name.getText());
+						statesList.forEach(s -> {
+							s.getStateMap().remove(data);
+							s.refreshState();
+						});
+						Set<String> duplicateFilter = new HashSet<>();
+						statesList.stream().toList().forEach(s -> {
+							if (s.getState() == null || s.getState().equals("") || !duplicateFilter.add(s.getState()))
+								s.removeState(stateEntries, statesList);
+						});
+					} else {
+						statesList.stream().toList().forEach(s -> s.removeState(stateEntries, statesList));
+					}
 				}
+				return super.remove(o);
 			}
-		});
+		};
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
@@ -169,17 +173,17 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				new RegistryNameValidator(pe.name, L10N.t("elementgui.item.custom_property.name_validator")));
 		pe.name.setValidator(validator);
 		pe.name.enableRealtimeValidation();
-		pe.name.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void insertUpdate(DocumentEvent e) {
-				propertyRenamed(pe);
-			}
-
-			@Override public void removeUpdate(DocumentEvent e) {
-				propertyRenamed(pe);
-			}
-
-			@Override public void changedUpdate(DocumentEvent e) {
-				propertyRenamed(pe);
+		pe.name.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER
+						&& pe.name.getValidationStatus() == Validator.ValidationResult.PASSED) {
+					String newName = pe.name.getText();
+					statesList.forEach(s -> s.rename(pe.nameString, newName));
+					pe.rename.requestFocus();
+					pe.name.setText(pe.nameString = newName);
+				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					pe.rename.requestFocus();
+				}
 			}
 		});
 
@@ -188,37 +192,29 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemStatesListEntry addStatesEntry() {
-		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList);
-		se.edit.addActionListener(e -> editState(se));
+		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList,
+				() -> buildPropertiesMap().values().stream().toList(), this::editState);
 		registerEntryUI(se);
 		return se;
 	}
 
-	private void propertyRenamed(JItemPropertiesListEntry entry) {
-		getValidationResult(false).validateIsErrorFree(); // this highlights all the property names errors
-		statesList.forEach(s -> {
-			int indexBuiltin = (int) Arrays.stream(s.state.getText().split(","))
-					.filter(el -> builtinPropertyNames.contains(el.split("=")[0])).count();
-			int indexCustom = propertiesList.stream()
-					.filter(e -> ("," + s.state.getText()).contains("," + e.nameString + "=")).toList().indexOf(entry);
-			s.propertyRenamed(entry.nameString, entry.name.getText(), indexBuiltin + indexCustom);
-		});
-		entry.nameString = entry.name.getText();
-	}
-
 	private void editState(JItemStatesListEntry entry) {
 		if (getValidationResult(false).validateIsErrorFree()) {
-			String newState = StateEditorDialog.open(mcreator,
-					entry != null ? entry.state.getText() : StateEditorDialog.TOKEN_NEW, buildPropertiesMap(),
-					"item/custom_state");
-			if (newState.equals("")) // all properties were unchecked
-				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_empty"),
-						L10N.t("elementgui.item.custom_states.add.error_empty.title"), JOptionPane.ERROR_MESSAGE);
-			else if (statesList.stream().anyMatch(el -> el != entry && el.state.getText().equals(newState)))
-				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.add.error_duplicate"),
-						L10N.t("elementgui.item.custom_states.add.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
-			else if (!StateEditorDialog.isToken(newState)) // valid state was returned
-				(entry != null ? entry : addStatesEntry()).state.setText(newState);
+			LinkedHashMap<PropertyData, Object> stateMap = new LinkedHashMap<>();
+			if (entry != null)
+				stateMap.putAll(entry.getStateMap());
+			if (JOptionPane.OK_OPTION != StateEditorDialog.open(mcreator, buildPropertiesMap(), stateMap, entry == null,
+					"item/custom_state"))
+				return;
+
+			if (stateMap.isEmpty()) // all properties were unchecked
+				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_empty"),
+						L10N.t("elementgui.item.custom_states.error_empty.title"), JOptionPane.ERROR_MESSAGE);
+			else if (statesList.stream().anyMatch(s -> s != entry && s.getStateMap().equals(stateMap)))
+				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_duplicate"),
+						L10N.t("elementgui.item.custom_states.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
+			else
+				(entry != null ? entry : addStatesEntry()).setStateMap(stateMap);
 		} else {
 			Toolkit.getDefaultToolkit().beep();
 		}
@@ -226,7 +222,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private Map<String, PropertyData> buildPropertiesMap() {
 		Map<String, PropertyData> props = new LinkedHashMap<>(builtinProperties);
-		propertiesList.forEach(e -> props.put(e.name.getText(), customNumber));
+		propertiesList.forEach(
+				e -> props.put(e.name.getText(), new PropertyData(e.name.getText(), Float.class, 0F, 1000000F, null)));
 		return props;
 	}
 
@@ -251,7 +248,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public Map<String, Item.ModelEntry> getStates() {
 		Map<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
-		statesList.forEach(e -> retVal.put(e.state.getText(), e.getEntry()));
+		statesList.forEach(e -> retVal.put(e.getState(), e.getEntry()));
 		return retVal;
 	}
 

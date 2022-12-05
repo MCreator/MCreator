@@ -59,8 +59,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -179,18 +177,24 @@ public class DialogsTest {
 	}
 
 	@Test public void testStateEditorDialog() throws Throwable {
-		Random rng = new Random();
 		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
 		Map<String, PropertyData> testProps = new LinkedHashMap<>();
-		testProps.put("logic", new PropertyData(Boolean.class, null, null, null));
-		testProps.put("integer", new PropertyData(Integer.class, 0, 1000, null));
-		testProps.put("float", new PropertyData(Float.class, 0F, 1000000F, null));
-		testProps.put("text", new PropertyData(String.class, null, null, meTypes.toArray(String[]::new)));
-		String testState = Stream.of("logic=" + rng.nextBoolean(), "integer=" + rng.nextInt(),
-						"float=" + rng.nextFloat(), "text=" + TestWorkspaceDataProvider.getRandomString(rng, meTypes))
-				.filter(e -> rng.nextBoolean()).collect(Collectors.joining(","));
+		testProps.put("logic", new PropertyData("logic", Boolean.class, null, null, null));
+		testProps.put("integer", new PropertyData("integer", Integer.class, 0, 1000, null));
+		testProps.put("float", new PropertyData("float", Float.class, 0F, 1000000F, null));
+		testProps.put("text", new PropertyData("text", String.class, null, null, meTypes.toArray(String[]::new)));
+		Random rng = new Random();
+		LinkedHashMap<PropertyData, Object> testState = new LinkedHashMap<>();
+		if (rng.nextBoolean())
+			testState.put(testProps.get("logic"), rng.nextBoolean());
+		if (rng.nextBoolean())
+			testState.put(testProps.get("integer"), rng.nextInt());
+		if (rng.nextBoolean())
+			testState.put(testProps.get("float"), rng.nextFloat());
+		if (rng.nextBoolean())
+			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomString(rng, meTypes));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testState, testProps, "block/custom_state"));
+				() -> StateEditorDialog.open(mcreator, testProps, testState, false, "block/custom_state"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

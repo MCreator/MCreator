@@ -36,23 +36,51 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.List;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
-	private final JComponent container;
-	private final JButton remove;
-
-	final VTextField name = new VTextField(20);
+	final VTextField name;
 	String nameString;
+	final JButton rename = new JButton(UIRES.get("16px.edit.gif"));
 
 	private final ProcedureSelector value;
+
+	private final JButton remove;
 
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryList, int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
-		nameString = "property" + propertyId;
-		name.setText(nameString);
+		name = new VTextField(20) {
+			@Override public void setEditable(boolean b) {
+				super.setEditable(b);
+				rename.setEnabled(!b);
+			}
+		};
+		name.setOpaque(true);
+		name.setText(nameString = "property" + propertyId);
+		name.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
+		name.setEditable(false);
+		name.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		name.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				name.setEditable(false);
+				name.setText(nameString);
+				name.getValidationStatus();
+			}
+		});
+
+		rename.setOpaque(false);
+		rename.setMargin(new Insets(0, 0, 0, 0));
+		rename.setBorder(BorderFactory.createEmptyBorder());
+		rename.setContentAreaFilled(false);
+		rename.setToolTipText(L10N.t("elementgui.item.custom_property.rename"));
+		rename.addActionListener(e -> {
+			name.setEditable(true);
+			name.requestFocus();
+		});
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
@@ -62,17 +90,23 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		reloadDataLists(); // we make sure that selector can be properly shown
 
-		container = PanelUtils.expandHorizontally(this);
-
+		JPanel butPan = new JPanel();
+		butPan.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		butPan.add(rename);
+		JPanel namePane = new JPanel(new FlowLayout(FlowLayout.CENTER, 7, 7));
+		namePane.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		namePane.add(name);
+		namePane.add(butPan);
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
-				L10N.t("elementgui.item.custom_property.name"), name, 3));
+				L10N.t("elementgui.item.custom_property.name"), namePane, 3));
 		add(value);
 
+		JComponent container = PanelUtils.expandHorizontally(this);
 		parent.add(container);
 		entryList.add(this);
 
 		remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.item.custom_properties.remove"));
+		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
@@ -91,6 +125,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		remove.setEnabled(enabled);
 
 		name.setEnabled(enabled);
+		rename.setEnabled(enabled);
 		value.setEnabled(enabled);
 	}
 

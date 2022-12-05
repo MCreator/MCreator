@@ -22,16 +22,27 @@ package net.mcreator.ui.minecraft.states;
 import javax.swing.*;
 
 public class PropertyData {
+	private String name;
 	private final Class<?> type;
+
 	private final Number min;
 	private final Number max;
 	private final String[] arrayData;
 
-	public PropertyData(Class<?> type, Number min, Number max, String[] arrayData) {
+	public PropertyData(String name, Class<?> type, Number min, Number max, String[] arrayData) {
+		this.name = name;
 		this.type = type;
 		this.min = min;
 		this.max = max;
 		this.arrayData = arrayData;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Class<?> type() {
@@ -54,8 +65,20 @@ public class PropertyData {
 		return null;
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean setValueOfComponent(JComponent component, Object value) {
 		return false;
 	}
 
+	@Override public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj instanceof PropertyData that)
+			return this.name.equals(that.name) && this.type == that.type;
+		return false;
+	}
+
+	@Override public int hashCode() {
+		return name.hashCode() * 31 + type.hashCode();
+	}
 }
