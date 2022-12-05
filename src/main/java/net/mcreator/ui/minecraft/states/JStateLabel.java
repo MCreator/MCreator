@@ -91,7 +91,9 @@ public class JStateLabel extends JPanel {
 		Map<String, String> values = Arrays.stream(state.split(","))
 				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
 		for (PropertyData property : properties.get()) {
-			if (property.type().equals(Boolean.class))
+			if (!values.containsKey(property.getName()))
+				this.stateMap.put(property, null);
+			else if (property.type().equals(Boolean.class))
 				this.stateMap.put(property, Boolean.parseBoolean(values.get(property.getName())));
 			else if (property.type().equals(Integer.class))
 				this.stateMap.put(property, Integer.parseInt(values.get(property.getName())));
