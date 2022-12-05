@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
+import net.mcreator.generator.ListTemplate;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.UIRES;
@@ -69,7 +70,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 						if (i > 0)
 							listMenu.addSeparator();
 
-						for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
+						for (ListTemplate modElementListFile : fileList.templates().keySet()) {
 							if (fileList.templates().get(modElementListFile).get(i)) {
 								listFilesFound++;
 								File indexedFile = fileList.processTokens(modElementListFile, i);

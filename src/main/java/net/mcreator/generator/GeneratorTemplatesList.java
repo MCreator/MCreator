@@ -37,13 +37,13 @@ import java.util.Map;
  *                  for all items on the mentioned collection.
  */
 public record GeneratorTemplatesList(String groupName, List<?> listData, GeneratableElement element,
-									 Map<GeneratorTemplate, List<Boolean>> templates) {
+									 Map<ListTemplate, List<Boolean>> templates) {
 
 	/**
 	 * The sole constructor.
 	 */
 	public GeneratorTemplatesList {
-		for (GeneratorTemplate listTemplate : templates.keySet())
+		for (ListTemplate listTemplate : templates.keySet())
 			listTemplate.setTemplatesList(this);
 	}
 
@@ -54,8 +54,8 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	 * @param ignoreConditions Specifies whether generation conditions of templates should not be respected.
 	 * @return Corresponding list template in case of success, or {@code null} otherwise.
 	 */
-	public GeneratorTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
-		for (GeneratorTemplate listTemplate : templates.keySet()) {
+	public ListTemplate getCorrespondingListTemplate(File generatorFile, boolean ignoreConditions) {
+		for (ListTemplate listTemplate : templates.keySet()) {
 			for (int i = 0; i < listData.size(); i++) {
 				if (processTokens(listTemplate, i).getPath().equals(generatorFile.getPath())) {
 					if (ignoreConditions || templates.get(listTemplate).get(i))
@@ -75,15 +75,11 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	 * @param index             Index of listData element for which to acquire the output file path.
 	 * @return The file generated from given list template with given token values.
 	 */
-	public File processTokens(GeneratorTemplate generatorTemplate, int index) {
-		if (generatorTemplate.getTemplatesList() == this) {
-			return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
-					GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
-							generatorTemplate.getFile().getPath()
-									.replace("@NAME", element.getModElement().getName())
-									.replace("@registryname", element.getModElement().getRegistryName())
-									.replace("@elementindex", Integer.toString(index)))));
-		}
-		return generatorTemplate.getFile();
+	public File processTokens(ListTemplate generatorTemplate, int index) {
+		return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
+				GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
+						generatorTemplate.getFile().getPath().replace("@NAME", element.getModElement().getName())
+								.replace("@registryname", element.getModElement().getRegistryName())
+								.replace("@elementindex", Integer.toString(index)))));
 	}
 }

@@ -266,10 +266,10 @@ public class Generator implements IGenerator, Closeable {
 				extractVariables(generatorTemplate, dataModel);
 
 				String code;
-				if (generatorTemplate.isListTemplate()) {
+				if (generatorTemplate instanceof ListTemplate listTemplate) {
 					code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
-							generatorTemplate.getTemplatesList().listData().get(generatorTemplate.getListItemIndex()),
-							generatorTemplate.getListItemIndex(), element, templateFileName, dataModel);
+							listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
+							listTemplate.getListItemIndex(), element, templateFileName, dataModel);
 				} else {
 					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
 							templateFileName, dataModel, element.getAdditionalTemplateData());
@@ -557,10 +557,10 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		Objects.requireNonNull(getModElementListTemplates(element, performFSTasks, generatableElement)).forEach(gtl -> {
-			for (GeneratorTemplate generatorTemplate : gtl.templates().keySet()) {
+			for (ListTemplate generatorTemplate : gtl.templates().keySet()) {
 				for (int i = 0; i < gtl.listData().size(); i++) {
 					if (gtl.templates().get(generatorTemplate).get(i) || !performFSTasks) {
-						files.add(new GeneratorTemplate(gtl.processTokens(generatorTemplate, i),
+						files.add(new ListTemplate(gtl.processTokens(generatorTemplate, i),
 								generatorTemplate.getTemplateIdentificator(), gtl, i,
 								generatorTemplate.getTemplateData()));
 					}
@@ -605,7 +605,7 @@ public class Generator implements IGenerator, Closeable {
 			int templateID = 0;
 			int listID = 1;
 			for (Object list : templateLists) {
-				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
+				Map<ListTemplate, List<Boolean>> files = new LinkedHashMap<>();
 				String groupName = (String) Objects.requireNonNullElse(((Map<?, ?>) list).get("name"),
 						"Group " + listID);
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
@@ -668,7 +668,7 @@ public class Generator implements IGenerator, Closeable {
 								excludefile.delete();
 						}
 
-						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(rawname),
+						ListTemplate generatorTemplate = new ListTemplate(new File(rawname),
 								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
 						// only preserve the last template for given file

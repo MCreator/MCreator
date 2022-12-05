@@ -22,30 +22,18 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class GeneratorTemplate {
+public class GeneratorTemplate {
 
 	private final File file;
 	private final Object templateData;
-
-	private GeneratorTemplatesList templatesList;
-	private final int listItemIndex;
 
 	private final String templateIdentificator;
 
 	private final Map<String, Object> dataModel = new HashMap<>();
 
 	GeneratorTemplate(File file, String templateIdentificator, Object templateData) {
-		this(file, templateIdentificator, null, -1, templateData);
-	}
-
-	GeneratorTemplate(File file, String templateIdentificator, GeneratorTemplatesList templatesList,
-			int listItemIndex, Object templateData) {
 		this.file = file;
 		this.templateIdentificator = templateIdentificator;
-
-		this.templatesList = templatesList;
-		this.listItemIndex = listItemIndex;
-
 		this.templateData = templateData;
 	}
 
@@ -59,22 +47,6 @@ public final class GeneratorTemplate {
 
 	public String getTemplateIdentificator() {
 		return templateIdentificator;
-	}
-
-	public boolean isListTemplate() {
-		return templatesList != null;
-	}
-
-	public GeneratorTemplatesList getTemplatesList() {
-		return templatesList;
-	}
-
-	void setTemplatesList(GeneratorTemplatesList templatesList) {
-		this.templatesList = templatesList;
-	}
-
-	public int getListItemIndex() {
-		return listItemIndex;
 	}
 
 	public Map<String, Object> getDataModel() {

@@ -23,6 +23,7 @@ import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
+import net.mcreator.generator.ListTemplate;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -1233,8 +1234,9 @@ import java.util.stream.Collectors;
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
-			new ModElementCodeDropdown(mcreator, modElementFiles.stream().filter(e -> !e.isListTemplate()).toList(),
-					modElementGlobalFiles, modElementListFiles).show(component, x, y);
+			new ModElementCodeDropdown(mcreator,
+					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
+					modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
 		else if (modElementGlobalFiles.size() == 1)
