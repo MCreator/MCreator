@@ -38,13 +38,14 @@ public class JStateLabel extends JPanel {
 	private LinkedHashMap<PropertyData, Object> stateMap = new LinkedHashMap<>();
 	private String state;
 
-	private final JLabel label = new JLabel();
+	private final JTextField label = new JTextField();
 	private final JButton edit;
 
 	public JStateLabel(Supplier<List<PropertyData>> properties, Runnable editButtonListener) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
 		this.properties = properties;
 
+		label.setEditable(false);
 		label.setOpaque(true);
 		label.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
@@ -67,7 +68,7 @@ public class JStateLabel extends JPanel {
 		copy.setContentAreaFilled(false);
 		copy.setToolTipText(L10N.t("elementgui.common.custom_state.copy"));
 		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
-				.setContents(new StringSelection(state), null));
+				.setContents(new StringSelection(getState()), null));
 
 		JPanel controls = new JPanel();
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -91,19 +92,10 @@ public class JStateLabel extends JPanel {
 		Map<String, String> values = Arrays.stream(state.split(","))
 				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
 		for (PropertyData property : properties.get()) {
-			if (!values.containsKey(property.getName()))
-				this.stateMap.put(property, null);
-			else if (property.type().equals(Boolean.class))
-				this.stateMap.put(property, Boolean.parseBoolean(values.get(property.getName())));
-			else if (property.type().equals(Integer.class))
-				this.stateMap.put(property, Integer.parseInt(values.get(property.getName())));
-			else if (property.type().equals(Float.class))
-				this.stateMap.put(property, Float.parseFloat(values.get(property.getName())));
-			else if (property.type().equals(String.class))
-				this.stateMap.put(property, values.get(property.getName()));
-			else
-				this.stateMap.put(property, null);
+			if (values.containsKey(property.getName()))
+				stateMap.put(property, property.parseValue(values.get(property.getName())));
 		}
+		refreshState();
 	}
 
 	public LinkedHashMap<PropertyData, Object> getStateMap() {
@@ -125,7 +117,7 @@ public class JStateLabel extends JPanel {
 		refreshState();
 	}
 
-	public void refreshState() {
+	private void refreshState() {
 		this.state = stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getValue())
 				.collect(Collectors.joining(","));
 		label.setText(L10N.t("elementgui.common.custom_state.when") + stateMap.entrySet().stream()

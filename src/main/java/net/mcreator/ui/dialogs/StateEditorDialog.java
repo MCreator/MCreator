@@ -28,7 +28,6 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,38 +38,38 @@ public class StateEditorDialog {
 	 *
 	 * @param parent       The workspace window in which this method was called.
 	 * @param properties   Keys are property names, values store data of those properties.
-	 * @param initialState The property-object map representation of state that should be edited.
+	 * @param stateMap     The property-object map representation of state that should be edited.
 	 * @param newState     Whether the state is just being created.
 	 * @param helpPath     The path to the help context file used as dialog's tooltip.
 	 * @return The dialog option the user chose after editing properties' values.
 	 */
-	public static int open(MCreator parent, Map<String, PropertyData> properties,
-			LinkedHashMap<PropertyData, Object> initialState, boolean newState, String helpPath) {
+	public static int open(MCreator parent, Collection<PropertyData> properties,
+			LinkedHashMap<PropertyData, Object> stateMap, boolean newState, String helpPath) {
 		AtomicInteger retVal = new AtomicInteger(JOptionPane.CLOSED_OPTION);
 		MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.state_editor.title"), true);
 
-		List<StatePart> entryList = new ArrayList<>();
+		Map<String, StatePart> entryMap = new HashMap<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		entries.setOpaque(false);
 
-		for (PropertyData data : properties.values()) {
+		for (PropertyData data : properties) {
 			JComponent component = generatePropertyComponent(data);
 			if (component != null) {
-				StatePart statePart = new StatePart(entries, entryList, data.getName(), component);
-				if (initialState.containsKey(data)) {
-					if (!data.setValueOfComponent(statePart.entryComponent, initialState.get(data)))
-						setValueOfComponent(statePart.entryComponent, data, initialState.get(data));
+				StatePart statePart = new StatePart(entries, data.getName(), component);
+				if (stateMap.containsKey(data)) {
+					if (!data.setValueOfComponent(statePart.entryComponent, stateMap.get(data)))
+						setValueOfComponent(statePart.entryComponent, data, stateMap.get(data));
 				} else {
 					setValueOfComponent(statePart.entryComponent, data, null);
 					if (!newState) // property is not used in this state
 						statePart.useEntry.doClick();
 				}
+				entryMap.put(data.getName(), statePart);
 			}
 		}
 
 		JPanel stateParts = new JPanel(new BorderLayout());
 		stateParts.setOpaque(false);
-		stateParts.setPreferredSize(new Dimension(270, 340));
 		stateParts.add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
 		JButton ok = new JButton(newState ? L10N.t("dialog.state_editor.create") : L10N.t("dialog.state_editor.save"));
@@ -78,15 +77,14 @@ public class StateEditorDialog {
 		dialog.getRootPane().setDefaultButton(ok);
 
 		ok.addActionListener(e -> {
-			for (StatePart part : entryList) {
-				PropertyData property = properties.get(part.property);
+			stateMap.clear();
+			for (PropertyData param : properties) {
+				StatePart part = entryMap.get(param.getName());
 				if (part.useEntry.isSelected()) {
-					Object value = property.getValueFromComponent(part.entryComponent);
+					Object value = param.getValueFromComponent(part.entryComponent);
 					if (value == null)
-						value = getValueFromComponent(part.entryComponent, property);
-					initialState.put(property, value);
-				} else {
-					initialState.remove(property);
+						value = getValueFromComponent(part.entryComponent, param);
+					stateMap.put(param, value);
 				}
 			}
 			retVal.set(JOptionPane.OK_OPTION);
@@ -189,18 +187,11 @@ public class StateEditorDialog {
 	private static class StatePart extends JPanel {
 
 		private final JCheckBox useEntry = new JCheckBox();
-		private final String property;
 		private final JComponent entryComponent;
 
-		private StatePart(JPanel parent, List<StatePart> entryList, String name, JComponent component) {
+		private StatePart(JPanel parent, String property, JComponent component) {
 			super(new FlowLayout(FlowLayout.LEFT));
-			property = name;
 			entryComponent = component;
-
-			useEntry.setSelected(true);
-
-			parent.add(PanelUtils.expandHorizontally(this));
-			entryList.add(this);
 
 			JPanel settings = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			settings.setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
@@ -208,9 +199,8 @@ public class StateEditorDialog {
 			settings.add(new JLabel("="));
 			settings.add(entryComponent);
 
-			add(useEntry);
-			add(settings);
-
+			useEntry.setSelected(true);
+			useEntry.setToolTipText(L10N.t("dialog.state_editor.use_entry"));
 			useEntry.addActionListener(e -> {
 				entryComponent.setEnabled(useEntry.isSelected());
 				settings.setBackground(useEntry.isSelected() ?
@@ -218,9 +208,12 @@ public class StateEditorDialog {
 						((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).darker());
 			});
 
+			add(useEntry);
+			add(settings);
+
+			parent.add(PanelUtils.expandHorizontally(this));
 			parent.revalidate();
 			parent.repaint();
 		}
 	}
-
 }

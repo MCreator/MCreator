@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -39,6 +40,9 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 
+<#if w.hasItemsWithCustomProperties()>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+</#if>
 public class ${JavaModName}Items {
 
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
@@ -87,6 +91,35 @@ public class ${JavaModName}Items {
 				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
 		</#if>
 	</#list>
+
+	<#if w.hasItemsWithCustomProperties()>
+	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+		<#list items as item>
+			<#if item.getModElement().getTypeString() == "item">
+				<#list item.customProperties.entrySet() as property>
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${property.getKey()}"),
+						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> <#if hasProcedure(property.getValue())>{
+					Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getEntityRepresentation();
+					if (entity == null)
+						return 0F;
+
+					return (float) <@procedureCode property.getValue(), {
+						"x": "entity.getX()",
+						"y": "entity.getY()",
+						"z": "entity.getZ()",
+						"world": "entity.level",
+						"entity": "entity",
+						"itemstack": "itemStackToRender"
+					}/>
+					}<#else>0F</#if>
+				);
+				</#list>
+			</#if>
+		</#list>
+		});
+	}
+	</#if>
 
 	<#if hasBlocks>
 	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {

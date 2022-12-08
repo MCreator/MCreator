@@ -194,7 +194,7 @@ public class DialogsTest {
 		if (rng.nextBoolean())
 			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomString(rng, meTypes));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testProps, testState, false, "block/custom_state"));
+				() -> StateEditorDialog.open(mcreator, testProps.values(), testState, false, "block/custom_state"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

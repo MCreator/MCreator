@@ -151,10 +151,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		stateLabel.rename(property, newName);
 	}
 
-	public void refreshState() {
-		stateLabel.refreshState();
-	}
-
 	public Item.ModelEntry getEntry() {
 		Item.ModelEntry retVal = new Item.ModelEntry();
 		retVal.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();

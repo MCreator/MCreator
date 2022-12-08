@@ -40,6 +40,9 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 
+<#if w.hasItemsWithCustomProperties()>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+</#if>
 public class ${JavaModName}Items {
 
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
@@ -90,13 +93,13 @@ public class ${JavaModName}Items {
     </#list>
 
 	<#if w.hasItemsWithCustomProperties()>
-		static {
+	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">
 				<#list item.customProperties.entrySet() as property>
 				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${property.getKey()}"),
-						(itemStackToRender, clientWorld, livingEntity, itemEntityId) ->
-					<#if hasProcedure(property.getValue())>{
+						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> <#if hasProcedure(property.getValue())>{
 					Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getEntityRepresentation();
 					if (entity == null)
 						return 0F;
@@ -109,14 +112,13 @@ public class ${JavaModName}Items {
 						"entity": "entity",
 						"itemstack": "itemStackToRender"
 					}/>
-					}<#else>
-					0F
-					</#if>
+					}<#else>0F</#if>
 				);
 				</#list>
 			</#if>
 		</#list>
-		}
+		});
+	}
 	</#if>
 
     <#if hasBlocks>

@@ -27,7 +27,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -42,9 +41,9 @@ import java.util.List;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
-	final VTextField name;
-	String nameString;
-	final JButton rename = new JButton(UIRES.get("16px.edit.gif"));
+	private final VTextField name;
+	private String cachedName;
+	private final JButton rename = new JButton(UIRES.get("16px.edit.gif"));
 
 	private final ProcedureSelector value;
 
@@ -60,14 +59,14 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 			}
 		};
 		name.setOpaque(true);
-		name.setText(nameString = "property" + propertyId);
+		name.setText(cachedName = "property" + propertyId);
 		name.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
 		name.setEditable(false);
 		name.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		name.addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
 				name.setEditable(false);
-				name.setText(nameString);
+				name.setText(cachedName);
 				name.getValidationStatus();
 			}
 		});
@@ -84,8 +83,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
-				L10N.t("elementgui.item.custom_property.value") + propertyId, AbstractProcedureSelector.Side.CLIENT,
-				true, VariableTypeLoader.BuiltInTypes.NUMBER,
+				L10N.t("elementgui.item.custom_property.value") + propertyId, ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		reloadDataLists(); // we make sure that selector can be properly shown
@@ -129,6 +128,22 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.setEnabled(enabled);
 	}
 
+	public VTextField getNameField() {
+		return name;
+	}
+
+	public String getCachedName() {
+		return cachedName;
+	}
+
+	public void renameTo(String newName) {
+		name.setText(cachedName = newName);
+	}
+
+	public void finishRenaming() {
+		rename.requestFocus();
+	}
+
 	public void reloadDataLists() {
 		value.refreshListKeepSelected();
 	}
@@ -138,7 +153,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	public void setEntry(String name, Procedure value) {
-		this.name.setText(name);
+		this.name.setText(cachedName = name);
 		this.value.setSelectedProcedure(value);
 	}
 

@@ -94,7 +94,8 @@ public abstract class GeneratableElement {
 		private static final Gson gson;
 
 		static {
-			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
+			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().serializeNulls().setPrettyPrinting()
+					.setLenient();
 
 			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 
