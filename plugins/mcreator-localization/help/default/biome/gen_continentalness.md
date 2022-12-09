@@ -11,10 +11,10 @@ from -1 to 1.
 
 Overworld vanilla biomes use these value ranges:
 
-* Deep ocean: -1.05 to -0.455;
-* Ocean: -0.455 to -0.19;
-* Coast: -0.19 to -0.11;
-* Inland: -0.11 to 0.55;
-* Near inland: -0.11 to 0.03;
-* Mid inland: 0.03 to 0.3;
-* Far inland: 0.3 to 1.0.
+* Deep ocean: -1.05 to -0.455
+* Ocean: -0.455 to -0.19
+* Coast: -0.19 to -0.11
+* Inland: -0.11 to 0.55
+* Near inland: -0.11 to 0.03
+* Mid inland: 0.03 to 0.3
+* Far inland: 0.3 to 1.0
