@@ -161,8 +161,10 @@ public class ${name}Item extends Item {
 	<#else>
 	if (entity.getAbilities().instabuild)
 	entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+	<#if !data.pickupProjectiles>
 	else
-	entityarrow.pickup = AbstractArrow.Pickup.<#if !data.pickupProjectiles>DISALLOWED<#else>ALLOWED</#if>;
+	entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
+	</#if>
 	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>
