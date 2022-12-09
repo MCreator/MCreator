@@ -29,10 +29,10 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.minecraft.states.JPropertyNameField;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -99,15 +99,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		propertiesList = new ArrayList<>() {
 			@Override public boolean remove(Object o) {
 				if (o instanceof JItemPropertiesListEntry entry) {
-					PropertyData data = buildPropertiesMap().get(entry.getNameField().getText());
+					PropertyData data = buildPropertiesMap().get(entry.getNameField().getTextField().getText());
 					statesList.forEach(s -> {
-						LinkedHashMap<PropertyData, Object> stateMap = s.getStateMap();
+						LinkedHashMap<PropertyData, Object> stateMap = s.getStateLabel().getStateMap();
 						stateMap.remove(data);
-						s.setStateMap(stateMap);
+						s.getStateLabel().setStateMap(stateMap);
 					});
 					Set<String> duplicateFilter = new HashSet<>();
 					statesList.stream().toList().forEach(s -> {
-						if (s.getState() == null || s.getState().equals("") || !duplicateFilter.add(s.getState()))
+						if (s.getStateLabel().getState() == null || s.getStateLabel().getState().equals("")
+								|| !duplicateFilter.add(s.getStateLabel().getState()))
 							s.removeState(stateEntries, statesList);
 					});
 				}
@@ -169,23 +170,24 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
 				propertyId);
 
-		VTextField nameField = pe.getNameField();
-		UniqueNameValidator validator = new UniqueNameValidator(nameField,
+		JPropertyNameField nameField = pe.getNameField();
+		UniqueNameValidator validator = new UniqueNameValidator(nameField.getTextField(),
 				L10N.t("elementgui.item.custom_property.name_validator"),
-				() -> propertiesList.stream().map(e -> e.getNameField().getText()), builtinPropertyNames,
-				new RegistryNameValidator(nameField, L10N.t("elementgui.item.custom_property.name_validator")));
-		nameField.setValidator(validator);
-		nameField.enableRealtimeValidation();
-		nameField.addKeyListener(new KeyAdapter() {
+				() -> propertiesList.stream().map(e -> e.getNameField().getTextField().getText()), builtinPropertyNames,
+				new RegistryNameValidator(nameField.getTextField(),
+						L10N.t("elementgui.item.custom_property.name_validator")));
+		nameField.getTextField().setValidator(validator);
+		nameField.getTextField().enableRealtimeValidation();
+		nameField.getTextField().addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
-						&& nameField.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					String newName = nameField.getText();
-					statesList.forEach(s -> s.rename(pe.getCachedName(), newName));
-					pe.finishRenaming();
-					pe.renameTo(newName);
+						&& pe.getValidationStatus() == Validator.ValidationResult.PASSED) {
+					String newName = nameField.getTextField().getText();
+					statesList.forEach(s -> s.getStateLabel().rename(nameField.getCachedName(), newName));
+					nameField.finishRenaming();
+					nameField.renameTo(newName);
 				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					pe.finishRenaming();
+					nameField.finishRenaming();
 				}
 			}
 		});
@@ -205,7 +207,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		if (getValidationResult(false).validateIsErrorFree()) {
 			LinkedHashMap<PropertyData, Object> stateMap = new LinkedHashMap<>();
 			if (entry != null)
-				stateMap.putAll(entry.getStateMap());
+				stateMap.putAll(entry.getStateLabel().getStateMap());
 			if (JOptionPane.OK_OPTION != StateEditorDialog.open(mcreator, buildPropertiesMap().values(), stateMap,
 					entry == null, "item/custom_state"))
 				return;
@@ -213,11 +215,12 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			if (stateMap.isEmpty()) { // all properties were unchecked - not acceptable by items
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_empty"),
 						L10N.t("elementgui.item.custom_states.error_empty.title"), JOptionPane.ERROR_MESSAGE);
-			} else if (statesList.stream().anyMatch(s -> s != entry && s.getStateMap().equals(stateMap))) {
+			} else if (statesList.stream()
+					.anyMatch(s -> s != entry && s.getStateLabel().getStateMap().equals(stateMap))) {
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_duplicate"),
 						L10N.t("elementgui.item.custom_states.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
 			} else {
-				(entry != null ? entry : addStatesEntry()).setStateMap(stateMap);
+				(entry != null ? entry : addStatesEntry()).getStateLabel().setStateMap(stateMap);
 			}
 		} else {
 			Toolkit.getDefaultToolkit().beep();
@@ -226,14 +229,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private Map<String, PropertyData> buildPropertiesMap() {
 		Map<String, PropertyData> props = new LinkedHashMap<>(builtinProperties);
-		propertiesList.forEach(e -> props.put(e.getNameField().getText(),
-				new PropertyData(e.getNameField().getText(), Float.class, 0F, 1000000F, null)));
+		propertiesList.forEach(e -> props.put(e.getNameField().getTextField().getText(),
+				new PropertyData(e.getNameField().getTextField().getText(), Float.class, 0F, 1000000F, null)));
 		return props;
 	}
 
 	public Map<String, Procedure> getProperties() {
 		Map<String, Procedure> retVal = new LinkedHashMap<>();
-		propertiesList.forEach(e -> retVal.put(e.getNameField().getText(), e.getEntry()));
+		propertiesList.forEach(e -> retVal.put(e.getNameField().getTextField().getText(), e.getEntry()));
 		return retVal;
 	}
 
@@ -252,7 +255,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public Map<String, Item.ModelEntry> getStates() {
 		Map<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
-		statesList.forEach(e -> retVal.put(e.getState(), e.getEntry()));
+		statesList.forEach(e -> retVal.put(e.getStateLabel().getState(), e.getEntry()));
 		return retVal;
 	}
 

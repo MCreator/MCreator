@@ -55,7 +55,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	private final MCreator mcreator;
 	private final JComponent container;
-	private final JButton remove;
+	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final JStateLabel stateLabel;
 
@@ -83,8 +83,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		model.setRenderer(new ModelComboBoxRenderer());
 		reloadDataLists(); // we make sure that combo box can be properly shown
 
-		container = PanelUtils.expandHorizontally(this);
-
 		JPanel ito = ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"));
 		Component imo = HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
 				L10N.t("elementgui.item.custom_state.model"), model, 3);
@@ -92,10 +90,10 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 				PanelUtils.join(ito, imo));
 		override.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
+		container = PanelUtils.expandHorizontally(this);
 		parent.add(container);
 		entryList.add(this);
 
-		remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_state.remove"));
 		remove.addActionListener(e -> removeState(parent, entryList));
 
@@ -118,11 +116,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 
-		remove.setEnabled(enabled);
-
 		stateLabel.setEnabled(enabled);
 		texture.setEnabled(enabled);
 		model.setEnabled(enabled);
+
+		remove.setEnabled(enabled);
 	}
 
 	public void reloadDataLists() {
@@ -131,24 +129,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}
 
-	public String getState() {
-		return stateLabel.getState();
-	}
-
-	public void setState(String state) {
-		stateLabel.setState(state);
-	}
-
-	public LinkedHashMap<PropertyData, Object> getStateMap() {
-		return stateLabel.getStateMap();
-	}
-
-	public void setStateMap(LinkedHashMap<PropertyData, Object> properties) {
-		stateLabel.setStateMap(properties);
-	}
-
-	public void rename(String property, String newName) {
-		stateLabel.rename(property, newName);
+	JStateLabel getStateLabel() {
+		return stateLabel;
 	}
 
 	public Item.ModelEntry getEntry() {

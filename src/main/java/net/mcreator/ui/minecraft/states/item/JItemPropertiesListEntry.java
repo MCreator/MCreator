@@ -27,59 +27,28 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.states.JPropertyNameField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.util.List;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
-	private final VTextField name;
-	private String cachedName;
-	private final JButton rename = new JButton(UIRES.get("16px.edit.gif"));
+	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
+	private final JPropertyNameField name;
 	private final ProcedureSelector value;
-
-	private final JButton remove;
 
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryList, int propertyId) {
 		super(new FlowLayout(FlowLayout.LEFT));
-		name = new VTextField(20) {
-			@Override public void setEditable(boolean b) {
-				super.setEditable(b);
-				rename.setEnabled(!b);
-			}
-		};
-		name.setOpaque(true);
-		name.setText(cachedName = "property" + propertyId);
-		name.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
-		name.setEditable(false);
-		name.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		name.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				name.setEditable(false);
-				name.setText(cachedName);
-				name.getValidationStatus();
-			}
-		});
 
-		rename.setOpaque(false);
-		rename.setMargin(new Insets(0, 0, 0, 0));
-		rename.setBorder(BorderFactory.createEmptyBorder());
-		rename.setContentAreaFilled(false);
-		rename.setToolTipText(L10N.t("elementgui.item.custom_property.rename"));
-		rename.addActionListener(e -> {
-			name.setEditable(true);
-			name.requestFocus();
-		});
+		name = new JPropertyNameField("property" + propertyId);
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
@@ -89,22 +58,14 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		reloadDataLists(); // we make sure that selector can be properly shown
 
-		JPanel butPan = new JPanel();
-		butPan.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		butPan.add(rename);
-		JPanel namePane = new JPanel(new FlowLayout(FlowLayout.CENTER, 7, 7));
-		namePane.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		namePane.add(name);
-		namePane.add(butPan);
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
-				L10N.t("elementgui.item.custom_property.name"), namePane, 3));
+				L10N.t("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
 		JComponent container = PanelUtils.expandHorizontally(this);
 		parent.add(container);
 		entryList.add(this);
 
-		remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
@@ -121,31 +82,18 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 
-		remove.setEnabled(enabled);
-
 		name.setEnabled(enabled);
-		rename.setEnabled(enabled);
 		value.setEnabled(enabled);
-	}
 
-	public VTextField getNameField() {
-		return name;
-	}
-
-	public String getCachedName() {
-		return cachedName;
-	}
-
-	public void renameTo(String newName) {
-		name.setText(cachedName = newName);
-	}
-
-	public void finishRenaming() {
-		rename.requestFocus();
+		remove.setEnabled(enabled);
 	}
 
 	public void reloadDataLists() {
 		value.refreshListKeepSelected();
+	}
+
+	JPropertyNameField getNameField() {
+		return name;
 	}
 
 	public Procedure getEntry() {
@@ -153,18 +101,18 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	public void setEntry(String name, Procedure value) {
-		this.name.setText(cachedName = name);
+		this.name.renameTo(name);
 		this.value.setSelectedProcedure(value);
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {
-		return name.getValidationStatus();
+		return name.getTextField().getValidationStatus();
 	}
 
 	@Override public void setValidator(Validator validator) {
 	}
 
 	@Override public Validator getValidator() {
-		return name.getValidator();
+		return name.getTextField().getValidator();
 	}
 }
