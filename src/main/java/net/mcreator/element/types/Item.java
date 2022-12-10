@@ -45,8 +45,8 @@ import java.util.Map;
 	public String texture;
 	public String customModelName;
 
-	public Map<String, Procedure> customProperties;
-	public Map<String, ModelEntry> modelsMap;
+	public LinkedHashMap<String, Procedure> customProperties;
+	public LinkedHashMap<String, ModelEntry> modelsMap;
 
 	public String name;
 	public String rarity;
@@ -95,21 +95,19 @@ import java.util.Map;
 	public String animation;
 
 	public static int encodeModelType(Model.Type modelType) {
-		if (modelType == Model.Type.JSON)
-			return 1;
-		else if (modelType == Model.Type.OBJ)
-			return 2;
-		else
-			return 0;
+		return switch (modelType) {
+			case JSON -> 1;
+			case OBJ -> 2;
+			default -> 0;
+		};
 	}
 
 	public static Model.Type decodeModelType(int modelType) {
-		if (modelType == 1)
-			return Model.Type.JSON;
-		else if (modelType == 2)
-			return Model.Type.OBJ;
-		else
-			return Model.Type.BUILTIN;
+		return switch (modelType) {
+			case 1 -> Model.Type.JSON;
+			case 2 -> Model.Type.OBJ;
+			default -> Model.Type.BUILTIN;
+		};
 	}
 
 	private Item() {
@@ -184,17 +182,16 @@ import java.util.Map;
 		}
 
 		public Map<String, String> getTextureMap(Workspace workspace) {
-			Model model = getItemModel(workspace);
-			if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-				return ((TexturedModel) model).getTextureMapping().getTextureMap();
+			if (getItemModel(workspace) instanceof TexturedModel textured && textured.getTextureMapping() != null)
+				return textured.getTextureMapping().getTextureMap();
 			return null;
 		}
 
-		public boolean isNormalModel(Workspace workspace) {
+		public boolean isNormalModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Normal");
 		}
 
-		public boolean isToolModel(Workspace workspace) {
+		public boolean isToolModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Tool");
 		}
 

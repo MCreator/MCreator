@@ -1,4 +1,4 @@
-Spécifiez une procédure pour déterminer la valeur de cette propriété d'élément personnalisé.
+Spécifiez une procédure pour déterminer la valeur de cette propriété d'item.
 
-Les coordonnées fournies sont les coordonnées d'une entité interagissant avec cet item et sont par défaut à zéro si
-l'item est à l'intérieur d'un coffre, au sol, etc.
+Si une entité tient cet item, les coordonnés fournies sont les coordonnées de cette entité. Si l'item est sur le sol,
+la dépendance d'entitié corresponds à l'entité d'item et ses coordonnées sont fournies.

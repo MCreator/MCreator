@@ -234,13 +234,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		return props;
 	}
 
-	public Map<String, Procedure> getProperties() {
-		Map<String, Procedure> retVal = new LinkedHashMap<>();
+	public LinkedHashMap<String, Procedure> getProperties() {
+		LinkedHashMap<String, Procedure> retVal = new LinkedHashMap<>();
 		propertiesList.forEach(e -> retVal.put(e.getNameField().getTextField().getText(), e.getEntry()));
 		return retVal;
 	}
 
-	public void setProperties(Map<String, Procedure> properties) {
+	public void setProperties(LinkedHashMap<String, Procedure> properties) {
 		properties.forEach((name, value) -> {
 			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
 			if (name.startsWith("property")) {
@@ -253,13 +253,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		});
 	}
 
-	public Map<String, Item.ModelEntry> getStates() {
-		Map<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
+	public LinkedHashMap<String, Item.ModelEntry> getStates() {
+		LinkedHashMap<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
 		statesList.forEach(e -> retVal.put(e.getStateLabel().getState(), e.getEntry()));
 		return retVal;
 	}
 
-	public void setStates(Map<String, Item.ModelEntry> states) {
+	public void setStates(LinkedHashMap<String, Item.ModelEntry> states) {
 		states.forEach((state, model) -> addStatesEntry().setEntry(state, model));
 	}
 

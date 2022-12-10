@@ -35,13 +35,13 @@ list_templates:
         writer: json
         condition:
           - "renderType #= 0"
-          - "${isNormalModel(w.getWorkspace())}"
+          - "isNormalModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
       - template: json/tool_override.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
-          - "${isToolModel(w.getWorkspace())}"
+          - "isToolModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
       - template: json/item_override_cmodel.json.ftl
         writer: json
