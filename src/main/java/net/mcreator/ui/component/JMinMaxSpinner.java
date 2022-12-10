@@ -32,11 +32,27 @@ public class JMinMaxSpinner extends JPanel {
 	private final JSpinner max;
 
 	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step) {
-		super(new GridLayout(1, 2, 5, 0));
-		setOpaque(false);
-
 		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
 		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
+
+		init();
+
+		if (step < 0.001) {
+			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(4);
+			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(4);
+		}
+	}
+
+	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step) {
+		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
+		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
+
+		init();
+	}
+
+	private void init() {
+		setLayout(new GridLayout(1, 2, 5, 0));
+		setOpaque(false);
 
 		min.addChangeListener(e -> {
 			if ((double) min.getValue() > (double) max.getValue())
