@@ -141,11 +141,11 @@ import java.util.Locale;
 	}
 
 	public boolean hasFruits() {
-		return !treeFruits.isEmpty();
+		return treeFruits != null && !treeFruits.isEmpty();
 	}
 
 	public boolean hasVines() {
-		return !treeVines.isEmpty();
+		return treeVines != null && !treeVines.isEmpty();
 	}
 
 	public boolean hasStructure(String structureType) {
