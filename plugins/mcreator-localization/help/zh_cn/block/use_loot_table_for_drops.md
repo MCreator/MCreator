@@ -1,9 +1,7 @@
-When enabled, block will not define drops in code (drops defined in block mod element), instead, block drops need to be
-defined with a loot table.
+当启用时，方块不会在代码中定义掉落(掉落在自定义掉落物元素中定义)，相反，方块掉落需要在战利品表中定义。
 
-Create loot table mod element with registry name `blocks/${registryname}`, namespace _mod_, and type _Block_.
+创建战利品表，注册名 `blocks/${registryname}`，命名空间 _mod_，类型 _Block_。
 
-If this parameter is not checked, loot tables will still override block drops, but block drop defined in block mod
-element will be used when loot table will not return any entry.
+如果不勾选此参数，战利品表仍将覆盖方块掉落，但当战利品表不返回任何条目时，自定义掉落物中定义的方块掉落将被使用。
 
-When this parameter is check, drops of this block are entirelly controlled by the loot tables.
+当勾选此参数时，此方块的掉落完全由战利品表控制。
