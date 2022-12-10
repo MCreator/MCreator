@@ -137,9 +137,8 @@ import java.util.Map;
 	}
 
 	@Override public Map<String, String> getTextureMap() {
-		Model model = getItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
+			return textured.getTextureMapping().getTextureMap();
 		return null;
 	}
 
