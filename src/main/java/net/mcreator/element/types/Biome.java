@@ -61,15 +61,16 @@ import java.util.Locale;
 
 	public double rainingPossibility;
 	public double temperature;
-	public double baseHeight;
-	public double heightVariation;
 
 	public boolean spawnBiome;
+	public boolean spawnInCaves;
 	public boolean spawnBiomeNether;
 
-	public boolean spawnInCaves;
-
-	public int biomeWeight;
+	public ClimatePoint genTemperature;
+	public ClimatePoint genHumidity;
+	public ClimatePoint genContinentalness;
+	public ClimatePoint genErosion;
+	public ClimatePoint genWeirdness;
 
 	public int grassPerChunk;
 	public int seagrassPerChunk;
@@ -204,6 +205,17 @@ import java.util.Locale;
 		public int weight;
 		public String spawnType;
 
+	}
+
+	public static class ClimatePoint {
+
+		public double min;
+		public double max;
+
+		public ClimatePoint(double min, double max) {
+			this.min = min;
+			this.max = max;
+		}
 	}
 
 }
