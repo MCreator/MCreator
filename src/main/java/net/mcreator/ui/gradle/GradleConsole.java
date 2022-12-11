@@ -293,7 +293,7 @@ public class GradleConsole extends JPanel {
 		textAccent = null;
 
 		SimpleAttributeSet keyWord = new SimpleAttributeSet();
-		StyleConstants.setFontSize(keyWord, consoleFontSize * 4 / 9);
+		StyleConstants.setFontSize(keyWord, consoleFontSize - 5);
 		pan.insertString("\n", keyWord);
 
 		append("Executing Gradle task: " + command, new Color(0xBBD9D0));
