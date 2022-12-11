@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component.util;
 
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
@@ -36,6 +37,8 @@ public class ComponentUtils {
 	}
 
 	public static JComponent deriveFont(JComponent component, float param) {
+		int size = ThemeLoader.CURRENT_THEME.getFontSize();
+		param = param * size / 12;
 		component.setFont(component.getFont().deriveFont(param));
 		return component;
 	}

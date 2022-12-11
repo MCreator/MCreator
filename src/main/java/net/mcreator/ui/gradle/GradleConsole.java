@@ -21,10 +21,12 @@ package net.mcreator.ui.gradle;
 import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
+import net.mcreator.io.UserFolderManager;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
@@ -91,6 +93,8 @@ public class GradleConsole extends JPanel {
 
 	// a flag to prevent infinite re-runs in case when re-run does not solve the build problem
 	public boolean rerunFlag = false;
+
+	private final int consoleFontSize = ThemeLoader.CURRENT_THEME.getFontSize() - 3;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
@@ -289,7 +293,7 @@ public class GradleConsole extends JPanel {
 		textAccent = null;
 
 		SimpleAttributeSet keyWord = new SimpleAttributeSet();
-		StyleConstants.setFontSize(keyWord, 4);
+		StyleConstants.setFontSize(keyWord, consoleFontSize * 4 / 9);
 		pan.insertString("\n", keyWord);
 
 		append("Executing Gradle task: " + command, new Color(0xBBD9D0));
@@ -302,7 +306,8 @@ public class GradleConsole extends JPanel {
 					+ "-bit, " + ref.getApplication().getDeviceInfo().getRamAmountMB() + " MB, " + ref.getApplication()
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
-					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime())
+					+ ", Gradle_User_Home: "+ UserFolderManager.getGradleHome();
 			append(deviceInfo, new Color(127, 120, 120));
 			append(" ");
 			taskOut.append(deviceInfo);
@@ -661,10 +666,10 @@ public class GradleConsole extends JPanel {
 						bracketText = spl[0];
 
 					SimpleAttributeSet keyWord = new SimpleAttributeSet();
-					StyleConstants.setFontSize(keyWord, 9);
+					StyleConstants.setFontSize(keyWord, consoleFontSize);
 
 					if (bracketText.contains(":") && !bracketText.contains("]:"))
-						StyleConstants.setFontSize(keyWord, 6);
+						StyleConstants.setFontSize(keyWord, consoleFontSize -3);
 
 					StyleConstants.setForeground(keyWord, c2);
 					StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -713,7 +718,7 @@ public class GradleConsole extends JPanel {
 			String err = text.replaceAll(": error:.*", "");
 			String othr = text.replaceAll(".+\\.java:\\d+", "") + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
-			StyleConstants.setFontSize(keyWord, 9);
+			StyleConstants.setFontSize(keyWord, consoleFontSize);
 			StyleConstants.setForeground(keyWord, new Color(0xF98771));
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			pan.insertLink(err.trim(), err.trim(), othr, keyWord);
@@ -733,7 +738,7 @@ public class GradleConsole extends JPanel {
 				String classLine = text.split("\\.java:")[1].split("\\)")[0];
 
 				SimpleAttributeSet keyWord = new SimpleAttributeSet();
-				StyleConstants.setFontSize(keyWord, 9);
+				StyleConstants.setFontSize(keyWord, consoleFontSize);
 				StyleConstants.setForeground(keyWord, Color.white);
 				StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 				pan.insertString(text.split("\\(")[0] + "(", keyWord);
@@ -755,7 +760,7 @@ public class GradleConsole extends JPanel {
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
-			StyleConstants.setFontSize(keyWord, 9);
+			StyleConstants.setFontSize(keyWord, consoleFontSize);
 			StyleConstants.setItalic(keyWord, a);
 			StyleConstants.setForeground(keyWord, c);
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
