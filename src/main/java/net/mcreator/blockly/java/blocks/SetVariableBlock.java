@@ -142,7 +142,7 @@ public class SetVariableBlock implements IBlockGenerator {
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.set")) + L10N.t(
+					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.set_var")) + L10N.t(
 							"blockly.warnings.skip")));
 		}
 	}
