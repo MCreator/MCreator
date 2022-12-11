@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -286,14 +287,6 @@ public class ElementUtil {
 
 		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
 		return retval;
-	}
-
-	public static List<DataListEntry> loadThrowableProjectiles() {
-		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("throwable")).toList();
-	}
-
-	public static List<DataListEntry> loadFireballProjectiles() {
-		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("fireball")).toList();
 	}
 
 	public static String[] loadAllDimensions(Workspace workspace) {

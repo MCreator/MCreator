@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -327,10 +328,6 @@ public class BlocklyJavascriptBridge {
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
-		case "throwableprojectile":
-			return ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "fireballprojectile":
-			return ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getName).toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
 		}
@@ -403,12 +400,6 @@ public class BlocklyJavascriptBridge {
 					.toArray(String[]::new);
 			case "rangeditem" ->
 					ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getReadableName)
-							.toArray(String[]::new);
-			case "fireballprojectile" ->
-					ElementUtil.loadFireballProjectiles().stream().map(DataListEntry::getReadableName)
-							.toArray(String[]::new);
-			case "throwableprojectile" ->
-					ElementUtil.loadThrowableProjectiles().stream().map(DataListEntry::getReadableName)
 							.toArray(String[]::new);
 			default -> getListOfForWorkspace(workspace, type);
 		};
