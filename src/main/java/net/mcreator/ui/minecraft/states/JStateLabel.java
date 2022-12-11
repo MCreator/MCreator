@@ -39,7 +39,11 @@ public class JStateLabel extends JPanel {
 	private String state;
 
 	private final JTextField label = new JTextField();
-	private final JButton edit;
+	private final JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
+		@Override public String getName() {
+			return "TechnicalButton";
+		}
+	};
 
 	public JStateLabel(Supplier<List<PropertyData>> properties, Runnable editButtonListener) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
@@ -53,7 +57,6 @@ public class JStateLabel extends JPanel {
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add(statePane);
 
-		edit = new JButton(UIRES.get("16px.edit.gif"));
 		edit.setOpaque(false);
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());
@@ -61,7 +64,11 @@ public class JStateLabel extends JPanel {
 		edit.setToolTipText(L10N.t("elementgui.common.custom_state.edit"));
 		edit.addActionListener(e -> editButtonListener.run());
 
-		JButton copy = new JButton(UIRES.get("16px.copyclipboard"));
+		JButton copy = new JButton(UIRES.get("16px.copyclipboard")) {
+			@Override public String getName() {
+				return "TechnicalButton";
+			}
+		};
 		copy.setOpaque(false);
 		copy.setMargin(new Insets(0, 0, 0, 0));
 		copy.setBorder(BorderFactory.createEmptyBorder());

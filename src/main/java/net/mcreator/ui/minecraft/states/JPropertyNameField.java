@@ -31,7 +31,11 @@ import java.awt.event.FocusEvent;
 public class JPropertyNameField extends JPanel {
 	private final VTextField field;
 	private String cachedName;
-	private final JButton rename = new JButton(UIRES.get("16px.edit.gif"));
+	private final JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
+		@Override public String getName() {
+			return "TechnicalButton";
+		}
+	};
 
 	public JPropertyNameField(String initialPropertyName) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 7));
@@ -82,6 +86,10 @@ public class JPropertyNameField extends JPanel {
 
 	public VTextField getTextField() {
 		return field;
+	}
+
+	public String getPropertyName() {
+		return field.getText();
 	}
 
 	public String getCachedName() {

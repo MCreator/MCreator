@@ -38,7 +38,7 @@ public abstract class JEntriesList extends JPanel {
 
 	protected final JButton add = new JButton(UIRES.get("16px.add.gif")) {
 		@Override public String getName() {
-			return "AddEntryButton";
+			return "TechnicalButton";
 		}
 	};
 

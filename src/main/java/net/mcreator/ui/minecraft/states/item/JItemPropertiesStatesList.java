@@ -29,10 +29,10 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.states.JPropertyNameField;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -99,7 +99,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		propertiesList = new ArrayList<>() {
 			@Override public boolean remove(Object o) {
 				if (o instanceof JItemPropertiesListEntry entry) {
-					PropertyData data = buildPropertiesMap().get(entry.getNameField().getTextField().getText());
+					PropertyData data = buildPropertiesMap().get(entry.getNameField().getPropertyName());
 					statesList.forEach(s -> {
 						LinkedHashMap<PropertyData, Object> stateMap = s.getStateLabel().getStateMap();
 						stateMap.remove(data);
@@ -170,24 +170,23 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
 				propertyId);
 
-		JPropertyNameField nameField = pe.getNameField();
-		UniqueNameValidator validator = new UniqueNameValidator(nameField.getTextField(),
+		VTextField name = pe.getNameField().getTextField();
+		UniqueNameValidator validator = new UniqueNameValidator(name,
 				L10N.t("elementgui.item.custom_property.name_validator"),
-				() -> propertiesList.stream().map(e -> e.getNameField().getTextField().getText()), builtinPropertyNames,
-				new RegistryNameValidator(nameField.getTextField(),
-						L10N.t("elementgui.item.custom_property.name_validator")));
-		nameField.getTextField().setValidator(validator);
-		nameField.getTextField().enableRealtimeValidation();
-		nameField.getTextField().addKeyListener(new KeyAdapter() {
+				() -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()), builtinPropertyNames,
+				new RegistryNameValidator(name, L10N.t("elementgui.item.custom_property.name_validator")));
+		name.setValidator(validator);
+		name.enableRealtimeValidation();
+		name.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
 						&& pe.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					String newName = nameField.getTextField().getText();
-					statesList.forEach(s -> s.getStateLabel().rename(nameField.getCachedName(), newName));
-					nameField.finishRenaming();
-					nameField.renameTo(newName);
+					String newName = name.getText();
+					statesList.forEach(s -> s.getStateLabel().rename(pe.getNameField().getCachedName(), newName));
+					pe.getNameField().finishRenaming();
+					pe.getNameField().renameTo(newName);
 				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					nameField.finishRenaming();
+					pe.getNameField().finishRenaming();
 				}
 			}
 		});
@@ -229,14 +228,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private Map<String, PropertyData> buildPropertiesMap() {
 		Map<String, PropertyData> props = new LinkedHashMap<>(builtinProperties);
-		propertiesList.forEach(e -> props.put(e.getNameField().getTextField().getText(),
-				new PropertyData(e.getNameField().getTextField().getText(), Float.class, 0F, 1000000F, null)));
+		propertiesList.forEach(e -> props.put(e.getNameField().getPropertyName(),
+				new PropertyData(e.getNameField().getPropertyName(), Float.class, 0F, 1000000F, null)));
 		return props;
 	}
 
 	public LinkedHashMap<String, Procedure> getProperties() {
 		LinkedHashMap<String, Procedure> retVal = new LinkedHashMap<>();
-		propertiesList.forEach(e -> retVal.put(e.getNameField().getTextField().getText(), e.getEntry()));
+		propertiesList.forEach(e -> retVal.put(e.getNameField().getPropertyName(), e.getEntry()));
 		return retVal;
 	}
 
