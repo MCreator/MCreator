@@ -356,24 +356,6 @@ public class BlocklyJavascriptBridge {
 		return retval.toArray(new String[0]);
 	}
 
-	@SuppressWarnings("unused") public String[] getReadableListOf(String type) {
-		return getReadableListOfForWorkspace(mcreator.getWorkspace(), type);
-	}
-
-	@SuppressWarnings("unused") public static String[] getReadableListOfForWorkspace(Workspace workspace, String type) {
-		List<String> retval;
-		return switch (type) {
-			case "entity" -> ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
-			case "biome" -> ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getReadableName)
-					.toArray(String[]::new);
-			case "rangeditem" ->
-					ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getReadableName)
-							.toArray(String[]::new);
-			default -> getListOfForWorkspace(workspace, type);
-		};
-	}
-
 	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
 		return BlocklyVariables.isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
