@@ -32,7 +32,7 @@ public class BlocklyLoader {
 	}
 
 	private static final List<String> builtinCategories = Arrays.asList("other", "apis", "mcelements", "mcvariables",
-			"customvariables", "logicloops", "logicoperations", "math", "text", "time", "advanced", "action");
+			"customvariables", "logicloops", "logicoperations", "math", "text", "time", "advanced", "action", "aiadvanced");
 	private final Map<String, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;
 

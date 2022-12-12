@@ -52,9 +52,9 @@ public class GTFeatureBlocks {
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGeneratorStats().getFeatureProcedures();
+		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks("features");
 
-		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks().values()) {
+		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getSpecificBlockLoader("features").getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			if (!generatorBlocks.contains(featureBlock.machine_name)) {

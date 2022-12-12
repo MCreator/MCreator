@@ -20,10 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ExternalBlockLoader;
-import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.types.Feature;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -108,11 +105,11 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		propertiesAndCondition.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("features").getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getFeatureBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
+			BlocklyLoader.INSTANCE.getSpecificBlockLoader("features")
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(FeatureGUI.this::regenerateFeature).start());
 			if (!isEditingMode()) {
@@ -144,7 +141,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 	private void regenerateFeature() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getFeatureProcedures());
+				mcreator.getGeneratorStats().getBlocklyBlocks("features"));
 
 		BlocklyToFeature blocklyToFeature;
 		try {

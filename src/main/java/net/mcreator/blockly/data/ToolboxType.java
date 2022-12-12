@@ -20,6 +20,7 @@
 package net.mcreator.blockly.data;
 
 public record ToolboxType(String name) {
+	public static ToolboxType AI_BUILDER = new ToolboxType("ai_builder");
 	public static ToolboxType PROCEDURE = new ToolboxType("procedure");
 	public static ToolboxType COMMAND = new ToolboxType("command");
 	public static ToolboxType EMPTY = new ToolboxType("empty");

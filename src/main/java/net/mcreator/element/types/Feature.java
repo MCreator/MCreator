@@ -56,7 +56,7 @@ import java.util.List;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			var blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks(),
+					BlocklyLoader.INSTANCE.getSpecificBlockLoader("features").getDefinedBlocks(),
 					this.getModElement().getGenerator().getTemplateGeneratorFromName("features"), additionalData);
 
 			var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
