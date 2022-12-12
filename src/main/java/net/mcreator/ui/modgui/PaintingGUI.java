@@ -77,7 +77,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 				L10N.label("elementgui.painting.painting_height")));
 		selp.add(height);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
+		pane3.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 		page1group.addValidationElement(texture);
@@ -94,7 +95,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	@Override public void openInEditingMode(Painting painting) {
 		width.setValue(painting.width);
 		height.setValue(painting.height);
-		texture.setTextureFromTextureName(StringUtils.removeEnd(painting.texture, ".png")); // legacy, old workspaces stored name with extension
+		texture.setTextureFromTextureName(
+				StringUtils.removeEnd(painting.texture, ".png")); // legacy, old workspaces stored name with extension
 	}
 
 	@Override public Painting getElementFromGUI() {

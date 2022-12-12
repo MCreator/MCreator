@@ -42,6 +42,7 @@ public class BlocklyLoader {
 		addBlockLoader("aitasks");
 		addBlockLoader("cmdargs");
 		addBlockLoader("jsontriggers");
+		addBlockLoader("features");
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
 	}
 

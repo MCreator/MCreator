@@ -1,0 +1,6 @@
+templates:
+  - template: feature/feature.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/@NAMEFeature.java"
+  - template: json/feature_biome_modifier.json.ftl
+    writer: json
+    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"

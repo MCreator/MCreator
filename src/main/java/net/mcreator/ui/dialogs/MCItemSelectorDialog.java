@@ -117,8 +117,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 						}
 					} else {
-						JOptionPane.showMessageDialog(this,
-								tagName.getValidationStatus().getMessage(),
+						JOptionPane.showMessageDialog(this, tagName.getValidationStatus().getMessage(),
 								L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -200,7 +199,9 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends MCItem> list, MCItem value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setToolTipText("<html>" + value.getReadableName() + "<br><small>" + value.getDescription());
+			setToolTipText("<html>" + value.getReadableName() + (value.getDescription().isEmpty() ?
+					"" :
+					("<br><small>" + value.getDescription())));
 			if (value.icon.getIconWidth() != 32)
 				setIcon(new ImageIcon(ImageUtils.resize(value.icon.getImage(), 32)));
 			else

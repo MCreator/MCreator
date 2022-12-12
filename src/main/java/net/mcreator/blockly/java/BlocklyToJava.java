@@ -24,7 +24,6 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.*;
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -37,7 +36,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.text.ParseException;
@@ -56,14 +54,14 @@ public class BlocklyToJava extends BlocklyToCode {
 	 * @param sourceXML         <p>The XML code used by Blockly</p>
 	 * @param templateGenerator <p>The folder location in each {@link net.mcreator.generator.Generator} containing the code template files<p>
 	 */
-	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType,
-			String sourceXML, TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, parent, templateGenerator, externalGenerators);
 
 		this.editorType = blocklyEditorType;
 
-		addJavaBlocks();
+		preInitialization();
 
 		if (sourceXML != null) {
 			try {
@@ -78,14 +76,14 @@ public class BlocklyToJava extends BlocklyToCode {
 					throw new ParseException("Could not find start block!", -1);
 
 				// we execute extra actions needed before placing blocks
-				preBlocksPlacement(doc);
+				preBlocksPlacement(doc, start_block);
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
 				processBlockProcedure(base_blocks);
 
 				// we execute extra actions needed after blocks are placed
-				postBlocksPlacement(doc);
+				postBlocksPlacement(doc, start_block, base_blocks);
 
 			} catch (TemplateGeneratorException e) {
 				throw e;
@@ -101,17 +99,23 @@ public class BlocklyToJava extends BlocklyToCode {
 	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
 	 *
 	 * @param doc Blockly XML document
+	 * @param startBlock The basic block of the editor used to get other blocks.
 	 */
-	public void preBlocksPlacement(Document doc) {}
+	protected void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {}
 
 	/**
 	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
 	 *
 	 * @param doc Blockly XML document
+	 * @param startBlock The basic block of the editor used to get other blocks.
+	 * @param baseBlocks A list of all blocks placed under start block.
 	 */
-	public void postBlocksPlacement(Document doc) {}
+	protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {}
 
-	private void addJavaBlocks() {
+	/**
+	 * <p>This method is executed after the constructor is called, before the code is executed.</p>
+	 */
+	protected void preInitialization() {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());

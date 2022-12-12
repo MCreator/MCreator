@@ -10,17 +10,17 @@
     </#if>
 </#function>
 
+<#function transformExtension mappedBlock>
+    <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
+    <#return (extension?has_content)?then("_" + extension, "")>
+</#function>
+
 <#function mappedMCItemToIngameItemName mappedBlock skipDefaultMetadata=false>
     <#if mappedBlock.toString().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.toString().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
             <#return "\"item\": \"" + "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")
+            + transformExtension(mappedBlock.getUnmappedValue())
             + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
@@ -42,15 +42,9 @@
 
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
-            <#return "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
+            <#return "${modid}:" + customelement + transformExtension(mappedBlock.getUnmappedValue())>
         <#else>
             <#return "minecraft:air">
         </#if>

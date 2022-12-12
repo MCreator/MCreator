@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -147,22 +146,28 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
 		for (Element block : blocks) {
 			String type = block.getAttribute("type");
-			boolean generated = false;
-			for (IBlockGenerator generator : blockGenerators) {
-				if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
-						generator.getSupportedBlocks()).contains(type)) {
-					generator.generateBlock(this, block);
 
-					lastProceduralBlockType = type; // update last block type generated
-
-					generated = true;
-					break;
-				}
-			}
-
-			if (!generated) {
+			if (block.getAttribute("disabled").equals("true")) { // Skip disabled blocks
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warnings.unknown_block_type.skip", type)));
+						L10N.t("blockly.warnings.disabled_block_type.skip", type)));
+			} else {
+				boolean generated = false;
+				for (IBlockGenerator generator : blockGenerators) {
+					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL &&
+							Arrays.asList(generator.getSupportedBlocks()).contains(type)) {
+						generator.generateBlock(this, block);
+
+						lastProceduralBlockType = type; // update last block type generated
+
+						generated = true;
+						break;
+					}
+				}
+
+				if (!generated) {
+					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							L10N.t("blockly.warnings.unknown_block_type.skip", type)));
+				}
 			}
 		}
 	}
@@ -174,20 +179,25 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		Element block = conditionBlocks.get(0);
 		String type = block.getAttribute("type");
 
-		boolean generated = false;
-		for (IBlockGenerator generator : blockGenerators) {
-			if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
-					generator.getSupportedBlocks()).contains(type)) {
-				generator.generateBlock(this, block);
-
-				generated = true;
-				break;
-			}
-		}
-
-		if (!generated) {
+		if (block.getAttribute("disabled").equals("true")) { // Add compile error if block is disabled
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.warnings.unknown_block_type.remove", type)));
+					L10N.t("blockly.errors.disabled_block_type.remove", type)));
+		} else {
+			boolean generated = false;
+			for (IBlockGenerator generator : blockGenerators) {
+				if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT &&
+						Arrays.asList(generator.getSupportedBlocks()).contains(type)) {
+					generator.generateBlock(this, block);
+
+					generated = true;
+					break;
+				}
+			}
+
+			if (!generated) {
+				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.unknown_block_type.remove", type)));
+			}
 		}
 	}
 

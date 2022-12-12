@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
+import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
@@ -70,15 +71,19 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			ProcedureGUI procedureGUI) {
 		setBorder(null);
 
-		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel,
-				TemplatesLoader.loadTemplates(blocklyEditorType.extension(), blocklyEditorType.extension()),
-				procedureGUI);
+		List<ResourcePointer> templates =
+				TemplatesLoader.loadTemplates(blocklyEditorType.extension(), blocklyEditorType.extension());
+
+		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
 
 		templateLib = L10N.button("blockly.templates." + blocklyEditorType.translationKey());
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
 		templateLib.setOpaque(false);
-		add(templateLib);
+
+		if (!templates.isEmpty())
+			add(templateLib);
+
 		templateLib.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				templateDropdown.show(e.getComponent(), e.getComponent().getWidth(), 0);

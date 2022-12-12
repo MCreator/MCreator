@@ -15,6 +15,8 @@ public net.minecraft.world.level.biome.MultiNoiseBiomeSource <init>(Lnet/minecra
 public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48438_ #preset
 public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48435_ #parameters
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_62137_ #biomeSource
+public-f net.minecraft.world.level.chunk.ChunkGenerator f_223020_ #featuresPerStep
+public-f net.minecraft.world.level.chunk.ChunkGenerator f_223021_ #generationSettingsGetter
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>

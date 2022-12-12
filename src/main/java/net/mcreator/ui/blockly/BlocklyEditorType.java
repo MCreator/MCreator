@@ -24,5 +24,6 @@ public record BlocklyEditorType(String translationKey, String extension, String 
 	public static BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");
 	public static BlocklyEditorType AI_TASK = new BlocklyEditorType("ai_setup", "aitpl", "aitasks_container");
 	public static BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmd_setup", "cmdtpl", "args_start");
+	public static BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
 
 }

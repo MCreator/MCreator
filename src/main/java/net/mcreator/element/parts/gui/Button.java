@@ -18,7 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -27,20 +27,26 @@ import java.awt.*;
 
 public class Button extends SizedComponent {
 
+	public String name;
 	public String text;
 	public Procedure onClick;
 	public Procedure displayCondition;
 
 	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick,
 			Procedure displayCondition) {
-		super(name, x, y, width, height);
+		super(x, y, width, height);
 		this.text = text;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;
+		this.name = name;
 	}
 
 	@Override public int getWeight() {
 		return 2;
+	}
+
+	@Override public String getName() {
+		return name;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
