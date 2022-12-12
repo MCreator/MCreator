@@ -115,7 +115,7 @@ public class ElementUtil {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
 				.forEach(modElement -> elements.addAll(
-						modElement.getMCItems().stream().filter(e -> !e.getName().endsWith(".bucket")).toList()));
+						modElement.getMCItems().stream().filter(e -> e.getType().equals("block")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.filter(typeMatches("block")).map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).toList());

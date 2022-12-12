@@ -37,10 +37,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class ImageDialog extends AbstractWYSIWYGDialog {
+public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
-		super(editor.mcreator, image);
+		super(editor, image);
 		setSize(560, 180);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
@@ -48,7 +48,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.toArray(String[]::new));
-		textureSelector.setRenderer(new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
+		textureSelector.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
@@ -88,23 +89,16 @@ public class ImageDialog extends AbstractWYSIWYGDialog {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					ImageIcon a = new ImageIcon(editor.mcreator.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(imageTxt), TextureType.SCREEN)
-							.getAbsolutePath());
+					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(), displayCondition.getSelectedProcedure());
 
-					if (scale1x.isSelected())
-						editor.editor.setPositioningMode(a.getIconWidth() / 2, a.getIconHeight() / 2);
-					else
-						editor.editor.setPositioningMode(a.getIconWidth(), a.getIconHeight());
-
-					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-							new Image(imageTxt, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, imageTxt, scale1x.isSelected(),
-									displayCondition.getSelectedProcedure()))));
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
-					Image labelNew = new Image(imageTxt, image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
+					Image labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);

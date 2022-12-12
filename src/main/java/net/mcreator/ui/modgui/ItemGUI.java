@@ -32,7 +32,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -120,7 +120,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "eat", "block", "bow", "crossbow", "drink", "none", "spear" });
+			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -160,7 +160,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -187,7 +187,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
@@ -333,7 +333,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
 
-		isFood.addActionListener(e -> updateFoodPanel());
+		isFood.addActionListener(e -> {
+			updateFoodPanel();
+			if (!isEditingMode()) {
+				animation.setSelectedItem("eat");
+				useDuration.setValue(32);
+			}
+		});
+
 		updateFoodPanel();
 
 		foodSubpane.add(
@@ -427,8 +434,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 			isMeat.setEnabled(true);
 			isAlwaysEdible.setEnabled(true);
 			eatResultItem.setEnabled(true);
-			if ((int) useDuration.getValue() <= 0)
-				useDuration.setValue(32);
 		} else {
 			nutritionalValue.setEnabled(false);
 			saturation.setEnabled(false);

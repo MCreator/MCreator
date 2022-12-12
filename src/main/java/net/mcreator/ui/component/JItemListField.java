@@ -22,10 +22,12 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
@@ -44,6 +46,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JButton bt = new JButton(UIRES.get("18px.add"));
 	private final JButton bt2 = new JButton(UIRES.get("18px.remove"));
 	private final JButton bt3 = new JButton(UIRES.get("18px.removeall"));
+	private final JToggleButton include = L10N.togglebutton("elementgui.common.include");
+	private final JToggleButton exclude = L10N.togglebutton("elementgui.common.exclude");
 
 	private Validator validator = null;
 	private Validator.ValidationResult currentValidationResult = null;
@@ -57,6 +61,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final List<ChangeListener> listeners = new ArrayList<>();
 
 	protected JItemListField(MCreator mcreator) {
+		this(mcreator, false);
+	}
+
+	protected JItemListField(MCreator mcreator, boolean excludeButton) {
 		this.mcreator = mcreator;
 
 		setLayout(new BorderLayout());
@@ -138,6 +146,22 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttons.setOpaque(true);
 		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
+		if (excludeButton) {
+			include.setSelected(true);
+			ButtonGroup group = new ButtonGroup();
+			group.add(include);
+			group.add(exclude);
+
+			include.setMargin(new Insets(0, 1, 0, 1));
+			exclude.setMargin(new Insets(0, 1, 0, 1));
+
+			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
+			incexc.setBorder(
+					BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+
+			add(incexc, BorderLayout.WEST);
+		}
+
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
 	}
@@ -148,6 +172,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		bt.setEnabled(enabled);
 		bt2.setEnabled(enabled);
 		bt3.setEnabled(enabled);
+		include.setEnabled(enabled);
+		exclude.setEnabled(enabled);
 	}
 
 	public void addChangeListener(ChangeListener changeListener) {
@@ -173,6 +199,15 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		elementsListModel.removeAllElements();
 		for (T el : elements)
 			elementsListModel.addElement(el);
+	}
+
+	public boolean isExclusionMode() {
+		return exclude.isSelected();
+	}
+
+	public void setExclusionMode(boolean isExcluded) {
+		exclude.setSelected(isExcluded);
+		include.setSelected(!isExcluded);
 	}
 
 	@Override public void paint(Graphics g) {
@@ -236,18 +271,23 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 			setIcon(null);
 
-			if (value instanceof MappableElement) {
-				setText(((MappableElement) value).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
-						.replace("Items.", ""));
-				if (((MappableElement) value).getUnmappedValue().contains("CUSTOM:"))
+			if (value instanceof MappableElement mappableElement) {
+				mappableElement.getDataListEntry()
+						.ifPresentOrElse(dataListEntry -> setText(dataListEntry.getReadableName()), () -> setText(
+								(mappableElement).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
+										.replace("Items.", "")));
+
+				if ((mappableElement).getUnmappedValue().contains("CUSTOM:"))
 					setIcon(new ImageIcon(ImageUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
-							((MappableElement) value).getUnmappedValue()).getImage(), 18)));
-				if (!((MappableElement) value).canProperlyMap())
+							(mappableElement).getUnmappedValue()).getImage(), 18)));
+
+				if (!(mappableElement).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));
 			} else if (value instanceof File) {
 				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
-				setText(value.toString().replace("CUSTOM:", ""));
+				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
+
 				if (value.toString().contains("CUSTOM:"))
 					setIcon(new ImageIcon(ImageUtils.resize(
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));

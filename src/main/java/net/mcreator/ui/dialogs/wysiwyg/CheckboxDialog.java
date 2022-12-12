@@ -20,7 +20,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Checkbox;
-import net.mcreator.element.parts.gui.IMachineNamedComponent;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -37,10 +37,10 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class CheckboxDialog extends AbstractWYSIWYGDialog {
+public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
-		super(editor.mcreator, checkbox);
+		super(editor, checkbox);
 		setSize(480, 220);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
@@ -53,8 +53,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.checkbox_name_validator"),
 				Transliteration::transliterateString,
-				() -> editor.getComponentList().stream().filter(e -> e instanceof IMachineNamedComponent)
-						.map(e -> e.name), new JavaMemberNameValidator(nameField, false));
+				() -> editor.getComponentList().stream().map(GUIComponent::getName),
+				new JavaMemberNameValidator(nameField, false));
 		validator.setIsPresentOnList(checkbox != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
@@ -92,18 +92,19 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog {
 		ok.addActionListener(arg01 -> {
 			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
-				String text = Transliteration.transliterateString(nameField.getText());
-				if (!text.equals("")) {
+				String checkBoxName = nameField.getText();
+				if (!checkBoxName.equals("")) {
 					if (checkbox == null) {
-						editor.editor.setPositioningMode(20, 20);
-						editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
-								new Checkbox(text, editor.editor.newlyAddedComponentPosX,
-										editor.editor.newlyAddedComponentPosY, checkboxText.getText(),
-										isCheckedProcedure.getSelectedProcedure()))));
+						Checkbox component = new Checkbox(checkBoxName, 0, 0, checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
+
+						setEditingComponent(component);
+						editor.editor.addComponent(component);
+						editor.list.setSelectedValue(component, true);
+						editor.editor.moveMode();
 					} else {
 						int idx = editor.components.indexOf(checkbox);
 						editor.components.remove(checkbox);
-						Checkbox checkboxNew = new Checkbox(text, checkbox.getX(), checkbox.getY(),
+						Checkbox checkboxNew = new Checkbox(checkBoxName, checkbox.getX(), checkbox.getY(),
 								checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
 						editor.components.add(idx, checkboxNew);
 						setEditingComponent(checkboxNew);

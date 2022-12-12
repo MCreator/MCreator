@@ -154,6 +154,7 @@ public class ExternalBlockLoader {
 		toolbox.put("text", new ArrayList<>());
 		toolbox.put("time", new ArrayList<>());
 		toolbox.put("advanced", new ArrayList<>());
+		toolbox.put("aiadvanced", new ArrayList<>());
 		toolbox.put("actions", new ArrayList<>());
 
 		// Handle built-in categories
@@ -240,7 +241,7 @@ public class ExternalBlockLoader {
 	}
 
 	public enum ToolboxType {
-		PROCEDURE, COMMAND, EMPTY
+		AI_BUILDER, PROCEDURE, COMMAND, EMPTY
 	}
 
 }

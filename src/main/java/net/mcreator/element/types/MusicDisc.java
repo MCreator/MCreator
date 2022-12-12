@@ -19,9 +19,9 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -33,13 +33,16 @@ import java.util.List;
 
 public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement {
 
-	public String texture;
 	public String name;
+	public String texture;
 	public String description;
 	public TabEntry creativeTab;
-	public Sound music;
 	public List<String> specialInfo;
 	public boolean hasGlow;
+
+	public Sound music;
+	public int lengthInTicks;
+	public int analogOutput;
 
 	public Procedure onRightClickedInAir;
 	public Procedure onRightClickedOnBlock;

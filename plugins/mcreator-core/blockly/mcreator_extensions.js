@@ -4,12 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('biome_dictionary_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("biomedictionarytypes"))), 'biomedict');
-    });
-
 Blockly.Extensions.register('gamemode_list_provider',
     function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
@@ -111,20 +105,6 @@ Blockly.Extensions.register('gui_list_provider',
             arrayToBlocklyDropDownArray(javabridge.getListOf("gui"))), 'guiname');
     });
 
-Blockly.Extensions.register('rangeditem_list_provider', // name is rangeditem for legacy reasons, is actually arrow list
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("rangeditem"),
-                javabridge.getReadableListOf("rangeditem"))), 'rangeditem');
-    });
-
-Blockly.Extensions.register('throwableprojectile_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("throwableprojectile"),
-                javabridge.getReadableListOf("throwableprojectile"))), 'throwableprojectile');
-    });
-
 Blockly.Extensions.register('custom_entity_with_entity_data_list_provider',
     function () {
         var thisBlock = this;
@@ -137,13 +117,6 @@ Blockly.Extensions.register('custom_entity_with_entity_data_list_provider',
                 return arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getCustomEntityDataList(thisBlock.getFieldValue('customentity')),
                     javabridge.getReadableListOfWithValue('entitydata', thisBlock.getFieldValue('customentity')));
             }), 'dataName');
-    });
-
-Blockly.Extensions.register('fireballprojectile_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArrayWithReadableNames(javabridge.getListOf("fireballprojectile"),
-                javabridge.getReadableListOf("fireballprojectile"))), 'fireballprojectile');
     });
 
 Blockly.Extensions.register('dimension_list_provider',

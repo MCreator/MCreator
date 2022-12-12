@@ -18,10 +18,9 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
-import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 
@@ -32,7 +31,7 @@ import java.awt.event.*;
 public class TextureHolder extends VButton {
 
 	private String id = "";
-	private final BlockItemTextureSelector td;
+	private final TypedTextureSelectorDialog td;
 
 	private ActionListener actionListener;
 
@@ -42,11 +41,11 @@ public class TextureHolder extends VButton {
 
 	private boolean xFlip;
 
-	public TextureHolder(BlockItemTextureSelector td) {
+	public TextureHolder(TypedTextureSelectorDialog td) {
 		this(td, 70);
 	}
 
-	public TextureHolder(BlockItemTextureSelector td, int size) {
+	public TextureHolder(TypedTextureSelectorDialog td, int size) {
 		super("");
 		this.td = td;
 
@@ -75,7 +74,7 @@ public class TextureHolder extends VButton {
 						id = "";
 						setIcon(null);
 						getValidationStatus();
-						setToolTipText("");
+						setToolTipText(null);
 					} else {
 						td.setVisible(true);
 					}
@@ -125,14 +124,9 @@ public class TextureHolder extends VButton {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
 			setToolTipText(texture);
-			if (td.getTextureType() == TextureType.BLOCK)
-				setIcon(new ImageIcon(ImageUtils.resize(
-						td.getMCreator().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage(),
-						this.size)));
-			else
-				setIcon(new ImageIcon(ImageUtils.resize(
-						td.getMCreator().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(),
-						this.size)));
+			setIcon(new ImageIcon(ImageUtils.resize(
+					td.getMCreator().getFolderManager().getTextureImageIcon(id, td.getTextureType()).getImage(),
+					this.size)));
 		}
 	}
 

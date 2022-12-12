@@ -1,6 +1,0 @@
-templates:
-  - template: biome.json.ftl
-    writer: json
-    name: "@SRCROOT/biomes/@registryname.json"
-
-field_inclusions: [rainingPossibility, temperature, groundBlock, undergroundBlock, treesPerChunk, baseHeight, heightVariation, spawnBiome, biomeType]

@@ -165,8 +165,8 @@
 <#macro onItemUsedOnBlock procedure="">
 <#if hasProcedure(procedure)>
 @Override public InteractionResult useOn(UseOnContext context) {
-	InteractionResult retval = super.useOn(context);
-	<@procedureCodeWithOptResult procedure, "actionresulttype", "retval", {
+	super.useOn(context);
+	<@procedureCodeWithOptResult procedure, "actionresulttype", "InteractionResult.SUCCESS", {
 		"world": "context.getLevel()",
 		"x": "context.getClickedPos().getX()",
 		"y": "context.getClickedPos().getY()",
@@ -180,22 +180,27 @@
 </#if>
 </#macro>
 
-<#macro onItemUseFirst procedure="">
-<#if hasProcedure(procedure)>
-@Override public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
-	<@procedureCodeWithOptResult procedure, "actionresulttype", "InteractionResult.PASS", {
-		"world": "context.getLevel()",
-		"x": "context.getClickedPos().getX()",
-		"y": "context.getClickedPos().getY()",
-		"z": "context.getClickedPos().getZ()",
-		"blockstate": "context.getLevel().getBlockState(context.getClickedPos())",
-		"entity": "context.getPlayer()",
-		"direction": "context.getClickedFace()",
+<#macro hasGlow procedure="">
+@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
+   	<#if hasProcedure(procedure)>
+    <#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+    <#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+   	Entity entity = Minecraft.getInstance().player;
+   	</#if>
+   	return <@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"entity": "entity",
+		"world": "entity.level",
 		"itemstack": "itemstack"
-	}/>
+   	}/>
+	<#else>
+   	return true;
+	</#if>
 }
-</#if>
 </#macro>
+
 
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">

@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "value",
+      "value": 64,
+      "min": -2032,
+      "max": 2031,
+      "precision": 1
+    }
+  ],
+  "output": "VerticalAnchor",
+  "colour": 165,
+  "mcreator": {
+    "toolbox_id": "heightplacements",
+    "fields": [
+      "value"
+    ]
+  }
+}

@@ -30,6 +30,7 @@ public class BlocklyLoader {
 	private final ExternalBlockLoader jsonTriggerLoader;
 	private final ExternalBlockLoader aitaskBlockLoader;
 	private final ExternalBlockLoader cmdargsBlockLoader;
+	private final ExternalBlockLoader featureBlockLoader;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
 	private BlocklyLoader() {
@@ -38,6 +39,7 @@ public class BlocklyLoader {
 		cmdargsBlockLoader = new ExternalBlockLoader("cmdargs");
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
 		jsonTriggerLoader = new ExternalBlockLoader("jsontriggers");
+		featureBlockLoader = new ExternalBlockLoader("features");
 	}
 
 	public ExternalBlockLoader getProcedureBlockLoader() {
@@ -48,7 +50,7 @@ public class BlocklyLoader {
 		return aitaskBlockLoader;
 	}
 
-	public ExternalBlockLoader getCmdArgsBlockLoader() { return cmdargsBlockLoader;}
+	public ExternalBlockLoader getCmdArgsBlockLoader() {return cmdargsBlockLoader;}
 
 	public ExternalTriggerLoader getExternalTriggerLoader() {
 		return externalTriggerLoader;
@@ -58,4 +60,7 @@ public class BlocklyLoader {
 		return jsonTriggerLoader;
 	}
 
+	public ExternalBlockLoader getFeatureBlockLoader() {
+		return featureBlockLoader;
+	}
 }

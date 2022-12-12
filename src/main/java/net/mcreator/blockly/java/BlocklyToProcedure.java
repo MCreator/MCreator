@@ -28,6 +28,7 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import org.apache.commons.lang3.ArrayUtils;
@@ -42,12 +43,13 @@ public class BlocklyToProcedure extends BlocklyToJava {
 	private List<VariableElement> variables;
 	private VariableType returnType;
 
-	public BlocklyToProcedure(Workspace workspace, String sourceXML, TemplateGenerator templateGenerator,
-			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
+	public BlocklyToProcedure(Workspace workspace, ModElement parent, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+			throws TemplateGeneratorException {
+		super(workspace, parent, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
-	@Override public void preBlocksPlacement(Document doc) {
+	@Override protected void preBlocksPlacement(Document doc, Element startBlock) {
 		if (doc != null) {
 			// first we load data from startblock
 			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, "event_trigger"),
@@ -62,7 +64,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 		}
 	}
 
-	@Override public void postBlocksPlacement(Document doc) {
+	@Override protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
 		if (getReturnType() != null) {
 			if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

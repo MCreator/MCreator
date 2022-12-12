@@ -143,8 +143,8 @@ public class Procedure extends GeneratableElement {
 				BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks(),
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
 
-		// load blocklytojava with custom generators loaded
-		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.procedurexml,
+		// load BlocklyToProcedure with custom generators loaded
+		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.getModElement(), this.procedurexml,
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));

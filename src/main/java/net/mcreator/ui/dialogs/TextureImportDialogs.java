@@ -51,7 +51,9 @@ public class TextureImportDialogs {
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-		saveTextures(mcreator, TextureType.getTextureType(n, false), new File[] { file });
+		if (n >= 0) {
+			saveTextures(mcreator, TextureType.getTextureType(n, false), new File[] { file });
+		}
 	}
 
 	public static void importArmor(final MCreator mcreator) {

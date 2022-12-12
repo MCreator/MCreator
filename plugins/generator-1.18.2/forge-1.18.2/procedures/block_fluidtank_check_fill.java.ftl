@@ -10,7 +10,7 @@
 				<#assign fluid = field$fluid?replace("CUSTOM:", "")>
 				_retval.set(capability.fill(new FluidStack(${JavaModName}Fluids.${fluid?ends_with(":Flowing")?then("FLOWING_","")}${generator.getRegistryNameForModElement(fluid?remove_ending(":Flowing"))?upper_case}.get(), amount), IFluidHandler.FluidAction.SIMULATE))
 				<#else>
-				_retval.set(capability.fill(new FluidStack(Fluids.${generator.map(field$fluid, "fluid")}, amount), IFluidHandler.FluidAction.SIMULATE))
+				_retval.set(capability.fill(new FluidStack(Fluids.${generator.map(field$fluid, "fluids")}, amount), IFluidHandler.FluidAction.SIMULATE))
 				</#if>
 		);
 		return _retval.get();

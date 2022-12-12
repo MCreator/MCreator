@@ -43,7 +43,7 @@ public class GetVariableBlock implements IBlockGenerator {
 
 	public GetVariableBlock() {
 		names = VariableTypeLoader.INSTANCE.getAllVariableTypes().stream().map(VariableType::getName)
-				.map(s -> s = "variables_get_" + s).toArray(String[]::new);
+				.map(s -> "variables_get_" + s).toArray(String[]::new);
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -126,7 +126,7 @@ public class GetVariableBlock implements IBlockGenerator {
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get"))));
+					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get_var"))));
 		}
 	}
 

@@ -60,15 +60,11 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		editor = new WYSIWYGEditor(mcreator, false);
-		editor.button.setVisible(false);
-		editor.checkbox.setVisible(false);
-		editor.slot1.setVisible(false);
-		editor.slot2.setVisible(false);
-		editor.text.setVisible(false);
 
 		editor.ovst.add(displayCondition);
 
-		editor.overlayBaseTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
+		editor.overlayBaseTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
 
 		editor.setPreferredSize(new Dimension(5, 550));
 

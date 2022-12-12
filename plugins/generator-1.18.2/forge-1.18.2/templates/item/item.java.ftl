@@ -112,9 +112,11 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
+	<#if (!data.isFood && data.useDuration != 0) || (data.isFood && data.useDuration != 32)>
 	@Override public int getUseDuration(ItemStack itemstack) {
 		return ${data.useDuration};
 	}
+	</#if>
 
 	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
@@ -135,18 +137,7 @@ public class ${name}Item extends Item {
 	</#if>
 
     <#if data.hasGlow>
-    @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-    	<#if hasProcedure(data.glowCondition)>
-    	Player entity = Minecraft.getInstance().player;
-    	Level world = entity.level;
-    	double x = entity.getX();
-    	double y = entity.getY();
-    	double z = entity.getZ();
-    	return <@procedureOBJToConditionCode data.glowCondition/>;
-		<#else>
-    	return true;
-		</#if>
-	}
+	<@hasGlow data.glowCondition/>
 	</#if>
 
 	<#if data.destroyAnyBlock>

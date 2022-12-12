@@ -20,8 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
@@ -200,6 +200,10 @@ import java.util.stream.Collectors;
 
 	public boolean doesGenerateInWorld() {
 		return spawnWorldTypes.size() > 0;
+	}
+
+	@Override public String getRenderType() {
+		return "cutout";
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

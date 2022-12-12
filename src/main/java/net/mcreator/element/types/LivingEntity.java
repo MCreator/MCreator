@@ -22,9 +22,10 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -82,6 +83,7 @@ import java.util.List;
 	public double movementSpeed;
 	public double armorBaseValue;
 	public int trackingRange;
+	public int followRange;
 	public int health;
 	public int xpAmount;
 	public boolean waterMob;
@@ -118,13 +120,6 @@ import java.util.List;
 	public Sound deathSound;
 	public Sound stepSound;
 
-	public boolean spawnParticles;
-	public Particle particleToSpawn;
-	public String particleSpawningShape;
-	public double particleSpawningRadious;
-	public int particleAmount;
-	public Procedure particleCondition;
-
 	public List<EntityDataEntry> entityDataEntries;
 
 	public Procedure onStruckByLightning;
@@ -148,6 +143,8 @@ import java.util.List;
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
 	public String rangedItemType;
+	public int rangedAttackInterval;
+	public double rangedAttackRadius;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
@@ -170,6 +167,10 @@ import java.util.List;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;
 		this.rangedItemType = "Default item";
+		this.rangedAttackInterval = 20;
+		this.rangedAttackRadius = 10;
+
+		this.followRange = 16;
 
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
@@ -226,11 +227,17 @@ import java.util.List;
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
-			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), BlocklyEditorType.AI_TASK,
-					this.aixml, this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
+					BlocklyEditorType.AI_TASK, this.aixml,
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
-			additionalData.put("aicode", blocklyToJava.getGeneratedCode());
+			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
+					.getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
+			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
+					blocklyToJava.getGeneratedCode() :
+					"");
 		};
 	}
 
