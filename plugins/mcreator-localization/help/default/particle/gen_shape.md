@@ -1,1 +1,0 @@
-This parameter sets the shape to spawn the particles in.

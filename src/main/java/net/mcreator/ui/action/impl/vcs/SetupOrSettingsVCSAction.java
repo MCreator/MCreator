@@ -25,7 +25,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.vcs.WorkspaceVCS;
 
-public class SetupOrSettingsVCSAction extends BasicAction {
+public class SetupOrSettingsVCSAction extends BasicAction implements VCSStateChangeListener {
 
 	public SetupOrSettingsVCSAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.setup_settings"), e -> {
@@ -36,7 +36,16 @@ public class SetupOrSettingsVCSAction extends BasicAction {
 				actionRegistry.remoteWorkspaceSettings.doAction();
 			}
 		}, new ActionAccelerator("vcs.setup_settings"));
-		setIcon(UIRES.get("16px.vcs"));
+
+		// Force initial update of the icon.
+		vcsStateChanged();
 	}
 
+	@Override public void vcsStateChanged() {
+		if (actionRegistry.getMCreator().getWorkspace().getVCS() == null) {
+			setIcon(UIRES.get("16px.setupvcs"));
+		} else {
+			setIcon(UIRES.get("16px.vcs"));
+		}
+	}
 }

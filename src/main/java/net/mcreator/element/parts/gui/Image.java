@@ -18,7 +18,7 @@
 
 package net.mcreator.element.parts.gui;
 
-import net.mcreator.element.parts.Procedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -34,11 +34,15 @@ public class Image extends GUIComponent {
 
 	public Procedure displayCondition;
 
-	public Image(String name, int x, int y, String image, boolean use1Xscale, Procedure displayCondition) {
-		super(name, x, y);
+	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition) {
+		super(x, y);
 		this.image = image;
 		this.use1Xscale = use1Xscale;
 		this.displayCondition = displayCondition;
+	}
+
+	@Override public String getName() {
+		return "image_" + FilenameUtilsPatched.removeExtension(image);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
