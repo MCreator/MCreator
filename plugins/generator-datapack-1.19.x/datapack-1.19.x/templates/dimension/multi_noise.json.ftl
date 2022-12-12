@@ -1,7 +1,5 @@
 <#-- @formatter:off -->
 
-<#include "../biomeutils.ftl">
-
 <#assign biomesmap = fp.file("utils/defaultbiomes.json")?eval_json/>
 
 <#macro multiNoiseSource>
@@ -26,11 +24,11 @@
               <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                   <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
                     {
-                      "temperature": [${temperature2temperature(ge.temperature, normalizeWeight(ge.biomeWeight))}],
-                      "humidity": [${rainingPossibility2humidity(ge.rainingPossibility, normalizeWeight(ge.biomeWeight))}],
-                      "continentalness": [${baseHeight2continentalness(ge.baseHeight normalizeWeight(ge.biomeWeight))}],
-                      "weirdness": [${registryname2weirdness(registryname normalizeWeight(ge.biomeWeight))}],
-                      "erosion": [${heightVariation2erosion(ge.heightVariation normalizeWeight(ge.biomeWeight))}],
+                      "temperature": [${ge.genTemperature.min}, ${ge.genTemperature.max}],
+                      "humidity": [${ge.genHumidity.min}, ${ge.genHumidity.max}],
+                      "continentalness": [${ge.genContinentalness.min}, ${ge.genContinentalness.max}],
+                      "weirdness": [${ge.genWeirdness.min}, ${ge.genWeirdness.max}],
+                      "erosion": [${ge.genErosion.min}, ${ge.genErosion.max}],
                       "depth": 0, <#-- 0 for surface biomes, 1 for cave biomes -->
                       "offset": 0
                     }

@@ -48,6 +48,7 @@ import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
@@ -111,7 +112,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onHitByProjectile;
 
 	private StringProcedureSelector specialInformation;
-	private ProcedureSelector particleCondition;
 	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
@@ -193,13 +193,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
-
-	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
-			new String[] { "Spread", "Top", "Tube", "Plane" });
-
-	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
-	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -217,8 +210,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
 	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
-
-	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.block.spawn_particles");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
 	private final Model singleTexture = new Model.BuiltInModel("Single texture");
@@ -320,17 +311,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
+		emittedRedstonePower = new NumberProcedureSelector(this.withEntry("block/redstone_power"), mcreator,
+				L10N.t("elementgui.block.redstone_power"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 130, Dependency.fromString(
+
 		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-
-		particleCondition = new ProcedureSelector(this.withEntry("block/particle_condition"), mcreator,
-				L10N.t("elementgui.block.event_particle_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
-
-		emittedRedstonePower = new NumberProcedureSelector(null, mcreator,
-				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -1106,40 +1092,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		enderpanel2.add("West", PanelUtils.totalCenterInPanel(new JLabel(UIRES.get("chunk"))));
 		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(genPanel,
 				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), generateCondition), 5, 5)));
-
 		enderpanel2.setOpaque(false);
 
-		JPanel particleParameters = new JPanel(new GridLayout(5, 2, 0, 2));
-
-		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_particles"), spawnParticles));
-		particleParameters.add(new JLabel());
-
-		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_type"),
-				L10N.label("elementgui.block.particle_gen_type")));
-		particleParameters.add(particleToSpawn);
-
-		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_shape"),
-				L10N.label("elementgui.block.particle_gen_shape")));
-		particleParameters.add(particleSpawningShape);
-
-		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_spawn_radius"),
-				L10N.label("elementgui.block.particle_gen_spawn_radius")));
-		particleParameters.add(particleSpawningRadious);
-
-		particleParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/gen_average_amount"),
-				L10N.label("elementgui.block.particle_gen_average_amount")));
-		particleParameters.add(particleAmount);
-
-		JComponent parpar = PanelUtils.northAndCenterElement(particleParameters, particleCondition, 5, 5);
-
-		parpar.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.properties_particle"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		particleParameters.setOpaque(false);
-
-		JPanel redstoneParameters = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel redstoneParameters = new JPanel(new GridLayout(2, 2, 0, 2));
 		redstoneParameters.setOpaque(false);
 
 		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
@@ -1150,22 +1105,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.emits_redstone")));
 		redstoneParameters.add(canProvidePower);
 
-		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_power"),
-				L10N.label("elementgui.block.redstone_power")));
-		redstoneParameters.add(emittedRedstonePower);
+		JComponent redstoneMerger = PanelUtils.northAndCenterElement(redstoneParameters, emittedRedstonePower, 2, 2);
 
-		redstoneParameters.setBorder(BorderFactory.createTitledBorder(
+		redstoneMerger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent parred = PanelUtils.centerAndSouthElement(parpar, PanelUtils.pullElementUp(redstoneParameters));
-
 		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
 		refreshRedstoneEmitted();
-
-		particleSpawningRadious.setOpaque(false);
-		spawnParticles.setOpaque(false);
 
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
@@ -1181,7 +1129,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(parred))));
+				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(redstoneMerger))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1327,7 +1275,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
-		particleCondition.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
@@ -1348,8 +1295,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
-
-		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -1412,15 +1357,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		minGenerateHeight.setValue(block.minGenerateHeight);
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
-		spawnParticles.setSelected(block.spawnParticles);
-		particleToSpawn.setSelectedItem(block.particleToSpawn);
-		particleSpawningShape.setSelectedItem(block.particleSpawningShape);
 		specialInformation.setSelectedProcedure(block.specialInformation);
-		particleCondition.setSelectedProcedure(block.particleCondition);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
 		generateCondition.setSelectedProcedure(block.generateCondition);
-		particleSpawningRadious.setValue(block.particleSpawningRadious);
-		particleAmount.setValue(block.particleAmount);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
 		hasGravity.setSelected(block.hasGravity);
@@ -1559,13 +1498,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
-		block.spawnParticles = spawnParticles.isSelected();
-		block.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
-		block.particleSpawningShape = (String) particleSpawningShape.getSelectedItem();
-		block.particleSpawningRadious = (double) particleSpawningRadious.getValue();
-		block.particleAmount = (int) particleAmount.getValue();
 		block.specialInformation = specialInformation.getSelectedProcedure();
-		block.particleCondition = particleCondition.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.generateCondition = generateCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();

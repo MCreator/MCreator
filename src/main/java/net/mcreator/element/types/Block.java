@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
@@ -127,13 +128,6 @@ import java.util.stream.Collectors;
 	public int luminance;
 	public boolean unbreakable;
 	public int breakHarvestLevel;
-
-	public boolean spawnParticles;
-	public Particle particleToSpawn;
-	public String particleSpawningShape;
-	public double particleSpawningRadious;
-	public int particleAmount;
-	public Procedure particleCondition;
 
 	public Procedure placingCondition;
 

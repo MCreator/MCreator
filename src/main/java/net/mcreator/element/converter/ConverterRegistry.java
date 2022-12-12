@@ -49,6 +49,10 @@ import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
 import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
 import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
 import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
+import net.mcreator.element.converter.fv35.ToolToItemTypeProcedureConverter;
+import net.mcreator.element.converter.fv36.GUIComponentNamer;
+import net.mcreator.element.converter.fv37.SlotInteractionsConverter;
+import net.mcreator.element.converter.fv38.BiomeGenParametersConverter;
 import net.mcreator.element.converter.fv35.ArmorSpecialInformationConverter;
 import net.mcreator.element.converter.fv35.SpecialInformationConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
@@ -68,7 +72,7 @@ public class ConverterRegistry {
 		put(ModElementType.ADVANCEMENT, Arrays.asList(new AchievementFixer(), new AdvancementTextureConverter()));
 		put(ModElementType.ARMOR, Arrays.asList(new ArmorTexturesConverter(), new ArmorSpecialInformationConverter()));
 		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
-				new BiomeFrozenTopLayerConverter()));
+				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter()));
 		put(ModElementType.BLOCK,
 				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new SpecialInformationConverter<Block>()));
@@ -80,9 +84,11 @@ public class ConverterRegistry {
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
-				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter()));
+				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
+						new GUIComponentNamer(),new SlotInteractionsConverter()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
-		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter()));
+		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
+				new GUIComponentNamer()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
@@ -91,7 +97,8 @@ public class ConverterRegistry {
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
-				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(), new TooltipProcedureConverter()));
+				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
+				new ToolToItemTypeProcedureConverter()));
 		put(ModElementType.RANGEDITEM, Arrays.asList(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, Arrays.asList(new ItemDispenseBehaviorToItemExtensionConverter(),

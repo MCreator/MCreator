@@ -20,8 +20,9 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -32,7 +33,7 @@ import javax.swing.*;
 import java.awt.Dimension;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Overlay extends GeneratableElement {
+@SuppressWarnings("unused") public class Overlay extends GeneratableElement implements IGUI {
 
 	private static final Logger LOG = LogManager.getLogger(Overlay.class);
 
@@ -55,6 +56,10 @@ import java.util.List;
 
 		this.gridSettings = new GridSettings();
 		this.overlayTarget = "Ingame";
+	}
+
+	public boolean hasTextures() {
+		return (this.baseTexture != null && !this.baseTexture.equals("")) || !getComponentsOfType("Image").isEmpty();
 	}
 
 	public int getBaseTextureWidth() {
@@ -84,6 +89,10 @@ import java.util.List;
 		}
 
 		return new Dimension(0, 0);
+	}
+
+	@Override public List<GUIComponent> getComponents() {
+		return components;
 	}
 
 }

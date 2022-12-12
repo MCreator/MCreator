@@ -78,7 +78,8 @@ import java.util.stream.Collectors;
 	public boolean isBlock(String elementName) {
 		ModElement element = getWorkspace().getModElementByName(getElementPlainName(elementName));
 		if (element != null)
-			return element.getMCItems().stream().anyMatch(e -> e.getName().equals(elementName) && e.getType().equals("block"));
+			return element.getMCItems().stream()
+					.anyMatch(e -> e.getName().equals(elementName) && e.getType().equals("block"));
 		else {
 			generator.getLogger().warn("Failed to determine mod element for: " + elementName);
 			return false;
@@ -87,11 +88,12 @@ import java.util.stream.Collectors;
 
 	/**
 	 * Removes the "CUSTOM:" prefix and any eventual suffix (if present, it's after the last .)
+	 *
 	 * @param elementName The name to convert
 	 * @return The plain name of the element
 	 */
 	public String getElementPlainName(String elementName) {
-		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:",""), ".");
+		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", ""), ".");
 	}
 
 	public String getRegistryNameForModElement(String modElement) {

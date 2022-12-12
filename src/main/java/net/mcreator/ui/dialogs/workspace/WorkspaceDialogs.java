@@ -246,18 +246,19 @@ public class WorkspaceDialogs {
 				}
 			});
 
-			version.setValidator(new TextFieldValidatorJSON(version, L10N.t("dialog.workspace_settings.version.error"), false) {
-				@Override public ValidationResult validate() {
-					try {
-						ModuleDescriptor.Version.parse(version.getText());
-					} catch (Exception e) {
-						return new ValidationResult(ValidationResultType.ERROR,
-								L10N.t("dialog.workspace_settings.version.error2", e.getMessage()));
-					}
+			version.setValidator(
+					new TextFieldValidatorJSON(version, L10N.t("dialog.workspace_settings.version.error"), false) {
+						@Override public ValidationResult validate() {
+							try {
+								ModuleDescriptor.Version.parse(version.getText());
+							} catch (Exception e) {
+								return new ValidationResult(ValidationResultType.ERROR,
+										L10N.t("dialog.workspace_settings.version.error2", e.getMessage()));
+							}
 
-					return super.validate();
-				}
-			});
+							return super.validate();
+						}
+					});
 
 			description.setValidator(
 					new TextFieldValidatorJSON(description, L10N.t("dialog.workspace_settings.description.error"),

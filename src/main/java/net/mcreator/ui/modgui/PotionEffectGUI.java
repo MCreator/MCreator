@@ -187,7 +187,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	@Override public void openInEditingMode(PotionEffect potion) {
 		effectName.setText(potion.effectName);
-		icon.setTextureFromTextureName(StringUtils.removeEnd(potion.icon, ".png")); // legacy, old workspaces stored name with extension
+		icon.setTextureFromTextureName(
+				StringUtils.removeEnd(potion.icon, ".png")); // legacy, old workspaces stored name with extension
 		color.setColor(potion.color);
 		isInstant.setSelected(potion.isInstant);
 		isBad.setSelected(potion.isBad);

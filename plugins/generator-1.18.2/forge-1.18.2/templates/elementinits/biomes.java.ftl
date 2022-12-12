@@ -87,13 +87,17 @@ public class ${JavaModName}Biomes {
 						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
 
 						<#list spawn_overworld as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT, 
-							biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolder(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 
 						<#list spawn_overworld_caves as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT_UNDERGROUND,
-								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.UNDERGROUND_PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolder(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 						
 						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
@@ -153,8 +157,10 @@ public class ${JavaModName}Biomes {
 						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
 
 						<#list spawn_nether as biome>
-						parameters.add(new Pair<>(${biome.getModElement().getName()}Biome.PARAMETER_POINT,
-								biomeRegistry.getOrCreateHolder(ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolder(
+									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+						}
 						</#list>
 
 						MultiNoiseBiomeSource moddedNoiseSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);

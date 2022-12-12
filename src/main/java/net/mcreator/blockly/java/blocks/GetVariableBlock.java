@@ -126,7 +126,7 @@ public class GetVariableBlock implements IBlockGenerator {
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get"))));
+					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get_var"))));
 		}
 	}
 
