@@ -314,6 +314,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		emittedRedstonePower = new NumberProcedureSelector(this.withEntry("block/redstone_power"), mcreator,
 				L10N.t("elementgui.block.redstone_power"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 130, Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
 
 		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));

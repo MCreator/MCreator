@@ -53,15 +53,15 @@ import net.mcreator.element.converter.fv35.ToolToItemTypeProcedureConverter;
 import net.mcreator.element.converter.fv36.GUIComponentNamer;
 import net.mcreator.element.converter.fv37.SlotInteractionsConverter;
 import net.mcreator.element.converter.fv38.BiomeGenParametersConverter;
-import net.mcreator.element.converter.fv35.ArmorSpecialInformationConverter;
-import net.mcreator.element.converter.fv35.SpecialInformationConverter;
+import net.mcreator.element.converter.fv39.ArmorSpecialInformationConverter;
+import net.mcreator.element.converter.fv39.SpecialInformationConverter;
+import net.mcreator.element.converter.fv39.TooltipProcedureConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
 import net.mcreator.element.converter.fv6.GUIBindingInverter;
 import net.mcreator.element.converter.fv7.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.fv8.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
-import net.mcreator.element.converter.fv35.TooltipProcedureConverter;
 import net.mcreator.element.types.*;
 
 import java.util.*;
@@ -86,7 +86,10 @@ public class ConverterRegistry {
 		put(ModElementType.GUI,
 				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(),new SlotInteractionsConverter()));
+		put(ModElementType.ITEM, Arrays.asList(new ItemDispenseBehaviorToItemExtensionConverter(),
+				new SpecialInformationConverter<Item>()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
+		put(ModElementType.MUSICDISC, Collections.singletonList(new SpecialInformationConverter<MusicDisc>()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
 				new GUIComponentNamer()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
@@ -98,12 +101,9 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter()));
+				new ToolToItemTypeProcedureConverter(), new TooltipProcedureConverter()));
 		put(ModElementType.RANGEDITEM, Arrays.asList(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ITEM, Arrays.asList(new ItemDispenseBehaviorToItemExtensionConverter(),
-				new SpecialInformationConverter<Item>()));
-		put(ModElementType.MUSICDISC, Collections.singletonList(new SpecialInformationConverter<MusicDisc>()));
 		put(ModElementType.TOOL, Collections.singletonList(new SpecialInformationConverter<Tool>()));
 	}};
 
