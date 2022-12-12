@@ -424,7 +424,7 @@ public class GTProcedureBlocks {
 				return ElementUtil.getProceduresOfType(workspace, variableType);
 			}
 			if (!DataListLoader.loadDataList(datalist).isEmpty()) {
-				return ElementUtil.loadDataListAndElements(workspace, datalist, typeFilter,
+				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
 								StringUtils.split(customEntryProviders, ','))
 						.stream().map(DataListEntry::getName).toArray(String[]::new);
 			}
