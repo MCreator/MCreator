@@ -22,6 +22,7 @@ package net.mcreator.ui.modgui.codeviewer;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplatesList;
+import net.mcreator.generator.ListTemplate;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.modgui.ModElementChangedListener;
@@ -98,33 +99,30 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
 							.generateElement(modElementGUI.getElementFromGUI(), false, false);
 					files.sort(Comparator.<GeneratorFile, String>comparing(
-									e -> FilenameUtils.getExtension(e.file().getName()))
-							.thenComparing(e -> e.file().getName()));
+									e -> FilenameUtils.getExtension(e.getFile().getName()))
+							.thenComparing(e -> e.getFile().getName()));
 
 					List<GeneratorTemplatesList> lists = modElementGUI.getModElement().getGenerator()
 							.getModElementListTemplates(modElementGUI.getModElement(),
 									modElementGUI.getElementFromGUI());
 
 					for (GeneratorFile file : files) {
-						Optional<GeneratorTemplatesList> ownerListOptional = lists.stream()
-								.filter(e -> e.isGeneratedFromListTemplate(file.file(), true)).findFirst();
-
-						if (cache.containsKey(file.file())) { // existing file
+						if (cache.containsKey(file.getFile())) { // existing file
 							SwingUtilities.invokeAndWait(() -> {
 								try {
-									if (cache.get(file.file()).update(file)) {
-										if (ownerListOptional.isPresent()) { // file from list
-											JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
+									if (cache.get(file.getFile()).update(file)) {
+										if (file.source() instanceof ListTemplate lt) { // file from list
+											JTabbedPane ownerList = listPager.get(lt.getTemplatesList().groupName());
 											int tabid = indexOfComponent(ownerList);
 											if (tabid != -1) {
-												int subtabid = ownerList.indexOfComponent(cache.get(file.file()));
+												int subtabid = ownerList.indexOfComponent(cache.get(file.getFile()));
 												if (subtabid != -1) {
 													setSelectedIndex(tabid);
 													ownerList.setSelectedIndex(subtabid);
 												}
 											}
 										} else { // simple file
-											int tabid = indexOfComponent(cache.get(file.file()));
+											int tabid = indexOfComponent(cache.get(file.getFile()));
 											if (tabid != -1)
 												setSelectedIndex(tabid);
 										}
@@ -136,24 +134,27 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							SwingUtilities.invokeAndWait(() -> {
 								try {
 									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
+									Optional<GeneratorTemplatesList> ownerListOptional = lists.stream()
+											.filter(e -> e.isGeneratedFromListTemplate(file.getFile(), true))
+											.findFirst();
 									if (ownerListOptional.isPresent()) { // file from list
 										JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
-										ownerList.addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
-												fileCodeViewer);
+										ownerList.addTab(file.getFile().getName(),
+												FileIcons.getIconForFile(file.getFile()), fileCodeViewer);
 										if (ownerList.getTabCount() == 1)
 											setEnabledAt(indexOfComponent(ownerList), true);
 									} else { // simple file
-										addTab(file.file().getName(), FileIcons.getIconForFile(file.file()),
+										addTab(file.getFile().getName(), FileIcons.getIconForFile(file.getFile()),
 												fileCodeViewer);
 									}
-									cache.put(file.file(), fileCodeViewer);
+									cache.put(file.getFile(), fileCodeViewer);
 								} catch (Exception ignored) {
 								}
 							});
 						}
 					}
 
-					List<File> mapped = files.stream().map(GeneratorFile::file).toList();
+					List<File> mapped = files.stream().map(GeneratorFile::getFile).toList();
 					cache.keySet().stream().toList().forEach(file -> {
 						if (!mapped.contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = templateLists.stream()

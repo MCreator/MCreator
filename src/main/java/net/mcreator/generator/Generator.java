@@ -192,8 +192,8 @@ public class Generator implements IGenerator, Closeable {
 					try {
 						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
 								templateFileName, dataModel);
-						return new GeneratorFile(code, generatorTemplate.getFile(),
-								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+						return new GeneratorFile(generatorTemplate,
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
 					} catch (TemplateGeneratorException e) {
 						success.set(false);
 					}
@@ -275,8 +275,8 @@ public class Generator implements IGenerator, Closeable {
 							templateFileName, dataModel, element.getAdditionalTemplateData());
 				}
 
-				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+				GeneratorFile generatorFile = new GeneratorFile(generatorTemplate,
+						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
 
 				// only preserve the last instance of template for a file
 				generatorFiles.remove(generatorFile);
@@ -294,7 +294,7 @@ public class Generator implements IGenerator, Closeable {
 
 			// store paths of generated files
 			element.getModElement().putMetadata("files", generatorFiles.stream()
-					.map(e -> getWorkspaceFolder().toPath().relativize(e.file().toPath()).toString()).toList());
+					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()).toList());
 
 			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
@@ -727,23 +727,23 @@ public class Generator implements IGenerator, Closeable {
 		// so the imports get properly organised in the next step
 		if (formatAndOrganiseImports) {
 			generatorFiles.forEach(generatorFile -> {
-				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
+				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
 					if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-						if (!generatorFile.file().isFile())
-							FileIO.touchFile(generatorFile.file());
+						if (!generatorFile.getFile().isFile())
+							FileIO.touchFile(generatorFile.getFile());
 				}
 			});
 		}
 
 		generatorFiles.forEach(generatorFile -> {
-			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
+			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
 				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.file(),
+					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.getFile(),
 							formatAndOrganiseImports);
 				else if (generatorFile.writer().equals("json"))
-					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
+					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.getFile());
 				else if (generatorFile.writer().equals("file"))
-					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.file());
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
 		});
 	}
