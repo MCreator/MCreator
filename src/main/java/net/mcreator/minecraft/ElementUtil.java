@@ -325,13 +325,11 @@ public class ElementUtil {
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
-		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
-				.collect(Collectors.toList());
+		return getCustomElements(workspace, modelement -> modelement.getType() == type);
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, BaseType type) {
-		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
-				.map(DataListEntry.Custom::new).collect(Collectors.toList());
+		return getCustomElements(workspace, mu -> mu.getType().getBaseType() == type);
 	}
 
 	/**
