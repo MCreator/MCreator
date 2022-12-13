@@ -612,6 +612,18 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
    	}
 	</#if>
 
+	<#if data.solidBoundingBox>
+	@Override
+	public boolean canCollideWith(Entity entity) {
+		return true;
+	}
+
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+	</#if>
+
 	<#if data.isBoss>
 	@Override public boolean canChangeDimensions() {
 		return false;

@@ -639,6 +639,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.inventorySize = 10;
 			livingEntity.inventoryStackSize = 42;
 			livingEntity.disableCollisions = !_true;
+			livingEntity.solidBoundingBox = _true;
 			livingEntity.immuneToFire = _true;
 			livingEntity.immuneToArrows = !_true;
 			livingEntity.immuneToFallDamage = !_true;

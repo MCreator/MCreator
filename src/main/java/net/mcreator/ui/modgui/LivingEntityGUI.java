@@ -123,6 +123,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner mountedYOffset = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.1));
 	private final JSpinner modelShadowSize = new JSpinner(new SpinnerNumberModel(0.5, 0, 20, 0.1));
 	private final JCheckBox disableCollisions = L10N.checkbox("elementgui.living_entity.disable_collisions");
+	private final JCheckBox solidBoundingBox = L10N.checkbox("elementgui.living_entity.solid_bounding_box");
 
 	private final JSpinner xpAmount = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 
@@ -455,6 +456,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		flyingMob.setOpaque(false);
 		hasSpawnEgg.setOpaque(false);
 		disableCollisions.setOpaque(false);
+		solidBoundingBox.setOpaque(false);
 
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
@@ -524,10 +526,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spawnEggBaseColor.setOpaque(false);
 		spawnEggDotColor.setOpaque(false);
 
-		modelWidth.setPreferredSize(new Dimension(85, 32));
-		mountedYOffset.setPreferredSize(new Dimension(85, 32));
-		modelHeight.setPreferredSize(new Dimension(85, 32));
-		modelShadowSize.setPreferredSize(new Dimension(85, 32));
+		modelWidth.setPreferredSize(new Dimension(65, 32));
+		mountedYOffset.setPreferredSize(new Dimension(65, 32));
+		modelHeight.setPreferredSize(new Dimension(65, 32));
+		modelShadowSize.setPreferredSize(new Dimension(65, 32));
 
 		armorBaseValue.setPreferredSize(new Dimension(250, 32));
 		movementSpeed.setPreferredSize(new Dimension(250, 32));
@@ -596,8 +598,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, modelHeight, new JEmptyBox(7, 7), modelShadowSize,
-				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(7, 7), modelHeight, new JEmptyBox(7, 7), modelShadowSize,
+				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), solidBoundingBox, new JEmptyBox(7, 7), disableCollisions));
+
+		disableCollisions.addActionListener(actionEvent -> {
+			solidBoundingBox.setEnabled(!disableCollisions.isSelected());
+		});
+
+		solidBoundingBox.addActionListener(actionEvent -> {
+			disableCollisions.setEnabled(!solidBoundingBox.isSelected());
+		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
@@ -974,6 +984,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		isBoss.setSelected(livingEntity.isBoss);
 		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
 		disableCollisions.setSelected(livingEntity.disableCollisions);
+		disableCollisions.setEnabled(!livingEntity.solidBoundingBox);
+		solidBoundingBox.setSelected(livingEntity.solidBoundingBox);
+		solidBoundingBox.setEnabled(!livingEntity.disableCollisions);
 		aiBase.setSelectedItem(livingEntity.aiBase);
 		spawningProbability.setValue(livingEntity.spawningProbability);
 		minNumberOfMobsPerGroup.setValue(livingEntity.minNumberOfMobsPerGroup);
@@ -1052,6 +1065,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();
+		livingEntity.solidBoundingBox = solidBoundingBox.isSelected();
 		livingEntity.isBoss = isBoss.isSelected();
 		livingEntity.bossBarColor = (String) bossBarColor.getSelectedItem();
 		livingEntity.bossBarType = (String) bossBarType.getSelectedItem();

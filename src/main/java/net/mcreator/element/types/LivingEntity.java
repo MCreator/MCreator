@@ -96,6 +96,7 @@ import java.util.Locale;
 	public int inventoryStackSize;
 
 	public boolean disableCollisions;
+	public boolean solidBoundingBox;
 
 	public boolean ridable;
 	public boolean canControlForward;
