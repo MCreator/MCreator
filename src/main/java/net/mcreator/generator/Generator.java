@@ -561,7 +561,7 @@ public class Generator implements IGenerator, Closeable {
 		Objects.requireNonNull(getModElementListTemplates(element, performFSTasks, generatableElement)).forEach(gtl -> {
 			for (GeneratorTemplate generatorTemplate : gtl.templates().keySet()) {
 				for (int i = 0; i < gtl.listData().size(); i++) {
-					if (gtl.templates().get(generatorTemplate).get(i) || !performFSTasks) {
+					if (gtl.templates().get(generatorTemplate).get(i)) {
 						files.add(new ListTemplate(gtl.processTokens(generatorTemplate, i),
 								generatorTemplate.getTemplateIdentificator(), gtl, i,
 								generatorTemplate.getTemplateData()));
