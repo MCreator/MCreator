@@ -134,11 +134,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							SwingUtilities.invokeAndWait(() -> {
 								try {
 									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-									Optional<GeneratorTemplatesList> ownerListOptional = lists.stream()
-											.filter(e -> e.isGeneratedFromListTemplate(file.getFile(), true))
-											.findFirst();
-									if (ownerListOptional.isPresent()) { // file from list
-										JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
+									if (file.source() instanceof ListTemplate lt) { // file from list
+										JTabbedPane ownerList = listPager.get(lt.getTemplatesList().groupName());
 										ownerList.addTab(file.getFile().getName(),
 												FileIcons.getIconForFile(file.getFile()), fileCodeViewer);
 										if (ownerList.getTabCount() == 1)
