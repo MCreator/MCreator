@@ -29,7 +29,7 @@ templates:
 
 list_templates:
   - name: "Custom models"
-    listData: modelsMap.values()
+    listData: data.modelsMap.values()
     forEach:
       - template: json/item_override.json.ftl
         writer: json
