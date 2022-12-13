@@ -16,10 +16,10 @@
         "temperature": ${data.temperature}
       },
       "minecraft:overworld_height": {
-        "noise_type": "${thelper.mapToString(data.heightVariation, 0, 1.5, "lowlands", "default", "extreme")}"
+        "noise_type": "${thelper.mapToString((data.genErosion.max - data.genErosion.min) / 3.0, 0, 1.5, "lowlands", "default", "extreme")}"
       },
       "minecraft:surface_parameters": {
-        "sea_floor_depth": ${(-12.5 * data.baseHeight + 25)?round},
+        "sea_floor_depth": 7,
         "sea_floor_material": ${mappedMCItemToIngameItemName(data.getUnderwaterBlock())?replace("\"item\":", "")},
         "top_material": ${mappedMCItemToIngameItemName(data.groundBlock)?replace("\"item\":", "")},
         "mid_material": ${mappedMCItemToIngameItemName(data.undergroundBlock)?replace("\"item\":", "")},
@@ -30,11 +30,11 @@
         <#if data.spawnBiome>
             "generate_for_climates": [
               <#if (data.temperature < 0)>
-              [ "cold", ${(data.biomeWeight / 10)?round} ]
+              [ "cold", 1 ]
               <#elseif (data.temperature >= 0 && data.temperature < 1)>
-              [ "medium", ${(data.biomeWeight / 10)?round} ]
+              [ "medium", 1 ]
               <#else>
-              [ "warm", ${(data.biomeWeight / 10)?round} ]
+              [ "warm", 1 ]
               </#if>
             ],
         </#if>
