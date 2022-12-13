@@ -266,11 +266,11 @@ public class Generator implements IGenerator, Closeable {
 				extractVariables(generatorTemplate, dataModel);
 
 				String code;
-				if (generatorTemplate instanceof ListTemplate listTemplate) {
+				if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
 					code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
 							listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
 							listTemplate.getListItemIndex(), element, templateFileName, dataModel);
-				} else {
+				} else { // regular template
 					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
 							templateFileName, dataModel, element.getAdditionalTemplateData());
 				}
@@ -285,16 +285,17 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		if (performFSTasks) {
+			// remove outdated files
 			Object oldFiles = element.getModElement().getMetadata("files");
 			if (oldFiles instanceof List<?> fileList)
 				fileList.forEach(e -> new File(getWorkspaceFolder(), (String) e).delete());
 
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
+			// store paths of generated files
 			element.getModElement().putMetadata("files", generatorFiles.stream()
 					.map(e -> getWorkspaceFolder().toPath().relativize(e.file().toPath()).toString()).toList());
 
-			// extract all localization keys
 			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
 			// do additional tasks if mod element has them
@@ -556,8 +557,9 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}
 
+		// we add all list templates (if any) for given element to the list
 		Objects.requireNonNull(getModElementListTemplates(element, performFSTasks, generatableElement)).forEach(gtl -> {
-			for (ListTemplate generatorTemplate : gtl.templates().keySet()) {
+			for (GeneratorTemplate generatorTemplate : gtl.templates().keySet()) {
 				for (int i = 0; i < gtl.listData().size(); i++) {
 					if (gtl.templates().get(generatorTemplate).get(i) || !performFSTasks) {
 						files.add(new ListTemplate(gtl.processTokens(generatorTemplate, i),
@@ -605,12 +607,13 @@ public class Generator implements IGenerator, Closeable {
 			int templateID = 0;
 			int listID = 1;
 			for (Object list : templateLists) {
-				Map<ListTemplate, List<Boolean>> files = new LinkedHashMap<>();
+				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
 				String groupName = (String) Objects.requireNonNullElse(((Map<?, ?>) list).get("name"),
 						"Group " + listID);
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
+				// we check type of list data collection and convert it to a list if needed
 				List<?> elements = new ArrayList<>();
 				if (listData instanceof Map<?, ?> listMap)
 					elements = new ArrayList<>(listMap.entrySet());
@@ -629,6 +632,7 @@ public class Generator implements IGenerator, Closeable {
 							operator = TemplateExpressionParser.Operator.OR;
 						}
 
+						// we store file generation conditions for current mod element
 						List<Boolean> conditionChecks = new ArrayList<>();
 						for (int i = 0; i < elements.size(); i++) {
 							if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
@@ -654,11 +658,9 @@ public class Generator implements IGenerator, Closeable {
 						// we check for potential excludes to be deleted
 						// this is only called if condition above is passed
 						String exclude = (String) ((Map<?, ?>) template).get("exclude");
-						boolean doExclude =
-								((Map<?, ?>) template).get("excludeIfAllPresent") != null && ((Map<?, ?>) template).get(
-										"excludeIfAllPresent").equals("true") ?
-										!conditionChecks.contains(false) :
-										conditionChecks.contains(true);
+						boolean doExclude = "true".equals(((Map<?, ?>) template).get("excludeIfAllPresent")) ?
+								!conditionChecks.contains(false) :
+								conditionChecks.contains(true);
 						if (exclude != null && doExclude && performFSTasks) {
 							String excludename = GeneratorTokens.replaceTokens(workspace,
 									exclude.replace("@NAME", element.getName())
@@ -668,7 +670,7 @@ public class Generator implements IGenerator, Closeable {
 								excludefile.delete();
 						}
 
-						ListTemplate generatorTemplate = new ListTemplate(new File(rawname),
+						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(rawname),
 								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
 						// only preserve the last template for given file

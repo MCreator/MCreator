@@ -107,7 +107,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					for (GeneratorFile file : files) {
 						Optional<GeneratorTemplatesList> ownerListOptional = lists.stream()
-								.filter(e -> e.getCorrespondingListTemplate(file.file(), true) != null).findFirst();
+								.filter(e -> e.isGeneratedFromListTemplate(file.file(), true)).findFirst();
 
 						if (cache.containsKey(file.file())) { // existing file
 							SwingUtilities.invokeAndWait(() -> {
@@ -157,7 +157,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					cache.keySet().stream().toList().forEach(file -> {
 						if (!mapped.contains(file)) { // deleted file
 							Optional<GeneratorTemplatesList> ownerListOptional = templateLists.stream()
-									.filter(e -> e.getCorrespondingListTemplate(file, true) != null).findFirst();
+									.filter(e -> e.isGeneratedFromListTemplate(file, true)).findFirst();
 							if (ownerListOptional.isPresent()) { // file from list
 								JTabbedPane ownerList = listPager.get(ownerListOptional.get().groupName());
 								ownerList.remove(cache.get(file));

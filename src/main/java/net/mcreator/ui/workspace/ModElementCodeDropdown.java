@@ -21,7 +21,6 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
-import net.mcreator.generator.ListTemplate;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.UIRES;
@@ -41,17 +40,20 @@ class ModElementCodeDropdown extends JPopupMenu {
 		setBorder(BorderFactory.createEmptyBorder());
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
+		// add regular files to the dropdown
 		for (GeneratorTemplate modElementFile : modElementFiles)
-			add(newModElementTemplateItem(modElementFile.getFile()));
+			add(newModElementFileMenuItem(modElementFile.getFile()));
 
+		// add global files to the dropdown (if any)
 		if (modElementGlobalFiles.size() > 0) {
 			if (modElementFiles.size() > 0)
 				addSeparator();
 
 			for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
-				add(newModElementTemplateItem(modElementGlobalFile.getFile()));
+				add(newModElementFileMenuItem(modElementGlobalFile.getFile()));
 		}
 
+		// add list files to the dropdown (if any)
 		if (modElementListFiles.size() > 0) {
 			if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
 				addSeparator();
@@ -67,14 +69,14 @@ class ModElementCodeDropdown extends JPopupMenu {
 
 					int listFilesFound = 0;
 					for (int i = 0; i < fileList.listData().size(); i++) {
-						if (i > 0)
+						if (i > 0) // separate files generated for different list items
 							listMenu.addSeparator();
 
-						for (ListTemplate modElementListFile : fileList.templates().keySet()) {
+						for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
 							if (fileList.templates().get(modElementListFile).get(i)) {
 								listFilesFound++;
 								File indexedFile = fileList.processTokens(modElementListFile, i);
-								listMenu.add(newModElementTemplateItem(indexedFile));
+								listMenu.add(newModElementFileMenuItem(indexedFile));
 							}
 						}
 					}
@@ -86,7 +88,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 		}
 	}
 
-	private JMenuItem newModElementTemplateItem(File template) {
+	private JMenuItem newModElementFileMenuItem(File template) {
 		JMenuItem item = new JMenuItem(
 				"<html>" + template.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
 						.getWorkspaceFolder().toPath().relativize(template.toPath()));

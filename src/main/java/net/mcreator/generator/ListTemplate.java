@@ -21,13 +21,15 @@ package net.mcreator.generator;
 
 import java.io.File;
 
+/**
+ * This is a subclass of {@code GeneratorTemplate} that is connected to a {@code GeneratorTemplatesList}
+ * it's created by and specific {@code listData} item index. These two are used by generator to generate the result file
+ * with the appropriate contents (that in this case don't only depend on given mod element, but also on a certain
+ * {@code listData} item).
+ */
 public class ListTemplate extends GeneratorTemplate {
-	private GeneratorTemplatesList templatesList;
+	private final GeneratorTemplatesList templatesList;
 	private final int listItemIndex;
-
-	ListTemplate(File file, String templateIdentificator, Object templateData) {
-		this(file, templateIdentificator, null, -1, templateData);
-	}
 
 	ListTemplate(File file, String templateIdentificator, GeneratorTemplatesList templatesList, int listItemIndex,
 			Object templateData) {
@@ -38,10 +40,6 @@ public class ListTemplate extends GeneratorTemplate {
 
 	public GeneratorTemplatesList getTemplatesList() {
 		return templatesList;
-	}
-
-	void setTemplatesList(GeneratorTemplatesList templatesList) {
-		this.templatesList = templatesList;
 	}
 
 	public int getListItemIndex() {
