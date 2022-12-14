@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProcedureRetvalBlock implements IBlockGenerator {
 	private final String[] names;
@@ -56,16 +57,43 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				return;
 			}
 
+			int paramsCount = 0;
+			Map<Integer, String> names = new HashMap<>();
+			Map<Integer, String> args = new HashMap<>();
+			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
+			if (mutation != null) {
+				paramsCount = Integer.parseInt(mutation.getAttribute("params"));
+				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
+						.filter(e -> e.getAttribute("name").matches("name\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
+						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				for (int i = 0; i < paramsCount; i++) {
+					names.put(i, fields.get("name" + i).getTextContent());
+					if (inputs.containsKey("arg" + i)) {
+						args.put(i, BlocklyToCode.directProcessOutputBlock(master, inputs.get("arg" + i)));
+					} else {
+						args.put(i, "");
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.call_procedure.missing_inputs")));
+					}
+				}
+			}
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("type", type);
 				dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
+				dataModel.put("paramsCount", paramsCount);
+				dataModel.put("names", names.keySet().stream().sorted().map(names::get).toArray(String[]::new));
+				dataModel.put("args", args.keySet().stream().sorted().map(args::get).toArray(String[]::new));
+
 				String code = master.getTemplateGenerator()
 						.generateFromTemplate("_procedure_retval.java.ftl", dataModel);
 				master.append(code);
 			}
-
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.procedure_retval.empty")));

@@ -45,27 +45,11 @@ Blockly.Blocks['old_command'] = {
     }
 };
 
-Blockly.Blocks['call_procedure'] = {
+Blockly.Blocks['call_procedure_no_args'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(javabridge.t("blockly.block.call_procedure"))
             .appendField(new FieldDataListSelector('procedure'), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(250);
-    }
-};
-
-Blockly.Blocks['call_procedure_at'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure')
-            .appendField(javabridge.t("blockly.block.call_procedure.at"));
-        this.appendValueInput('x').setCheck('Number').appendField('x: ');
-        this.appendValueInput('y').setCheck('Number').appendField('y: ');
-        this.appendValueInput('z').setCheck('Number').appendField('z: ');
-        this.setInputsInline(true);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(250);

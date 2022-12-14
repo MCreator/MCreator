@@ -20,6 +20,8 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.fv39.CallProcedureBlockConverter;
+import net.mcreator.element.converter.fv39.CommandCallProcedureBlockConverter;
 import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
 import net.mcreator.element.converter.v2020_1.AchievementFixer;
 import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
@@ -62,7 +64,7 @@ public class ConverterRegistry {
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer()));
-		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
+		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer(), new CommandCallProcedureBlockConverter()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
@@ -79,7 +81,7 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter()));
+				new ToolToItemTypeProcedureConverter(), new CallProcedureBlockConverter()));
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));

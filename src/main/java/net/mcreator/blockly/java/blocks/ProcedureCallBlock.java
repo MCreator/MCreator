@@ -30,10 +30,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProcedureCallBlock implements IBlockGenerator {
 
@@ -49,38 +47,6 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure.getName())));
 				return;
-			}
-
-			Element x = null, y = null, z = null;
-			List<Element> values = XMLUtil.getChildrenWithName(block, "value");
-			for (Element e : values)
-				switch (e.getAttribute("name")) {
-				case "x":
-					x = e;
-					break;
-				case "y":
-					y = e;
-					break;
-				case "z":
-					z = e;
-					break;
-				}
-			boolean call_at = false;
-			if (x != null || y != null || z != null)
-				if (x != null && y != null && z != null)
-					call_at = true;
-				else
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.warnings.call_procedure.missing_inputs")));
-
-			String xcode = "";
-			String ycode = "";
-			String zcode = "";
-
-			if (call_at) {
-				xcode = BlocklyToCode.directProcessOutputBlock(master, x);
-				ycode = BlocklyToCode.directProcessOutputBlock(master, y);
-				zcode = BlocklyToCode.directProcessOutputBlock(master, z);
 			}
 
 			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
@@ -112,34 +78,47 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				}
 			}
 
+			int paramsCount = 0;
+			Map<Integer, String> names = new HashMap<>();
+			Map<Integer, String> args = new HashMap<>();
+			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
+			if (mutation != null) {
+				paramsCount = Integer.parseInt(mutation.getAttribute("params"));
+				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
+						.filter(e -> e.getAttribute("name").matches("name\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
+						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				for (int i = 0; i < paramsCount; i++) {
+					names.put(i, fields.remove("name" + i).getTextContent());
+					if (inputs.containsKey("arg" + i)) {
+						args.put(i, BlocklyToCode.directProcessOutputBlock(master, inputs.remove("arg" + i)));
+					} else {
+						args.put(i, "");
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.call_procedure.missing_inputs")));
+					}
+				}
+			}
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("dependencies", dependencies);
-
-				if (call_at) {
-					dataModel.put("x", xcode);
-					dataModel.put("y", ycode);
-					dataModel.put("z", zcode);
+				if (type.equals("call_procedure")) {
+					dataModel.put("paramsCount", paramsCount);
+					dataModel.put("names", names.keySet().stream().sorted().map(names::get).toArray(String[]::new));
+					dataModel.put("args", args.keySet().stream().sorted().map(args::get).toArray(String[]::new));
 				}
 
-				if (master instanceof BlocklyToJava blocklyToJava
-						&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
-					if (type.equals("old_command")) {
-						master.append(
-								master.getTemplateGenerator().generateFromTemplate("_old_command.java.ftl", dataModel));
-					} else {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
-					}
+				if (master instanceof BlocklyToJava btj && btj.getEditorType() == BlocklyEditorType.COMMAND_ARG
+						&& type.equals("old_command")) {
+					master.append(
+							master.getTemplateGenerator().generateFromTemplate("_old_command.java.ftl", dataModel));
 				} else {
-					if (type.equals("call_procedure_at")) {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_call_procedure_at.java.ftl", dataModel));
-					} else {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
-					}
+					master.append(
+							master.getTemplateGenerator().generateFromTemplate("_call_procedure.java.ftl", dataModel));
 				}
 			}
 		} else {
@@ -149,7 +128,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "call_procedure", "call_procedure_at", "old_command" };
+		return new String[] { "call_procedure", "call_procedure_no_args", "old_command" };
 	}
 
 	@Override public BlockType getBlockType() {
