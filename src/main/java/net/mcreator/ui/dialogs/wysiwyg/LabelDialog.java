@@ -48,8 +48,10 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		JTextField textField = new JTextField();
 
 		addWindowListener(new WindowAdapter() {
-			@Override public void windowActivated(WindowEvent e) {
+			@Override
+			public void windowActivated(WindowEvent e) {
 				SwingUtilities.invokeLater(textField::requestFocus);
+				SwingUtilities.invokeLater(textField::grabFocus);
 			}
 		});
 
@@ -112,7 +114,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
 
-				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
+				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(),
+						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
 				editor.editor.addComponent(component);

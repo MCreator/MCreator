@@ -66,6 +66,7 @@ package ${package}.client.screens;
         }
 
         <#if data.hasTextures()>
+        <#if hasTextures>
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();

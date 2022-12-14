@@ -71,6 +71,7 @@ package ${package}.client.gui;
 			}
 
 			<#if data.hasTextures()>
+			<#if hasTextures>
 				RenderSystem.disableDepthTest();
 				RenderSystem.depthMask(false);
 				RenderSystem.enableBlend();
@@ -108,6 +109,17 @@ package ${package}.client.gui;
 						Minecraft.getInstance().font.draw(event.${stackMethodName}(),
 							<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 							posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+	                <#elseif component.getClass().getSimpleName() == "Image">
+						<#if hasProcedure(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>) {
+						</#if>
+						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+						Minecraft.getInstance().gui.blit(event.${stackMethodName}(), posX + ${x}, posY + ${y}, 0, 0,
+							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+
+						<#if hasProcedure(component.displayCondition)>}</#if>
+	                </#if>
 	            </#list>
 			}
 

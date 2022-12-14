@@ -44,12 +44,21 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	private final int x, y, z;
 	private final Player entity;
 
+
 	<#list data.getComponentsOfType("TextField") as component>
 		EditBox ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("Checkbox") as component>
 		Checkbox ${component.getName()};
+
+	<#list data.components as component>
+		<#if component.getClass().getSimpleName() == "TextField">
+		EditBox ${component.getName()};
+		<#elseif component.getClass().getSimpleName() == "Checkbox">
+		Checkbox ${component.getName()};
+		</#if>
+
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -78,8 +87,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.render(ms, mouseX, mouseY, partialTicks);
 		this.renderTooltip(ms, mouseX, mouseY);
 
+
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
+
+		<#list data.components as component>
+			<#if component.getClass().getSimpleName() == "TextField">
+				${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
+			</#if>
+
 		</#list>
 	}
 
@@ -111,9 +127,17 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			return true;
 		}
 
+
 		<#list data.getComponentsOfType("TextField") as component>
 				if(${component.getName()}.isFocused())
 					return ${component.getName()}.keyPressed(key, b, c);
+
+		<#list data.components as component>
+			<#if component.getClass().getSimpleName() == "TextField">
+				if(${component.getName()}.isFocused())
+					return ${component.getName()}.keyPressed(key, b, c);
+			</#if>
+
 		</#list>
 
 		return super.keyPressed(key, b, c);
@@ -121,8 +145,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	@Override public void containerTick() {
 		super.containerTick();
+
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.tick();
+
+		<#list data.components as component>
+			<#if component.getClass().getSimpleName() == "TextField">
+				${component.getName()}.tick();
+			</#if>
+
 		</#list>
 	}
 
@@ -148,7 +179,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		<#assign btid = 0>
+
 		<#list data.getComponentsOfType("TextField") as component>
+
+		<#list data.components as component>
+			<#if component.getClass().getSimpleName() == "TextField">
+
 				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
 				<#if component.placeholder?has_content>
@@ -179,9 +215,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				guistate.put("text:${component.getName()}", ${component.getName()});
 				${component.getName()}.setMaxLength(32767);
 				this.addWidget(this.${component.getName()});
+
 		</#list>
 
 		<#list data.getComponentsOfType("Button") as component>
+
+			<#elseif component.getClass().getSimpleName() == "Button">
+
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), e -> {
 							<#if hasProcedure(component.onClick)>
@@ -201,14 +241,22 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				}
 				</#if>);
 				<#assign btid +=1>
+
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
+
+			<#elseif component.getClass().getSimpleName() == "Checkbox">
+
 				${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 						20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
 					<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
 				guistate.put("checkbox:${component.getName()}", ${component.getName()});
 				this.addRenderableWidget(${component.getName()});
+
+
+			</#if>
+
 		</#list>
 	}
 

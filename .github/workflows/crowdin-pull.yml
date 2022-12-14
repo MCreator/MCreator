@@ -9,8 +9,13 @@ jobs:
   crowdin-sync:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v3
       - uses: Pylo/crowdin-github-action@1.5.1
+
+      - uses: actions/checkout@v2.5.0
+      - uses: crowdin/github-action@1.4.9
+
         name: Pull translations
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
