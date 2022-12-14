@@ -1,2 +1,2 @@
-While the value is returned true, the entity's bounding box will be solid.
-Boats are an example of this feature being used.
+While the returned value is true, the entity's bounding box is solid.
+This feature is used by boats, for example.
