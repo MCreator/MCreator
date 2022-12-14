@@ -57,6 +57,7 @@ import java.util.Locale;
 	public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
+	public Procedure solidBoundingBox;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
@@ -96,7 +97,6 @@ import java.util.Locale;
 	public int inventoryStackSize;
 
 	public boolean disableCollisions;
-	public boolean solidBoundingBox;
 
 	public boolean ridable;
 	public boolean canControlForward;

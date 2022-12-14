@@ -601,6 +601,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 			livingEntity.transparentModelCondition = new Procedure("condition1");
 			livingEntity.isShakingCondition = new Procedure("condition2");
+			livingEntity.solidBoundingBox = new Procedure("condition3");
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;
@@ -639,7 +640,6 @@ public class TestWorkspaceDataProvider {
 			livingEntity.inventorySize = 10;
 			livingEntity.inventoryStackSize = 42;
 			livingEntity.disableCollisions = !_true;
-			livingEntity.solidBoundingBox = _true;
 			livingEntity.immuneToFire = _true;
 			livingEntity.immuneToArrows = !_true;
 			livingEntity.immuneToFallDamage = !_true;

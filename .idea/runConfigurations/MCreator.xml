@@ -1,5 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MCreator" type="Application" factoryName="Application" singleton="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="temurin-17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="net.mcreator.Launcher" />
     <module name="MCreator.main" />
     <option name="VM_PARAMETERS" value="--add-opens=java.base/java.lang=ALL-UNNAMED" />
