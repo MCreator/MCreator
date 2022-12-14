@@ -1,3 +1,3 @@
-如果勾选，水将可以放置在方块内。
+If checked, water will be placeable inside the block. 
 
-原版例子:半砖，楼梯
+Vanilla examples: Slabs, Stairs, etc.

@@ -1,14 +1,13 @@
-该参数控制该方块可以在中生成的最大Y轴高度。
+This parameter controls the maximum Y height that this block can generate in.
 
-注:Minecraft 1.17.x及以上取值范围为-2032 ~ 2016，不建议大于或小于0 ~ 256。
-在Minecraft 1.16.5及以下版本中，Minecraft只支持0到256之间的值。
+NOTE: Minecraft 1.17.x and higher supports from -2032 to 2016, but it is not recommended to use lower and higher values than 0 to 256.
+With Minecraft 1.16.5 and lower, Minecraft only supports values between 0 and 256.
 
-原版最大Y轴高度:
-
-* 煤炭- 125
-* 铁矿- 40
-* 金矿- 32
-* 红石矿- 16
-* 钻石矿- 16
-* 绿宝石矿- 32
-* 青金石- 31
+Vanilla maximum Y levels heights:
+* Coal Ore - 125
+* Iron Ore - 40
+* Gold Ore - 32
+* Redstone Ore - 16
+* Diamond Ore - 16
+* Emerald Ore - 32
+* Lapis Lazuli - 31

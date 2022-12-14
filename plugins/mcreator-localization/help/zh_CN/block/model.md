@@ -1,8 +1,9 @@
-选择要与此方块一起使用的模型。模型只定义视觉外观，而不是方块的碰撞箱。
+Select the model to be used with this block. Model only defines visual look and not the
+bounding box of the block.
 
-* **Normal** -每边都有纹理的普通块
-* **单一纹理** -方块具有相同的纹理在所有的边
-* **交叉** -植物使用的模型
-* 自定义-您也可以定义自定义JSON和OBJ模型
+* **Normal** - Normal block with textures on each side
+* **Single texture** - Block with same texture on all sides
+* **Cross** - Model used by plants
+* Custom - you can define custom JSON and OBJ models too
 
-在创建自定义模型时，建议使用JSON，因为JSON支持这种模型类型。
+When making custom models, JSON is recommended due to vanilla support for this model type.

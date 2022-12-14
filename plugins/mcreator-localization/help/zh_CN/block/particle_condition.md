@@ -1,1 +1,1 @@
-当这个条件流程为真时，位于x、y和z的方块将根据设置生成粒子。
+When this conditional procedure is true, the block at x, y, and z will spawn particles based on the settings.

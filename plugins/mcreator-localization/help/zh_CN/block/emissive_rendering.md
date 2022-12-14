@@ -1,1 +1,1 @@
-勾选此属性可使你的方块产生发光效果(类似于岩浆块)。
+Check this property to have a glowing effect (similar to the magma block) applied to your block.

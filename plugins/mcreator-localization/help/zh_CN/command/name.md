@@ -1,1 +1,1 @@
-在/后面的单词，玩家必须编写来定义命令，如gamemode, give, setblock等。
+在斜杠(/)之后玩家要写的命令定义，例如gamemode, give, setblock等。

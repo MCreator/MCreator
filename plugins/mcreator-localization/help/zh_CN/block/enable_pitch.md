@@ -1,2 +1,2 @@
-如果您的方块水平旋转，勾选此框以允许它面向地板、墙壁或天花板的任何方向。
-这个选项被拉杆，切石机等使用。
+If your block rotates horizontally, check this box to allow it facing floor, walls or ceiling at any direction.
+This option is used by lever, grindstone, etc.

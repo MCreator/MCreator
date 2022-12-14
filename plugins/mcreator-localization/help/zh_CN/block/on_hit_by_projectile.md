@@ -1,1 +1,1 @@
-当箭击中方块时触发一个流程。
+Triggers a procedure when a projectile hits the block.

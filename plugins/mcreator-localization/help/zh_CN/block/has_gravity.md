@@ -1,1 +1,1 @@
-如果勾选该参数，方块将像沙子一样落下。
+If this parameter is checked, the block will fall down like sand.

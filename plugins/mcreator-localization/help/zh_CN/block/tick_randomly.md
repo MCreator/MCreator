@@ -1,5 +1,6 @@
-在默认情况下，自然生成的方块通常不会勾选，除非使用随机勾选。
+Blocks naturally generated will usually not tick by default, unless tick randomly is used.
 
-该参数使方块随机刻，其中速度由全局世界刻参数控制。
+This parameter makes block tick randomly, where speed is controled by a global world tick
+parameter.
 
-例如，植物就使用这种生物刻。
+This type of ticking is used by plants, for example.

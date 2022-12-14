@@ -1,1 +1,1 @@
-输出槽不能作为漏斗物品输送的输入。
+Output slots will not be used as input for hopper item transmission.

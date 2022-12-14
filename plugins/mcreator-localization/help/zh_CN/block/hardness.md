@@ -1,2 +1,2 @@
-该参数控制挖掘方块所需的时间。
-更高的值意味着需要更长的时间来挖掘这个方块。
+This parameter controls how long it takes to mine the block. 
+A higher value means it takes longer to mine this block.

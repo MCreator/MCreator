@@ -1,1 +1,1 @@
-如果启用此选项，则仅当使用指定的收集工具进行破坏时，方块才会掉落。
+If this option is enabled, the block will drop only when broken with the specified harvest tool.
