@@ -1,4 +1,4 @@
-该参数控制实体在方块上的跳跃高度
+This parameter controls the jump height of entities
 
-大多数方块使用的默认值是1.0。
-蜂蜜块跳跃系数为0.5。
+Default value used by most of the blocks is 1.0.
+The honey block jump factor is 0.5.

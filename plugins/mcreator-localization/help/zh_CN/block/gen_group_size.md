@@ -1,10 +1,10 @@
-该参数控制每个矿脉的平均方块数量。
+This parameter controls the average amount of block per ore veins.
 
-原版矿石组大小:
+Vanilla ore group sizes:
 
-* 煤炭- 17
-* 铁矿石- 9
-* 金矿- 9
-* 红石矿- 8
-* 钻石矿- 8
-* 青金石- 7
+* Coal Ore - 17
+* Iron Ore - 9
+* Gold Ore - 9
+* Redstone Ore - 8
+* Diamond Ore - 8
+* Lapis Lazuli - 7

@@ -1,3 +1,4 @@
-如果选中此参数，红石粉将始终连接到这个方块(类似于红石块)。
+If this parameter is checked, redstone dust will always connect to 
+this block (similar to the Redstone Blocks).
 
-注意:即使不勾选此参数，方块仍然可以输出红石能量。
+NOTE: The block can still emit redstone power even if this parameter isn't checked.

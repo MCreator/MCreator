@@ -1,7 +1,9 @@
-该参数控制方块更新的频率。如果选择“随机”，则此参数没有效果。
+This parameter controls how often the block will tick. If tick randomly is selected, this parameter
+has no effect.
 
-请记住，通常情况下，自然生成的方块在默认情况下不会勾选，除非随机勾选使用。
+Keep in mind that usually, blocks naturally generated will not tick by default, unless tick randomly
+is used.
 
-默认的更新率为0表示方块不会自动更新。
+Default tick rate of 0 means the block will not tick automatically.
 
-如果该参数设置为大于0的数字，则块将自动勾选。一秒钟有20游戏刻。
+If this parameter is set to a number greater than 0, the block will tick automatically. There are 20 world ticks in a second.

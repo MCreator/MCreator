@@ -1,9 +1,9 @@
-**如果你的块有透明度选中此框**
-对于固体例如方块，不勾选，检查它是否类似于树叶，玻璃，铁条等。
+**Check this box if your block has transparency** - 
+Leave unchecked for a solid block, check it if your block is similar to leaves, glass, iron bars, etc.
 
-透明类型:
+Transparency types:
 
-* **固体:**无透明度(类似于泥土、石头等)
-* **镂空:**透明没有贴图分级细化(类似于玻璃)
-* **Cutout mipped:**像切割形状，但与贴图分级细化
-* **半透明:**部分透明，资源最多的选项(类似于冰)
+* **Solid:** No transparency (similar to dirt, stone, etc.)
+* **Cutout:** Transparent without mipmapping (similar to glass)
+* **Cutout mipped:** Like Cutout, but with mipmapping
+* **Translucent:** Partially transparent and the most resource heavy option (similar to ice)

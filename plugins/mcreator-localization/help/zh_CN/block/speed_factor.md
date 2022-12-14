@@ -1,4 +1,4 @@
-此参数控制该方块上实体的速度。
+This parameter controls the speed of entities on this block.
 
-大多数块使用的默认值是1.0。
-灵魂沙和蜂蜜块的速度因子是0.4。
+Default value used by most of the blocks is 1.0.
+The soul sand and honey block speed factor is 0.4.

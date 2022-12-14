@@ -1,3 +1,3 @@
-这个参数定义了玩家是否能够挖掘它。
+This parameter defines if the player will be able to mine it. 
 
-原版例子:基岩和命令方块
+Vanilla examples: Bedrock and command block

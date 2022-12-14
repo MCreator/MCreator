@@ -1,1 +1,1 @@
-该参数控制火焰蔓延到其他方块的速度。
+This parameter controls how quickly the fire spreads to other blocks.

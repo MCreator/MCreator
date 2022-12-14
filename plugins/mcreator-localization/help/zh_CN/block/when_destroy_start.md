@@ -1,1 +1,1 @@
-当玩家开始破坏方块时触发一个流程。
+Triggers a procedure when a player starts to destroy the block.

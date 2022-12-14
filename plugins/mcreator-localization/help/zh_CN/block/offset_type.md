@@ -1,3 +1,3 @@
-此参数控制方块的放置是否应该随机偏移以及由哪个轴偏移。
+This parameter controls if block placement should be randomly offset and by which axis.
 
-大多数植物使用一种补偿类型。
+Most plants use one of the offset types.

@@ -1,3 +1,3 @@
-当方块被选中时触发一个过程。
+Triggers a procedure when the block is ticked.
 
-自然生成的方块只有在出于性能原因使用随机刻时才会运行。
+Naturally spawned blocks will only tick if random ticking is used for performance reasons.

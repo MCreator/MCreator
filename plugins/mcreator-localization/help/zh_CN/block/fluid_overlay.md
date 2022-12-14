@@ -1,5 +1,5 @@
-该参数只能与透明方块组合使用。
+This parameter should only be used in combination with transparent blocks.
 
-如果选中此选项，则方块在浸入水中时将不会显示流体纹理，类似于玻璃。
+If this is checked, the block won't display the fluid texture when submerged, similar to glass blocks.
 
-此选项不适用于1.15.2之前的版本
+This option doesn't work with versions prior to 1.15.2

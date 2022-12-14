@@ -1,3 +1,4 @@
-生成该方块时可以替换的块的列表。
+List of blocks this block can replace when generating.
 
-如果你让这个列表为空，方块将不会自然生成，因为它将无法将自己放置在世界上。
+If you leave this list empty, the block will not naturally generate as it will not be able
+to place itself on the world.

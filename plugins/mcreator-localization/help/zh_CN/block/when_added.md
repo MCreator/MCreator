@@ -1,1 +1,1 @@
-当方块被添加到世界时触发一个过程(可能不会被一些自然生成器调用)。
+Triggers a procedure when the block is added to the world (might not be called by some natural generators).

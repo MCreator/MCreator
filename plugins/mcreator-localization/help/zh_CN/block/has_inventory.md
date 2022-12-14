@@ -1,9 +1,8 @@
-此参数将为您的方块提供一个清单。该方块将是一个tile实体。
+This parameter will give an inventory to your block. The block will be a tile entity.
 
-该参数启用如下特性:
+This parameter enables features such as:
+* NBT tags on block
+* Inventory for item storage of block
+* Comparator interaction
 
-* NBT标签块
-* 用于方块项目存储的库存
-* 比较器交互
-
-如果不选中此参数，这些特性将无法工作。
+These features will not work without this parameter checked.

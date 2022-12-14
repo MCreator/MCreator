@@ -1,1 +1,1 @@
-当方块落下时，就会发出这种声音。
+This sound is played when the block falls.
