@@ -461,7 +461,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		flyingMob.setOpaque(false);
 		hasSpawnEgg.setOpaque(false);
 		disableCollisions.setOpaque(false);
-		solidBoundingBox.setOpaque(false);
 
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
@@ -498,7 +497,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(isShakingCondition);
 
 		spo2.add(new JEmptyBox());
-		solidBoundingBox.setOpaque(true);
 		spo2.add(solidBoundingBox);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
