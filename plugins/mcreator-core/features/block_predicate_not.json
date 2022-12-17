@@ -1,0 +1,17 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "condition",
+      "check": "BlockPredicate"
+    }
+  ],
+  "output": "BlockPredicate",
+  "colour": 210,
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+	"inputs": [
+	  "condition"
+	]
+  }
+}

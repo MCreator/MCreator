@@ -1,0 +1,43 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "x",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    },
+    {
+      "type": "field_number",
+      "name": "y",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    },
+    {
+      "type": "field_number",
+      "name": "z",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    }
+  ],
+  "extensions": [
+    "direction_list_provider"
+  ],
+  "inputsInline": true,
+  "output": "BlockPredicate",
+  "colour": 210,
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+	"fields": [
+	  "x",
+	  "y",
+	  "z",
+      "direction"
+	]
+  }
+}

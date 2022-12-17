@@ -1,0 +1,55 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "maxSteps",
+      "value": 5,
+      "precision": 1,
+	  "min": 1,
+	  "max": 32
+    },
+    {
+      "type": "field_dropdown",
+      "name": "direction",
+      "options": [
+        [
+          "UP",
+          "UP"
+        ],
+        [
+          "DOWN",
+          "DOWN"
+        ]
+      ]
+    },
+    {
+      "type": "input_value",
+      "name": "condition",
+      "check": "BlockPredicate"
+    },
+    {
+      "type": "input_value",
+      "name": "searchCondition",
+      "check": "BlockPredicate"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+    "toolbox_init": [
+      "<value name=\"condition\"><block type=\"block_predicate_is_air_or_water\"></block></value>",
+      "<value name=\"searchCondition\"><block type=\"block_predicate_is_air\"></block></value>"
+    ],
+	"fields": [
+	  "maxSteps",
+	  "direction"
+	],
+    "inputs": [
+      "condition",
+      "searchCondition"
+    ]
+  }
+}
