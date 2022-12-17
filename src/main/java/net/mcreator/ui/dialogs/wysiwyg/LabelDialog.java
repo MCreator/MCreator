@@ -49,7 +49,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowActivated(WindowEvent e) {
-				SwingUtilities.invokeLater(textField::requestFocus);
+				SwingUtilities.invokeLater(textField::grabFocus);
 			}
 		});
 

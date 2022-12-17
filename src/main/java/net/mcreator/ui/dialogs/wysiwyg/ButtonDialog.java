@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
@@ -62,9 +63,10 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		options.add(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition));
+		add("Center",
+				new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
 
-		add("Center", new JScrollPane(PanelUtils.centerInPanel(options)));
+		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
