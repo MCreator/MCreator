@@ -29,10 +29,10 @@
   "colour": 210,
   "mcreator": {
     "toolbox_id": "blockpredicates",
-	"fields": [
-	  "x",
-	  "y",
-	  "z"
-	]
+    "fields": [
+      "x",
+      "y",
+      "z"
+    ]
   }
 }

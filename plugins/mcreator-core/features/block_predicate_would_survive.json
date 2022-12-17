@@ -40,10 +40,10 @@
     "inputs": [
       "block"
     ],
-	"fields": [
-	  "x",
-	  "y",
-	  "z"
-	]
+    "fields": [
+      "x",
+      "y",
+      "z"
+    ]
   }
 }

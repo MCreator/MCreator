@@ -10,8 +10,8 @@
   "colour": 210,
   "mcreator": {
     "toolbox_id": "blockpredicates",
-	"inputs": [
-	  "condition"
-	]
+    "inputs": [
+      "condition"
+    ]
   }
 }
