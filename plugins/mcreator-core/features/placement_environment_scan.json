@@ -5,8 +5,8 @@
       "name": "maxSteps",
       "value": 5,
       "precision": 1,
-	  "min": 1,
-	  "max": 32
+      "min": 1,
+      "max": 32
     },
     {
       "type": "field_dropdown",
@@ -37,10 +37,10 @@
     "toolbox_init": [
       "<value name=\"condition\"><block type=\"block_predicate_is_air\"></block></value>"
     ],
-	"fields": [
-	  "maxSteps",
-	  "direction"
-	],
+    "fields": [
+      "maxSteps",
+      "direction"
+    ],
     "inputs": [
       "condition"
     ]

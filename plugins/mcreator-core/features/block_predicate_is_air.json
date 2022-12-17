@@ -1,6 +1,6 @@
 {
   "output": "BlockPredicate",
-  "colour": 210,
+  "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "blockpredicates"
   }
