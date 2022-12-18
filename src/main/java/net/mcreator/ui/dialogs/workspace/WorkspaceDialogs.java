@@ -465,8 +465,7 @@ public class WorkspaceDialogs {
 						L10N.t("dialog.workspace_settings.section.external_apis")));
 				apiSettings.add("North", L10N.label("dialog.workspace_settings.section.external_apis.tooltip"));
 
-				JPanel apiList = new JPanel();
-				apiList.setLayout(new BoxLayout(apiList, BoxLayout.PAGE_AXIS));
+				JPanel apiList = new JPanel(new GridLayout(0, 1, 0, 0));
 
 				List<ModAPIImplementation> apisSupported = ModAPIManager.getModAPIsForGenerator(
 						workspace.getGenerator().getGeneratorName());
@@ -476,7 +475,7 @@ public class WorkspaceDialogs {
 					apiEnableBox.setText(api.parent().name());
 
 					if (api.parent().id().equals("mcreator_link")) {
-						apiList.add(PanelUtils.westAndCenterElement(
+						apiList.add(PanelUtils.join(FlowLayout.LEFT,
 								ComponentUtils.wrapWithInfoButton(apiEnableBox, "https://mcreator.net/link"),
 								new JLabel(UIRES.get("16px.link"))));
 					} else {
@@ -486,7 +485,11 @@ public class WorkspaceDialogs {
 					apis.put(api.parent().id(), apiEnableBox);
 				}
 
-				apiSettings.add("West", apiList);
+				JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(apiList));
+				scrollPane.getVerticalScrollBar().setUnitIncrement(11);
+				scrollPane.setPreferredSize(new Dimension(-1, 160));
+
+				apiSettings.add("Center", scrollPane);
 
 				JButton explorePlugins = L10N.button("dialog.workspace_settings.explore_plugins");
 				explorePlugins.setIcon(UIRES.get("16px.search"));
