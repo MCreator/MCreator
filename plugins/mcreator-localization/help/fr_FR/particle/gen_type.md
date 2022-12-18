@@ -1,1 +1,0 @@
-Ce paramètre contrôle le type de particules qui seront générées par le générateur de particules.

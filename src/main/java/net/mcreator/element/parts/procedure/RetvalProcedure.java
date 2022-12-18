@@ -27,6 +27,7 @@ import java.util.Map;
 public abstract class RetvalProcedure<T> extends Procedure {
 
 	public static final Map<Class<? extends RetvalProcedure<?>>, JsonDeserializer<? extends RetvalProcedure<?>>> GSON_ADAPTERS = new HashMap<>() {{
+		put(LogicProcedure.class, new LogicProcedure.GSONAdapter());
 		put(NumberProcedure.class, new NumberProcedure.GSONAdapter());
 		put(StringProcedure.class, new StringProcedure.GSONAdapter());
 	}};

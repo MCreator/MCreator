@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +30,14 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ElementUtil {
 
@@ -45,6 +49,41 @@ public class ElementUtil {
 	 */
 	public static Predicate<DataListEntry> typeMatches(String type) {
 		return e -> type.equals(e.getType());
+	}
+
+	/**
+	 * Loads a list of entries, with optional custom entries from the given mod element types,
+	 * and with an optional filter for the entry type.
+	 *
+	 * <p>NOTE: custom entries cannot specify a type yet, so the type filter will remove any custom entry</p>
+	 *
+	 * @param workspace The current workspace
+	 * @param dataList The datalist from which to load the entries
+	 * @param sorted Whether the list should be sorted alphabetically
+	 * @param typeFilter If present, only entries whose type matches this parameter are loaded
+	 * @param customEntryProviders The string id of the mod element types that provide custom entries
+	 *
+	 * @return All entries from the given data list and the given mod element types, matching the optional filter
+	 */
+	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList,
+			boolean sorted, @Nullable String typeFilter, @Nullable String... customEntryProviders) {
+		List<DataListEntry> retval = new ArrayList<>();
+
+		// We add custom entries before normal ones, so that they are on top even if the list isn't sorted
+		if (customEntryProviders != null) {
+			retval.addAll(getCustomElements(workspace,
+					me -> Arrays.asList(customEntryProviders).contains(me.getTypeString())));
+		}
+		retval.addAll(DataListLoader.loadDataList(dataList));
+
+		Stream<DataListEntry> retvalStream = retval.stream();
+		if (typeFilter != null) {
+			retvalStream = retvalStream.filter(typeMatches(typeFilter));
+		}
+		if (sorted) {
+			return retvalStream.filter(e -> e.isSupportedInWorkspace(workspace)).sorted().toList();
+		}
+		return retvalStream.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 	}
 
 	/**
@@ -124,15 +163,11 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		List<DataListEntry> achievements = getCustomElementsOfType(workspace, ModElementType.ADVANCEMENT);
-		achievements.addAll(DataListLoader.loadDataList("achievements"));
-		return achievements;
+		return loadDataListAndElements(workspace, "achievements", false, null, "achievement");
 	}
 
 	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
-		List<DataListEntry> tabs = getCustomElementsOfType(workspace, ModElementType.TAB);
-		tabs.addAll(DataListLoader.loadDataList("tabs"));
-		return tabs;
+		return loadDataListAndElements(workspace, "tabs", false, null, "tab");
 	}
 
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
@@ -143,9 +178,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.ENCHANTMENT);
-		retval.addAll(DataListLoader.loadDataList("enchantments"));
-		return retval;
+		return loadDataListAndElements(workspace, "enchantments", false, null, "enchantment");
 	}
 
 	public static List<DataListEntry> loadMaterials() {
@@ -178,21 +211,15 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PARTICLE);
-		retval.addAll(DataListLoader.loadDataList("particles"));
-		return retval;
+		return loadDataListAndElements(workspace, "particles", false, null, "particle");
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTIONEFFECT);
-		retval.addAll(DataListLoader.loadDataList("effects"));
-		return retval;
+		return loadDataListAndElements(workspace, "effects", false, null, "potioneffect");
 	}
 
 	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.POTION);
-		retval.addAll(DataListLoader.loadDataList("potions"));
-		return retval;
+		return loadDataListAndElements(workspace, "potions", false, null, "potion");
 	}
 
 	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
@@ -273,14 +300,6 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> loadThrowableProjectiles() {
-		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("throwable")).toList();
-	}
-
-	public static List<DataListEntry> loadFireballProjectiles() {
-		return DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("fireball")).toList();
-	}
-
 	public static String[] loadAllDimensions(Workspace workspace) {
 		ArrayList<String> dimensions = new ArrayList<>();
 		dimensions.add("Surface");
@@ -320,13 +339,11 @@ public class ElementUtil {
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
-		return workspace.getModElements().stream().filter(mu -> mu.getType() == type).map(DataListEntry.Custom::new)
-				.collect(Collectors.toList());
+		return getCustomElements(workspace, modelement -> modelement.getType() == type);
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, BaseType type) {
-		return workspace.getModElements().stream().filter(mu -> mu.getType().getBaseType() == type)
-				.map(DataListEntry.Custom::new).collect(Collectors.toList());
+		return getCustomElements(workspace, mu -> mu.getType().getBaseType() == type);
 	}
 
 	/**

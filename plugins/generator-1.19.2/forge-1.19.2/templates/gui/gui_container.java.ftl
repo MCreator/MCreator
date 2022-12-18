@@ -113,9 +113,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						${(component.x - mx)?int + 1},
 						${(component.y - my)?int + 1}) {
 
-						<#if component.disableStackInteraction>
-						@Override public boolean mayPickup(Player player) {
-							return false;
+						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
+						@Override public boolean mayPickup(Player entity) {
+							return <@procedureOBJToConditionCode component.disablePickup false true/>;
 						}
 						</#if>
 
@@ -140,12 +140,12 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						}
 						</#if>
 
-						<#if component.disableStackInteraction>
-							@Override public boolean mayPlace(ItemStack stack) {
-								return false;
-							}
-						<#elseif component.getClass().getSimpleName() == "InputSlot">
-							<#if component.inputLimit.toString()?has_content>
+						<#if component.getClass().getSimpleName() == "InputSlot">
+							<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
+								@Override public boolean mayPlace(ItemStack itemstack) {
+									return <@procedureOBJToConditionCode component.disablePlacement false true/>;
+								}
+							<#elseif component.inputLimit.toString()?has_content>
 								@Override public boolean mayPlace(ItemStack stack) {
 									<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
 										<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "") + "\"">

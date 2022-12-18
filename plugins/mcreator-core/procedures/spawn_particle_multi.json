@@ -43,7 +43,8 @@
     {
       "type": "field_data_list_selector",
       "name": "particle",
-      "datalist": "particle"
+      "datalist": "particles",
+      "customEntryProviders": "particle"
     }
   ],
   "inputsInline": true,
