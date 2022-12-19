@@ -201,14 +201,21 @@ loadScripts(document, 'script');</script>
  that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
  This list also provides potions from both Minecraft elements and mod elements</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadDirections()" class="member-name-link">loadDirections</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadEnchantmentTypes()" class="member-name-link">loadEnchantmentTypes</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadDataListAndElements(net.mcreator.workspace.Workspace,java.lang.String,boolean,java.lang.String,java.lang.String...)" class="member-name-link">loadDataListAndElements</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataList,
+ boolean&nbsp;sorted,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeFilter,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;customEntryProviders)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Loads a list of entries, with optional custom entries from the given mod element types,
+ and with an optional filter for the entry type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadDirections()" class="member-name-link">loadDirections</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadFireballProjectiles()" class="member-name-link">loadFireballProjectiles</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadEnchantmentTypes()" class="member-name-link">loadEnchantmentTypes</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadMaterials()" class="member-name-link">loadMaterials</a>()</code></div>
@@ -216,12 +223,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadStepSounds()" class="member-name-link">loadStepSounds</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadThrowableProjectiles()" class="member-name-link">loadThrowableProjectiles</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#typeMatches(java.lang.String)" class="member-name-link">typeMatches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#typeMatches(java.lang.String)" class="member-name-link">typeMatches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Provides a predicate to check the type of data list entries</div>
 </div>
 </div>
@@ -265,6 +269,32 @@ loadScripts(document, 'script');</script>
 <dd><code>type</code> - The type that the entry has to match</dd>
 <dt>Returns:</dt>
 <dd>A predicate that checks if the type matches the parameter</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="loadDataListAndElements(net.mcreator.workspace.Workspace,java.lang.String,boolean,java.lang.String,java.lang.String...)">
+<h3>loadDataListAndElements</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadDataListAndElements</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataList,
+ boolean&nbsp;sorted,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeFilter,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;customEntryProviders)</span></div>
+<div class="block">Loads a list of entries, with optional custom entries from the given mod element types,
+ and with an optional filter for the entry type.
+
+ <p>NOTE: custom entries cannot specify a type yet, so the type filter will remove any custom entry</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>workspace</code> - The current workspace</dd>
+<dd><code>dataList</code> - The datalist from which to load the entries</dd>
+<dd><code>sorted</code> - Whether the list should be sorted alphabetically</dd>
+<dd><code>typeFilter</code> - If present, only entries whose type matches this parameter are loaded</dd>
+<dd><code>customEntryProviders</code> - The string id of the mod element types that provide custom entries</dd>
+<dt>Returns:</dt>
+<dd>All entries from the given data list and the given mod element types, matching the optional filter</dd>
 </dl>
 </section>
 </li>
@@ -447,18 +477,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="loadArrowProjectiles(net.mcreator.workspace.Workspace)">
 <h3>loadArrowProjectiles</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadArrowProjectiles</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="loadThrowableProjectiles()">
-<h3>loadThrowableProjectiles</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadThrowableProjectiles</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="loadFireballProjectiles()">
-<h3>loadFireballProjectiles</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadFireballProjectiles</span>()</div>
 </section>
 </li>
 <li>
