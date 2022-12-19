@@ -1,1 +1,0 @@
-Ce paramètre contrôle la rareté de ce biome. Laissez le à 10 pour utiliser le poids standard d'un biome.

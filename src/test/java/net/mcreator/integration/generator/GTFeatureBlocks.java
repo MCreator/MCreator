@@ -177,8 +177,17 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
+			} else if (featureBlock.blocklyJSON.getAsJsonObject().get("output").getAsString().equals("HeightProvider")) { // Testing height providers
+				feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+						</block></value><next><block type="placement_height_range">
+							<value name="height">%s</value></block></next></block></xml>
+						""".formatted(testXML);
 			} else {
-				LOG.warn("[" + generatorName + "] Skipping feature block that is neither placement nor feature: "
+				LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
 						+ featureBlock.machine_name);
 				continue;
 			}

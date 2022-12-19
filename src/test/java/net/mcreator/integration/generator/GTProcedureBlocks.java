@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 package net.mcreator.integration.generator;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
@@ -28,11 +30,15 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
@@ -174,9 +180,17 @@ public class GTProcedureBlocks {
 								}
 								case "field_data_list_selector" -> {
 									String type = arg.get("datalist").getAsString();
-									if (type.equals("enchantment"))
-										type = "enhancement";
-									String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, type);
+
+									// Get the optional properties
+									JsonElement optTypeFilter = arg.get("typeFilter");
+									String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+
+									JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+									String customEntryProviders = optCustomEntryProviders == null ? null :
+											optCustomEntryProviders.getAsString();
+
+									String[] values = getDataListFieldValues(workspace, type, typeFilter,
+											customEntryProviders);
 									if (values.length > 0 && !values[0].equals("")) {
 										String value = ListUtils.getRandomItem(random, values);
 										additionalXML.append("<field name=\"").append(field).append("\">").append(value)
@@ -341,6 +355,15 @@ public class GTProcedureBlocks {
 					procedure.procedurexml = wrapWithBaseTestXML(
 							"<block type=\"return_itemstack\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
+				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
+					procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="projectile_shoot_from_entity">
+							<value name="projectile">%s</value>
+							<value name="entity"><block type="entity_from_deps"></block></value>
+							<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
+						</block>""".formatted(testXML));
+					break;
 				default:
 					procedure.procedurexml = wrapWithBaseTestXML(
 							"<block type=\"text_print\"><value name=\"TEXT\">" + testXML + "</value></block>");
@@ -379,4 +402,34 @@ public class GTProcedureBlocks {
 				+ "</next></block></next></block></next></block></next></block></xml>";
 	}
 
+	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
+			String customEntryProviders) {
+		switch (datalist) {
+		case "entity": return ElementUtil.loadAllEntities(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "spawnableEntity": return ElementUtil.loadAllSpawnableEntities(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "biome": return ElementUtil.loadAllBiomes(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "sound": return ElementUtil.getAllSounds(workspace);
+		case "procedure": return workspace.getModElements()
+				.stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+				.map(ModElement::getName).toArray(String[]::new);
+		case "arrowProjectile": return ElementUtil.loadArrowProjectiles(workspace)
+				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		default: {
+			if (datalist.startsWith("procedure_retval_")) {
+				var variableType = VariableTypeLoader.INSTANCE.fromName(
+						StringUtils.removeStart(datalist, "procedure_retval_"));
+				return ElementUtil.getProceduresOfType(workspace, variableType);
+			}
+			if (!DataListLoader.loadDataList(datalist).isEmpty()) {
+				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
+								StringUtils.split(customEntryProviders, ','))
+						.stream().map(DataListEntry::getName).toArray(String[]::new);
+			}
+		}
+		}
+		return new String[]{""};
+	}
 }
