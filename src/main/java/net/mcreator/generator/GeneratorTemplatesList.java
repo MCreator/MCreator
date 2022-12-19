@@ -40,26 +40,6 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
 	/**
-	 * Attempts to locate the source generator template used to create given file.
-	 *
-	 * @param generatorFile    The input file claimed to be generated from a template from this list.
-	 * @param ignoreConditions Specifies whether generation conditions of templates should not be respected.
-	 * @return True if corresponding list template is found in this templates list, false otherwise.
-	 */
-	public boolean isGeneratedFromListTemplate(File generatorFile, boolean ignoreConditions) {
-		for (GeneratorTemplate generatorTemplate : templates.keySet()) {
-			for (int i = 0; i < listData.size(); i++) {
-				if (processTokens(generatorTemplate, i).getPath().equals(generatorFile.getPath())) {
-					if (templates.get(generatorTemplate).get(i) || ignoreConditions)
-						return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Replaces tokens on name of provided list template with appropriate values from
 	 * {@link GeneratorTemplatesList#element} and returns the target file.
 	 *
