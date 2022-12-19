@@ -18,10 +18,7 @@
 
 package net.mcreator.blockly.data;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BlocklyLoader {
 
@@ -31,8 +28,21 @@ public class BlocklyLoader {
 		INSTANCE = new BlocklyLoader();
 	}
 
-	private static final List<String> builtinCategories = Arrays.asList("other", "apis", "mcelements", "mcvariables",
-			"customvariables", "logicloops", "logicoperations", "math", "text", "time", "advanced", "action", "aiadvanced");
+	private static final List<String> builtinCategories = new ArrayList<>() {{
+		add("other");
+		add("apis");
+		add("mcelements");
+		add("mcvariables");
+		add("customvariables");
+		add("logicloops");
+		add("logicoperations");
+		add("math");
+		add("text");
+		add("time");
+		add("advanced");
+		add("action");
+		add("aiadvanced");
+	}};
 	private final Map<String, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
