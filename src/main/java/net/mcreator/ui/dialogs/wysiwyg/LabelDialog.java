@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -39,7 +40,7 @@ import java.awt.event.WindowEvent;
 public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
-		super(editor.mcreator, label);
+		super(editor, label);
 		setSize(590, 190);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
@@ -48,14 +49,14 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowActivated(WindowEvent e) {
-				SwingUtilities.invokeLater(textField::grabFocus);
+				SwingUtilities.invokeLater(textField::requestFocus);
 			}
 		});
 
-		StringProcedureSelector textSelector = new StringProcedureSelector(
+		StringProcedureSelector labelText = new StringProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_text"), editor.mcreator, textField,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		textSelector.refreshList();
+		labelText.refreshList();
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,
@@ -67,7 +68,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), textSelector));
+		add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), labelText));
 
 		add("Center", PanelUtils.westAndEastElement(options, PanelUtils.join(FlowLayout.LEFT, displayCondition)));
 
@@ -91,7 +92,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 		if (label != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			textSelector.setSelectedProcedure(label.text);
+			labelText.setSelectedProcedure(label.text);
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);
 		}
@@ -99,14 +100,19 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
 			setVisible(false);
-			StringProcedure text = textSelector.getSelectedProcedure();
-
-			String name = text.getFixedValue();
-			if (text.getName() != null)
-				name = text.getName() + " (string procedure)";
+			StringProcedure textProcedure = labelText.getSelectedProcedure();
 
 			if (label == null) {
-				Label component = new Label(name, 0, 0, text, cola.getColor(), displayCondition.getSelectedProcedure());
+				String nameBase;
+				if (textProcedure.getName() != null) { // string procedure
+					nameBase = "proc_" + RegistryNameFixer.fromCamelCase(textProcedure.getName());
+				} else { // fixed text
+					nameBase = textProcedure.getFixedValue();
+				}
+
+				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
+
+				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
@@ -115,7 +121,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			} else {
 				int idx = editor.components.indexOf(label);
 				editor.components.remove(label);
-				Label labelNew = new Label(name, label.getX(), label.getY(), text, cola.getColor(),
+				Label labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
 						displayCondition.getSelectedProcedure());
 				editor.components.add(idx, labelNew);
 				setEditingComponent(labelNew);

@@ -30,17 +30,16 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
-		super(editor.mcreator, button);
+		super(editor, button);
 		setModal(true);
 		setSize(480, 200);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
-		JTextField nameField = new JTextField(20);
+		JTextField buttonText = new JTextField(20);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
@@ -49,7 +48,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		else
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
-		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), buttonText));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -63,10 +62,9 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		add("Center",
-				new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition))));
+		options.add(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, options));
+		add("Center", new JScrollPane(PanelUtils.centerInPanel(options)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -76,7 +74,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			nameField.setText(button.name);
+			buttonText.setText(button.text);
 			eh.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
@@ -84,26 +82,26 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
 			setVisible(false);
-			String text = nameField.getText();
-			if (text != null && !text.equals("")) {
-				if (button == null) {
-					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
+			String text = buttonText.getText();
+			if (button == null) {
+				String name = textToMachineName(editor.getComponentList(), "button_", text);
 
-					Button component = new Button(text, 0, 0, text, textwidth + 25, 20, eh.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure());
+				int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 
-					setEditingComponent(component);
-					editor.editor.addComponent(component);
-					editor.list.setSelectedValue(component, true);
-					editor.editor.moveMode();
-				} else {
-					int idx = editor.components.indexOf(button);
-					editor.components.remove(button);
-					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
-							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
-					editor.components.add(idx, buttonNew);
-					setEditingComponent(buttonNew);
-				}
+				Button component = new Button(name, 0, 0, text, textwidth + 25, 20,
+						eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+
+				setEditingComponent(component);
+				editor.editor.addComponent(component);
+				editor.list.setSelectedValue(component, true);
+				editor.editor.moveMode();
+			} else {
+				int idx = editor.components.indexOf(button);
+				editor.components.remove(button);
+				Button buttonNew = new Button(button.name, button.getX(), button.getY(), text, button.width, button.height,
+						eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+				editor.components.add(idx, buttonNew);
+				setEditingComponent(buttonNew);
 			}
 		});
 

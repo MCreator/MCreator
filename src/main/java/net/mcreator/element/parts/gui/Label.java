@@ -29,16 +29,23 @@ import java.awt.*;
 
 public class Label extends GUIComponent {
 
+	public String name;
+
 	public StringProcedure text;
 	public Color color;
 
 	public Procedure displayCondition;
 
 	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
-		super(name, x, y);
+		super(x, y);
 		this.text = text;
 		this.color = color;
 		this.displayCondition = displayCondition;
+		this.name = name;
+	}
+
+	@Override public String getName() {
+		return name;
 	}
 
 	@Override public final int getWidth(Workspace workspace) {
@@ -57,7 +64,7 @@ public class Label extends GUIComponent {
 		return false; // one could be using tokens in the label
 	}
 
-	private String getRenderText() {
+	public String getRenderText() {
 		if (text.getName() == null)
 			return text.getFixedValue();
 		else

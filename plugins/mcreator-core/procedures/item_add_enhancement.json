@@ -13,7 +13,8 @@
     {
       "type": "field_data_list_selector",
       "name": "enhancement",
-      "datalist": "enchantment"
+      "datalist": "enchantments",
+      "customEntryProviders": "enchantment"
     }
   ],
   "inputsInline": true,

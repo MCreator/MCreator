@@ -1,1 +1,0 @@
-This paremeter controls how common/big this biome is. Leave at 10 to use standard biome weighting.

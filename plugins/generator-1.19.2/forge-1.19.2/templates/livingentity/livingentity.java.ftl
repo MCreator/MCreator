@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
-<#include "../particles.java.ftl">
 
 package ${package}.entity;
 
@@ -170,7 +169,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
         </#if>
 
         <#if data.ranged>
-            this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, 20, 10) {
+            this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, ${data.rangedAttackInterval}, ${data.rangedAttackRadius}f) {
 				@Override public boolean canContinueToUse() {
 					return this.canUse();
 				}
@@ -670,25 +669,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-    <#if data.spawnParticles || data.flyingMob>
+    <#if data.flyingMob>
     public void aiStep() {
 		super.aiStep();
 
-		<#if data.flyingMob>
 		this.setNoGravity(true);
-		</#if>
-
-		<#if data.spawnParticles>
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Entity entity = this;
-		Level world = this.level;
-		<#if hasProcedure(data.particleCondition)>
-			if(<@procedureOBJToConditionCode data.particleCondition/>)
-		</#if>
-        <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount/>
-		</#if>
 	}
     </#if>
 
