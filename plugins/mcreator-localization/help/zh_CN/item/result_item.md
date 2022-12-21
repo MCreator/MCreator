@@ -1,0 +1,1 @@
+This parameter defines what item should be added to inventory of the entity that ate this food.
