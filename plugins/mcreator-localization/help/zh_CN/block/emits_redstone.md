@@ -1,1 +1,1 @@
-如果你勾选这个参数，这个方块将能够输出红石能量。
+If you check this parameter, this block will be able to emit redstone power.

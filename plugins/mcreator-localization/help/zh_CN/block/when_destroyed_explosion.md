@@ -1,1 +1,1 @@
-当方块被爆炸摧毁时触发一个流程。
+Triggers a procedure when the block is destroyed by an explosion.

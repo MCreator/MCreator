@@ -1,3 +1,4 @@
-随机触发一个过程。
+Triggers a procedure randomly.
 
-这个触发器只在客户端触发，所以除了播放声音和放置粒子之外，没有任何世界的修改应该从这里完成。
+This trigger is triggered on client-side only so no real world modifications except for 
+playing sounds and placing particles should be done from here.

@@ -1,1 +1,1 @@
-此参数控制当该方块被破坏时，该方块丢弃多少物品或方块。
+This parameter controls how many drop items or blocks the block drops when this block is broken.
