@@ -38,8 +38,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
@@ -150,7 +149,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
-		del.addActionListener(e -> {
+		ActionListener delListener = e -> {
 			Model model = modelList.getSelectedValue();
 			if (model != null) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -160,6 +159,14 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				if (n == 0) {
 					Arrays.stream(model.getFiles()).forEach(File::delete);
 					reloadElements();
+				}
+			}
+		};
+		del.addActionListener(delListener);
+		modelList.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					delListener.actionPerformed(null);
 				}
 			}
 		});

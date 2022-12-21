@@ -37,6 +37,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -261,7 +264,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			del.addActionListener(e -> {
+			ActionListener actionListener = e -> {
 				if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
 					return;
 
@@ -275,6 +278,15 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 								.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);
 						reloadElements();
 					}
+				}
+			};
+
+			del.addActionListener(actionListener);
+
+			elements.addKeyListener(new KeyAdapter() {
+				@Override public void keyReleased(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE)
+						actionListener.actionPerformed(null);
 				}
 			});
 

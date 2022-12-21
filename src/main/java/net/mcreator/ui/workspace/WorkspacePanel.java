@@ -261,6 +261,14 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					deleteCurrentlySelectedModElement();
+				}
+			}
+		});
+
 		JScrollPane sp = new JScrollPane(list);
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
