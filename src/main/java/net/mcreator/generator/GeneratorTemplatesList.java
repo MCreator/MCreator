@@ -21,9 +21,12 @@ package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 /**
  * A generator templates list is used for generating several similar templates for each item on a list provided by given

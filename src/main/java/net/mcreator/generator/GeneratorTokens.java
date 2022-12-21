@@ -18,7 +18,6 @@
 
 package net.mcreator.generator;
 
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -59,27 +58,10 @@ public class GeneratorTokens {
 	private static final Pattern brackets = Pattern.compile("@\\[(.*?)]");
 
 	static String replaceVariableTokens(Object element, String rawname) {
-		if (containsVariableTokens(rawname)) {
-			Matcher m = brackets.matcher(rawname);
-			while (m.find()) {
-				String match = m.group(1);
-				Object value = null;
-				if (element != null) {
-					try {
-						value = match.contains("()") ?
-								element.getClass().getMethod(match.replace("()", "").trim()).invoke(element) :
-								element.getClass().getField(match.trim()).get(element);
-					} catch (Exception e) {
-						LOG.warn("Failed to load token value " + match, e);
-					}
-				}
-				rawname = rawname.replace("@[" + match + "]", String.valueOf(value));
-			}
-		}
-		return rawname;
+		return replaceVariableTokens(element, null, rawname);
 	}
 
-	static String replaceVariableTokens(GeneratableElement element, Object listItem, String rawname) {
+	static String replaceVariableTokens(Object element, Object listItem, String rawname) {
 		if (containsVariableTokens(rawname)) {
 			Matcher m = brackets.matcher(rawname);
 			while (m.find()) {

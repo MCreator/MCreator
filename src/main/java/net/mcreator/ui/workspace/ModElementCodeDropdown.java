@@ -29,6 +29,7 @@ import net.mcreator.ui.laf.FileIcons;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 class ModElementCodeDropdown extends JPopupMenu {
@@ -67,21 +68,15 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setIconTextGap(8);
 					listMenu.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
 
-					int listFilesFound = 0;
-					for (int i = 0; i < fileList.listData().size(); i++) {
+					fileList.forEachTemplate(e -> {
+						if (e.getFile().isFile())
+							listMenu.add(newModElementFileMenuItem(e.getFile()));
+					}, i -> {
 						if (i > 0) // separate files generated for different list items
 							listMenu.addSeparator();
+					});
 
-						for (GeneratorTemplate modElementListFile : fileList.templates().keySet()) {
-							if (fileList.templates().get(modElementListFile).get(i)) {
-								listFilesFound++;
-								File indexedFile = fileList.processTokens(modElementListFile, i);
-								listMenu.add(newModElementFileMenuItem(indexedFile));
-							}
-						}
-					}
-
-					if (listFilesFound > 0)
+					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
 						add(listMenu);
 				}
 			}

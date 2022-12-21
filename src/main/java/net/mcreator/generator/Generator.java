@@ -558,17 +558,8 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		// we add all list templates (if any) for given element to the list
-		Objects.requireNonNull(getModElementListTemplates(element, performFSTasks, generatableElement)).forEach(gtl -> {
-			for (GeneratorTemplate generatorTemplate : gtl.templates().keySet()) {
-				for (int i = 0; i < gtl.listData().size(); i++) {
-					if (gtl.templates().get(generatorTemplate).get(i)) {
-						files.add(new ListTemplate(gtl.processTokens(generatorTemplate, i),
-								generatorTemplate.getTemplateIdentificator(), gtl, i,
-								generatorTemplate.getTemplateData()));
-					}
-				}
-			}
-		});
+		Objects.requireNonNull(getModElementListTemplates(element, performFSTasks, generatableElement))
+				.forEach(e -> e.forEachTemplate(files::add, null));
 
 		return new ArrayList<>(files);
 	}
