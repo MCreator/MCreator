@@ -6,7 +6,7 @@
       "check": "MCItem"
     }
   ],
-  "output": "Number",
+  "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "group": "count",

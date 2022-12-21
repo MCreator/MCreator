@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-/*@int*/((${mappedMCItemToItemStackCode(input$item, 1)}).isDamaged())
+((${mappedMCItemToItemStackCode(input$item, 1)}).isDamaged())
