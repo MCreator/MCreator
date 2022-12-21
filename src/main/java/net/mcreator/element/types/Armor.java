@@ -179,7 +179,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), bootsModelName, modelType);
 	}
 
-	public Model getHelmetItemJSONModel() {
+	public Model getHelmetItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (helmetItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -188,7 +188,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), helmetItemCustomModelName, modelType);
 	}
 
-	public Model getBodyItemJSONModel() {
+	public Model getBodyItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (bodyItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -197,7 +197,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), bodyItemCustomModelName, modelType);
 	}
 
-	public Model getLeggingsItemJSONModel() {
+	public Model getLeggingsItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (leggingsItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -206,7 +206,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), leggingsItemCustomModelName, modelType);
 	}
 
-	public Model getBootsItemJSONModel() {
+	public Model getBootsItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (bootsItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -216,35 +216,35 @@ import java.util.*;
 	}
 
 	public boolean hasHelmetNormalModel() {
-		return getHelmetItemJSONModel().getType() == Model.Type.BUILTIN && getHelmetItemJSONModel().getReadableName().equals("Normal");
+		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName().equals("Normal");
 	}
 
 	public boolean hasHelmetToolModel() {
-		return getHelmetItemJSONModel().getType() == Model.Type.BUILTIN && getHelmetItemJSONModel().getReadableName().equals("Tool");
+		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName().equals("Tool");
 	}
 
 	public boolean hasBodyNormalModel() {
-		return getBodyItemJSONModel().getType() == Model.Type.BUILTIN && getBodyItemJSONModel().getReadableName().equals("Normal");
+		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName().equals("Normal");
 	}
 
 	public boolean hasBodyToolModel() {
-		return getBodyItemJSONModel().getType() == Model.Type.BUILTIN && getBodyItemJSONModel().getReadableName().equals("Tool");
+		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName().equals("Tool");
 	}
 
 	public boolean hasLeggingsNormalModel() {
-		return getLeggingsItemJSONModel().getType() == Model.Type.BUILTIN && getLeggingsItemJSONModel().getReadableName().equals("Normal");
+		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName().equals("Normal");
 	}
 
 	public boolean hasLeggingsToolModel() {
-		return getBootsItemJSONModel().getType() == Model.Type.BUILTIN && getBootsItemJSONModel().getReadableName().equals("Tool");
+		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName().equals("Tool");
 	}
 
 	public boolean hasBootsNormalModel() {
-		return getBootsItemJSONModel().getType() == Model.Type.BUILTIN && getBootsItemJSONModel().getReadableName().equals("Normal");
+		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName().equals("Normal");
 	}
 
 	public boolean hasBootsToolModel() {
-		return getBootsItemJSONModel().getType() == Model.Type.BUILTIN && getBootsItemJSONModel().getReadableName().equals("Tool");
+		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName().equals("Tool");
 	}
 
 	public String getArmorModelsCode() {
@@ -272,28 +272,28 @@ import java.util.*;
 	}
 
 	public Map<String, String> getHelmetTextureMap() {
-		Model model = getHelmetItemJSONModel();
+		Model model = getHelmetItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
 	}
 
 	public Map<String, String> getBodyTextureMap() {
-		Model model = getBodyItemJSONModel();
+		Model model = getBodyItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
 	}
 
 	public Map<String, String> getLeggingsTextureMap() {
-		Model model = getLeggingsItemJSONModel();
+		Model model = getLeggingsItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;
 	}
 
 	public Map<String, String> getBootsTextureMap() {
-		Model model = getBootsItemJSONModel();
+		Model model = getBootsItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return null;

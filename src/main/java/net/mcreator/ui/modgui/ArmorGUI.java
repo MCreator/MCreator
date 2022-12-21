@@ -961,16 +961,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
-		Model helmetJSON = armor.getHelmetItemJSONModel();
+		Model helmetJSON = armor.getHelmetItemModel();
 		if (helmetJSON != null)
 			helmetItemRenderType.setSelectedItem(helmetJSON);
-		Model bodyJSON = armor.getBodyItemJSONModel();
+		Model bodyJSON = armor.getBodyItemModel();
 		if (bodyJSON != null)
 			bodyItemRenderType.setSelectedItem(bodyJSON);
-		Model leggingsJSON = armor.getLeggingsItemJSONModel();
+		Model leggingsJSON = armor.getLeggingsItemModel();
 		if (leggingsJSON != null)
 			leggingsItemRenderType.setSelectedItem(leggingsJSON);
-		Model bootsJSON = armor.getBootsItemJSONModel();
+		Model bootsJSON = armor.getBootsItemModel();
 		if (bootsJSON != null)
 			bootsItemRenderType.setSelectedItem(bootsJSON);
 
