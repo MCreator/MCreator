@@ -43,18 +43,26 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 									 Map<GeneratorTemplate, List<Boolean>> templates) {
 
 	/**
-	 * Replaces tokens on name of provided list template with appropriate values from
-	 * {@link GeneratorTemplatesList#element} and returns the target file.
+	 * Iterates over all regular templates that can be produced by this templates list instance.
 	 *
-	 * @param generatorTemplate One of templates in this list instance.
-	 * @param index             Index of listData element for which to acquire the output file path.
-	 * @return The file generated from given list template with given token values.
+	 * @param action             Action to be performed for each generated template.
+	 * @param beforeNextListItem Optional action to be performed before next item from the list data is processed.
 	 */
-	public File processTokens(GeneratorTemplate generatorTemplate, int index) {
-		return new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
-				GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
-						generatorTemplate.getFile().getPath().replace("@NAME", element.getModElement().getName())
-								.replace("@registryname", element.getModElement().getRegistryName())
-								.replace("@elementindex", Integer.toString(index)))));
+	public void forEachTemplate(Consumer<ListTemplate> action, @Nullable IntConsumer beforeNextListItem) {
+		for (int index = 0; index < listData.size(); index++) {
+			if (beforeNextListItem != null)
+				beforeNextListItem.accept(index);
+			for (GeneratorTemplate template : templates.keySet()) {
+				if (templates.get(template).get(index)) {
+					File targetFile = new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
+							GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
+									template.getFile().getPath().replace("@NAME", element.getModElement().getName())
+											.replace("@registryname", element.getModElement().getRegistryName())
+											.replace("@elementindex", Integer.toString(index)))));
+					action.accept(new ListTemplate(targetFile, template.getTemplateIdentificator(), this, index,
+							template.getTemplateData()));
+				}
+			}
+		}
 	}
 }
