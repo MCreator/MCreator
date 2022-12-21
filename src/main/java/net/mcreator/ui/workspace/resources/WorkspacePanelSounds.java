@@ -34,8 +34,7 @@ import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
@@ -102,7 +101,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(actionEvent -> {
+		ActionListener delListener = actionEvent -> {
 			List<SoundElement> file = soundElementList.getSelectedValuesList();
 			if (file.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -111,6 +110,14 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 				if (n == 0) {
 					file.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);
 					reloadElements();
+				}
+			}
+		};
+		del.addActionListener(delListener);
+		soundElementList.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					delListener.actionPerformed(null);
 				}
 			}
 		});
