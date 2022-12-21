@@ -677,11 +677,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		JPanel aipan = new JPanel(new BorderLayout(0, 5));
 		aipan.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("aitasks").getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader("aitasks").getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getSpecificBlockLoader("aitasks")
+			BlocklyLoader.INSTANCE.getBlockLoader("aitasks")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());

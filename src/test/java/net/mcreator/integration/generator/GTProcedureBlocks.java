@@ -57,7 +57,7 @@ public class GTProcedureBlocks {
 
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks("procedures");
 
-		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures").getDefinedBlocks()
+		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getBlockLoader("procedures").getDefinedBlocks()
 				.values()) {
 			StringBuilder additionalXML = new StringBuilder();
 

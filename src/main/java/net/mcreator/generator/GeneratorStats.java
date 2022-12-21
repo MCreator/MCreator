@@ -90,7 +90,7 @@ public class GeneratorStats {
 
 		// lazy load actual values
 		new Thread(() -> {
-			BlocklyLoader.INSTANCE.getBlockLoaders().forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
+			BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
 			addBlocklyFolder(generatorConfiguration, "triggers");
 		}).start();
 
@@ -146,7 +146,7 @@ public class GeneratorStats {
 				.stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 				.collect(Collectors.toSet());
 		coverageInfo.put(name, Math.min(
-				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs").getDefinedBlocks().size())
+				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader("cmdargs").getDefinedBlocks().size())
 						* 100, 100));
 		generatorBlocklyBlocks.put(name, blocks);
 	}

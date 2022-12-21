@@ -562,11 +562,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		pane5.add("East", PanelUtils.centerAndSouthElement(eastPan, returnType));
 		pane5.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
-		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures").getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader("procedures").getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures")
+			BlocklyLoader.INSTANCE.getBlockLoader("procedures")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()

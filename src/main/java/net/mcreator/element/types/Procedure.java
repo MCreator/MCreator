@@ -140,7 +140,7 @@ public class Procedure extends GeneratableElement {
 	public BlocklyToProcedure getBlocklyToProcedure(Map<String, Object> additionalData)
 			throws TemplateGeneratorException {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-				BlocklyLoader.INSTANCE.getSpecificBlockLoader("procedures").getDefinedBlocks(),
+				BlocklyLoader.INSTANCE.getBlockLoader("procedures").getDefinedBlocks(),
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
 
 		// load BlocklyToProcedure with custom generators loaded

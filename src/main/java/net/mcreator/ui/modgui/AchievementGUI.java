@@ -209,10 +209,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		page1group.addValidationElement(achievementName);
 		page1group.addValidationElement(achievementDescription);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("jsontriggers").getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader("jsontriggers").getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getSpecificBlockLoader("jsontriggers")
+			BlocklyLoader.INSTANCE.getBlockLoader("jsontriggers")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger).start());

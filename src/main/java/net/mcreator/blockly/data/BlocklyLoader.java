@@ -75,7 +75,7 @@ public class BlocklyLoader {
 		builtinCategories.add(name);
 	}
 
-	public Map<String, ExternalBlockLoader> getBlockLoaders() {
+	public Map<String, ExternalBlockLoader> getAllBlockLoaders() {
 		return blockLoaders;
 	}
 
@@ -83,7 +83,7 @@ public class BlocklyLoader {
 		return builtinCategories;
 	}
 
-	public ExternalBlockLoader getSpecificBlockLoader(String name) {
+	public ExternalBlockLoader getBlockLoader(String name) {
 		return blockLoaders.get(name);
 	}
 

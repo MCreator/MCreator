@@ -52,7 +52,7 @@ public class GTCommandArgBlocks {
 
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks("cmdargs");
 
-		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs").getDefinedBlocks().values()) {
+		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getBlockLoader("cmdargs").getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip command argument blocks not supported by this generator

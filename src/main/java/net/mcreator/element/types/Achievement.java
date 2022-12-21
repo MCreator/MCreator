@@ -75,7 +75,7 @@ import java.util.List;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getSpecificBlockLoader("jsontriggers").getDefinedBlocks(),
+					BlocklyLoader.INSTANCE.getBlockLoader("jsontriggers").getDefinedBlocks(),
 					this.getModElement().getGenerator().getTemplateGeneratorFromName("jsontriggers"),
 					additionalData).setTemplateExtension("json");
 

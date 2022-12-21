@@ -86,11 +86,11 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		enderpanel.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs").getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader("cmdargs").getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getSpecificBlockLoader("cmdargs")
+			BlocklyLoader.INSTANCE.getBlockLoader("cmdargs")
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());

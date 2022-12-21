@@ -54,7 +54,7 @@ public class GTFeatureBlocks {
 
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks("features");
 
-		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getSpecificBlockLoader("features").getDefinedBlocks().values()) {
+		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getBlockLoader("features").getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			if (!generatorBlocks.contains(featureBlock.machine_name)) {
