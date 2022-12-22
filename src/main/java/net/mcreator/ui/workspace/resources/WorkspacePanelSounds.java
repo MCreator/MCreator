@@ -114,13 +114,6 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			}
 		};
 		del.addActionListener(delListener);
-		soundElementList.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE){
-					delListener.actionPerformed(null);
-				}
-			}
-		});
 
 		JButton play = L10N.button("workspace.sounds.play_selected");
 		play.setIcon(UIRES.get("16px.play"));
@@ -146,6 +139,17 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 				play.setEnabled(true);
 			}
 
+		});
+
+		soundElementList.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()){
+					case KeyEvent.VK_DELETE -> delListener.actionPerformed(null);
+					//play or edit?
+					case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
+					//maybe I can add more keys? I don't have ideas.
+				}
+			}
 		});
 
 		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));

@@ -265,6 +265,13 @@ import java.util.stream.Collectors;
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE){
 					deleteCurrentlySelectedModElement();
+				} else if (e.getKeyCode() == KeyEvent.VK_ENTER){
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+					}
 				}
 			}
 		});
