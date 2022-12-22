@@ -353,6 +353,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					if (e.getKeyCode() == KeyEvent.VK_DELETE||e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
 						removeRecentWorkspace(recentsList.getSelectedValue());
 						reloadRecents();
+					} else if (e.getKeyCode() == KeyEvent.VK_ENTER){
+						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
 					}
 				}
 			});

@@ -29,6 +29,9 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 
@@ -86,7 +89,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(actionEvent -> {
+		ActionListener delListener = actionEvent -> {
 			List<String> files = structureElementList.getSelectedValuesList();
 			if (files.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -96,6 +99,16 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 					files.forEach(workspacePanel.getMcreator().getFolderManager()::removeStructure);
 					reloadElements();
 				}
+			}
+		};
+		del.addActionListener(delListener);
+
+		structureElementList.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+					delListener.actionPerformed(null);
+				}
+
 			}
 		});
 
