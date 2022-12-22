@@ -16,3 +16,18 @@ feature_huge_brown_mushroom:
 feature_huge_red_mushroom:
   - HugeRedMushroomFeature
   - HugeMushroomFeatureConfiguration
+feature_coral_claw:
+  - CoralClawFeature
+  - NoneFeatureConfiguration
+feature_coral_mushroom:
+  - CoralMushroomFeature
+  - NoneFeatureConfiguration
+feature_coral_tree:
+  - CoralTreeFeature
+  - NoneFeatureConfiguration
+feature_forest_rock:
+  - BlockBlobFeature
+  - BlockStateConfiguration
+feature_huge_fungus:
+  - HugeFungusFeature
+  - HugeFungusConfiguration
