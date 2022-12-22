@@ -109,9 +109,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOn;
 	private ProcedureSelector onRedstoneOff;
 	private ProcedureSelector onHitByProjectile;
+	private ProcedureSelector onBonemealSuccess;
 
 	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
+	private ProcedureSelector isBonemealTargetCondition;
+	private ProcedureSelector bonemealSuccessCondition;
 	private ProcedureSelector generateCondition;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
@@ -134,6 +137,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> tintType = new JComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
@@ -310,21 +314,30 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
+		onBonemealSuccess = new ProcedureSelector(this.withEntry("block/on_bonemeal_success"), mcreator,
+				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		emittedRedstonePower = new NumberProcedureSelector(this.withEntry("block/redstone_power"), mcreator,
 				L10N.t("elementgui.block.redstone_power"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 130, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
-
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
-
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
+		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
+				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic"))
+				.makeInline();
+		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
+				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -837,6 +850,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);
+		isBonemealable.setOpaque(false);
 		isLadder.setOpaque(false);
 
 		useLootTableForDrops.addActionListener(e -> {
@@ -1115,6 +1129,29 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
 		refreshRedstoneEmitted();
 
+		JPanel bonemealPanel = new JPanel(new GridLayout(1, 2, 0, 2));
+		bonemealPanel.setOpaque(false);
+
+		bonemealPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_bonemealable"),
+				L10N.label("elementgui.common.is_bonemealable")));
+		bonemealPanel.add(isBonemealable);
+
+		JPanel bonemealEvents = new JPanel(new GridLayout(3, 1, 0, 2));
+		bonemealEvents.setOpaque(false);
+
+		bonemealEvents.add(isBonemealTargetCondition);
+		bonemealEvents.add(bonemealSuccessCondition);
+		bonemealEvents.add(onBonemealSuccess);
+
+		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
+		bonemealMerger.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		isBonemealable.addActionListener(e -> refreshBonemealProperties());
+		refreshBonemealProperties();
+
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
@@ -1129,7 +1166,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(redstoneMerger))));
+				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(
+						PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1198,6 +1236,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private void refreshRedstoneEmitted() {
 		emittedRedstonePower.setEnabled(canProvidePower.isSelected());
+	}
+
+	private void refreshBonemealProperties() {
+		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected());
+		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected());
+		onBonemealSuccess.setEnabled(isBonemealable.isSelected());
 	}
 
 	private void updateTextureOptions() {
@@ -1273,8 +1317,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOn.refreshListKeepSelected();
 		onRedstoneOff.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
+		onBonemealSuccess.refreshListKeepSelected();
 
 		emittedRedstonePower.refreshListKeepSelected();
+		isBonemealTargetCondition.refreshListKeepSelected();
+		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
 
@@ -1382,6 +1429,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isNotColidable.setSelected(block.isNotColidable);
 		unbreakable.setSelected(block.unbreakable);
 		canRedstoneConnect.setSelected(block.canRedstoneConnect);
+		isBonemealable.setSelected(block.isBonemealable);
+		isBonemealTargetCondition.setSelectedProcedure(block.isBonemealTargetCondition);
+		bonemealSuccessCondition.setSelectedProcedure(block.bonemealSuccessCondition);
+		onBonemealSuccess.setSelectedProcedure(block.onBonemealSuccess);
 		lightOpacity.setValue(block.lightOpacity);
 		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
@@ -1436,6 +1487,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
+		refreshBonemealProperties();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
@@ -1486,6 +1538,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.fluidCapacity = (int) fluidCapacity.getValue();
 		block.isNotColidable = isNotColidable.isSelected();
 		block.canRedstoneConnect = canRedstoneConnect.isSelected();
+		block.isBonemealable = isBonemealable.isSelected();
+		block.isBonemealTargetCondition = isBonemealTargetCondition.getSelectedProcedure();
+		block.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
+		block.onBonemealSuccess = onBonemealSuccess.getSelectedProcedure();
 		block.lightOpacity = (int) lightOpacity.getValue();
 		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();

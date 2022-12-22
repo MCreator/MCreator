@@ -108,6 +108,11 @@ import java.util.stream.Collectors;
 	public List<MItemBlock> canBePlacedOn;
 	public Procedure placingCondition;
 
+	public boolean isBonemealable;
+	public Procedure isBonemealTargetCondition;
+	public Procedure bonemealSuccessCondition;
+	public Procedure onBonemealSuccess;
+
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
