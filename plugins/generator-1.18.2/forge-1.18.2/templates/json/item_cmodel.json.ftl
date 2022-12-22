@@ -1,12 +1,6 @@
 {
-<#if var_item?? && var_item=="helmet">
-  "parent": "${modid}:custom/${data.helmetItemCustomModelName.split(":")[0]}",
-<#elseif var_item?? && var_item=="body">
-  "parent": "${modid}:custom/${data.bodyItemCustomModelName.split(":")[0]}",
-<#elseif var_item?? && var_item=="leggings">
-  "parent": "${modid}:custom/${data.leggingsItemCustomModelName.split(":")[0]}",
-<#elseif var_item?? && var_item=="boots">
-  "parent": "${modid}:custom/${data.bootsItemCustomModelName.split(":")[0]}",
+<#if var_item?? && (var_item=="helmet" || var_item=="body" || var_item=="leggings" || var_item=="boots")>
+  "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
 <#else>
   "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
 </#if>

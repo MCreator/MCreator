@@ -215,6 +215,16 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), bootsItemCustomModelName, modelType);
 	}
 
+	public String getItemCustomModelNameFor(String part) {
+		return switch (part) {
+			case "helmet" -> helmetItemCustomModelName.split(":")[0];
+			case "body", "chestplate" -> bodyItemCustomModelName.split(":")[0];
+			case "leggings" -> leggingsItemCustomModelName.split(":")[0];
+			case "boots" -> bootsItemCustomModelName.split(":")[0];
+			default -> null;
+		};
+	}
+
 	public boolean hasHelmetNormalModel() {
 		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName().equals("Normal");
 	}
