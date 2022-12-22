@@ -994,6 +994,12 @@ public class TestWorkspaceDataProvider {
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
 					"Cross model" }[valueIndex];
 			plant.isItemTinted = _true;
+			if (!emptyLists) {
+				plant.isBonemealable = true;
+				plant.isBonemealTargetCondition = new Procedure("condition3");
+				plant.bonemealSuccessCondition = new Procedure("condition4");
+				plant.onBonemealSuccess = new Procedure("procedure13");
+			}
 			return plant;
 		} else if (ModElementType.ITEM.equals(modElement.getType())) {
 			Item item = new Item(modElement);
@@ -1285,6 +1291,7 @@ public class TestWorkspaceDataProvider {
 			block.frequencyOnChunk = 7;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
+			block.isBonemealable = !emptyLists;
 			if (!emptyLists) {
 				block.onBlockAdded = new Procedure("procedure10");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
@@ -1302,6 +1309,9 @@ public class TestWorkspaceDataProvider {
 				block.onHitByProjectile = new Procedure("procedure14");
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
+				block.isBonemealTargetCondition = new Procedure("condition3");
+				block.bonemealSuccessCondition = new Procedure("condition4");
+				block.onBonemealSuccess = new Procedure("procedure15");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
 			block.particleTexture = emptyLists ? "" : "test7";
