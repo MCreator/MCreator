@@ -44,6 +44,7 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
