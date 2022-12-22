@@ -105,7 +105,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 		structureElementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
 					delListener.actionPerformed(null);
 				}
 
