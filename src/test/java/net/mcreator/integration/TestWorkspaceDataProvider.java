@@ -1291,8 +1291,8 @@ public class TestWorkspaceDataProvider {
 			block.frequencyOnChunk = 7;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
-			block.isBonemealable = !emptyLists;
 			if (!emptyLists) {
+				block.isBonemealable = true;
 				block.onBlockAdded = new Procedure("procedure10");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
 				block.onTickUpdate = new Procedure("procedure3");
