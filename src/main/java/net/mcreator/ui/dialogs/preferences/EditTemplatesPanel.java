@@ -29,6 +29,9 @@ import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
@@ -68,10 +71,19 @@ class EditTemplatesPanel {
 		openFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
-		remove.addActionListener(e -> templates.getSelectedValuesList().forEach(el -> {
+		ActionListener del = e -> templates.getSelectedValuesList().forEach(el -> {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
 			tmodel.removeElement(el);
-		}));
+		});
+		remove.addActionListener(del);
+
+		templates.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					del.actionPerformed(null);
+				}
+			}
+		});
 
 		add.addActionListener(e -> {
 			File[] files = FileDialogs.getMultiOpenDialog(preferencesDialog, new String[] { templateExt });
