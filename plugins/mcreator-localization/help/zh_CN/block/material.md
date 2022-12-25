@@ -1,7 +1,5 @@
-Block material defines some base block properties such as
-reaction to pistons, water, plant growing options and more.
+方块材料定义了一些基本方块属性，如对活塞的反应，水，植物生长选项等。
 
-If you intend to use the block for ore, select ROCK material
-so the harvest level is properly applied.
+如果你打算使用矿石方块类型，选择岩石材料，以便适当地应用收获等级。
 
-Click [here](https://mcreator.net/wiki/materials) to read more about materials.
+点击[这里](https://mcreator.net/wiki/materials)来阅读更多有关资料。
