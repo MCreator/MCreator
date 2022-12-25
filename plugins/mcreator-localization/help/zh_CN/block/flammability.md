@@ -1,5 +1,6 @@
-This parameter determines how quickly the block is consumed by fire.
+这个参数决定了方块被火燃尽的速度。
 
-Vanilla examples: 
-* logs have a flammability of 5
-* planks have a flammability of 20
+原版例子:
+
+* 原木的可燃性为5
+* 木板的可燃性为20
