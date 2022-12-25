@@ -1,9 +1,9 @@
 <#-- @formatter:off -->
 {
   "id": "${registryname}",
-  "index": ${elementindex},
+  "index": ${itemindex},
   "name": "${name}",
   "type": "${parent.getModElement().getType()}",
-  "value": "${element.getUnmappedValue()}"
+  "value": "${item.getUnmappedValue()}"
 }
 <#-- @formatter:on -->
