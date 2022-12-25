@@ -1,5 +1,5 @@
-To add more conditions to the generator of this block, add your procedure with return value here.
+若要向此方块的生成器添加更多条件，请在此处添加带有返回值的过程。
 
-This condition will be used alongside with conditions such as generation biomes and replacement blocks.
+该条件将与生成生物群系和替换方块等条件一起使用。
 
-Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
+请记住，在早期世界生成期间，一些流程可能无法在此触发器中正常工作。
