@@ -1,5 +1,4 @@
-When a player right-clicks on the block, the procedure will be executed.
+当玩家右键点击方块时，该流程将被执行。
 
-The procedure should return an action result of type SUCCESS/CONSUME if it performs an action, and PASS otherwise.
-If a GUI is opened on right-click, or if the procedure doesn't return any value, then the action result type
-will be SUCCESS.
+如果执行一个操作，过程应该返回SUCCESS/CONSUME类型的操作结果，否则返回PASS类型的操作结果。
+如果在右键单击时打开了一个GUl，或者如果过程没有返回任何值，那么操作结果类型将是SUCCESS。

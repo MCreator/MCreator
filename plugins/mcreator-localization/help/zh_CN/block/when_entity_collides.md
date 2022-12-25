@@ -1,1 +1,1 @@
-Triggers a procedure when an entity is inside the block.
+当实体在方块内部时触发一个流程。

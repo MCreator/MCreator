@@ -1,3 +1,3 @@
-Triggers a procedure when an entity walks on top of this block.
+当一个实体走过这个方块的顶部时触发一个流程。
 
-It won't be called if the entity is sneaking.
+如果实体正在潜行，它不会被调用。
