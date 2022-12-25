@@ -1,2 +1,2 @@
-This parameter controls how much light the block emits. It is a value between 0 and 15. 
-If set to 0, the block won't emit light. If set to 15, the block will emit as much light as glowstone.
+该参数控制块发出的光量。取值范围为0至15。
+如果设置为0，该方块将不会发光。如果设置为15，方块将发出和萤石一样多的光。
