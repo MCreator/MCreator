@@ -1,3 +1,3 @@
-Check this parameter if you want the items to drop when the block is broken. 
+如果您希望在方块损坏时掉落内部的物品，请选中此参数。
 
-Chests use this parameter, for example.
+例如，箱子使用这个参数。
