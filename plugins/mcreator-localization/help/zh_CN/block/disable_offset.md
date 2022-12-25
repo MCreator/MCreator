@@ -1,4 +1,4 @@
-If the block has a random model offset, its bounding box will also be moved, unless this option is selected.
-If the bounding box is submerging into neighboring blocks because of the offset, check this box to prevent that.
+如果该方块启用随机模型偏移，除非选中此选项，否则其边界框也将被移动。
+如果边界框由于偏移而淹没到相邻的方块中，请选中此参数以防止这种情况。
 
-For example, this option would be false for bamboo, and true for tall grass.
+例如，该选项对于竹子为假，对于高草为真。
