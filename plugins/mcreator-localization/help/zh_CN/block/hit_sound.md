@@ -1,3 +1,3 @@
-This is the sound played when the player mines the block.
+这是玩家破坏方块时发出的声音。
 
-NOTE: This sound is played in loop while breaking until the block is broken.
+注意:这个声音将循环播放，直到方块被破坏。
