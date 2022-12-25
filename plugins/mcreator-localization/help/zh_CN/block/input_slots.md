@@ -1,1 +1,1 @@
-Input slots will not be used as output/source for hopper item transmission.
+输入槽将不用作漏斗物品传输的输出/源。
