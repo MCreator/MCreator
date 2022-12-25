@@ -58,6 +58,10 @@ import java.util.List;
 		this.overlayTarget = "Ingame";
 	}
 
+	public boolean hasTextures() {
+		return (this.baseTexture != null && !this.baseTexture.equals("")) || !getComponentsOfType("Image").isEmpty();
+	}
+
 	public int getBaseTextureWidth() {
 		return getBaseTextureSize().width;
 	}

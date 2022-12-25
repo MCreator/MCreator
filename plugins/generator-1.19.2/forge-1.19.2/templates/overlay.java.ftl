@@ -31,14 +31,6 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 
-<#assign hasTextures = data.baseTexture?has_content>
-<#list data.components as component>
-	<#if component.getClass().getSimpleName() == "Image">
-    <#assign hasTextures = true>
-    <#break>
-	</#if>
-</#list>
-
 <#assign stackMethodName = "getPoseStack">
 
 package ${package}.client.screens;
@@ -73,7 +65,7 @@ package ${package}.client.screens;
             z = entity.getZ();
         }
 
-        <#if hasTextures>
+        <#if data.hasTextures()>
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
@@ -89,31 +81,32 @@ package ${package}.client.screens;
                 Minecraft.getInstance().gui.blit(event.getPoseStack(), 0, 0, 0, 0, w, h, w, h);
             </#if>
 
-            <#list data.components as component>
+            <#list data.getComponentsOfType("Image") as component>
                 <#assign x = component.x - 213>
                 <#assign y = component.y - 120>
-                <#if component.getClass().getSimpleName() == "Label">
+                <#if hasProcedure(component.displayCondition)>
+                        if (<@procedureOBJToConditionCode component.displayCondition/>) {
+                </#if>
+                    RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+                    Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y}, 0, 0,
+                        ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+                        ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+                <#if hasProcedure(component.displayCondition)>}</#if>
+            </#list>
+
+            <#list data.getComponentsOfType("Label") as component>
+                <#assign x = component.x - 213>
+                <#assign y = component.y - 120>
                     <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
                     Minecraft.getInstance().font.draw(event.getPoseStack(),
                         <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
                         posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-                <#elseif component.getClass().getSimpleName() == "Image">
-                    <#if hasProcedure(component.displayCondition)>
-                        if (<@procedureOBJToConditionCode component.displayCondition/>) {
-                    </#if>
-                    RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-                    Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y}, 0, 0,
-                    ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-                    ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-
-                    <#if hasProcedure(component.displayCondition)>}</#if>
-                </#if>
             </#list>
         }
 
-        <#if hasTextures>
+        <#if data.hasTextures()>
             RenderSystem.depthMask(true);
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
