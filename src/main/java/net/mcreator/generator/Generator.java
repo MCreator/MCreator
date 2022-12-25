@@ -634,7 +634,7 @@ public class Generator implements IGenerator, Closeable {
 											elements.get(i), GeneratorTokens.replaceTokens(workspace,
 													rawname.replace("@NAME", element.getName())
 															.replace("@registryname", element.getRegistryName())
-															.replace("@elementindex", Integer.toString(i))));
+															.replace("@itemindex", Integer.toString(i))));
 									if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
 										new File(name).delete(); //if template is skipped, we delete its potential file
 									}
