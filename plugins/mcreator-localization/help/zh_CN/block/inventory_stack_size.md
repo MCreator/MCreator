@@ -1,4 +1,3 @@
-This parameter controls maximal size of the stack that can be placed in its internal inventory slots.
+该参数控制可以放置在其内部库存槽中的堆栈的最大大小。
 
-Keep in mind that the smaller number between this parameter and max item stack size
-determines the actual max stack size.
+请记住，该参数与最大项目堆栈大小之间的较小数字决定了实际的最大堆栈大小。

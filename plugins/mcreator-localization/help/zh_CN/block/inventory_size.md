@@ -1,3 +1,3 @@
-This parameter controls how many slots your block will use for its internal inventory.
+此参数控制方块将用于内部库存的物品槽数量。
 
-If the block is bound to GUI, set this value to `the biggest slot ID in the GUI + 1`
+如果方块绑定到GUI，则将此值设置为 `GUI中最大的物品槽号+ 1`
