@@ -1,3 +1,3 @@
-This parameter controls the power bonus that the block has for the enchanting table. 
+此参数控制方块对附魔台的能力加成。
 
-The power bonus of the bookshelf is 1, of normal blocks, it is 0.
+书架的能量加成是1，普通方块的能量加成是0。
