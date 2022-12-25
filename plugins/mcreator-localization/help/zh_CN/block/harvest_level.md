@@ -1,14 +1,14 @@
-This is the tier of tool required to break this block.
+这是打破这个块所需要的工具等级。
 
-* 0 is wood
-* 1 is stone
-* 2 is iron
-* 3 is diamond.
-* 4 is netherite
+* 0为木制
+* 1为石质
+* 2为铁质
+* 3为钻石
+* 4为下界合金
 
-Only the tier of tool you specify will be able to break your block. 
-You can define larger tiers than diamond too by setting the tier to 4 or larger.
+只有你指定的工具层才能打破你的块。
+你也可以通过将层设置为4或更大来定义比钻石更大的层。
 
-Condition for the block to drop the items when broken is:
+块在破碎时掉落物品的条件为:
 
 `IF BLOCK HARVEST LEVEL <= TOOL HARVEST LEVEL`

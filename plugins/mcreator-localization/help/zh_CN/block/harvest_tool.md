@@ -1,5 +1,5 @@
-This parameter controls what tool you want to mine the block.
+这个参数控制使用什么工具来挖掘该方块。
 
-Ores use pickaxe here, logs axe, dirt shovel.
+矿石用镐子，木头用斧头，土用铲子。
 
-If set to "Not specified", players will be able to break this block with hand.
+如果设置为“Not specified”，玩家将能够用手打破这个方块。
