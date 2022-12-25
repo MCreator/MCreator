@@ -1,2 +1,1 @@
-Check this parameter if your block is not a solid cube, but has either custom shape or transparent parts
-of the texture.
+如果您的方块不是实心立方体，但具有自定义模型或透明部分，请选中此参数。
