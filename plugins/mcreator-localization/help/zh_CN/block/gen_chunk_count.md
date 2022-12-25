@@ -1,10 +1,10 @@
-Sets the average number of ore veins to spawn per chunk.
+设置每个区块生成矿石的平均数量。
 
-Vanilla ore group per chunk values:
+原版矿石组每块值:
 
-* Coal Ore - 20
-* Iron Ore - 20
-* Gold Ore - 2
-* Redstone Ore - 8
-* Diamond Ore - 1
-* Lapis Lazuli - 1
+* 煤炭矿石 - 20
+* 铁矿石 - 20
+* 金矿 - 2
+* 红石 - 8
+* 钻石矿石 - 1
+* 青金石 - 1

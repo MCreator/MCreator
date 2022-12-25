@@ -1,13 +1,14 @@
-This parameter controls the minimum Y height that this block can generate in.
+该参数控制该方块可以在世界中生成的最低Y轴高度。
 
-NOTE: Minecraft 1.17.x and higher supports from -2032 to 2016, but it is not recommended to use lower and higher values than 0 to 256.
-With Minecraft 1.16.5 and lower, Minecraft only supports values between 0 and 256.
+注:Minecraft 1.17.X及以上版本为-2032至2016，不建议大于或小于0 ~ 256。
+在Minecraft 1.16.5及以下版本中，Minecraft只支持0到256之间的值。
 
-Vanilla minimum Y levels heights:
-* Coal Ore - 1
-* Iron Ore - 5
-* Gold Ore - 1
-* Redstone Ore - 1
-* Diamond Ore - 1
-* Emerald Ore - 4
-* Lapis Lazuli - 1
+原版最低Y轴高度:
+
+* 煤炭 - 1
+* 铁矿石 - 5
+* 金矿石 - 1
+* 红石矿 - 1
+* 钻石矿- 1
+* 绿宝石矿 - 4
+* 青金石- 1
