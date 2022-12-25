@@ -1,7 +1,5 @@
-If checked, entities will be able to climb on the block. 
+如果勾选，实体将能够爬上方块。
 
-The block's width and depth need to be less than 1 for this parameter to work,
-so the collisions in the block are detected properly. Change the bounding box
-setting to match this if this parameter is used.
+方块的宽度和深度需要小于1才能使该参数生效，这样方块中的碰撞才能被正确检测。如果使用此参数，则更改碰撞箱设置以匹配此参数。
 
-Vanilla examples: Ladder and Vines
+原版例子:梯子和藤蔓

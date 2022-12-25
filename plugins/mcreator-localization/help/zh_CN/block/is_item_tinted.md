@@ -1,4 +1,3 @@
-If this option is checked, a fixed tint will be applied to the block while it's in the inventory, 
-matching the tint type.
+如果选中此选项，则当该方块在库存中时，将对其应用与色调类型匹配的固定色调。
 
-The tint is applied also when an item texture is specified.
+当项目的纹理被指定时，着色也会被应用。
