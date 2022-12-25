@@ -1,3 +1,3 @@
-This optional property will change the texture of the block in the inventory.
+此可选属性将更改库存中的方块的纹理。
 
-Commonly used with doors or custom models.
+通常用于门或定制模型。
