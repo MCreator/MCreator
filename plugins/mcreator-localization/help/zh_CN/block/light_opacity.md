@@ -1,2 +1,1 @@
-This property determines how much the light level decreases when going through this block. For example, a value of 15
-will block all the light, a value of 0 will make the block transparent for light.
+这个属性决定了当光线穿过这个方块时，亮度降低了多少。例如，值为15将阻止所有的光源，值为0将使方块完全透光。
