@@ -1,1 +1,1 @@
-This parameter controls how many drop items or blocks the block drops when this block is broken.
+此参数控制当该方块被破坏时，该方块将掉落多少物品或方块。
