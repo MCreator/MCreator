@@ -1,3 +1,3 @@
-This parameter controls if block placement should be randomly offset and by which axis.
+此参数控制方块的放置是否应该随机偏移以及向哪个轴偏移。
 
-Most plants use one of the offset types.
+大多数植物使用一种偏移类型。
