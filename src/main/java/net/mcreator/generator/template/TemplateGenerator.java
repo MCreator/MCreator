@@ -67,8 +67,8 @@ public class TemplateGenerator {
 			String templateName, Map<String, Object> dataModel) throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());
 
-		dataModel.put("element", item);
-		dataModel.put("elementindex", itemIndex);
+		dataModel.put("item", item);
+		dataModel.put("itemindex", itemIndex);
 		dataModel.put("parent", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
 		dataModel.put("name", element.getModElement().getName());

@@ -67,10 +67,10 @@ public class GeneratorTokens {
 			while (m.find()) {
 				String match = m.group(1);
 				Object value = null;
-				if (match.startsWith("element.")) { // a value on list item is requested
+				if (match.startsWith("item.")) { // a value from list item is requested
 					if (listItem != null) { // get it if available
 						try {
-							String ref = match.substring(8);
+							String ref = match.substring("item.".length());
 							value = match.contains("()") ?
 									listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
 									listItem.getClass().getField(ref.trim()).get(listItem);
