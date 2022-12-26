@@ -1,9 +1,7 @@
-If emit redstone parameter is checked, this parameter will allow you to modify the emitted redstone power.
+如果选中“输出红石能量”参数，该参数将允许修改发射红石能量。
 
-When this a conditional procedure is used and returns a number, 
-the redstone power emitted by this block will be set by the returned number of the procedure.
+当使用这个条件过程并返回一个数字时，此方块发出的红石功率将由该过程返回的数字设置。
 
-NOTE: The block can still emit redstone even if redstone doesn't connect to it.
+注意:方块仍然可以发射红石能量，即使红石没有连接到它。
 
-WARNING: When using custom number provider procedure, you will need to notify neighbouring 
-blocks of redstone value change for them to register the change.
+警告:当使用自定义数字提供程序时，你需要通知相邻的区块红石值的变化，以便它们应用更改。

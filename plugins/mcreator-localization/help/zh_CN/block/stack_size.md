@@ -1,4 +1,3 @@
-This is how many items in the slots in this block's inventory can stack too.
+这是这个区块的库存中的插槽中的物品可以堆叠的数量。
 
-Keep in mind that there is another slot stack size limit set for the specific items, so this is an upper limit
-of the slots that can be further limited by items.
+请记住，对于特定的物品还有另一个插槽堆栈大小限制，所以这是可以被物品进一步限制的插槽的上限。

@@ -1,4 +1,3 @@
-If you check this parameter, the player will be able to place another block 
-on it (this block can be replaced by other blocks being placed).
+如果你勾选这个参数，玩家将能够在它上面放置另一个方块(这个方块可以被其他正在放置的方块所取代)。
 
-Examples: air, most plants
+例如:空气，大多数植物

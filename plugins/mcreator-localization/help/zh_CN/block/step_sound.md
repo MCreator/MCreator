@@ -1,1 +1,1 @@
-This is the sound played when an entity walks on this block.
+这是一个实体在这个方块上行走时发出的声音。

@@ -1,3 +1,3 @@
-This parameter controls how slippery the block is.
+该参数控制方块的粘滑度。
 
-Default value used by most of the blocks is 0.6
+大多数方块使用的默认值是0.6

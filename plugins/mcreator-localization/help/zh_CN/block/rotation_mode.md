@@ -1,6 +1,6 @@
-* **No rotation:** Fixed block orientation.
-* **Y-axis rotation (S/W/N/E):** Rotates only the sides based on the way the player is facing.
-* **D/U/N/S/W/E rotation:** Rotates all sides based on the way the player is facing.
-* **Y-axis rotation (S/W/N/E):** Rotates only the sides based on the block face the block is clicked on.
-* **D/U/N/S/W/E rotation:** Rotates all sides based on the block face the block is clicked on.
-* **Log rotation (X/Y/Z):** Rotates the block like vanilla logs.
+* **无旋转:**方块方向。
+* **Y轴旋转(S/W/N/E):**仅根据玩家面对的方式旋转侧边。
+* **D/U/N/S/W/E旋转:**根据玩家面对的方向旋转所有边。
+* **Y轴旋转(S/W/N/E):**只旋转基于方块面点击块的边。
+* **D/U/N/S/W/E旋转:**根据被点击的方块面，旋转所有的面。
+* **原木旋转(X/Y/Z):**像普通原木一样旋转方块。

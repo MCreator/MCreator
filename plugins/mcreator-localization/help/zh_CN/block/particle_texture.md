@@ -1,2 +1,1 @@
-This optional property will change the texture of the particles when the block is broken,
- an entity lands on the block and so on.
+这个可选属性将在方块被打破、实体落在方块上等情况下改变粒子的纹理。

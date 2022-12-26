@@ -1,4 +1,3 @@
-This condition determines whether this block can be placed in a specific location. If the position is
-no longer valid, the block will be broken once it receives a block update.
+此条件决定此方块是否可以放置在特定位置。如果位置不再有效，方块一旦接收到方块更新就会被破坏。
 
-NOTE: This condition isn't checked during world generation.
+注意:这个条件在生成世界期间不会被检查。

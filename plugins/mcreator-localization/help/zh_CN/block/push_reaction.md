@@ -1,6 +1,6 @@
-This parameter determines how the block reacts with a piston.
+这个参数决定了方块如何与活塞反应。
 
-* Normal: Normal reaction of pistons like the Stone
-* Destroy: When the block will be pushed by a piston, the block will be destroyed.
-* Block: The block don't react to a piston like the Obsidian.
-* Push Only: The block can be only pushed by a piston.
+* 正常:正常的活塞反应，像石头
+* 破坏:当活塞推动方块时，方块将被破坏。
+* 阻碍:方块不对活塞反应，像黑曜石。
+* 只能推动:该方块只能被活塞推动。

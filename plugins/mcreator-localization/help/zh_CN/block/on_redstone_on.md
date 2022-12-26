@@ -1,1 +1,1 @@
-Triggers a procedure when the block is powered by the redstone power.
+当方块被红石能量充能时触发一个流程。

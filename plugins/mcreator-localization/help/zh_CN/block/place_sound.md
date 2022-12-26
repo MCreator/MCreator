@@ -1,1 +1,1 @@
-This is the sound played when the player places the block in the world.
+这是当玩家在游戏世界中放置方块时所发出的声音。

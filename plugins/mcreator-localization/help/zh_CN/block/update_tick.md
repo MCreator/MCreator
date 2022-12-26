@@ -1,3 +1,3 @@
-Triggers a procedure when the block is ticked.
+当方块被选中时触发一个流程。
 
-Naturally spawned blocks will only tick if random ticking is used for performance reasons.
+自然生成的方块只有在出于性能原因使用随机刻时才会更新。

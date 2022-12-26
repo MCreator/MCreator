@@ -1,2 +1,2 @@
-This parameter controls how the block reacts to explosions. 
-A higher value makes the block more resistant to explosions.
+该参数控制块对爆炸的反应。
+数值越高，方块越能抵抗爆炸。

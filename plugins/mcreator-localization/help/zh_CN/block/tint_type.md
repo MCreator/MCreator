@@ -1,4 +1,4 @@
-This option applies a tint to the block based on biome colors, similar to grass, leaves, and water. 
-For best results, the tinted faces should use a grayscale texture.
+此选项将基于生物群落颜色的色调应用到块上，类似于草、叶子和水。
+为了获得最好的效果，着色的面应该使用灰度纹理。
 
-NOTE: The fog tint type is only available in Minecraft 1.16.x and higher, and defaults to water fog in older versions.
+注意:雾色调类型只在Minecraft 1.16.x可用或更高版本中可用，在旧版本中默认为水雾。
