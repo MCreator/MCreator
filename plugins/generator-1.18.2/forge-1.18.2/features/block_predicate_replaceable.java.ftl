@@ -1,2 +1,1 @@
-<#include "mcelements.ftl">
-BlockPredicate.replaceable(${toOptionalVec3i(field$x,field$y,field$z)})
+BlockPredicate.replaceable(<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>new Vec3i(${field$x}, ${field$y}, ${field$z})</#if>)

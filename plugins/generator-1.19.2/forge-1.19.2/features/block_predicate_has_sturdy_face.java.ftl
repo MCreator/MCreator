@@ -1,2 +1,1 @@
-<#include "mcelements.ftl">
-BlockPredicate.hasSturdyFace(${toOptionalVec3i(field$x,field$y,field$z,true)} ${generator.map(field$direction, "directions")})
+BlockPredicate.hasSturdyFace(<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>new Vec3i(${field$x}, ${field$y}, ${field$z}), </#if>${generator.map(field$direction, "directions")})

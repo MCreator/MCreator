@@ -35,11 +35,3 @@
 <#function toBlockPos x y z>
     <#return "new BlockPos(" + opt.removeParentheses(x) + "," + opt.removeParentheses(y) + "," + opt.removeParentheses(z) +")">
 </#function>
-
-<#function toOptionalVec3i x y z trailingComma=false>
-    <#if (x != "0") || (y != "0") || (z != "0")>
-        <#return "new Vec3i(" + x + "," + y + "," + z + ")" + trailingComma?then(",","")>
-    <#else>
-        <#return "">
-    </#if>
-</#function>
