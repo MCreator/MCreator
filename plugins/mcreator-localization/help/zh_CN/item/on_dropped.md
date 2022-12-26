@@ -1,1 +1,0 @@
-This procedure is executed when this item is dropped.
