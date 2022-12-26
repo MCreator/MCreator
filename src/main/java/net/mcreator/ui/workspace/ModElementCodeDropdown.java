@@ -28,7 +28,6 @@ import net.mcreator.ui.laf.FileIcons;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +42,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 
 		// add regular files to the dropdown
 		for (GeneratorTemplate modElementFile : modElementFiles)
-			add(newModElementFileMenuItem(modElementFile.getFile()));
+			add(modElementFileMenuItem(modElementFile));
 
 		// add global files to the dropdown (if any)
 		if (modElementGlobalFiles.size() > 0) {
@@ -51,7 +50,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 				addSeparator();
 
 			for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
-				add(newModElementFileMenuItem(modElementGlobalFile.getFile()));
+				add(modElementFileMenuItem(modElementGlobalFile));
 		}
 
 		// add list files to the dropdown (if any)
@@ -68,9 +67,9 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setIconTextGap(8);
 					listMenu.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
 
-					fileList.forEachTemplate(e -> {
-						if (e.getFile().isFile())
-							listMenu.add(newModElementFileMenuItem(e.getFile()));
+					fileList.forEachTemplate(listTemplate -> {
+						if (listTemplate.getFile().isFile())
+							listMenu.add(modElementFileMenuItem(listTemplate));
 					}, i -> {
 						if (i > 0) // separate files generated for different list items
 							listMenu.addSeparator();
@@ -83,16 +82,16 @@ class ModElementCodeDropdown extends JPopupMenu {
 		}
 	}
 
-	private JMenuItem newModElementFileMenuItem(File template) {
+	private JMenuItem modElementFileMenuItem(GeneratorTemplate template) {
 		JMenuItem item = new JMenuItem(
-				"<html>" + template.getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-						.getWorkspaceFolder().toPath().relativize(template.toPath()));
-		item.setIcon(FileIcons.getIconForFile(template));
+				"<html>" + template.getFile().getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
+						.getWorkspaceFolder().toPath().relativize(template.getFile().toPath()));
+		item.setIcon(FileIcons.getIconForFile(template.getFile()));
 		item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		item.setIconTextGap(8);
 		item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template));
+		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));
 		return item;
 	}
 }
