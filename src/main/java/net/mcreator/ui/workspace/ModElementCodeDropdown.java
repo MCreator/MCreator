@@ -30,7 +30,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class ModElementCodeDropdown extends JPopupMenu {
 	private final MCreator mcreator;
@@ -68,12 +68,15 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setIconTextGap(8);
 					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
+					AtomicInteger files = new AtomicInteger(0);
 					fileList.forEachTemplate(listTemplate -> {
-						if (listTemplate.getFile().isFile())
+						if (listTemplate.getFile().isFile()) {
+							files.getAndIncrement();
 							listMenu.add(modElementFileMenuItem(listTemplate));
+						}
 					}, i -> {
-						if (i > 0) // separate files generated for different list items
-							listMenu.addSeparator();
+						if (files.getAndSet(0) > 0 && i > 0)
+							listMenu.addSeparator(); // separate files generated for different list items
 					});
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
