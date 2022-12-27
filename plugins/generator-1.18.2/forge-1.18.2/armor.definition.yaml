@@ -8,7 +8,6 @@ templates:
     variables: "item=helmet"
     condition:
       - enableHelmet
-      - "helmetItemRenderType #= 0"
       - "hasHelmetNormalModel()"
     name: "@MODASSETSROOT/models/item/@registryname_helmet.json"
   - template: json/tool.json.ftl
@@ -16,7 +15,6 @@ templates:
     variables: "item=helmet"
     condition:
       - enableHelmet
-      - "helmetItemRenderType #= 0"
       - "hasHelmetToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname_helmet.json"
   - template: json/item_cmodel.json.ftl
@@ -40,7 +38,6 @@ templates:
     variables: "item=body"
     condition:
       - enableBody
-      - "bodyItemRenderType #= 0"
       - "hasBodyNormalModel()"
     name: "@MODASSETSROOT/models/item/@registryname_chestplate.json"
   - template: json/tool.json.ftl
@@ -48,7 +45,6 @@ templates:
     variables: "item=body"
     condition:
       - enableBody
-      - "bodyItemRenderType #= 0"
       - "hasBodyToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname_chestplate.json"
   - template: json/item_cmodel.json.ftl
@@ -72,7 +68,6 @@ templates:
     variables: "item=leggings"
     condition:
       - enableLeggings
-      - "leggingsItemRenderType #= 0"
       - "hasLeggingsNormalModel()"
     name: "@MODASSETSROOT/models/item/@registryname_leggings.json"
   - template: json/tool.json.ftl
@@ -80,7 +75,6 @@ templates:
     variables: "item=leggings"
     condition:
       - enableLeggings
-      - "leggingsItemRenderType #= 0"
       - "hasLeggingsToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname_leggings.json"
   - template: json/item_cmodel.json.ftl
@@ -104,7 +98,6 @@ templates:
     variables: "item=boots"
     condition:
       - enableBoots
-      - "bootsItemRenderType #= 0"
       - "hasBootsNormalModel()"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
   - template: json/tool.json.ftl
@@ -112,7 +105,6 @@ templates:
     variables: "item=boots"
     condition:
       - enableBoots
-      - "bootsItemRenderType #= 0"
       - "hasBootsToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
   - template: json/item_cmodel.json.ftl

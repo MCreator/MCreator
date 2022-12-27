@@ -961,18 +961,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
-		Model helmetJSON = armor.getHelmetItemModel();
-		if (helmetJSON != null)
-			helmetItemRenderType.setSelectedItem(helmetJSON);
-		Model bodyJSON = armor.getBodyItemModel();
-		if (bodyJSON != null)
-			bodyItemRenderType.setSelectedItem(bodyJSON);
-		Model leggingsJSON = armor.getLeggingsItemModel();
-		if (leggingsJSON != null)
-			leggingsItemRenderType.setSelectedItem(leggingsJSON);
-		Model bootsJSON = armor.getBootsItemModel();
-		if (bootsJSON != null)
-			bootsItemRenderType.setSelectedItem(bootsJSON);
+		Model helmetItemModel = armor.getHelmetItemModel();
+		if (helmetItemModel != null)
+			helmetItemRenderType.setSelectedItem(helmetItemModel);
+		Model bodyItemModel = armor.getBodyItemModel();
+		if (bodyItemModel != null)
+			bodyItemRenderType.setSelectedItem(bodyItemModel);
+		Model leggingsItemModel = armor.getLeggingsItemModel();
+		if (leggingsItemModel != null)
+			leggingsItemRenderType.setSelectedItem(leggingsItemModel);
+		Model bootsItemModel = armor.getBootsItemModel();
+		if (bootsItemModel != null)
+			bootsItemRenderType.setSelectedItem(bootsItemModel);
 
 		updateArmorTexturePreview();
 	}

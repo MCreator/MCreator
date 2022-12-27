@@ -218,9 +218,32 @@ import java.util.*;
 	public String getItemCustomModelNameFor(String part) {
 		return switch (part) {
 			case "helmet" -> helmetItemCustomModelName.split(":")[0];
-			case "body", "chestplate" -> bodyItemCustomModelName.split(":")[0];
+			case "body" -> bodyItemCustomModelName.split(":")[0];
 			case "leggings" -> leggingsItemCustomModelName.split(":")[0];
 			case "boots" -> bootsItemCustomModelName.split(":")[0];
+			default -> null;
+		};
+	}
+
+	public Map<String, String> getItemModelTextureMap(String part) {
+		Model model = switch (part) {
+			case "helmet" -> getHelmetModel();
+			case "body" -> getBodyItemModel();
+			case "leggings" -> getLeggingsItemModel();
+			case "boots" -> getBootsItemModel();
+			default -> null;
+		};
+		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
+			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		return null;
+	}
+
+	public String getArmorPartTexture(String part) {
+		return switch (part) {
+			case "helmet" -> textureHelmet;
+			case "body" -> textureBody;
+			case "leggings" -> textureLeggings;
+			case "boots" -> textureBoots;
 			default -> null;
 		};
 	}
@@ -279,34 +302,6 @@ import java.util.*;
 			modelsCode.append(FileIO.readFileToString(model.getFile())).append("\n\n");
 
 		return modelsCode.toString();
-	}
-
-	public Map<String, String> getHelmetTextureMap() {
-		Model model = getHelmetItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
-	}
-
-	public Map<String, String> getBodyTextureMap() {
-		Model model = getBodyItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
-	}
-
-	public Map<String, String> getLeggingsTextureMap() {
-		Model model = getLeggingsItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
-	}
-
-	public Map<String, String> getBootsTextureMap() {
-		Model model = getBootsItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
 	}
 
 	@Override public TabEntry getCreativeTab() {
