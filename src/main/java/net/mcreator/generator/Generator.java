@@ -291,7 +291,7 @@ public class Generator implements IGenerator, Closeable {
 			if (oldFiles instanceof List<?> fileList)
 				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
 				fileList.stream().map(e -> new File(getWorkspaceFolder(), (String) e))
-						.filter(f -> workspace.getFolderManager().isFileInWorkspace(f)).forEach(File::delete);
+						.filter(workspace.getFolderManager()::isFileInWorkspace).forEach(File::delete);
 
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
