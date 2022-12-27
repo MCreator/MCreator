@@ -66,24 +66,15 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 					listMenu.setIconTextGap(8);
-					listMenu.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
+					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
-					AtomicInteger files = new AtomicInteger(0), items = new AtomicInteger(0);
 					fileList.forEachTemplate(listTemplate -> {
-						if (listTemplate.getFile().isFile()) {
-							files.getAndIncrement();
+						if (listTemplate.getFile().isFile())
 							listMenu.add(modElementFileMenuItem(listTemplate));
-						}
 					}, i -> {
-						if (files.getAndSet(0) > 0)
-							items.getAndIncrement();
 						if (i > 0) // separate files generated for different list items
 							listMenu.addSeparator();
 					});
-					if (files.get() > 0)
-						items.getAndIncrement();
-
-					listMenu.setText(listMenu.getText() + "<br><small color=#666666>Entry count: " + items.get());
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
 						add(listMenu);
@@ -100,7 +91,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 		item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		item.setIconTextGap(8);
-		item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
+		item.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));
 		return item;
 	}
