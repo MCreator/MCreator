@@ -31,6 +31,7 @@ import net.mcreator.util.image.ImageUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -72,7 +73,21 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		modElementGUI.getModElement().getGenerator()
 				.getModElementListTemplates(modElementGUI.getModElement(), modElementGUI.getElementFromGUI()).stream()
 				.map(GeneratorTemplatesList::groupName).forEach(listName -> {
-					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
+					JTabbedPane listPane = new JTabbedPane(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
+					listPane.setUI(new MetalTabbedPaneUI() {
+						private final Insets borderInsets = new Insets(0, 0, 0, 0);
+						@Override
+						protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+						}
+						@Override
+						protected Insets getContentBorderInsets(int tabPlacement) {
+							return borderInsets;
+						}
+					});
+
+					listPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					listPane.setOpaque(true);
+
 					listPane.addComponentListener(new ComponentAdapter() {
 						@Override public void componentShown(ComponentEvent e) {
 							super.componentShown(e);
@@ -91,7 +106,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		codeChangeListener.registerUI(container);
 	}
 
-	private void reload() {
+	private synchronized void reload() {
 		if (isVisible() && !updateRunning) {
 			updateRunning = true;
 			new Thread(() -> {
@@ -134,7 +149,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 										JTabbedPane ownerList = listPager.get(lt.getTemplatesList().groupName());
 										ownerList.addTab(file.getFile().getName(),
 												FileIcons.getIconForFile(file.getFile()), fileCodeViewer);
-										if (ownerList.getTabCount() == 1)
+										if (ownerList.getTabCount() > 0)
 											setEnabledAt(indexOfComponent(ownerList), true);
 									} else { // simple file
 										addTab(file.getFile().getName(), FileIcons.getIconForFile(file.getFile()),
