@@ -30,6 +30,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 class ModElementCodeDropdown extends JPopupMenu {
 	private final MCreator mcreator;
@@ -65,15 +66,23 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 					listMenu.setIconTextGap(8);
-					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
+
+					AtomicReference<Separator> lastSeparator = new AtomicReference<>(null);
 
 					fileList.forEachTemplate(listTemplate -> {
 						if (listTemplate.getFile().isFile())
 							listMenu.add(modElementFileMenuItem(listTemplate));
 					}, i -> {
-						if (i > 0) // separate files generated for different list items
-							listMenu.addSeparator();
+						if (i > 0) { // separate files generated for different list items
+							lastSeparator.set(new Separator());
+							listMenu.add(lastSeparator.get());
+						}
 					});
+
+					// remove last separator as it is not needed
+					if (lastSeparator.get() != null)
+						listMenu.remove(lastSeparator.get());
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
 						add(listMenu);
