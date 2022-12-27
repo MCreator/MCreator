@@ -30,7 +30,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 class ModElementCodeDropdown extends JPopupMenu {
 	private final MCreator mcreator;
@@ -61,25 +60,22 @@ class ModElementCodeDropdown extends JPopupMenu {
 
 			for (GeneratorTemplatesList fileList : modElementListFiles) {
 				if (fileList.templates().size() > 0) {
-					JMenu listMenu = new JMenu("<html>" + fileList.groupName());
+					JMenu listMenu = new JMenu(
+							"<html>" + fileList.groupName() + "<br><small color=#666666>Entry count: "
+									+ fileList.listData().size());
 					listMenu.setIcon(UIRES.get("16px.list.gif"));
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 					listMenu.setIconTextGap(8);
 					listMenu.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
 
-					AtomicInteger count = new AtomicInteger(0);
 					fileList.forEachTemplate(listTemplate -> {
 						if (listTemplate.getFile().isFile())
 							listMenu.add(modElementFileMenuItem(listTemplate));
 					}, i -> {
-						count.getAndIncrement();
-
 						if (i > 0) // separate files generated for different list items
 							listMenu.addSeparator();
 					});
-
-					listMenu.setText(listMenu.getText() + "<br><small color=#666666>Entry count: " + count.get());
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
 						add(listMenu);
