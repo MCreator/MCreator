@@ -70,10 +70,8 @@ class ModElementCodeDropdown extends JPopupMenu {
 
 					AtomicInteger files = new AtomicInteger(0);
 					fileList.forEachTemplate(listTemplate -> {
-						if (listTemplate.getFile().isFile()) {
-							files.getAndIncrement();
-							listMenu.add(modElementFileMenuItem(listTemplate));
-						}
+						files.getAndIncrement();
+						listMenu.add(modElementFileMenuItem(listTemplate));
 					}, i -> {
 						if (files.getAndSet(0) > 0 && i > 0)
 							listMenu.addSeparator(); // separate files generated for different list items
