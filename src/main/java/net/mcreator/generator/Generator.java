@@ -269,7 +269,8 @@ public class Generator implements IGenerator, Closeable {
 				if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
 					code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
 							listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
-							listTemplate.getListItemIndex(), element, templateFileName, dataModel);
+							listTemplate.getListItemIndex(), element, templateFileName, dataModel,
+							element.getAdditionalTemplateData());
 				} else { // regular template
 					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
 							templateFileName, dataModel, element.getAdditionalTemplateData());
