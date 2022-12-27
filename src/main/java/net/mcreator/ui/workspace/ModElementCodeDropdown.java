@@ -30,7 +30,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 class ModElementCodeDropdown extends JPopupMenu {
 	private final MCreator mcreator;
@@ -61,7 +60,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 
 			for (GeneratorTemplatesList fileList : modElementListFiles) {
 				if (fileList.templates().size() > 0) {
-					JMenu listMenu = new JMenu("<html>" + fileList.groupName());
+					JMenu listMenu = new JMenu(fileList.groupName());
 					listMenu.setIcon(UIRES.get("16px.list.gif"));
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
