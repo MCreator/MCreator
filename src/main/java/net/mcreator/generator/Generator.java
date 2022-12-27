@@ -630,23 +630,9 @@ public class Generator implements IGenerator, Closeable {
 						// we store file generation conditions for current mod element
 						List<Boolean> conditionChecks = new ArrayList<>();
 						for (int i = 0; i < elements.size(); i++) {
-							if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
-									elements.get(i), operator)) {
-								conditionChecks.add(i, false);
-								if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks) {
-									String name = GeneratorTokens.replaceVariableTokens(generatableElement,
-											elements.get(i), GeneratorTokens.replaceTokens(workspace,
-													rawname.replace("@NAME", element.getName())
-															.replace("@registryname", element.getRegistryName())
-															.replace("@itemindex", Integer.toString(i))));
-									if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
-										new File(name).delete(); //if template is skipped, we delete its potential file
-									}
-								}
-							} else {
-								conditionChecks.add(i, true);
-							}
+							conditionChecks.add(i, !TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, elements.get(i), operator));
 						}
+
 						if (!conditionChecks.contains(true) && performFSTasks)
 							continue;
 
