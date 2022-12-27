@@ -289,7 +289,9 @@ public class Generator implements IGenerator, Closeable {
 			// remove outdated files
 			Object oldFiles = element.getModElement().getMetadata("files");
 			if (oldFiles instanceof List<?> fileList)
-				fileList.forEach(e -> new File(getWorkspaceFolder(), (String) e).delete());
+				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
+				fileList.stream().map(e -> new File(getWorkspaceFolder(), (String) e))
+						.filter(f -> workspace.getFolderManager().isFileInWorkspace(f)).forEach(File::delete);
 
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
