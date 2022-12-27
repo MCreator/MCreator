@@ -600,11 +600,9 @@ public class Generator implements IGenerator, Closeable {
 		List<?> templateLists = (List<?>) map.get("list_templates");
 		if (templateLists != null) {
 			int templateID = 0;
-			int listID = 1;
 			for (Object list : templateLists) {
 				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
-				String groupName = (String) Objects.requireNonNullElse(((Map<?, ?>) list).get("name"),
-						"Group " + listID);
+				String groupName = (String) ((Map<?, ?>) list).get("name");
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
@@ -680,7 +678,6 @@ public class Generator implements IGenerator, Closeable {
 								generatableElement, Collections.unmodifiableMap(files)));
 					}
 				}
-				listID++;
 			}
 		}
 
