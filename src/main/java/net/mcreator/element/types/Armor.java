@@ -227,7 +227,7 @@ import java.util.*;
 
 	public Map<String, String> getItemModelTextureMap(String part) {
 		Model model = switch (part) {
-			case "helmet" -> getHelmetModel();
+			case "helmet" -> getHelmetItemModel();
 			case "body" -> getBodyItemModel();
 			case "leggings" -> getLeggingsItemModel();
 			case "boots" -> getBootsItemModel();

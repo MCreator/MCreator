@@ -1,33 +1,17 @@
 {
-<#if var_item?? && (var_item=="helmet" || var_item=="body" || var_item=="leggings" || var_item=="boots")>
+<#if var_item??>
   "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
+  "textures": {
+    <@textures data.getItemModelTextureMap(var_item)/>
+    "particle": "${modid}:items/${data.getArmorPartTexture(var_item)}"
+  }
 <#else>
   "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
-</#if>
   "textures": {
-    <#if var_item?? && var_item=="helmet">
-        <@textures data.getHelmetTextureMap()/>
-    <#elseif var_item?? && var_item=="body">
-        <@textures data.getBodyTextureMap()/>
-    <#elseif var_item?? && var_item=="leggings">
-        <@textures data.getLeggingsTextureMap()/>
-    <#elseif var_item?? && var_item=="boots">
-        <@textures data.getBootsTextureMap()/>
-    <#else>
-        <@textures data.getTextureMap()/>
-    </#if>
-<#if var_item?? && var_item=="helmet">
-    "particle": "${modid}:items/${data.textureHelmet}"
-<#elseif var_item?? && var_item=="body">
-    "particle": "${modid}:items/${data.textureBody}"
-<#elseif var_item?? && var_item=="leggings">
-    "particle": "${modid}:items/${data.textureLeggings}"
-<#elseif var_item?? && var_item=="boots">
-    "particle": "${modid}:items/${data.textureBoots}"
-<#else>
+    <@textures data.getTextureMap()/>
     "particle": "${modid}:items/${data.texture}"
-</#if>
   }
+</#if>
 }
 
 <#macro textures textureMap>
