@@ -290,14 +290,15 @@ public class Generator implements IGenerator, Closeable {
 			Object oldFiles = element.getModElement().getMetadata("files");
 			if (oldFiles instanceof List<?> fileList)
 				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
-				fileList.stream().map(e -> new File(getWorkspaceFolder(), (String) e))
+				fileList.stream().map(e -> new File(getWorkspaceFolder(), ((String) e).replace("/", File.separator)))
 						.filter(workspace.getFolderManager()::isFileInWorkspace).forEach(File::delete);
 
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// store paths of generated files
 			element.getModElement().putMetadata("files", generatorFiles.stream()
-					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()).toList());
+					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()
+							.replace(File.separator, "/")).toList());
 
 			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
