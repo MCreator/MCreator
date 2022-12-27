@@ -607,13 +607,15 @@ public class Generator implements IGenerator, Closeable {
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
 				// we check type of list data collection and convert it to a list if needed
-				List<?> elements = new ArrayList<>();
+				List<?> elements;
 				if (listData instanceof Map<?, ?> listMap)
 					elements = new ArrayList<>(listMap.entrySet());
 				else if (listData instanceof Collection<?> collection)
 					elements = new ArrayList<>(collection);
 				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
 					elements = StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
+				else
+					elements = new ArrayList<>();
 				if (templates != null) {
 					for (Object template : templates) {
 						String rawname = (String) ((Map<?, ?>) template).get("name");
