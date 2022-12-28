@@ -2,12 +2,3 @@ templates:
   - template: json/tag.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@[getName()].json"
-
-list_templates:
-  - name: "Tag elements"
-    listData: data.getEntities()
-    forEach:
-      - template: json/tag_element.json.ftl
-        writer: json
-        condition: "${data.getUnmappedValue() != 'EntityArrow'}"
-        name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@registryname@itemindex_@[item.getMappedRegistryName()].json"

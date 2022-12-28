@@ -631,10 +631,13 @@ public class Generator implements IGenerator, Closeable {
 						// we store file generation conditions for current mod element
 						List<Boolean> conditionChecks = new ArrayList<>();
 						for (int i = 0; i < elements.size(); i++) {
-							conditionChecks.add(i, !TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, elements.get(i), operator));
+							conditionChecks.add(i,
+									!TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
+											elements.get(i), operator));
 						}
 
-						// Only add GeneratorTemplatesList if at least one list template will be generated
+						// only add templates list if at least one list template will be generated
+						// or if we need all template lists possible for the given mod element (performFSTasks is false)
 						if (!conditionChecks.contains(true) && performFSTasks)
 							continue;
 

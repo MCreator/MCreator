@@ -53,11 +53,6 @@ import java.util.Locale;
 		return type.toLowerCase(Locale.ENGLISH);
 	}
 
-	//TODO: Temporal, used for testing
-	public List<EntityEntry> getEntities() {
-		return entities.stream().toList();
-	}
-
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
