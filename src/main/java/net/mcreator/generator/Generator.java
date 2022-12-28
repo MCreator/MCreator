@@ -286,13 +286,14 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		if (performFSTasks) {
-			// remove outdated files
+			// remove outdated files for mod element files list (used to know what files belong to the ME for removal on regeneration)
 			Object oldFiles = element.getModElement().getMetadata("files");
 			if (oldFiles instanceof List<?> fileList)
 				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
-				fileList.stream().map(e -> new File(getWorkspaceFolder(), ((String) e).replace("/", File.separator)))
+				fileList.stream().map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator)))
 						.filter(workspace.getFolderManager()::isFileInWorkspace).forEach(File::delete);
 
+			// generate files as old files were deleted
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// store paths of generated files
@@ -633,6 +634,7 @@ public class Generator implements IGenerator, Closeable {
 							conditionChecks.add(i, !TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, elements.get(i), operator));
 						}
 
+						// Only add GeneratorTemplatesList if at least one list template will be generated
 						if (!conditionChecks.contains(true) && performFSTasks)
 							continue;
 
