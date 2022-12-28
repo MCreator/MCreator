@@ -636,21 +636,6 @@ public class Generator implements IGenerator, Closeable {
 						if (!conditionChecks.contains(true) && performFSTasks)
 							continue;
 
-						// we check for potential excludes to be deleted
-						// this is only called if condition above is passed
-						String exclude = (String) ((Map<?, ?>) template).get("exclude");
-						boolean doExclude = "true".equals(((Map<?, ?>) template).get("excludeIfAllPresent")) ?
-								!conditionChecks.contains(false) :
-								conditionChecks.contains(true);
-						if (exclude != null && doExclude && performFSTasks) {
-							String excludename = GeneratorTokens.replaceTokens(workspace,
-									exclude.replace("@NAME", element.getName())
-											.replace("@registryname", element.getRegistryName()));
-							File excludefile = new File(excludename);
-							if (workspace.getFolderManager().isFileInWorkspace(excludefile))
-								excludefile.delete();
-						}
-
 						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(rawname),
 								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
