@@ -71,16 +71,12 @@ class EditTemplatesPanel {
 		openFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
-		ActionListener del = e -> templates.getSelectedValuesList().forEach(el -> {
-			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
-			tmodel.removeElement(el);
-		});
-		remove.addActionListener(del);
+		remove.addActionListener(a-> delCurrentSelected(templatesFolder, tmodel, templates));
 
 		templates.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE){
-					del.actionPerformed(null);
+					delCurrentSelected(templatesFolder, tmodel, templates);
 				}
 			}
 		});
@@ -106,6 +102,13 @@ class EditTemplatesPanel {
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(templates), 5, 5));
 
 		preferencesDialog.preferences.add(sectionPanel, name);
+	}
+
+	private void delCurrentSelected(String templatesFolder, DefaultListModel<String> tmodel, JList<String> templates) {
+		templates.getSelectedValuesList().forEach(el -> {
+			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
+			tmodel.removeElement(el);
+		});
 	}
 
 }

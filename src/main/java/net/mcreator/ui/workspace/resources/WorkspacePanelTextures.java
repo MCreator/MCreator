@@ -39,7 +39,10 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 import java.util.*;
@@ -56,7 +59,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private final MouseAdapter mouseAdapter;
 
 	private final WorkspacePanelTextures.Render textureRender = new Render();
-	private final ActionListener delListener;
 
 	WorkspacePanelTextures(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
@@ -174,34 +176,35 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		delListener = actionEvent -> {
-			List<File> files = listGroup.getSelectedItemsList();
-			if (files.size() > 0) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-
-				if (n == 0) {
-					files.forEach(file -> {
-						if (file != null) {
-							file.delete();
-
-							// try to delete mcmeta file if it exists too
-							File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
-							if (mcmeta.isFile())
-								mcmeta.delete();
-						}
-					});
-					reloadElements();
-				}
-			}
-		};
-		del.addActionListener(delListener);
+		del.addActionListener(a->delCurrentSelected(workspacePanel));
 
 		edit.addActionListener(e -> editSelectedFile());
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 
 		add("North", bar);
+	}
+
+	private void delCurrentSelected(WorkspacePanel workspacePanel) {
+		List<File> files = listGroup.getSelectedItemsList();
+		if (files.size() > 0) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+					L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+
+			if (n == 0) {
+				files.forEach(file -> {
+					if (file != null) {
+						file.delete();
+
+						// try to delete mcmeta file if it exists too
+						File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
+						if (mcmeta.isFile())
+							mcmeta.delete();
+					}
+				});
+				reloadElements();
+			}
+		}
 	}
 
 	private void exportSelectedImages() {
@@ -245,7 +248,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				switch (e.getKeyCode()){
-					case KeyEvent.VK_DELETE -> delListener.actionPerformed(null);
+					case KeyEvent.VK_DELETE -> delCurrentSelected(workspacePanel);
 					case KeyEvent.VK_ENTER -> editSelectedFile();
 				}
 			}

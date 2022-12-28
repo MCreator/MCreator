@@ -44,7 +44,6 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -247,29 +246,12 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			}
 		});
 
-		ActionListener del = e -> {
-			if (elements.getSelectedRow() == -1)
-				return;
-
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-					L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == JOptionPane.YES_OPTION) {
-				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-						.forEach(el -> {
-							VariableElement element = new VariableElement();
-							element.setName(el);
-							workspacePanel.getMcreator().getWorkspace().removeVariableElement(element);
-						});
-				reloadElements();
-			}
-		};
-		delvar.addActionListener(del);
+		delvar.addActionListener(a-> delCurrentSelected(workspacePanel));
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE){
-					del.actionPerformed(null);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					delCurrentSelected(workspacePanel);
 				}
 			}
 		});
@@ -306,6 +288,24 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			}
 		}).start());
 
+	}
+
+	private void delCurrentSelected(WorkspacePanel workspacePanel) {
+		if (elements.getSelectedRow() == -1)
+			return;
+
+		int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+				L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (n == JOptionPane.YES_OPTION) {
+			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
+					.forEach(el -> {
+						VariableElement element = new VariableElement();
+						element.setName(el);
+						workspacePanel.getMcreator().getWorkspace().removeVariableElement(element);
+					});
+			reloadElements();
+		}
 	}
 
 	@Override public void reloadElements() {
