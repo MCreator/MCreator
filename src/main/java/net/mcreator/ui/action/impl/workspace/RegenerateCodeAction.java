@@ -161,7 +161,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 					if (!mod.isCodeLocked()) {
 						filesToReformat.addAll(
-								generatedFiles.stream().map(GeneratorFile::file).collect(Collectors.toSet()));
+								generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
 					}
 
 					// save custom mod element picture if it has one

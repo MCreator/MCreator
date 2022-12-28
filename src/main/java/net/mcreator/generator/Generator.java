@@ -60,6 +60,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Generator implements IGenerator, Closeable {
 
@@ -191,8 +192,8 @@ public class Generator implements IGenerator, Closeable {
 					try {
 						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
 								templateFileName, dataModel);
-						return new GeneratorFile(code, generatorTemplate.getFile(),
-								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+						return new GeneratorFile(generatorTemplate,
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
 					} catch (TemplateGeneratorException e) {
 						success.set(false);
 					}
@@ -264,11 +265,19 @@ public class Generator implements IGenerator, Closeable {
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 				extractVariables(generatorTemplate, dataModel);
 
-				String code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
-						templateFileName, dataModel, element.getAdditionalTemplateData());
+				String code;
+				if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
+					code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
+							listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
+							listTemplate.getListItemIndex(), element, templateFileName, dataModel,
+							element.getAdditionalTemplateData());
+				} else { // regular template
+					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
+							templateFileName, dataModel, element.getAdditionalTemplateData());
+				}
 
-				GeneratorFile generatorFile = new GeneratorFile(code, generatorTemplate.getFile(),
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"));
+				GeneratorFile generatorFile = new GeneratorFile(generatorTemplate,
+						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
 
 				// only preserve the last instance of template for a file
 				generatorFiles.remove(generatorFile);
@@ -277,7 +286,20 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		if (performFSTasks) {
+			// remove outdated files for mod element files list (used to know what files belong to the ME for removal on regeneration)
+			Object oldFiles = element.getModElement().getMetadata("files");
+			if (oldFiles instanceof List<?> fileList)
+				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
+				fileList.stream().map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator)))
+						.filter(workspace.getFolderManager()::isFileInWorkspace).forEach(File::delete);
+
+			// generate files as old files were deleted
 			generateFiles(generatorFiles, formatAndOrganiseImports);
+
+			// store paths of generated files
+			element.getModElement().putMetadata("files", generatorFiles.stream()
+					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()
+							.replace(File.separator, "/")).toList());
 
 			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
@@ -316,8 +338,8 @@ public class Generator implements IGenerator, Closeable {
 			return;
 		}
 
-		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null)).stream()
-				.map(GeneratorTemplate::getFile).forEach(File::delete);
+		Objects.requireNonNull(getModElementGeneratorTemplatesList(element, true, null))
+				.forEach(template -> template.getFile().delete());
 
 		// delete localization keys associated with the mod element
 		LocalizationUtils.deleteLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
@@ -348,7 +370,7 @@ public class Generator implements IGenerator, Closeable {
 			}
 
 			files.add(new GeneratorTemplate(new File(name),
-					Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template));
+					Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template));
 
 			templateID.getAndIncrement();
 		}
@@ -450,7 +472,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
-						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), true, template);
+						Integer.toString(templateID.get()) + ((Map<?, ?>) template).get("template"), template);
 
 				// only keep the last template for given file
 				files.remove(generatorTemplate);
@@ -519,7 +541,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
-						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), false, template);
+						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
 				// only preserve the last template for given file
 				files.remove(generatorTemplate);
@@ -529,7 +551,104 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}
 
+		// we add all list templates (if any) for given element to the list
+		Objects.requireNonNull(getModElementListTemplates(element, performFSTasks, generatableElement))
+				.forEach(e -> e.forEachTemplate(files::add, null));
+
 		return new ArrayList<>(files);
+	}
+
+	public List<GeneratorTemplatesList> getModElementListTemplates(ModElement element) {
+		return getModElementListTemplates(element, false, null);
+	}
+
+	public List<GeneratorTemplatesList> getModElementListTemplates(ModElement element,
+			GeneratableElement generatableElement) {
+		return getModElementListTemplates(element, false, generatableElement);
+	}
+
+	private List<GeneratorTemplatesList> getModElementListTemplates(ModElement element, boolean performFSTasks,
+			GeneratableElement generatableElement) {
+
+		if (generatableElement == null) {
+			generatableElement = element.getGeneratableElement();
+			if (generatableElement == null) { // we can't construct list data because we have nothing to process
+				LOG.warn("Failed to load mod generatable element: " + element.getName()
+						+ ". This means no list templates will be generated");
+				return new ArrayList<>();
+			}
+		}
+
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(element.getType());
+		if (map == null) {
+			LOG.info("Failed to load element definition for mod element type " + element.getType().getRegistryName());
+			return null;
+		}
+
+		Set<GeneratorTemplatesList> fileLists = new HashSet<>();
+
+		List<?> templateLists = (List<?>) map.get("list_templates");
+		if (templateLists != null) {
+			int templateID = 0;
+			for (Object list : templateLists) {
+				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
+				String groupName = (String) ((Map<?, ?>) list).get("name");
+				Object listData = TemplateExpressionParser.processFTLExpression(this,
+						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
+				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
+				// we check type of list data collection and convert it to a list if needed
+				List<?> elements;
+				if (listData instanceof Map<?, ?> listMap)
+					elements = new ArrayList<>(listMap.entrySet());
+				else if (listData instanceof Collection<?> collection)
+					elements = new ArrayList<>(collection);
+				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
+					elements = StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
+				else
+					elements = new ArrayList<>();
+				if (templates != null) {
+					for (Object template : templates) {
+						String rawname = (String) ((Map<?, ?>) template).get("name");
+
+						TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+						Object conditionRaw = ((Map<?, ?>) template).get("condition");
+						if (conditionRaw == null) {
+							conditionRaw = ((Map<?, ?>) template).get("condition_any");
+							operator = TemplateExpressionParser.Operator.OR;
+						}
+
+						// we store file generation conditions for current mod element
+						List<Boolean> conditionChecks = new ArrayList<>();
+						for (int i = 0; i < elements.size(); i++) {
+							conditionChecks.add(i,
+									!TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
+											elements.get(i), operator));
+						}
+
+						// only add templates list if at least one list template will be generated
+						// or if we need all template lists possible for the given mod element (performFSTasks is false)
+						if (!conditionChecks.contains(true) && performFSTasks)
+							continue;
+
+						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(rawname),
+								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
+
+						// only preserve the last template for given file
+						files.remove(generatorTemplate);
+						files.put(generatorTemplate, Collections.unmodifiableList(conditionChecks));
+
+						templateID++;
+					}
+
+					if (!elements.isEmpty() || !performFSTasks) {
+						fileLists.add(new GeneratorTemplatesList(groupName, Collections.unmodifiableList(elements),
+								generatableElement, Collections.unmodifiableMap(files)));
+					}
+				}
+			}
+		}
+
+		return new ArrayList<>(fileLists);
 	}
 
 	public ModElement getModElementThisFileBelongsTo(File file) {
@@ -567,23 +686,23 @@ public class Generator implements IGenerator, Closeable {
 		// so the imports get properly organised in the next step
 		if (formatAndOrganiseImports) {
 			generatorFiles.forEach(generatorFile -> {
-				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
+				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
 					if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-						if (!generatorFile.file().isFile())
-							FileIO.touchFile(generatorFile.file());
+						if (!generatorFile.getFile().isFile())
+							FileIO.touchFile(generatorFile.getFile());
 				}
 			});
 		}
 
 		generatorFiles.forEach(generatorFile -> {
-			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.file())) {
+			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
 				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.file(),
+					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.getFile(),
 							formatAndOrganiseImports);
 				else if (generatorFile.writer().equals("json"))
-					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.file());
+					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.getFile());
 				else if (generatorFile.writer().equals("file"))
-					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.file());
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
 		});
 	}
