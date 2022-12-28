@@ -137,7 +137,7 @@ public class LocalizationUtils {
 			for (Object template : localizationkeys) {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
 				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
-						(String) ((Map<?, ?>) template).get("fromlist"), element);
+						(String) ((Map<?, ?>) template).get("fromlist"), element.getGeneratableElement());
 
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {

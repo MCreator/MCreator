@@ -42,6 +42,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -87,8 +88,7 @@ public class GTModElements {
 					}
 				}
 
-				// Disabled part of the test to speed up automated tests
-				/*// test mod element file detection system
+				// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (!modElement.equals(modElement1))
@@ -111,7 +111,7 @@ public class GTModElements {
 				}
 
 				// generate back after removal for build testing
-				assertTrue(workspace.getGenerator().generateElement(generatableElement));*/
+				assertTrue(workspace.getGenerator().generateElement(generatableElement));
 			});
 		}
 	}

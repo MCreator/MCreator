@@ -88,7 +88,7 @@ public class ComponentUtils {
 	}
 
 	public static Component wrapWithInfoButton(Component ca, String url) {
-		JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		pan.setOpaque(false);
 		JLabel lab = new JLabel(UIRES.get("16px.info"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));

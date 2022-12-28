@@ -63,6 +63,23 @@ public class TemplateGenerator {
 		return generateTemplate(templateName, dataModel);
 	}
 
+	public String generateListItemFromTemplate(Object item, int itemIndex, GeneratableElement element,
+			String templateName, Map<String, Object> dataModel, @Nullable IAdditionalTemplateDataProvider provider)
+			throws TemplateGeneratorException {
+		dataModel.putAll(baseDataModelProvider.provide());
+
+		dataModel.put("item", item);
+		dataModel.put("itemindex", itemIndex);
+		dataModel.put("parent", element);
+		dataModel.put("registryname", element.getModElement().getRegistryName());
+		dataModel.put("name", element.getModElement().getName());
+
+		if (provider != null)
+			provider.provideAdditionalData(dataModel);
+
+		return generateTemplate(templateName, dataModel);
+	}
+
 	public String generateBaseFromTemplate(String templateName, Map<String, Object> dataModel)
 			throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());

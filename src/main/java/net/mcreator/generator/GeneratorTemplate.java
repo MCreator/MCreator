@@ -22,27 +22,19 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class GeneratorTemplate {
+public class GeneratorTemplate {
 
 	private final File file;
 	private final Object templateData;
 
 	private final String templateIdentificator;
 
-	private final boolean isGlobal;
-
 	private final Map<String, Object> dataModel = new HashMap<>();
 
-	GeneratorTemplate(File file, String templateIdentificator, boolean global, Object templateData) {
+	GeneratorTemplate(File file, String templateIdentificator, Object templateData) {
 		this.file = file;
-		this.templateData = templateData;
-		this.isGlobal = global;
-
 		this.templateIdentificator = templateIdentificator;
-	}
-
-	public boolean isGlobal() {
-		return isGlobal;
+		this.templateData = templateData;
 	}
 
 	public File getFile() {
