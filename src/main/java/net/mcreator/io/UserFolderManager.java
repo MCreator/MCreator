@@ -45,9 +45,6 @@ public class UserFolderManager {
 	}
 
 	public static File getGradleHome() {
-		if (System.getenv("GRADLE_USER_HOME") != null){
-			return new File(System.getenv("GRADLE_USER_HOME").replace('\\','/'));
-		}
 		return getFileFromUserFolder("/gradle/");
 	}
 
