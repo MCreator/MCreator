@@ -264,29 +264,12 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			ActionListener actionListener = e -> {
-				if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
-					return;
-
-				String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
-				if (key != null) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-							L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if (n == 0) {
-						Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-								.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);
-						reloadElements();
-					}
-				}
-			};
-
-			del.addActionListener(actionListener);
+			del.addActionListener(a-> delCurrentSelected(elements, id));
 
 			elements.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_DELETE)
-						actionListener.actionPerformed(null);
+						delCurrentSelected(elements, id);
 				}
 			});
 
@@ -376,6 +359,23 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		pane.addChangeListener(changeListener);
 
 		refilterElements();
+	}
+
+	private void delCurrentSelected(JTable elements, int id) {
+		if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
+			return;
+
+		String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
+		if (key != null) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+					L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (n == 0) {
+				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
+						.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);
+				reloadElements();
+			}
+		}
 	}
 
 	private void newLocalizationDialog() {
