@@ -41,14 +41,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 <#compress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
-
-	public static ${name}Feature FEATURE = null;
-
-	public static Feature<?> feature() {
-		FEATURE = new ${name}Feature();
-		return FEATURE;
-	}
-
 	<#if data.restrictionDimensions?has_content>
 	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
 		<#list data.restrictionDimensions as dimension>
