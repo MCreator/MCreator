@@ -36,14 +36,9 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
-import net.mcreator.minecraft.RegistryNameFixer;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.resources.Model;
-import net.mcreator.workspace.resources.ModelUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
@@ -51,11 +46,8 @@ import org.gradle.tooling.ProjectConnection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -187,11 +179,10 @@ public class Generator implements IGenerator, Closeable {
 
 					Map<String, Object> dataModel = generatorTemplate.getDataModel();
 
-					extractVariables(generatorTemplate, dataModel);
-
 					try {
 						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
-								templateFileName, dataModel);
+								templateFileName, dataModel,
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("variables"));
 						return new GeneratorFile(generatorTemplate,
 								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
 					} catch (TemplateGeneratorException e) {
@@ -205,7 +196,7 @@ public class Generator implements IGenerator, Closeable {
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// run other source tasks
-			runSetupTasks(generatorConfiguration.getSourceSetupTasks());
+			GeneratorFileTasks.runFileTasks(this, generatorConfiguration.getSourceSetupTasks());
 
 			// generate lang files
 			LocalizationUtils.generateLanguageFiles(this, workspace,
@@ -263,17 +254,18 @@ public class Generator implements IGenerator, Closeable {
 				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
 
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
-				extractVariables(generatorTemplate, dataModel);
+
+				String variables = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("variables");
 
 				String code;
 				if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
 					code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
 							listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
-							listTemplate.getListItemIndex(), element, templateFileName, dataModel,
+							listTemplate.getListItemIndex(), element, templateFileName, dataModel, variables,
 							element.getAdditionalTemplateData());
 				} else { // regular template
 					code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element,
-							templateFileName, dataModel, element.getAdditionalTemplateData());
+							templateFileName, dataModel, variables, element.getAdditionalTemplateData());
 				}
 
 				GeneratorFile generatorFile = new GeneratorFile(generatorTemplate,
@@ -308,26 +300,6 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		return new ArrayList<>(generatorFiles);
-	}
-
-	/**
-	 * Load any hardcoded variables from template definition into dataModel
-	 *
-	 * @param generatorTemplate Template from which to get variables
-	 * @param dataModel         Data model to place variables into
-	 */
-	private void extractVariables(GeneratorTemplate generatorTemplate, Map<String, Object> dataModel) {
-		String variables = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("variables");
-		if (variables != null) {
-			try {
-				String[] vars = variables.split(";");
-				for (String var : vars) {
-					String[] data = var.split("(?<!/)=");
-					dataModel.put("var_" + data[0].trim().replace("/=", "="), data[1].trim().replace("/=", "="));
-				}
-			} catch (Exception ignored) {
-			}
-		}
 	}
 
 	public void removeElementFilesAndLangKeys(ModElement element) {
@@ -697,8 +669,8 @@ public class Generator implements IGenerator, Closeable {
 		generatorFiles.forEach(generatorFile -> {
 			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
 				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.getFile(),
-							formatAndOrganiseImports);
+					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(),
+							generatorFile.getFile(), formatAndOrganiseImports);
 				else if (generatorFile.writer().equals("json"))
 					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.getFile());
 				else if (generatorFile.writer().equals("file"))
@@ -708,131 +680,7 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void runResourceSetupTasks() {
-		runSetupTasks(generatorConfiguration.getResourceSetupTasks());
-	}
-
-	public void runSetupTasks(List<?> setupTaks) {
-		if (setupTaks != null) {
-			setupTaks.forEach(task -> {
-				String taskType = (String) ((Map<?, ?>) task).get("task");
-				switch (taskType) {
-				case "empty_dir" -> {
-					String dir = (String) ((Map<?, ?>) task).get("dir");
-					List<?> excludes_raw = (List<?>) ((Map<?, ?>) task).get("excludes");
-					List<String> excludes = new ArrayList<>();
-					if (excludes_raw != null) {
-						for (Object o : excludes_raw)
-							excludes.add(GeneratorTokens.replaceTokens(workspace, (String) o));
-					}
-					if (workspace.getFolderManager()
-							.isFileInWorkspace(new File(GeneratorTokens.replaceTokens(workspace, dir)))) {
-						FileIO.emptyDirectory(new File(GeneratorTokens.replaceTokens(workspace, dir)),
-								excludes.toArray(new String[0]));
-					}
-				}
-				case "sync_dir" -> {
-					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
-					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
-					if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
-						FileIO.emptyDirectory(
-								new File(to)); // first delete existing contents of the destination directory
-						FileIO.copyDirectory(new File(from), new File(to));
-					}
-				}
-				case "copy_file" -> {
-					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
-					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
-					if (workspace.getFolderManager().isFileInWorkspace(new File(to)) && new File(from).isFile())
-						FileIO.copyFile(new File(from), new File(to));
-				}
-				case "copy_and_resize_image" -> {
-					String from = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("from"));
-					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
-					int w = Integer.parseInt(
-							GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("width")));
-					int h = Integer.parseInt(
-							GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("height")));
-					if (workspace.getFolderManager().isFileInWorkspace(new File(to)) && new File(from).isFile()) {
-						try {
-							BufferedImage image = ImageIO.read(new File(from));
-							BufferedImage resized = ImageUtils.resize(image, w, h);
-							ImageIO.write(resized, "png", new File(to));
-						} catch (IOException e) {
-							LOG.warn("Failed to read image file for resizing", e);
-						}
-					} else if (workspace.getFolderManager().isFileInWorkspace(new File(to))) {
-						try {
-							BufferedImage resized = ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h);
-							ImageIO.write(resized, "png", new File(to));
-						} catch (IOException e) {
-							LOG.warn("Failed to read image file for resizing", e);
-						}
-					}
-				}
-				case "copy_models" -> {
-					String to = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) task).get("to"));
-					if (!workspace.getFolderManager().isFileInWorkspace(new File(to, "model.dummy")))
-						break;
-
-					List<Model> modelList = Model.getModels(workspace);
-
-					String type = (String) ((Map<?, ?>) task).get("type");
-					switch (type) {
-					case "OBJ":
-						for (Model model : modelList)
-							if (model.getType() == Model.Type.OBJ)
-								Arrays.stream(model.getFiles())
-										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
-										.forEach(f -> FileIO.copyFile(f, new File(to, f.getName())));
-						break;
-					case "OBJ_inlinetextures":
-						String prefix = GeneratorTokens.replaceTokens(workspace,
-								(String) ((Map<?, ?>) task).get("prefix"));
-						for (Model model : modelList)
-							if (model.getType() == Model.Type.OBJ) {
-								Arrays.stream(model.getFiles())
-										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
-										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureMapping(f,
-												new File(to, f.getName()), model, prefix));
-							}
-						break;
-					case "JSON":
-						for (Model model : modelList)
-							if (model.getType() == Model.Type.JSON)
-								FileIO.copyFile(model.getFile(), new File(to, model.getFile().getName()));
-						break;
-					case "JSON_noinlinetextures":
-						for (Model model : modelList)
-							if (model.getType() == Model.Type.JSON) {
-								String jsonorig = FileIO.readFileToString(model.getFile());
-								String notextures = ModelUtils.removeInlineTexturesSectionFromJSONModel(jsonorig);
-								FileIO.writeStringToFile(notextures, new File(to, model.getFile().getName()));
-							}
-						break;
-					case "JAVA_viatemplate":
-						String template = GeneratorTokens.replaceTokens(workspace,
-								(String) ((Map<?, ?>) task).get("template"));
-						for (Model model : modelList)
-							if (model.getType() == Model.Type.JAVA) {
-								String modelCode = FileIO.readFileToString(model.getFile());
-								try {
-									modelCode = getTemplateGeneratorFromName("templates").generateFromTemplate(template,
-											new HashMap<>(
-													Map.of("modelname", model.getReadableName(), "model", modelCode,
-															"modelregistryname",
-															RegistryNameFixer.fromCamelCase(model.getReadableName()))));
-								} catch (TemplateGeneratorException e) {
-									e.printStackTrace();
-								}
-								ClassWriter.writeClassToFileWithoutQueue(workspace, modelCode,
-										new File(to, model.getReadableName() + ".java"), true);
-							}
-						break;
-					}
-				}
-				}
-			});
-		}
+		GeneratorFileTasks.runFileTasks(this, generatorConfiguration.getResourceSetupTasks());
 	}
 
 	@Nullable public ProjectConnection getGradleProjectConnection() {
