@@ -78,6 +78,10 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.FEATURE);
+		if (hasGenerationConditions() || this.getModElement().getGeneratorConfiguration()
+				.getGeneratorName().equals("forge-1.18.2")) {
+			return List.of(BaseType.FEATURE);
+		}
+		return Collections.emptyList();
 	}
 }
