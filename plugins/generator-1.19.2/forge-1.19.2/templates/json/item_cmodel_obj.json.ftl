@@ -6,7 +6,7 @@
   "model": "${modid}:models/item/${data.getItemCustomModelNameFor(var_item)}.obj",
   "textures": {
     <@textures data.getItemModelTextureMap(var_item)/>
-    "particle": "${modid}:items/${data.getArmorPartTexture(var_item)}"
+    "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
 <#else>
   "model": "${modid}:models/item/${data.customModelName.split(":")[0]}.obj",
   "textures": {

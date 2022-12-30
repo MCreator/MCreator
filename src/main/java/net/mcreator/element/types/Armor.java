@@ -238,7 +238,7 @@ import java.util.*;
 		return null;
 	}
 
-	public String getArmorPartTexture(String part) {
+	public String getItemTextureFor(String part) {
 		return switch (part) {
 			case "helmet" -> textureHelmet;
 			case "body" -> textureBody;
@@ -269,7 +269,7 @@ import java.util.*;
 	}
 
 	public boolean hasLeggingsToolModel() {
-		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName().equals("Tool");
+		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName().equals("Tool");
 	}
 
 	public boolean hasBootsNormalModel() {

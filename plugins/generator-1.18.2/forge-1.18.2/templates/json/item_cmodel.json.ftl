@@ -3,7 +3,7 @@
   "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
   "textures": {
     <@textures data.getItemModelTextureMap(var_item)/>
-    "particle": "${modid}:items/${data.getArmorPartTexture(var_item)}"
+    "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
   }
 <#else>
   "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
