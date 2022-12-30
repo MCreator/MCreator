@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "${modid}:items/${element.modelTexture}"
+        "layer0": "${modid}:items/${item.modelTexture}"
     }
 }

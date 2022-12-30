@@ -36,22 +36,22 @@ list_templates:
         condition:
           - "renderType #= 0"
           - "isNormalModel()"
-        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool_override.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
           - "isToolModel()"
-        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_override_cmodel.json.ftl
         writer: json
         condition: "renderType #= 1"
-        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_override_cmodel_obj.json.ftl
         writer: json
         condition: "renderType #= 2"
         variables: "type=item"
-        name: "@MODASSETSROOT/models/item/@registryname_@elementindex.json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
 localizationkeys:
   - key: item.@modid.@registryname

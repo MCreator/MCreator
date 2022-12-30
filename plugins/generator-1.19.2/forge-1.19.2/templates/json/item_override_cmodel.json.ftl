@@ -1,11 +1,11 @@
 {
-  "parent": "${modid}:custom/${element.modelName.split(":")[0]}",
+  "parent": "${modid}:custom/${item.modelName.split(":")[0]}",
   "textures": {
-    <#if element.getTextureMap(w.getWorkspace())??>
-        <#list element.getTextureMap(w.getWorkspace()).entrySet() as texture>
+    <#if item.getTextureMap(w.getWorkspace())??>
+        <#list item.getTextureMap(w.getWorkspace()).entrySet() as texture>
             "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
         </#list>
     </#if>
-    "particle": "${modid}:items/${element.modelTexture}"
+    "particle": "${modid}:items/${item.modelTexture}"
   }
 }

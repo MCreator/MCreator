@@ -193,7 +193,6 @@ import java.util.Map;
 		public boolean isToolModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Tool");
 		}
-
 	}
 
 }
