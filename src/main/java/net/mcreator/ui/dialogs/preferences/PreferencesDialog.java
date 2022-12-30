@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
+import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
 import net.mcreator.preferences.PreferencesData;
@@ -181,10 +182,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		addEditTemplatesPanel("texture_templates", "textures/texturemaker", "png");
 		addEditTemplatesPanel("armor_templates", "textures/armormaker", "png");
 
-		addEditTemplatesPanel(BlocklyEditorType.PROCEDURE);
-		addEditTemplatesPanel(BlocklyEditorType.AI_TASK);
-		addEditTemplatesPanel(BlocklyEditorType.COMMAND_ARG);
-		addEditTemplatesPanel(BlocklyEditorType.FEATURE);
+		BlocklyLoader.INSTANCE.getAllBlockLoaders().keySet().stream()
+				.filter(type -> type.translationKey() != null && type.extension() != null)
+				.forEach(this::addEditTemplatesPanel);
 
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
 	}
