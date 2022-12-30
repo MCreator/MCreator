@@ -32,6 +32,7 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -130,7 +131,7 @@ public class Procedure extends GeneratableElement {
 			String triggerCode = "";
 			if (trigger != null) {
 				TemplateGenerator templateGenerator = getModElement().getGenerator()
-						.getTemplateGeneratorFromName("triggers");
+						.getTemplateGeneratorFromName(BlocklyEditorType.GLOBAL_TRIGGER.folder());
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
 			}
 			additionalData.put("trigger_code", triggerCode);
@@ -140,12 +141,12 @@ public class Procedure extends GeneratableElement {
 	public BlocklyToProcedure getBlocklyToProcedure(Map<String, Object> additionalData)
 			throws TemplateGeneratorException {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-				BlocklyLoader.INSTANCE.getBlockLoader("procedures").getDefinedBlocks(),
-				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
+				BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks(),
+				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.folder()), additionalData);
 
 		// load BlocklyToProcedure with custom generators loaded
 		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.getModElement(), this.procedurexml,
-				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
+				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.folder()),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 	}

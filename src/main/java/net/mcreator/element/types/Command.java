@@ -57,14 +57,14 @@ import java.util.Locale;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getBlockLoader("cmdargs").getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
+					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.COMMAND_ARG.folder()),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
 					BlocklyEditorType.COMMAND_ARG, this.argsxml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.COMMAND_ARG.folder()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());

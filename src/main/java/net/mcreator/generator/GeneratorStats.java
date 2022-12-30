@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -91,7 +92,7 @@ public class GeneratorStats {
 		// lazy load actual values
 		new Thread(() -> {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
-			addBlocklyFolder(generatorConfiguration, "triggers");
+			addBlocklyFolder(generatorConfiguration, BlocklyEditorType.GLOBAL_TRIGGER);
 		}).start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -139,24 +140,30 @@ public class GeneratorStats {
 	 * Load all Blockly files of a {@link Generator} inside the provided folder.
 	 *
 	 * @param genConfig The current generator's config to use
-	 * @param name The name of the folder to load
+	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
-	public void addBlocklyFolder(GeneratorConfiguration genConfig, String name) {
-		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + name, ftlFile)
-				.stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
+		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + type.folder(),
+						ftlFile).stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 				.collect(Collectors.toSet());
-		coverageInfo.put(name, Math.min(
-				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader("cmdargs").getDefinedBlocks().size())
-						* 100, 100));
-		generatorBlocklyBlocks.put(name, blocks);
+		if (type != BlocklyEditorType.GLOBAL_TRIGGER) {
+			coverageInfo.put(type.folder(), Math.min(
+					(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
+							* 100, 100));
+		} else {
+			coverageInfo.put(type.folder(), Math.min(
+					(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
+							.size()) * 100, 100));
+		}
+		generatorBlocklyBlocks.put(type.folder(), blocks);
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
 		return generatorBlocklyBlocks;
 	}
 
-	public Set<String> getBlocklyBlocks(String name) {
-		return generatorBlocklyBlocks.get(name);
+	public Set<String> getBlocklyBlocks(BlocklyEditorType type) {
+		return generatorBlocklyBlocks.get(type.folder());
 	}
 
 	private CoverageStatus forElement(List<?> features, String feature) {

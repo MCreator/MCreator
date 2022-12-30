@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ public class GTProcedureTriggers {
 			return;
 		}
 
-		Set<String> generatorTriggers = workspace.getGeneratorStats().getBlocklyBlocks("triggers");
+		Set<String> generatorTriggers = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.GLOBAL_TRIGGER);
 
 		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {

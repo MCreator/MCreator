@@ -105,10 +105,10 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		propertiesAndCondition.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader("features").getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getBlockLoader("features")
+			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(FeatureGUI.this::regenerateFeature).start());
@@ -141,7 +141,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 	private void regenerateFeature() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getBlocklyBlocks("features"));
+				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 
 		BlocklyToFeature blocklyToFeature;
 		try {

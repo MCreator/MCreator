@@ -19,11 +19,13 @@
 
 package net.mcreator.ui.blockly;
 
-public record BlocklyEditorType(String translationKey, String extension, String startBlockName) {
+public record BlocklyEditorType(String folder, String translationKey, String extension, String startBlockName) {
 
-	public static BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");
-	public static BlocklyEditorType AI_TASK = new BlocklyEditorType("ai_setup", "aitpl", "aitasks_container");
-	public static BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmd_setup", "cmdtpl", "args_start");
-	public static BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
+	public static final BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "procedures", "ptpl", "event_trigger");
+	public static final BlocklyEditorType AI_TASK = new BlocklyEditorType("aitasks", "ai_setup", "aitpl", "aitasks_container");
+	public static final BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmdargs", "cmd_setup", "cmdtpl", "args_start");
+	public static final BlocklyEditorType FEATURE = new BlocklyEditorType("features", "features", "ftpl", "feature_container");
+	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null, null, null);
+	public static final BlocklyEditorType GLOBAL_TRIGGER = new BlocklyEditorType("triggers", null, null, null);
 
 }

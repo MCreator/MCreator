@@ -18,6 +18,8 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.ui.blockly.BlocklyEditorType;
+
 import java.util.*;
 
 public class BlocklyLoader {
@@ -43,26 +45,26 @@ public class BlocklyLoader {
 		add("action");
 		add("aiadvanced");
 	}};
-	private final Map<String, ExternalBlockLoader> blockLoaders;
+	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
 	private BlocklyLoader() {
 		blockLoaders = new LinkedHashMap<>();
-		addBlockLoader("procedures");
-		addBlockLoader("aitasks");
-		addBlockLoader("cmdargs");
-		addBlockLoader("jsontriggers");
-		addBlockLoader("features");
-		externalTriggerLoader = new ExternalTriggerLoader("triggers");
+		addBlockLoader(BlocklyEditorType.PROCEDURE);
+		addBlockLoader(BlocklyEditorType.AI_TASK);
+		addBlockLoader(BlocklyEditorType.JSON_TRIGGER);
+		addBlockLoader(BlocklyEditorType.COMMAND_ARG);
+		addBlockLoader(BlocklyEditorType.FEATURE);
+		externalTriggerLoader = new ExternalTriggerLoader(BlocklyEditorType.GLOBAL_TRIGGER.folder());
 	}
 
 	/**
 	 * Create a new {@link ExternalBlockLoader} to load blocks for a specific Blockly panel.
 	 *
-	 * @param name The folder's name where to load files
+	 * @param type The type of Blockly editor to register
 	 */
-	public void addBlockLoader(String name) {
-		blockLoaders.put(name, new ExternalBlockLoader(name));
+	public void addBlockLoader(BlocklyEditorType type) {
+		blockLoaders.put(type, new ExternalBlockLoader(type.folder()));
 	}
 
 	/**
@@ -75,7 +77,7 @@ public class BlocklyLoader {
 		builtinCategories.add(name);
 	}
 
-	public Map<String, ExternalBlockLoader> getAllBlockLoaders() {
+	public Map<BlocklyEditorType, ExternalBlockLoader> getAllBlockLoaders() {
 		return blockLoaders;
 	}
 
@@ -83,8 +85,8 @@ public class BlocklyLoader {
 		return builtinCategories;
 	}
 
-	public ExternalBlockLoader getBlockLoader(String name) {
-		return blockLoaders.get(name);
+	public ExternalBlockLoader getBlockLoader(BlocklyEditorType type) {
+		return blockLoaders.get(type);
 	}
 
 	public ExternalTriggerLoader getExternalTriggerLoader() {
