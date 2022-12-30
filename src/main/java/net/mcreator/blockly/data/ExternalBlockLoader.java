@@ -24,7 +24,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.BlocklyToolboxesLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;

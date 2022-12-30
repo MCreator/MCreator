@@ -88,6 +88,7 @@ public class GeneratorStats {
 		coverageInfo.put("jsontriggers", 100d);
 		coverageInfo.put("aitasks", 100d);
 		coverageInfo.put("cmdargs", 100d);
+		coverageInfo.put("features", 100d);
 
 		// lazy load actual values
 		new Thread(() -> {
