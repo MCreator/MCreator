@@ -47,7 +47,7 @@ public class PreferencesDialogEvent extends MCREvent {
 	 * <p>This event is called when different sections of the {@link PreferencesDialog} are being created and added.
 	 * Template sections for {@link BlocklyEditorType} can be added using {@link PreferencesDialog#addEditTemplatesPanel(BlocklyEditorType)}.
 	 * Custom template sections can also be added using {@link PreferencesDialog#addEditTemplatesPanel(String, String, String)}.
-	 * Those new sections will be after the built-in sections, but before the texture templates sections.</p>
+	 * Those new sections will be after all sections added by MCreator itself.</p>
 	 */
 	public static class SectionsLoaded extends PreferencesDialogEvent {
 

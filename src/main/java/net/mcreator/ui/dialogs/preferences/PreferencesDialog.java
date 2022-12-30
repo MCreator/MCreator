@@ -176,9 +176,10 @@ public class PreferencesDialog extends MCreatorDialog {
 		new PluginsPanel(this);
 
 		themes = new ThemesPanel(this);
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_"), "backgrounds", "png");
 
 		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
+		addEditTemplatesPanel("texture_templates", "textures/texturemaker", "png");
+		addEditTemplatesPanel("armor_templates", "textures/armormaker", "png");
 
 		addEditTemplatesPanel(BlocklyEditorType.PROCEDURE);
 		addEditTemplatesPanel(BlocklyEditorType.AI_TASK);
@@ -186,9 +187,6 @@ public class PreferencesDialog extends MCreatorDialog {
 		addEditTemplatesPanel(BlocklyEditorType.FEATURE);
 
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
-
-		addEditTemplatesPanel("texture_template", "textures/texturemaker", "png");
-		addEditTemplatesPanel("armor_template", "textures/armormaker", "png");
 	}
 
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
