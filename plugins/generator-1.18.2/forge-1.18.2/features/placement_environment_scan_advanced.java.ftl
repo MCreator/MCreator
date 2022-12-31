@@ -1,0 +1,1 @@
+EnvironmentScanPlacement.scanningFor(${generator.map(field$direction, "directions")}, ${input$condition}, ${input$searchCondition}, ${field$maxSteps}),
