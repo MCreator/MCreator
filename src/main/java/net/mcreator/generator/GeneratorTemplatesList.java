@@ -40,7 +40,7 @@ import java.util.function.IntConsumer;
  *                  for all items on the mentioned collection.
  */
 public record GeneratorTemplatesList(String groupName, List<?> listData, GeneratableElement element,
-									 Map<GeneratorTemplate, List<Boolean>> templates) {
+									 Map<ListTemplate, List<Boolean>> templates) {
 
 	/**
 	 * Iterates over all regular templates that can be produced by this templates list instance.
@@ -48,18 +48,18 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 	 * @param action             Action to be performed for each generated template.
 	 * @param beforeNextListItem Optional action to be performed before next item from the list data is processed.
 	 */
-	public void forEachTemplate(Consumer<ListTemplate> action, @Nullable IntConsumer beforeNextListItem) {
+	public void forEachTemplate(Consumer<ListTemplate.Output> action, @Nullable IntConsumer beforeNextListItem) {
 		for (int index = 0; index < listData.size(); index++) {
 			if (beforeNextListItem != null)
 				beforeNextListItem.accept(index);
-			for (GeneratorTemplate template : templates.keySet()) {
+			for (ListTemplate template : templates.keySet()) {
 				if (templates.get(template).get(index)) {
 					File targetFile = new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
 							GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
 									template.getFile().getPath().replace("@NAME", element.getModElement().getName())
 											.replace("@registryname", element.getModElement().getRegistryName())
 											.replace("@itemindex", Integer.toString(index)))));
-					action.accept(new ListTemplate(targetFile, template.getTemplateIdentificator(), this, index,
+					action.accept(new ListTemplate.Output(targetFile, template.getTemplateIdentificator(), this, index,
 							template.getTemplateData()));
 				}
 			}
