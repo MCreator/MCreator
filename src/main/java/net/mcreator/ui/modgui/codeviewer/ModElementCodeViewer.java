@@ -124,7 +124,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							SwingUtilities.invokeAndWait(() -> {
 								try {
 									if (cache.get(file).update(file)) {
-										if (file.source() instanceof ListTemplate.Output lt) { // file from list
+										if (file.source() instanceof ListTemplate lt) { // file from list
 											JTabbedPane ownerList = listPager.get(lt.getTemplatesList().groupName());
 											int tabid = indexOfComponent(ownerList);
 											if (tabid != -1) {
@@ -147,7 +147,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 							SwingUtilities.invokeAndWait(() -> {
 								try {
 									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
-									if (file.source() instanceof ListTemplate.Output lt) { // file from list
+									if (file.source() instanceof ListTemplate lt) { // file from list
 										JTabbedPane ownerList = listPager.get(lt.getTemplatesList().groupName());
 										ownerList.addTab(file.getFile().getName(),
 												FileIcons.getIconForFile(file.getFile()), fileCodeViewer);
@@ -166,7 +166,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					cache.keySet().stream().toList().forEach(file -> {
 						if (!files.contains(file)) { // deleted file
-							if (file.source() instanceof ListTemplate.Output lt) { // file from list
+							if (file.source() instanceof ListTemplate lt) { // file from list
 								JTabbedPane ownerList = listPager.get(lt.getTemplatesList().groupName());
 								ownerList.remove(cache.get(file));
 								if (ownerList.getTabCount() == 0)

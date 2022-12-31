@@ -22,43 +22,27 @@ package net.mcreator.generator;
 import java.io.File;
 
 /**
- * This is a subclass of {@code GeneratorTemplate} that is used to create output templates
- * connected to a {@code GeneratorTemplatesList} it's created by and specific {@code listData} item index.
- * These two are used by generator to generate the result file with the appropriate contents (that in this case
- * don't only depend on given mod element, but also on a certain {@code listData} item).
+ * This is a subclass of {@code GeneratorTemplate} that is connected to a {@code GeneratorTemplatesList}
+ * it's created by and specific {@code listData} item index. These two are used by generator to generate the result file
+ * with the appropriate contents that in this case don't only depend on given mod element, but also on a certain
+ * {@code listData} item.
  */
 public class ListTemplate extends GeneratorTemplate {
+	private final GeneratorTemplatesList templatesList;
+	private final int listItemIndex;
 
-	ListTemplate(File file, String templateIdentificator, Object templateData) {
+	ListTemplate(File file, String templateIdentificator, GeneratorTemplatesList templatesList, int listItemIndex,
+			Object templateData) {
 		super(file, templateIdentificator, templateData);
+		this.templatesList = templatesList;
+		this.listItemIndex = listItemIndex;
 	}
 
-	@Override public boolean equals(Object o) {
-		return super.equals(o) && o instanceof ListTemplate lt && lt.getTemplateIdentificator()
-				.equals(getTemplateIdentificator());
+	public GeneratorTemplatesList getTemplatesList() {
+		return templatesList;
 	}
 
-	@Override public int hashCode() {
-		return getFile().hashCode() * 31 + getTemplateIdentificator().hashCode();
-	}
-
-	public static class Output extends ListTemplate {
-		private final GeneratorTemplatesList templatesList;
-		private final int listItemIndex;
-
-		Output(File file, String templateIdentificator, GeneratorTemplatesList templatesList, int listItemIndex,
-				Object templateData) {
-			super(file, templateIdentificator, templateData);
-			this.templatesList = templatesList;
-			this.listItemIndex = listItemIndex;
-		}
-
-		public GeneratorTemplatesList getTemplatesList() {
-			return templatesList;
-		}
-
-		public int getListItemIndex() {
-			return listItemIndex;
-		}
+	public int getListItemIndex() {
+		return listItemIndex;
 	}
 }

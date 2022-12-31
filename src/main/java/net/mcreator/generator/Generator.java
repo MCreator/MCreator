@@ -258,7 +258,7 @@ public class Generator implements IGenerator, Closeable {
 				String variables = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("variables");
 
 				String code;
-				if (generatorTemplate instanceof ListTemplate.Output listTemplate) { // list template - generate it for list data item pointed at
+				if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
 					code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
 							listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
 							listTemplate.getListItemIndex(), element, templateFileName, dataModel, variables,
@@ -563,7 +563,7 @@ public class Generator implements IGenerator, Closeable {
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
-				Map<ListTemplate, List<Boolean>> files = new LinkedHashMap<>();
+				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
 				String groupName = (String) ((Map<?, ?>) list).get("name");
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
@@ -598,16 +598,15 @@ public class Generator implements IGenerator, Closeable {
 						}
 
 						// only add templates list if at least one list template will be generated
-						// or if we need all template lists possible for the given mod element (performFSTasks is false)
-						if (!conditionChecks.contains(true) && performFSTasks)
+						if (!conditionChecks.contains(true))
 							continue;
 
-						ListTemplate listTemplate = new ListTemplate(new File(rawname),
+						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(rawname),
 								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), template);
 
 						// only preserve the last template for given file
-						files.remove(listTemplate);
-						files.put(listTemplate, Collections.unmodifiableList(conditionChecks));
+						files.remove(generatorTemplate);
+						files.put(generatorTemplate, Collections.unmodifiableList(conditionChecks));
 
 						templateID++;
 					}
