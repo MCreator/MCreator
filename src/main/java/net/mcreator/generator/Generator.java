@@ -569,15 +569,15 @@ public class Generator implements IGenerator, Closeable {
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
 				// we check type of list data collection and convert it to a list if needed
-				List<?> elements;
+				List<?> items;
 				if (listData instanceof Map<?, ?> listMap)
-					elements = new ArrayList<>(listMap.entrySet());
+					items = new ArrayList<>(listMap.entrySet());
 				else if (listData instanceof Collection<?> collection)
-					elements = new ArrayList<>(collection);
+					items = new ArrayList<>(collection);
 				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-					elements = StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
+					items = StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
 				else
-					elements = new ArrayList<>();
+					items = new ArrayList<>();
 				if (templates != null) {
 					for (Object template : templates) {
 						String rawname = (String) ((Map<?, ?>) template).get("name");
@@ -591,13 +591,11 @@ public class Generator implements IGenerator, Closeable {
 
 						// we store file generation conditions for current mod element
 						List<Boolean> conditionChecks = new ArrayList<>();
-						for (int i = 0; i < elements.size(); i++) {
+						for (int i = 0; i < items.size(); i++) {
 							conditionChecks.add(i,
 									!TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
-											elements.get(i), operator));
+											items.get(i), operator));
 						}
-
-						// only add templates list if at least one list template will be generated
 						if (!conditionChecks.contains(true))
 							continue;
 
@@ -611,8 +609,10 @@ public class Generator implements IGenerator, Closeable {
 						templateID++;
 					}
 
-					if (!elements.isEmpty() || !performFSTasks) {
-						fileLists.add(new GeneratorTemplatesList(groupName, Collections.unmodifiableList(elements),
+					// only add templates list if at least one list template would be generated
+					// or if we need all template lists possible for the given mod element (performFSTasks is false)
+					if (!items.isEmpty() || !performFSTasks) {
+						fileLists.add(new GeneratorTemplatesList(groupName, Collections.unmodifiableList(items),
 								generatableElement, Collections.unmodifiableMap(files)));
 					}
 				}
