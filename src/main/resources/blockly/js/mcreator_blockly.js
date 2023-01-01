@@ -81,16 +81,6 @@ function arrayToBlocklyDropDownArray(arrorig) {
     return retval;
 }
 
-function arrayToBlocklyDropDownArrayWithReadableNames(arrorig, readablenames) {
-    var retval = [];
-    var length = arrorig.length;
-    var nameslength = readablenames.length;
-    for (var i = 0; i < length; i++) {
-        retval.push(["" + (i < nameslength ? readablenames[i] : arrorig[i]), "" + arrorig[i]]);
-    }
-    return retval;
-}
-
 function jsonToBlocklyDropDownArray(json) {
     var map = JSON.parse(json);
     var retval = [];
