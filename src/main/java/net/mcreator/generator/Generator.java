@@ -168,13 +168,13 @@ public class Generator implements IGenerator, Closeable {
 
 		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(performFSTasks).parallelStream()
 				.map(generatorTemplate -> {
-					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+					if (((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("canLock")
 							.equals("true")) // can this file be locked
 						if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
 							return null; // if they are, we skip this file
 
-					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get(
+					String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get(
 							"template");
 
 					Map<String, Object> dataModel = generatorTemplate.getDataModel();
@@ -182,9 +182,9 @@ public class Generator implements IGenerator, Closeable {
 					try {
 						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
 								templateFileName, dataModel,
-								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("variables"));
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("variables"));
 						return new GeneratorFile(generatorTemplate,
-								(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
+								(String) ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("writer"), code);
 					} catch (TemplateGeneratorException e) {
 						success.set(false);
 					}
@@ -251,11 +251,11 @@ public class Generator implements IGenerator, Closeable {
 				performFSTasks, element);
 		if (generatorTemplateList != null) {
 			for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
-				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("template");
+				String templateFileName = (String) ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("template");
 
 				Map<String, Object> dataModel = generatorTemplate.getDataModel();
 
-				String variables = (String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("variables");
+				String variables = (String) ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("variables");
 
 				String code;
 				if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
@@ -269,7 +269,7 @@ public class Generator implements IGenerator, Closeable {
 				}
 
 				GeneratorFile generatorFile = new GeneratorFile(generatorTemplate,
-						(String) ((Map<?, ?>) generatorTemplate.getTemplateData()).get("writer"), code);
+						(String) ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("writer"), code);
 
 				// only preserve the last instance of template for a file
 				generatorFiles.remove(generatorFile);

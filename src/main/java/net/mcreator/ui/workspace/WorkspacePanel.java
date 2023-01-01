@@ -1172,8 +1172,8 @@ import java.util.stream.Collectors;
 								File originalFile = originalTemplate.getFile();
 								File duplicateFile = null;
 								for (GeneratorTemplate newCandidate : duplicateFiles) {
-									if (newCandidate.getTemplateIdentificator()
-											.equals(originalTemplate.getTemplateIdentificator())) {
+									if (newCandidate.getTemplateIdentifier()
+											.equals(originalTemplate.getTemplateIdentifier())) {
 										duplicateFile = newCandidate.getFile();
 										break;
 									}

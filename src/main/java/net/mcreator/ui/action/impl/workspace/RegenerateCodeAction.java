@@ -79,8 +79,8 @@ public class RegenerateCodeAction extends GradleAction {
 			// keep base mod files that can be locked if selected so in the workspace settings
 			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
 				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
-					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+					if (((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("canLock")
 							.equals("true")) // can this file be locked
 						// are mod base file locked
 						toBePreserved.add(

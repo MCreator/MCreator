@@ -151,7 +151,7 @@ public class ModElementManager {
 			templates.addAll(elementTemplates);
 
 		for (GeneratorTemplate template : templates) {
-			String writer = (String) ((Map<?, ?>) template.getTemplateData()).get("writer");
+			String writer = (String) ((Map<?, ?>) template.getTemplateDefinition()).get("writer");
 			if (writer == null || writer.equals("java"))
 				return true;
 		}

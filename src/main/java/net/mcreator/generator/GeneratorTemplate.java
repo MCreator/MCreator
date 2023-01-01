@@ -25,30 +25,52 @@ import java.util.Map;
 public class GeneratorTemplate {
 
 	private final File file;
-	private final Object templateData;
+	private final Object templateDefinition;
 
-	private final String templateIdentificator;
+	private final String templateIdentifier;
 
 	private final Map<String, Object> dataModel = new HashMap<>();
 
-	GeneratorTemplate(File file, String templateIdentificator, Object templateData) {
+	/**
+	 * @param file File where this GeneratorTemplate should be generated into
+	 * @param templateIdentifier String that is equal for all GeneratorTemplate generated for the same template entry in element definition
+	 * @param templateDefinition Raw object defining the template properties that generator uses
+	 */
+	GeneratorTemplate(File file, String templateIdentifier, Object templateDefinition) {
 		this.file = file;
-		this.templateIdentificator = templateIdentificator;
-		this.templateData = templateData;
+		this.templateIdentifier = templateIdentifier;
+		this.templateDefinition = templateDefinition;
 	}
 
+	/**
+	 * @return File where this GeneratorTemplate should be generated into
+	 */
 	public File getFile() {
 		return file;
 	}
 
-	public Object getTemplateData() {
-		return templateData;
+	/**
+	 * @return Raw object defining the template properties that generator uses
+	 */
+	public Object getTemplateDefinition() {
+		return templateDefinition;
 	}
 
-	public String getTemplateIdentificator() {
-		return templateIdentificator;
+	/**
+	 * Used to determine what template belongs to what file. Same GeneratorTemplate file of different MEs
+	 * can belong to the same template entry in element definition that was used to generate said file.
+	 * <p>
+	 * Currently used to determine which files to copy to which files when duplicating ME with locked code.
+	 *
+	 * @return String that is equal for all GeneratorTemplate generated for the same template entry in element definition
+	 */
+	public String getTemplateIdentifier() {
+		return templateIdentifier;
 	}
 
+	/**
+	 * @return Data model that is used to generate this GeneratorTemplate (data accessible in FTL templates)
+	 */
 	public Map<String, Object> getDataModel() {
 		return dataModel;
 	}
