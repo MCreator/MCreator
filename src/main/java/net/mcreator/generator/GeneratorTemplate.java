@@ -25,7 +25,8 @@ import java.util.Map;
 public class GeneratorTemplate {
 
 	private final File file;
-	private final Object templateDefinition;
+
+	private final Map<?, ?> templateDefinition;
 
 	private final String templateIdentifier;
 
@@ -34,9 +35,9 @@ public class GeneratorTemplate {
 	/**
 	 * @param file File where this GeneratorTemplate should be generated into
 	 * @param templateIdentifier String that is equal for all GeneratorTemplate generated for the same template entry in element definition
-	 * @param templateDefinition Raw object defining the template properties that generator uses
+	 * @param templateDefinition Map defining the template properties that generator uses
 	 */
-	GeneratorTemplate(File file, String templateIdentifier, Object templateDefinition) {
+	GeneratorTemplate(File file, String templateIdentifier, Map<?, ?> templateDefinition) {
 		this.file = file;
 		this.templateIdentifier = templateIdentifier;
 		this.templateDefinition = templateDefinition;
@@ -50,9 +51,9 @@ public class GeneratorTemplate {
 	}
 
 	/**
-	 * @return Raw object defining the template properties that generator uses
+	 * @return Map defining the template properties that generator uses
 	 */
-	public Object getTemplateDefinition() {
+	public Map<?, ?> getTemplateDefinition() {
 		return templateDefinition;
 	}
 
@@ -77,6 +78,10 @@ public class GeneratorTemplate {
 
 	public void addDataModelEntry(String key, Object value) {
 		dataModel.put(key, value);
+	}
+
+	public GeneratorFile toGeneratorFile(String code) {
+		return new GeneratorFile(this, (String) templateDefinition.get("writer"), code);
 	}
 
 	@Override public boolean equals(Object o) {

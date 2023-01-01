@@ -145,13 +145,12 @@ public class ModElementManager {
 					generator.getModElementGlobalTemplatesList(generatableElement.getModElement().getType(), false,
 							new AtomicInteger()));
 
-		List<GeneratorTemplate> elementTemplates = generator.getModElementGeneratorTemplatesList(
-				generatableElement.getModElement());
+		List<GeneratorTemplate> elementTemplates = generator.getModElementGeneratorTemplatesList(generatableElement);
 		if (elementTemplates != null)
 			templates.addAll(elementTemplates);
 
 		for (GeneratorTemplate template : templates) {
-			String writer = (String) ((Map<?, ?>) template.getTemplateDefinition()).get("writer");
+			String writer = (String) template.getTemplateDefinition().get("writer");
 			if (writer == null || writer.equals("java"))
 				return true;
 		}

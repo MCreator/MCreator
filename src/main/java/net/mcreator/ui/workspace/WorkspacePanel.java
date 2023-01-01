@@ -1164,9 +1164,9 @@ import java.util.stream.Collectors;
 
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(mu);
+									.getModElementGeneratorTemplatesList(generatableElementOriginal);
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(duplicateModElement);
+									.getModElementGeneratorTemplatesList(generatableElementDuplicate);
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
 								File originalFile = originalTemplate.getFile();
@@ -1219,10 +1219,10 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger());
-		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu);
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu.getGeneratableElement());
 
 		if (mu.getGeneratableElement() instanceof ICommonType) {
 			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();

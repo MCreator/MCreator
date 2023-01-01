@@ -465,8 +465,8 @@ import java.util.stream.Collectors;
 		// process workspace base files
 		List<GeneratorTemplate> modBaseTemplates = localWorkspace.getGenerator().getModBaseGeneratorTemplatesList(true);
 		for (GeneratorTemplate generatorTemplate : modBaseTemplates) {
-			if (((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("canLock") != null
-					&& ((Map<?, ?>) generatorTemplate.getTemplateDefinition()).get("canLock")
+			if (generatorTemplate.getTemplateDefinition().get("canLock") != null
+					&& generatorTemplate.getTemplateDefinition().get("canLock")
 					.equals("true")) // can this file be locked
 				if (localWorkspace.getWorkspaceSettings()
 						.isLockBaseModFiles()) // are mod base file locked in local workspace

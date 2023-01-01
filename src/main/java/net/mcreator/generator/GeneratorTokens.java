@@ -62,7 +62,7 @@ public class GeneratorTokens {
 	}
 
 	static String replaceVariableTokens(Object element, Object listItem, String rawname) {
-		if (containsVariableTokens(rawname)) {
+		if (rawname.contains("@[")) { // check if we have any variable tokens to replace
 			Matcher m = brackets.matcher(rawname);
 			while (m.find()) {
 				String match = m.group(1);
@@ -91,10 +91,6 @@ public class GeneratorTokens {
 			}
 		}
 		return rawname;
-	}
-
-	static boolean containsVariableTokens(String rawname) {
-		return rawname.contains("@[");
 	}
 
 }
