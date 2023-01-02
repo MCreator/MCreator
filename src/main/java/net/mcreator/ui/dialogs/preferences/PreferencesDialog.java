@@ -183,14 +183,14 @@ public class PreferencesDialog extends MCreatorDialog {
 		addEditTemplatesPanel("armor_templates", "textures/armormaker", "png");
 
 		BlocklyLoader.INSTANCE.getAllBlockLoaders().keySet().stream()
-				.filter(type -> type.translationKey() != null && type.extension() != null)
+				.filter(type -> type.registryName() != null && type.extension() != null)
 				.forEach(this::addEditTemplatesPanel);
 
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
 	}
 
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
-		addEditTemplatesPanel(type.translationKey() + "_templates", type.extension(), type.extension());
+		addEditTemplatesPanel(type.registryName() + "_templates", type.extension(), type.extension());
 	}
 	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey),

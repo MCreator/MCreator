@@ -58,7 +58,7 @@ public class BlocklyLoader {
 		addBlockLoader(BlocklyEditorType.JSON_TRIGGER);
 		addBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		addBlockLoader(BlocklyEditorType.FEATURE);
-		externalTriggerLoader = new ExternalTriggerLoader(BlocklyEditorType.GLOBAL_TRIGGER.folder());
+		externalTriggerLoader = new ExternalTriggerLoader(BlocklyEditorType.GLOBAL_TRIGGER.registryName());
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class BlocklyLoader {
 	 * @param type The type of Blockly editor to register
 	 */
 	public void addBlockLoader(BlocklyEditorType type) {
-		blockLoaders.put(type, new ExternalBlockLoader(type.folder()));
+		blockLoaders.put(type, new ExternalBlockLoader(type.registryName()));
 	}
 
 	/**

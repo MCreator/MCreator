@@ -211,13 +211,13 @@ import java.util.Locale;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.folder()),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
 					BlocklyEditorType.AI_TASK, this.aixml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.folder()),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()

@@ -58,10 +58,10 @@ import java.util.List;
 		return additionalData -> {
 			var blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.folder()), additionalData);
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()), additionalData);
 
 			var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
-					this.featurexml, this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.folder()),
+					this.featurexml, this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 

@@ -76,7 +76,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
 
-		templateLib = L10N.button("blockly.templates." + blocklyEditorType.translationKey());
+		templateLib = L10N.button("blockly.templates." + blocklyEditorType.registryName());
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
 		templateLib.setOpaque(false);
@@ -197,7 +197,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton export = L10N.button("blockly.templates." + blocklyEditorType.translationKey() + ".export");
+		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
 		export.setOpaque(false);
 		add(export);
@@ -209,9 +209,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.translationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".export_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.translationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -219,7 +219,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		ComponentUtils.normalizeButton4(export);
 		export.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.translationKey() + ".import");
+		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
 		import_.setOpaque(false);
 		add(import_);
@@ -245,9 +245,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.translationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".import_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.translationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}

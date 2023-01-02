@@ -144,19 +144,19 @@ public class GeneratorStats {
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
 	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
-		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + type.folder(),
+		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + type.registryName(),
 						ftlFile).stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 				.collect(Collectors.toSet());
 		if (type != BlocklyEditorType.GLOBAL_TRIGGER) {
-			coverageInfo.put(type.folder(), Math.min(
+			coverageInfo.put(type.registryName(), Math.min(
 					(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
 							* 100, 100));
 		} else {
-			coverageInfo.put(type.folder(), Math.min(
+			coverageInfo.put(type.registryName(), Math.min(
 					(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
 							.size()) * 100, 100));
 		}
-		generatorBlocklyBlocks.put(type.folder(), blocks);
+		generatorBlocklyBlocks.put(type.registryName(), blocks);
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
@@ -164,7 +164,7 @@ public class GeneratorStats {
 	}
 
 	public Set<String> getBlocklyBlocks(BlocklyEditorType type) {
-		return generatorBlocklyBlocks.get(type.folder());
+		return generatorBlocklyBlocks.get(type.registryName());
 	}
 
 	private CoverageStatus forElement(List<?> features, String feature) {

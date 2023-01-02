@@ -52,7 +52,7 @@ public class BlocklyToProcedure extends BlocklyToJava {
 	@Override protected void preBlocksPlacement(Document doc, Element startBlock) {
 		if (doc != null) {
 			// first we load data from startblock
-			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, BlocklyEditorType.PROCEDURE.startBlockName()),
+			Element trigger = XMLUtil.getFirstChildrenWithName(BlocklyBlockUtil.getStartBlock(doc, getEditorType().startBlockName()),
 					"field");
 			if (trigger != null && !trigger.getTextContent().equals("no_ext_trigger")) {
 				externalTrigger = trigger.getTextContent();
