@@ -6,16 +6,13 @@ templates:
   - template: livingentity/livingentity_projectile.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntityProjectile.java"
     condition: hasCustomProjectile()
-    deleteWhenConditionFalse: true
   - template: json/spawn_egg.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname_spawn_egg.json"
     condition: hasSpawnEgg
-    deleteWhenConditionFalse: true
 
   - template: livingentity/entity_spawn_biome_modifier.json.ftl
     writer: json
-    deleteWhenConditionFalse: true
     condition: spawnThisMob
     name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
 

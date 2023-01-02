@@ -312,10 +312,9 @@ public class Generator implements IGenerator, Closeable {
 
 			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 					workspace.getWorkspaceInfo(), operator)) {
-				if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-					if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
-						new File(name).delete(); // if template is skipped, we delete its potential file
-					}
+				if (workspace.getFolderManager().isFileInWorkspace(new File(name)) && performFSTasks) {
+					new File(name).delete(); // if template is skipped, we delete its potential file
+				}
 				continue;
 			}
 
@@ -412,10 +411,9 @@ public class Generator implements IGenerator, Closeable {
 
 				if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw,
 						workspace.getWorkspaceInfo(), operator)) {
-					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
-							new File(name).delete(); // if template is skipped, we delete its potential file
-						}
+					if (workspace.getFolderManager().isFileInWorkspace(new File(name)) && performFSTasks) {
+						new File(name).delete(); // if template is skipped, we delete its potential file
+					}
 					continue;
 				}
 
@@ -468,13 +466,8 @@ public class Generator implements IGenerator, Closeable {
 								.replace("@registryname", element.getRegistryName())));
 
 				if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, conditionRaw, generatableElement,
-						operator)) {
-					if (((Map<?, ?>) template).get("deleteWhenConditionFalse") != null && performFSTasks)
-						if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
-							new File(name).delete(); // if template is skipped, we delete its potential file
-						}
+						operator))
 					continue;
-				}
 
 				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
 						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), (Map<?, ?>) template);
