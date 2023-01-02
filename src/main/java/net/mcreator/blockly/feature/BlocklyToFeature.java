@@ -51,6 +51,7 @@ public class BlocklyToFeature extends BlocklyToJava {
 
 	@Override protected void preInitialization() {
 		blockGenerators.add(new MCItemBlock());
+
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
 	}
