@@ -18,6 +18,8 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.generator.template.TemplateExpressionParser;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,8 +82,21 @@ public class GeneratorTemplate {
 		dataModel.put(key, value);
 	}
 
+	// Helper functions below
+
 	public GeneratorFile toGeneratorFile(String code) {
 		return new GeneratorFile(this, (String) templateDefinition.get("writer"), code);
+	}
+
+	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {
+		TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+		Object conditionRaw = templateDefinition.get("condition");
+		if (conditionRaw == null) {
+			conditionRaw = templateDefinition.get("condition_any");
+			operator = TemplateExpressionParser.Operator.OR;
+		}
+
+		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw, conditionData, operator);
 	}
 
 	@Override public boolean equals(Object o) {
