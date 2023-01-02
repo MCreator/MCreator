@@ -22,8 +22,8 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Procedure;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Command;
 import net.mcreator.element.types.GUI;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -109,8 +109,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		BlocklyToProcedure blocklyToJava;
 
 		try {
-			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), blocklyPanel.getXML(), null,
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), this.modElement, blocklyPanel.getXML(),
+					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
@@ -629,7 +629,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 								break;
 							}
 						}
-						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement, modElement.getName()))
+						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
+								modElement.getName()))
 							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {

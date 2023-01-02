@@ -1,0 +1,21 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "depth",
+      "value": 2,
+      "min": 0,
+      "precision": 1
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "placements",
+    "fields": [
+      "depth"
+    ]
+  }
+}

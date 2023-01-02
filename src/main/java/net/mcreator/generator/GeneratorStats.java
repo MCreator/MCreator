@@ -49,6 +49,7 @@ public class GeneratorStats {
 	private Set<String> jsonTriggers;
 	private Set<String> generatorAITasks;
 	private Set<String> generatorCmdArgs;
+	private Set<String> featureProcedures;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
 		this.status = Status.valueOf(
@@ -90,6 +91,7 @@ public class GeneratorStats {
 		coverageInfo.put("jsontriggers", 100d);
 		coverageInfo.put("aitasks", 100d);
 		coverageInfo.put("cmdargs", 100d);
+		coverageInfo.put("features", 100d);
 
 		// lazy load actual values
 		new Thread(() -> {
@@ -125,11 +127,20 @@ public class GeneratorStats {
 					(((double) generatorAITasks.size()) / BlocklyLoader.INSTANCE.getAITaskBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
 
-			generatorCmdArgs = PluginLoader.INSTANCE
-					.getResources(generatorConfiguration.getGeneratorName() + ".cmdargs", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet());
+			generatorCmdArgs = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".cmdargs", ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+					.collect(Collectors.toSet());
 			coverageInfo.put("cmdargs", Math.min(
 					(((double) generatorCmdArgs.size()) / BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
+							.getDefinedBlocks().size()) * 100, 100));
+
+			featureProcedures = PluginLoader.INSTANCE.getResources(
+							generatorConfiguration.getGeneratorName() + ".features", ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+					.collect(Collectors.toSet());
+			coverageInfo.put("features", Math.min(
+					(((double) featureProcedures.size()) / BlocklyLoader.INSTANCE.getFeatureBlockLoader()
 							.getDefinedBlocks().size()) * 100, 100));
 		}).start();
 
@@ -209,6 +220,10 @@ public class GeneratorStats {
 
 	public Set<String> getJsonTriggers() {
 		return jsonTriggers;
+	}
+
+	public Set<String> getFeatureProcedures() {
+		return featureProcedures;
 	}
 
 	public Set<String> getGeneratorAITasks() {

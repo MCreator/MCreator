@@ -102,6 +102,18 @@ Blockly.Blocks['advancement_trigger'] = {
     }
 };
 
+Blockly.Blocks['feature_container'] = {
+    init: function () {
+        this.appendValueInput('feature').setCheck('Feature').appendField(javabridge.t("blockly.block.feature_container"));
+        this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.feature_container.with_placement")));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true, 'Placement');
+        this.setColour(340);
+        this.setInputsInline(false);
+        this.setTooltip(javabridge.t("blockly.block.feature_container.tooltip"));
+    }
+};
+
 Blockly.Blocks['condition_input'] = {
     init: function () {
         this.appendValueInput('CONDITION').setCheck('Boolean').setAlign(Blockly.ALIGN_RIGHT)

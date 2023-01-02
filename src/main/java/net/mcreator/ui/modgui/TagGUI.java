@@ -28,13 +28,13 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.ModElementListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
-import net.mcreator.ui.validation.validators.TagsNameValidator;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -47,7 +47,8 @@ import java.util.Objects;
 public class TagGUI extends ModElementGUI<Tag> {
 
 	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
+	private final JComboBox<String> type = new JComboBox<>(
+			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
@@ -75,7 +76,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		entities = new SpawnableEntityListField(mcreator);
 		biomes = new BiomeListField(mcreator);
 
-		name.setValidator(new TagsNameValidator<>(name, false));
+		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();
 
 		namespace.setValidator(new NamespaceValidator<>(namespace));

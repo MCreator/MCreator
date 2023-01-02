@@ -89,7 +89,7 @@ public class DataListEntry implements Comparable<DataListEntry> {
 
 	public String getDescription() {
 		if (description == null)
-			return "No description for entry " + getReadableName() + " found";
+			return "";
 		return description;
 	}
 
@@ -184,7 +184,6 @@ public class DataListEntry implements Comparable<DataListEntry> {
 
 			this.modElement = modElement;
 
-			setType("mcreator");
 			setDescription(modElement.getType().getDescription());
 		}
 

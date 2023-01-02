@@ -81,20 +81,20 @@ public class LegacyShootArrowProcedureRemover implements IConverter {
 				Element shooterValue = null, damageValue = null, knockbackValue = null;
 				for (Element value : XMLUtil.getChildrenWithName(element, "value")) {
 					switch (value.getAttribute("name")) {
-						// This value is copied to the arrow block
-						case "entity" -> {
-							shooterValue = (Element) value.cloneNode(true);
-							shooterValue.setAttribute("name", "shooter");
-						}
-						// These values are moved to the arrow block
-						case "damage" -> {
-							damageValue = value;
-							element.removeChild(value);
-						}
-						case "knockback" -> {
-							knockbackValue = value;
-							element.removeChild(value);
-						}
+					// This value is copied to the arrow block
+					case "entity" -> {
+						shooterValue = (Element) value.cloneNode(true);
+						shooterValue.setAttribute("name", "shooter");
+					}
+					// These values are moved to the arrow block
+					case "damage" -> {
+						damageValue = value;
+						element.removeChild(value);
+					}
+					case "knockback" -> {
+						knockbackValue = value;
+						element.removeChild(value);
+					}
 					}
 				}
 
@@ -104,9 +104,8 @@ public class LegacyShootArrowProcedureRemover implements IConverter {
 				Element piercingValue = bh.createValue("piercing",
 						bh.createBlock("math_number", bh.createField("NUM", "0")));
 
-				Element arrowProjectileBlock = bh.createBlock("projectiles_arrow",
-						projectileField, fireField, particlesField, pickupField,
-						damageValue, knockbackValue, piercingValue, shooterValue);
+				Element arrowProjectileBlock = bh.createBlock("projectiles_arrow", projectileField, fireField,
+						particlesField, pickupField, damageValue, knockbackValue, piercingValue, shooterValue);
 
 				Element inaccuracyValue = bh.createValue("inaccuracy",
 						bh.createBlock("math_number", bh.createField("NUM", "0")));

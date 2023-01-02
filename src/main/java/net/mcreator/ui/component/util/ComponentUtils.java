@@ -88,7 +88,7 @@ public class ComponentUtils {
 	}
 
 	public static Component wrapWithInfoButton(Component ca, String url) {
-		JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		pan.setOpaque(false);
 		JLabel lab = new JLabel(UIRES.get("16px.info"));
 		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -109,7 +109,7 @@ public class ComponentUtils {
 		p.setOpaque(false);
 		p.setPreferredSize(new Dimension(100, 100));
 		p.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 2), text, TitledBorder.LEADING,
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 1), text, TitledBorder.LEADING,
 						TitledBorder.BOTTOM, gor.getFont(), color));
 		return p;
 	}

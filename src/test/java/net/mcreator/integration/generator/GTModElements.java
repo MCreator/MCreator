@@ -42,6 +42,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -71,7 +72,7 @@ public class GTModElements {
 
 				workspace.getModElementManager().storeModElement(generatableElement);
 
-				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
+				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
 						.stream().map(GeneratorTemplate::getFile).toList();
 
 				// test generated JSON syntax (Java is tested later in the build)
@@ -87,8 +88,7 @@ public class GTModElements {
 					}
 				}
 
-				// Disabled part of the test to speed up automated tests
-				/*// test mod element file detection system
+				// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (!modElement.equals(modElement1))
@@ -97,10 +97,10 @@ public class GTModElements {
 				}
 
 				// testing if element file deletion works properly (no exception thrown)
-				workspace.getGenerator().removeElementFilesAndLangKeys(modElement);
+				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
 
 				// testing if all element files were properly deleted
-				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
+				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement).stream()
 						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
@@ -111,7 +111,7 @@ public class GTModElements {
 				}
 
 				// generate back after removal for build testing
-				assertTrue(workspace.getGenerator().generateElement(generatableElement));*/
+				assertTrue(workspace.getGenerator().generateElement(generatableElement));
 			});
 		}
 	}

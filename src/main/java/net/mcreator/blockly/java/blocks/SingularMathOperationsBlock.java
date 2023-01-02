@@ -51,9 +51,8 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 						yield "/*@float*/";
 					yield "";
 				}
-				case "ROUND" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ?
-						"/*@int*/" :
-						"/*@float*/";
+				case "ROUND" ->
+						numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ? "/*@int*/" : "/*@float*/";
 				case "SIGNUM" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ? "/*@float*/" : "";
 				default -> "";
 			});

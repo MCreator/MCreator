@@ -25,7 +25,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.TagsNameValidator;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -85,7 +85,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 			VComboBox<String> tagName = new VComboBox<>();
 
-			tagName.setValidator(new TagsNameValidator<>(tagName, true));
+			tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
 
 			tagName.addItem("");
 			tagName.addItem("tag");
@@ -117,8 +117,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 						}
 					} else {
-						JOptionPane.showMessageDialog(this,
-								L10N.t("dialog.item_selector.error_invalid_tag_name_message"),
+						JOptionPane.showMessageDialog(this, tagName.getValidationStatus().getMessage(),
 								L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -200,7 +199,9 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends MCItem> list, MCItem value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setToolTipText("<html>" + value.getReadableName() + "<br><small>" + value.getDescription());
+			setToolTipText("<html>" + value.getReadableName() + (value.getDescription().isEmpty() ?
+					"" :
+					("<br><small>" + value.getDescription())));
 			if (value.icon.getIconWidth() != 32)
 				setIcon(new ImageIcon(ImageUtils.resize(value.icon.getImage(), 32)));
 			else

@@ -32,7 +32,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -204,8 +204,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.BLOCK));
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		portalTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);

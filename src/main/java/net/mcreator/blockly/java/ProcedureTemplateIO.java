@@ -53,23 +53,28 @@ public class ProcedureTemplateIO {
 			throw new ParseException("Could not find start block!", -1);
 
 		Element next = XMLUtil.getFirstChildrenWithName(start_block, "next");
-		Element block = XMLUtil.getFirstChildrenWithName(next, "block");
+		Element nextBlock = next == null ? null : XMLUtil.getFirstChildrenWithName(next, "block");
 
-		if (block == null)
+		Element input = XMLUtil.getFirstChildrenWithName(start_block, "value");
+		Element inputBlock = input == null ? null : XMLUtil.getFirstChildrenWithName(input, "block");
+
+		if (nextBlock == null && inputBlock == null)
 			throw new ParseException("Could not export block!", -1);
 
-		exportBlocklyXML(block, file);
+		exportBlocklyXML(nextBlock, inputBlock, file);
 	}
 
-	private static void exportBlocklyXML(Element element, File file) {
-		DOMImplementationLS lsImpl = (DOMImplementationLS) element.getOwnerDocument().getImplementation()
+	private static void exportBlocklyXML(Element nextBlock, Element inputBlock, File file) {
+		var nonNullBlock = nextBlock == null ? inputBlock : nextBlock;
+		DOMImplementationLS lsImpl = (DOMImplementationLS) nonNullBlock.getOwnerDocument().getImplementation()
 				.getFeature("LS", "3.0");
 		LSSerializer serializer = lsImpl.createLSSerializer();
 		serializer.getDomConfig().setParameter("xml-declaration", false);
 
-		BinaryStringIO.writeStringToFile(
-				"<xml xmlns=\"http://www.w3.org/1999/xhtml\">" + serializer.writeToString(element)
-						.replaceAll("[\\n\\r\\t]", "") + "</xml>", file);
+		BinaryStringIO.writeStringToFile("""
+			<xml xmlns="http://www.w3.org/1999/xhtml">%s%s</xml>""".formatted(
+					inputBlock == null ? "" : serializer.writeToString(inputBlock).replaceAll("[\n\r\t]", ""),
+					nextBlock == null ? "" : serializer.writeToString(nextBlock).replaceAll("[\n\r\t]", "")), file);
 	}
 
 	public static String importBlocklyXML(File template) {

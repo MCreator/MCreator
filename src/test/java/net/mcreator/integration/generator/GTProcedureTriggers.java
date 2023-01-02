@@ -29,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureTriggers {

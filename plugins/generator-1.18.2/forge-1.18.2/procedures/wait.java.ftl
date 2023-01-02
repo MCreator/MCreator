@@ -12,18 +12,18 @@ new Object() {
 	}
 
     @SubscribeEvent
-    public void tick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            this.ticks += 1;
-            if (this.ticks >= this.waitTicks)
-                run();
-        }
-    }
+	public void tick(TickEvent.ServerTickEvent event) {
+		if (event.phase == TickEvent.Phase.END) {
+			this.ticks += 1;
+			if (this.ticks >= this.waitTicks)
+				run();
+		}
+	}
 
     private void run() {
-        ${statement$do}
-        MinecraftForge.EVENT_BUS.unregister(this);
-    }
+		${statement$do}
+		MinecraftForge.EVENT_BUS.unregister(this);
+	}
 
 }.start(world, ${opt.toInt(input$ticks)});
 <#-- @formatter:on -->

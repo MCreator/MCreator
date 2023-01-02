@@ -19,7 +19,6 @@
 package net.mcreator.element.types;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
@@ -106,12 +105,6 @@ public class Procedure extends GeneratableElement {
 		return additionalData -> {
 			BlocklyToProcedure blocklyToJava = getBlocklyToProcedure(additionalData);
 
-			// If there are any compile notes of type ERROR, throw an exception
-			for (BlocklyCompileNote compileNote : blocklyToJava.getCompileNotes()) {
-				if (compileNote.type() == BlocklyCompileNote.Type.ERROR)
-					throw new TemplateGeneratorException("Failed to parse procedure XML. Compile notes: " + blocklyToJava.getCompileNotes());
-			}
-
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 					.getExternalTrigers();
 			ExternalTrigger trigger = null;
@@ -151,7 +144,7 @@ public class Procedure extends GeneratableElement {
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
 
 		// load BlocklyToProcedure with custom generators loaded
-		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.procedurexml,
+		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.getModElement(), this.procedurexml,
 				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));

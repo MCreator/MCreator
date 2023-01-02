@@ -18,7 +18,8 @@
     {
       "type": "field_data_list_selector",
       "name": "potion",
-      "datalist": "effect"
+      "datalist": "effects",
+      "customEntryProviders": "potioneffect"
     }
   ],
   "inputsInline": true,

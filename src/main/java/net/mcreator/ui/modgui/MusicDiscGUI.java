@@ -28,7 +28,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -94,9 +94,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.common.event_on_crafted"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRightClickedOnBlock = new ProcedureSelector(this.withEntry("item/when_right_clicked_block"), mcreator,
-				L10N.t("elementgui.common.event_right_clicked_block"),
-				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate")).makeReturnValueOptional();
+				L10N.t("elementgui.common.event_right_clicked_block"), VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/direction:direction/blockstate:blockstate")).makeReturnValueOptional();
 		onEntityHitWith = new ProcedureSelector(this.withEntry("item/when_entity_hit"), mcreator,
 				L10N.t("elementgui.music_disc.event_entity_hitwith"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack"));
@@ -113,7 +113,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		texture.setOpaque(false);
 		hasGlow.setOpaque(false);
@@ -237,8 +237,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		name.setText(musicDisc.name);
 		description.setText(musicDisc.description);
 		texture.setTextureFromTextureName(musicDisc.texture);
-		specialInfo.setText(musicDisc.specialInfo.stream().map(info -> info.replace(",", "\\,"))
-				.collect(Collectors.joining(",")));
+		specialInfo.setText(
+				musicDisc.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		onRightClickedInAir.setSelectedProcedure(musicDisc.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(musicDisc.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(musicDisc.onCrafted);

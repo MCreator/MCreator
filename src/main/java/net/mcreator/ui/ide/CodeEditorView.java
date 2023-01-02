@@ -395,7 +395,8 @@ public class CodeEditorView extends ViewBase {
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
 				method.setAccessible(true);
 				ac = (AutoCompletion) method.invoke(jls, te);
-			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException | NoSuchMethodException | IllegalAccessException e1) {
+			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
+					 NoSuchMethodException | IllegalAccessException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
 

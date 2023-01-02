@@ -74,7 +74,8 @@ public class PluginLoader extends URLClassLoader {
 		this.javaPlugins = new ArrayList<>();
 		this.pluginUpdates = new ArrayList<>();
 
-		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {}, Thread.currentThread().getContextClassLoader());
+		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {},
+				Thread.currentThread().getContextClassLoader());
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 

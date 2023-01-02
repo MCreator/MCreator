@@ -38,7 +38,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTCommandArgBlocks {
