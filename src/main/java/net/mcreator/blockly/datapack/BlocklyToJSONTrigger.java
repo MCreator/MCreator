@@ -49,14 +49,13 @@ import java.util.List;
 public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly2JSONTrigger");
-	private static final BlocklyEditorType editorType = BlocklyEditorType.JSON_TRIGGER;
 
 	private boolean hasTrigger;
 
 	public BlocklyToJSONTrigger(Workspace workspace, ModElement parent, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
-		super(workspace, parent, templateGenerator, externalGenerators);
+		super(workspace, parent, BlocklyEditorType.JSON_TRIGGER, templateGenerator, externalGenerators);
 
 		blockGenerators.add(new NumberBlock());
 		blockGenerators.add(new MCItemBlock());
