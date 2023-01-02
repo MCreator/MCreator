@@ -3,19 +3,15 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
   - template: dimension/teleporter.java.ftl
     condition: enablePortal
-    deleteWhenConditionFalse: true
     name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMETeleporter.java"
   - template: dimension/portalshape.java.ftl
     condition: enablePortal
-    deleteWhenConditionFalse: true
     name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMEPortalShape.java"
   - template: dimension/blockportal.java.ftl
     condition: enablePortal
-    deleteWhenConditionFalse: true
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
   - template: dimension/portaltrigger.java.ftl
     condition: enablePortal
-    deleteWhenConditionFalse: true
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
   - template: json/dimension/dimension_type.json.ftl
     writer: json
@@ -36,22 +32,18 @@ templates:
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname_portal.json"
     condition: enablePortal
-    deleteWhenConditionFalse: true
   - template: json/dimension_portal_ew.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_portal_ew.json"
     condition: enablePortal
-    deleteWhenConditionFalse: true
   - template: json/dimension_portal_ns.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_portal_ns.json"
     condition: enablePortal
-    deleteWhenConditionFalse: true
   - template: json/item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: enablePortal
-    deleteWhenConditionFalse: true
 
 localizationkeys:
   - key: item.@modid.@registryname
