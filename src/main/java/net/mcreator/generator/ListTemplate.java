@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * This is a subclass of {@code GeneratorTemplate} that is connected to a {@code GeneratorTemplatesList}
  * it's created by and specific {@code listData} item index. These two are used by generator to generate the result file
- * with the appropriate contents (that in this case don't only depend on given mod element, but also on a certain
- * {@code listData} item).
+ * with the appropriate contents that in this case don't only depend on given mod element, but also on a certain
+ * {@code listData} item.
  */
 public class ListTemplate extends GeneratorTemplate {
 	private final GeneratorTemplatesList templatesList;
