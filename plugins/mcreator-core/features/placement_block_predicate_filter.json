@@ -1,0 +1,22 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "condition",
+      "check": "BlockPredicate"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+    "toolbox_init": [
+      "<value name=\"condition\"><block type=\"block_predicate_is_air\"></block></value>"
+    ],
+    "inputs": [
+      "condition"
+    ]
+  }
+}

@@ -20,6 +20,7 @@
 package net.mcreator.generator;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * This is a subclass of {@code GeneratorTemplate} that is connected to a {@code GeneratorTemplatesList}
@@ -32,7 +33,7 @@ public class ListTemplate extends GeneratorTemplate {
 	private final int listItemIndex;
 
 	ListTemplate(File file, String templateIdentificator, GeneratorTemplatesList templatesList, int listItemIndex,
-			Object templateData) {
+			Map<?, ?> templateData) {
 		super(file, templateIdentificator, templateData);
 		this.templatesList = templatesList;
 		this.listItemIndex = listItemIndex;
