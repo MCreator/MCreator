@@ -47,12 +47,15 @@ public class GeneratorTokens {
 		if (rawname.contains("@MODDATAROOT"))
 			rawname = rawname.replace("@MODDATAROOT", workspace.getGenerator().getModDataRoot().getAbsolutePath());
 
-		return rawname.replace("@WORKSPACEROOT", workspace.getWorkspaceFolder().getAbsolutePath())
+		//@formatter:off
+		return rawname
+				.replace("@WORKSPACEROOT", workspace.getWorkspaceFolder().getAbsolutePath())
 				.replace("@modid", workspaceSettings.getModID())
-				.replace("@JavaModName", workspaceSettings.getJavaModName()).replace("@modpicture",
-						workspaceSettings.getModPicture() != null ? workspaceSettings.getModPicture() : "")
+				.replace("@JavaModName", workspaceSettings.getJavaModName())
+				.replace("@modpicture", workspaceSettings.getModPicture() != null ? workspaceSettings.getModPicture() : "")
 				.replace("@BASEPACKAGEPATH", workspaceSettings.getModElementsPackage().replace(".", "/"))
 				.replace("@BASEPACKAGE", workspaceSettings.getModElementsPackage());
+		//@formatter:on
 	}
 
 	private static final Pattern brackets = Pattern.compile("@\\[(.*?)]");
@@ -62,33 +65,31 @@ public class GeneratorTokens {
 	}
 
 	static String replaceVariableTokens(Object element, Object listItem, String rawname) {
-		if (rawname.contains("@[")) { // check if we have any variable tokens to replace
-			Matcher m = brackets.matcher(rawname);
-			while (m.find()) {
-				String match = m.group(1);
-				Object value = null;
-				if (match.startsWith("item.")) { // a value from list item is requested
-					if (listItem != null) { // get it if available
-						try {
-							String ref = match.substring("item.".length());
-							value = match.contains("()") ?
-									listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
-									listItem.getClass().getField(ref.trim()).get(listItem);
-						} catch (Exception e) {
-							LOG.warn("Failed to load token value " + match, e);
-						}
-					}
-				} else if (element != null) { // get a value from the mod element
+		Matcher m = brackets.matcher(rawname);
+		while (m.find()) {
+			String match = m.group(1);
+			Object value = null;
+			if (match.startsWith("item.")) { // a value from list item is requested
+				if (listItem != null) { // get it if available
 					try {
+						String ref = match.substring("item.".length());
 						value = match.contains("()") ?
-								element.getClass().getMethod(match.replace("()", "").trim()).invoke(element) :
-								element.getClass().getField(match.trim()).get(element);
+								listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
+								listItem.getClass().getField(ref.trim()).get(listItem);
 					} catch (Exception e) {
 						LOG.warn("Failed to load token value " + match, e);
 					}
 				}
-				rawname = rawname.replace("@[" + match + "]", String.valueOf(value));
+			} else if (element != null) { // get a value from the mod element
+				try {
+					value = match.contains("()") ?
+							element.getClass().getMethod(match.replace("()", "").trim()).invoke(element) :
+							element.getClass().getField(match.trim()).get(element);
+				} catch (Exception e) {
+					LOG.warn("Failed to load token value " + match, e);
+				}
 			}
+			rawname = rawname.replace("@[" + match + "]", String.valueOf(value));
 		}
 		return rawname;
 	}
