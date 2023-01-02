@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:inside_world_bounds"<#if (field$x != "0")||(field$y != "0")||(field$z != "0")>,
+  "type": "minecraft:inside_world_bounds"
+  <#if (field$x != "0")||(field$y != "0")||(field$z != "0")>,
   "offset": [
     ${field$x},
     ${field$y},
