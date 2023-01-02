@@ -1,0 +1,1 @@
+BlockPredicateFilter.forPredicate(${input$condition}),

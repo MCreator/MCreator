@@ -1164,16 +1164,16 @@ import java.util.stream.Collectors;
 
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(mu);
+									.getModElementGeneratorTemplatesList(generatableElementOriginal);
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(duplicateModElement);
+									.getModElementGeneratorTemplatesList(generatableElementDuplicate);
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
 								File originalFile = originalTemplate.getFile();
 								File duplicateFile = null;
 								for (GeneratorTemplate newCandidate : duplicateFiles) {
-									if (newCandidate.getTemplateIdentificator()
-											.equals(originalTemplate.getTemplateIdentificator())) {
+									if (newCandidate.getTemplateIdentifier()
+											.equals(originalTemplate.getTemplateIdentifier())) {
 										duplicateFile = newCandidate.getFile();
 										break;
 									}
@@ -1219,15 +1219,15 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu);
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
-				.getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger());
-		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu);
+				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu.getGeneratableElement());
 
 		if (mu.getGeneratableElement() instanceof ICommonType) {
 			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
 			for (BaseType baseType : baseTypes) {
-				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
 			}

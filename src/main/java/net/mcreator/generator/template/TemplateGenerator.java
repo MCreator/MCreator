@@ -48,10 +48,27 @@ public class TemplateGenerator {
 		this.baseDataModelProvider = generator.getBaseDataModelProvider();
 	}
 
-	public String generateElementFromTemplate(GeneratableElement element, String templateName,
-			Map<String, Object> dataModel, @Nullable IAdditionalTemplateDataProvider provider)
+	public String generateBaseFromTemplate(String templateName, Map<String, Object> dataModel, String fixedVariables)
 			throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());
+
+		extractVariables(fixedVariables, dataModel);
+
+		dataModel.put("variables", generator.getWorkspace().getVariableElements());
+		dataModel.put("sounds", generator.getWorkspace().getSoundElements());
+		dataModel.put("javamodels",
+				Model.getModels(generator.getWorkspace()).stream().filter(model -> model.getType() == Model.Type.JAVA)
+						.collect(Collectors.toList()));
+
+		return generateTemplate(templateName, dataModel);
+	}
+
+	public String generateElementFromTemplate(GeneratableElement element, String templateName,
+			Map<String, Object> dataModel, String fixedVariables, @Nullable IAdditionalTemplateDataProvider provider)
+			throws TemplateGeneratorException {
+		dataModel.putAll(baseDataModelProvider.provide());
+
+		extractVariables(fixedVariables, dataModel);
 
 		dataModel.put("data", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
@@ -64,9 +81,12 @@ public class TemplateGenerator {
 	}
 
 	public String generateListItemFromTemplate(Object item, int itemIndex, GeneratableElement element,
-			String templateName, Map<String, Object> dataModel, @Nullable IAdditionalTemplateDataProvider provider)
+			String templateName, Map<String, Object> dataModel, String fixedVariables,
+			@Nullable IAdditionalTemplateDataProvider provider)
 			throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());
+
+		extractVariables(fixedVariables, dataModel);
 
 		dataModel.put("item", item);
 		dataModel.put("itemindex", itemIndex);
@@ -76,19 +96,6 @@ public class TemplateGenerator {
 
 		if (provider != null)
 			provider.provideAdditionalData(dataModel);
-
-		return generateTemplate(templateName, dataModel);
-	}
-
-	public String generateBaseFromTemplate(String templateName, Map<String, Object> dataModel)
-			throws TemplateGeneratorException {
-		dataModel.putAll(baseDataModelProvider.provide());
-
-		dataModel.put("variables", generator.getWorkspace().getVariableElements());
-		dataModel.put("sounds", generator.getWorkspace().getSoundElements());
-		dataModel.put("javamodels",
-				Model.getModels(generator.getWorkspace()).stream().filter(model -> model.getType() == Model.Type.JAVA)
-						.collect(Collectors.toList()));
 
 		return generateTemplate(templateName, dataModel);
 	}
@@ -136,6 +143,25 @@ public class TemplateGenerator {
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
 			throw new TemplateGeneratorException();
+		}
+	}
+
+	/**
+	 * Load any hardcoded variables from template definition into dataModel
+	 *
+	 * @param variables 		Variables string from YAML definition to load into the model
+	 * @param dataModel         Data model to place variables into
+	 */
+	private void extractVariables(@Nullable String variables, Map<String, Object> dataModel) {
+		if (variables != null) {
+			try {
+				String[] vars = variables.split(";");
+				for (String var : vars) {
+					String[] data = var.split("(?<!/)=");
+					dataModel.put("var_" + data[0].trim().replace("/=", "="), data[1].trim().replace("/=", "="));
+				}
+			} catch (Exception ignored) {
+			}
 		}
 	}
 

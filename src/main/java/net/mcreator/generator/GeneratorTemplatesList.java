@@ -59,8 +59,8 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 									template.getFile().getPath().replace("@NAME", element.getModElement().getName())
 											.replace("@registryname", element.getModElement().getRegistryName())
 											.replace("@itemindex", Integer.toString(index)))));
-					action.accept(new ListTemplate(targetFile, template.getTemplateIdentificator(), this, index,
-							template.getTemplateData()));
+					action.accept(new ListTemplate(targetFile, template.getTemplateIdentifier(), this, index,
+							template.getTemplateDefinition()));
 				}
 			}
 		}

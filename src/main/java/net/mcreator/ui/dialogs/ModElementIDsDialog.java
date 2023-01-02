@@ -92,12 +92,16 @@ public class ModElementIDsDialog {
 				}
 			}
 
-			mcreator.getGenerator().removeElementFilesAndLangKeys(
-					modElement); // we remove current files as new ones will be made for the new registry name
-			modElement.setRegistryName(registryName.getText()); // set new name
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			mcreator.getGenerator().generateElement(
-					generatableElement); // regenerate mod element code to use new registry id and to regenerate resource files, ...
+
+			// we remove current files as new ones will be made for the new registry name
+			if (generatableElement != null) {
+				mcreator.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+			}
+
+			modElement.setRegistryName(registryName.getText()); // set new registry name
+
+			mcreator.getGenerator().generateElement(generatableElement); // regenerate mod element code to use new registry name
 
 			if (regenerateCode) {
 				mcreator.actionRegistry.regenerateCode.doAction();

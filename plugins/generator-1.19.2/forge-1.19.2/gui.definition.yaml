@@ -6,11 +6,9 @@ templates:
   - template: gui/gui_msg_button.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMEButtonMessage.java"
     condition: hasButtonEvents()
-    deleteWhenConditionFalse: true
   - template: gui/gui_msg_slot.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMESlotMessage.java"
     condition: hasSlotEvents()
-    deleteWhenConditionFalse: true
 
 global_templates:
   - template: elementinits/menus.java.ftl
