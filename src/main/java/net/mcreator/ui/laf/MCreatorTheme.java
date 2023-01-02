@@ -266,8 +266,8 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("TabbedPane.foreground", new ColorUIResource(colorScheme.getForegroundColor()));
 		table.put("TabbedPane.contentAreaColor", colorScheme.getBackgroundColor());
 		table.put("TabbedPane.contentBorderInsets", new Insets(4, 2, 3, 3));
-		table.put("TabbedPane.selected", colorScheme.getAltForegroundColor());
-		table.put("TabbedPane.selectedForeground", colorScheme.getSecondAltBackgroundColor());
+		table.put("TabbedPane.selected", colorScheme.getBackgroundColor());
+		table.put("TabbedPane.selectedForeground", colorScheme.getForegroundColor());
 		table.put("TabbedPane.tabAreaBackground", colorScheme.getAltBackgroundColor());
 		table.put("TabbedPane.tabAreaInsets", new Insets(2, 2, 0, 6));
 		table.put("TabbedPane.unselectedBackground", colorScheme.getBackgroundColor());
