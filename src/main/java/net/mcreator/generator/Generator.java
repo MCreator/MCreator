@@ -388,7 +388,7 @@ public class Generator implements IGenerator, Closeable {
 		return Collections.emptyList();
 	}
 
-	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(List<?> templates, boolean performFSTasks,
+	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(@Nonnull List<?> templates, boolean performFSTasks,
 			AtomicInteger templateID) {
 		Set<GeneratorTemplate> files = new HashSet<>();
 		for (Object template : templates) {
