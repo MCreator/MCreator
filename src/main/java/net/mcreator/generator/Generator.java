@@ -200,7 +200,7 @@ public class Generator implements IGenerator, Closeable {
 			this.generateElement(element, true);
 			return true;
 		} catch (TemplateGeneratorException e) {
-			e.printStackTrace();
+			LOG.error("Failed to generate mod element: " + element.getModElement().getName(), e);
 			return false;
 		}
 	}
@@ -519,6 +519,8 @@ public class Generator implements IGenerator, Closeable {
 							conditionChecks.add(i, 
 									!generatorTemplate.shouldBeSkippedBasedOnCondition(this, items.get(i)));
 						}
+
+						// only add template if its condition passes for at least one list data item
 						if (!conditionChecks.contains(true))
 							continue;
 
