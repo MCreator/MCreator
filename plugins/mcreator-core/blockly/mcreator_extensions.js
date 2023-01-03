@@ -146,3 +146,26 @@ Blockly.Extensions.register('dimension_custom_list_provider',
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf("dimension_custom"))), 'dimension');
     });
+
+// Extension used by int providers to validate their min/max values, so that min can't be greater than max and vice versa
+Blockly.Extensions.register('min_max_fields_validator',
+    function() {
+        var minField = this.getField('min');
+        var maxField = this.getField('max');
+
+        // If min > max, we set its value to that of max
+        minField.setValidator(function(newValue) {
+            if (newValue > maxField.getValue()) {
+                return maxField.getValue();
+            }
+            return newValue;
+        });
+
+        // If max < min, we set its value to that of min
+        maxField.setValidator(function(newValue) {
+            if (newValue < minField.getValue()) {
+                return minField.getValue();
+            }
+            return newValue;
+        });
+    });
