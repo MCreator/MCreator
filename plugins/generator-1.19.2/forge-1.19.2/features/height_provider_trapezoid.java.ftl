@@ -1,1 +1,0 @@
-TrapezoidHeight.of(${input$min}, ${input$max}<#if field$plateau != "0">, ${field$plateau}</#if>)

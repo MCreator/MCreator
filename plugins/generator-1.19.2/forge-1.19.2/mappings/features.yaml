@@ -25,15 +25,20 @@ feature_huge_red_mushroom:
 feature_coral_claw:
   - CoralClawFeature
   - NoneFeatureConfiguration
+  - "minecraft:coral_claw"
 feature_coral_mushroom:
   - CoralMushroomFeature
   - NoneFeatureConfiguration
+  - "minecraft:coral_mushroom"
 feature_coral_tree:
   - CoralTreeFeature
   - NoneFeatureConfiguration
+  - "minecraft:coral_tree"
 feature_forest_rock:
   - BlockBlobFeature
   - BlockStateConfiguration
+  - "minecraft:forest_rock"
 feature_huge_fungus:
   - HugeFungusFeature
   - HugeFungusConfiguration
+  - "minecraft:huge_fungus"
