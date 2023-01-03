@@ -191,6 +191,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
 		addEditTemplatesPanel(type.registryName() + "_templates", type.extension(), type.extension());
 	}
+
 	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey),
 				"templates/" + folder, extension);
