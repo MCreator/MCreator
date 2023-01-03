@@ -110,12 +110,8 @@ public class GeneratorStats {
 							CoverageStatus.PARTIAL);
 		}
 
-		if (generatorConfiguration.getJavaModelsKey().equals("legacy")) {
-			baseCoverageInfo.put("model_java",
-					forElement(((List<?>) generatorConfiguration.getRaw().get("basefeatures")), "model_java"));
-		} else {
-			baseCoverageInfo.put("model_java", CoverageStatus.FULL);
-		}
+		baseCoverageInfo.put("model_java",
+				generatorConfiguration.getRaw().get("java_models") != null ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		String resourceTasksJSON = new Gson().toJson(generatorConfiguration.getResourceSetupTasks());
 		baseCoverageInfo.put("model_json",
@@ -180,15 +176,6 @@ public class GeneratorStats {
 
 	public Set<String> getProcedureTriggers() {
 		return procedureTriggers;
-	}
-
-	private CoverageStatus forElement(List<?> features, String feature) {
-		if (features == null)
-			return CoverageStatus.NONE;
-
-		return features.contains("~" + feature) ?
-				CoverageStatus.PARTIAL :
-				(features.contains(feature) ? CoverageStatus.FULL : CoverageStatus.NONE);
 	}
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
