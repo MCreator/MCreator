@@ -1,21 +1,21 @@
 {
- "args0": [
-     {
-       "type": "input_value",
-       "name": "modid",
-       "check": "String"
-     }
-   ],
-   "inputsInline": true,
-   "output": "Boolean",
-   "colour": 250,
-   "mcreator": {
-     "toolbox_id": "advanced",
-     "toolbox_init": [
-       "<value name=\"modid\"><block type=\"text\"><field name=\"TEXT\">modid:mod_name</field></block></value>"
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "modid",
+      "check": "String"
+    }
   ],
-  "inputs": [
-    "modid"
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "advanced",
+    "toolbox_init": [
+      "<value name=\"modid\"><block type=\"text\"><field name=\"TEXT\">forge</field></block></value>"
+    ],
+	"inputs": [
+      "modid"
     ]
   }
 }

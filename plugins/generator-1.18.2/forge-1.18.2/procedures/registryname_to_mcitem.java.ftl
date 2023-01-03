@@ -1,1 +1,2 @@
-ForgeRegistries.ITEMS.getValue(new ResourceLocation(${input$registryname}))
+<#include "mcelements.ftl">
+ForgeRegistries.ITEMS.getValue(${toResourceLocation(input$registryname)})
