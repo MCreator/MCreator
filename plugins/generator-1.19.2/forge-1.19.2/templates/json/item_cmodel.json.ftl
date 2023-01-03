@@ -1,14 +1,18 @@
 {
+<#if var_item??>
+  "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
+  "textures": {
+    <@textures data.getItemModelTextureMap(var_item)/>
+    "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
+  }
+<#else>
   "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
   "textures": {
-    <#if data.getTextureMap()??>
-        <#list data.getTextureMap().entrySet() as texture>
-            "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
-        </#list>
-    </#if>
+    <@textures data.getTextureMap()/>
     "particle": "${modid}:items/${data.texture}"
   }
-    <#if data.modelsMap?has_content>,
+</#if>
+    <#if data.getModElement().getTypeString() == "item" && data.modelsMap?has_content>,
     "overrides": [
     <#list data.modelsMap.entrySet() as model>
         {
@@ -23,3 +27,11 @@
     ]
     </#if>
 }
+
+<#macro textures textureMap>
+    <#if textureMap??>
+        <#list textureMap.entrySet() as texture>
+            "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
+        </#list>
+    </#if>
+</#macro>
