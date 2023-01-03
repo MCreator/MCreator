@@ -488,11 +488,9 @@ public class Generator implements IGenerator, Closeable {
 				// we check type of list data collection and convert it to a list if needed
 				List<?> items;
 				if (listData instanceof Map<?, ?> listMap)
-					//noinspection Java9CollectionFactory
-					items = Collections.unmodifiableList(new ArrayList<>(listMap.entrySet()));
+					items = List.copyOf(listMap.entrySet());
 				else if (listData instanceof Collection<?> collection)
-					//noinspection Java9CollectionFactory
-					items = Collections.unmodifiableList(new ArrayList<>(collection));
+					items = List.copyOf(collection);
 				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
 					items = StreamSupport.stream(iterable.spliterator(), false).toList();
 				else
