@@ -199,7 +199,7 @@ public class ExternalBlockLoader {
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
 		pane.executeJavaScriptSynchronously("Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ")");
 
-		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getSpecificToolBox(toolboxType.name().toLowerCase(Locale.ENGLISH));
+		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getToolboxXML(toolboxType.name().toLowerCase(Locale.ENGLISH));
 
 		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {

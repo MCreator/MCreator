@@ -220,7 +220,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						sideTriggerLabel.setIcon(UIRES.get("16px.server"));
 					}
 
-					if (!mcreator.getGeneratorStats().getBlocklyBlocks("triggers").contains(trigger.getID())) {
+					if (!mcreator.getGeneratorStats().getProcedureTriggers().contains(trigger.getID())) {
 						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 								L10N.t("elementgui.procedure.global_trigger_unsupported")));
 					}

@@ -49,7 +49,7 @@ public class BlocklyToolboxesLoader {
 			TOOLBOXES.put(fileName, FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
 	}
 
-	public String getSpecificToolBox(String name) {
+	public String getToolboxXML(String name) {
 		return TOOLBOXES.get("blockly/toolboxes/toolbox_" + name + ".xml");
 	}
 }

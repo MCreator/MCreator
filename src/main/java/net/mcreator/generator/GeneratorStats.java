@@ -47,10 +47,13 @@ public class GeneratorStats {
 
 	private final Map<String, Set<String>> generatorBlocklyBlocks;
 
+	private final Set<String> procedureTriggers;
+
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
 		this.status = Status.valueOf(
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 		this.generatorBlocklyBlocks = new LinkedHashMap<>();
+		this.procedureTriggers = new HashSet<>();
 
 		// determine supported mod element types
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
@@ -158,15 +161,13 @@ public class GeneratorStats {
 	}
 
 	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
-		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + ".triggers", ftlFile)
+		procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + ".triggers", ftlFile)
 				.stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toSet()));
 
 		coverageInfo.put("triggers", Math.min(
-				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
+				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
 						.size()) * 100, 100));
-
-		generatorBlocklyBlocks.put("triggers", blocks);
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
@@ -174,11 +175,11 @@ public class GeneratorStats {
 	}
 
 	public Set<String> getBlocklyBlocks(BlocklyEditorType type) {
-		return getBlocklyBlocks(type.registryName());
+		return generatorBlocklyBlocks.get(type.registryName());
 	}
 
-	public Set<String> getBlocklyBlocks(String type) {
-		return generatorBlocklyBlocks.get(type);
+	public Set<String> getProcedureTriggers() {
+		return procedureTriggers;
 	}
 
 	private CoverageStatus forElement(List<?> features, String feature) {
