@@ -1,0 +1,21 @@
+{
+ "args0": [
+     {
+       "type": "input_value",
+       "name": "registryname",
+       "check": "String"
+     }
+   ],
+   "inputsInline": true,
+   "output": "MCItem",
+   "colour": 350,
+   "mcreator": {
+     "toolbox_id": "itemmanagement",
+     "toolbox_init": [
+       "<value name=\"registryname\"><block type=\"text\"><field name=\"TEXT\">minecraft:dirt</field></block></value>"
+  ],
+  "inputs": [
+    "registryname"
+    ]
+  }
+}
