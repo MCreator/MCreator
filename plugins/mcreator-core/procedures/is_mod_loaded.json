@@ -1,7 +1,7 @@
 {
  "args0": [
      {
-	   "type": "input_value",
+       "type": "input_value",
        "name": "modid",
        "check": "String"
      }
