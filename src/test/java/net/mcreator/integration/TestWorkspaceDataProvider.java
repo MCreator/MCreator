@@ -827,6 +827,14 @@ public class TestWorkspaceDataProvider {
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.helmetItemRenderType = 0;
+			armor.helmetItemCustomModelName = "Normal";
+			armor.bodyItemRenderType = 0;
+			armor.bodyItemCustomModelName = "Normal";
+			armor.leggingsItemRenderType = 0;
+			armor.leggingsItemCustomModelName = "Normal";
+			armor.bootsItemRenderType = 0;
+			armor.bootsItemCustomModelName = "Normal";
 			if (!emptyLists) {
 				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
 						"info 1, info 2, test \\, is this, another one");
@@ -1331,7 +1339,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.TAG.equals(modElement.getType())) {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions" });
+			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();

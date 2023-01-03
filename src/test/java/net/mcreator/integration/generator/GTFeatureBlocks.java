@@ -172,25 +172,25 @@ public class GTFeatureBlocks {
 							<value name="fluid"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 							<value name="border"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 						</block></value><next>%s</next></block></xml>""".formatted(testXML);
-			} else if (featureBlock.blocklyJSON.getAsJsonObject().get("output").getAsString().equals("Feature")) { // It's a feature, we test with in square placement
-				feature.featurexml = """
+			} else {
+				switch (featureBlock.getOutputType()) {
+					// Features are tested with the "In square" placement
+					case "Feature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
-			} else if (featureBlock.blocklyJSON.getAsJsonObject().get("output").getAsString().equals("HeightProvider")) { // Testing height providers
-				feature.featurexml = """
-						<xml xmlns="https://developers.google.com/blockly/xml">
-						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_simple_block">
-							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-						</block></value><next><block type="placement_height_range">
-							<value name="height">%s</value></block></next></block></xml>
-						""".formatted(testXML);
-			} else {
-				LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
-						+ featureBlock.machine_name);
-				continue;
+					// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
+					case "HeightProvider" ->
+							feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
+					case "BlockPredicate" ->
+							feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
+					default -> {
+						LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
+								+ featureBlock.machine_name);
+						continue;
+					}
+				}
 			}
 
 			try {
@@ -202,5 +202,25 @@ public class GTFeatureBlocks {
 				t.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * This method returns an XML string to test feature blocks that are neither placements nor features.
+	 * The test is performed using the simple block feature and a placement that accepts the block being tested.
+	 *
+	 * @param placementType The name of the placement used to test the block
+	 * @param valueName The name of the input accepting to which the block is attached
+	 * @param testXML The XML of the block being tested
+	 * @return An XML string representing a feature configuration to test the given block
+	 */
+	private static String getXMLFor(String placementType, String valueName, String testXML) {
+		return """
+			<xml xmlns="https://developers.google.com/blockly/xml">
+			<block type="feature_container" deletable="false" x="40" y="40">
+			<value name="feature"><block type="feature_simple_block">
+				<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+			</block></value><next><block type="%s">
+				<value name="%s">%s</value></block></next></block></xml>
+			""".formatted(placementType, valueName, testXML);
 	}
 }
