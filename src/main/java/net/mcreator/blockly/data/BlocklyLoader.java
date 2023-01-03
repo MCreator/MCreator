@@ -53,12 +53,13 @@ public class BlocklyLoader {
 
 	private BlocklyLoader() {
 		blockLoaders = new LinkedHashMap<>();
+		externalTriggerLoader = new ExternalTriggerLoader("triggers");
+
 		addBlockLoader(BlocklyEditorType.PROCEDURE);
 		addBlockLoader(BlocklyEditorType.AI_TASK);
 		addBlockLoader(BlocklyEditorType.JSON_TRIGGER);
 		addBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		addBlockLoader(BlocklyEditorType.FEATURE);
-		externalTriggerLoader = new ExternalTriggerLoader("triggers");
 	}
 
 	/**
