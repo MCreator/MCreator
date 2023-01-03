@@ -45,7 +45,7 @@ public class BlocklyLoader {
 		add("text");
 		add("time");
 		add("advanced");
-		add("action");
+		add("actions");
 		add("aiadvanced");
 	}};
 	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;

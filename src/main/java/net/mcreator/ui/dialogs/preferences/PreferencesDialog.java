@@ -179,8 +179,8 @@ public class PreferencesDialog extends MCreatorDialog {
 		themes = new ThemesPanel(this);
 
 		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
-		addEditTemplatesPanel("texture_templates", "textures/texturemaker", "png");
-		addEditTemplatesPanel("armor_templates", "textures/armormaker", "png");
+		addEditTemplatesPanel("texture_templates", "templates/textures/texturemaker", "png");
+		addEditTemplatesPanel("armor_templates", "templates/textures/armormaker", "png");
 
 		BlocklyLoader.INSTANCE.getAllBlockLoaders().keySet().stream().filter(type -> type.extension() != null)
 				.forEach(this::addEditTemplatesPanel);
@@ -189,12 +189,12 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
-		addEditTemplatesPanel(type.registryName() + "_templates", type.extension(), type.extension());
+		addEditTemplatesPanel(type.registryName() + "_templates", "templates/" + type.extension(), type.extension());
 	}
 
 	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey),
-				"templates/" + folder, extension);
+				folder, extension);
 	}
 
 	private void createPreferencesPanel(Field sectionField) {
