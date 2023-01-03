@@ -131,7 +131,7 @@ public class Procedure extends GeneratableElement {
 			String triggerCode = "";
 			if (trigger != null) {
 				TemplateGenerator templateGenerator = getModElement().getGenerator()
-						.getTemplateGeneratorFromName(BlocklyEditorType.GLOBAL_TRIGGER.registryName());
+						.getTemplateGeneratorFromName("triggers");
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".java.ftl", additionalData);
 			}
 			additionalData.put("trigger_code", triggerCode);

@@ -93,7 +93,7 @@ public class GeneratorStats {
 		// lazy load actual values
 		new Thread(() -> {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
-			addBlocklyFolder(generatorConfiguration, BlocklyEditorType.GLOBAL_TRIGGER);
+			addGlobalTriggerFolder(generatorConfiguration);
 		}).start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -139,6 +139,7 @@ public class GeneratorStats {
 
 	/**
 	 * Load all Blockly files of a {@link Generator} inside the provided folder.
+	 * Global triggers are loaded with their own method using {@link #addGlobalTriggerFolder(GeneratorConfiguration)}.
 	 *
 	 * @param genConfig The current generator's config to use
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
@@ -147,16 +148,24 @@ public class GeneratorStats {
 		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + type.registryName(),
 						ftlFile).stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 				.collect(Collectors.toSet());
-		if (type != BlocklyEditorType.GLOBAL_TRIGGER) {
-			coverageInfo.put(type.registryName(), Math.min(
-					(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
-							* 100, 100));
-		} else {
-			coverageInfo.put(type.registryName(), Math.min(
-					(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
-							.size()) * 100, 100));
-		}
+
+		coverageInfo.put(type.registryName(), Math.min(
+				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
+						.size()) * 100, 100));
+
 		generatorBlocklyBlocks.put(type.registryName(), blocks);
+	}
+
+	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
+		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + ".triggers", ftlFile)
+				.stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+				.collect(Collectors.toSet());
+
+		coverageInfo.put("triggers", Math.min(
+				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
+						.size()) * 100, 100));
+
+		generatorBlocklyBlocks.put("triggers", blocks);
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
@@ -164,7 +173,11 @@ public class GeneratorStats {
 	}
 
 	public Set<String> getBlocklyBlocks(BlocklyEditorType type) {
-		return generatorBlocklyBlocks.get(type.registryName());
+		return getBlocklyBlocks(type.registryName());
+	}
+
+	public Set<String> getBlocklyBlocks(String type) {
+		return generatorBlocklyBlocks.get(type);
 	}
 
 	private CoverageStatus forElement(List<?> features, String feature) {
