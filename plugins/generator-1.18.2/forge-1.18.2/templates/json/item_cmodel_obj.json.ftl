@@ -2,13 +2,24 @@
   "forge_marker": 1,
   "parent": "forge:item/default",
   "loader": "forge:obj",
+<#if var_item??>
+  "model": "${modid}:models/item/${data.getItemCustomModelNameFor(var_item)}.obj",
+  "textures": {
+    <@textures data.getItemModelTextureMap(var_item)/>
+    "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
+<#else>
   "model": "${modid}:models/item/${data.customModelName.split(":")[0]}.obj",
   "textures": {
-    <#if data.getTextureMap()?has_content>
-        <#list data.getTextureMap().entrySet() as texture>
+    <@textures data.getTextureMap()/>
+    "particle": "${modid}:items/${data.texture}"
+</#if>
+  }
+}
+
+<#macro textures textureMap>
+    <#if textureMap??>
+        <#list textureMap.entrySet() as texture>
             "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
         </#list>
     </#if>
-    "particle": "${modid}:items/${data.texture}"
-  }
-}
+</#macro>
