@@ -215,7 +215,7 @@ public class Generator implements IGenerator, Closeable {
 		if (element.getModElement().isCodeLocked()) {
 			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
 					+ " - the code of this element is locked");
-			return Collections.emptyList();
+			return new ArrayList<>();
 		}
 
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
@@ -223,7 +223,7 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null) {
 			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
 					.getRegistryName());
-			return Collections.emptyList();
+			return new ArrayList<>();
 		}
 
 		Set<GeneratorFile> generatorFiles = new HashSet<>();
