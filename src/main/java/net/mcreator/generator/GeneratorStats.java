@@ -145,13 +145,14 @@ public class GeneratorStats {
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
 	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
-		Set<String> blocks = PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + "." + type.registryName(),
-						ftlFile).stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+		Set<String> blocks = PluginLoader.INSTANCE.getResources(
+						genConfig.getGeneratorName() + "." + type.registryName(), ftlFile).stream()
+				.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 				.collect(Collectors.toSet());
 
 		coverageInfo.put(type.registryName(), Math.min(
-				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
-						.size()) * 100, 100));
+				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
+						* 100, 100));
 
 		generatorBlocklyBlocks.put(type.registryName(), blocks);
 	}
