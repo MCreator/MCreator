@@ -229,7 +229,7 @@ public class Generator implements IGenerator, Closeable {
 		Set<GeneratorFile> generatorFiles = new HashSet<>();
 
 		// generate all source files
-		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element);
+		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element, performFSTasks);
 		for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
 			String templateFileName = (String) generatorTemplate.getTemplateDefinition().get("template");
 
@@ -290,7 +290,7 @@ public class Generator implements IGenerator, Closeable {
 			return;
 		}
 
-		for (GeneratorTemplate template : getModElementGeneratorTemplatesList(generatableElement)) {
+		for (GeneratorTemplate template : getModElementGeneratorTemplatesList(generatableElement, true)) {
 			if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
 				template.getFile().delete();
 		}
@@ -417,6 +417,11 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement) {
+		return getModElementGeneratorTemplatesList(generatableElement, false);
+	}
+
+	private List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement,
+			boolean performFSTasks) {
 		if (generatableElement == null)
 			throw new RuntimeException("GeneratableElement is null");
 
@@ -457,12 +462,18 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		// we add all list templates (if any) for given element to the list
-		getModElementListTemplates(generatableElement).forEach(e -> e.forEachTemplate(files::add, null));
+		getModElementListTemplates(generatableElement, performFSTasks).forEach(
+				e -> e.forEachTemplate(files::add, null));
 
 		return new ArrayList<>(files);
 	}
 
 	public List<GeneratorTemplatesList> getModElementListTemplates(GeneratableElement generatableElement) {
+		return getModElementListTemplates(generatableElement, false);
+	}
+
+	private List<GeneratorTemplatesList> getModElementListTemplates(GeneratableElement generatableElement,
+			boolean performFSTasks) {
 		if (generatableElement == null)
 			throw new RuntimeException("GeneratableElement is null");
 
