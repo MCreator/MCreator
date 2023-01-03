@@ -13,9 +13,9 @@
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"registryname\"><block type=\"text\"><field name=\"TEXT\">minecraft:dirt</field></block></value>"
-	],
-	"inputs": [
-	  "registryname"
+    ],
+    "inputs": [
+      "registryname"
     ]
   }
 }

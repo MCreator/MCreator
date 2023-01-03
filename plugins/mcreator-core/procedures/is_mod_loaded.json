@@ -14,7 +14,7 @@
     "toolbox_init": [
       "<value name=\"modid\"><block type=\"text\"><field name=\"TEXT\">forge</field></block></value>"
     ],
-	"inputs": [
+    "inputs": [
       "modid"
     ]
   }
