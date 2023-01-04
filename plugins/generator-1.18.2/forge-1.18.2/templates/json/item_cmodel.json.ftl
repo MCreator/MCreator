@@ -1,5 +1,5 @@
 {
-<#if var_item??>
+<#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
   "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
   "textures": {
     <@textures data.getItemModelTextureMap(var_item)/>

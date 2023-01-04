@@ -221,7 +221,7 @@ import java.util.*;
 			case "body" -> bodyItemCustomModelName.split(":")[0];
 			case "leggings" -> leggingsItemCustomModelName.split(":")[0];
 			case "boots" -> bootsItemCustomModelName.split(":")[0];
-			default -> null;
+			default -> "";
 		};
 	}
 
@@ -235,7 +235,7 @@ import java.util.*;
 		};
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
+		return new HashMap<>();
 	}
 
 	public String getItemTextureFor(String part) {

@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "parent": "forge:item/default",
   "loader": "forge:obj",
-<#if var_item??>
+<#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
   "model": "${modid}:models/item/${data.getItemCustomModelNameFor(var_item)}.obj",
   "textures": {
     <@textures data.getItemModelTextureMap(var_item)/>
