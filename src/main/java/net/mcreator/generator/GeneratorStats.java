@@ -147,7 +147,7 @@ public class GeneratorStats {
 		Set<String> blocks = PluginLoader.INSTANCE.getResources(
 						genConfig.getGeneratorName() + "." + type.registryName(), ftlFile).stream()
 				.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-				.collect(Collectors.toSet());
+				.filter(e -> !e.startsWith("_")).collect(Collectors.toSet());
 
 		coverageInfo.put(type.registryName(), Math.min(
 				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
@@ -157,9 +157,10 @@ public class GeneratorStats {
 	}
 
 	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
-		procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + ".triggers", ftlFile)
-				.stream().map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-				.collect(Collectors.toSet()));
+		procedureTriggers.addAll(
+				PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + ".triggers", ftlFile).stream()
+						.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+						.collect(Collectors.toSet()));
 
 		coverageInfo.put("triggers", Math.min(
 				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
