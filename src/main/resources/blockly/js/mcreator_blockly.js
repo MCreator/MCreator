@@ -81,16 +81,6 @@ function arrayToBlocklyDropDownArray(arrorig) {
     return retval;
 }
 
-function arrayToBlocklyDropDownArrayWithReadableNames(arrorig, readablenames) {
-    var retval = [];
-    var length = arrorig.length;
-    var nameslength = readablenames.length;
-    for (var i = 0; i < length; i++) {
-        retval.push(["" + (i < nameslength ? readablenames[i] : arrorig[i]), "" + arrorig[i]]);
-    }
-    return retval;
-}
-
 function jsonToBlocklyDropDownArray(json) {
     var map = JSON.parse(json);
     var retval = [];
@@ -98,4 +88,21 @@ function jsonToBlocklyDropDownArray(json) {
         retval.push(["" + map[key], "" + key]);
     });
     return retval;
+}
+
+// Helper function to use in Blockly extensions that append a dropdown
+function appendDropDown(listType, fieldName) {
+    return function() {
+        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
+            arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
+    };
+}
+
+// Helper function to use in Blockly extensions that append a message and a dropdown
+function appendDropDownWithMessage(messageKey, listType, fieldName) {
+    return function() {
+        this.appendDummyInput().appendField(javabridge.t("blockly.extension." + messageKey))
+            .appendField(new Blockly.FieldDropdown(
+                arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
+    };
 }
