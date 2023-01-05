@@ -135,8 +135,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	public Item.ModelEntry getEntry() {
 		Item.ModelEntry retVal = new Item.ModelEntry();
-		retVal.modelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
-		retVal.modelTexture = texture.getID();
+		retVal.customModelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
+		retVal.texture = texture.getID();
 		retVal.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());
 		return retVal;
 	}
@@ -144,8 +144,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	public void setEntry(String state, Item.ModelEntry value) {
 		this.stateLabel.setState(state);
 
-		this.texture.setTextureFromTextureName(value.modelTexture);
-		this.model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), value.modelName,
+		this.texture.setTextureFromTextureName(value.texture);
+		this.model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), value.customModelName,
 				Item.decodeModelType(value.renderType)));
 	}
 

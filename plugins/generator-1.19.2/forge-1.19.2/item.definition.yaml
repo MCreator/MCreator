@@ -30,23 +30,23 @@ list_templates:
   - name: "Custom models"
     listData: data.modelsMap.values()
     forEach:
-      - template: json/item_override.json.ftl
+      - template: json/item.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
           - "isNormalModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
-      - template: json/tool_override.json.ftl
+      - template: json/tool.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
           - "isToolModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
-      - template: json/item_override_cmodel.json.ftl
+      - template: json/item_cmodel.json.ftl
         writer: json
         condition: "renderType #= 1"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
-      - template: json/item_override_cmodel_obj.json.ftl
+      - template: json/item_cmodel_obj.json.ftl
         writer: json
         condition: "renderType #= 2"
         variables: "type=item"

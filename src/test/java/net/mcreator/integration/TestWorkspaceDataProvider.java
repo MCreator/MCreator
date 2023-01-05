@@ -1059,8 +1059,8 @@ public class TestWorkspaceDataProvider {
 					}
 
 					Item.ModelEntry model = new Item.ModelEntry();
-					model.modelName = _true ^ random.nextBoolean() ? "Tool" : "Normal";
-					model.modelTexture = i == 0 ? "test" : "test" + i;
+					model.customModelName = _true ^ random.nextBoolean() ? "Tool" : "Normal";
+					model.texture = i == 0 ? "test" : "test" + i;
 					model.renderType = 0;
 
 					item.modelsMap.put("property1=" + random.nextFloat(0F, 1000000F) + state, model);

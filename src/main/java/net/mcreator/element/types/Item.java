@@ -174,11 +174,11 @@ import java.util.Map;
 	public static class ModelEntry {
 
 		public int renderType;
-		public String modelTexture;
-		public String modelName;
+		public String texture;
+		public String customModelName;
 
 		public Model getItemModel(Workspace workspace) {
-			return Model.getModelByParams(workspace, modelName, decodeModelType(renderType));
+			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
 		}
 
 		public Map<String, String> getTextureMap(Workspace workspace) {
@@ -188,11 +188,11 @@ import java.util.Map;
 		}
 
 		public boolean isNormalModel() {
-			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Normal");
+			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Normal");
 		}
 
 		public boolean isToolModel() {
-			return decodeModelType(renderType) == Model.Type.BUILTIN && modelName.equals("Tool");
+			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 		}
 	}
 

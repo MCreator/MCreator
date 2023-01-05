@@ -9,15 +9,16 @@
     "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
   }
 <#else>
-  "model": "${modid}:models/item/${data.customModelName.split(":")[0]}.obj",
+  <#assign source = (item??)?then(item, data)>
+  "model": "${modid}:models/item/${source.customModelName.split(":")[0]}.obj",
   "textures": {
-    <@textures data.getTextureMap()/>
-    "particle": "${modid}:items/${data.texture}"
+    <@textures (item??)?then(item.getTextureMap(w.getWorkspace()), data.getTextureMap())/>
+    "particle": "${modid}:items/${source.texture}"
   }
 </#if>
-    <#if data.getModElement().getTypeString() == "item" && data.modelsMap?has_content>,
+    <#if data?? && data.getModElement().getTypeString() == "item" && data.modelsMap?has_content>,
     "overrides": [
-    <#list data.modelsMap.entrySet() as model>
+        <#list data.modelsMap.entrySet() as model>
         {
             "predicate": {
             <#list model.getKey().split(",") as state>
@@ -26,7 +27,7 @@
             },
             "model": "${modid}:item/${registryname}_${model?index}"
         }<#sep>,
-    </#list>
+        </#list>
     ]
     </#if>
 }
