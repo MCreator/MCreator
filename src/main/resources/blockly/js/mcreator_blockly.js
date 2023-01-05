@@ -109,20 +109,19 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
 
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
-    const treeXml = Blockly.utils.xml.createElement('xml');
-    const variablesElement = Blockly.Xml.variablesToDom(Blockly.Variables.allUsedVarModels(workspace));
+    const treeXml = Blockly.Xml.workspaceToDom(workspace, true);
+
+    // Remove variables child if present
+    const variablesElements = treeXml.getElementsByTagName("variables");
+    for (const varEl of variablesElements) {
+        treeXml.removeChild(varEl);
+    }
+
+    // Add variables child on top of DOM
+    const variablesElement = Blockly.Xml.variablesToDom(workspace.getAllVariables());
     if (variablesElement.hasChildNodes()) {
-        treeXml.appendChild(variablesElement);
+        treeXml.prepend(variablesElement);
     }
-    const comments = workspace.getTopComments(true);
-    for (let i = 0; i < comments.length; i++) {
-        const comment = comments[i];
-        treeXml.appendChild(comment.toXmlWithXY(true));
-    }
-    const blocks = workspace.getTopBlocks(true);
-    for (let i = 0; i < blocks.length; i++) {
-        const block = blocks[i];
-        treeXml.appendChild(Blockly.Xml.blockToDomWithXY(block, true));
-    }
+
     return Blockly.Xml.domToText(treeXml);
 }
