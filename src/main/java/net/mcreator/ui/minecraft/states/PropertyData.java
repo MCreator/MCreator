@@ -61,18 +61,6 @@ public class PropertyData {
 		return arrayData;
 	}
 
-	public Object parseValue(String value) {
-		if (type.equals(Boolean.class))
-			return Boolean.parseBoolean(value);
-		else if (type.equals(Integer.class))
-			return Integer.parseInt(value);
-		else if (type.equals(Float.class))
-			return Float.parseFloat(value);
-		else if (type.equals(String.class))
-			return value;
-		return null;
-	}
-
 	public Object getValueFromComponent(JComponent component) {
 		return null;
 	}

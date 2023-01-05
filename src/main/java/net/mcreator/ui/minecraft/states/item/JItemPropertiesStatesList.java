@@ -66,10 +66,6 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 		Function<String, PropertyData> builtinNumber = name -> new PropertyData(name, Float.class, 0F, 1F, null);
 		Function<String, PropertyData> builtinLogic = name -> new PropertyData(name, Boolean.class, null, null, null) {
-			@Override public Object parseValue(String value) {
-				return Float.parseFloat(value);
-			}
-
 			@Override public Object getValueFromComponent(JComponent component) {
 				if (component instanceof JCheckBox check)
 					return check.isSelected() ? 1F : 0F;
