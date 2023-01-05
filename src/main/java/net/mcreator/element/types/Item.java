@@ -34,6 +34,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,7 @@ import java.util.Map;
 	@Override public Map<String, String> getTextureMap() {
 		if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
 			return textured.getTextureMapping().getTextureMap();
-		return null;
+		return new HashMap<>();
 	}
 
 	@Override public TabEntry getCreativeTab() {
