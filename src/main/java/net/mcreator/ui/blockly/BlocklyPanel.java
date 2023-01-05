@@ -77,8 +77,7 @@ public class BlocklyPanel extends JFXPanel {
 		this.mcreator = mcreator;
 
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
-			String newXml = (String) executeJavaScriptSynchronously(
-					"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))");
+			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 			if (!newXml.isEmpty())
 				this.currentXML = newXml;
 		});
