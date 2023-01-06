@@ -4,36 +4,32 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('gamemode_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("gamemodes"))), 'gamemode');
-    });
+Blockly.Extensions.register('gamemode_list_provider', appendDropDown('gamemodes', 'gamemode'));
 
-Blockly.Extensions.register('damagesource_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("damagesources"))), 'damagesource');
-    });
+Blockly.Extensions.register('damagesource_list_provider', appendDropDown('damagesources', 'damagesource'));
 
 Blockly.Extensions.register('sound_category_list_provider',
-    function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.extension.sound_category_list"))
-            .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf("soundcategories"))), 'soundcategory');
-    });
+    appendDropDownWithMessage('sound_category_list', 'soundcategories', 'soundcategory'));
 
-Blockly.Extensions.register('material_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("material"))), 'material');
-    });
+Blockly.Extensions.register('material_list_provider', appendDropDown('material', 'material'));
 
-Blockly.Extensions.register('plant_type_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("planttypes"))), 'planttype');
-    });
+Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
+
+Blockly.Extensions.register('gui_list_provider', appendDropDown('gui', 'guiname'));
+
+Blockly.Extensions.register('dimension_list_provider', appendDropDown('dimension', 'dimension'));
+
+Blockly.Extensions.register('gamerulesboolean_list_provider', appendDropDown('gamerulesboolean', 'gamerulesboolean'));
+
+Blockly.Extensions.register('gamerulesnumber_list_provider', appendDropDown('gamerulesnumber', 'gamerulesnumber'));
+
+Blockly.Extensions.register('schematic_list_provider', appendDropDown('schematic', 'schematic'));
+
+Blockly.Extensions.register('fluid_list_provider', appendDropDown('fluid', 'fluid'));
+
+Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
+
+Blockly.Extensions.register('dimension_custom_list_provider', appendDropDown('dimension_custom', 'dimension'));
 
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
@@ -97,52 +93,4 @@ Blockly.Extensions.registerMutator('variable_entity_input',
                 this.removeInput('entity');
             }
         }
-    });
-
-Blockly.Extensions.register('gui_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("gui"))), 'guiname');
-    });
-
-Blockly.Extensions.register('dimension_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("dimension"))), 'dimension');
-    });
-
-Blockly.Extensions.register('gamerulesboolean_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesboolean"))), 'gamerulesboolean');
-    });
-
-Blockly.Extensions.register('gamerulesnumber_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("gamerulesnumber"))), 'gamerulesnumber');
-    });
-
-Blockly.Extensions.register('schematic_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("schematic"))), 'schematic');
-    });
-
-Blockly.Extensions.register('fluid_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("fluid"))), 'fluid');
-    });
-
-Blockly.Extensions.register('direction_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("direction"))), 'direction');
-    });
-
-Blockly.Extensions.register('dimension_custom_list_provider',
-    function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf("dimension_custom"))), 'dimension');
     });

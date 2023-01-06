@@ -22,6 +22,8 @@ import net.mcreator.element.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
+import net.mcreator.generator.GeneratorTemplatesList;
+import net.mcreator.generator.ListTemplate;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -40,7 +42,6 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -230,17 +231,17 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
-						duplicateElement.setEnabled(false);
-						codeElement.setEnabled(false);
-						lockElement.setEnabled(false);
-						idElement.setEnabled(false);
-						renameElementFolder.setEnabled(true);
+						duplicateElement.setVisible(false);
+						codeElement.setVisible(false);
+						lockElement.setVisible(false);
+						idElement.setVisible(false);
+						renameElementFolder.setVisible(true);
 					} else {
-						duplicateElement.setEnabled(true);
-						codeElement.setEnabled(true);
-						lockElement.setEnabled(true);
-						idElement.setEnabled(true);
-						renameElementFolder.setEnabled(false);
+						duplicateElement.setVisible(true);
+						codeElement.setVisible(true);
+						lockElement.setVisible(true);
+						idElement.setVisible(true);
+						renameElementFolder.setVisible(false);
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());
@@ -1163,16 +1164,16 @@ import java.util.stream.Collectors;
 
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(mu);
+									.getModElementGeneratorTemplatesList(generatableElementOriginal);
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(duplicateModElement);
+									.getModElementGeneratorTemplatesList(generatableElementDuplicate);
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
 								File originalFile = originalTemplate.getFile();
 								File duplicateFile = null;
 								for (GeneratorTemplate newCandidate : duplicateFiles) {
-									if (newCandidate.getTemplateIdentificator()
-											.equals(originalTemplate.getTemplateIdentificator())) {
+									if (newCandidate.getTemplateIdentifier()
+											.equals(originalTemplate.getTemplateIdentifier())) {
 										duplicateFile = newCandidate.getFile();
 										break;
 									}
@@ -1218,50 +1219,28 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		GeneratableElement ge = mu.getGeneratableElement();
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu.getGeneratableElement());
+		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
+				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu.getGeneratableElement());
 
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
-
-		modElementFiles.addAll(
-				mcreator.getGenerator().getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger()));
-
-		if (ge instanceof ICommonType) {
-			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
+		if (mu.getGeneratableElement() instanceof ICommonType) {
+			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
 			for (BaseType baseType : baseTypes) {
-				modElementFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
 			}
 		}
 
-		if (modElementFiles.size() > 1) {
-			JPopupMenu codeDropdown = new JPopupMenu();
-			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-
-			boolean global = false;
-			for (GeneratorTemplate modElementFile : modElementFiles) {
-				if (!global && modElementFile.isGlobal()) {
-					codeDropdown.addSeparator();
-					global = true;
-				}
-
-				JMenuItem item = new JMenuItem(
-						"<html>" + modElementFile.getFile().getName() + "<br><small color=#666666>"
-								+ mcreator.getWorkspace().getWorkspaceFolder().toPath()
-								.relativize(modElementFile.getFile().toPath()));
-				item.setIcon(FileIcons.getIconForFile(modElementFile.getFile()));
-				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				item.setIconTextGap(8);
-				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile.getFile()));
-				codeDropdown.add(item);
-			}
-			codeDropdown.show(component, x, y);
-		} else if (modElementFiles.size() == 1) {
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
+			new ModElementCodeDropdown(mcreator,
+					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
+					modElementListFiles).show(component, x, y);
+		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
-		}
+		else if (modElementGlobalFiles.size() == 1)
+			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
 	}
 
 	private void deleteCurrentlySelectedModElement() {

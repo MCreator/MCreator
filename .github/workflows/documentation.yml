@@ -4,23 +4,24 @@ on:
   schedule:
     - cron: "0 0 * * 1"
   workflow_dispatch: {}
-  
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - uses: actions/checkout@v3
+        name: Checkout Repository
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: '17.0.3'
+          java-version: '17.0'
           distribution: 'adopt'
       - name: Generate Javadoc
         run: ./gradlew javadoc
       - name: Deploy Javadoc
-        uses: Pylo/github-pages-deploy-action@4.1.3
+        uses: Pylo/github-pages-deploy-action@v4.4.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: javadoc
-          CLEAN: true
-          FOLDER: build/docs/javadoc
-          TARGET_FOLDER: .
+          branch: javadoc
+          clean: true
+          folder: build/docs/javadoc
+          target-folder: .
