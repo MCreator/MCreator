@@ -20,11 +20,11 @@
 package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.util.Tuple;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
@@ -40,7 +40,7 @@ import java.util.function.IntConsumer;
  *                  for all items on the mentioned collection.
  */
 public record GeneratorTemplatesList(String groupName, List<?> listData, GeneratableElement element,
-									 Map<GeneratorTemplate, List<Boolean>> templates) {
+									 List<Tuple<GeneratorTemplate, List<Boolean>>> templates) {
 
 	/**
 	 * Iterates over all regular templates that can be produced by this templates list instance.
@@ -52,8 +52,9 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 		for (int index = 0; index < listData.size(); index++) {
 			if (beforeNextListItem != null)
 				beforeNextListItem.accept(index);
-			for (GeneratorTemplate template : templates.keySet()) {
-				if (templates.get(template).get(index)) {
+			for (Tuple<GeneratorTemplate, List<Boolean>> tuple : templates) {
+				GeneratorTemplate template = tuple.x();
+				if (tuple.y().get(index)) {
 					File targetFile = new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
 							GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
 									template.getFile().getPath().replace("@NAME", element.getModElement().getName())

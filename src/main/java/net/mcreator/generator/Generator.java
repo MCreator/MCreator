@@ -37,6 +37,7 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -480,7 +481,7 @@ public class Generator implements IGenerator, Closeable {
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
-				Map<GeneratorTemplate, List<Boolean>> files = new LinkedHashMap<>();
+				List<Tuple<GeneratorTemplate, List<Boolean>>> files = new ArrayList<>();
 				String groupName = (String) ((Map<?, ?>) list).get("name");
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
@@ -512,15 +513,13 @@ public class Generator implements IGenerator, Closeable {
 						if (!conditionChecks.contains(true))
 							continue;
 
-						// only preserve the last template for given file (only the last template matching given file will be generated)
-						files.remove(generatorTemplate);
-						files.put(generatorTemplate, Collections.unmodifiableList(conditionChecks));
+						files.add(new Tuple<>(generatorTemplate, Collections.unmodifiableList(conditionChecks)));
 
 						templateID++;
 					}
 
 					fileLists.add(new GeneratorTemplatesList(groupName, items, generatableElement,
-							Collections.unmodifiableMap(files)));
+							Collections.unmodifiableList(files)));
 				}
 			}
 		}
