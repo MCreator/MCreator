@@ -100,7 +100,7 @@ public class JStateLabel extends JPanel {
 				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
 		for (PropertyData property : properties.get()) {
 			if (values.containsKey(property.getName()))
-				stateMap.put(property, parseValue(values.get(property.getName())));
+				stateMap.put(property, parseValue(property.type(), values.get(property.getName())));
 		}
 		refreshState();
 	}
@@ -124,7 +124,7 @@ public class JStateLabel extends JPanel {
 		refreshState();
 	}
 
-	private Object parseValue(String value) {
+	private Object parseValue(Class<?> type, String value) {
 		try {
 			return Integer.parseInt(value);
 		} catch (NumberFormatException ignored) {
@@ -133,7 +133,7 @@ public class JStateLabel extends JPanel {
 			return Float.parseFloat(value);
 		} catch (NumberFormatException ignored) {
 		}
-		return "true".equals(value) || "false".equals(value) ? Boolean.parseBoolean(value) : value;
+		return type.equals(Boolean.class) ? Boolean.parseBoolean(value) : value;
 	}
 
 	private void refreshState() {
