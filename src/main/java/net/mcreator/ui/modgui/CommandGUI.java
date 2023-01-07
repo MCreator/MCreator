@@ -20,8 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.types.Command;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -86,12 +86,12 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		enderpanel.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.COMMAND);
+			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
 			if (!isEditingMode()) {
@@ -125,12 +125,12 @@ public class CommandGUI extends ModElementGUI<Command> {
 		}
 	}
 
-	private void regenerateArgs() {
+	private synchronized void regenerateArgs() {
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(
-					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getGeneratorCmdArgs())));
+					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}
