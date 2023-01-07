@@ -44,7 +44,7 @@ idea {
         excludeDirs += file("logs")
 
         // additional source dirs
-        sourceDirs += file("plugins/mcreator-core/blockly")
+        sourceDirs += file("plugins/mcreator-core/blockly/js")
     }
 }
 
