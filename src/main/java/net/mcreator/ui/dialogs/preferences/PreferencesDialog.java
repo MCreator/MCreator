@@ -20,10 +20,11 @@ package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
+import net.mcreator.preferences.Preferences;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.preferences.*;
 import net.mcreator.preferences.entries.PreferenceEntry;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -42,7 +43,9 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
 
@@ -62,6 +65,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private final JButton apply = L10N.button("action.common.apply");
 
 	private final Window parent;
+
 	public PreferencesDialog(Window parent, @Nullable String selectedTab) {
 		super(parent);
 
@@ -189,8 +193,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey),
-				folder, extension);
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey), folder, extension);
 	}
 
 	private void createPreferenceSection(String section) {
@@ -204,7 +207,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		JPanel sectionPanel = new JPanel(new GridBagLayout());
 		sectionPanel.setOpaque(false);
 
-		JComponent titlebar  = L10N.label("dialog.preferences.description", name, description);
+		JComponent titlebar = L10N.label("dialog.preferences.description", name, description);
 		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
 
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
