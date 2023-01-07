@@ -68,11 +68,10 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
 					for (int i = 0; i < list.listData().size(); i++) {
-						if (!list.templates().get(i).isEmpty() && i > 0) {
+						if (!list.templates().get(i).isEmpty() && i > 0)
 							listMenu.addSeparator(); // separate files generated for different list items
 
-							list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
-						}
+						list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
 					}
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
