@@ -31,8 +31,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -48,8 +46,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
-
-	private static final Logger LOG = LogManager.getLogger("Preferences UI");
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
