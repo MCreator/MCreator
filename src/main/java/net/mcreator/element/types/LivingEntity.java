@@ -23,7 +23,6 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
@@ -211,22 +210,21 @@ import java.util.Locale;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getAITaskBlockLoader().getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
 					BlocklyEditorType.AI_TASK, this.aixml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
 					.getGeneratorConfiguration().getDefinitionsProvider()
 					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
 			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
-					blocklyToJava.getGeneratedCode() :
-					"");
+					blocklyToJava.getGeneratedCode() : "");
 		};
 	}
 

@@ -23,7 +23,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -131,28 +130,30 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static void deleteLocalizationKeys(Generator generator, ModElement element,
+	public static void deleteLocalizationKeys(Generator generator, GeneratableElement generatableElement,
 			@Nullable List<?> localizationkeys) {
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
 				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
-						(String) ((Map<?, ?>) template).get("fromlist"), element);
+						(String) ((Map<?, ?>) template).get("fromlist"), generatableElement);
 
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
 								GeneratorTokens.replaceTokens(generator.getWorkspace(),
-										keytpl.replace("@NAME", element.getName()).replace("@modid",
+										keytpl.replace("@NAME", generatableElement.getModElement().getName())
+												.replace("@modid",
 														generator.getWorkspace().getWorkspaceSettings().getModID())
-												.replace("@registryname", element.getRegistryName())));
+												.replace("@registryname",
+														generatableElement.getModElement().getRegistryName())));
 						generator.getWorkspace().removeLocalizationEntryByKey(key);
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
-							keytpl.replace("@NAME", element.getName())
+							keytpl.replace("@NAME", generatableElement.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-									.replace("@registryname", element.getRegistryName()));
+									.replace("@registryname", generatableElement.getModElement().getRegistryName()));
 					generator.getWorkspace().removeLocalizationEntryByKey(key);
 				}
 			}

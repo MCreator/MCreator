@@ -1,0 +1,49 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "field_number",
+      "name": "x",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    },
+    {
+      "type": "field_number",
+      "name": "y",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    },
+    {
+      "type": "field_number",
+      "name": "z",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    }
+  ],
+  "output": "BlockPredicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+    "toolbox_init": [
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "block"
+    ],
+    "fields": [
+      "x",
+      "y",
+      "z"
+    ]
+  }
+}
