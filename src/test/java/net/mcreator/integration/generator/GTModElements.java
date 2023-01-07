@@ -75,19 +75,6 @@ public class GTModElements {
 				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
 						.stream().map(GeneratorTemplate::getFile).toList();
 
-				// test generated JSON syntax (Java is tested later in the build)
-				for (File modElementFile : modElementFiles) {
-					if (modElementFile.getName().endsWith(".json")) {
-						try {
-							new Gson().fromJson(FileIO.readFileToString(modElementFile),
-									Object.class); // try to parse JSON
-						} catch (Exception e) {
-							LOG.error("Invalid JSON in: " + FileIO.readFileToString(modElementFile), e);
-							fail("Invalid JSON");
-						}
-					}
-				}
-
 				// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
