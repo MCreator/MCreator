@@ -258,7 +258,7 @@ public class BlocklyPanel extends JFXPanel {
 		return retval;
 	}
 
-	public synchronized Object executeJavaScriptSynchronously(String javaScript) {
+	public Object executeJavaScriptSynchronously(String javaScript) {
 		try {
 			FutureTask<Object> query = new FutureTask<>(() -> {
 				if (webEngine != null)
