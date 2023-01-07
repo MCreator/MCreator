@@ -37,7 +37,6 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -481,45 +480,53 @@ public class Generator implements IGenerator, Closeable {
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
-				List<Tuple<GeneratorTemplate, List<Boolean>>> files = new ArrayList<>();
 				String groupName = (String) ((Map<?, ?>) list).get("name");
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
-				// we check type of list data collection and convert it to a list if needed
-				List<?> items;
-				if (listData instanceof Map<?, ?> listMap)
-					items = List.copyOf(listMap.entrySet());
-				else if (listData instanceof Collection<?> collection)
-					items = List.copyOf(collection);
-				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-					items = StreamSupport.stream(iterable.spliterator(), false).toList();
-				else
-					items = Collections.emptyList();
 				if (templates != null) {
-					for (Object template : templates) {
-						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File((String) ((Map<?, ?>) template).get("name")),
-								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"),
-								(Map<?, ?>) template);
+					List<List<ListTemplate>> files = new ArrayList<>();
 
-						// we store file generation conditions for current mod element
-						List<Boolean> conditionChecks = new ArrayList<>();
-						for (int i = 0; i < items.size(); i++) {
-							conditionChecks.add(i,
-									!generatorTemplate.shouldBeSkippedBasedOnCondition(this, items.get(i)));
+					// we check type of list data collection and convert it to a list if needed
+					List<?> items;
+					if (listData instanceof Map<?, ?> listMap)
+						items = List.copyOf(listMap.entrySet());
+					else if (listData instanceof Collection<?> collection)
+						items = List.copyOf(collection);
+					else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
+						items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
+					else
+						items = List.of();
+
+					for (int i = 0; i < items.size(); i++) {
+						Set<ListTemplate> filesForCurrentItem = new HashSet<>();
+						for (Object template : templates) {
+							String name = GeneratorTokens.replaceVariableTokens(generatableElement, items.get(i),
+									GeneratorTokens.replaceTokens(workspace,
+											((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
+															generatableElement.getModElement().getName())
+													.replace("@registryname",
+															generatableElement.getModElement().getRegistryName())
+													.replace("@itemindex", Integer.toString(i))));
+
+							ListTemplate listTemplate = new ListTemplate(new File(name),
+									Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), i,
+									(Map<?, ?>) template);
+
+							if (listTemplate.shouldBeSkippedBasedOnCondition(this, items.get(i)))
+								continue;
+
+							// only preserve the last template for given file (only the last template matching given file will be generated)
+							filesForCurrentItem.remove(listTemplate);
+							filesForCurrentItem.add(listTemplate);
+
+							templateID++;
 						}
 
-						// only add template if its condition passes for at least one list data item
-						if (!conditionChecks.contains(true))
-							continue;
-
-						files.add(new Tuple<>(generatorTemplate, Collections.unmodifiableList(conditionChecks)));
-
-						templateID++;
+						files.add(List.copyOf(filesForCurrentItem));
 					}
 
-					fileLists.add(new GeneratorTemplatesList(groupName, items, generatableElement,
-							Collections.unmodifiableList(files)));
+					fileLists.add(new GeneratorTemplatesList(groupName, items, List.copyOf(files)));
 				}
 			}
 		}

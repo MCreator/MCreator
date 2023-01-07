@@ -19,11 +19,7 @@
 
 package net.mcreator.generator;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.util.Tuple;
-
 import javax.annotation.Nullable;
-import java.io.File;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
@@ -34,13 +30,16 @@ import java.util.function.IntConsumer;
  *
  * @param groupName The name of this group of templates shown in workspace panel.
  * @param listData  The collection used by workspace to generate given templates.
- * @param element   The {@link GeneratableElement} used to process tokens in template names.
- * @param templates The map of templates to be generated for each entry of {@code listData};
- *                  keys are templates themselves, values represent generation conditions of their key template
- *                  for all items on the mentioned collection.
+ * @param templates The list of templates to be generated for each {@code listData} item.
  */
-public record GeneratorTemplatesList(String groupName, List<?> listData, GeneratableElement element,
-									 List<Tuple<GeneratorTemplate, List<Boolean>>> templates) {
+public record GeneratorTemplatesList(String groupName, List<?> listData, List<List<ListTemplate>> templates) {
+
+	/**
+	 * The sole constructor.
+	 */
+	public GeneratorTemplatesList {
+		templates.forEach(l -> l.forEach(e -> e.setTemplatesList(this)));
+	}
 
 	/**
 	 * Iterates over all regular templates that can be produced by this templates list instance.
@@ -52,18 +51,7 @@ public record GeneratorTemplatesList(String groupName, List<?> listData, Generat
 		for (int index = 0; index < listData.size(); index++) {
 			if (beforeNextListItem != null)
 				beforeNextListItem.accept(index);
-			for (Tuple<GeneratorTemplate, List<Boolean>> tuple : templates) {
-				GeneratorTemplate template = tuple.x();
-				if (tuple.y().get(index)) {
-					File targetFile = new File(GeneratorTokens.replaceVariableTokens(element, listData.get(index),
-							GeneratorTokens.replaceTokens(element.getModElement().getWorkspace(),
-									template.getFile().getPath().replace("@NAME", element.getModElement().getName())
-											.replace("@registryname", element.getModElement().getRegistryName())
-											.replace("@itemindex", Integer.toString(index)))));
-					action.accept(new ListTemplate(targetFile, template.getTemplateIdentifier(), this, index,
-							template.getTemplateDefinition()));
-				}
-			}
+			templates.get(index).forEach(action);
 		}
 	}
 }
