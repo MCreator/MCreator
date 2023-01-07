@@ -66,9 +66,6 @@ public class ModElementUITest {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Mod Element Test");
 
-		// disable webview to avoid issues in headless test environments
-		BlocklyPanel.DISABLE_WEBVIEW = true;
-
 		TestSetup.setupIntegrationTestEnvironment();
 
 		// create temporary directory

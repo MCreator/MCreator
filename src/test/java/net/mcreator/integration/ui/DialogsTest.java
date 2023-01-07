@@ -65,9 +65,6 @@ public class DialogsTest {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Dialogs Test");
 
-		// disable webview to avoid issues in headless test environments
-		BlocklyPanel.DISABLE_WEBVIEW = true;
-
 		// disable native file choosers for tests due to threading issues
 		FileDialogs.DISABLE_NATIVE_DIALOGS = true;
 
