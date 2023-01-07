@@ -232,7 +232,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
 
+	private boolean editorReady = false;
+
 	private boolean disableMobModelCheckBoxListener = false;
+
+	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+			.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
+			.get("unmodifiable_ai_bases");
 
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -266,9 +272,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-				.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
-				.get("unmodifiable_ai_bases");
 		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem()))
 			compileNotesArrayList = List.of(aiUnmodifiableCompileNote);
 
@@ -651,7 +654,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
 		aiBase.setPreferredSize(new Dimension(250, 32));
-		aiBase.addActionListener(e -> regenerateAITasks());
+		aiBase.addActionListener(e -> {
+			if (editorReady)
+				regenerateAITasks();
+		});
 
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
 		aitopoveral.setOpaque(false);
@@ -851,6 +857,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
 		}
+
+		editorReady = true;
 	}
 
 	@Override public void reloadDataLists() {
@@ -917,6 +925,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
 		disableMobModelCheckBoxListener = true;
+		editorReady = false;
+
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
@@ -1037,6 +1047,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
 		disableMobModelCheckBoxListener = false;
+		editorReady = true;
 	}
 
 	@Override public LivingEntity getElementFromGUI() {
