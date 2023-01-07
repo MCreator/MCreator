@@ -22,7 +22,7 @@ project.ext.builddate = new Date().format('wwuHH')
 
 javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 sourceCompatibility = 17
 targetCompatibility = 17
@@ -33,8 +33,18 @@ System.setProperty("user.dir", projectDir.toString())
 idea {
     module {
         inheritOutputDirs = true
-        excludeDirs = [file(".gradle"), file(".idea"), file(".github"), file("build"),
-                       file("gradle"), file("jdk"), file("license"), file("logs")] as Set<File>
+
+        // define exclude dirs
+        excludeDirs += file(".gradle")
+        excludeDirs += file(".idea")
+        excludeDirs += file("build")
+        excludeDirs += file("gradle")
+        excludeDirs += file("jdk")
+        excludeDirs += file("license")
+        excludeDirs += file("logs")
+
+        // additional source dirs
+        sourceDirs += file("plugins/mcreator-core/blockly")
     }
 }
 
@@ -138,8 +148,8 @@ task runMCreator(type: JavaExec, dependsOn: jar) {
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
     classpath += sourceSets.main.runtimeClasspath
-    main = "net.mcreator.Launcher"
 
+    mainClass.set("net.mcreator.Launcher")
 }
 
 apply from: 'platform/setup.gradle'
