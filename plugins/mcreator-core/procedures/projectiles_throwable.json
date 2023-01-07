@@ -3,7 +3,8 @@
     {
       "type": "field_data_list_selector",
       "name": "projectile",
-      "datalist": "throwableProjectile"
+      "datalist": "projectiles",
+      "typeFilter": "throwable"
     },
     {
       "type": "input_value",

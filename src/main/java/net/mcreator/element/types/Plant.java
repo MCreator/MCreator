@@ -32,10 +32,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
@@ -171,7 +168,7 @@ import java.util.stream.Collectors;
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
+		return new HashMap<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

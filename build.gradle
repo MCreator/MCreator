@@ -22,7 +22,7 @@ project.ext.builddate = new Date().format('wwuHH')
 
 javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 sourceCompatibility = 17
 targetCompatibility = 17
@@ -33,8 +33,18 @@ System.setProperty("user.dir", projectDir.toString())
 idea {
     module {
         inheritOutputDirs = true
-        excludeDirs = [file(".gradle"), file(".idea"), file(".github"), file("build"),
-                       file("gradle"), file("jdk"), file("license"), file("logs")] as Set<File>
+
+        // define exclude dirs
+        excludeDirs += file(".gradle")
+        excludeDirs += file(".idea")
+        excludeDirs += file("build")
+        excludeDirs += file("gradle")
+        excludeDirs += file("jdk")
+        excludeDirs += file("license")
+        excludeDirs += file("logs")
+
+        // additional source dirs
+        sourceDirs += file("plugins/mcreator-core/blockly/js")
     }
 }
 
@@ -73,14 +83,14 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '6.4.0.202211300538-r'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.5'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.6'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.1.1'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
     implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.0'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.1'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.0'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
@@ -138,8 +148,8 @@ task runMCreator(type: JavaExec, dependsOn: jar) {
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
     classpath += sourceSets.main.runtimeClasspath
-    main = "net.mcreator.Launcher"
 
+    mainClass.set("net.mcreator.Launcher")
 }
 
 apply from: 'platform/setup.gradle'

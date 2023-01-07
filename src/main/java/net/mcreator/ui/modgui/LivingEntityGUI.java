@@ -19,10 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ExternalBlockLoader;
-import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -235,7 +232,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
 
+	private boolean editorReady = false;
+
 	private boolean disableMobModelCheckBoxListener = false;
+
+	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+			.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
+			.get("unmodifiable_ai_bases");
 
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -244,18 +247,20 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	}
 
 	private void setDefaultAISet() {
-		blocklyPanel.setXML("<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-				+ "<block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"><next>"
-				+ "<block type=\"attack_on_collide\"><field name=\"speed\">1.2</field><field name=\"longmemory\">FALSE</field><next>"
-				+ "<block type=\"wander\"><field name=\"speed\">1</field><next>"
-				+ "<block type=\"attack_action\"><field name=\"callhelp\">FALSE</field><next>"
-				+ "<block type=\"look_around\"><next><block type=\"swim_in_water\"/></next>"
-				+ "</block></next></block></next></block></next></block></next></block></xml>");
+		blocklyPanel.setXML("""
+			<xml xmlns="https://developers.google.com/blockly/xml">
+			<block type="aitasks_container" deletable="false" x="40" y="40"><next>
+			<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition"/><next>
+			<block type="wander"><field name="speed">1</field><field name="condition"/><next>
+			<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition"/><next>
+			<block type="look_around"><field name="condition"/><next>
+			<block type="swim_in_water"/><field name="condition"/></next>
+			</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
-	private void regenerateAITasks() {
+	private synchronized void regenerateAITasks() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getGeneratorAITasks());
+				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
 
 		BlocklyToJava blocklyToJava;
 		try {
@@ -267,9 +272,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-				.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
-				.get("unmodifiable_ai_bases");
 		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem()))
 			compileNotesArrayList = List.of(aiUnmodifiableCompileNote);
 
@@ -538,7 +540,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		followRange.setPreferredSize(new Dimension(250, 32));
 		health.setPreferredSize(new Dimension(250, 32));
 		xpAmount.setPreferredSize(new Dimension(250, 32));
-		
+
 		rangedAttackInterval.setPreferredSize(new Dimension(85, 32));
 		rangedAttackRadius.setPreferredSize(new Dimension(85, 32));
 
@@ -652,7 +654,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
 		aiBase.setPreferredSize(new Dimension(250, 32));
-		aiBase.addActionListener(e -> regenerateAITasks());
+		aiBase.addActionListener(e -> {
+			if (editorReady)
+				regenerateAITasks();
+		});
 
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
 		aitopoveral.setOpaque(false);
@@ -680,12 +685,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		JPanel aipan = new JPanel(new BorderLayout(0, 5));
 		aipan.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getAITaskBlockLoader().getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getAITaskBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.AI_BUILDER);
+			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());
 			if (!isEditingMode()) {
@@ -852,6 +857,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
 		}
+
+		editorReady = true;
 	}
 
 	@Override public void reloadDataLists() {
@@ -918,6 +925,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
 		disableMobModelCheckBoxListener = true;
+		editorReady = false;
+
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
@@ -1038,6 +1047,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
 		disableMobModelCheckBoxListener = false;
+		editorReady = true;
 	}
 
 	@Override public LivingEntity getElementFromGUI() {

@@ -67,7 +67,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-				List<GeneratorTemplate> templates = mcreator.getGenerator().getModElementGeneratorTemplatesList(mod);
+				List<GeneratorTemplate> templates = mcreator.getGenerator().getModElementGeneratorTemplatesList(mod.getGeneratableElement());
 				if (templates == null)
 					continue;
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();
@@ -79,8 +79,8 @@ public class RegenerateCodeAction extends GradleAction {
 			// keep base mod files that can be locked if selected so in the workspace settings
 			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
 				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
-					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+					if (generatorTemplate.getTemplateDefinition().get("canLock") != null
+							&& generatorTemplate.getTemplateDefinition().get("canLock")
 							.equals("true")) // can this file be locked
 						// are mod base file locked
 						toBePreserved.add(
@@ -161,7 +161,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 					if (!mod.isCodeLocked()) {
 						filesToReformat.addAll(
-								generatedFiles.stream().map(GeneratorFile::file).collect(Collectors.toSet()));
+								generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
 					}
 
 					// save custom mod element picture if it has one
@@ -214,6 +214,7 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.addProgress(p2);
 
 			mcreator.getGenerator().runResourceSetupTasks();
+			// generate base files without organizing imports as we first need all files generated so we can properly organize imports
 			mcreator.getGenerator().generateBase(false);
 			mcreator.mv.updateMods();
 
@@ -228,6 +229,7 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.addProgress(p22);
 
 			int ftfCount = filesToReformat.size();
+			// after all files are generated, we can perform global import organization and code reformat
 			ClassWriter.formatAndOrganiseImportsForFiles(mcreator.getWorkspace(), filesToReformat,
 					idx -> p22.setPercent((int) (((float) idx / (float) ftfCount) * 100.0f)));
 

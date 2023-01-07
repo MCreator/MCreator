@@ -264,7 +264,7 @@ import java.util.stream.Collectors;
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
+		return new HashMap<>();
 	}
 
 	@Override public TabEntry getCreativeTab() {

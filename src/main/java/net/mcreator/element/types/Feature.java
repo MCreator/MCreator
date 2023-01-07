@@ -30,11 +30,13 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
@@ -56,11 +58,13 @@ import java.util.List;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			var blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("features"), additionalData);
+					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()), additionalData)
+					.setTemplateExtension(this.getModElement().getGeneratorConfiguration()
+							.getGeneratorName().equals("forge-1.18.2") ? "java" : "json"); // 1.18 features are in Java
 
 			var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
-					this.featurexml, this.getModElement().getGenerator().getTemplateGeneratorFromName("features"),
+					this.featurexml, this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
@@ -75,6 +79,10 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.FEATURE);
+		if (hasGenerationConditions() || this.getModElement().getGeneratorConfiguration()
+				.getGeneratorName().equals("forge-1.18.2")) {
+			return List.of(BaseType.FEATURE);
+		}
+		return Collections.emptyList();
 	}
 }
