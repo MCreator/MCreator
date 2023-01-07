@@ -32,7 +32,6 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement

@@ -79,8 +79,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ArmorGUI extends ModElementGUI<Armor> {
