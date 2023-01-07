@@ -29,7 +29,6 @@ import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
