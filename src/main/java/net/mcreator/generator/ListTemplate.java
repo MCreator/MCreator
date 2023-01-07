@@ -29,20 +29,18 @@ import java.util.Map;
  * {@code listData} item.
  */
 public class ListTemplate extends GeneratorTemplate {
-	private GeneratorTemplatesList templatesList;
+	private final GeneratorTemplatesList templatesList;
 	private final int listItemIndex;
 
-	ListTemplate(File file, String templateIdentifier, int listItemIndex, Map<?, ?> templateData) {
+	ListTemplate(File file, String templateIdentifier, GeneratorTemplatesList templatesList, int listItemIndex,
+			Map<?, ?> templateData) {
 		super(file, templateIdentifier, templateData);
+		this.templatesList = templatesList;
 		this.listItemIndex = listItemIndex;
 	}
 
 	public GeneratorTemplatesList getTemplatesList() {
 		return templatesList;
-	}
-
-	void setTemplatesList(GeneratorTemplatesList templatesList) {
-		this.templatesList = templatesList;
 	}
 
 	public int getListItemIndex() {

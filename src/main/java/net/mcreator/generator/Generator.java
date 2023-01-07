@@ -457,7 +457,7 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		// we add all list templates (if any) for given element to the list
-		getModElementListTemplates(generatableElement).forEach(e -> e.forEachTemplate(files::add, null));
+		getModElementListTemplates(generatableElement).forEach(list -> list.templates().forEach(files::addAll));
 
 		return new ArrayList<>(files);
 	}
@@ -484,36 +484,37 @@ public class Generator implements IGenerator, Closeable {
 				Object listData = TemplateExpressionParser.processFTLExpression(this,
 						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
+
+				// we check type of listData collection and convert it to a list if needed
+				List<?> items;
+				if (listData instanceof Map<?, ?> listMap)
+					items = List.copyOf(listMap.entrySet());
+				else if (listData instanceof Collection<?> collection)
+					items = List.copyOf(collection);
+				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
+					items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
+				else
+					items = List.of();
+
+				GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items, new ArrayList<>());
+
 				if (templates != null) {
-					List<List<ListTemplate>> files = new ArrayList<>();
-
-					// we check type of list data collection and convert it to a list if needed
-					List<?> items;
-					if (listData instanceof Map<?, ?> listMap)
-						items = List.copyOf(listMap.entrySet());
-					else if (listData instanceof Collection<?> collection)
-						items = List.copyOf(collection);
-					else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-						items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
-					else
-						items = List.of();
-
-					for (int i = 0; i < items.size(); i++) {
+					for (int index = 0; index < items.size(); index++) {
 						Set<ListTemplate> filesForCurrentItem = new HashSet<>();
 						for (Object template : templates) {
-							String name = GeneratorTokens.replaceVariableTokens(generatableElement, items.get(i),
+							String name = GeneratorTokens.replaceVariableTokens(generatableElement, items.get(index),
 									GeneratorTokens.replaceTokens(workspace,
 											((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
 															generatableElement.getModElement().getName())
 													.replace("@registryname",
 															generatableElement.getModElement().getRegistryName())
-													.replace("@itemindex", Integer.toString(i))));
+													.replace("@itemindex", Integer.toString(index))));
 
 							ListTemplate listTemplate = new ListTemplate(new File(name),
-									Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), i,
-									(Map<?, ?>) template);
+									Integer.toString(templateID) + ((Map<?, ?>) template).get("template"),
+									templatesList, index, (Map<?, ?>) template);
 
-							if (listTemplate.shouldBeSkippedBasedOnCondition(this, items.get(i)))
+							if (listTemplate.shouldBeSkippedBasedOnCondition(this, items.get(index)))
 								continue;
 
 							// only preserve the last template for given file (only the last template matching given file will be generated)
@@ -523,10 +524,10 @@ public class Generator implements IGenerator, Closeable {
 							templateID++;
 						}
 
-						files.add(List.copyOf(filesForCurrentItem));
+						templatesList.templates().add(List.copyOf(filesForCurrentItem));
 					}
 
-					fileLists.add(new GeneratorTemplatesList(groupName, items, List.copyOf(files)));
+					fileLists.add(templatesList);
 				}
 			}
 		}
