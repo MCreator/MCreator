@@ -17,14 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.blockly;
+package net.mcreator.blockly.data;
 
-public record BlocklyEditorType(String registryName, String extension, String startBlockName) {
-
-	public static final BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");
-	public static final BlocklyEditorType AI_TASK = new BlocklyEditorType("aitasks", "aitpl", "aitasks_container");
-	public static final BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmdargs", "cmdtpl", "args_start");
-	public static final BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
-	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null, "advancement_trigger");
-
+public record ToolboxType(String name) {
+	public static ToolboxType AI_BUILDER = new ToolboxType("ai_builder");
+	public static ToolboxType PROCEDURE = new ToolboxType("procedure");
+	public static ToolboxType COMMAND = new ToolboxType("command");
+	public static ToolboxType EMPTY = new ToolboxType("empty");
 }
