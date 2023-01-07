@@ -295,6 +295,27 @@ Blockly.Blocks['time_to_formatted_string'] = {
     }
 };
 
+// Mutator block for "Any/All of" block predicates
+Blockly.Blocks['block_predicate_mutator_container'] = {
+    init: function() {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_predicate_mutator.container'));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(210);
+    }
+};
+
+// Mutator block for "Any/All of" block predicates
+Blockly.Blocks['block_predicate_mutator_input'] = {
+    init: function() {
+      this.appendDummyInput().appendField(javabridge.t('blockly.block.block_predicate_mutator.input'));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.setColour(210);
+    }
+};
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",

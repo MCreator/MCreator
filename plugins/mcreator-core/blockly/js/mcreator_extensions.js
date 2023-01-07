@@ -201,3 +201,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         }
     }
 }
+
+Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
+        'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition', 'BlockPredicate'),
+        undefined, ['block_predicate_mutator_input']);
