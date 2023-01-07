@@ -28,6 +28,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -50,9 +51,9 @@ public class GTCommandArgBlocks {
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorCmdArgs();
+		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG);
 
-		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks().values()) {
+		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip command argument blocks not supported by this generator

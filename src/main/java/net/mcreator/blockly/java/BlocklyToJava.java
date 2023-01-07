@@ -46,8 +46,6 @@ public class BlocklyToJava extends BlocklyToCode {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
 	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 
-	private final BlocklyEditorType editorType;
-
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
 	 * @param blocklyEditorType <p>Blockly editor type</p>
@@ -57,9 +55,7 @@ public class BlocklyToJava extends BlocklyToCode {
 	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
-		super(workspace, parent, templateGenerator, externalGenerators);
-
-		this.editorType = blocklyEditorType;
+		super(workspace, parent, blocklyEditorType, templateGenerator, externalGenerators);
 
 		preInitialization();
 
@@ -69,7 +65,7 @@ public class BlocklyToJava extends BlocklyToCode {
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.startBlockName());
 
 				// if there is no start block, we return empty string
 				if (start_block == null)
@@ -176,9 +172,5 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
-	}
-
-	public BlocklyEditorType getEditorType() {
-		return editorType;
 	}
 }

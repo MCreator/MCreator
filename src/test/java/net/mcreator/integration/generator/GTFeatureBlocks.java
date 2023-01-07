@@ -30,6 +30,7 @@ import net.mcreator.element.types.Feature;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -52,9 +53,9 @@ public class GTFeatureBlocks {
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGeneratorStats().getFeatureProcedures();
+		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE);
 
-		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks().values()) {
+		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			if (!generatorBlocks.contains(featureBlock.machine_name)) {

@@ -43,6 +43,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -298,7 +299,7 @@ public class TestWorkspaceDataProvider {
 				achievement.rewardRecipes.add("ExampleRecipe1");
 				achievement.rewardRecipes.add("ExampleRecipe2");
 			}
-			achievement.triggerxml = "<xml><block type=\"tick\" x=\"40\" y=\"80\"><next>"
+			achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
 					+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
 			return achievement;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
@@ -686,20 +687,21 @@ public class TestWorkspaceDataProvider {
 			livingEntity.hasAI = _true;
 			livingEntity.aiBase = "(none)";
 			if (!emptyLists) {
-				Set<String> aiTasks = modElement.getGeneratorStats().getGeneratorAITasks();
+				Set<String> aiTasks = modElement.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
 						"panic_when_attacked") && aiTasks.contains("attack_action") && aiTasks.contains(
 						"swim_in_water")) {
-					livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\">"
-							+ "<next><block type=\"wander\"><field name=\"speed\">1</field>"
-							+ "<next><block type=\"look_around\"><next><block type=\"swim_in_water\">"
-							+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field>"
-							+ "<next><block type=\"attack_action\"><field name=\"callhelp\">!_true</field>"
+					livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
+							+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
+							+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
+							+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
+							+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
+							+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
 							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
 				}
 			}
 			if (livingEntity.aixml == null) // fallback
-				livingEntity.aixml = "<xml><block type=\"aitasks_container\" deletable=\"!_true\"></block></xml>";
+				livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 			livingEntity.breedable = _true;
 			livingEntity.tameable = _true;
 			livingEntity.breedTriggerItems = new ArrayList<>();
@@ -826,6 +828,14 @@ public class TestWorkspaceDataProvider {
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
 			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.helmetItemRenderType = 0;
+			armor.helmetItemCustomModelName = "Normal";
+			armor.bodyItemRenderType = 0;
+			armor.bodyItemCustomModelName = "Normal";
+			armor.leggingsItemRenderType = 0;
+			armor.leggingsItemCustomModelName = "Normal";
+			armor.bootsItemRenderType = 0;
+			armor.bootsItemCustomModelName = "Normal";
 			if (!emptyLists) {
 				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
 						"info 1, info 2, test \\, is this, another one");

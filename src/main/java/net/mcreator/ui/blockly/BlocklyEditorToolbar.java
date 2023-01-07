@@ -72,11 +72,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		setBorder(null);
 
 		List<ResourcePointer> templates =
-				TemplatesLoader.loadTemplates(blocklyEditorType.getExtension(), blocklyEditorType.getExtension());
+				TemplatesLoader.loadTemplates(blocklyEditorType.extension(), blocklyEditorType.extension());
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
 
-		templateLib = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey());
+		templateLib = L10N.button("blockly.templates." + blocklyEditorType.registryName());
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
 		templateLib.setOpaque(false);
@@ -126,7 +126,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 						Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks()
 								.values()) {
 							if (block.getName().toLowerCase(Locale.ENGLISH)
 									.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
@@ -134,7 +134,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							}
 						}
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks()
 								.values()) {
 							for (String keyWord : keyWords) {
 								if (block.getName().toLowerCase(Locale.ENGLISH)
@@ -197,21 +197,21 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton export = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export");
+		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
 		export.setOpaque(false);
 		add(export);
 		export.addActionListener(event -> {
-			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.getExtension() });
+			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.extension() });
 			if (exp != null) {
 				try {
 					ProcedureTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".export_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -219,12 +219,12 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		ComponentUtils.normalizeButton4(export);
 		export.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import");
+		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
 		import_.setOpaque(false);
 		add(import_);
 		import_.addActionListener(event -> {
-			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.getExtension() });
+			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.extension() });
 			if (imp != null) {
 				try {
 					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
@@ -245,9 +245,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".import_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+							L10N.t("blockly.templates." + blocklyEditorType.registryName()
 									+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}

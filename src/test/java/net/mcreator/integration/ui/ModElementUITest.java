@@ -192,6 +192,8 @@ public class ModElementUITest {
 
 				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
 
+				modElementGUI.showView();
+
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);
 				field.set(modElementGUI, true);

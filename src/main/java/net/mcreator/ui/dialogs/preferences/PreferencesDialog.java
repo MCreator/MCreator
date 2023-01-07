@@ -18,6 +18,10 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.preferences.*;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.ui.component.JColor;
@@ -169,18 +173,24 @@ public class PreferencesDialog extends MCreatorDialog {
 		new PluginsPanel(this);
 
 		themes = new ThemesPanel(this);
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png");
 
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_procedure_templates"), "templates/ptpl", "ptpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_feature_templates"), "templates/ftpl", "ftpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ai_builder_templates"), "templates/aitpl",
-				"aitpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_cmd_builder_templates"), "templates/cmdtpl",
-				"cmdtpl");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_texture_templates"),
-				"templates/textures/texturemaker", "png");
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_armor_templates"), "templates/textures/armormaker",
-				"png");
+		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
+		addEditTemplatesPanel("texture_templates", "templates/textures/texturemaker", "png");
+		addEditTemplatesPanel("armor_templates", "templates/textures/armormaker", "png");
+
+		BlocklyLoader.INSTANCE.getAllBlockLoaders().keySet().stream().filter(type -> type.extension() != null)
+				.forEach(this::addEditTemplatesPanel);
+
+		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
+	}
+
+	public void addEditTemplatesPanel(BlocklyEditorType type) {
+		addEditTemplatesPanel(type.registryName() + "_templates", "templates/" + type.extension(), type.extension());
+	}
+
+	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey),
+				folder, extension);
 	}
 
 	private void createPreferenceSection(String section) {
