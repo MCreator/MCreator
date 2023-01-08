@@ -329,9 +329,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.coverage_estimate")));
 		spawnproperties.add(PanelUtils.centerInPanel(coverageEstimate));
 
-		spawnproperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_temperature"),
-						L10N.label("elementgui.biome.gen_temperature")));
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_temperature"),
+				L10N.label("elementgui.biome.gen_temperature")));
 		spawnproperties.add(genTemperature);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_humidity"),
@@ -350,11 +349,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.gen_weirdness")));
 		spawnproperties.add(genWeirdness);
 
-		genTemperature.addChangeListener(e-> estimateGenCoverage());
-		genHumidity.addChangeListener(e-> estimateGenCoverage());
-		genContinentalness.addChangeListener(e-> estimateGenCoverage());
-		genErosion.addChangeListener(e-> estimateGenCoverage());
-		genWeirdness.addChangeListener(e-> estimateGenCoverage());
+		genTemperature.addChangeListener(e -> estimateGenCoverage());
+		genHumidity.addChangeListener(e -> estimateGenCoverage());
+		genContinentalness.addChangeListener(e -> estimateGenCoverage());
+		genErosion.addChangeListener(e -> estimateGenCoverage());
+		genWeirdness.addChangeListener(e -> estimateGenCoverage());
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
@@ -603,14 +602,21 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	private void estimateGenCoverage() {
-		double temperatureCoverage = (Math.min(genTemperature.getMaxValue(), 1.0) - Math.max(genTemperature.getMinValue(), -1.0)) / 2.0;
-		double humidityCoverage = (Math.min(genHumidity.getMaxValue(), 1.0) - Math.max(genHumidity.getMinValue(), -1.0)) / 2.0;
-		double continentalnessCoverage = (Math.min(genContinentalness.getMaxValue(), 1.0) - Math.max(genContinentalness.getMinValue(), -1.0)) / 2.0;
-		double erosionCoverage = (Math.min(genErosion.getMaxValue(), 1.0) - Math.max(genErosion.getMinValue(), -1.0)) / 2.0;
-		double weirdnessCoverage = (Math.min(genWeirdness.getMaxValue(), 1.0) - Math.max(genWeirdness.getMinValue(), -1.0)) / 2.0;
+		double temperatureCoverage =
+				(Math.min(genTemperature.getMaxValue(), 1.0) - Math.max(genTemperature.getMinValue(), -1.0)) / 2.0;
+		double humidityCoverage =
+				(Math.min(genHumidity.getMaxValue(), 1.0) - Math.max(genHumidity.getMinValue(), -1.0)) / 2.0;
+		double continentalnessCoverage =
+				(Math.min(genContinentalness.getMaxValue(), 1.0) - Math.max(genContinentalness.getMinValue(), -1.0))
+						/ 2.0;
+		double erosionCoverage =
+				(Math.min(genErosion.getMaxValue(), 1.0) - Math.max(genErosion.getMinValue(), -1.0)) / 2.0;
+		double weirdnessCoverage =
+				(Math.min(genWeirdness.getMaxValue(), 1.0) - Math.max(genWeirdness.getMinValue(), -1.0)) / 2.0;
 
-		double totalCoverage = temperatureCoverage * humidityCoverage * continentalnessCoverage * erosionCoverage
-				* weirdnessCoverage * 100.0;
+		double totalCoverage =
+				temperatureCoverage * humidityCoverage * continentalnessCoverage * erosionCoverage * weirdnessCoverage
+						* 100.0;
 
 		if (totalCoverage >= 99.999) {
 			totalCoverage = 99.999;
@@ -843,7 +849,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		biome.genTemperature = new Biome.ClimatePoint(genTemperature.getMinValue(), genTemperature.getMaxValue());
 		biome.genHumidity = new Biome.ClimatePoint(genHumidity.getMinValue(), genHumidity.getMaxValue());
-		biome.genContinentalness = new Biome.ClimatePoint(genContinentalness.getMinValue(), genContinentalness.getMaxValue());
+		biome.genContinentalness = new Biome.ClimatePoint(genContinentalness.getMinValue(),
+				genContinentalness.getMaxValue());
 		biome.genErosion = new Biome.ClimatePoint(genErosion.getMinValue(), genErosion.getMaxValue());
 		biome.genWeirdness = new Biome.ClimatePoint(genWeirdness.getMinValue(), genWeirdness.getMaxValue());
 

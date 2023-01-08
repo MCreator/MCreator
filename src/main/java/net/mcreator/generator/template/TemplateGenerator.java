@@ -82,8 +82,7 @@ public class TemplateGenerator {
 
 	public String generateListItemFromTemplate(Object item, int itemIndex, GeneratableElement element,
 			String templateName, Map<String, Object> dataModel, String fixedVariables,
-			@Nullable IAdditionalTemplateDataProvider provider)
-			throws TemplateGeneratorException {
+			@Nullable IAdditionalTemplateDataProvider provider) throws TemplateGeneratorException {
 		dataModel.putAll(baseDataModelProvider.provide());
 
 		extractVariables(fixedVariables, dataModel);
@@ -149,8 +148,8 @@ public class TemplateGenerator {
 	/**
 	 * Load any hardcoded variables from template definition into dataModel
 	 *
-	 * @param variables 		Variables string from YAML definition to load into the model
-	 * @param dataModel         Data model to place variables into
+	 * @param variables Variables string from YAML definition to load into the model
+	 * @param dataModel Data model to place variables into
 	 */
 	private void extractVariables(@Nullable String variables, Map<String, Object> dataModel) {
 		if (variables != null) {

@@ -80,7 +80,7 @@ public class ConverterRegistry {
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
 				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
-						new GUIComponentNamer(),new SlotInteractionsConverter()));
+						new GUIComponentNamer(), new SlotInteractionsConverter()));
 		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
 				new GUIComponentNamer()));

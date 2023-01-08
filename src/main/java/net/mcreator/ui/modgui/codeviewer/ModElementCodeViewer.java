@@ -70,19 +70,16 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		// we group list templates inside separate tabs to improve UX
 		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
-		modElementGUI.getModElement().getGenerator()
-				.getModElementListTemplates(modElementGUI.getElementFromGUI()).stream()
-				.map(GeneratorTemplatesList::groupName).forEach(listName -> {
+		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
+				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
 					JTabbedPane listPane = new JTabbedPane(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
 					listPane.setUI(new MetalTabbedPaneUI() {
 						private final Insets borderInsets = new Insets(0, 0, 0, 0);
 
-						@Override
-						protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+						@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 						}
 
-						@Override
-						protected Insets getContentBorderInsets(int tabPlacement) {
+						@Override protected Insets getContentBorderInsets(int tabPlacement) {
 							return borderInsets;
 						}
 					});

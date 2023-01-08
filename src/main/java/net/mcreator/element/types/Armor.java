@@ -221,7 +221,7 @@ import java.util.*;
 			case "body" -> bodyItemCustomModelName.split(":")[0];
 			case "leggings" -> leggingsItemCustomModelName.split(":")[0];
 			case "boots" -> bootsItemCustomModelName.split(":")[0];
-			default -> null;
+			default -> "";
 		};
 	}
 
@@ -235,7 +235,7 @@ import java.util.*;
 		};
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return null;
+		return new HashMap<>();
 	}
 
 	public String getItemTextureFor(String part) {
@@ -249,35 +249,43 @@ import java.util.*;
 	}
 
 	public boolean hasHelmetNormalModel() {
-		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName().equals("Normal");
+		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName()
+				.equals("Normal");
 	}
 
 	public boolean hasHelmetToolModel() {
-		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName().equals("Tool");
+		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName()
+				.equals("Tool");
 	}
 
 	public boolean hasBodyNormalModel() {
-		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName().equals("Normal");
+		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName()
+				.equals("Normal");
 	}
 
 	public boolean hasBodyToolModel() {
-		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName().equals("Tool");
+		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName()
+				.equals("Tool");
 	}
 
 	public boolean hasLeggingsNormalModel() {
-		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName().equals("Normal");
+		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName()
+				.equals("Normal");
 	}
 
 	public boolean hasLeggingsToolModel() {
-		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName().equals("Tool");
+		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName()
+				.equals("Tool");
 	}
 
 	public boolean hasBootsNormalModel() {
-		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName().equals("Normal");
+		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName()
+				.equals("Normal");
 	}
 
 	public boolean hasBootsToolModel() {
-		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName().equals("Tool");
+		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName()
+				.equals("Tool");
 	}
 
 	public String getArmorModelsCode() {
