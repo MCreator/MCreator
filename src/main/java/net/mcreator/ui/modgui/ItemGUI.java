@@ -196,8 +196,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
 		destal2.setOpaque(false);
-		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
-		destal3.setOpaque(false);
 
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
