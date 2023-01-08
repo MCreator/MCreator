@@ -7,8 +7,8 @@ task cleanupPlugins(type: DefaultTask) {
 // export  all plugins
 file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
     tasks.create(name: 'export_plugin_' + it.getName().replace('.', ''), type: Zip) { task ->
-        task.archiveName = it.getName() + '.zip'
-        task.destinationDir = file('build/plugins/')
+        task.archiveFileName = it.getName() + '.zip'
+        task.destinationDirectory = file('build/plugins/')
         task.from 'plugins/' + it.getName()
         task.group "mcreatorplugins"
         task.mustRunAfter cleanupPlugins

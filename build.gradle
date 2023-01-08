@@ -132,11 +132,28 @@ javafx {
 test {
     useJUnitPlatform()
 
-    testLogging.showStandardStreams = true
-    testLogging.exceptionFormat = 'full'
-    maxHeapSize = "1024m"
-
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+
+    // default max heap is VM RAM / 4, which may be too low on low RAM VMs
+    maxHeapSize = "2048m"
+
+    testLogging {
+        // https://stackoverflow.com/a/48709645/1627085
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+
+        showCauses true
+        showStackTraces true
+        showExceptions true
+        exceptionFormat "full"
+
+        debug {
+            events "started", "failed", "passed", "skipped", "standard_error", "standard_out"
+            exceptionFormat "full"
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+    }
 }
 
 javadoc {
