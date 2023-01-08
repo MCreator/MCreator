@@ -245,7 +245,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		}
 	}
 
-	private void regenerateTrigger() {
+	private synchronized void regenerateTrigger() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER));
 
