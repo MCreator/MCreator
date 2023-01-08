@@ -184,8 +184,19 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
+				// Vertical anchors are tested with the "Height: At constant height" placement
+				case "VerticalAnchor" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+						</block></value><next><block type="placement_height_range">
+							<value name="height"><block type="height_provider_constant">
+								<value name="value">%s</value></block></value></block></next></block></xml>
+						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
-				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
+				case "HeightProvider" ->
+						feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->
 						feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
 				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
