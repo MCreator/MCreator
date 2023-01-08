@@ -59,12 +59,16 @@ import java.util.List;
 		return additionalData -> {
 			var blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()), additionalData)
-					.setTemplateExtension(this.getModElement().getGeneratorConfiguration()
-							.getGeneratorName().equals("forge-1.18.2") ? "java" : "json"); // 1.18 features are in Java
+					this.getModElement().getGenerator()
+							.getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()),
+					additionalData).setTemplateExtension(
+					this.getModElement().getGeneratorConfiguration().getGeneratorName().equals("forge-1.18.2") ?
+							"java" :
+							"json"); // 1.18 features are in Java
 
 			var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
-					this.featurexml, this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()),
+					this.featurexml, this.getModElement().getGenerator()
+					.getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
@@ -79,8 +83,8 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		if (hasGenerationConditions() || this.getModElement().getGeneratorConfiguration()
-				.getGeneratorName().equals("forge-1.18.2")) {
+		if (hasGenerationConditions() || this.getModElement().getGeneratorConfiguration().getGeneratorName()
+				.equals("forge-1.18.2")) {
 			return List.of(BaseType.FEATURE);
 		}
 		return Collections.emptyList();

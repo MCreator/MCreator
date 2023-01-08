@@ -38,21 +38,24 @@ public class SlotInteractionsConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		GUI gui = (GUI) input;
 		try {
-			JsonArray components = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("components").getAsJsonArray();
+			JsonArray components = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("components").getAsJsonArray();
 
 			if (components != null && !components.isEmpty()) {
 				components.forEach(c -> {
-					if (c.getAsJsonObject().get("type").getAsString().equals("inputslot") ||
-							c.getAsJsonObject().get("type").getAsString().equals("outputslot")) {
+					if (c.getAsJsonObject().get("type").getAsString().equals("inputslot") || c.getAsJsonObject()
+							.get("type").getAsString().equals("outputslot")) {
 						gui.components.forEach(component -> {
 							if (component instanceof Slot slot) {
 								if (slot.id == c.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsInt()) {
 									slot.disablePickup = new LogicProcedure(null,
-											c.getAsJsonObject().get("data").getAsJsonObject().get("disableStackInteraction").getAsBoolean());
+											c.getAsJsonObject().get("data").getAsJsonObject()
+													.get("disableStackInteraction").getAsBoolean());
 
 									if (slot instanceof InputSlot inputSlot) {
 										inputSlot.disablePlacement = new LogicProcedure(null,
-												c.getAsJsonObject().get("data").getAsJsonObject().get("disableStackInteraction").getAsBoolean());
+												c.getAsJsonObject().get("data").getAsJsonObject()
+														.get("disableStackInteraction").getAsBoolean());
 									}
 								}
 							}

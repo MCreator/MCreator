@@ -95,7 +95,8 @@ public class GeneratorStats {
 
 		// lazy load actual values
 		new Thread(() -> {
-			BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
+			BlocklyLoader.INSTANCE.getAllBlockLoaders()
+					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
 			addGlobalTriggerFolder(generatorConfiguration);
 		}).start();
 
@@ -163,8 +164,8 @@ public class GeneratorStats {
 						.collect(Collectors.toSet()));
 
 		coverageInfo.put("triggers", Math.min(
-				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
-						.size()) * 100, 100));
+				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
+						.getExternalTrigers().size()) * 100, 100));
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {

@@ -39,8 +39,8 @@ public class CustomElementGUI extends ModElementGUI<CustomElement> {
 
 		GeneratableElement generatableElement = new CustomElement(modElement);
 
-		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(generatableElement).stream()
-				.map(GeneratorTemplate::getFile).toList();
+		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
+				.stream().map(GeneratorTemplate::getFile).toList();
 
 		File modElementFile = modElementFiles.get(0);
 

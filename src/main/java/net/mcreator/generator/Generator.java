@@ -369,10 +369,11 @@ public class Generator implements IGenerator, Closeable {
 		return files;
 	}
 
-	public List<GeneratorTemplate> getGlobalTemplatesListForModElementType(ModElementType<?> type, boolean performFSTasks,
-			AtomicInteger templateID) {
-		return getGlobalTemplatesListForDefinition(generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type),
-				performFSTasks, templateID);
+	public List<GeneratorTemplate> getGlobalTemplatesListForModElementType(ModElementType<?> type,
+			boolean performFSTasks, AtomicInteger templateID) {
+		return getGlobalTemplatesListForDefinition(
+				generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type), performFSTasks,
+				templateID);
 	}
 
 	public List<GeneratorTemplate> getGlobalTemplatesListForDefinition(@Nullable Map<?, ?> map, boolean performFSTasks,
@@ -387,8 +388,8 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>();
 	}
 
-	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(@Nonnull List<?> templates, boolean performFSTasks,
-			AtomicInteger templateID) {
+	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(@Nonnull List<?> templates,
+			boolean performFSTasks, AtomicInteger templateID) {
 		Set<GeneratorTemplate> files = new HashSet<>();
 		for (Object template : templates) {
 			String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
@@ -497,7 +498,8 @@ public class Generator implements IGenerator, Closeable {
 					items = Collections.emptyList();
 				if (templates != null) {
 					for (Object template : templates) {
-						GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File((String) ((Map<?, ?>) template).get("name")),
+						GeneratorTemplate generatorTemplate = new GeneratorTemplate(
+								new File((String) ((Map<?, ?>) template).get("name")),
 								Integer.toString(templateID) + ((Map<?, ?>) template).get("template"),
 								(Map<?, ?>) template);
 

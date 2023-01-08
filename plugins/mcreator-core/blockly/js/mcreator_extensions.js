@@ -40,7 +40,7 @@ Blockly.Extensions.register('is_custom_loop',
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
-        mutationToDom: function() {
+        mutationToDom: function () {
             var container = document.createElement('mutation');
             var parentConnection = this.outputConnection.targetConnection;
             if (parentConnection == null)
@@ -54,7 +54,8 @@ Blockly.Extensions.registerMutator('mark_attached_to_block_item',
             }
         },
 
-        domToMutation: function(xmlElement) {}
+        domToMutation: function (xmlElement) {
+        }
     });
 
 // Mutator to add/remove entity input from get/set variable blocks for player variables
@@ -97,12 +98,12 @@ Blockly.Extensions.registerMutator('variable_entity_input',
 
 // Extension used by int providers to validate their min/max values, so that min can't be greater than max and vice versa
 Blockly.Extensions.register('min_max_fields_validator',
-    function() {
+    function () {
         var minField = this.getField('min');
         var maxField = this.getField('max');
 
         // If min > max, we set its value to that of max
-        minField.setValidator(function(newValue) {
+        minField.setValidator(function (newValue) {
             if (newValue > maxField.getValue()) {
                 return maxField.getValue();
             }
@@ -110,7 +111,7 @@ Blockly.Extensions.register('min_max_fields_validator',
         });
 
         // If max < min, we set its value to that of min
-        maxField.setValidator(function(newValue) {
+        maxField.setValidator(function (newValue) {
             if (newValue < minField.getValue()) {
                 return minField.getValue();
             }
@@ -149,8 +150,8 @@ function isIntProviderWithinBounds(providerBlock, min, max) {
 // The inputs to check and their bounds are passed as arrays of [inputName, min, max]
 // The localization key of warnings is "blockly.extension.block_type.input_name"
 function validateIntProviderInputs(...inputs) {
-    return function() {
-        this.setOnChange(function(changeEvent) {
+    return function () {
+        this.setOnChange(function (changeEvent) {
             // Trigger the change only if a block is changed, moved, deleted or created
             if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
                 changeEvent.type !== Blockly.Events.BLOCK_MOVE &&

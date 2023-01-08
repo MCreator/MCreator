@@ -27,14 +27,12 @@
 
 package net.mcreator.integration.generator;
 
-import com.google.gson.Gson;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -72,8 +70,9 @@ public class GTModElements {
 
 				workspace.getModElementManager().storeModElement(generatableElement);
 
-				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
-						.stream().map(GeneratorTemplate::getFile).toList();
+				List<File> modElementFiles = workspace.getGenerator()
+						.getModElementGeneratorTemplatesList(generatableElement).stream()
+						.map(GeneratorTemplate::getFile).toList();
 
 				// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
@@ -87,12 +86,12 @@ public class GTModElements {
 				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
 
 				// testing if all element files were properly deleted
-				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement).stream()
-						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
+						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
-					if (modElement
-							.equals(modElement1)) // if now ownership can still be found, this means some files were not properly removed
+					if (modElement.equals(
+							modElement1)) // if now ownership can still be found, this means some files were not properly removed
 						fail("Filed to properly delete file of mod element type: " + modElement.getType()
 								.getReadableName() + ", file: " + modElementFile);
 				}

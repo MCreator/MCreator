@@ -27,7 +27,6 @@ import net.mcreator.integration.TestSetup;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.dialogs.*;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;

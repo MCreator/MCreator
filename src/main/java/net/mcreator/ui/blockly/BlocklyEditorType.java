@@ -25,6 +25,7 @@ public record BlocklyEditorType(String registryName, String extension, String st
 	public static final BlocklyEditorType AI_TASK = new BlocklyEditorType("aitasks", "aitpl", "aitasks_container");
 	public static final BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmdargs", "cmdtpl", "args_start");
 	public static final BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
-	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null, "advancement_trigger");
+	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null,
+			"advancement_trigger");
 
 }
