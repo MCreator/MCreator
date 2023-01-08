@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
+import net.mcreator.generator.ListTemplate;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.UIRES;
@@ -68,10 +69,11 @@ class ModElementCodeDropdown extends JPopupMenu {
 					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
 					for (int i = 0; i < list.listData().size(); i++) {
-						if (!list.templates().get(i).isEmpty() && i > 0)
-							listMenu.addSeparator(); // separate files generated for different list items
+						List<ListTemplate> filesForCurrentItem = list.templates().get(i);
+						filesForCurrentItem.stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
 
-						list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
+						if (!filesForCurrentItem.isEmpty() && i <= list.listData().size() - 1)
+							listMenu.addSeparator(); // separate files generated for different list items
 					}
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
