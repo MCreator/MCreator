@@ -41,6 +41,13 @@ jobs:
           run: ./gradlew test
       - name: Test Javadoc Generation
         run: ./gradlew javadoc
+      - name: Publish Test Report
+        uses: Pylo/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          include_passed: true
+          detailed_summary: true
+          report_paths: '**/build/test-results/test/TEST-*.xml'
       - name: Prepare Gradle Cache
         run: |
           rm -f  ~/.mcreator/gradle/caches/modules-2/modules-2.lock
