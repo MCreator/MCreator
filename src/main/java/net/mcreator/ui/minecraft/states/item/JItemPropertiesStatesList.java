@@ -21,6 +21,8 @@ package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Item;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.StateEditorDialog;
@@ -43,7 +45,6 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
@@ -51,12 +52,21 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 	private final AtomicInteger propertyId = new AtomicInteger(0);
 
-	private final List<String> builtinPropertyNames = List.of("damaged", "damage", "lefthanded", "cooldown",
-			"custom_model_data");
+	private final List<String> builtinPropertyNames;
 	private final Map<String, PropertyData> builtinProperties = new LinkedHashMap<>();
 
-	private final JPanel propertyEntries = new JPanel(new GridLayout(0, 1, 5, 5));
-	private final JPanel stateEntries = new JPanel();
+	private final JPanel propertyEntries = new JPanel() {
+		@Override public void setEnabled(boolean enabled) {
+			super.setEnabled(enabled);
+			propertiesList.forEach(e -> e.setEnabled(enabled));
+		}
+	};
+	private final JPanel stateEntries = new JPanel() {
+		@Override public void setEnabled(boolean enabled) {
+			super.setEnabled(enabled);
+			statesList.forEach(e -> e.setEnabled(enabled));
+		}
+	};
 
 	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
 	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
@@ -64,33 +74,36 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
 
-		Function<String, PropertyData> builtinNumber = name -> new PropertyData(name, Float.class, 0F, 1F, null);
-		Function<String, PropertyData> builtinLogic = name -> new PropertyData(name, Boolean.class, null, null, null) {
-			@Override public Object getValueFromComponent(JComponent component) {
-				if (component instanceof JCheckBox check)
-					return check.isSelected() ? 1F : 0F;
-				return super.getValueFromComponent(component);
-			}
+		Map<String, DataListEntry> properties = DataListLoader.loadDataMap("itemproperties");
+		builtinPropertyNames = List.copyOf(properties.keySet());
+		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
+			if ("Number".equals(e.getType())) {
+				builtinProperties.put(e.getName(), new PropertyData(e.getName(), Float.class, 0F, 1F, null));
+			} else if ("Logic".equals(e.getType())) {
+				builtinProperties.put(e.getName(), new PropertyData(e.getName(), Boolean.class, null, null, null) {
+					@Override public Object getValueFromComponent(JComponent component) {
+						if (component instanceof JCheckBox check)
+							return check.isSelected() ? 1F : 0F;
+						return super.getValueFromComponent(component);
+					}
 
-			@Override public boolean setValueOfComponent(JComponent component, Object value) {
-				if (component instanceof JCheckBox check) {
-					check.setSelected(Float.parseFloat(value.toString()) == 1F);
-					check.setText(check.isSelected() ? "True" : "False");
-					return true;
-				}
-				return super.setValueOfComponent(component, value);
+					@Override public boolean setValueOfComponent(JComponent component, Object value) {
+						if (component instanceof JCheckBox check) {
+							check.setSelected(Float.parseFloat(value.toString()) == 1F);
+							check.setText(check.isSelected() ? "True" : "False");
+							return true;
+						}
+						return super.setValueOfComponent(component, value);
+					}
+				});
 			}
-		};
-
-		builtinProperties.put("damaged", builtinLogic.apply("damaged"));
-		builtinProperties.put("damage", builtinNumber.apply("damage"));
-		builtinProperties.put("lefthanded", builtinLogic.apply("lefthanded"));
-		builtinProperties.put("cooldown", builtinNumber.apply("cooldown"));
+		});
 
 		setOpaque(false);
+		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		propertyEntries.setOpaque(false);
-		stateEntries.setOpaque(false);
 		stateEntries.setLayout(new BoxLayout(stateEntries, BoxLayout.Y_AXIS));
+		stateEntries.setOpaque(false);
 
 		propertiesList = new ArrayList<>() {
 			@Override public boolean remove(Object o) {
@@ -153,8 +166,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setEnabled(enabled);
 		addState.setEnabled(enabled);
 
-		propertiesList.forEach(e -> e.setEnabled(enabled));
-		statesList.forEach(e -> e.setEnabled(enabled));
+		propertyEntries.setEnabled(enabled);
+		stateEntries.setEnabled(enabled);
 	}
 
 	public void reloadDataLists() {

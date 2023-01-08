@@ -1,0 +1,9 @@
+- damaged:
+  type: Logic
+- damage:
+  type: Number
+- lefthanded:
+  type: Logic
+- cooldown:
+  type: Number
+- custom_model_data
