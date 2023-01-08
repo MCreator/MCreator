@@ -94,3 +94,89 @@ Blockly.Extensions.registerMutator('variable_entity_input',
             }
         }
     });
+
+// Extension used by int providers to validate their min/max values, so that min can't be greater than max and vice versa
+Blockly.Extensions.register('min_max_fields_validator',
+    function() {
+        var minField = this.getField('min');
+        var maxField = this.getField('max');
+
+        // If min > max, we set its value to that of max
+        minField.setValidator(function(newValue) {
+            if (newValue > maxField.getValue()) {
+                return maxField.getValue();
+            }
+            return newValue;
+        });
+
+        // If max < min, we set its value to that of min
+        maxField.setValidator(function(newValue) {
+            if (newValue < minField.getValue()) {
+                return minField.getValue();
+            }
+            return newValue;
+        });
+    });
+
+// Helper function to check if the value of a given int provider is within a certain range
+function isIntProviderWithinBounds(providerBlock, min, max) {
+    // If the int provider block is missing, don't perform any validation
+    if (!providerBlock)
+        return true;
+
+    // Check the value of the constant int provider
+    if (providerBlock.type === 'int_provider_constant') {
+        let blockValue = providerBlock.getField('value').getValue();
+        return blockValue >= min && blockValue <= max;
+    }
+    // Check the values for the other "terminal" int providers
+    else if (providerBlock.type !== 'int_provider_clamped') {
+        let blockMin = providerBlock.getField('min').getValue();
+        let blockMax = providerBlock.getField('max').getValue();
+        return blockMin >= min && blockMax <= max;
+    }
+    // Check the values for the clamped int provider
+    else {
+        let blockMin = providerBlock.getField('min').getValue();
+        let blockMax = providerBlock.getField('max').getValue();
+        let clampedBlock = providerBlock.getInput('toClamp').connection.targetBlock();
+        // If the input block is being clamped within bounds, stop checking. Otherwise, check the input as well
+        return (blockMin >= min && blockMax <= max) || isIntProviderWithinBounds(clampedBlock, min, max);
+    }
+}
+
+// Helper function for extensions that validate one or more int provider inputs
+// The inputs to check and their bounds are passed as arrays of [inputName, min, max]
+// The localization key of warnings is "blockly.extension.block_type.input_name"
+function validateIntProviderInputs(...inputs) {
+    return function() {
+        this.setOnChange(function(changeEvent) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            var isValid = true;
+            // For each passed input, we check if it's within bounds
+            for (var i = 0; i < inputs.length; i++) {
+                var countValue = this.getInput(inputs[i][0]).connection.targetBlock();
+                isValid = isIntProviderWithinBounds(countValue, inputs[i][1], inputs[i][2]);
+                if (!isValid)
+                    break; // Stop checking as soon as one input isn't valid
+            }
+            if (!this.isInFlyout) {
+                // Add a warning for the first non-valid input
+                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.' + this.type + '.' + inputs[i][0]));
+                const group = Blockly.Events.getGroup();
+                // Makes it so the block change and the disable event get undone together.
+                Blockly.Events.setGroup(changeEvent.group);
+                this.setEnabled(isValid);
+                Blockly.Events.setGroup(group);
+            }
+        });
+    };
+}
+
+Blockly.Extensions.register('count_placement_validator', validateIntProviderInputs(['count', 0, 256]));
