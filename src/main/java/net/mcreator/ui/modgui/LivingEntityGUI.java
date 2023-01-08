@@ -261,7 +261,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
-	private synchronized void regenerateAITasks() {
+	private void regenerateAITasks() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
 

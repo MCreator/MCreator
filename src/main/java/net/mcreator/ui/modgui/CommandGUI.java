@@ -125,7 +125,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 		}
 	}
 
-	private synchronized void regenerateArgs() {
+	private void regenerateArgs() {
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,

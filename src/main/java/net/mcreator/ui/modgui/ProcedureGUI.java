@@ -103,7 +103,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		super.finalizeGUI(false);
 	}
 
-	private synchronized void regenerateProcedure() {
+	private void regenerateProcedure() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE));
 		BlocklyToProcedure blocklyToJava;

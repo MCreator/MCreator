@@ -143,7 +143,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		addPage(page1);
 	}
 
-	private synchronized void regenerateFeature() {
+	private void regenerateFeature() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 
