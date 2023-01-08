@@ -169,7 +169,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
-		customProperties.setPreferredSize(getPreferredSize());
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -187,7 +186,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
-		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
@@ -229,18 +227,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rent.add(PanelUtils.join(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
+
+		renderType.setPreferredSize(new Dimension(350, 42));
+		renderType.setRenderer(new ModelComboBoxRenderer());
+
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		destal2.add("North", PanelUtils.totalCenterInPanel(
 				PanelUtils.join(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
-
-		renderType.setPreferredSize(new Dimension(350, 42));
-		renderType.setRenderer(new ModelComboBoxRenderer());
-
-		cipp.setOpaque(false);
-		cipp.add("Center", customProperties);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -421,7 +417,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.item.page_models"), cipp);
+		addPage(L10N.t("elementgui.item.page_models"), customProperties);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);

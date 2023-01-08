@@ -155,9 +155,12 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				L10N.t("elementgui.item.custom_states.title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
+		JComponent merger = PanelUtils.gridElements(1, 0, left, right);
+		merger.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
 		add("North", PanelUtils.centerInPanel(
 				HelpUtils.wrapWithHelpButton(gui.withEntry("common/custom_states"), topbar, SwingConstants.LEFT)));
-		add("Center", PanelUtils.gridElements(1, 0, left, right));
+		add("Center", merger);
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -188,6 +191,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		name.enableRealtimeValidation();
 		name.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
+				if (!name.isEnabled())
+					return;
+
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
 						&& pe.getValidationStatus() == Validator.ValidationResult.PASSED) {
 					String newName = name.getText();
