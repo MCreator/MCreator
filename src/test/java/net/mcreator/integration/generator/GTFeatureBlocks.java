@@ -95,7 +95,8 @@ public class GTFeatureBlocks {
 				}
 
 				if (!templatesDefined && !Arrays.asList(specialCases).contains(featureBlock.machine_name)) {
-					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: " + featureBlock.machine_name);
+					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
+							+ featureBlock.machine_name);
 					continue;
 				}
 			}
@@ -203,8 +204,7 @@ public class GTFeatureBlocks {
 								<value name="value">%s</value></block></value></block></next></block></xml>
 						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
-				case "HeightProvider" ->
-						feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
+				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->
 						feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
 				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
