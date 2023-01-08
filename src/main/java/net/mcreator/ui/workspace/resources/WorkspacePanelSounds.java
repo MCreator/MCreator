@@ -104,7 +104,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(a->delCurrentSelected(workspacePanel, soundElementList));
+		del.addActionListener(a-> deleteSelectedSound(workspacePanel, soundElementList));
 
 		JButton play = L10N.button("workspace.sounds.play_selected");
 		play.setIcon(UIRES.get("16px.play"));
@@ -135,7 +135,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		soundElementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				switch (e.getKeyCode()){
-					case KeyEvent.VK_DELETE -> delCurrentSelected(workspacePanel, soundElementList);
+					case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
 					//play or edit?
 					case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
 					//maybe I can add more keys? I don't have ideas.
@@ -149,7 +149,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 	}
 
-	private void delCurrentSelected(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
+	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
 		List<SoundElement> file = soundElementList.getSelectedValuesList();
 		if (file.size() > 0) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),

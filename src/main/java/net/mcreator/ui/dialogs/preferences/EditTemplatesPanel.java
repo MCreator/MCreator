@@ -29,7 +29,6 @@ import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -71,12 +70,12 @@ class EditTemplatesPanel {
 		openFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
-		remove.addActionListener(a-> delCurrentSelected(templatesFolder, tmodel, templates));
+		remove.addActionListener(a-> deleteCurrentlySelected(templatesFolder, tmodel, templates));
 
 		templates.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE){
-					delCurrentSelected(templatesFolder, tmodel, templates);
+					deleteCurrentlySelected(templatesFolder, tmodel, templates);
 				}
 			}
 		});
@@ -104,7 +103,7 @@ class EditTemplatesPanel {
 		preferencesDialog.preferences.add(sectionPanel, name);
 	}
 
-	private void delCurrentSelected(String templatesFolder, DefaultListModel<String> tmodel, JList<String> templates) {
+	private void deleteCurrentlySelected(String templatesFolder, DefaultListModel<String> tmodel, JList<String> templates) {
 		templates.getSelectedValuesList().forEach(el -> {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
 			tmodel.removeElement(el);

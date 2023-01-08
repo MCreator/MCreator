@@ -246,12 +246,12 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			}
 		});
 
-		delvar.addActionListener(a-> delCurrentSelected(workspacePanel));
+		delvar.addActionListener(a-> deleteCurrentlySelected(workspacePanel));
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					delCurrentSelected(workspacePanel);
+					deleteCurrentlySelected(workspacePanel);
 				}
 			}
 		});
@@ -290,7 +290,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 	}
 
-	private void delCurrentSelected(WorkspacePanel workspacePanel) {
+	private void deleteCurrentlySelected(WorkspacePanel workspacePanel) {
 		if (elements.getSelectedRow() == -1)
 			return;
 
