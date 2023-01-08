@@ -1,10 +1,10 @@
-var global_variables = [];
+let global_variables = [];
 
 Blockly.HSV_SATURATION = 0.37;
 Blockly.HSV_VALUE = 0.6;
 
-var blockly = document.getElementById('blockly');
-var workspace = Blockly.inject(blockly, {
+const blockly = document.getElementById('blockly');
+const workspace = Blockly.inject(blockly, {
     media: 'res/',
     oneBasedIndex: false,
     sounds: false,
@@ -47,7 +47,7 @@ Blockly.Variables.allUsedVarModels = function () {
 };
 
 function getVariablesOfType(type) {
-    var retval = [];
+    let retval = [];
 
     workspace.getVariableMap().getAllVariables().forEach(function (v) {
         if (v.type === type)
@@ -66,7 +66,7 @@ function getVariablesOfType(type) {
 }
 
 function getSerializedLocalVariables() {
-    var retval = "";
+    let retval = "";
     workspace.getVariableMap().getAllVariables().forEach(function (v, index, array) {
         retval += ((v.name + ";" + v.type) + (index < array.length - 1 ? ":" : ""));
     });
@@ -74,7 +74,7 @@ function getSerializedLocalVariables() {
 }
 
 function arrayToBlocklyDropDownArray(arrorig) {
-    var retval = [];
+    let retval = [];
     arrorig.forEach(function (element) {
         retval.push(["" + element, "" + element]);
     });
@@ -82,8 +82,8 @@ function arrayToBlocklyDropDownArray(arrorig) {
 }
 
 function jsonToBlocklyDropDownArray(json) {
-    var map = JSON.parse(json);
-    var retval = [];
+    let map = JSON.parse(json);
+    let retval = [];
     Object.keys(map).forEach(function (key) {
         retval.push(["" + map[key], "" + key]);
     });
@@ -92,7 +92,7 @@ function jsonToBlocklyDropDownArray(json) {
 
 // Helper function to use in Blockly extensions that append a dropdown
 function appendDropDown(listType, fieldName) {
-    return function() {
+    return function () {
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(
             arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
     };
@@ -100,9 +100,28 @@ function appendDropDown(listType, fieldName) {
 
 // Helper function to use in Blockly extensions that append a message and a dropdown
 function appendDropDownWithMessage(messageKey, listType, fieldName) {
-    return function() {
+    return function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.extension." + messageKey))
             .appendField(new Blockly.FieldDropdown(
                 arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
     };
+}
+
+// A function to properly convert workspace to XML (google/blockly#6738)
+function workspaceToXML() {
+    const treeXml = Blockly.Xml.workspaceToDom(workspace, true);
+
+    // Remove variables child if present
+    const variablesElements = treeXml.getElementsByTagName("variables");
+    for (const varEl of variablesElements) {
+        treeXml.removeChild(varEl);
+    }
+
+    // Add variables child on top of DOM
+    const variablesElement = Blockly.Xml.variablesToDom(workspace.getAllVariables());
+    if (variablesElement.hasChildNodes()) {
+        treeXml.prepend(variablesElement);
+    }
+
+    return Blockly.Xml.domToText(treeXml);
 }

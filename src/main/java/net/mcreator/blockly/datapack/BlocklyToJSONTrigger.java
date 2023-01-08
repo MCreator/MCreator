@@ -26,6 +26,7 @@ import net.mcreator.blockly.datapack.blocks.MCItemBlock;
 import net.mcreator.blockly.datapack.blocks.NumberBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -54,7 +55,7 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 	public BlocklyToJSONTrigger(Workspace workspace, ModElement parent, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
-		super(workspace, parent, templateGenerator, externalGenerators);
+		super(workspace, parent, BlocklyEditorType.JSON_TRIGGER, templateGenerator, externalGenerators);
 
 		blockGenerators.add(new NumberBlock());
 		blockGenerators.add(new MCItemBlock());
@@ -79,7 +80,7 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 					List<Element> children = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block_candidate);
 					if (children.size() == 1) {
-						if (children.get(0).getAttribute("type").equals("advancement_trigger")) {
+						if (children.get(0).getAttribute("type").equals(editorType.startBlockName())) {
 							start_block = start_block_candidate;
 						}
 					}
@@ -87,7 +88,7 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 				if (start_block != null) {
 					String type = start_block.getAttribute("type");
-					if (!type.equals("advancement_trigger")) {
+					if (!type.equals(editorType.startBlockName())) {
 						hasTrigger = true;
 						processBlockProcedure(Collections.singletonList(start_block));
 					}

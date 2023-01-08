@@ -32,6 +32,7 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -140,12 +141,13 @@ public class Procedure extends GeneratableElement {
 	public BlocklyToProcedure getBlocklyToProcedure(Map<String, Object> additionalData)
 			throws TemplateGeneratorException {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-				BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks(),
-				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
+				BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks(),
+				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.registryName()),
+				additionalData);
 
 		// load BlocklyToProcedure with custom generators loaded
 		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.getModElement(), this.procedurexml,
-				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
+				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.registryName()),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 	}

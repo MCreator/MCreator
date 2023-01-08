@@ -35,7 +35,7 @@ public class GeneratorTemplate {
 	private final Map<String, Object> dataModel = new HashMap<>();
 
 	/**
-	 * @param file File where this GeneratorTemplate should be generated into
+	 * @param file               File where this GeneratorTemplate should be generated into
 	 * @param templateIdentifier String that is equal for all GeneratorTemplate generated for the same template entry in element definition
 	 * @param templateDefinition Map defining the template properties that generator uses
 	 */
@@ -96,7 +96,8 @@ public class GeneratorTemplate {
 			operator = TemplateExpressionParser.Operator.OR;
 		}
 
-		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw, conditionData, operator);
+		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw, conditionData,
+				operator);
 	}
 
 	@Override public boolean equals(Object o) {

@@ -29,7 +29,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 
 public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, LogicProcedure> {
 
@@ -57,8 +56,7 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 			fixedValue.setBorderPainted(true);
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 5, 1, 5, this.getBackground()),
-					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())
-			));
+					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
 		}
 	}
 
