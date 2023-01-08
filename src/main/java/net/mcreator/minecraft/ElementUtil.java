@@ -57,16 +57,15 @@ public class ElementUtil {
 	 *
 	 * <p>NOTE: custom entries cannot specify a type yet, so the type filter will remove any custom entry</p>
 	 *
-	 * @param workspace The current workspace
-	 * @param dataList The datalist from which to load the entries
-	 * @param sorted Whether the list should be sorted alphabetically
-	 * @param typeFilter If present, only entries whose type matches this parameter are loaded
+	 * @param workspace            The current workspace
+	 * @param dataList             The datalist from which to load the entries
+	 * @param sorted               Whether the list should be sorted alphabetically
+	 * @param typeFilter           If present, only entries whose type matches this parameter are loaded
 	 * @param customEntryProviders The string id of the mod element types that provide custom entries
-	 *
 	 * @return All entries from the given data list and the given mod element types, matching the optional filter
 	 */
-	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList,
-			boolean sorted, @Nullable String typeFilter, @Nullable String... customEntryProviders) {
+	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList, boolean sorted,
+			@Nullable String typeFilter, @Nullable String... customEntryProviders) {
 		List<DataListEntry> retval = new ArrayList<>();
 
 		// We add custom entries before normal ones, so that they are on top even if the list isn't sorted

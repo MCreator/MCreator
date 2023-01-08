@@ -2,11 +2,9 @@ templates:
   - template: block/block.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
   - template: block/oregen.java.ftl
-    deleteWhenConditionFalse: true
     condition: doesGenerateInWorld()
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/ores/@NAMEFeature.java"
   - template: block/blockentity.java.ftl
-    deleteWhenConditionFalse: true
     condition: hasInventory
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
@@ -83,13 +81,11 @@ templates:
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_model_tbs.json.ftl
     variables: "model=inner_stairs"
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Stairs"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_inner.json"
   - template: json/block_model_tbs.json.ftl
     variables: "model=outer_stairs"
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Stairs"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_outer.json"
@@ -109,13 +105,11 @@ templates:
     variables: "model=fence_side;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Fence"
     writer: json
     variables: "model=fence_post;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_post.json"
   - template: json/block.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Fence"
     writer: json
     variables: "model=fence_inventory;txname=texture"
@@ -141,13 +135,11 @@ templates:
     variables: "model=template_wall_side_tall;txname=wall"
     name: "@MODASSETSROOT/models/block/@registryname_side_tall.json"
   - template: json/block.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Wall"
     writer: json
     variables: "model=template_wall_post;txname=wall"
     name: "@MODASSETSROOT/models/block/@registryname_post.json"
   - template: json/block.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Wall"
     writer: json
     variables: "model=wall_inventory;txname=wall"
@@ -168,13 +160,11 @@ templates:
     variables: "model=slab"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_model_tbs.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Slab"
     writer: json
     variables: "model=slab_top"
     name: "@MODASSETSROOT/models/block/@registryname_top.json"
   - template: json/block_model_tbs.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Slab"
     writer: json
     variables: "model=cube_bottom_top"
@@ -195,13 +185,11 @@ templates:
     variables: "model=template_orientable_trapdoor_bottom;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= TrapDoor"
     writer: json
     variables: "model=template_orientable_trapdoor_top;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_top.json"
   - template: json/block.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= TrapDoor"
     writer: json
     variables: "model=template_orientable_trapdoor_open;txname=texture"
@@ -302,17 +290,14 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/txblock/fence_gate_open.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= FenceGate"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_open.json"
   - template: json/txblock/fence_gate_wall.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= FenceGate"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_wall.json"
   - template: json/txblock/fence_gate_wall_open.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= FenceGate"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_wall_open.json"
@@ -345,7 +330,6 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/txblock/pressure_plate_down.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= PressurePlate"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_down.json"
@@ -364,12 +348,10 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/txblock/button_pressed.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Button"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_pressed.json"
   - template: json/txblock/button_inventory.json.ftl
-    deleteWhenConditionFalse: true
     condition: "blockBase %= Button"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
@@ -383,23 +365,19 @@ global_templates:
     writer: json
     variables: "type=pickaxe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/pickaxe.json"
-    deleteWhenConditionFalse: true
     condition: ${w.hasBlocksMineableWith('pickaxe')}
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=axe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/axe.json"
-    deleteWhenConditionFalse: true
     condition: ${w.hasBlocksMineableWith('axe')}
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=shovel"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/shovel.json"
-    deleteWhenConditionFalse: true
     condition: ${w.hasBlocksMineableWith('shovel')}
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=hoe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
-    deleteWhenConditionFalse: true
     condition: ${w.hasBlocksMineableWith('hoe')}

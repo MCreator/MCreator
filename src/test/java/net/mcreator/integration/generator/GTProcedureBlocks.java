@@ -33,6 +33,7 @@ import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -55,10 +56,10 @@ public class GTProcedureBlocks {
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorProcedures();
+		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE);
 
-		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
-				.values()) {
+		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
+				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip procedure blocks not supported by this generator
@@ -186,7 +187,8 @@ public class GTProcedureBlocks {
 									String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 
 									JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
-									String customEntryProviders = optCustomEntryProviders == null ? null :
+									String customEntryProviders = optCustomEntryProviders == null ?
+											null :
 											optCustomEntryProviders.getAsString();
 
 									String[] values = getDataListFieldValues(workspace, type, typeFilter,
@@ -357,12 +359,12 @@ public class GTProcedureBlocks {
 					break;
 				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
 					procedure.procedurexml = wrapWithBaseTestXML("""
-						<block type="projectile_shoot_from_entity">
-							<value name="projectile">%s</value>
-							<value name="entity"><block type="entity_from_deps"></block></value>
-							<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
-							<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
-						</block>""".formatted(testXML));
+							<block type="projectile_shoot_from_entity">
+								<value name="projectile">%s</value>
+								<value name="entity"><block type="entity_from_deps"></block></value>
+								<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
+								<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
+							</block>""".formatted(testXML));
 					break;
 				default:
 					procedure.procedurexml = wrapWithBaseTestXML(
@@ -405,18 +407,21 @@ public class GTProcedureBlocks {
 	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
 			String customEntryProviders) {
 		switch (datalist) {
-		case "entity": return ElementUtil.loadAllEntities(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "spawnableEntity": return ElementUtil.loadAllSpawnableEntities(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "biome": return ElementUtil.loadAllBiomes(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "sound": return ElementUtil.getAllSounds(workspace);
-		case "procedure": return workspace.getModElements()
-				.stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-				.map(ModElement::getName).toArray(String[]::new);
-		case "arrowProjectile": return ElementUtil.loadArrowProjectiles(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "entity":
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "spawnableEntity":
+			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "biome":
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "sound":
+			return ElementUtil.getAllSounds(workspace);
+		case "procedure":
+			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+					.map(ModElement::getName).toArray(String[]::new);
+		case "arrowProjectile":
+			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		default: {
 			if (datalist.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -425,11 +430,11 @@ public class GTProcedureBlocks {
 			}
 			if (!DataListLoader.loadDataList(datalist).isEmpty()) {
 				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
-								StringUtils.split(customEntryProviders, ','))
-						.stream().map(DataListEntry::getName).toArray(String[]::new);
+								StringUtils.split(customEntryProviders, ',')).stream().map(DataListEntry::getName)
+						.toArray(String[]::new);
 			}
 		}
 		}
-		return new String[]{""};
+		return new String[] { "" };
 	}
 }
