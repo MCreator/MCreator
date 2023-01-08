@@ -35,16 +35,13 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTFeatureBlocks {
-	private static final String[] specialCases = {"block_predicate_not", "int_provider_clamped"};
+	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FEATURE)
@@ -94,7 +91,7 @@ public class GTFeatureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined && !Arrays.asList(specialCases).contains(featureBlock.machine_name)) {
+				if (!templatesDefined && !specialCases.contains(featureBlock.machine_name)) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
 							+ featureBlock.machine_name);
 					continue;
