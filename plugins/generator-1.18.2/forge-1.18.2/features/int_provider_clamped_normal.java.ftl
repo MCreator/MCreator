@@ -1,0 +1,1 @@
+ClampedNormalInt.of(${field$mean}, ${field$deviation}, ${field$min}, ${field$max})

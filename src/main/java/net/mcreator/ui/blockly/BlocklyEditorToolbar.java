@@ -71,8 +71,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			ProcedureGUI procedureGUI) {
 		setBorder(null);
 
-		List<ResourcePointer> templates =
-				TemplatesLoader.loadTemplates(blocklyEditorType.extension(), blocklyEditorType.extension());
+		List<ResourcePointer> templates = TemplatesLoader.loadTemplates(blocklyEditorType.extension(),
+				blocklyEditorType.extension());
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
 
@@ -126,16 +126,16 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 						Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks()
-								.values()) {
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
+								.getDefinedBlocks().values()) {
 							if (block.getName().toLowerCase(Locale.ENGLISH)
 									.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
 								filtered.add(block);
 							}
 						}
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks()
-								.values()) {
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
+								.getDefinedBlocks().values()) {
 							for (String keyWord : keyWords) {
 								if (block.getName().toLowerCase(Locale.ENGLISH)
 										.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (block.toolboxCategory != null
@@ -209,10 +209,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.registryName()
-									+ ".export_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.registryName()
-									+ ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".export_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".export_failed.title"),
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -245,10 +244,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.registryName()
-									+ ".import_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.registryName()
-									+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".import_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".import_failed.title"),
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

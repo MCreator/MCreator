@@ -83,14 +83,16 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 		JCheckBox dropItemsWhenNotBound = L10N.checkbox("dialog.gui.slot_drop_item_when_gui_closed");
 		options.add(PanelUtils.join(FlowLayout.LEFT, dropItemsWhenNotBound));
 
-		LogicProcedureSelector disablePickup = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_pickup_condition"),
-				editor.mcreator, L10N.t("dialog.gui.disable_pickup"), ProcedureSelector.Side.BOTH,
+		LogicProcedureSelector disablePickup = new LogicProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/slot_pickup_condition"), editor.mcreator,
+				L10N.t("dialog.gui.disable_pickup"), ProcedureSelector.Side.BOTH,
 				L10N.checkbox("condition.common.disable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		disablePickup.refreshList();
 
-		LogicProcedureSelector disablePlacement = new LogicProcedureSelector(IHelpContext.NONE.withEntry("gui/slot_placement_condition"),
-				editor.mcreator, L10N.t("dialog.gui.disable_placement"), ProcedureSelector.Side.BOTH,
+		LogicProcedureSelector disablePlacement = new LogicProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/slot_placement_condition"), editor.mcreator,
+				L10N.t("dialog.gui.disable_placement"), ProcedureSelector.Side.BOTH,
 				L10N.checkbox("condition.common.disable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map"));
 		disablePlacement.refreshList();
@@ -160,7 +162,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 				if (slot == null) {
 					editor.guiType.setSelectedIndex(1);
 
-					InputSlot component = new InputSlot(slotIDnum,0, 0,
+					InputSlot component = new InputSlot(slotIDnum, 0, 0,
 							color.getColor().equals(Color.white) ? null : color.getColor(),
 							disablePickup.getSelectedProcedure(), disablePlacement.getSelectedProcedure(),
 							dropItemsWhenNotBound.isSelected(), eh.getSelectedProcedure(), eh2.getSelectedProcedure(),

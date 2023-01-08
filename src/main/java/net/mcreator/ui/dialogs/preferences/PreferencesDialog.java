@@ -193,8 +193,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey),
-				folder, extension);
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey), folder, extension);
 	}
 
 	private void createPreferencesPanel(Field sectionField) {

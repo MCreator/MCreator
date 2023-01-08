@@ -53,8 +53,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			}
 		});
 
-		StringProcedureSelector labelText = new StringProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/label_text"), editor.mcreator, textField,
+		StringProcedureSelector labelText = new StringProcedureSelector(IHelpContext.NONE.withEntry("gui/label_text"),
+				editor.mcreator, textField,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		labelText.refreshList();
 
@@ -112,7 +112,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
 
-				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
+				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(),
+						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
 				editor.editor.addComponent(component);

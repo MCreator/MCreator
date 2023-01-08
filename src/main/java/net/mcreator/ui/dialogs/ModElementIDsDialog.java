@@ -101,7 +101,8 @@ public class ModElementIDsDialog {
 
 			modElement.setRegistryName(registryName.getText()); // set new registry name
 
-			mcreator.getGenerator().generateElement(generatableElement); // regenerate mod element code to use new registry name
+			mcreator.getGenerator()
+					.generateElement(generatableElement); // regenerate mod element code to use new registry name
 
 			if (regenerateCode) {
 				mcreator.actionRegistry.regenerateCode.doAction();

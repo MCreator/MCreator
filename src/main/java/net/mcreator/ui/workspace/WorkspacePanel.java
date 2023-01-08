@@ -1219,10 +1219,12 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu.getGeneratableElement());
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
+				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
-		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu.getGeneratableElement());
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
+				.getModElementListTemplates(mu.getGeneratableElement());
 
 		if (mu.getGeneratableElement() instanceof ICommonType) {
 			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();

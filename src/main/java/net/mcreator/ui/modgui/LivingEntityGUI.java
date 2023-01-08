@@ -19,7 +19,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.*;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.Dependency;
+import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -236,8 +239,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private boolean disableMobModelCheckBoxListener = false;
 
-	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-			.getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
+	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator()
+			.getGeneratorConfiguration().getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
 			.get("unmodifiable_ai_bases");
 
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -248,14 +251,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private void setDefaultAISet() {
 		blocklyPanel.setXML("""
-			<xml xmlns="https://developers.google.com/blockly/xml">
-			<block type="aitasks_container" deletable="false" x="40" y="40"><next>
-			<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition"/><next>
-			<block type="wander"><field name="speed">1</field><field name="condition"/><next>
-			<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition"/><next>
-			<block type="look_around"><field name="condition"/><next>
-			<block type="swim_in_water"/><field name="condition"/></next>
-			</block></next></block></next></block></next></block></next></block></xml>""");
+				<xml xmlns="https://developers.google.com/blockly/xml">
+				<block type="aitasks_container" deletable="false" x="40" y="40"><next>
+				<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition"/><next>
+				<block type="wander"><field name="speed">1</field><field name="condition"/><next>
+				<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition"/><next>
+				<block type="look_around"><field name="condition"/><next>
+				<block type="swim_in_water"/><field name="condition"/></next>
+				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
 	private synchronized void regenerateAITasks() {
@@ -651,7 +654,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		aitop.add(PanelUtils.join(FlowLayout.LEFT, new JEmptyBox(5, 5),
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/base"),
-				L10N.label("elementgui.living_entity.mob_base")), aiBase));
+						L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> {
@@ -665,8 +668,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		aitopoveral.add("West", aitop);
 
 		aitopoveral.add("Center", PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-				rangedItemType, rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged), rangedItemType,
+				rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
 
 		rangedAttackItem.setEnabled(false);
 
