@@ -159,9 +159,13 @@ test {
 javadoc {
     source = sourceSets.main.allJava
     classpath = configurations.runtimeClasspath
+
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
-task runMCreator(type: JavaExec, dependsOn: jar) {
+tasks.register('runMCreator', JavaExec.class) {
+    dependsOn jar
+
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
     classpath += sourceSets.main.runtimeClasspath
