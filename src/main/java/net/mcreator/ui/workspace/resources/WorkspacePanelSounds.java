@@ -104,7 +104,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(a-> deleteSelectedSound(workspacePanel, soundElementList));
+		del.addActionListener(a -> deleteSelectedSound(workspacePanel, soundElementList));
 
 		JButton play = L10N.button("workspace.sounds.play_selected");
 		play.setIcon(UIRES.get("16px.play"));
@@ -134,11 +134,9 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 		soundElementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				switch (e.getKeyCode()){
-					case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
-					//play or edit?
-					case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
-					//maybe I can add more keys? I don't have ideas.
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
+				case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
 				}
 			}
 		});
@@ -150,13 +148,13 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 	}
 
 	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
-		List<SoundElement> file = soundElementList.getSelectedValuesList();
-		if (file.size() > 0) {
+		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
+		if (soundElements.size() > 0) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
 					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == 0) {
-				file.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);
+				soundElements.forEach(workspacePanel.getMcreator().getWorkspace()::removeSoundElement);
 				reloadElements();
 			}
 		}

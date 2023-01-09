@@ -88,14 +88,13 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(a-> deleteCurrentlySelected(workspacePanel,structureElementList));
+		del.addActionListener(a -> deleteCurrentlySelected(workspacePanel, structureElementList));
 
 		structureElementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE){
-					deleteCurrentlySelected(workspacePanel,structureElementList);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelected(workspacePanel, structureElementList);
 				}
-
 			}
 		});
 

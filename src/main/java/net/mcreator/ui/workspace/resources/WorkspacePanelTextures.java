@@ -176,7 +176,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		del.addActionListener(a->deleteCurrentlySelected(workspacePanel));
+		del.addActionListener(a -> deleteCurrentlySelected(workspacePanel));
 
 		edit.addActionListener(e -> editSelectedFile());
 		duplicate.addActionListener(e -> duplicateSelectedFile());
@@ -247,9 +247,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listGroup.addList(listElement);
 		listElement.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				switch (e.getKeyCode()){
-					case KeyEvent.VK_DELETE -> deleteCurrentlySelected(workspacePanel);
-					case KeyEvent.VK_ENTER -> editSelectedFile();
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_DELETE -> deleteCurrentlySelected(workspacePanel);
+				case KeyEvent.VK_ENTER -> editSelectedFile();
 				}
 			}
 		});
