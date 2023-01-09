@@ -42,12 +42,16 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
+
+	private static final List<String> specialCases = List.of("compare_mcitems", "compare_blockstates",
+			"compare_dimensionids", "compare_mcblocks", "compare_directions", "item_nbt_copy", "compare_entities");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if procedures are not supported by this generator
@@ -127,7 +131,7 @@ public class GTProcedureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined) {
+				if (!templatesDefined && !specialCases.contains(procedureBlock.machine_name)) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
 							+ procedureBlock.machine_name);
 					continue;
@@ -291,6 +295,25 @@ public class GTProcedureBlocks {
 				}
 			}
 
+			// Add missing inputs for the hardcoded feature blocks (fix incomplete templates)
+			switch (procedureBlock.machine_name) {
+			case "compare_mcitems" -> additionalXML.append("""
+					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
+					<value name="b"><block type="mcitem_all"><field name="value"></field></block></value>""");
+			case "compare_blockstates", "compare_mcblocks" -> additionalXML.append("""
+					<value name="a"><block type="mcitem_allblocks"><field name="value"></field></block></value>
+					<value name="b"><block type="mcitem_allblocks"><field name="value"></field></block></value>""");
+			case "compare_dimensionids" -> additionalXML.append("""
+					<value name="a"><block type="provided_dimensionid"></block></value>
+					<value name="b"><block type="provided_dimensionid"></block></value>""");
+			case "compare_directions" -> additionalXML.append("""
+					<value name="a"><block type="direction_from_deps"></block></value>
+					<value name="b"><block type="direction_from_deps"></block></value>""");
+			case "item_nbt_copy" -> additionalXML.append("""
+					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
+					<value name="b"><block type="itemstack_to_mcitem"></block></value>""");
+			}
+
 			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.machine_name,
 					ModElementType.PROCEDURE);
 
@@ -312,7 +335,11 @@ public class GTProcedureBlocks {
 			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>",
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
 
-			// replace common itemstack blocks with blocks that contain logic variable
+			// add additional xml to the block definition
+			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
+					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
+
+			// replace common itemstack blocks with blocks that contain local variable
 			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
 					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
@@ -323,15 +350,6 @@ public class GTProcedureBlocks {
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
-
-			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
-							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
-							+ "</field></block>");
-
-			// add additional xml to the block definition
-			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
-					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
 
 			Procedure procedure = new Procedure(modElement);
 
