@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	private static final List<String> specialCases = List.of("compare_mcitems", "compare_blockstates",
-			"compare_dimensionids", "compare_mcblocks", "compare_directions", "item_nbt_copy", "compare_entities");
+			"compare_dimensionids", "compare_mcblocks", "compare_directions", "item_nbt_copy");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if procedures are not supported by this generator
