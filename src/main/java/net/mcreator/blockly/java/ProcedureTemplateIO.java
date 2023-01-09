@@ -46,7 +46,7 @@ public class ProcedureTemplateIO {
 		Document doc = dBuilder.parse(new InputSource(new StringReader(blocklyXML)));
 		doc.getDocumentElement().normalize();
 
-		Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
+		Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.startBlockName());
 
 		// if there is no start block, we return empty string
 		if (start_block == null)
@@ -72,9 +72,9 @@ public class ProcedureTemplateIO {
 		serializer.getDomConfig().setParameter("xml-declaration", false);
 
 		BinaryStringIO.writeStringToFile("""
-			<xml xmlns="http://www.w3.org/1999/xhtml">%s%s</xml>""".formatted(
-					inputBlock == null ? "" : serializer.writeToString(inputBlock).replaceAll("[\n\r\t]", ""),
-					nextBlock == null ? "" : serializer.writeToString(nextBlock).replaceAll("[\n\r\t]", "")), file);
+				<xml xmlns="http://www.w3.org/1999/xhtml">%s%s</xml>""".formatted(
+				inputBlock == null ? "" : serializer.writeToString(inputBlock).replaceAll("[\n\r\t]", ""),
+				nextBlock == null ? "" : serializer.writeToString(nextBlock).replaceAll("[\n\r\t]", "")), file);
 	}
 
 	public static String importBlocklyXML(File template) {

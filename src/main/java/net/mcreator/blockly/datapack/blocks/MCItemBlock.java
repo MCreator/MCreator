@@ -21,7 +21,9 @@ package net.mcreator.blockly.datapack.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -36,7 +38,12 @@ public class MCItemBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")
 				&& !element.getTextContent().equals("null")) {
-			if (master.getTemplateGenerator() != null) {
+			// Forge 1.18 features are still in Java
+			if (master instanceof BlocklyToFeature && master.getWorkspace().getGeneratorConfiguration()
+					.getGeneratorName().equals("forge-1.18.2")) {
+				master.append(
+						new NameMapper(master.getWorkspace(), "blocksitems").getMapping(element.getTextContent()));
+			} else if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), element.getTextContent()));
 				String code = master.getTemplateGenerator().generateFromTemplate("_mcitemblock.json.ftl", dataModel);

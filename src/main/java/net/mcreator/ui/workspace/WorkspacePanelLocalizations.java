@@ -68,7 +68,6 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		this.workspacePanel = workspacePanel;
 
 		pane = new JTabbedPane();
-		pane.setForeground(Color.white);
 		pane.setOpaque(false);
 		pane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
 			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {

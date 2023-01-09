@@ -18,11 +18,13 @@
 
 package net.mcreator.integration.generator;
 
+import com.google.gson.Gson;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
+import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
@@ -30,6 +32,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -151,15 +154,32 @@ public class GeneratorsTest {
 				assertTrue(workspace.getGenerator().generateBase());
 
 				LOG.info("[" + generator + "] ----- Reformatting the code and organising the imports");
-				ClassWriter.formatAndOrganiseImportsForFiles(workspace,
-						Files.walk(workspace.getWorkspaceFolder().toPath()).filter(Files::isRegularFile)
-								.map(Path::toFile).collect(Collectors.toList()), null);
+				try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
+					ClassWriter.formatAndOrganiseImportsForFiles(workspace,
+							entries.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList()), null);
+				}
 
 				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
-				GTBuild.runTest(LOG, generator, workspace);
+				GTBuild.runTest(LOG, generator, workspace); // This will verify Java files
 
+				// We also need to verify JSON files
+				LOG.info("[" + generator + "] ----- Verifying workspace JSON files");
+				verifyGeneratedJSON(workspace);
 			});
 		});
+	}
+
+	private void verifyGeneratedJSON(Workspace workspace) throws IOException {
+		try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
+			entries.filter(Files::isRegularFile).map(Path::toFile)
+					.filter(file -> FilenameUtils.isExtension(file.getName(), "json")).forEach(file -> {
+						try {
+							new Gson().fromJson(FileIO.readFileToString(file), Object.class); // try to parse JSON
+						} catch (Exception e) {
+							fail("Invalid JSON in file: " + file);
+						}
+					});
+		}
 	}
 
 }
