@@ -186,6 +186,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
+		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
@@ -244,6 +245,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(sbbp2)));
 
 		pane2.setOpaque(false);
+
+		cipp.setOpaque(false);
+		cipp.add("Center", customProperties);
 
 		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 2, 2));
 
@@ -415,7 +419,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.item.page_models"), customProperties);
+		addPage(L10N.t("elementgui.item.page_models"), cipp);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
