@@ -36,9 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build and Test Using Gradle
-        uses: Pylo/xvfb-action@v1.6
-        with:
-          run: ./gradlew test
+        run: xvfb-run -a ./gradlew test
       - name: Test Javadoc Generation
         run: ./gradlew javadoc
       - name: Publish Test Report
