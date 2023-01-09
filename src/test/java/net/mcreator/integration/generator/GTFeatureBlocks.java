@@ -44,10 +44,9 @@ public class GTFeatureBlocks {
 	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip if features are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FEATURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping feature blocks test as the current generator does not support them.");
 			return;
 		}
 
@@ -136,7 +135,7 @@ public class GTFeatureBlocks {
 				}
 
 				if (processed != featureBlock.getFields().size()) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
+					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
 							+ featureBlock.machine_name);
 					continue;
 				}

@@ -44,10 +44,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTCommandArgBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip if commands are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.COMMAND)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping command argument blocks test as the current generator does not support them.");
 			return;
 		}
 
