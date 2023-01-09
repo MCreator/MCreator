@@ -481,25 +481,25 @@ public class Generator implements IGenerator, Closeable {
 		if (templateLists != null) {
 			int templateID = 0;
 			for (Object list : templateLists) {
-				String groupName = (String) ((Map<?, ?>) list).get("name");
-				Object listData = TemplateExpressionParser.processFTLExpression(this,
-						(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 				List<?> templates = (List<?>) ((Map<?, ?>) list).get("forEach");
-
-				// we check type of listData collection and convert it to a list if needed
-				List<?> items;
-				if (listData instanceof Map<?, ?> listMap)
-					items = List.copyOf(listMap.entrySet());
-				else if (listData instanceof Collection<?> collection)
-					items = List.copyOf(collection);
-				else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-					items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
-				else
-					items = List.of();
-
-				GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items, new ArrayList<>());
-
 				if (templates != null) {
+					String groupName = (String) ((Map<?, ?>) list).get("name");
+					Object listData = TemplateExpressionParser.processFTLExpression(this,
+							(String) ((Map<?, ?>) list).get("listData"), generatableElement);
+
+					// we check type of listData collection and convert it to a list if needed
+					List<?> items;
+					if (listData instanceof Map<?, ?> listMap)
+						items = List.copyOf(listMap.entrySet());
+					else if (listData instanceof Collection<?> collection)
+						items = List.copyOf(collection);
+					else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
+						items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
+					else
+						items = List.of();
+
+					GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items, new ArrayList<>());
+
 					for (int index = 0; index < items.size(); index++) {
 						Set<ListTemplate> filesForCurrentItem = new HashSet<>();
 						for (Object template : templates) {
