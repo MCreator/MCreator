@@ -1,0 +1,1 @@
+Plus le nombre est élevé, l'entité touchée sera poussée plus loin par le projectile.

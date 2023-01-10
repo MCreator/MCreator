@@ -1,1 +1,0 @@
-Plus le nombre est élevé, l'entité touchée sera poussée plus loin par l'arme à distance.

@@ -1,0 +1,1 @@
+This is the texture of the projectile model if custom model is used.

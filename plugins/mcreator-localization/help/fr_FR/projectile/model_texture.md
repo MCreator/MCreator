@@ -1,0 +1,1 @@
+La texture du modèle du projectile si un modèle personnalisé est utilisé.
