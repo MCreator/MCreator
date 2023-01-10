@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.RangedItem;
 import net.mcreator.minecraft.DataListEntry;
@@ -29,23 +30,17 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
@@ -59,11 +54,9 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -75,34 +68,20 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final VTextField name = new VTextField(13);
 
-	private final JCheckBox bulletParticles = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox bulletIgnitesFire = L10N.checkbox("elementgui.common.enable");
-
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
 	private final JComboBox<String> animation = new JComboBox<>(
 			new String[] { "bow", "block", "crossbow", "drink", "eat", "none", "spear" });
 
-	private ProcedureSelector onBulletHitsBlock;
-	private ProcedureSelector onBulletHitsPlayer;
-	private ProcedureSelector onBulletHitsEntity;
-	private ProcedureSelector onBulletFlyingTick;
 	private ProcedureSelector onRangedItemUsed;
 	private ProcedureSelector onEntitySwing;
 
-	private final SoundSelector shootSound = new SoundSelector(mcreator);
-
 	private final JTextField specialInfo = new JTextField(20);
 
-	private MCItemHolder ammoItem;
-	private MCItemHolder bulletItemTexture;
+	private final DataListComboBox ammoItem = new DataListComboBox(mcreator);
 
 	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
-	private final JSpinner bulletPower = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
-	private final JSpinner bulletDamage = new JSpinner(new SpinnerNumberModel(5, 0, 10000, 0.1));
-	private final JSpinner bulletKnockback = new JSpinner(new SpinnerNumberModel(5, 0, 500, 1));
-
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 
 	private final Model normal = new Model.BuiltInModel("Normal");
@@ -110,12 +89,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final Model adefault = new Model.BuiltInModel("Default");
-	private final SearchableComboBox<Model> bulletModel = new SearchableComboBox<>(new Model[] { adefault });
-	private final VComboBox<String> customBulletModelTexture = new SearchableComboBox<>();
-
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
 
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
@@ -129,21 +103,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	}
 
 	@Override protected void initGUI() {
-		ammoItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-		bulletItemTexture = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-
-		onBulletHitsBlock = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_block"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_hits_block"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
-		onBulletHitsPlayer = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_player"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_hits_player"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity"));
-		onBulletHitsEntity = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_hits_entity"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_hits_entity"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity"));
-		onBulletFlyingTick = new ProcedureSelector(this.withEntry("rangeditem/when_bullet_flying_tick"), mcreator,
-				L10N.t("elementgui.ranged_item.event_bullet_flying_tick"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("rangeditem/when_used"), mcreator,
 				L10N.t("elementgui.ranged_item.event_on_use"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -159,18 +118,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
-		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-
-		customBulletModelTexture.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-
-		bulletModel.setPreferredSize(new Dimension(400, 42));
-		bulletModel.setRenderer(new ModelComboBoxRenderer());
-		ComponentUtils.deriveFont(bulletModel, 16);
 		ComponentUtils.deriveFont(specialInfo, 16);
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
@@ -200,12 +150,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
 		selp.setOpaque(false);
-
-		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
-		selp2.setOpaque(false);
-
-		bulletParticles.setOpaque(false);
-		bulletIgnitesFire.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -255,65 +199,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		sbbp2.add("Center", selp);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_power"),
-				L10N.label("elementgui.ranged_item.bullet_power")));
-		selp2.add(bulletPower);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_damage"),
-				L10N.label("elementgui.ranged_item.bullet_damage")));
-		selp2.add(bulletDamage);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_knockback"),
-				L10N.label("elementgui.ranged_item.bullet_knockback")));
-		selp2.add(bulletKnockback);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_particles"),
-				L10N.label("elementgui.ranged_item.bullet_particles")));
-		selp2.add(bulletParticles);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_ignite_fire"),
-				L10N.label("elementgui.ranged_item.bullet_ignite_fire")));
-		selp2.add(bulletIgnitesFire);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_item_texture"),
-				L10N.label("elementgui.ranged_item.bullet_item_texture")));
-		selp2.add(PanelUtils.centerInPanel(bulletItemTexture));
-
-		shootSound.setText("entity.arrow.shoot");
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/action_sound"),
-				L10N.label("elementgui.ranged_item.ranged_action_sound")));
-		selp.add(shootSound);
-
 		usageCount.setOpaque(false);
-		bulletPower.setOpaque(false);
-		bulletDamage.setOpaque(false);
-		bulletKnockback.setOpaque(false);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/bullet_model"),
-				L10N.label("elementgui.ranged_item.bullet_model")));
-
-		ComponentUtils.deriveFont(customBulletModelTexture, 16);
-
-		selp2.add(bulletModel);
-
-		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-		importmobtexture.setToolTipText(L10N.t("elementgui.ranged_item.bullet_model_tooltip"));
-		importmobtexture.setOpaque(false);
-		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
-			customBulletModelTexture.removeAllItems();
-			customBulletModelTexture.addItem("");
-			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.ENTITY);
-			for (File element : textures)
-				if (element.getName().endsWith(".png"))
-					customBulletModelTexture.addItem(element.getName());
-		});
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/model_texture"),
-				L10N.label("elementgui.ranged_item.model_texture")));
-
-		selp2.add(PanelUtils.centerAndEastElement(customBulletModelTexture, importmobtexture));
 
 		JPanel slpa = new JPanel(new BorderLayout(0, 10));
 		slpa.setOpaque(false);
@@ -321,17 +207,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel eventsal = new JPanel(new GridLayout(2, 2, 10, 10));
 		eventsal.setOpaque(false);
 
-		eventsal.add(onBulletHitsBlock);
-		eventsal.add(onBulletHitsPlayer);
-		eventsal.add(onBulletHitsEntity);
-		eventsal.add(onBulletFlyingTick);
-
-		slpa.add("North", selp2);
 		slpa.add("Center", PanelUtils.centerInPanel(eventsal));
-
-		pane2.setOpaque(false);
-
-		pane2.add("Center", PanelUtils.totalCenterInPanel(selp2));
 
 		JPanel itemEvents = new JPanel(new GridLayout(1, 3, 10, 10));
 		itemEvents.setOpaque(false);
@@ -349,26 +225,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.item_events"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel bulletEvents = new JPanel(new GridLayout(2, 2, 10, 10));
-		bulletEvents.setOpaque(false);
-		bulletEvents.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		bulletEvents.add(onBulletHitsBlock);
-		bulletEvents.add(onBulletHitsPlayer);
-		bulletEvents.add(onBulletHitsEntity);
-		bulletEvents.add(onBulletFlyingTick);
-
-		JPanel bulletEventsWrap = new JPanel(new GridLayout());
-		bulletEventsWrap.setOpaque(false);
-		bulletEventsWrap.add(bulletEvents);
-		bulletEventsWrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.ranged_item.bullet_events"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
 		JPanel triggersPanel = new JPanel(new BorderLayout(0, 10));
 		triggersPanel.setOpaque(false);
-		triggersPanel.add("Center", PanelUtils.northAndCenterElement(itemEventsWrap, bulletEventsWrap, 10, 10));
+		triggersPanel.add("Center", itemEventsWrap);
 
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(triggersPanel));
@@ -380,28 +239,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.ranged_item.error_item_needs_name")));
 		name.enableRealtimeValidation();
-		bulletItemTexture.setValidator(() -> {
-			if (bulletItemTexture.containsItem() || !adefault.equals(bulletModel.getSelectedItem()))
-				return Validator.ValidationResult.PASSED;
-			else
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.ranged_item.error_select_element"));
-		});
 
-		customBulletModelTexture.setValidator(() -> {
-			if (!adefault.equals(bulletModel.getSelectedItem()))
-				if (customBulletModelTexture.getSelectedItem() == null || customBulletModelTexture.getSelectedItem()
-						.equals(""))
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-							L10N.t("elementgui.ranged_item.error_custom_model_needs_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		page2group.addValidationElement(bulletItemTexture);
-		page2group.addValidationElement(customBulletModelTexture);
-
-		addPage(L10N.t("elementgui.ranged_item.page_ranged_item"), pane1);
-		addPage(L10N.t("elementgui.ranged_item.page_bullet"), pane2);
+		addPage(L10N.t("elementgui.common.page_properties"), pane1);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
@@ -416,27 +255,16 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBulletHitsBlock.refreshListKeepSelected();
-		onBulletHitsPlayer.refreshListKeepSelected();
-		onBulletHitsEntity.refreshListKeepSelected();
-		onBulletFlyingTick.refreshListKeepSelected();
-		onRangedItemUsed.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 
 		useCondition.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(customBulletModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
-
-		ComboBoxUtil.updateComboBoxContents(bulletModel, ListUtils.merge(Collections.singletonList(adefault),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
-
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("COMBAT"));
+
+		ComboBoxUtil.updateComboBoxContents(ammoItem, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()),
+				new DataListEntry.Dummy("Arrow"));
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
@@ -447,8 +275,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -456,21 +282,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		creativeTab.setSelectedItem(rangedItem.creativeTab);
 		shootConstantly.setSelected(rangedItem.shootConstantly);
 		name.setText(rangedItem.name);
-		shootSound.setSound(rangedItem.actionSound);
 		stackSize.setValue(rangedItem.stackSize);
 		texture.setTextureFromTextureName(rangedItem.texture);
-		bulletItemTexture.setBlock(rangedItem.bulletItemTexture);
-		ammoItem.setBlock(rangedItem.ammoItem);
+		ammoItem.setSelectedItem(rangedItem.ammoItem);
 		usageCount.setValue(rangedItem.usageCount);
-		bulletPower.setValue(rangedItem.bulletPower);
-		bulletDamage.setValue(rangedItem.bulletDamage);
-		bulletKnockback.setValue(rangedItem.bulletKnockback);
-		bulletParticles.setSelected(rangedItem.bulletParticles);
-		bulletIgnitesFire.setSelected(rangedItem.bulletIgnitesFire);
-		onBulletHitsBlock.setSelectedProcedure(rangedItem.onBulletHitsBlock);
-		onBulletHitsPlayer.setSelectedProcedure(rangedItem.onBulletHitsPlayer);
-		onBulletHitsEntity.setSelectedProcedure(rangedItem.onBulletHitsEntity);
-		onBulletFlyingTick.setSelectedProcedure(rangedItem.onBulletFlyingTick);
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
 		hasGlow.setSelected(rangedItem.hasGlow);
@@ -481,14 +296,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		specialInfo.setText(
 				rangedItem.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
-		customBulletModelTexture.setSelectedItem(rangedItem.customBulletModelTexture);
 		useCondition.setSelectedProcedure(rangedItem.useCondition);
 
 		updateGlowElements();
-
-		Model model = rangedItem.getEntityModel();
-		if (model != null && model.getType() != null && model.getReadableName() != null)
-			bulletModel.setSelectedItem(model);
 
 		Model model2 = rangedItem.getItemModel();
 		if (model2 != null)
@@ -499,20 +309,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		RangedItem rangedItem = new RangedItem(modElement);
 		rangedItem.name = name.getText();
 		rangedItem.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
-		rangedItem.ammoItem = ammoItem.getBlock();
+		rangedItem.ammoItem = new ProjectileEntry(mcreator.getWorkspace(), ammoItem.getSelectedItem());
 		rangedItem.shootConstantly = shootConstantly.isSelected();
 		rangedItem.usageCount = (int) usageCount.getValue();
-		rangedItem.actionSound = shootSound.getSound();
-		rangedItem.bulletPower = (double) bulletPower.getValue();
-		rangedItem.bulletDamage = (double) bulletDamage.getValue();
-		rangedItem.bulletKnockback = (int) bulletKnockback.getValue();
-		rangedItem.bulletParticles = bulletParticles.isSelected();
-		rangedItem.bulletIgnitesFire = bulletIgnitesFire.isSelected();
-		rangedItem.bulletItemTexture = bulletItemTexture.getBlock();
-		rangedItem.onBulletHitsBlock = onBulletHitsBlock.getSelectedProcedure();
-		rangedItem.onBulletHitsPlayer = onBulletHitsPlayer.getSelectedProcedure();
-		rangedItem.onBulletHitsEntity = onBulletHitsEntity.getSelectedProcedure();
-		rangedItem.onBulletFlyingTick = onBulletFlyingTick.getSelectedProcedure();
 		rangedItem.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		rangedItem.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		rangedItem.stackSize = (int) stackSize.getValue();
@@ -521,8 +320,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.animation = (String) animation.getSelectedItem();
 		rangedItem.damageVsEntity = (double) damageVsEntity.getValue();
 		rangedItem.enableMeleeDamage = enableMeleeDamage.isSelected();
-		rangedItem.bulletModel = (Objects.requireNonNull(bulletModel.getSelectedItem())).getReadableName();
-		rangedItem.customBulletModelTexture = customBulletModelTexture.getSelectedItem();
 		rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		rangedItem.useCondition = useCondition.getSelectedProcedure();
 

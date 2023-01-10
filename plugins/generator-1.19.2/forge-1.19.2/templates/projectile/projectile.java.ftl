@@ -38,6 +38,8 @@ package ${package}.entity;
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
+    public static final ItemStack PROJECTILE_ITEM = <#if !data.projectileItem.isEmpty()>${mappedMCItemToItem(data.projectileItem)}.getDefaultInstance()<#else>ItemStack.EMPTY</#if>;
+
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
 	}
@@ -59,19 +61,11 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
-		<#if !data.projectileItem.isEmpty()>
-		    return ${mappedMCItemToItemStackCode(data.projectileItem, 1)};
-		<#else>
-		    return ItemStack.EMPTY;
-		</#if>
+		return PROJECTILE_ITEM;
 	}
 
 	@Override protected ItemStack getPickupItem() {
-		<#if !data.projectileItem.isEmpty()>
-		    return ${mappedMCItemToItemStackCode(data.projectileItem, 1)};
-		<#else>
-		    return ItemStack.EMPTY;
-		</#if>
+		return PROJECTILE_ITEM;
 	}
 
 	@Override protected void doPostHurtEffects(LivingEntity entity) {

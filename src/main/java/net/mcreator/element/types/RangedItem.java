@@ -18,10 +18,9 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
@@ -35,7 +34,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
-		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;
@@ -44,10 +43,9 @@ import java.util.*;
 	public List<String> specialInfo;
 	public TabEntry creativeTab;
 	public int stackSize;
-	public MItemBlock ammoItem;
+	public ProjectileEntry ammoItem;
 	public boolean shootConstantly;
 	public int usageCount;
-	public Sound actionSound;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 	public String animation;
@@ -56,20 +54,6 @@ import java.util.*;
 	public Procedure onRangedItemUsed;
 	public Procedure onEntitySwing;
 	public Procedure useCondition;
-
-	public double bulletPower;
-	public double bulletDamage;
-	public int bulletKnockback;
-	public boolean bulletParticles;
-	public boolean bulletIgnitesFire;
-	public MItemBlock bulletItemTexture;
-	public String bulletModel;
-	public String customBulletModelTexture;
-
-	public Procedure onBulletHitsBlock;
-	public Procedure onBulletHitsPlayer;
-	public Procedure onBulletHitsEntity;
-	public Procedure onBulletFlyingTick;
 
 	private RangedItem() {
 		this(null);
@@ -105,23 +89,12 @@ import java.util.*;
 		return new HashMap<>();
 	}
 
-	@Override public Model getEntityModel() {
-		Model.Type modelType = Model.Type.BUILTIN;
-		if (!bulletModel.equals("Default"))
-			modelType = Model.Type.JAVA;
-		return Model.getModelByParams(getModElement().getWorkspace(), bulletModel, modelType);
-	}
-
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
 	}
 
 	@Override public String getTexture() {
 		return texture;
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.ITEM, BaseType.ENTITY);
 	}
 
 }

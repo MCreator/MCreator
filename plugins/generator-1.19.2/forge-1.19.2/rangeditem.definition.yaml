@@ -1,11 +1,6 @@
 templates:
   - template: rangeditem/rangeditem.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
-  - template: rangeditem/projectile.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
-  - template: rangeditem/projectile_renderer.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
-    condition: isCustomModel()
   - template: json/rangeditem.json.ftl
     writer: json
     condition: "renderType #= 0"

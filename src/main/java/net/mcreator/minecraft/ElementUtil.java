@@ -279,7 +279,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.RANGEDITEM);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PROJECTILE);
 
 		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
 		return retval;

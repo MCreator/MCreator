@@ -20,6 +20,7 @@
 package net.mcreator.element.converter.fv31;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.RangedItem;
@@ -33,11 +34,13 @@ public class RangedItemTextureConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		RangedItem item = (RangedItem) input;
 
-		if (item.customBulletModelTexture != null && !item.customBulletModelTexture.isEmpty()) {
+		JsonObject rangedItem = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+
+		if (rangedItem.get("customBulletModelTexture") != null && !rangedItem.get("customBulletModelTexture").getAsString().isEmpty()) {
 			FileIO.copyFile(workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture),
+					.getTextureFile(FilenameUtilsPatched.removeExtension(rangedItem.get("customBulletModelTexture").getAsString()),
 							TextureType.OTHER), workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture),
+					.getTextureFile(FilenameUtilsPatched.removeExtension(rangedItem.get("customBulletModelTexture").getAsString()),
 							TextureType.ENTITY));
 		}
 

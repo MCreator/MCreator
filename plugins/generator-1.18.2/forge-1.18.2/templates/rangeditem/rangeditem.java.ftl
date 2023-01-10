@@ -115,7 +115,6 @@ public class ${name}Item extends Item {
 }
 
 <#macro arrowShootCode>
-	<#if !data.ammoItem.isEmpty()>
 	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${mappedMCItemToItem(data.ammoItem)});
 
 	if(stack == ItemStack.EMPTY) {
@@ -128,18 +127,15 @@ public class ${name}Item extends Item {
 		}
 	}
 
-	if (entity.getAbilities().instabuild || stack != ItemStack.EMPTY) {
-	</#if>
 
-	${name}Entity entityarrow = ${name}Entity.shoot(world, entity, world.getRandom(), ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
+	${generator.map(data.ammoItem, "projectiles", 0)} entityarrow = ${generator.map(data.ammoItem, "projectiles", 0)}.shoot(world, entity, world.getRandom());
 
 	itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
 
-	<#if !data.ammoItem.isEmpty()>
 	if (entity.getAbilities().instabuild) {
 		entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 	} else {
-		if (${mappedMCItemToItemStackCode(data.ammoItem, 1)}.isDamageableItem()){
+		if (${generator.map(data.ammoItem, "projectiles", 2)}.isDamageableItem()){
 			if (stack.hurt(1, world.getRandom(), entity)) {
 				stack.shrink(1);
 				stack.setDamageValue(0);
@@ -152,16 +148,9 @@ public class ${name}Item extends Item {
                entity.getInventory().removeItem(stack);
 		}
 	}
-	<#else>
-	entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
-	</#if>
 
 	<#if hasProcedure(data.onRangedItemUsed)>
 		<@procedureOBJToCode data.onRangedItemUsed/>
-	</#if>
-
-	<#if !data.ammoItem.isEmpty()>
-	}
 	</#if>
 </#macro>
 

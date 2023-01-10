@@ -44,7 +44,6 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 	public String entityModel;
 	public String customModelTexture;
 
-	public Procedure onEntitySwing;
 	public Procedure onHitsBlock;
 	public Procedure onHitsPlayer;
 	public Procedure onHitsEntity;

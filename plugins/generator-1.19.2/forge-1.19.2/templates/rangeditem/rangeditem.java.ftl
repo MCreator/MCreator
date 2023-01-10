@@ -117,13 +117,12 @@ public class ${name}Item extends Item {
 </#compress>
 
 <#macro arrowShootCode>
-	<#if !data.ammoItem.isEmpty()>
-	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${mappedMCItemToItem(data.ammoItem)});
+	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${generator.map(data.ammoItem, "projectiles", 2)});
 
 	if(stack == ItemStack.EMPTY) {
 		for (int i = 0; i < entity.getInventory().items.size(); i++) {
 			ItemStack teststack = entity.getInventory().items.get(i);
-			if(teststack != null && teststack.getItem() == ${mappedMCItemToItem(data.ammoItem)}) {
+			if(teststack != null && teststack.getItem() == ${generator.map(data.ammoItem, "projectiles", 2)}) {
 				stack = teststack;
 				break;
 			}
@@ -131,40 +130,32 @@ public class ${name}Item extends Item {
 	}
 
 	if (entity.getAbilities().instabuild || stack != ItemStack.EMPTY) {
-	</#if>
 
-	${name}Entity entityarrow = ${name}Entity.shoot(world, entity, world.getRandom());
+		${generator.map(data.ammoItem.getUnmappedValue(), "projectiles", 0)} projectile = ${generator.map(data.ammoItem.getUnmappedValue(), "projectiles", 0)}.shoot(world, entity, world.getRandom());
 
-	itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
+		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
 
-	<#if !data.ammoItem.isEmpty()>
-	if (entity.getAbilities().instabuild) {
-		entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-	} else {
-		if (${mappedMCItemToItemStackCode(data.ammoItem, 1)}.isDamageableItem()){
-			if (stack.hurt(1, world.getRandom(), entity)) {
+		if (entity.getAbilities().instabuild) {
+			projectile.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+		} else {
+			if (${generator.map(data.ammoItem.getUnmappedValue(), "projectiles", 2)}.isDamageableItem()){
+				if (stack.hurt(1, world.getRandom(), entity)) {
+					stack.shrink(1);
+					stack.setDamageValue(0);
+					if (stack.isEmpty())
+						entity.getInventory().removeItem(stack);
+				}
+			} else{
 				stack.shrink(1);
-				stack.setDamageValue(0);
 				if (stack.isEmpty())
 					entity.getInventory().removeItem(stack);
 			}
-		} else{
-			stack.shrink(1);
-			if (stack.isEmpty())
-				entity.getInventory().removeItem(stack);
 		}
-	}
-	<#else>
-	entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
-	</#if>
 
-	<#if hasProcedure(data.onRangedItemUsed)>
-		<@procedureOBJToCode data.onRangedItemUsed/>
-	</#if>
-
-	<#if !data.ammoItem.isEmpty()>
+		<#if hasProcedure(data.onRangedItemUsed)>
+			<@procedureOBJToCode data.onRangedItemUsed/>
+		</#if>
 	}
-	</#if>
 </#macro>
 
 <#-- @formatter:on -->
