@@ -98,8 +98,11 @@ public class ModElementTypeLoader {
 		ModElementType.PROCEDURE = register(
 				new ModElementType<>("procedure", 'p', BaseType.OTHER, RecipeType.NONE, ProcedureGUI::new,
 						Procedure.class));
+		ModElementType.PROJECTILE = register(
+				new ModElementType<>("projectile", 'q', BaseType.ENTITY, RecipeType.NONE, ProjectileGUI::new,
+						Projectile.class));
 		ModElementType.RANGEDITEM = register(
-				new ModElementType<>("rangeditem", 'q', BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new,
+				new ModElementType<>("rangeditem", null, BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new,
 						RangedItem.class));
 		ModElementType.RECIPE = register(
 				new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeType.NONE, RecipeGUI::new, Recipe.class));

@@ -1,0 +1,56 @@
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.element.types;
+
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.IEntityWithModel;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.resources.Model;
+
+public class Projectile extends GeneratableElement implements IEntityWithModel {
+
+	public MItemBlock projectileItem;
+	public boolean showParticles;
+	public boolean igniteFire;
+	public double power;
+	public double damage;
+	public int knockback;
+	public String entityModel;
+	public String customModelTexture;
+
+	public Procedure onEntitySwing;
+	public Procedure onHitsBlock;
+	public Procedure onHitsPlayer;
+	public Procedure onHitsEntity;
+	public Procedure onFlyingTick;
+
+	public Projectile(ModElement element) {
+		super(element);
+	}
+
+	@Override public Model getEntityModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (!entityModel.equals("Default"))
+			modelType = Model.Type.JAVA;
+		return Model.getModelByParams(getModElement().getWorkspace(), entityModel, modelType);
+	}
+}
