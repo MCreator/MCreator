@@ -23,20 +23,54 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class UnsupportedComponent extends JPanel {
+
+	public static void markUnsupported(Component comp) {
+		Container parent = comp.getParent();
+		if (parent != null) {
+			int index = Arrays.asList(parent.getComponents()).indexOf(comp);
+			parent.remove(index);
+			parent.add(new UnsupportedComponent(comp), index);
+		}
+	}
 
 	private final Image warning = UIRES.get("18px.warning").getImage();
 
 	public UnsupportedComponent(Component origin) {
 		setLayout(new GridLayout());
-
-		if (!(origin instanceof JSpinner))
-			add(origin);
-
 		setOpaque(false);
 
 		origin.setEnabled(false);
+		origin.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				e.consume();
+			}
+
+			@Override public void mouseReleased(MouseEvent e) {
+				e.consume();
+			}
+
+			@Override public void mouseDragged(MouseEvent e) {
+				e.consume();
+			}
+		});
+		origin.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				e.consume();
+			}
+
+			@Override public void keyReleased(KeyEvent e) {
+				e.consume();
+			}
+		});
+
+		add(origin);
 	}
 
 	@Override public void paint(Graphics g) {

@@ -425,56 +425,61 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	private void disableUnsupportedFields() {
-		List<String> inclusions = mcreator.getGeneratorConfiguration()
-				.getSupportedDefinitionFields(modElement.getType());
-
 		List<String> exclusions = mcreator.getGeneratorConfiguration()
 				.getUnsupportedDefinitionFields(modElement.getType());
 
-		if (inclusions != null && exclusions != null) {
-			LOG.warn("Field inclusions and exclusions can not be used at the same time. Skipping them.");
-			return;
-		}
+		List<String> inclusions = mcreator.getGeneratorConfiguration()
+				.getSupportedDefinitionFields(modElement.getType());
 
-		if (inclusions != null) {
-			Field[] fields = getClass().getDeclaredFields();
-			for (Field field : fields) {
-				if (Component.class.isAssignableFrom(field.getType())) {
-					if (!inclusions.contains(field.getName())) {
-						try {
-							field.setAccessible(true);
-							Component obj = (Component) field.get(this);
-
-							Container parent = obj.getParent();
-							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-							parent.remove(index);
-							parent.add(new UnsupportedComponent(obj), index);
-						} catch (IllegalAccessException e) {
-							LOG.warn("Failed to access field", e);
+		if (exclusions != null && inclusions != null) {
+			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
+		} else if (exclusions != null && !exclusions.isEmpty() || inclusions != null && !inclusions.isEmpty()) {
+			Map<Container, List<Component>> unsupportedComps = new HashMap<>();
+			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
+				try {
+					Stack<Component> hierarchy = new Stack<>();
+					hierarchy.push(this);
+					for (String next : entry.split("\\.")) {
+						Field field = hierarchy.peek().getClass().getDeclaredField(next);
+						if (!Component.class.isAssignableFrom(field.getType())) {
+							hierarchy.clear(); // clear hierarchy cache to skip current entry
+							break;
 						}
+
+						field.setAccessible(true);
+						Component obj = (Component) field.get(hierarchy.peek());
+						if (obj != null)
+							hierarchy.push(obj);
 					}
+					if (hierarchy.size() < 2) // only process current entry if its target component is found
+						continue;
+
+					Component c = hierarchy.pop();
+					if (inclusions != null)
+						unsupportedComps.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
+					else
+						UnsupportedComponent.markUnsupported(c);
+				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
+					LOG.warn("Failed to access component: " + entry, e);
 				}
 			}
-		}
 
-		if (exclusions != null) {
-			Field[] fields = getClass().getDeclaredFields();
-			for (Field field : fields) {
-				if (Component.class.isAssignableFrom(field.getType())) {
-					if (exclusions.contains(field.getName())) {
+			if (inclusions != null) {
+				unsupportedComps.forEach((k, v) -> {
+					for (Field field : k.getClass().getDeclaredFields()) {
+						if (!Component.class.isAssignableFrom(field.getType()))
+							continue;
+
 						try {
 							field.setAccessible(true);
-							Component obj = (Component) field.get(this);
-
-							Container parent = obj.getParent();
-							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-							parent.remove(index);
-							parent.add(new UnsupportedComponent(obj), index);
+							Component obj = (Component) field.get(k);
+							if (!v.contains(obj))
+								UnsupportedComponent.markUnsupported(obj);
 						} catch (IllegalAccessException e) {
-							LOG.warn("Failed to access field", e);
+							LOG.warn("Failed to access component", e);
 						}
 					}
-				}
+				});
 			}
 		}
 	}
