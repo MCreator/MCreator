@@ -1,3 +1,4 @@
-The item texture representing the projectile. Bullet will look the same as the item selected here.
+C'est l'item utilisé dans l'inventaire et lors de son obtention depuis le sol.
+Sauf si un modèle personnalisé est utilisé, c'est également cet item qui sera affiché lors du tir du projectile.
 
-For custom shapes, use bullet model parameter.
+For custom shapes, use the model parameter.

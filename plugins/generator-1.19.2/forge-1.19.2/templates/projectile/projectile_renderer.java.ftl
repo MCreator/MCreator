@@ -33,13 +33,13 @@ package ${package}.client.renderer;
 
 public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customBulletModelTexture}");
+	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");
 
-	private final ${data.bulletModel} model;
+	private final ${data.model} model;
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		super(context);
-		model = new ${data.bulletModel}(context.bakeLayer(${data.bulletModel}.LAYER_LOCATION));
+		model = new ${data.model}(context.bakeLayer(${data.model}.LAYER_LOCATION));
 	}
 
 	@Override public void render(${name}Entity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {

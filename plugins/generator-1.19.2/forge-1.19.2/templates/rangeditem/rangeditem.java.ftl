@@ -133,7 +133,7 @@ public class ${name}Item extends Item {
 	if (entity.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 	</#if>
 
-	${name}Entity entityarrow = ${name}Entity.shoot(world, entity, world.getRandom(), ${data.bulletPower}f, ${data.bulletDamage}, ${data.bulletKnockback});
+	${name}Entity entityarrow = ${name}Entity.shoot(world, entity, world.getRandom());
 
 	itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
 

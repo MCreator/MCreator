@@ -19,17 +19,24 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
-public class Projectile extends GeneratableElement implements IEntityWithModel {
+import java.util.Collection;
+import java.util.Collections;
+
+public class Projectile extends GeneratableElement implements IEntityWithModel, ICommonType {
 
 	public MItemBlock projectileItem;
 	public boolean showParticles;
+	public Sound actionSound;
 	public boolean igniteFire;
 	public double power;
 	public double damage;
@@ -52,5 +59,9 @@ public class Projectile extends GeneratableElement implements IEntityWithModel {
 		if (!entityModel.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), entityModel, modelType);
+	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		return Collections.singletonList(BaseType.ENTITY);
 	}
 }

@@ -59,18 +59,18 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
-		<#if !data.bulletItemTexture.isEmpty()>
-		return ${mappedMCItemToItemStackCode(data.bulletItemTexture, 1)};
+		<#if !data.projectileItem.isEmpty()>
+		    return ${mappedMCItemToItemStackCode(data.projectileItem, 1)};
 		<#else>
-		return ItemStack.EMPTY;
+		    return ItemStack.EMPTY;
 		</#if>
 	}
 
 	@Override protected ItemStack getPickupItem() {
-		<#if !data.ammoItem.isEmpty()>
-		return ${mappedMCItemToItemStackCode(data.ammoItem, 1)};
+		<#if !data.projectileItem.isEmpty()>
+		    return ${mappedMCItemToItemStackCode(data.projectileItem, 1)};
 		<#else>
-		return ItemStack.EMPTY;
+		    return ItemStack.EMPTY;
 		</#if>
 	}
 
@@ -79,55 +79,55 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
 	}
 
-	<#if hasProcedure(data.onBulletHitsPlayer)>
-	@Override public void playerTouch(Player entity) {
-		super.playerTouch(entity);
-		<@procedureCode data.onBulletHitsPlayer, {
-			"x": "this.getX()",
-			"y": "this.getY()",
-			"z": "this.getZ()",
-			"entity": "entity",
-			"sourceentity": "this.getOwner()",
-			"immediatesourceentity": "this",
-			"world": "this.level"
-		}/>
-	}
+	<#if hasProcedure(data.onHitsPlayer)>
+        @Override public void playerTouch(Player entity) {
+            super.playerTouch(entity);
+            <@procedureCode data.onHitsPlayer, {
+                "x": "this.getX()",
+                "y": "this.getY()",
+                "z": "this.getZ()",
+                "entity": "entity",
+                "sourceentity": "this.getOwner()",
+                "immediatesourceentity": "this",
+                "world": "this.level"
+            }/>
+        }
 	</#if>
 
-	<#if hasProcedure(data.onBulletHitsEntity)>
-	@Override public void onHitEntity(EntityHitResult entityHitResult) {
-		super.onHitEntity(entityHitResult);
-		<@procedureCode data.onBulletHitsEntity, {
-			"x": "this.getX()",
-			"y": "this.getY()",
-			"z": "this.getZ()",
-			"entity": "entityHitResult.getEntity()",
-			"sourceentity": "this.getOwner()",
-			"immediatesourceentity": "this",
-			"world": "this.level"
-		}/>
-	}
+	<#if hasProcedure(data.onHitsEntity)>
+        @Override public void onHitEntity(EntityHitResult entityHitResult) {
+            super.onHitEntity(entityHitResult);
+            <@procedureCode data.onHitsEntity, {
+                "x": "this.getX()",
+                "y": "this.getY()",
+                "z": "this.getZ()",
+                "entity": "entityHitResult.getEntity()",
+                "sourceentity": "this.getOwner()",
+                "immediatesourceentity": "this",
+                "world": "this.level"
+            }/>
+        }
 	</#if>
 
-	<#if hasProcedure(data.onBulletHitsBlock)>
-	@Override public void onHitBlock(BlockHitResult blockHitResult) {
-		super.onHitBlock(blockHitResult);
-		<@procedureCode data.onBulletHitsBlock, {
-			"x": "blockHitResult.getBlockPos().getX()",
-			"y": "blockHitResult.getBlockPos().getY()",
-			"z": "blockHitResult.getBlockPos().getZ()",
-			"entity": "this.getOwner()",
-			"immediatesourceentity": "this",
-			"world": "this.level"
-		}/>
-	}
+	<#if hasProcedure(data.onHitsBlock)>
+        @Override public void onHitBlock(BlockHitResult blockHitResult) {
+            super.onHitBlock(blockHitResult);
+            <@procedureCode data.onHitsBlock, {
+                "x": "blockHitResult.getBlockPos().getX()",
+                "y": "blockHitResult.getBlockPos().getY()",
+                "z": "blockHitResult.getBlockPos().getZ()",
+                "entity": "this.getOwner()",
+                "immediatesourceentity": "this",
+                "world": "this.level"
+            }/>
+        }
 	</#if>
 
 	@Override public void tick() {
 		super.tick();
 
-		<#if hasProcedure(data.onBulletFlyingTick)>
-			<@procedureCode data.onBulletFlyingTick, {
+		<#if hasProcedure(data.onFlyingTick)>
+			<@procedureCode data.onFlyingTick, {
 				"x": "this.getX()",
 				"y": "this.getY()",
 				"z": "this.getZ()",
@@ -141,20 +141,21 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			this.discard();
 	}
 
+	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source) {
+	    return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
+	}
+
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
 		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
-		entityarrow.setCritArrow(${data.bulletParticles});
+		entityarrow.setCritArrow(${data.showParticles});
 		entityarrow.setBaseDamage(damage);
 		entityarrow.setKnockback(knockback);
-		<#if data.bulletIgnitesFire>
+		<#if data.igniteFire>
 			entityarrow.setSecondsOnFire(100);
 		</#if>
 		world.addFreshEntity(entityarrow);
-
-		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 
 		return entityarrow;
 	}
@@ -164,13 +165,13 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		double dx = target.getX() - entity.getX();
 		double dy = target.getY() + target.getEyeHeight() - 1.1;
 		double dz = target.getZ() - entity.getZ();
-		entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * 0.2F, dz, ${data.bulletPower}f * 2, 12.0F);
+		entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * 0.2F, dz, ${data.power}f * 2, 12.0F);
 
 		entityarrow.setSilent(true);
-		entityarrow.setBaseDamage(${data.bulletDamage});
-		entityarrow.setKnockback(${data.bulletKnockback});
-		entityarrow.setCritArrow(${data.bulletParticles});
-		<#if data.bulletIgnitesFire>
+		entityarrow.setBaseDamage(${data.damage});
+		entityarrow.setKnockback(${data.knockback});
+		entityarrow.setCritArrow(${data.showParticles});
+		<#if data.igniteFire>
 			entityarrow.setSecondsOnFire(100);
 		</#if>
 		entity.level.addFreshEntity(entityarrow);

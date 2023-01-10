@@ -1,1 +1,0 @@
-Ce paramètre contrôle le son joué lorsque l'arme à distance est utilisée.

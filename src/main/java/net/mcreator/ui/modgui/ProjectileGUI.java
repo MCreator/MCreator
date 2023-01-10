@@ -35,11 +35,13 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -61,6 +63,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	private MCItemHolder projectileItem;
 	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
+	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JCheckBox igniteFire = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
 	private final JSpinner damage = new JSpinner(new SpinnerNumberModel(5, 0, 10000, 0.1));
@@ -98,18 +101,24 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.t("elementgui.projectile.event_flying_tick"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(8, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 		
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
 				L10N.label("elementgui.projectile.item_texture")));
 		projectileItem.setOpaque(false);
+		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
 		propertiesPanel.add(PanelUtils.totalCenterInPanel(projectileItem));
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/particles"),
 				L10N.label("elementgui.projectile.show_particles")));
 		showParticles.setOpaque(false);
 		propertiesPanel.add(showParticles);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
+				L10N.label("elementgui.projectile.action_sound")));
+		actionSound.setText("entity.arrow.shoot");
+		propertiesPanel.add(actionSound);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model"),
 				L10N.label("elementgui.projectile.model")));
@@ -188,8 +197,6 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page1group);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -211,8 +218,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	}
 
 	@Override protected void openInEditingMode(Projectile projectile) {
-		showParticles.setSelected(projectile.showParticles);
 		projectileItem.setBlock(projectile.projectileItem);
+		showParticles.setSelected(projectile.showParticles);
+		actionSound.setSound(projectile.actionSound);
 		power.setValue(projectile.power);
 		damage.setValue(projectile.damage);
 		knockback.setValue(projectile.knockback);
@@ -232,6 +240,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		Projectile projectile = new Projectile(modElement);
 		projectile.projectileItem = projectileItem.getBlock();
 		projectile.showParticles = showParticles.isSelected();
+		projectile.actionSound = actionSound.getSound();
 		projectile.igniteFire = igniteFire.isSelected();
 		projectile.power = (double) power.getValue();
 		projectile.damage = (double) damage.getValue();
