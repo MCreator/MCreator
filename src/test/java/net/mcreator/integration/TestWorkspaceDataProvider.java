@@ -1076,13 +1076,31 @@ public class TestWorkspaceDataProvider {
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
 			return itemExtension;
+		} else if (ModElementType.PROJECTILE.equals(modElement.getType())){
+			Projectile projectile = new Projectile(modElement);
+			projectile.actionSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			projectile.power = 1.5;
+			projectile.damage = 2.3;
+			projectile.knockback = 5;
+			projectile.showParticles = _true;
+			projectile.igniteFire = _true;
+			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
+			projectile.entityModel = "Default";
+			projectile.customModelTexture = "";
+			projectile.onHitsBlock = new Procedure("procedure1");
+			projectile.onHitsEntity = new Procedure("procedure2");
+			projectile.onHitsPlayer = new Procedure("procedure3");
+			projectile.onFlyingTick = new Procedure("procedure4");
+			return projectile;
 		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
 			RangedItem rangedItem = new RangedItem(modElement);
 			rangedItem.name = modElement.getName();
 			rangedItem.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+			rangedItem.ammoItem = new ProjectileEntry(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			rangedItem.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -1095,23 +1113,9 @@ public class TestWorkspaceDataProvider {
 			rangedItem.shootConstantly = _true;
 			rangedItem.usageCount = 67;
 			rangedItem.stackSize = 41;
-			rangedItem.actionSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			rangedItem.bulletPower = 1.5;
-			rangedItem.bulletDamage = 2.3;
-			rangedItem.bulletKnockback = 5;
-			rangedItem.bulletParticles = _true;
-			rangedItem.bulletIgnitesFire = _true;
-			rangedItem.bulletItemTexture = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.onBulletHitsBlock = new Procedure("procedure2");
-			rangedItem.onBulletHitsPlayer = new Procedure("procedure1");
-			rangedItem.onBulletFlyingTick = new Procedure("procedure3");
 			rangedItem.onRangedItemUsed = new Procedure("procedure4");
 			rangedItem.useCondition = new Procedure("condition1");
 			rangedItem.onEntitySwing = new Procedure("procedure8");
-			rangedItem.bulletModel = "Default";
-			rangedItem.customBulletModelTexture = "";
 			rangedItem.texture = "test3";
 			rangedItem.renderType = 0;
 			rangedItem.customModelName = "Normal";

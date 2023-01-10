@@ -38,7 +38,7 @@ package ${package}.entity;
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
-    public static final ItemStack PROJECTILE_ITEM = <#if !data.projectileItem.isEmpty()>${mappedMCItemToItem(data.projectileItem)}.getDefaultInstance()<#else>ItemStack.EMPTY</#if>;
+	public static final ItemStack PROJECTILE_ITEM = <#if !data.projectileItem.isEmpty()>${mappedMCItemToItem(data.projectileItem)}.getDefaultInstance()<#else>ItemStack.EMPTY</#if>;
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
@@ -74,47 +74,47 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	<#if hasProcedure(data.onHitsPlayer)>
-        @Override public void playerTouch(Player entity) {
-            super.playerTouch(entity);
-            <@procedureCode data.onHitsPlayer, {
-                "x": "this.getX()",
-                "y": "this.getY()",
-                "z": "this.getZ()",
-                "entity": "entity",
-                "sourceentity": "this.getOwner()",
-                "immediatesourceentity": "this",
-                "world": "this.level"
-            }/>
-        }
+		@Override public void playerTouch(Player entity) {
+			super.playerTouch(entity);
+			<@procedureCode data.onHitsPlayer, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "entity",
+				"sourceentity": "this.getOwner()",
+				"immediatesourceentity": "this",
+				"world": "this.level"
+			}/>
+		}
 	</#if>
 
 	<#if hasProcedure(data.onHitsEntity)>
-        @Override public void onHitEntity(EntityHitResult entityHitResult) {
-            super.onHitEntity(entityHitResult);
-            <@procedureCode data.onHitsEntity, {
-                "x": "this.getX()",
-                "y": "this.getY()",
-                "z": "this.getZ()",
-                "entity": "entityHitResult.getEntity()",
-                "sourceentity": "this.getOwner()",
-                "immediatesourceentity": "this",
-                "world": "this.level"
-            }/>
-        }
+		@Override public void onHitEntity(EntityHitResult entityHitResult) {
+			super.onHitEntity(entityHitResult);
+			<@procedureCode data.onHitsEntity, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "entityHitResult.getEntity()",
+				"sourceentity": "this.getOwner()",
+				"immediatesourceentity": "this",
+				"world": "this.level"
+			}/>
+		}
 	</#if>
 
 	<#if hasProcedure(data.onHitsBlock)>
-        @Override public void onHitBlock(BlockHitResult blockHitResult) {
-            super.onHitBlock(blockHitResult);
-            <@procedureCode data.onHitsBlock, {
-                "x": "blockHitResult.getBlockPos().getX()",
-                "y": "blockHitResult.getBlockPos().getY()",
-                "z": "blockHitResult.getBlockPos().getZ()",
-                "entity": "this.getOwner()",
-                "immediatesourceentity": "this",
-                "world": "this.level"
-            }/>
-        }
+		@Override public void onHitBlock(BlockHitResult blockHitResult) {
+			super.onHitBlock(blockHitResult);
+			<@procedureCode data.onHitsBlock, {
+				"x": "blockHitResult.getBlockPos().getX()",
+				"y": "blockHitResult.getBlockPos().getY()",
+				"z": "blockHitResult.getBlockPos().getZ()",
+				"entity": "this.getOwner()",
+				"immediatesourceentity": "this",
+				"world": "this.level"
+			}/>
+		}
 	</#if>
 
 	@Override public void tick() {
@@ -136,7 +136,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source) {
-	    return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
+		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {

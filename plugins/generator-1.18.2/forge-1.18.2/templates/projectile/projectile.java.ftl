@@ -37,7 +37,7 @@ package ${package}.entity;
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
-    public static final ItemStack PROJECTILE_ITEM = <#if !data.projectileItem.isEmpty()>${mappedMCItemToItem(data.projectileItem)}.getDefaultInstance()<#else>ItemStack.EMPTY</#if>;
+	public static final ItemStack PROJECTILE_ITEM = <#if !data.projectileItem.isEmpty()>${mappedMCItemToItem(data.projectileItem)}.getDefaultInstance()<#else>ItemStack.EMPTY</#if>;
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
@@ -85,7 +85,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			"world": "this.level"
 		}/>
 	}
-    </#if>
+	</#if>
 
 	<#if hasProcedure(data.onHitsEntity)>
 	@Override public void onHitEntity(EntityHitResult entityHitResult) {
@@ -135,7 +135,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source) {
-	    return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
+		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
