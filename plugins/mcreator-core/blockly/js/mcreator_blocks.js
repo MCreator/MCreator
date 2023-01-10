@@ -1,37 +1,3 @@
-Blockly.Blocks['mcitem_allblocks'] = {
-    init: function () {
-        let block = this;
-        this.appendDummyInput()
-            .appendField(new FieldMCItemSelector("allblocks"), "value")
-            .appendField(new Blockly.FieldImage("./res/b.png", 8, 36));
-        this.setOutput(true, ['MCItemBlock', 'BlockStateProvider']);
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setColour(60);
-        this.setTooltip(function () {
-            let value = block.getFieldValue('value');
-            return value == null ? "Double click to select block" : value;
-        });
-    }
-};
-
-Blockly.Blocks['mcitem_all'] = {
-    init: function () {
-        let block = this;
-        this.appendDummyInput()
-            .appendField(new FieldMCItemSelector("all"), "value")
-            .appendField(new Blockly.FieldImage("./res/bi.png", 8, 36));
-        this.setOutput(true, 'MCItem');
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setColour(350);
-        this.setTooltip(function () {
-            let value = block.getFieldValue('value');
-            return value == null ? "Double click to select item/block" : value;
-        });
-    }
-};
-
 Blockly.Blocks['event_trigger'] = {
     init: function () {
         this.appendDummyInput()
@@ -145,6 +111,40 @@ Blockly.Blocks['feature_container'] = {
         this.setColour(340);
         this.setInputsInline(false);
         this.setTooltip(javabridge.t("blockly.block.feature_container.tooltip"));
+    }
+};
+
+Blockly.Blocks['mcitem_allblocks'] = {
+    init: function () {
+        let block = this;
+        this.appendDummyInput()
+            .appendField(new FieldMCItemSelector("allblocks"), "value")
+            .appendField(new Blockly.FieldImage("./res/b.png", 8, 36));
+        this.setOutput(true, ['MCItemBlock', 'BlockStateProvider']);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setColour(60);
+        this.setTooltip(function () {
+            let value = block.getFieldValue('value');
+            return value == null ? "Double click to select block" : value;
+        });
+    }
+};
+
+Blockly.Blocks['mcitem_all'] = {
+    init: function () {
+        let block = this;
+        this.appendDummyInput()
+            .appendField(new FieldMCItemSelector("all"), "value")
+            .appendField(new Blockly.FieldImage("./res/bi.png", 8, 36));
+        this.setOutput(true, 'MCItem');
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setColour(350);
+        this.setTooltip(function () {
+            let value = block.getFieldValue('value');
+            return value == null ? "Double click to select item/block" : value;
+        });
     }
 };
 
