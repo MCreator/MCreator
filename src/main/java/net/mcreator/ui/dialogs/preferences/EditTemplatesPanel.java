@@ -70,11 +70,11 @@ class EditTemplatesPanel {
 		openFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
-		remove.addActionListener(a-> deleteCurrentlySelected(templatesFolder, tmodel, templates));
+		remove.addActionListener(a -> deleteCurrentlySelected(templatesFolder, tmodel, templates));
 
 		templates.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelected(templatesFolder, tmodel, templates);
 				}
 			}
@@ -103,7 +103,8 @@ class EditTemplatesPanel {
 		preferencesDialog.preferences.add(sectionPanel, name);
 	}
 
-	private void deleteCurrentlySelected(String templatesFolder, DefaultListModel<String> tmodel, JList<String> templates) {
+	private void deleteCurrentlySelected(String templatesFolder, DefaultListModel<String> tmodel,
+			JList<String> templates) {
 		templates.getSelectedValuesList().forEach(el -> {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
 			tmodel.removeElement(el);

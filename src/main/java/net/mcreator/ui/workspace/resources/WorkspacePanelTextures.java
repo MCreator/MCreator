@@ -176,7 +176,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		del.addActionListener(a -> deleteCurrentlySelected(workspacePanel));
+		del.addActionListener(a -> deleteCurrentlySelected());
 
 		edit.addActionListener(e -> editSelectedFile());
 		duplicate.addActionListener(e -> duplicateSelectedFile());
@@ -184,7 +184,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		add("North", bar);
 	}
 
-	private void deleteCurrentlySelected(WorkspacePanel workspacePanel) {
+	private void deleteCurrentlySelected() {
 		List<File> files = listGroup.getSelectedItemsList();
 		if (files.size() > 0) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -248,7 +248,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				switch (e.getKeyCode()) {
-				case KeyEvent.VK_DELETE -> deleteCurrentlySelected(workspacePanel);
+				case KeyEvent.VK_DELETE -> deleteCurrentlySelected();
 				case KeyEvent.VK_ENTER -> editSelectedFile();
 				}
 			}

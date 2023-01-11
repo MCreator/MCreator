@@ -264,9 +264,9 @@ import java.util.stream.Collectors;
 
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelectedModElement();
-				} else if (e.getKeyCode() == KeyEvent.VK_ENTER){
+				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					IElement selected = list.getSelectedValue();
 					if (selected instanceof FolderElement) {
 						switchFolder((FolderElement) selected);

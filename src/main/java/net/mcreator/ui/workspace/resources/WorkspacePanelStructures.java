@@ -88,12 +88,12 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(a -> deleteCurrentlySelected(workspacePanel, structureElementList));
+		del.addActionListener(a -> deleteCurrentlySelected(structureElementList));
 
 		structureElementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					deleteCurrentlySelected(workspacePanel, structureElementList);
+					deleteCurrentlySelected(structureElementList);
 				}
 			}
 		});
@@ -106,7 +106,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 	}
 
-	private void deleteCurrentlySelected(WorkspacePanel workspacePanel, JSelectableList<String> structureElementList) {
+	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
 		List<String> files = structureElementList.getSelectedValuesList();
 		if (files.size() > 0) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),

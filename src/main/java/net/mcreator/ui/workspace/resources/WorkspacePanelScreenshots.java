@@ -106,6 +106,8 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					screenshotsList.getSelectedValuesList().forEach(File::delete);
 					reloadElements();
+				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					exportSelectedScreenshots();
 				}
 			}
 		});
