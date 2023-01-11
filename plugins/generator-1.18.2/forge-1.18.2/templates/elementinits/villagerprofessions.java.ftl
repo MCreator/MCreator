@@ -51,21 +51,20 @@ public class ${JavaModName}VillagerProfessions {
         public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} = registerProfession("${villagerprofession.getModElement().getRegistryName()}", ${villagerprofession.getModElement().getRegistryNameUpper()}_POI, () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}")));
     </#list>
 
-    @SuppressWarnings("SameParameterValue")
     private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent>... soundEventSuppliers) {
-        return PROFESSIONS.register(name, () -> new VillagerProfessions(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
+        return PROFESSIONS.register(name, () -> new CustomVillagerProfession(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
 
-    public static class VillagerProfessions extends VillagerProfession {
+    public static class CustomVillagerProfession extends VillagerProfession {
 
         private final List<Supplier<SoundEvent>> soundEventSuppliers;
 
         @SafeVarargs
-        public VillagerProfessions(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        public CustomVillagerProfession(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
             super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
             this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
         }
