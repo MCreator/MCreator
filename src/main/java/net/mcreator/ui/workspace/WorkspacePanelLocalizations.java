@@ -262,7 +262,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			del.addActionListener(a-> deleteCurrentlySelected(elements, id));
+			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
 
 			elements.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
