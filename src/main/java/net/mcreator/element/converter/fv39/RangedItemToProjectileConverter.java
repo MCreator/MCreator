@@ -88,7 +88,7 @@ public class RangedItemToProjectileConverter implements IConverter {
 			workspace.getGenerator().generateElement(projectile);
 			workspace.getModElementManager().storeModElement(projectile);
 
-			rangedItem.ammoItem = new ProjectileEntry(workspace, "CUSTOM:" + projectile.getModElement().getName());
+			rangedItem.projectile = new ProjectileEntry(workspace, "CUSTOM:" + projectile.getModElement().getName());
 		} catch (Exception exception) {
 			LOG.warn("Failed to update ranged item's projectile to new format", exception);
 		}

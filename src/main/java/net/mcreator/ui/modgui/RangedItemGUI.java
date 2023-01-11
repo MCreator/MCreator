@@ -36,7 +36,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -79,7 +78,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final DataListComboBox ammoItem = new DataListComboBox(mcreator);
+	private final DataListComboBox projectile = new DataListComboBox(mcreator);
 
 	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
@@ -120,9 +119,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
-		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
-		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
@@ -134,103 +130,75 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		ComponentUtils.deriveFont(renderType, 16.0f);
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		JPanel sbbp2 = new JPanel(new BorderLayout(0, 2));
-		sbbp2.setOpaque(false);
+		JPanel propertiesPanel = new JPanel(new BorderLayout(0, 2));
+		propertiesPanel.setOpaque(false);
 
-		sbbp2.add("North", PanelUtils.centerInPanel(
+		propertiesPanel.add("North", PanelUtils.centerInPanel(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
-		sbbp2.add("South", PanelUtils.westAndEastElement(
+		propertiesPanel.add("South", PanelUtils.westAndEastElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.ranged_item.enable_glowing")), PanelUtils.join(hasGlow, glowCondition)));
 
-		pane1.setOpaque(false);
-
-		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
-
-		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
-		selp.setOpaque(false);
+		JPanel centerProperties = new JPanel(new GridLayout(10, 2, 5, 2));
+		centerProperties.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
 		shootConstantly.setOpaque(false);
 
-		selp.add(
+		centerProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
-		selp.add(renderType);
+		centerProperties.add(renderType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
-		selp.add(name);
+		centerProperties.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.ranged_item.special_informations")));
-		selp.add(specialInfo);
+		centerProperties.add(specialInfo);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
-		selp.add(creativeTab);
+		centerProperties.add(creativeTab);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
 				L10N.label("elementgui.ranged_item.item_animation")));
-		selp.add(animation);
+		centerProperties.add(animation);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
-		selp.add(stackSize);
+		centerProperties.add(stackSize);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.ranged_item.damages_vs_mob")));
-		selp.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
+		centerProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/ammo_item"),
-				L10N.label("elementgui.ranged_item.ammo_item")));
-		selp.add(PanelUtils.join(ammoItem));
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/projectile"),
+				L10N.label("elementgui.ranged_item.projectile")));
+		centerProperties.add(PanelUtils.join(projectile));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/shoot_constantly"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/shoot_constantly"),
 				L10N.label("elementgui.ranged_item.shoot_constantly")));
-		selp.add(shootConstantly);
+		centerProperties.add(shootConstantly);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
+		centerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.ranged_item.number_of_uses")));
-		selp.add(usageCount);
+		centerProperties.add(usageCount);
 
-		sbbp2.add("Center", selp);
+		propertiesPanel.add("Center", centerProperties);
 
 		usageCount.setOpaque(false);
 
-		JPanel slpa = new JPanel(new BorderLayout(0, 10));
-		slpa.setOpaque(false);
-
-		JPanel eventsal = new JPanel(new GridLayout(2, 2, 10, 10));
-		eventsal.setOpaque(false);
-
-		slpa.add("Center", PanelUtils.centerInPanel(eventsal));
-
-		JPanel itemEvents = new JPanel(new GridLayout(1, 3, 10, 10));
-		itemEvents.setOpaque(false);
-		itemEvents.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		itemEvents.add(useCondition);
-		itemEvents.add(onRangedItemUsed);
-		itemEvents.add(onEntitySwing);
-
-		JPanel itemEventsWrap = new JPanel(new GridLayout());
-		itemEventsWrap.setOpaque(false);
-		itemEventsWrap.add(itemEvents);
-		itemEventsWrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.ranged_item.item_events"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel triggersPanel = new JPanel(new BorderLayout(0, 10));
+		JPanel triggersPanel = new JPanel(new GridLayout(1, 3, 10, 10));
 		triggersPanel.setOpaque(false);
-		triggersPanel.add("Center", itemEventsWrap);
 
-		pane3.setOpaque(false);
-		pane3.add("Center", PanelUtils.totalCenterInPanel(triggersPanel));
+		triggersPanel.add(useCondition);
+		triggersPanel.add(onRangedItemUsed);
+		triggersPanel.add(onEntitySwing);
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -240,8 +208,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.ranged_item.error_item_needs_name")));
 		name.enableRealtimeValidation();
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane1);
-		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
+		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(triggersPanel));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -255,6 +223,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+		onRangedItemUsed.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 
 		useCondition.refreshListKeepSelected();
@@ -263,8 +232,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("COMBAT"));
 
-		ComboBoxUtil.updateComboBoxContents(ammoItem, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("Arrow"));
+		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
@@ -284,7 +252,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		name.setText(rangedItem.name);
 		stackSize.setValue(rangedItem.stackSize);
 		texture.setTextureFromTextureName(rangedItem.texture);
-		ammoItem.setSelectedItem(rangedItem.ammoItem);
+		projectile.setSelectedItem(rangedItem.projectile);
 		usageCount.setValue(rangedItem.usageCount);
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
@@ -309,7 +277,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		RangedItem rangedItem = new RangedItem(modElement);
 		rangedItem.name = name.getText();
 		rangedItem.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
-		rangedItem.ammoItem = new ProjectileEntry(mcreator.getWorkspace(), ammoItem.getSelectedItem());
+		rangedItem.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		rangedItem.shootConstantly = shootConstantly.isSelected();
 		rangedItem.usageCount = (int) usageCount.getValue();
 		rangedItem.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();

@@ -117,12 +117,12 @@ public class ${name}Item extends Item {
 </#compress>
 
 <#macro arrowShootCode>
-	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${generator.map(data.ammoItem, "projectiles", 2)});
+	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${generator.map(data.projectile, "projectiles", 2)});
 
 	if(stack == ItemStack.EMPTY) {
 		for (int i = 0; i < entity.getInventory().items.size(); i++) {
 			ItemStack teststack = entity.getInventory().items.get(i);
-			if(teststack != null && teststack.getItem() == ${generator.map(data.ammoItem, "projectiles", 2)}) {
+			if(teststack != null && teststack.getItem() == ${generator.map(data.projectile, "projectiles", 2)}) {
 				stack = teststack;
 				break;
 			}
@@ -130,15 +130,24 @@ public class ${name}Item extends Item {
 	}
 
 	if (entity.getAbilities().instabuild || stack != ItemStack.EMPTY) {
-
-		${generator.map(data.ammoItem.getUnmappedValue(), "projectiles", 0)} projectile = ${generator.map(data.ammoItem.getUnmappedValue(), "projectiles", 0)}.shoot(world, entity, world.getRandom());
+	    <#assign projectile = data.projectile.getUnmappedValue()>
+	    <#assign projectileClass = generator.map(data.projectile.getUnmappedValue(), "projectiles", 0)>
+	    <#if projectile.startsWith("CUSTOM:")>
+		    ${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
+		<#elseif projectile.endsWith("Arrow")>
+		    ${projectileClass} projectile = new ${projectileClass}(world, entity);
+		    projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
+		    world.addFreshEntity(projectile);
+		    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
+				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
+		</#if>
 
 		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
 
 		if (entity.getAbilities().instabuild) {
 			projectile.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 		} else {
-			if (${generator.map(data.ammoItem.getUnmappedValue(), "projectiles", 2)}.isDamageableItem()){
+			if (stack.isDamageableItem()){
 				if (stack.hurt(1, world.getRandom(), entity)) {
 					stack.shrink(1);
 					stack.setDamageValue(0);

@@ -16,9 +16,11 @@
 - Arrow:
   readable_name: "Arrow"
   type: arrow
+  texture: ARROW
 - SpectralArrow:
   readable_name: "Spectral arrow"
   type: arrow
+  texture: SPECTRAL_ARROW
 - SmallFireball:
   readable_name: "Small fireball"
   type: fireball

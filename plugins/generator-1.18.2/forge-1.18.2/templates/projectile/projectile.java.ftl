@@ -134,8 +134,8 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			this.discard();
 	}
 
-	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source) {
-		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
+	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random) {
+		return shoot(world, entity, random, ${data.power}f, ${data.damage}, ${data.knockback});
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
@@ -165,7 +165,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 		entityarrow.setSilent(true);
 		entityarrow.setBaseDamage(${data.damage});
-		entityarrow.setKnockback(${data.bulletKnockback});
+		entityarrow.setKnockback(${data.knockback});
 		entityarrow.setCritArrow(${data.showParticles});
 		<#if data.igniteFire>
 			entityarrow.setSecondsOnFire(100);

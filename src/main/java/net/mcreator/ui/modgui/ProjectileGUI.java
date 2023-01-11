@@ -103,7 +103,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
-		
+
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
 				L10N.label("elementgui.projectile.item_texture")));
 		projectileItem.setOpaque(false);

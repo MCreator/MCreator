@@ -151,6 +151,9 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		</#if>
 		world.addFreshEntity(entityarrow);
 
+		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
+        		.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+
 		return entityarrow;
 	}
 

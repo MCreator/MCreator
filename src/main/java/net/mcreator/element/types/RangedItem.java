@@ -19,7 +19,6 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -43,7 +42,7 @@ import java.util.*;
 	public List<String> specialInfo;
 	public TabEntry creativeTab;
 	public int stackSize;
-	public ProjectileEntry ammoItem;
+	public ProjectileEntry projectile;
 	public boolean shootConstantly;
 	public int usageCount;
 	public boolean hasGlow;

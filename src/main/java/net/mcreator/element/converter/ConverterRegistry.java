@@ -53,6 +53,7 @@ import net.mcreator.element.converter.fv35.ToolToItemTypeProcedureConverter;
 import net.mcreator.element.converter.fv36.GUIComponentNamer;
 import net.mcreator.element.converter.fv37.SlotInteractionsConverter;
 import net.mcreator.element.converter.fv38.BiomeGenParametersConverter;
+import net.mcreator.element.converter.fv39.EntitiesRangedAttackConverter;
 import net.mcreator.element.converter.fv39.RangedItemToProjectileConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
@@ -82,7 +83,7 @@ public class ConverterRegistry {
 		put(ModElementType.GUI,
 				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
-		put(ModElementType.LIVINGENTITY, Collections.singletonList(new EntityTexturesConverter()));
+		put(ModElementType.LIVINGENTITY, Arrays.asList(new EntityTexturesConverter(), new EntitiesRangedAttackConverter()));
 		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
 				new GUIComponentNamer()));
 		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));

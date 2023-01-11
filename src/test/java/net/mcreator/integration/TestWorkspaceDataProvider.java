@@ -1099,7 +1099,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.name = modElement.getName();
 			rangedItem.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			rangedItem.ammoItem = new ProjectileEntry(modElement.getWorkspace(),
+			rangedItem.projectile = new ProjectileEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			rangedItem.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
