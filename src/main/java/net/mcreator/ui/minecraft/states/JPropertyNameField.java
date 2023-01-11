@@ -29,7 +29,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 public class JPropertyNameField extends JPanel {
-	private final VTextField field;
+	private final VTextField field = new VTextField(20);
 	private String cachedName;
 	private final JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
 		@Override public String getName() {
@@ -41,17 +41,11 @@ public class JPropertyNameField extends JPanel {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 7));
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		field = new VTextField(20) {
-			@Override public void setEditable(boolean b) {
-				super.setEditable(b);
-				rename.setEnabled(!b);
-			}
-		};
-		renameTo(initialPropertyName);
 		field.setOpaque(true);
 		field.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
 		field.setEditable(false);
 		field.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		field.addPropertyChangeListener("editable", e -> rename.setEnabled(!((boolean) e.getNewValue())));
 		field.addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
 				field.setEditable(false);
@@ -59,6 +53,7 @@ public class JPropertyNameField extends JPanel {
 				field.getValidationStatus();
 			}
 		});
+		renameTo(initialPropertyName);
 		add(field);
 
 		rename.setOpaque(false);
@@ -101,6 +96,6 @@ public class JPropertyNameField extends JPanel {
 	}
 
 	public void finishRenaming() {
-		rename.requestFocus();
+		field.dispatchEvent(new FocusEvent(field, FocusEvent.FOCUS_LOST));
 	}
 }

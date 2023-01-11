@@ -34,9 +34,6 @@ import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -175,23 +172,17 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private JItemPropertiesListEntry addPropertiesEntry(int propertyId) {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
-				propertyId);
+				propertyId, () -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()),
+				builtinPropertyNames);
 
-		VTextField name = pe.getNameField().getTextField();
-		UniqueNameValidator validator = new UniqueNameValidator(name,
-				L10N.t("elementgui.item.custom_property.name_validator"),
-				() -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()), builtinPropertyNames,
-				new RegistryNameValidator(name, L10N.t("elementgui.item.custom_property.name_validator")));
-		name.setValidator(validator);
-		name.enableRealtimeValidation();
-		name.addKeyListener(new KeyAdapter() {
+		pe.getNameField().getTextField().addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (!name.isEnabled())
+				if (!e.getComponent().isEnabled())
 					return;
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
 						&& pe.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					String newName = name.getText();
+					String newName = ((JTextField) e.getComponent()).getText();
 					statesList.forEach(s -> s.getStateLabel().rename(pe.getNameField().getCachedName(), newName));
 					pe.getNameField().finishRenaming();
 					pe.getNameField().renameTo(newName);

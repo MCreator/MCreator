@@ -61,7 +61,7 @@ public class ModElementManager {
 		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);
 
 		GsonBuilder gsonBuilder = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class,
-				this.gsonAdapter).disableHtmlEscaping().serializeNulls().setPrettyPrinting().setLenient();
+				this.gsonAdapter).disableHtmlEscaping().setPrettyPrinting().setLenient();
 
 		RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 

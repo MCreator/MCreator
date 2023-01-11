@@ -31,11 +31,15 @@ import net.mcreator.ui.minecraft.states.JPropertyNameField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
@@ -45,10 +49,15 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	private final ProcedureSelector value;
 
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemPropertiesListEntry> entryList, int propertyId) {
+			List<JItemPropertiesListEntry> entryList, int propertyId, Supplier<Stream<String>> otherNames,
+			List<String> builtinPropertyNames) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		name = new JPropertyNameField("property" + propertyId);
+		name.getTextField().setValidator(new UniqueNameValidator(name.getTextField(),
+				L10N.t("elementgui.item.custom_property.validator"), otherNames, builtinPropertyNames,
+				new RegistryNameValidator(name.getTextField(), L10N.t("elementgui.item.custom_property.validator"))));
+		name.getTextField().enableRealtimeValidation();
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
@@ -106,7 +115,15 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {
-		return name.getTextField().getValidationStatus();
+		Validator.ValidationResult result = name.getTextField().getValidationStatus();
+		if (result != Validator.ValidationResult.PASSED)
+			return result;
+
+		if (value.getSelectedProcedure() == null)
+			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					L10N.t("elementgui.item.custom_property.value.error_missing", name.getPropertyName()));
+
+		return Validator.ValidationResult.PASSED;
 	}
 
 	@Override public void setValidator(Validator validator) {
