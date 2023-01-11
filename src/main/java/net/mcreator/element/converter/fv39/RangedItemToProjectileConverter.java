@@ -52,9 +52,11 @@ public class RangedItemToProjectileConverter implements IConverter {
 			if (rangedItemJSON.get("bulletItemTexture") != null)
 				projectile.projectileItem = new MItemBlock(workspace,
 						rangedItemJSON.get("bulletItemTexture").getAsJsonObject().get("value").getAsString());
-			else
+			else if (rangedItemJSON.get("ammoItem") != null && !rangedItemJSON.get("ammoItem").getAsJsonObject().get("value").getAsString().isEmpty())
 				projectile.projectileItem = new MItemBlock(workspace,
-						rangedItemJSON.get("ammoItem").getAsJsonObject().get("value").getAsString()); // in case ancient workspaces don't have the bulletItemTexture parameter
+						rangedItemJSON.get("ammoItem").getAsJsonObject().get("value").getAsString());
+			else
+				projectile.projectileItem = new MItemBlock(workspace, "Items.ARROW"); // if for some reason a ranged item has no item defined, we need to provide one.
 			projectile.showParticles = rangedItemJSON.get("bulletParticles").getAsBoolean();
 			if (rangedItemJSON.get("actionSound") != null)
 				projectile.actionSound = new Sound(workspace,
