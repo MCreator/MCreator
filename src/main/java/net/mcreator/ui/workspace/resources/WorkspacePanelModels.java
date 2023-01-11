@@ -72,7 +72,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				int idx = modelList.locationToIndex(e.getPoint());
 				Model model = modelList.getModel().getElementAt(idx);
 				if (model != null) {
-					workspacePanel.getMcreator().getStatusBar().setMessage(model.getReadableName());
+					workspacePanel.getMCreator().getStatusBar().setMessage(model.getReadableName());
 				}
 			}
 		});
@@ -98,11 +98,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp1, 12);
 		imp1.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp1);
 
-		imp1.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJavaModel.doAction());
+		imp1.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importJavaModel.doAction());
 
 		JButton imp2 = L10N.button("action.workspace.resources.import_json_model");
 		imp2.setIcon(UIRES.get("16px.importjsonmodel"));
@@ -111,11 +111,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp2, 12);
 		imp2.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp2);
 
-		imp2.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importJSONModel.doAction());
+		imp2.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importJSONModel.doAction());
 
 		JButton imp3 = L10N.button("action.workspace.resources.import_obj_mtl_model");
 		imp3.setIcon(UIRES.get("16px.importobjmodel"));
@@ -124,11 +124,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		ComponentUtils.deriveFont(imp3, 12);
 		imp3.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			bar.add(imp3);
 
-		imp3.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importOBJModel.doAction());
+		imp3.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importOBJModel.doAction());
 
 		JButton editTextureMappings = L10N.button("workspace.3dmodels.edit_texture_mappings");
 		editTextureMappings.setIcon(UIRES.get("16px.edit.gif"));
@@ -182,7 +182,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 	private void deleteCurrentlySelected() {
 		Model model = modelList.getSelectedValue();
 		if (model != null) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
@@ -198,11 +198,11 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		if (model.getType() == Model.Type.JAVA) {
 			File file = model.getFile();
 			String code = FileIO.readFileToString(file);
-			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.getMcreator(), code);
+			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.getMCreator(), code);
 			if (code != null) {
 				FileIO.writeStringToFile(code, file);
 
-				ProgressDialog dial = new ProgressDialog(workspacePanel.getMcreator(),
+				ProgressDialog dial = new ProgressDialog(workspacePanel.getMCreator(),
 						L10N.t("workspace.3dmodels.regenerating_code"));
 				Thread t = new Thread(() -> {
 					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
@@ -211,17 +211,17 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 					AtomicInteger i = new AtomicInteger();
 					// this model might be in use, we need to regenerate code of mobs
-					workspacePanel.getMcreator().getWorkspace().getModElements().forEach(e -> {
+					workspacePanel.getMCreator().getWorkspace().getModElements().forEach(e -> {
 						if (e.getType() == ModElementType.LIVINGENTITY && !e.isCodeLocked()) {
 							GeneratableElement generatableElement = e.getGeneratableElement();
 							if (generatableElement != null) {
 								// generate mod element
-								workspacePanel.getMcreator().getGenerator().generateElement(generatableElement);
+								workspacePanel.getMCreator().getGenerator().generateElement(generatableElement);
 							}
 						}
 
 						i.getAndIncrement();
-						p0.setPercent((int) (((float) i.get() / (float) workspacePanel.getMcreator().getWorkspace()
+						p0.setPercent((int) (((float) i.get() / (float) workspacePanel.getMCreator().getWorkspace()
 								.getModElements().size()) * 100.0f));
 						dial.refreshDisplay();
 					});
@@ -232,7 +232,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.3dmodels.rebuilding_workspace"));
 					dial.addProgress(p2);
-					workspacePanel.getMcreator().actionRegistry.buildWorkspace.doAction();
+					workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
 					p2.ok();
 					dial.refreshDisplay();
 
@@ -242,7 +242,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 				dial.setVisible(true);
 			}
 		} else {
-			JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
+			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.3dmodels.animation_unsupported_message"),
 					L10N.t("workspace.3dmodels.animation_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
@@ -253,14 +253,14 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(model);
 		if (textureMappingMap != null) {
 			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
-					workspacePanel.getMcreator(), null, model.getType() == Model.Type.JSON);
+					workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);
 			if (textureMappingMap != null) {
 				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-				FileIO.writeStringToFile(data, new File(workspacePanel.getMcreator().getFolderManager().getModelsDir(),
+				FileIO.writeStringToFile(data, new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
 						model.getFile().getName() + ".textures"));
 			}
 		} else {
-			JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
+			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.3dmodels.mappings_unsupported_message"),
 					L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
@@ -268,7 +268,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 	@Override public void reloadElements() {
 		listmodel.removeAllElements();
-		Model.getModels(workspacePanel.getMcreator().getWorkspace()).forEach(listmodel::addElement);
+		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(listmodel::addElement);
 		refilterElements();
 	}
 
