@@ -63,7 +63,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(ItemGUI.builtInItemModels());
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData>> properties,
+			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData<?, ?>>> properties,
 			Consumer<JItemStatesListEntry> editButtonListener) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;

@@ -53,7 +53,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final AtomicInteger propertyId = new AtomicInteger(0);
 
 	private final List<String> builtinPropertyNames;
-	private final Map<String, PropertyData> builtinProperties = new LinkedHashMap<>();
+	private final Map<String, PropertyData<?, ?>> builtinProperties = new LinkedHashMap<>();
 
 	private final JPanel propertyEntries = new JPanel() {
 		@Override public void setEnabled(boolean enabled) {
@@ -78,22 +78,15 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		builtinPropertyNames = List.copyOf(properties.keySet());
 		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
 			if ("Number".equals(e.getType())) {
-				builtinProperties.put(e.getName(), new PropertyData(e.getName(), Float.class, 0F, 1F, null));
+				builtinProperties.put(e.getName(), new PropertyData.Float<>(e.getName(), Float.class, 0F, 1F));
 			} else if ("Logic".equals(e.getType())) {
-				builtinProperties.put(e.getName(), new PropertyData(e.getName(), Boolean.class, null, null, null) {
-					@Override public Object getValueFromComponent(JComponent component) {
-						if (component instanceof JCheckBox check)
-							return check.isSelected() ? 1F : 0F;
-						return super.getValueFromComponent(component);
+				builtinProperties.put(e.getName(), new PropertyData.Float<>(e.getName(), Boolean.class, 0F, 1F) {
+					@Override public java.lang.Boolean toUIValue(Object value) {
+						return parseObj(value.toString()) == 1F;
 					}
 
-					@Override public boolean setValueOfComponent(JComponent component, Object value) {
-						if (component instanceof JCheckBox check) {
-							check.setSelected(Float.parseFloat(value.toString()) == 1F);
-							check.setText(check.isSelected() ? "True" : "False");
-							return true;
-						}
-						return super.setValueOfComponent(component, value);
+					@Override public java.lang.Float fromUIValue(Object value) {
+						return (boolean) value ? 1F : 0F;
 					}
 				});
 			}
@@ -108,9 +101,10 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		propertiesList = new ArrayList<>() {
 			@Override public boolean remove(Object o) {
 				if (o instanceof JItemPropertiesListEntry entry) {
-					PropertyData data = buildPropertiesMap().get(entry.getNameField().getPropertyName());
+					stateEntries.setVisible(false);
+					PropertyData<?, ?> data = buildPropertiesMap().get(entry.getNameField().getPropertyName());
 					statesList.forEach(s -> {
-						LinkedHashMap<PropertyData, Object> stateMap = s.getStateLabel().getStateMap();
+						LinkedHashMap<PropertyData<?, ?>, Object> stateMap = s.getStateLabel().getStateMap();
 						stateMap.remove(data);
 						s.getStateLabel().setStateMap(stateMap);
 					});
@@ -120,6 +114,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 								|| !duplicateFilter.add(s.getStateLabel().getState()))
 							s.removeState(stateEntries, statesList);
 					});
+					stateEntries.setVisible(true);
 				}
 				return super.remove(o);
 			}
@@ -212,14 +207,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private JItemStatesListEntry addStatesEntry() {
 		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList,
-				() -> buildPropertiesMap().values().stream().toList(), this::editState);
+				buildPropertiesMap().values().stream()::toList, this::editState);
 		registerEntryUI(se);
 		return se;
 	}
 
 	private void editState(JItemStatesListEntry entry) {
 		if (getValidationResult(false).validateIsErrorFree()) {
-			LinkedHashMap<PropertyData, Object> stateMap = new LinkedHashMap<>();
+			LinkedHashMap<PropertyData<?, ?>, Object> stateMap = new LinkedHashMap<>();
 			if (entry != null)
 				stateMap.putAll(entry.getStateLabel().getStateMap());
 			if (JOptionPane.OK_OPTION != StateEditorDialog.open(mcreator, buildPropertiesMap().values(), stateMap,
@@ -241,10 +236,10 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		}
 	}
 
-	private Map<String, PropertyData> buildPropertiesMap() {
-		Map<String, PropertyData> props = new LinkedHashMap<>(builtinProperties);
+	private Map<String, PropertyData<?, ?>> buildPropertiesMap() {
+		Map<String, PropertyData<?, ?>> props = new LinkedHashMap<>(builtinProperties);
 		propertiesList.forEach(e -> props.put(e.getNameField().getPropertyName(),
-				new PropertyData(e.getNameField().getPropertyName(), Float.class, 0F, 1000000F, null)));
+				new PropertyData.Float<>(e.getNameField().getPropertyName(), Float.class, 0F, 1000001F)));
 		return props;
 	}
 

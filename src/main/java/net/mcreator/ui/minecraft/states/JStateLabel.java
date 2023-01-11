@@ -34,8 +34,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class JStateLabel extends JPanel {
-	private final Supplier<List<PropertyData>> properties;
-	private LinkedHashMap<PropertyData, Object> stateMap = new LinkedHashMap<>();
+	private final Supplier<List<PropertyData<?, ?>>> properties;
+	private LinkedHashMap<PropertyData<?, ?>, Object> stateMap = new LinkedHashMap<>();
 	private String state;
 
 	private final JTextField label = new JTextField();
@@ -45,7 +45,7 @@ public class JStateLabel extends JPanel {
 		}
 	};
 
-	public JStateLabel(Supplier<List<PropertyData>> properties, Runnable editButtonListener) {
+	public JStateLabel(Supplier<List<PropertyData<?, ?>>> properties, Runnable editButtonListener) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
 		this.properties = properties;
 
@@ -98,42 +98,30 @@ public class JStateLabel extends JPanel {
 		this.stateMap = new LinkedHashMap<>();
 		Map<String, String> values = Arrays.stream(state.split(","))
 				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-		for (PropertyData property : properties.get()) {
+		for (PropertyData<?, ?> property : properties.get()) {
 			if (values.containsKey(property.getName()))
-				stateMap.put(property, parseValue(property.type(), values.get(property.getName())));
+				stateMap.put(property, property.parseObj(values.get(property.getName())));
 		}
 		refreshState();
 	}
 
-	public LinkedHashMap<PropertyData, Object> getStateMap() {
+	public LinkedHashMap<PropertyData<?, ?>, Object> getStateMap() {
 		return stateMap;
 	}
 
-	public void setStateMap(LinkedHashMap<PropertyData, Object> stateMap) {
+	public void setStateMap(LinkedHashMap<PropertyData<?, ?>, Object> stateMap) {
 		this.stateMap = stateMap;
 		refreshState();
 	}
 
 	public void rename(String property, String newName) {
-		for (PropertyData data : stateMap.keySet()) {
+		for (PropertyData<?, ?> data : stateMap.keySet()) {
 			if (data.getName().equals(property)) {
 				data.setName(newName);
 				break;
 			}
 		}
 		refreshState();
-	}
-
-	private Object parseValue(Class<?> type, String value) {
-		try {
-			return Integer.parseInt(value);
-		} catch (NumberFormatException ignored) {
-		}
-		try {
-			return Float.parseFloat(value);
-		} catch (NumberFormatException ignored) {
-		}
-		return type.equals(Boolean.class) ? Boolean.parseBoolean(value) : value;
 	}
 
 	private void refreshState() {
