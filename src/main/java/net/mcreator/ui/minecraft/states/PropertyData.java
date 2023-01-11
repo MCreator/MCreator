@@ -31,17 +31,14 @@ package net.mcreator.ui.minecraft.states;
  */
 public abstract class PropertyData<T, U> {
 	private java.lang.String name;
-	private final Class<T> type;
 	private final Class<U> uiType;
 
 	/**
 	 * @param name   Name of this property object.
-	 * @param type   Type of values this property can take.
-	 * @param uiType Type of this property for representation in UI (usually the same as {@link #type}).
+	 * @param uiType Type of this property for representation in UI (usually the same as property type).
 	 */
-	private PropertyData(java.lang.String name, Class<T> type, Class<U> uiType) {
+	private PropertyData(java.lang.String name, Class<U> uiType) {
 		this.name = name;
-		this.type = type;
 		this.uiType = uiType;
 	}
 
@@ -120,15 +117,15 @@ public abstract class PropertyData<T, U> {
 	public abstract T parseObj(java.lang.String value);
 
 	@Override public boolean equals(Object obj) {
-		if (obj == this)
-			return true;
-		if (obj instanceof PropertyData<?, ?> that)
-			return this.name.equals(that.name) && this.type.equals(that.type) && this.uiType.equals(that.uiType);
-		return false;
+		return super.equals(obj) || obj instanceof PropertyData<?, ?> that && this.name.equals(that.name);
 	}
 
 	@Override public int hashCode() {
-		return (name.hashCode() * 31 + type.hashCode()) * 31 + uiType.hashCode();
+		return name.hashCode();
+	}
+
+	@Override public java.lang.String toString() {
+		return getName();
 	}
 
 	/**
@@ -138,7 +135,11 @@ public abstract class PropertyData<T, U> {
 	 */
 	public static class Boolean<T> extends PropertyData<java.lang.Boolean, T> {
 		public Boolean(java.lang.String name, Class<T> uiType) {
-			super(name, java.lang.Boolean.class, uiType);
+			super(name, uiType);
+		}
+
+		public static Boolean<java.lang.Boolean> create(java.lang.String name) {
+			return new Boolean<>(name, java.lang.Boolean.class);
 		}
 
 		@Override public java.lang.Boolean parseObj(java.lang.String value) {
@@ -155,9 +156,13 @@ public abstract class PropertyData<T, U> {
 		private final int min, max;
 
 		public Integer(java.lang.String name, Class<T> uiType, int min, int max) {
-			super(name, java.lang.Integer.class, uiType);
+			super(name, uiType);
 			this.min = min;
 			this.max = max;
+		}
+
+		public static Integer<java.lang.Integer> create(java.lang.String name, int min, int max) {
+			return new Integer<>(name, java.lang.Integer.class, min, max);
 		}
 
 		@Override @SuppressWarnings("unchecked") public java.lang.Integer min() {
@@ -182,9 +187,13 @@ public abstract class PropertyData<T, U> {
 		private final float min, max;
 
 		public Float(java.lang.String name, Class<T> uiType, float min, float max) {
-			super(name, java.lang.Float.class, uiType);
+			super(name, uiType);
 			this.min = min;
 			this.max = max;
+		}
+
+		public static Float<java.lang.Float> create(java.lang.String name, float min, float max) {
+			return new Float<>(name, java.lang.Float.class, min, max);
 		}
 
 		@Override @SuppressWarnings("unchecked") public java.lang.Float min() {
@@ -209,8 +218,12 @@ public abstract class PropertyData<T, U> {
 		private final java.lang.String[] arrayData;
 
 		public String(java.lang.String name, Class<T> uiType, java.lang.String[] arrayData) {
-			super(name, java.lang.String.class, uiType);
+			super(name, uiType);
 			this.arrayData = arrayData;
+		}
+
+		public static String<java.lang.String> create(java.lang.String name, java.lang.String[] arrayData) {
+			return new String<>(name, java.lang.String.class, arrayData);
 		}
 
 		@Override public java.lang.String[] arrayData() {

@@ -78,7 +78,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		builtinPropertyNames = List.copyOf(properties.keySet());
 		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
 			if ("Number".equals(e.getType())) {
-				builtinProperties.put(e.getName(), new PropertyData.Float<>(e.getName(), Float.class, 0F, 1F));
+				builtinProperties.put(e.getName(), PropertyData.Float.create(e.getName(), 0F, 1F));
 			} else if ("Logic".equals(e.getType())) {
 				builtinProperties.put(e.getName(), new PropertyData.Float<>(e.getName(), Boolean.class, 0F, 1F) {
 					@Override public java.lang.Boolean toUIValue(Object value) {
@@ -239,7 +239,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private Map<String, PropertyData<?, ?>> buildPropertiesMap() {
 		Map<String, PropertyData<?, ?>> props = new LinkedHashMap<>(builtinProperties);
 		propertiesList.forEach(e -> props.put(e.getNameField().getPropertyName(),
-				new PropertyData.Float<>(e.getNameField().getPropertyName(), Float.class, 0F, 1000001F)));
+				PropertyData.Float.create(e.getNameField().getPropertyName(), 0F, 1000001F)));
 		return props;
 	}
 

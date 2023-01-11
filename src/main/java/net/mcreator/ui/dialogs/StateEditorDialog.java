@@ -53,20 +53,15 @@ public class StateEditorDialog {
 		entries.setOpaque(false);
 
 		for (PropertyData<?, ?> param : properties) {
-			JComponent component = generatePropertyComponent(param);
+			JComponent component = generatePropertyComponent(param, stateMap.get(param));
 			if (component != null) {
-				setValueOfComponent(component, param, stateMap.get(param));
-				StatePart statePart = new StatePart(entries, param.getName(), component);
-				statePart.useEntry.setSelected(stateMap.containsKey(param) || newState);
-				entryMap.put(param, statePart);
+				StatePart part = new StatePart(entries, param.getName(), component);
+				part.useEntry.setSelected(stateMap.containsKey(param) || newState);
+				entryMap.put(param, part);
 			}
 		}
 
-		JPanel stateParts = new JPanel(new BorderLayout());
-		stateParts.setOpaque(false);
-		stateParts.add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
-
-		JButton ok = new JButton(newState ? L10N.t("dialog.state_editor.create") : L10N.t("dialog.state_editor.save"));
+		JButton ok = newState ? L10N.button("dialog.state_editor.create") : L10N.button("dialog.state_editor.save");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
 
@@ -86,7 +81,7 @@ public class StateEditorDialog {
 		});
 
 		Component editor = HelpUtils.stackHelpTextAndComponent(IHelpContext.NONE.withEntry(helpPath),
-				L10N.t("dialog.state_editor.header"), stateParts, 7);
+				L10N.t("dialog.state_editor.header"), new JScrollPane(PanelUtils.pullElementUp(entries)), 7);
 		dialog.getContentPane().add("Center", PanelUtils.centerAndSouthElement(editor, PanelUtils.join(ok, cancel)));
 
 		dialog.setSize(300, 400);
@@ -96,29 +91,31 @@ public class StateEditorDialog {
 		return retVal.get();
 	}
 
-	private static JComponent generatePropertyComponent(PropertyData<?, ?> param) {
-		Object value = getDefaultValueForType(param.uiType());
-		if (value == null)
-			return null;
-
-		if (param.uiType() == Boolean.class) {
-			return new JCheckBox("", (boolean) value) {
+	private static JComponent generatePropertyComponent(PropertyData<?, ?> param, Object value) {
+		value = value != null ? param.toUIValue(value) : null;
+		if (param.uiType().equals(Boolean.class)) {
+			value = Objects.requireNonNullElse(value, false);
+			JCheckBox box = new JCheckBox() {
 				@Override public String getText() {
 					return isSelected() ? "True" : "False";
 				}
 			};
-		} else if (param.uiType() == Integer.class) {
-			value = Math.max(param.min(), Math.min(param.max(), (Integer) value));
+			box.setSelected((boolean) value);
+			box.setPreferredSize(new Dimension(54, 25));
+			return box;
+		} else if (param.uiType().equals(Integer.class)) {
+			value = Math.max(param.min(), Math.min(param.max(), (int) Objects.requireNonNullElse(value, 0)));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, (int) param.min(), (int) param.max(), 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
-		} else if (param.uiType() == Float.class) {
-			value = Math.max(param.min(), Math.min(param.max(), (float) value));
+		} else if (param.uiType().equals(Float.class)) {
+			value = Math.max(param.min(), Math.min(param.max(), (float) Objects.requireNonNullElse(value, 0F)));
 			JSpinner box = new JSpinner(
 					new SpinnerNumberModel((float) value, (float) param.min(), (float) param.max(), 0.001));
 			box.setPreferredSize(new Dimension(130, 22));
 			return box;
-		} else if (param.uiType() == String.class) {
+		} else if (param.uiType().equals(String.class)) {
+			value = Objects.requireNonNullElse(value, "");
 			JComboBox<String> box = new JComboBox<>(param.arrayData());
 			box.setEditable(false);
 			box.setSelectedIndex(Math.max(0, Arrays.asList(param.arrayData()).indexOf(value.toString())));
@@ -129,49 +126,17 @@ public class StateEditorDialog {
 
 	private static Object getValueFromComponent(JComponent component, PropertyData<?, ?> param) {
 		Object value = null;
-		if (component == null) {
-			value = getDefaultValueForType(param.uiType());
-		} else if (param.uiType() == Boolean.class) {
+		if (param.uiType().equals(Boolean.class)) {
 			value = ((JCheckBox) component).isSelected();
-		} else if (param.uiType() == Integer.class) {
+		} else if (param.uiType().equals(Integer.class)) {
 			value = ((JSpinner) component).getValue();
-		} else if (param.uiType() == Float.class) {
+		} else if (param.uiType().equals(Float.class)) {
 			Number num = (Number) ((JSpinner) component).getValue();
 			value = Math.round(num.floatValue() * 1000) / 1000F;
-		} else if (param.uiType() == String.class) {
+		} else if (param.uiType().equals(String.class)) {
 			value = ((JComboBox<?>) component).getSelectedItem();
 		}
-		return value == null ? null : param.fromUIValue(value);
-	}
-
-	private static void setValueOfComponent(JComponent component, PropertyData<?, ?> param, Object value) {
-		value = value != null ? param.toUIValue(value) : getDefaultValueForType(param.uiType());
-		if (value == null)
-			return;
-
-		if (param.uiType() == Boolean.class) {
-			((JCheckBox) component).setSelected(Boolean.parseBoolean(value.toString()));
-		} else if (param.uiType() == Integer.class) {
-			((JSpinner) component).setValue(
-					Math.max(param.min(), Math.min(param.max(), Integer.parseInt(value.toString()))));
-		} else if (param.uiType() == Float.class) {
-			((JSpinner) component).setValue(
-					Math.max(param.min(), Math.min(param.max(), Float.parseFloat(value.toString()))));
-		} else if (param.uiType() == String.class) {
-			((JComboBox<?>) component).setSelectedItem(value);
-		}
-	}
-
-	private static Object getDefaultValueForType(Class<?> type) {
-		if (type == Boolean.class)
-			return false;
-		else if (type == Integer.class)
-			return 0;
-		else if (type == Float.class)
-			return 0F;
-		else if (type == String.class)
-			return "";
-		return null;
+		return value != null ? param.fromUIValue(value) : null;
 	}
 
 	private static final class StatePart extends JPanel {

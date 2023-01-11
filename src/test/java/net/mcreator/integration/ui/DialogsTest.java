@@ -179,10 +179,10 @@ public class DialogsTest {
 	@Test public void testStateEditorDialog() throws Throwable {
 		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
 		Map<String, PropertyData<?, ?>> testProps = new LinkedHashMap<>();
-		testProps.put("logic", new PropertyData.Boolean<>("logic", Boolean.class));
-		testProps.put("integer", new PropertyData.Integer<>("integer", Integer.class, 0, 1000));
-		testProps.put("float", new PropertyData.Float<>("float", Float.class, 0F, 1000000F));
-		testProps.put("text", new PropertyData.String<>("text", String.class, meTypes.toArray(String[]::new)));
+		testProps.put("logic", PropertyData.Boolean.create("logic"));
+		testProps.put("integer", PropertyData.Integer.create("integer", 0, 1000));
+		testProps.put("float", PropertyData.Float.create("float", 0F, 1000000F));
+		testProps.put("text", PropertyData.String.create("text", meTypes.toArray(String[]::new)));
 		Random rng = new Random();
 		LinkedHashMap<PropertyData<?, ?>, Object> testState = new LinkedHashMap<>();
 		if (rng.nextBoolean())
