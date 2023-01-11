@@ -54,6 +54,7 @@ import net.mcreator.element.converter.fv36.GUIComponentNamer;
 import net.mcreator.element.converter.fv37.SlotInteractionsConverter;
 import net.mcreator.element.converter.fv38.BiomeGenParametersConverter;
 import net.mcreator.element.converter.fv39.EntitiesRangedAttackConverter;
+import net.mcreator.element.converter.fv39.ProcedureArrowProjectileFixer;
 import net.mcreator.element.converter.fv39.RangedItemToProjectileConverter;
 import net.mcreator.element.converter.fv4.RecipeTypeConverter;
 import net.mcreator.element.converter.fv5.AchievementFixer;
@@ -95,7 +96,7 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter()));
+				new ToolToItemTypeProcedureConverter(), new ProcedureArrowProjectileFixer()));
 		put(ModElementType.RANGEDITEM, Arrays.asList(new RangedItemTextureConverter(), new RangedItemToProjectileConverter()));
 		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));
