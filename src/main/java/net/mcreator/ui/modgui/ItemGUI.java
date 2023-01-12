@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
@@ -85,6 +86,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
+
+	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
+
+	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
+
+	private ProcedureSelector onRangedItemUsed;
+
+	private final DataListComboBox projectile = new DataListComboBox(mcreator);
+
+	private ProcedureSelector useCondition;
 	private ProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
@@ -161,10 +172,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onRangedItemUsed = new ProcedureSelector(this.withEntry("rangeditem/when_used"), mcreator,
+				L10N.t("elementgui.item.event_on_use"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
+				L10N.t("elementgui.item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -185,6 +202,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
+		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
@@ -406,7 +424,44 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(inventoryProperties));
+		updateRangedPanel();
+
+		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2,2));
+		rangedProperties.setOpaque(false);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
+				L10N.label("elementgui.item_enable_ranged_item")));
+		enableRanged.setOpaque(false);
+		enableRanged.addActionListener(e -> updateRangedPanel());
+		rangedProperties.add(enableRanged);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
+				L10N.label("elementgui.ranged_item.projectile")));
+		rangedProperties.add(projectile);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/shoot_constantly"),
+				L10N.label("elementgui.ranged_item.shoot_constantly")));
+		shootConstantly.setOpaque(false);
+		rangedProperties.add(shootConstantly);
+
+		JPanel rangedTriggers = new JPanel(new GridLayout(1, 2, 10, 10));
+		rangedTriggers.setOpaque(false);
+		rangedTriggers.add(onRangedItemUsed);
+		rangedTriggers.add(useCondition);
+		rangedTriggers.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.ranged_events"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		rangedPanel.setOpaque(false);
+		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
+		rangedPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(inventoryProperties), rangedPanel, 10, 10)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -447,6 +502,20 @@ public class ItemGUI extends ModElementGUI<Item> {
 		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
+	private void updateRangedPanel() {
+		if (enableRanged.isSelected()) {
+			shootConstantly.setEnabled(true);
+			projectile.setEnabled(true);
+			onRangedItemUsed.setEnabled(true);
+			useCondition.setEnabled(true);
+		} else {
+			shootConstantly.setEnabled(false);
+			projectile.setEnabled(false);
+			onRangedItemUsed.setEnabled(false);
+			useCondition.setEnabled(false);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -460,6 +529,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer.refreshListKeepSelected();
 		onFinishUsingItem.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		onRangedItemUsed.refreshListKeepSelected();
+		useCondition.refreshListKeepSelected();
+
+		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
@@ -523,6 +596,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
 		eatResultItem.setBlock(item.eatResultItem);
+		enableRanged.setSelected(item.enableRanged);
+		shootConstantly.setSelected(item.shootConstantly);
+		projectile.setSelectedItem(item.projectile);
+		useCondition.setSelectedProcedure(item.useCondition);
+		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
 
 		updateGlowElements();
 		updateFoodPanel();
@@ -571,6 +649,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.animation = (String) animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
+		item.enableRanged = enableRanged.isSelected();
+		item.shootConstantly = shootConstantly.isSelected();
+		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
+		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
+		item.useCondition = useCondition.getSelectedProcedure();
 
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 

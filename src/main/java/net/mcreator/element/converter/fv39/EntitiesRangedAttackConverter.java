@@ -23,22 +23,14 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.element.types.RangedItem;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 
 public class EntitiesRangedAttackConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		LivingEntity entity = (LivingEntity) input;
 		if (!entity.rangedItemType.equals("Default item")) {
-			for (ModElement me : workspace.getModElements()) {
-				if (me.getName().equals(entity.rangedItemType) && me.getGeneratableElement() != null) {
-					RangedItem rangedItem = (RangedItem) me.getGeneratableElement();
-					entity.rangedItemType = rangedItem.projectile.getUnmappedValue().replace("CUSTOM:", "");
-					break;
-				}
-			}
+			entity.rangedItemType = entity.rangedItemType + "Projectile";
 		}
 
 		return entity;

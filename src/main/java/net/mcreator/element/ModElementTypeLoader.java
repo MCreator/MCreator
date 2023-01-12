@@ -101,9 +101,6 @@ public class ModElementTypeLoader {
 		ModElementType.PROJECTILE = register(
 				new ModElementType<>("projectile", 'q', BaseType.ENTITY, RecipeType.NONE, ProjectileGUI::new,
 						Projectile.class));
-		ModElementType.RANGEDITEM = register(
-				new ModElementType<>("rangeditem", null, BaseType.ITEM, RecipeType.ITEM, RangedItemGUI::new,
-						RangedItem.class));
 		ModElementType.RECIPE = register(
 				new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeType.NONE, RecipeGUI::new, Recipe.class));
 		ModElementType.STRUCTURE = register(

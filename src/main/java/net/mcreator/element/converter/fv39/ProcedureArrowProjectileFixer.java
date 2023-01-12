@@ -23,10 +23,8 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.element.types.RangedItem;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -51,7 +49,7 @@ public class ProcedureArrowProjectileFixer implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Procedure procedure = (Procedure) input;
 		try {
-			procedure.procedurexml = fixXML(workspace, procedure.procedurexml);
+			procedure.procedurexml = fixXML(procedure.procedurexml);
 		} catch (Exception e) {
 			LOG.warn("Failed to fix Arrow Projectile blocks for procedure " + input.getModElement().getName());
 		}
@@ -59,7 +57,7 @@ public class ProcedureArrowProjectileFixer implements IConverter {
 		return procedure;
 	}
 
-	private String fixXML(Workspace workspace, String xml) throws Exception {
+	private String fixXML(String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
@@ -71,15 +69,8 @@ public class ProcedureArrowProjectileFixer implements IConverter {
 			String type = element.getAttribute("type");
 			if (type.equals("projectiles_arrow")) {
 				Element field = XMLUtil.getFirstChildrenWithName(element, "field");
-				if (field != null) {
-					for (ModElement me : workspace.getModElements()) {
-						if (me.getName().equals(field.getTextContent().replace("CUSTOM:", "")) && me.getGeneratableElement() != null) {
-							RangedItem rangedItem = (RangedItem) me.getGeneratableElement();
-							field.setTextContent(rangedItem.projectile.getUnmappedValue());
-							break;
-						}
-					}
-				}
+				if (field != null)
+					field.setTextContent(field.getTextContent() + "Projectile");
 			}
 		}
 

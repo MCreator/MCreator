@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
@@ -80,6 +81,13 @@ import java.util.Map;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
 	public Procedure onFinishUsingItem;
+
+	// Ranged properties
+	public boolean enableRanged;
+	public boolean shootConstantly;
+	public ProjectileEntry projectile;
+	public Procedure onRangedItemUsed;
+	public Procedure useCondition;
 
 	// Food
 	public boolean isFood;
