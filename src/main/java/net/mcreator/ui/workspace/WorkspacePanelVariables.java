@@ -84,7 +84,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+					int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 							L10N.t("workspace.variables.change_type"), L10N.t("common.confirmation"),
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
@@ -98,7 +98,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()),
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()),
 										row, 3);
 							}
 						}
@@ -113,10 +113,10 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				VariableType variableType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
 					return new DefaultCellEditor(new JComboBox<>(variableType.getSupportedScopesWithoutLocal(
-							workspacePanel.getMcreator().getGeneratorConfiguration())));
+							workspacePanel.getMCreator().getGeneratorConfiguration())));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
-									workspacePanel.getMcreator().getGeneratorConfiguration()).stream()
+									workspacePanel.getMCreator().getGeneratorConfiguration()).stream()
 							.map(VariableType::getName).toArray(String[]::new)));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
@@ -226,7 +226,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		add("North", bar);
 
 		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMcreator(), true,
+			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
 							UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
@@ -237,9 +237,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							return validator.validate();
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
-							workspacePanel.getMcreator().getGeneratorConfiguration()));
+							workspacePanel.getMCreator().getGeneratorConfiguration()));
 			if (element != null) {
-				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
+				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
 			}
 		});
@@ -248,7 +248,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			if (elements.getSelectedRow() == -1)
 				return;
 
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == JOptionPane.YES_OPTION) {
@@ -256,7 +256,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 						.forEach(el -> {
 							VariableElement element = new VariableElement();
 							element.setName(el);
-							workspacePanel.getMcreator().getWorkspace().removeVariableElement(element);
+							workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
 						});
 				reloadElements();
 			}
@@ -271,7 +271,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				storingEdits = true;
 				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-				Workspace workspace = workspacePanel.getMcreator().getWorkspace();
+				Workspace workspace = workspacePanel.getMCreator().getWorkspace();
 
 				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
 				for (VariableElement variableElement : todelete)
@@ -302,7 +302,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (VariableElement variable : workspacePanel.getMcreator().getWorkspace().getVariableElements()) {
+		for (VariableElement variable : workspacePanel.getMCreator().getWorkspace().getVariableElements()) {
 			model.addRow(new Object[] { variable.getName(), variable.getType().getName(), variable.getScope(),
 					variable.getValue() });
 		}

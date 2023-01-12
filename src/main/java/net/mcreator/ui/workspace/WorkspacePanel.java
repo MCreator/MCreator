@@ -1414,7 +1414,7 @@ import java.util.stream.Collectors;
 		vcsPan.refilterElements();
 	}
 
-	public MCreator getMcreator() {
+	public MCreator getMCreator() {
 		return mcreator;
 	}
 

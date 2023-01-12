@@ -35,21 +35,18 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTFeatureBlocks {
+	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip if features are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FEATURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping feature blocks test as the current generator does not support them.");
 			return;
 		}
 
@@ -93,7 +90,7 @@ public class GTFeatureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined) {
+				if (!templatesDefined && !specialCases.contains(featureBlock.machine_name)) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
 							+ featureBlock.machine_name);
 					continue;
@@ -138,7 +135,7 @@ public class GTFeatureBlocks {
 				}
 
 				if (processed != featureBlock.getFields().size()) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
+					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
 							+ featureBlock.machine_name);
 					continue;
 				}
@@ -154,6 +151,14 @@ public class GTFeatureBlocks {
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
+
+			// Add missing inputs for the hardcoded feature blocks
+			switch (featureBlock.machine_name) {
+				case "block_predicate_not" -> additionalXML.append("""
+						<value name="condition"><block type="block_predicate_is_air"></block></value>""");
+				case "int_provider_clamped" -> additionalXML.append("""
+						<value name="toClamp"><block type="int_provider_constant"><field name="value">2</field></block></value>""");
+			}
 
 			testXML = testXML.replace("<block type=\"" + featureBlock.machine_name + "\">",
 					"<block type=\"" + featureBlock.machine_name + "\">" + additionalXML);
@@ -183,6 +188,16 @@ public class GTFeatureBlocks {
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value><next><block type="placement_in_square"></block></next></block></xml>
+						""".formatted(testXML);
+				// Vertical anchors are tested with the "Height: At constant height" placement
+				case "VerticalAnchor" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+						</block></value><next><block type="placement_height_range">
+							<value name="height"><block type="height_provider_constant">
+								<value name="value">%s</value></block></value></block></next></block></xml>
 						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
