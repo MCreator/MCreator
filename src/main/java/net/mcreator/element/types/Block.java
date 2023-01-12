@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Fluid;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -131,6 +130,11 @@ import java.util.stream.Collectors;
 	public int breakHarvestLevel;
 
 	public Procedure placingCondition;
+
+	public boolean isBonemealable;
+	public Procedure isBonemealTargetCondition;
+	public Procedure bonemealSuccessCondition;
+	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
 	public String guiBoundTo;

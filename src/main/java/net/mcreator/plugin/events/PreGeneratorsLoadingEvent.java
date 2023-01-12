@@ -22,7 +22,7 @@ package net.mcreator.plugin.events;
 import net.mcreator.ui.MCreatorApplication;
 
 /**
- * <p>This event is triggered before generators are loaded. This event can be used to load custom {@link net.mcreator.element.ModElementType}.
+ * <p>This event is triggered before generators are loaded. This event can be used to load custom {@link net.mcreator.element.ModElementType} or other plugin features.
  * As it is triggered after plugins are loaded, except generators, this event can be used to create new features for plugins.</p>
  */
 public class PreGeneratorsLoadingEvent extends ApplicationLoadedEvent {

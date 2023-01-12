@@ -1,0 +1,40 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "mean",
+      "value": 0
+    },
+    {
+      "type": "field_number",
+      "name": "deviation",
+      "value": 1
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": -3,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 3,
+      "precision": 1
+    }
+  ],
+  "output": "IntProvider",
+  "colour": "%{BKY_MATH_HUE}",
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "intproviders",
+    "fields": [
+      "mean",
+      "deviation",
+      "min",
+      "max"
+    ]
+  }
+}

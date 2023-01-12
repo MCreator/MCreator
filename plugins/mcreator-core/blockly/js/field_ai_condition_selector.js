@@ -1,22 +1,30 @@
-Blockly.Extensions.register('ai_condition_selector',
-    function () {
-        this.appendDummyInput()
-            .appendField(AIConditionFieldImpl(), 'condition');
-    });
+/**
+ * This class represents a condition selector for AI blocks
+ */
+class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
+    constructor(opt_validator) {
+        super('Conditions: OO', 'condition-label');
+        this.condition = 'null,null';
 
-function AIConditionFieldImpl() {
-    let condition = 'null,null';
-    let conditionfield = new Blockly.FieldLabelSerializable('Conditions: OO', 'condition-label');
-    conditionfield.EDITABLE = true;
-    conditionfield.SERIALIZABLE = true;
-    conditionfield.initView = function () {
+        this.EDITABLE = true;
+
+        if (opt_validator)
+            this.setValidator(opt_validator);
+    }
+
+    // Create the field from the json definition
+    static fromJson(options) {
+        return new this(undefined);
+    }
+
+    // Initialize the field with a rectangle surrounding the text
+    initView() {
         let rect = Blockly.utils.dom.createSvgElement('rect',
             {
                 'class': 'blocklyFlyoutButtonShadow',
                 'rx': 2, 'ry': 2, 'y': 0, 'x': 1
             },
             this.fieldGroup_);
-
         this.createTextElement_();
 
         if (workspace.getRenderer().name === "thrasos") {
@@ -32,53 +40,58 @@ function AIConditionFieldImpl() {
 
         rect.setAttribute('width', 93);
         rect.setAttribute('height', 15);
-
         this.lastClickTime = -1;
-    };
-    conditionfield.updateSize_ = function () {
+    }
+
+    updateSize_() {
         this.size_.height = 14;
         this.size_.width = 93;
-    };
-    conditionfield.onMouseDown_ = function (e) {
+    }
+
+    // Function to handle clicking
+    onMouseDown_(e) {
         if (this.sourceBlock_ && !this.sourceBlock_.isInFlyout) {
             if (this.lastClickTime !== -1 && ((new Date().getTime() - this.lastClickTime) < 500)) {
                 e.stopPropagation(); // fix so the block does not "stick" to the mouse when the field is clicked
-                javabridge.openAIConditionEditor(condition, {
+                let thisField = this;
+                javabridge.openAIConditionEditor(this.condition, {
                     'callback': function (data) {
-                        if (data !== undefined) {
-                            condition = data;
+                        if (data) {
+                            thisField.condition = data;
                         } else {
-                            condition = 'null,null';
+                            thisField.condition = 'null,null';
                         }
 
-                        conditionfield.updateDisplay();
+                        thisField.updateDisplay();
                     }
                 });
             } else {
                 this.lastClickTime = new Date().getTime();
             }
         }
-    };
-    conditionfield.toXml = function (fieldElement) {
-        fieldElement.textContent = condition;
+    }
+
+    toXml(fieldElement) {
+        fieldElement.textContent = this.condition;
         return fieldElement;
-    };
+    }
 
-    conditionfield.fromXml = function (fieldElement) {
-        condition = fieldElement.textContent;
-        conditionfield.updateDisplay();
-    };
+    fromXml(fieldElement) {
+        this.condition = fieldElement.textContent || 'null,null';
+        this.updateDisplay();
+    }
 
-    conditionfield.updateDisplay = function () {
-        if (condition.split(',').length === 2) {
+    updateDisplay() {
+        if (this.condition.split(',').length === 2) {
             this.setValue('Conditions: ' +
-                (condition.split(',')[0] !== 'null' ? 'X' : 'O') +
-                (condition.split(',')[1] !== 'null' ? 'X' : 'O')
+                (this.condition.split(',')[0] !== 'null' ? 'X' : 'O') +
+                (this.condition.split(',')[1] !== 'null' ? 'X' : 'O')
             );
         } else {
             this.setValue('Conditions: OO');
         }
-    };
-
-    return conditionfield;
+    }
 }
+
+// Register this field, so that it can be added without extensions
+Blockly.fieldRegistry.register('field_ai_condition_selector', FieldAiConditionSelector);

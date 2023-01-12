@@ -106,8 +106,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
             if (!readableName) // The readable name is an empty string because it couldn't be found
                 readableName = fieldElement.textContent; // In this case, we use the actual value
             this.entry = fieldElement.textContent + ',' + readableName;
-        }
-        else
+        } else
             this.entry = FieldDataListSelector.getDefaultEntry();
         this.updateDisplay();
     };

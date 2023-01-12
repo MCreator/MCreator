@@ -29,7 +29,6 @@ import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.dialogs.*;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -71,9 +70,6 @@ public class DialogsTest {
 	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Dialogs Test");
-
-		// disable webview to avoid issues in headless test environments
-		BlocklyPanel.DISABLE_WEBVIEW = true;
 
 		// disable native file choosers for tests due to threading issues
 		FileDialogs.DISABLE_NATIVE_DIALOGS = true;
