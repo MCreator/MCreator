@@ -123,7 +123,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 	 * @param helpContext          Help tip explaining how is the selected procedure used.
 	 * @param mcreator             Workspace window inside which this selector is to be created.
 	 * @param eventName            Name of the event calling the selected procedure.
-	 * @param procedureName        Suffix of the procedure mod element that this selector can create.
+	 * @param procedureName        Suffix of the name of procedure mod element this selector can create.
 	 * @param side                 Side of the game on which the event may occur (CLIENT, SERVER or BOTH).
 	 * @param allowInlineEditor    Whether layout of this selector can adapt to low height values.
 	 * @param returnType           The type of value the selected procedure should return.

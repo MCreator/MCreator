@@ -33,12 +33,12 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -105,11 +105,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 						stateMap.remove(data);
 						s.getStateLabel().setStateMap(stateMap);
 					});
-					Set<String> duplicateFilter = new HashSet<>();
+					Set<LinkedHashMap<PropertyData<?, ?>, Object>> duplicateFilter = new HashSet<>();
 					statesList.stream().toList().forEach(s -> {
-						if (s.getStateLabel().getState() == null || s.getStateLabel().getState().equals("")
-								|| !duplicateFilter.add(s.getStateLabel().getState()))
-							s.removeState(stateEntries, statesList);
+						LinkedHashMap<PropertyData<?, ?>, Object> state = s.getStateLabel().getStateMap();
+						if (state.isEmpty() || !duplicateFilter.add(state)) {
+							statesList.remove(s);
+							stateEntries.remove(s.getParent());
+						}
 					});
 					stateEntries.setVisible(true);
 				}
@@ -121,10 +123,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		topbar.setOpaque(false);
 
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
-		addProperty.addActionListener(e -> {
-			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
-			addPropertiesEntry(propertyId.get());
-		});
+		addProperty.addActionListener(e -> addPropertiesEntry());
 		topbar.add(addProperty);
 
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
@@ -170,30 +169,18 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		statesList.forEach(JItemStatesListEntry::reloadDataLists);
 	}
 
-	private JItemPropertiesListEntry addPropertiesEntry(int propertyId) {
+	private JItemPropertiesListEntry addPropertiesEntry() {
+		propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
-				propertyId, () -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()),
-				builtinPropertyNames);
-
-		pe.getNameField().getTextField().addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				if (!e.getComponent().isEnabled())
-					return;
-
-				if (e.getKeyCode() == KeyEvent.VK_ENTER
-						&& pe.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					String newName = ((JTextField) e.getComponent()).getText();
-					statesList.forEach(s -> s.getStateLabel().rename(pe.getNameField().getCachedName(), newName));
-					pe.getNameField().finishRenaming();
-					pe.getNameField().renameTo(newName);
-				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					pe.getNameField().finishRenaming();
-				}
-			}
-		});
-
+				propertyId.get(), this::nameValidator, (nameField, newName) -> statesList.forEach(
+				s -> s.getStateLabel().rename(nameField.getCachedName(), newName)));
 		registerEntryUI(pe);
 		return pe;
+	}
+
+	private UniqueNameValidator nameValidator(VTextField holder) {
+		return new UniqueNameValidator(holder, L10N.t("elementgui.item.custom_property.validator"),
+				() -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()), builtinPropertyNames, null);
 	}
 
 	private JItemStatesListEntry addStatesEntry() {
@@ -204,7 +191,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private void editState(JItemStatesListEntry entry) {
-		if (getValidationResult(false).validateIsErrorFree()) {
+		if (new AggregatedValidationResult(propertiesList.stream().map(e -> e.getNameField().getTextField())
+				.toArray(IValidable[]::new)).validateIsErrorFree()) {
 			LinkedHashMap<PropertyData<?, ?>, Object> stateMap = new LinkedHashMap<>();
 			if (entry != null)
 				stateMap.putAll(entry.getStateLabel().getStateMap());
@@ -230,7 +218,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private Map<String, PropertyData<?, ?>> buildPropertiesMap() {
 		Map<String, PropertyData<?, ?>> props = new LinkedHashMap<>(builtinProperties);
 		propertiesList.forEach(e -> props.put(e.getNameField().getPropertyName(),
-				PropertyData.Float.create(e.getNameField().getPropertyName(), 0F, 1000001F)));
+				PropertyData.Float.create(e.getNameField().getPropertyName(), 0F, 1000000F)));
 		return props;
 	}
 
@@ -241,16 +229,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setProperties(LinkedHashMap<String, Procedure> properties) {
-		properties.forEach((name, value) -> {
-			propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
-			if (name.startsWith("property")) {
-				try {
-					propertyId.set(Math.max(propertyId.get(), Integer.parseInt(name.substring("property".length()))));
-				} catch (NumberFormatException ignored) {
-				}
-			}
-			addPropertiesEntry(propertyId.get()).setEntry(name, value);
-		});
+		properties.forEach((name, value) -> addPropertiesEntry().setEntry(name, value));
 	}
 
 	public LinkedHashMap<String, Item.ModelEntry> getStates() {
@@ -263,11 +242,10 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		states.forEach((state, model) -> addStatesEntry().setEntry(state, model));
 	}
 
-	public AggregatedValidationResult getValidationResult(boolean includeStates) {
+	public AggregatedValidationResult getValidationResult() {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult();
 		propertiesList.forEach(validationResult::addValidationElement);
-		if (includeStates)
-			statesList.forEach(validationResult::addValidationElement);
+		statesList.forEach(validationResult::addValidationElement);
 		return validationResult;
 	}
 }

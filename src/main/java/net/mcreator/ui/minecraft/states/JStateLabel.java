@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 public class JStateLabel extends JPanel {
 	private final Supplier<List<PropertyData<?, ?>>> properties;
 	private LinkedHashMap<PropertyData<?, ?>, Object> stateMap = new LinkedHashMap<>();
-	private String state;
 
 	private final JTextField label = new JTextField();
 	private final JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
@@ -49,11 +48,14 @@ public class JStateLabel extends JPanel {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
 		this.properties = properties;
 
+		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+
 		label.setEditable(false);
-		label.setOpaque(true);
-		label.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		label.setOpaque(false);
 
 		JScrollPane statePane = new JScrollPane(label);
+		statePane.setOpaque(false);
+		statePane.getViewport().setOpaque(false);
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add(statePane);
 
@@ -90,11 +92,11 @@ public class JStateLabel extends JPanel {
 	}
 
 	public String getState() {
-		return state;
+		return stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getValue())
+				.collect(Collectors.joining(","));
 	}
 
 	public void setState(String state) {
-		this.state = state;
 		this.stateMap = new LinkedHashMap<>();
 		Map<String, String> values = Arrays.stream(state.split(","))
 				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
@@ -125,8 +127,6 @@ public class JStateLabel extends JPanel {
 	}
 
 	private void refreshState() {
-		this.state = stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getValue())
-				.collect(Collectors.joining(","));
 		label.setText(L10N.t("elementgui.common.custom_state.when") + stateMap.entrySet().stream()
 				.map(e -> StringUtils.snakeToCamel(e.getKey().getName()) + " = " + e.getValue())
 				.collect(Collectors.joining("; ")));

@@ -54,7 +54,6 @@ import java.util.function.Supplier;
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	private final MCreator mcreator;
-	private final JComponent container;
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final JStateLabel stateLabel;
@@ -72,8 +71,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 
 		stateLabel = new JStateLabel(properties, () -> editButtonListener.accept(this));
-		stateLabel.setOpaque(true);
-		stateLabel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setValidator(new TileHolderValidator(texture));
@@ -90,25 +87,23 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 				PanelUtils.join(ito, imo));
 		override.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
-		container = PanelUtils.expandHorizontally(this);
+		JComponent container = PanelUtils.expandHorizontally(this);
 		parent.add(container);
 		entryList.add(this);
 
 		remove.setText(L10N.t("elementgui.item.custom_state.remove"));
-		remove.addActionListener(e -> removeState(parent, entryList));
+		remove.addActionListener(e -> {
+			entryList.remove(this);
+			parent.remove(container);
+			parent.revalidate();
+			parent.repaint();
+		});
 
 		JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		contents.add(PanelUtils.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, stateLabel), override));
 		contents.add(remove);
 		add(contents);
 
-		parent.revalidate();
-		parent.repaint();
-	}
-
-	public void removeState(JPanel parent, List<JItemStatesListEntry> entryList) {
-		entryList.remove(this);
-		parent.remove(container);
 		parent.revalidate();
 		parent.repaint();
 	}

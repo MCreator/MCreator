@@ -55,9 +55,10 @@ public class StateEditorDialog {
 		for (PropertyData<?, ?> param : properties) {
 			JComponent component = generatePropertyComponent(param, stateMap.get(param));
 			if (component != null) {
-				StatePart part = new StatePart(entries, param.getName(), component);
+				StatePart part = new StatePart(param.getName(), component);
 				part.useEntry.setSelected(stateMap.containsKey(param) || newState);
 				entryMap.put(param, part);
+				entries.add(PanelUtils.expandHorizontally(part));
 			}
 		}
 
@@ -144,7 +145,7 @@ public class StateEditorDialog {
 		private final JCheckBox useEntry = new JCheckBox();
 		private final JComponent entryComponent;
 
-		private StatePart(JPanel parent, String property, JComponent component) {
+		private StatePart(String property, JComponent component) {
 			super(new FlowLayout(FlowLayout.LEFT));
 			entryComponent = component;
 
@@ -165,10 +166,6 @@ public class StateEditorDialog {
 
 			add(useEntry);
 			add(settings);
-
-			parent.add(PanelUtils.expandHorizontally(this));
-			parent.revalidate();
-			parent.repaint();
 		}
 	}
 }

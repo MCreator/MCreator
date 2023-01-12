@@ -45,7 +45,8 @@ public class JPropertyNameField extends JPanel {
 		field.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
 		field.setEditable(false);
 		field.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		field.addPropertyChangeListener("editable", e -> rename.setEnabled(!((boolean) e.getNewValue())));
+		field.addPropertyChangeListener("enabled", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
+		field.addPropertyChangeListener("editable", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
 		field.addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
 				field.setEditable(false);
@@ -74,9 +75,7 @@ public class JPropertyNameField extends JPanel {
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-
 		field.setEnabled(enabled);
-		rename.setEnabled(enabled);
 	}
 
 	public VTextField getTextField() {
@@ -95,7 +94,7 @@ public class JPropertyNameField extends JPanel {
 		field.setText(cachedName = newName);
 	}
 
-	public void finishRenaming() {
+	public void stopRenaming() {
 		field.dispatchEvent(new FocusEvent(field, FocusEvent.FOCUS_LOST));
 	}
 }

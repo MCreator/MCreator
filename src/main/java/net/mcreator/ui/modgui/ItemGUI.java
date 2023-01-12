@@ -488,7 +488,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (page == 2)
 			return new AggregatedValidationResult(name);
 		else if (page == 1)
-			return customProperties.getValidationResult(true);
+			return customProperties.getValidationResult();
 		else if (page == 0)
 			return new AggregatedValidationResult(page1group);
 		return new AggregatedValidationResult.PASS();
