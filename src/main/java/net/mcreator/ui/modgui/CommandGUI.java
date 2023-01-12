@@ -130,7 +130,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(
-					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
+					new BlocklyBlockCodeGenerator(externalBlocks,
+							mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}

@@ -35,27 +35,25 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTFeatureBlocks {
+	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
+		// silently skip if features are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FEATURE)
 				== GeneratorStats.CoverageStatus.NONE) {
-			LOG.warn("[" + generatorName
-					+ "] Skipping feature blocks test as the current generator does not support them.");
 			return;
 		}
 
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE);
 
-		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks().values()) {
+		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
+				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			if (!generatorBlocks.contains(featureBlock.machine_name)) {
@@ -92,7 +90,7 @@ public class GTFeatureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined) {
+				if (!templatesDefined && !specialCases.contains(featureBlock.machine_name)) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
 							+ featureBlock.machine_name);
 					continue;
@@ -109,25 +107,25 @@ public class GTFeatureBlocks {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
-									case "field_checkbox" -> {
-										additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-										processed++;
-									}
-									case "field_number" -> {
-										additionalXML.append("<field name=\"").append(field).append("\">4</field>");
-										processed++;
-									}
-									case "field_input" -> {
-										additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-										processed++;
-										}
-									case "field_dropdown" -> {
-										JsonArray opts = arg.get("options").getAsJsonArray();
-										JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-										additionalXML.append("<field name=\"").append(field).append("\">")
-												.append(opt.get(1).getAsString()).append("</field>");
-										processed++;
-									}
+								case "field_checkbox" -> {
+									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
+									processed++;
+								}
+								case "field_number" -> {
+									additionalXML.append("<field name=\"").append(field).append("\">4</field>");
+									processed++;
+								}
+								case "field_input" -> {
+									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+									processed++;
+								}
+								case "field_dropdown" -> {
+									JsonArray opts = arg.get("options").getAsJsonArray();
+									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
+									additionalXML.append("<field name=\"").append(field).append("\">")
+											.append(opt.get(1).getAsString()).append("</field>");
+									processed++;
+								}
 								}
 								break;
 							}
@@ -137,7 +135,7 @@ public class GTFeatureBlocks {
 				}
 
 				if (processed != featureBlock.getFields().size()) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
+					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
 							+ featureBlock.machine_name);
 					continue;
 				}
@@ -154,17 +152,28 @@ public class GTFeatureBlocks {
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
 
+			// Add missing inputs for the hardcoded feature blocks
+			switch (featureBlock.machine_name) {
+				case "block_predicate_not" -> additionalXML.append("""
+						<value name="condition"><block type="block_predicate_is_air"></block></value>""");
+				case "int_provider_clamped" -> additionalXML.append("""
+						<value name="toClamp"><block type="int_provider_constant"><field name="value">2</field></block></value>""");
+			}
+
 			testXML = testXML.replace("<block type=\"" + featureBlock.machine_name + "\">",
 					"<block type=\"" + featureBlock.machine_name + "\">" + additionalXML);
 
 			Feature feature = new Feature(modElement);
-			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random, ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = random.nextBoolean() ? new ArrayList<>() :
+			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.restrictionDimensions = random.nextBoolean() ?
+					new ArrayList<>() :
 					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
 			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
 
-			if (featureBlock.type == IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the lake feature
+			if (featureBlock.type
+					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the lake feature
 				feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
@@ -174,22 +183,32 @@ public class GTFeatureBlocks {
 						</block></value><next>%s</next></block></xml>""".formatted(testXML);
 			} else {
 				switch (featureBlock.getOutputType()) {
-					// Features are tested with the "In square" placement
-					case "Feature" -> feature.featurexml = """
+				// Features are tested with the "In square" placement
+				case "Feature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
-					// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
-					case "HeightProvider" ->
-							feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
-					case "BlockPredicate" ->
-							feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
-					default -> {
-						LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
-								+ featureBlock.machine_name);
-						continue;
-					}
+				// Vertical anchors are tested with the "Height: At constant height" placement
+				case "VerticalAnchor" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+						</block></value><next><block type="placement_height_range">
+							<value name="height"><block type="height_provider_constant">
+								<value name="value">%s</value></block></value></block></next></block></xml>
+						""".formatted(testXML);
+				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
+				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
+				case "BlockPredicate" ->
+						feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
+				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
+				default -> {
+					LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
+							+ featureBlock.machine_name);
+					continue;
+				}
 				}
 			}
 
@@ -209,18 +228,18 @@ public class GTFeatureBlocks {
 	 * The test is performed using the simple block feature and a placement that accepts the block being tested.
 	 *
 	 * @param placementType The name of the placement used to test the block
-	 * @param valueName The name of the input accepting to which the block is attached
-	 * @param testXML The XML of the block being tested
+	 * @param valueName     The name of the input accepting to which the block is attached
+	 * @param testXML       The XML of the block being tested
 	 * @return An XML string representing a feature configuration to test the given block
 	 */
 	private static String getXMLFor(String placementType, String valueName, String testXML) {
 		return """
-			<xml xmlns="https://developers.google.com/blockly/xml">
-			<block type="feature_container" deletable="false" x="40" y="40">
-			<value name="feature"><block type="feature_simple_block">
-				<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-			</block></value><next><block type="%s">
-				<value name="%s">%s</value></block></next></block></xml>
-			""".formatted(placementType, valueName, testXML);
+				<xml xmlns="https://developers.google.com/blockly/xml">
+				<block type="feature_container" deletable="false" x="40" y="40">
+				<value name="feature"><block type="feature_simple_block">
+					<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+				</block></value><next><block type="%s">
+					<value name="%s">%s</value></block></next></block></xml>
+				""".formatted(placementType, valueName, testXML);
 	}
 }

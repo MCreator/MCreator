@@ -88,8 +88,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 				int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 
-				Button component = new Button(name, 0, 0, text, textwidth + 25, 20,
-						eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+				Button component = new Button(name, 0, 0, text, textwidth + 25, 20, eh.getSelectedProcedure(),
+						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
@@ -98,8 +98,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 			} else {
 				int idx = editor.components.indexOf(button);
 				editor.components.remove(button);
-				Button buttonNew = new Button(button.name, button.getX(), button.getY(), text, button.width, button.height,
-						eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+				Button buttonNew = new Button(button.name, button.getX(), button.getY(), text, button.width,
+						button.height, eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 				editor.components.add(idx, buttonNew);
 				setEditingComponent(buttonNew);
 			}

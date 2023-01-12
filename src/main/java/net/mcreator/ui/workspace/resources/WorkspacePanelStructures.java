@@ -89,19 +89,19 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		del.addActionListener(actionEvent -> {
 			List<String> files = structureElementList.getSelectedValuesList();
 			if (files.size() > 0) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 						L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == 0) {
-					files.forEach(workspacePanel.getMcreator().getFolderManager()::removeStructure);
+					files.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
 					reloadElements();
 				}
 			}
 		});
 
-		importnbt.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importStructure.doAction());
+		importnbt.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
 		importmc.addActionListener(
-				e -> workspacePanel.getMcreator().actionRegistry.importStructureFromMinecraft.doAction());
+				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
 
 		add("North", bar);
 
@@ -109,7 +109,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 	@Override public void reloadElements() {
 		listmodel.removeAllElements();
-		workspacePanel.getMcreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
+		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
 		refilterElements();
 	}
 

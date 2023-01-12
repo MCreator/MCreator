@@ -39,7 +39,10 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RegenerateCodeAction extends GradleAction {
@@ -69,7 +72,8 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-				List<GeneratorTemplate> templates = mcreator.getGenerator().getModElementGeneratorTemplatesList(mod.getGeneratableElement());
+				List<GeneratorTemplate> templates = mcreator.getGenerator()
+						.getModElementGeneratorTemplatesList(mod.getGeneratableElement());
 				if (templates == null)
 					continue;
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();

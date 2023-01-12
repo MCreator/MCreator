@@ -43,10 +43,10 @@ public class BlocklyToFeature extends BlocklyToJava {
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
 
-	public BlocklyToFeature(Workspace workspace, ModElement parent, String sourceXML, TemplateGenerator templateGenerator,
-			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator,
-				externalGenerators);
+	public BlocklyToFeature(Workspace workspace, ModElement parent, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+			throws TemplateGeneratorException {
+		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
 	@Override protected void preInitialization() {

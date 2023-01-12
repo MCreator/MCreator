@@ -47,10 +47,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -65,9 +62,6 @@ public class ModElementUITest {
 	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Mod Element Test");
-
-		// disable webview to avoid issues in headless test environments
-		BlocklyPanel.DISABLE_WEBVIEW = true;
 
 		TestSetup.setupIntegrationTestEnvironment();
 
@@ -92,7 +86,7 @@ public class ModElementUITest {
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
 		// generate some "dummy" procedures for dropdowns to work
-		for (int i = 1; i <= 14; i++) {
+		for (int i = 1; i <= 15; i++) {
 			workspace.addModElement(
 					new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
 							new ArrayList<String>()));
@@ -163,7 +157,8 @@ public class ModElementUITest {
 	}
 
 	private void testModElementLoading(Random random)
-			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException,
+			InterruptedException {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
@@ -203,6 +198,12 @@ public class ModElementUITest {
 						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 				method.setAccessible(true);
 				method.invoke(modElementGUI, generatableElement);
+
+				if (Arrays.stream(modElementGUI.getClass().getDeclaredFields())
+						.anyMatch(f -> f.getType() == BlocklyPanel.class)) {
+					// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
+					Thread.sleep(5000);
+				}
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();
