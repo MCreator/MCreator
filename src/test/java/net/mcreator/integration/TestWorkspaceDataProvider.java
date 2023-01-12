@@ -1062,6 +1062,12 @@ public class TestWorkspaceDataProvider {
 					"" :
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
+			item.enableRanged = _true;
+			item.projectile = new ProjectileEntry(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
+			item.shootConstantly = _true;
+			item.onRangedItemUsed = new Procedure("procedure4");
+			item.useCondition = new Procedure("condition1");
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
@@ -1094,35 +1100,6 @@ public class TestWorkspaceDataProvider {
 			projectile.onHitsPlayer = new Procedure("procedure3");
 			projectile.onFlyingTick = new Procedure("procedure4");
 			return projectile;
-		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
-			RangedItem rangedItem = new RangedItem(modElement);
-			rangedItem.name = modElement.getName();
-			rangedItem.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			rangedItem.projectile = new ProjectileEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
-			rangedItem.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				rangedItem.specialInfo = new ArrayList<>();
-			}
-			rangedItem.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
-			rangedItem.shootConstantly = _true;
-			rangedItem.usageCount = 67;
-			rangedItem.stackSize = 41;
-			rangedItem.onRangedItemUsed = new Procedure("procedure4");
-			rangedItem.useCondition = new Procedure("condition1");
-			rangedItem.onEntitySwing = new Procedure("procedure8");
-			rangedItem.texture = "test3";
-			rangedItem.renderType = 0;
-			rangedItem.customModelName = "Normal";
-			rangedItem.hasGlow = _true;
-			rangedItem.enableMeleeDamage = !_true;
-			rangedItem.damageVsEntity = 2;
-			return rangedItem;
 		} else if (ModElementType.POTION.equals(modElement.getType())) {
 			Potion potion = new Potion(modElement);
 			potion.potionName = modElement.getName() + " Potion";
