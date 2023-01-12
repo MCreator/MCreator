@@ -27,6 +27,7 @@ import net.mcreator.minecraft.StructureUtils;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.action.accelerators.Accelerator;
 import net.mcreator.ui.action.accelerators.ActionAccelerator;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
@@ -41,6 +42,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +59,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 			refactorWorkspace(actionRegistry.getMCreator(), change);
 
 			actionRegistry.getMCreator().mv.updateMods();
-		}, new ActionAccelerator("workspace.settings"));
+		}, new ActionAccelerator("workspace.settings", KeyEvent.VK_P, Accelerator.CTRL_ALT));
 	}
 
 	public static void refactorWorkspace(MCreator mcreator, WorkspaceSettingsChange change) {

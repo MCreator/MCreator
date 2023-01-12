@@ -54,46 +54,22 @@ public class AcceleratorDialog extends MCreatorDialog {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
 		// Just an Easter egg because it's nice
-		final String[] str = { "" };
-		tabbedPane.addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_M)
-					str[0] = "m";
-				if (str[0].equals("m") && e.getKeyCode() == KeyEvent.VK_C)
-					str[0] += "c";
-				if (str[0].equals("mc") && e.getKeyCode() == KeyEvent.VK_R) {
-					GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-					if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-							!= GeneratorStats.CoverageStatus.NONE
-							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-							!= GeneratorStats.CoverageStatus.NONE
-							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-							!= GeneratorStats.CoverageStatus.NONE
-							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
-							!= GeneratorStats.CoverageStatus.NONE
-							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
-							!= GeneratorStats.CoverageStatus.NONE) {
-						MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), "MCreator",
-								"Gem based", MCreatorTheme.MAIN_TINT_DEFAULT, 4.84);
-						mcreator.mv.updateMods();
-					}
-				}
-			}
-		}); // End of the Easter egg
+		checkToAddMCreatorMaterialPack(mcreator, tabbedPane);
 
 		AcceleratorsManager.INSTANCE.SECTIONS.forEach(sectionName -> {
 			List<JComponent> comps = new ArrayList<>();
-			actions.stream().filter(action -> action.getAccelerator().getSection().equals(sectionName))
-					.forEach(action -> {
-						KeyStroke keyStroke = action.getAccelerator().getKeyStroke();
-						if (keyStroke != null) {
-							comps.add(new JLabel(action.getName()));
-							JAcceleratorButton button = new JAcceleratorButton(setButtonText(keyStroke),
-									action.getAccelerator());
-							comps.add(button);
-							buttonsList.add(button);
-						}
-					});
+			for (BasicAction action : actions) {
+				if (action.getAccelerator().getSection().equals(sectionName)) {
+					KeyStroke keyStroke = action.getAccelerator().getKeyStroke();
+					if (keyStroke != null) {
+						comps.add(new JLabel(action.getName()));
+						JAcceleratorButton button = new JAcceleratorButton(setButtonText(keyStroke),
+								action.getAccelerator());
+						comps.add(button);
+						buttonsList.add(button);
+					}
+				}
+			}
 
 			tabbedPane.addTab(L10N.t("dialog.accelerators.section." + sectionName), new JScrollPane(
 					PanelUtils.pullElementUp(
@@ -154,6 +130,35 @@ public class AcceleratorDialog extends MCreatorDialog {
 			return L10N.t("dialog.accelerators.none");
 		}
 		return acceleratorText + KeyEvent.getKeyText(keyStroke.getKeyCode());
+	}
+
+	private void checkToAddMCreatorMaterialPack(MCreator mcreator, JTabbedPane tabbedPane) {
+		final String[] str = { "" };
+		tabbedPane.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_M)
+					str[0] = "m";
+				if (str[0].equals("m") && e.getKeyCode() == KeyEvent.VK_C)
+					str[0] += "c";
+				if (str[0].equals("mc") && e.getKeyCode() == KeyEvent.VK_R) {
+					GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
+					if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
+							!= GeneratorStats.CoverageStatus.NONE
+							&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
+							!= GeneratorStats.CoverageStatus.NONE) {
+						MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), "MCreator",
+								"Gem based", MCreatorTheme.MAIN_TINT_DEFAULT, 4.84);
+						mcreator.mv.updateMods();
+					}
+				}
+			}
+		});
 	}
 
 }
