@@ -1,0 +1,1 @@
+Si cette option est activée, le bloc pourra être fertilisé avec de la poudre d'os.

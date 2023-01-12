@@ -131,6 +131,11 @@ import java.util.stream.Collectors;
 
 	public Procedure placingCondition;
 
+	public boolean isBonemealable;
+	public Procedure isBonemealTargetCondition;
+	public Procedure bonemealSuccessCondition;
+	public Procedure onBonemealSuccess;
+
 	public boolean hasInventory;
 	public String guiBoundTo;
 	public boolean openGUIOnRightClick;
