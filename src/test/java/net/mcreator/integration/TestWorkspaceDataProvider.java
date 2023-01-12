@@ -301,7 +301,7 @@ public class TestWorkspaceDataProvider {
 			}
 			achievement.triggerxml =
 					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
-							+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
+							+ "<block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>";
 			return achievement;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
@@ -735,7 +735,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
 			livingEntity.spawnInDungeons = _true;

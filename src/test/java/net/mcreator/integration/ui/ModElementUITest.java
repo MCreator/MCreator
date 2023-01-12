@@ -29,6 +29,7 @@ import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
@@ -46,10 +47,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -159,7 +157,8 @@ public class ModElementUITest {
 	}
 
 	private void testModElementLoading(Random random)
-			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException,
+			InterruptedException {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
@@ -199,6 +198,12 @@ public class ModElementUITest {
 						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 				method.setAccessible(true);
 				method.invoke(modElementGUI, generatableElement);
+
+				if (Arrays.stream(modElementGUI.getClass().getDeclaredFields())
+						.anyMatch(f -> f.getType() == BlocklyPanel.class)) {
+					// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
+					Thread.sleep(5000);
+				}
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();
