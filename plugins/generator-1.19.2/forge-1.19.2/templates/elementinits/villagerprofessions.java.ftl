@@ -39,7 +39,6 @@
 package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
-import javax.annotation.Nullable;
 
 public class ${JavaModName}VillagerProfessions {
 
@@ -48,16 +47,16 @@ public class ${JavaModName}VillagerProfessions {
 
     <#list villagerprofessions as villagerprofession>
         public static final RegistryObject<PoiType> ${villagerprofession.getModElement().getRegistryNameUpper()}_POI = POI.register("${villagerprofession.getModElement().getRegistryName()}", () -> new PoiType(getAllStates(${mappedBlockToBlock(villagerprofession.pointOfInterest)}), 1, 1));
-        public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} = registerProfession("${villagerprofession.getModElement().getRegistryName()}", ${villagerprofession.getModElement().getRegistryNameUpper()}_POI, () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}")));
+        public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} = registerProfession("${villagerprofession.getModElement().getRegistryName()}", ${villagerprofession.getModElement().getRegistryNameUpper()}_POI, new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}")));
     </#list>
 
-    @SuppressWarnings("SameParameterValue")
-    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent> soundEventSuppliers) {
-        return PROFESSIONS.register(name, () -> new VillagerProfession(${JavaModName}.MODID + ":" + name, (typeHolder) -> typeHolder.get() == poiType.get(), (secTypeHolder) -> secTypeHolder.get() == poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers.get()));
+    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, SoundEvent soundEvent) {
+        return PROFESSIONS.register(name, () -> new VillagerProfession(${JavaModName}.MODID + ":" + name, t -> t.get() == poiType.get(), t -> t.get() == poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEvent));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
+
 }
 <#-- @formatter:on -->
