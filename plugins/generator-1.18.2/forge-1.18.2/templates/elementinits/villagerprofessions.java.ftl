@@ -39,7 +39,6 @@
 package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
-import javax.annotation.Nullable;
 
 public class ${JavaModName}VillagerProfessions {
 
@@ -51,30 +50,27 @@ public class ${JavaModName}VillagerProfessions {
         public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} = registerProfession("${villagerprofession.getModElement().getRegistryName()}", ${villagerprofession.getModElement().getRegistryNameUpper()}_POI, () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}")));
     </#list>
 
-    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent>... soundEventSuppliers) {
-        return PROFESSIONS.register(name, () -> new CustomVillagerProfession(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSuppliers));
+    private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<PoiType> poiType, Supplier<SoundEvent> soundEventSupplier) {
+        return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poiType.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSupplier));
     }
 
     private static Set<BlockState> getAllStates(Block block) {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
 
-    public static class CustomVillagerProfession extends VillagerProfession {
+    public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
-        private final List<Supplier<SoundEvent>> soundEventSuppliers;
+        private final Supplier<SoundEvent> soundEventSupplier;
 
-        @SafeVarargs
-        public CustomVillagerProfession(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent>... soundEventSuppliers) {
+        public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent> soundEventSupplier) {
             super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
-            this.soundEventSuppliers = Arrays.asList(soundEventSuppliers);
+            this.soundEventSupplier = soundEventSupplier;
         }
 
-        @Nullable
-        @Override
-        public SoundEvent getWorkSound() {
-            int n = ThreadLocalRandom.current().nextInt(soundEventSuppliers.size());
-            return soundEventSuppliers.get(n).get();
+        @Override public SoundEvent getWorkSound() {
+            return soundEventSupplier.get();
         }
     }
+
 }
 <#-- @formatter:on -->
