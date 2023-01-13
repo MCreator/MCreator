@@ -21,7 +21,6 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.ModElementSavedEvent;
 import net.mcreator.plugin.events.ui.ModElementGUIEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
