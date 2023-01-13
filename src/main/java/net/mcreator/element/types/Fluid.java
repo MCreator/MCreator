@@ -27,6 +27,7 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -161,4 +162,11 @@ import java.util.List;
 		return baseTypes;
 	}
 
+	@Override public List<MCItem> providedMCItems() {
+		ArrayList<MCItem> retval = new ArrayList<>();
+		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Fluid block"));
+		if (this.generateBucket)
+			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Fluid bucket"));
+		return retval;
+	}
 }

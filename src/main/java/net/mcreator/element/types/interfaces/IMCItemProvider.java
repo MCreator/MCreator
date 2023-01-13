@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,10 @@
 
 package net.mcreator.element.types.interfaces;
 
-import net.mcreator.element.BaseType;
+import net.mcreator.minecraft.MCItem;
 
-import java.util.Collection;
 import java.util.List;
 
-public interface IItem extends ICommonType, IMCItemProvider {
-
-	@Override default Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.ITEM);
-	}
-
+public interface IMCItemProvider {
+	List<MCItem> providedMCItems();
 }

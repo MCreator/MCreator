@@ -21,6 +21,7 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -150,7 +151,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
+		workspace.getModElements().stream().filter(element -> element.getGeneratableElement() instanceof IMCItemProvider)
 				.forEach(modElement -> elements.addAll(
 						modElement.getMCItems().stream().filter(e -> e.getType().equals("block")).toList()));
 		elements.addAll(
