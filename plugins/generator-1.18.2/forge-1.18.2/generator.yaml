@@ -62,7 +62,6 @@ base_templates:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
       - ${w.hasElementsOfType('dimension') || w.hasElementsOfType('biome')}
       - ${w.hasToolsOfType('Fishing rod')}
-      - ${w.hasElementsOfType('villagerprofession')}
 
 sources_setup_tasks:
   - task: copy_models
