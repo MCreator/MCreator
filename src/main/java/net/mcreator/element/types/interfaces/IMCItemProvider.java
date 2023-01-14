@@ -20,9 +20,23 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.workspace.Workspace;
 
+import javax.swing.*;
 import java.util.List;
 
 public interface IMCItemProvider {
 	List<MCItem> providedMCItems();
+
+	/**
+	 * This method determines what icon should be used for a custom MCItem, according to its eventual suffix
+	 *
+	 * @param workspace	The current workspace
+	 * @param suffix	The suffix of the given MCItem (for example, "bucket" for fluid buckets).
+	 *                  If this MCItem has no suffix, this will be the empty string.
+	 * @return 			An ImageIcon to use for the given MCItem, or null to use the element preview image.
+	 */
+	default ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		return null;
+	}
 }

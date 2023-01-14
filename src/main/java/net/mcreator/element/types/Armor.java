@@ -29,10 +29,12 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
@@ -324,6 +326,16 @@ import java.util.*;
 		if (this.enableBoots)
 			retval.add(new MCItem.Custom(this.getModElement(), "boots", "item", "Boots"));
 		return retval;
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		return switch (suffix) {
+			case "helmet" -> workspace.getFolderManager().getTextureImageIcon(textureHelmet, TextureType.ITEM);
+			case "body" -> workspace.getFolderManager().getTextureImageIcon(textureBody, TextureType.ITEM);
+			case "legs" -> workspace.getFolderManager().getTextureImageIcon(textureLeggings, TextureType.ITEM);
+			case "boots" -> workspace.getFolderManager().getTextureImageIcon(textureBoots, TextureType.ITEM);
+			default -> null;
+		};
 	}
 
 	@Override public TabEntry getCreativeTab() {
