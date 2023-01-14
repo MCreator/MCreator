@@ -98,22 +98,6 @@ public class ImageUtils {
 		return new ImageIcon(resizedImage);
 	}
 
-	public static ImageIcon drawOverNoScale(ImageIcon i, ImageIcon wh) {
-		Image original = i.getImage();
-		Image over = wh.getImage();
-
-		int x = original.getWidth(null);
-		int y = original.getHeight(null);
-
-		BufferedImage resizedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(original, 0, 0, x, y, null);
-		g.drawImage(over, 0, 0, over.getWidth(null), over.getHeight(null), null);
-		g.dispose();
-
-		return new ImageIcon(resizedImage);
-	}
-
 	private static Color[][] bufferedImageToColorArray(BufferedImage buf) {
 		Color[][] car = new Color[buf.getHeight()][buf.getWidth()];
 		for (int i = 0; i < buf.getHeight(); i++)
@@ -203,19 +187,19 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage resize(Image image, int size) {
-		return resizeImageWithHint(toBufferedImage(image), size, size);
+		return resizeImage(toBufferedImage(image), size, size);
 	}
 
-	public static BufferedImage resize(Image image, int size, int y) {
-		return resizeImageWithHint(toBufferedImage(image), size, y);
+	public static BufferedImage resize(Image image, int w, int h) {
+		return resizeImage(toBufferedImage(image), w, h);
 	}
 
 	public static BufferedImage resizeAA(Image image, int size) {
-		return resizeImageWithHintAA(toBufferedImage(image), size, size);
+		return resizeImageWithAA(toBufferedImage(image), size, size);
 	}
 
-	public static BufferedImage resizeAA(Image image, int size, int y) {
-		return resizeImageWithHintAA(toBufferedImage(image), size, y);
+	public static BufferedImage resizeAA(Image image, int w, int h) {
+		return resizeImageWithAA(toBufferedImage(image), w, h);
 	}
 
 	public static BufferedImage emptyImageWithSize(int size, int y, Color color) {
@@ -229,19 +213,27 @@ public class ImageUtils {
 		return resizedImage;
 	}
 
-	private static BufferedImage resizeImageWithHint(BufferedImage originalImage, int size, int y) {
-		BufferedImage resizedImage = new BufferedImage(size, y, BufferedImage.TYPE_INT_ARGB);
+	private static BufferedImage resizeImage(BufferedImage originalImage, int w, int h) {
+		// Optimization to not resize images that are already the correct size
+		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
+			return originalImage;
+
+		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(originalImage, 0, 0, size, y, null);
+		g.drawImage(originalImage, 0, 0, w, h, null);
 		g.dispose();
 		return resizedImage;
 	}
 
-	private static BufferedImage resizeImageWithHintAA(BufferedImage originalImage, int size, int y) {
-		BufferedImage resizedImage = new BufferedImage(size, y, BufferedImage.TYPE_INT_ARGB);
+	private static BufferedImage resizeImageWithAA(BufferedImage originalImage, int w, int h) {
+		// Optimization to not resize images that are already the correct size
+		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
+			return originalImage;
+
+		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(originalImage, 0, 0, size, y, null);
+		g.drawImage(originalImage, 0, 0, w, h, null);
 		g.dispose();
 		return resizedImage;
 	}
@@ -285,8 +277,8 @@ public class ImageUtils {
 	 * @return The converted BufferedImage
 	 */
 	public static BufferedImage toBufferedImage(Image img) {
-		if (img instanceof BufferedImage)
-			return (BufferedImage) img;
+		if (img instanceof BufferedImage bufferedImage)
+			return bufferedImage;
 
 		int width = img.getWidth(null) > 0 ? img.getWidth(null) : 1;
 		int height = img.getHeight(null) > 0 ? img.getHeight(null) : 1;
@@ -330,10 +322,6 @@ public class ImageUtils {
 
 	public static BufferedImage crop(BufferedImage src, Rectangle rect) {
 		return src.getSubimage(rect.x, rect.y, rect.width, rect.height);
-	}
-
-	public static Image generateTransparentImage(int w, int h) {
-		return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 	}
 
 	public static Image cover(Image image, Dimension dimension) {
@@ -456,12 +444,8 @@ public class ImageUtils {
 		}
 	}
 
-	public static Image randomTile(BufferedImage tile) {
-		return randomTile(tile, new Random());
-	}
-
 	public static BufferedImage resizeAndCrop(Image image, int size) {
-		return resizeImageWithHint(autoCropTile(toBufferedImage(image)), size, size);
+		return resizeImage(autoCropTile(toBufferedImage(image)), size, size);
 	}
 
 	public static BufferedImage generateCuboidImage(Image texture, int x, int y, int z, int xOff, int yOff, int zOff) {
