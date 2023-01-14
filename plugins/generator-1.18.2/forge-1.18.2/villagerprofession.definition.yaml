@@ -1,5 +1,5 @@
 templates:
-  - template: profession.mcmeta.ftl
+  - template: profession_hat.mcmeta.ftl
     writer: json
     condition: isHatEnabled()
     name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
