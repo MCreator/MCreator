@@ -26,6 +26,11 @@ import javax.swing.*;
 import java.util.List;
 
 public interface IMCItemProvider {
+	/**
+	 * This method determines what MCItems are provided by this generatable element
+	 *
+	 * @return A list of MCItems provided by this generatable element
+	 */
 	List<MCItem> providedMCItems();
 
 	/**
