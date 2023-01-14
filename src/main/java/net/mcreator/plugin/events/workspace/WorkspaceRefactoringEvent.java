@@ -39,7 +39,7 @@ public class WorkspaceRefactoringEvent extends MCREvent {
 		this.change = change;
 	}
 
-	public MCreator getMcreator() {
+	public MCreator getMCreator() {
 		return mcreator;
 	}
 
