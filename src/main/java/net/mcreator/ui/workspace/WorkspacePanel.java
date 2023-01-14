@@ -262,6 +262,21 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelectedModElement();
+				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+					}
+				}
+			}
+		});
+
 		JScrollPane sp = new JScrollPane(list);
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
