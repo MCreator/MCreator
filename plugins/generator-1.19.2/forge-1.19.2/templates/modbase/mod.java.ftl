@@ -36,8 +36,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(bus);
-		${JavaModName}FluidTypes.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("fluid")>${JavaModName}
+			Fluids.REGISTRY.register(bus);
+			${JavaModName}FluidTypes.REGISTRY.register(bus);
+		</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
