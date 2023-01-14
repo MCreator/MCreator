@@ -38,7 +38,7 @@
 
 package ${package}.init;
 
-import net.minecraft.sounds.SoundEvent;import java.util.function.Supplier;
+import net.minecraft.sounds.SoundEvent;
 
 public class ${JavaModName}VillagerProfessions {
 
