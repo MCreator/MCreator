@@ -35,7 +35,7 @@ public class ModElementGUIEvent extends TabEvent {
 	 * @param tab <p>The {@link MCreatorTabs.Tab} that is opened for the {@link ModElementGUI}.</p>
 	 * @param modElementGUI <p>The {@link ModElementGUI} that calls each event.</p>
 	 */
-	public ModElementGUIEvent(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
+	protected ModElementGUIEvent(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
 		super(tab);
 		this.mcreator = mcreator;
 		this.modElementGUI = modElementGUI;

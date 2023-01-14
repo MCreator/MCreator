@@ -22,14 +22,16 @@ package net.mcreator.plugin.events.workspace;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.workspace.Workspace;
 
-/**
- * <p>This event class handles events when a workspace is being saved. This event is not triggered in a place of the code.
- * It only stores the sub-events and variables that can be used.</p>
- */
+
 public class WorkspaceSavedEvent extends MCREvent {
 	private final Workspace workspace;
 
-	public WorkspaceSavedEvent(Workspace workspace) {
+	/**
+	 * <p>This event is never called. It only aims to group all events inside a single class.</p>
+	 *
+	 * @param workspace <p>The {@link Workspace} that will try to be saved.</p>
+	 */
+	protected WorkspaceSavedEvent(Workspace workspace) {
 		this.workspace = workspace;
 	}
 

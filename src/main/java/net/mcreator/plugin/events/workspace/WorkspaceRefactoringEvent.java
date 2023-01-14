@@ -38,4 +38,12 @@ public class WorkspaceRefactoringEvent extends MCREvent {
 		this.mcreator = mcreator;
 		this.change = change;
 	}
+
+	public MCreator getMcreator() {
+		return mcreator;
+	}
+
+	public WorkspaceSettingsChange getChange() {
+		return change;
+	}
 }
