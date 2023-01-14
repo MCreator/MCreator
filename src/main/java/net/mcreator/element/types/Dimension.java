@@ -113,7 +113,7 @@ import java.util.List;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
-		if (suffix.equals("portal"))
+		if ("portal".equals(suffix))
 			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);
 		else
 			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);

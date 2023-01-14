@@ -174,7 +174,7 @@ import java.util.List;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
-		if (suffix.equals("bucket")) {
+		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present
 			if (!textureBucket.isEmpty()) {
 				return workspace.getFolderManager().getTextureImageIcon(textureBucket, TextureType.ITEM);

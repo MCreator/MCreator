@@ -113,11 +113,8 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 		reloadElementIcon();
 
-		mcItems = new ArrayList<>();
-
-		if (this.getGeneratableElement() instanceof IMCItemProvider provider) {
-			mcItems.addAll(provider.providedMCItems());
-		}
+		mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
+				provider.providedMCItems() : new ArrayList<>();
 	}
 
 	private void reloadElementIcon() {
