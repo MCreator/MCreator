@@ -19,33 +19,37 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import net.mcreator.ui.MCreator;
+
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Instances of this class store information about certain property (its name, type,
- * minimum and maximum values for number properties and list of allowed values for string properties).
- *
- * @implNote If type parameters {@link T} and {@link U} are not the same, methods {@link #toUIValue(Object)}
- * and {@link #fromUIValue(Object)} need to be overridden for proper values conversion between those two types.
+ * minimum and maximum values for number properties, list of allowed values for string properties and so on).
  *
  * @param <T> Type of values this property can take.
- * @param <U> Type of this property for representation in UI (usually the same as {@link T}).
  */
-public abstract class PropertyData<T, U> {
-	private java.lang.String name;
-	private final Class<U> uiType;
+public abstract class PropertyData<T> {
+
+	private String name;
 
 	/**
-	 * @param name   Name of this property object.
-	 * @param uiType Type of this property for representation in UI (usually the same as property type).
+	 * The sole constructor.
+	 *
+	 * @param name Name of the future property object.
 	 */
-	private PropertyData(java.lang.String name, Class<U> uiType) {
+	protected PropertyData(String name) {
 		this.name = name;
-		this.uiType = uiType;
 	}
 
 	/**
 	 * @return The name of this property.
 	 */
-	public java.lang.String getName() {
+	public final String getName() {
 		return name;
 	}
 
@@ -54,184 +58,187 @@ public abstract class PropertyData<T, U> {
 	 *
 	 * @param name The new name of this property.
 	 */
-	public void setName(java.lang.String name) {
+	public final void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return Type of UI representations of possible values of this property.
-	 */
-	public Class<U> uiType() {
-		return uiType;
-	}
-
-	/**
-	 * @param <N> Type of number - integer or float.
-	 * @return The minimum allowed value of this property or {@code null} if property is not of a number type.
-	 */
-	public <N extends Number> N min() {
-		return null;
-	}
-
-	/**
-	 * @param <N> Type of number - integer or float.
-	 * @return The maximum allowed value of this property or {@code null} if property is not of a number type.
-	 */
-	public <N extends Number> N max() {
-		return null;
-	}
-
-	/**
-	 * @return List of allowed values of this property or an empty array if property is not of the string type.
-	 */
-	public java.lang.String[] arrayData() {
-		return new java.lang.String[0];
-	}
-
-	/**
-	 * Converts passed value of this property for representation in UI.
+	 * Converts passed value of this property to its string representation.
 	 *
-	 * @param value Value of this property's type.
-	 * @return UI representation of the value.
+	 * @param value A value of this property's type.
+	 * @return Possible value of this property as a string.
+	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
 	 */
-	@SuppressWarnings("unchecked") public U toUIValue(Object value) {
-		return (U) value;
-	}
+	public abstract String toString(Object value);
 
 	/**
-	 * Converts passed value extracted from UI component to a value this property can take.
-	 *
-	 * @param value UI representation of the value.
-	 * @return Value of this property's type.
-	 */
-	@SuppressWarnings("unchecked") public T fromUIValue(Object value) {
-		return (T) value;
-	}
-
-	/**
-	 * Parses string representation of a passed value of this property.
+	 * Parses string representation of passed value of this property.
 	 *
 	 * @param value Possible value of this property as a string.
-	 * @return Value of this property's type.
+	 * @return A value of this property's type.
 	 */
-	public abstract T parseObj(java.lang.String value);
+	public abstract T parseObj(String value);
 
-	@Override public boolean equals(Object obj) {
-		return super.equals(obj) || obj instanceof PropertyData<?, ?> that && this.name.equals(that.name);
+	/**
+	 * Generates a UI component accepting values of type {@link T} and sets its value to the passed one.
+	 *
+	 * @param mcreator The future parent window of the component returned.
+	 * @param value    Possible value of this property.
+	 * @return A UI component that accepts values of type {@link T}.
+	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
+	 */
+	public abstract JComponent getComponent(MCreator mcreator, @Nullable Object value);
+
+	/**
+	 * Extracts possible value of this property from the provided UI component.
+	 *
+	 * @param component A UI component that accepts values of type {@link T}.
+	 * @return A value of this property's type.
+	 */
+	public abstract T getValue(JComponent component);
+
+	@Override public final boolean equals(Object obj) {
+		return super.equals(obj) || obj instanceof PropertyData<?> that && this.name.equals(that.name);
 	}
 
-	@Override public int hashCode() {
+	@Override public final int hashCode() {
 		return name.hashCode();
 	}
 
-	@Override public java.lang.String toString() {
+	@Override public final String toString() {
 		return getName();
 	}
 
 	/**
-	 * A subclass for boolean properties.
-	 *
-	 * @param <T> Type of this property for representation in UI (usually {@link java.lang.Boolean} as well).
+	 * A subclass for boolean type properties.
 	 */
-	public static class Boolean<T> extends PropertyData<java.lang.Boolean, T> {
-		public Boolean(java.lang.String name, Class<T> uiType) {
-			super(name, uiType);
+	public static class Logic extends PropertyData<Boolean> {
+
+		public Logic(String name) {
+			super(name);
 		}
 
-		public static Boolean<java.lang.Boolean> create(java.lang.String name) {
-			return new Boolean<>(name, java.lang.Boolean.class);
+		@Override public final String toString(Object value) {
+			return Boolean.toString((Boolean) value);
 		}
 
-		@Override public java.lang.Boolean parseObj(java.lang.String value) {
-			return java.lang.Boolean.parseBoolean(value);
+		@Override public final Boolean parseObj(String value) {
+			return Boolean.parseBoolean(value);
+		}
+
+		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+			value = Objects.requireNonNullElse(value, false);
+			JCheckBox box = new JCheckBox() {
+				@Override public String getText() {
+					return isSelected() ? "True" : "False";
+				}
+			};
+			box.setSelected((boolean) value);
+			box.setPreferredSize(new Dimension(54, 25));
+			return box;
+		}
+
+		@Override public Boolean getValue(JComponent component) {
+			return ((JCheckBox) component).isSelected();
 		}
 	}
 
 	/**
-	 * A subclass for integer number properties.
-	 *
-	 * @param <T> Type of this property for representation in UI (usually {@link java.lang.Integer} as well).
+	 * A subclass for integer number type properties.
 	 */
-	public static class Integer<T> extends PropertyData<java.lang.Integer, T> {
-		private final int min, max;
+	public static class IntNumber extends PropertyData<Integer> {
+		private final int min;
+		private final int max;
 
-		public Integer(java.lang.String name, Class<T> uiType, int min, int max) {
-			super(name, uiType);
+		public IntNumber(String name, int min, int max) {
+			super(name);
 			this.min = min;
 			this.max = max;
 		}
 
-		public static Integer<java.lang.Integer> create(java.lang.String name, int min, int max) {
-			return new Integer<>(name, java.lang.Integer.class, min, max);
+		@Override public final String toString(Object value) {
+			return Integer.toString((Integer) value);
 		}
 
-		@Override @SuppressWarnings("unchecked") public java.lang.Integer min() {
-			return min;
+		@Override public final Integer parseObj(String value) {
+			return Integer.parseInt(value);
 		}
 
-		@Override @SuppressWarnings("unchecked") public java.lang.Integer max() {
-			return max;
+		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+			value = Math.max(min, Math.min(max, (int) Objects.requireNonNullElse(value, 0)));
+			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
+			box.setPreferredSize(new Dimension(105, 22));
+			return box;
 		}
 
-		@Override public java.lang.Integer parseObj(java.lang.String value) {
-			return java.lang.Integer.parseInt(value);
+		@Override public Integer getValue(JComponent component) {
+			return (Integer) ((JSpinner) component).getValue();
 		}
 	}
 
 	/**
-	 * A subclass for float number properties.
-	 *
-	 * @param <T> Type of this property for representation in UI (usually {@link java.lang.Float} as well).
+	 * A subclass for float number type properties.
 	 */
-	public static class Float<T> extends PropertyData<java.lang.Float, T> {
-		private final float min, max;
+	public static class FloatNumber extends PropertyData<Float> {
+		private final float min;
+		private final float max;
 
-		public Float(java.lang.String name, Class<T> uiType, float min, float max) {
-			super(name, uiType);
+		public FloatNumber(String name, float min, float max) {
+			super(name);
 			this.min = min;
 			this.max = max;
 		}
 
-		public static Float<java.lang.Float> create(java.lang.String name, float min, float max) {
-			return new Float<>(name, java.lang.Float.class, min, max);
+		@Override public final String toString(Object value) {
+			return Float.toString((Float) value);
 		}
 
-		@Override @SuppressWarnings("unchecked") public java.lang.Float min() {
-			return min;
+		@Override public final Float parseObj(String value) {
+			return Float.parseFloat(value);
 		}
 
-		@Override @SuppressWarnings("unchecked") public java.lang.Float max() {
-			return max;
+		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+			value = Math.max(min, Math.min(max, (float) Objects.requireNonNullElse(value, 0F)));
+			JSpinner box = new JSpinner(new SpinnerNumberModel((float) value, min, max, 0.001));
+			box.setPreferredSize(new Dimension(130, 22));
+			return box;
 		}
 
-		@Override public java.lang.Float parseObj(java.lang.String value) {
-			return java.lang.Float.parseFloat(value);
+		@Override public Float getValue(JComponent component) {
+			Number num = (Number) ((JSpinner) component).getValue();
+			return Math.round(num.floatValue() * 1000) / 1000F;
 		}
 	}
 
 	/**
-	 * A subclass for string properties.
-	 *
-	 * @param <T> Type of this property for representation in UI (usually {@link java.lang.String} as well).
+	 * A subclass for string type properties.
 	 */
-	public static class String<T> extends PropertyData<java.lang.String, T> {
-		private final java.lang.String[] arrayData;
+	public static class Text extends PropertyData<String> {
+		private final String[] arrayData;
 
-		public String(java.lang.String name, Class<T> uiType, java.lang.String[] arrayData) {
-			super(name, uiType);
+		public Text(String name, String[] arrayData) {
+			super(name);
 			this.arrayData = arrayData;
 		}
 
-		public static String<java.lang.String> create(java.lang.String name, java.lang.String[] arrayData) {
-			return new String<>(name, java.lang.String.class, arrayData);
+		@Override public final String toString(Object value) {
+			return (String) value;
 		}
 
-		@Override public java.lang.String[] arrayData() {
-			return arrayData;
-		}
-
-		@Override public java.lang.String parseObj(java.lang.String value) {
+		@Override public final String parseObj(String value) {
 			return value;
+		}
+
+		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+			value = Objects.requireNonNullElse(value, "");
+			JComboBox<String> box = new JComboBox<>(arrayData);
+			box.setEditable(false);
+			box.setSelectedIndex(Math.max(0, Arrays.asList(arrayData).indexOf((String) value)));
+			return box;
+		}
+
+		@Override public String getValue(JComponent component) {
+			return (String) ((JComboBox<?>) component).getSelectedItem();
 		}
 	}
 }

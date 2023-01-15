@@ -36,7 +36,6 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
-import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
@@ -46,8 +45,9 @@ import net.mcreator.workspace.resources.Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
-import java.util.*;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -59,10 +59,12 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final JStateLabel stateLabel;
 
 	private final TextureHolder texture;
-	private final SearchableComboBox<Model> model = new SearchableComboBox<>(ItemGUI.builtInItemModels());
+	private final Model normal = new Model.BuiltInModel("Normal");
+	private final Model tool = new Model.BuiltInModel("Tool");
+	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { normal, tool });
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData<?, ?>>> properties,
+			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData<?>>> properties,
 			Consumer<JItemStatesListEntry> editButtonListener) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
@@ -119,7 +121,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtInItemModels()),
+		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(normal, tool),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}

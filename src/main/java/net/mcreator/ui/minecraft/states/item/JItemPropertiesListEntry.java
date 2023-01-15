@@ -28,6 +28,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.states.JPropertyNameField;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -50,18 +51,19 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final JPropertyNameField name;
+
 	private final ProcedureSelector value;
 
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryList, int propertyId,
-			Function<VTextField, UniqueNameValidator> validator,
+			Function<Supplier<String>, UniqueNameValidator> validator,
 			BiConsumer<JPropertyNameField, String> editButtonListener) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		name = new JPropertyNameField("property" + propertyId);
 
 		VTextField textField = name.getTextField();
-		textField.setValidator(validator.apply(textField).wrapValidator(
+		textField.setValidator(validator.apply(textField::getText).wrapValidator(
 				new RegistryNameValidator(textField, L10N.t("elementgui.item.custom_property.validator"))));
 		textField.enableRealtimeValidation();
 		textField.addKeyListener(new KeyAdapter() {
@@ -99,10 +101,10 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
 		remove.addActionListener(e -> {
-			entryList.remove(this);
 			parent.remove(container);
 			parent.revalidate();
 			parent.repaint();
+			entryList.remove(this);
 		});
 		add(remove);
 
@@ -125,6 +127,10 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	JPropertyNameField getNameField() {
 		return name;
+	}
+
+	PropertyData.FloatNumber toPropertyData() {
+		return new PropertyData.FloatNumber(name.getPropertyName(), 0F, 1000000F);
 	}
 
 	public Procedure getEntry() {

@@ -90,9 +90,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private static final Model normal = new Model.BuiltInModel("Normal");
-	private static final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtInItemModels());
+	private final Model normal = new Model.BuiltInModel("Normal");
+	private final Model tool = new Model.BuiltInModel("Tool");
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal, tool });
 	private JItemPropertiesStatesList customProperties;
 
 	private ProcedureSelector onRightClickedInAir;
@@ -169,6 +169,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
+		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -470,7 +471,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("MISC"));
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(builtInItemModels()),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, tool),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -478,10 +479,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
-	}
-
-	public static Model[] builtInItemModels() {
-		return new Model[] { normal, tool };
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

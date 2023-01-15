@@ -174,13 +174,13 @@ public class DialogsTest {
 
 	@Test public void testStateEditorDialog() throws Throwable {
 		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
-		Map<String, PropertyData<?, ?>> testProps = new LinkedHashMap<>();
-		testProps.put("logic", PropertyData.Boolean.create("logic"));
-		testProps.put("integer", PropertyData.Integer.create("integer", 0, 1000));
-		testProps.put("float", PropertyData.Float.create("float", 0F, 1000000F));
-		testProps.put("text", PropertyData.String.create("text", meTypes.toArray(String[]::new)));
+		Map<String, PropertyData<?>> testProps = new LinkedHashMap<>();
+		testProps.put("logic", new PropertyData.Logic("logic"));
+		testProps.put("integer", new PropertyData.IntNumber("integer", 0, 1000));
+		testProps.put("float", new PropertyData.FloatNumber("float", 0F, 1000000F));
+		testProps.put("text", new PropertyData.Text("text", meTypes.toArray(String[]::new)));
 		Random rng = new Random();
-		LinkedHashMap<PropertyData<?, ?>, Object> testState = new LinkedHashMap<>();
+		LinkedHashMap<PropertyData<?>, Object> testState = new LinkedHashMap<>();
 		if (rng.nextBoolean())
 			testState.put(testProps.get("logic"), rng.nextBoolean());
 		if (rng.nextBoolean())
@@ -190,7 +190,8 @@ public class DialogsTest {
 		if (rng.nextBoolean())
 			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomString(rng, meTypes));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, testProps.values(), testState, false, "block/custom_state"));
+				() -> StateEditorDialog.open(mcreator, testProps.values().stream().toList(), testState, false,
+						"block/custom_state"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

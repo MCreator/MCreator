@@ -34,23 +34,26 @@ import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
-import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
-	private final List<JItemPropertiesListEntry> propertiesList;
+	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 	private final AtomicInteger propertyId = new AtomicInteger(0);
 
 	private final List<String> builtinPropertyNames;
-	private final Map<String, PropertyData<?, ?>> builtinProperties = new LinkedHashMap<>();
+	private final Map<String, PropertyData<?>> builtinProperties = new LinkedHashMap<>();
 
 	private final JPanel propertyEntries = new JPanel() {
 		@Override public void setEnabled(boolean enabled) {
@@ -65,8 +68,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		}
 	};
 
-	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif"));
-	private final JButton addState = new JButton(UIRES.get("16px.add.gif"));
+	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif")) {
+		@Override public String getName() {
+			return "TechnicalButton";
+		}
+	};
+	private final JButton addState = new JButton(UIRES.get("16px.add.gif")) {
+		@Override public String getName() {
+			return "TechnicalButton";
+		}
+	};
 
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
@@ -75,15 +86,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		builtinPropertyNames = List.copyOf(properties.keySet());
 		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
 			if ("Number".equals(e.getType())) {
-				builtinProperties.put(e.getName(), PropertyData.Float.create(e.getName(), 0F, 1F));
+				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), 0F, 1F));
 			} else if ("Logic".equals(e.getType())) {
-				builtinProperties.put(e.getName(), new PropertyData.Float<>(e.getName(), Boolean.class, 0F, 1F) {
-					@Override public java.lang.Boolean toUIValue(Object value) {
-						return parseObj(value.toString()) == 1F;
+				PropertyData.Logic logic = new PropertyData.Logic(e.getName());
+				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), 0F, 1F) {
+					@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+						return logic.getComponent(mcreator, value != null && (Float) value == 1F);
 					}
 
-					@Override public java.lang.Float fromUIValue(Object value) {
-						return (boolean) value ? 1F : 0F;
+					@Override public Float getValue(JComponent component) {
+						return logic.getValue(component) ? 1F : 0F;
 					}
 				});
 			}
@@ -95,29 +107,27 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setLayout(new BoxLayout(stateEntries, BoxLayout.Y_AXIS));
 		stateEntries.setOpaque(false);
 
-		propertiesList = new ArrayList<>() {
-			@Override public boolean remove(Object o) {
-				if (o instanceof JItemPropertiesListEntry entry) {
-					stateEntries.setVisible(false);
-					PropertyData<?, ?> data = buildPropertiesMap().get(entry.getNameField().getPropertyName());
-					statesList.forEach(s -> {
-						LinkedHashMap<PropertyData<?, ?>, Object> stateMap = s.getStateLabel().getStateMap();
-						stateMap.remove(data);
-						s.getStateLabel().setStateMap(stateMap);
-					});
-					Set<LinkedHashMap<PropertyData<?, ?>, Object>> duplicateFilter = new HashSet<>();
+		propertyEntries.addContainerListener(new ContainerAdapter() {
+			@Override public void componentRemoved(ContainerEvent e) {
+				if (e.getChild() instanceof Container c && c.getComponentCount() > 0
+						&& c.getComponents()[0] instanceof JItemPropertiesListEntry entry) {
+					PropertyData.FloatNumber data = entry.toPropertyData();
+					Set<LinkedHashMap<PropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 					statesList.stream().toList().forEach(s -> {
-						LinkedHashMap<PropertyData<?, ?>, Object> state = s.getStateLabel().getStateMap();
-						if (state.isEmpty() || !duplicateFilter.add(state)) {
+						LinkedHashMap<PropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();
+						stateMap.remove(data);
+						if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
 							statesList.remove(s);
 							stateEntries.remove(s.getParent());
+						} else {
+							s.getStateLabel().setStateMap(stateMap);
 						}
 					});
-					stateEntries.setVisible(true);
+					stateEntries.revalidate();
+					stateEntries.repaint();
 				}
-				return super.remove(o);
 			}
-		};
+		});
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
@@ -170,22 +180,21 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
-		propertyId.set(Math.max(propertiesList.size(), propertyId.get()) + 1);
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
-				propertyId.get(), this::nameValidator, (nameField, newName) -> statesList.forEach(
+				propertyId.incrementAndGet(), this::nameValidator, (nameField, newName) -> statesList.forEach(
 				s -> s.getStateLabel().rename(nameField.getCachedName(), newName)));
 		registerEntryUI(pe);
 		return pe;
 	}
 
-	private UniqueNameValidator nameValidator(VTextField holder) {
-		return new UniqueNameValidator(holder, L10N.t("elementgui.item.custom_property.validator"),
+	private UniqueNameValidator nameValidator(Supplier<String> nameGetter) {
+		return new UniqueNameValidator(L10N.t("elementgui.item.custom_property.validator"), nameGetter,
 				() -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()), builtinPropertyNames, null);
 	}
 
 	private JItemStatesListEntry addStatesEntry() {
 		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList,
-				buildPropertiesMap().values().stream()::toList, this::editState);
+				this::buildPropertiesList, this::editState);
 		registerEntryUI(se);
 		return se;
 	}
@@ -193,11 +202,10 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private void editState(JItemStatesListEntry entry) {
 		if (new AggregatedValidationResult(propertiesList.stream().map(e -> e.getNameField().getTextField())
 				.toArray(IValidable[]::new)).validateIsErrorFree()) {
-			LinkedHashMap<PropertyData<?, ?>, Object> stateMap = new LinkedHashMap<>();
-			if (entry != null)
+			LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
+			if (entry != null) // copy state definition map if in editing mode
 				stateMap.putAll(entry.getStateLabel().getStateMap());
-			if (JOptionPane.OK_OPTION != StateEditorDialog.open(mcreator, buildPropertiesMap().values(), stateMap,
-					entry == null, "item/custom_state"))
+			if (!StateEditorDialog.open(mcreator, buildPropertiesList(), stateMap, entry == null, "item/custom_state"))
 				return;
 
 			if (stateMap.isEmpty()) { // all properties were unchecked - not acceptable by items
@@ -215,10 +223,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		}
 	}
 
-	private Map<String, PropertyData<?, ?>> buildPropertiesMap() {
-		Map<String, PropertyData<?, ?>> props = new LinkedHashMap<>(builtinProperties);
-		propertiesList.forEach(e -> props.put(e.getNameField().getPropertyName(),
-				PropertyData.Float.create(e.getNameField().getPropertyName(), 0F, 1000000F)));
+	private List<PropertyData<?>> buildPropertiesList() {
+		List<PropertyData<?>> props = new ArrayList<>(builtinProperties.values());
+		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
 		return props;
 	}
 

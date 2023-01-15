@@ -34,8 +34,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class JStateLabel extends JPanel {
-	private final Supplier<List<PropertyData<?, ?>>> properties;
-	private LinkedHashMap<PropertyData<?, ?>, Object> stateMap = new LinkedHashMap<>();
+	private final Supplier<List<PropertyData<?>>> properties;
+	private LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
 
 	private final JTextField label = new JTextField();
 	private final JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
@@ -44,7 +44,7 @@ public class JStateLabel extends JPanel {
 		}
 	};
 
-	public JStateLabel(Supplier<List<PropertyData<?, ?>>> properties, Runnable editButtonListener) {
+	public JStateLabel(Supplier<List<PropertyData<?>>> properties, Runnable editButtonListener) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
 		this.properties = properties;
 
@@ -92,7 +92,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public String getState() {
-		return stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getValue())
+		return stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getKey().toString(e.getValue()))
 				.collect(Collectors.joining(","));
 	}
 
@@ -100,24 +100,24 @@ public class JStateLabel extends JPanel {
 		this.stateMap = new LinkedHashMap<>();
 		Map<String, String> values = Arrays.stream(state.split(","))
 				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-		for (PropertyData<?, ?> property : properties.get()) {
+		for (PropertyData<?> property : properties.get()) {
 			if (values.containsKey(property.getName()))
 				stateMap.put(property, property.parseObj(values.get(property.getName())));
 		}
 		refreshState();
 	}
 
-	public LinkedHashMap<PropertyData<?, ?>, Object> getStateMap() {
+	public LinkedHashMap<PropertyData<?>, Object> getStateMap() {
 		return stateMap;
 	}
 
-	public void setStateMap(LinkedHashMap<PropertyData<?, ?>, Object> stateMap) {
+	public void setStateMap(LinkedHashMap<PropertyData<?>, Object> stateMap) {
 		this.stateMap = stateMap;
 		refreshState();
 	}
 
 	public void rename(String property, String newName) {
-		for (PropertyData<?, ?> data : stateMap.keySet()) {
+		for (PropertyData<?> data : stateMap.keySet()) {
 			if (data.getName().equals(property)) {
 				data.setName(newName);
 				break;
@@ -127,8 +127,10 @@ public class JStateLabel extends JPanel {
 	}
 
 	private void refreshState() {
-		label.setText(L10N.t("elementgui.common.custom_state.when") + stateMap.entrySet().stream()
-				.map(e -> StringUtils.snakeToCamel(e.getKey().getName()) + " = " + e.getValue())
-				.collect(Collectors.joining("; ")));
+		label.setText(L10N.t("elementgui.common.custom_state.when", stateMap.isEmpty() ?
+				L10N.t("elementgui.common.custom_state.empty") :
+				stateMap.entrySet().stream()
+						.map(e -> StringUtils.snakeToCamel(e.getKey().getName()) + " = " + e.getKey()
+								.toString(e.getValue())).collect(Collectors.joining("; "))));
 	}
 }
