@@ -1,0 +1,1 @@
+${input$entity} instanceof Player player ? player.containerMenu instanceof ${field$guiname}Menu : false
