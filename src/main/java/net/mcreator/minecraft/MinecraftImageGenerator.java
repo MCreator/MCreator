@@ -205,7 +205,7 @@ public class MinecraftImageGenerator {
 
 	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
 		ImageIcon base = ImageUtils.colorize(TiledImageCache.spawnEggBase, baseColor, false);
-		ImageIcon dots = ImageUtils.colorize(TiledImageCache.spawnEggDots, dotColor, false);
+		ImageIcon dots = ImageUtils.colorize(TiledImageCache.spawnEggDots, dotColor, true);
 		return ImageUtils.drawOver(base, dots);
 	}
 
