@@ -64,7 +64,7 @@ public class TiledImageCache {
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
 			TiledImageUtils workspaceIcons = new TiledImageUtils(UIRES.get("wrktile"), 45, 45);
 			TiledImageUtils bucketIcons = new TiledImageUtils(UIRES.get("fluidbucket"), 32, 32);
-			TiledImageUtils spawnEggIcons = new TiledImageUtils(UIRES.get("spawnEgg"), 32, 32);
+			TiledImageUtils spawnEggIcons = new TiledImageUtils(UIRES.get("spawnegg"), 32, 32);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
 			plantGrowingNo = plantGrowthTile.getIcon(2, 1);
