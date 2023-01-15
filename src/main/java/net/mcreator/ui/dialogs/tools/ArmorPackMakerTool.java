@@ -37,7 +37,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.views.ArmorImageMakerView;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -97,7 +97,7 @@ public class ArmorPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.armor_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.plugin.events;
+package net.mcreator.plugin.events.workspace;
 
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.ui.MCreator;
@@ -26,6 +26,11 @@ public class MCreatorLoadedEvent extends MCREvent {
 
 	private final MCreator mcreator;
 
+	/**
+	 * <p>An event triggered when a new {@link MCreator} window is opened, meaning a new {@link net.mcreator.workspace.Workspace} has been created or opened.</p>
+	 *
+	 * @param mcreator <p>The opened MCreator window</p>
+	 */
 	public MCreatorLoadedEvent(MCreator mcreator) {
 		this.mcreator = mcreator;
 	}
