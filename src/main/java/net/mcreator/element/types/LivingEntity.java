@@ -39,10 +39,12 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -237,5 +239,13 @@ import java.util.List;
 		if (hasSpawnEgg)
 			return List.of(new MCItem.Custom(this.getModElement(), "spawn_egg", "item", "Spawn egg"));
 		return Collections.emptyList();
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if ("spawn_egg".equals(suffix)) {
+			return MinecraftImageGenerator.generateSpawnEggIcon(spawnEggBaseColor, spawnEggDotColor);
+		}
+
+		return null;
 	}
 }

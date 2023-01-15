@@ -203,6 +203,12 @@ public class MinecraftImageGenerator {
 		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
+	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
+		ImageIcon base = ImageUtils.colorize(TiledImageCache.spawnEggBase, baseColor, false);
+		ImageIcon dots = ImageUtils.colorize(TiledImageCache.spawnEggDots, dotColor, false);
+		return ImageUtils.drawOver(base, dots);
+	}
+
 	public static class Preview {
 
 		public static Image generateArmorPreviewFrame1() {
