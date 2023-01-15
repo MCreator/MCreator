@@ -25,7 +25,7 @@
           "MOTION_BLOCKING"
         ],
         [
-          "Motion blocking or liquid, except leaves",
+          "Motion blocking or liquid (except leaves)",
           "MOTION_BLOCKING_NO_LEAVES"
         ]
       ]
