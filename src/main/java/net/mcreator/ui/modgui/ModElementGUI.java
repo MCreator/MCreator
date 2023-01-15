@@ -107,7 +107,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	@Override public ViewBase showView() {
-		MCREvent.event(new ModElementGUIEvent.BeforeLoading(this.tabIn, this));
+		MCREvent.event(new ModElementGUIEvent.BeforeLoading(mcreator, this.tabIn, this));
 		this.tabIn = new MCreatorTabs.Tab(this, modElement);
 
 		// reload data lists in a background thread
@@ -131,7 +131,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.mcreatorTabs.addTab(this.tabIn);
 			return this;
 		}
-		MCREvent.event(new ModElementGUIEvent.AfterLoading(existing, this));
+		MCREvent.event(new ModElementGUIEvent.AfterLoading(mcreator, existing, this));
 		return (ViewBase) existing.getContent();
 	}
 
@@ -504,6 +504,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
+		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
 		GE element = getElementFromGUI();
 
 		// if new element, and if we are not in the root folder, specify the folder of the mod element
