@@ -27,11 +27,9 @@ import net.mcreator.element.converter.fv13.ProcedureSpawnGemPickupDelayFixer;
 import net.mcreator.element.converter.fv14.BlockLuminanceFixer;
 import net.mcreator.element.converter.fv14.DimensionLuminanceFixer;
 import net.mcreator.element.converter.fv14.PlantLuminanceFixer;
-import net.mcreator.element.converter.fv15.DimensionPortalSelectedFixer;
 import net.mcreator.element.converter.fv16.BlockBoundingBoxFixer;
 import net.mcreator.element.converter.fv17.GameruleDisplayNameFixer;
 import net.mcreator.element.converter.fv18.BiomeFrozenTopLayerConverter;
-import net.mcreator.element.converter.fv19.FluidBucketSelectedFixer;
 import net.mcreator.element.converter.fv20.FluidNameFixer;
 import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
 import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
@@ -74,8 +72,8 @@ public class ConverterRegistry {
 						new BlockRequiresCorrectToolConverter()));
 		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
+		put(ModElementType.DIMENSION, Collections.singletonList(new DimensionLuminanceFixer()));
+		put(ModElementType.FLUID, Collections.singletonList(new FluidNameFixer()));
 		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
