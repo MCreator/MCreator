@@ -202,6 +202,28 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#assign btid +=1>
 		</#list>
 
+		<#list data.getComponentsOfType("ImageButton") as component>
+				this.addRenderableWidget(new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height}, 0, 0, 0, new ResourceLocation("${modid}:textures/screens/${component.image}"), ${component.width}, ${component.height}, e -> {
+							<#if hasProcedure(component.onClick)>
+								if (<@procedureOBJToConditionCode component.displayCondition/>) {
+									${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+									${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
+								}
+							</#if>
+					}
+				)
+				<#if hasProcedure(component.displayCondition)>
+				{
+					@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+							super.render(ms, gx, gy, ticks);
+					}
+				}
+				</#if>);
+				<#assign btid +=1>
+		</#list>
+
 		<#list data.getComponentsOfType("Checkbox") as component>
             	${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 						20, 20, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>

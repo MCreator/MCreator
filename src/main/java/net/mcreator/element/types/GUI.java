@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.ImageButton;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
@@ -85,10 +86,15 @@ import java.util.List;
 	}
 
 	public boolean hasButtonEvents() {
-		for (GUIComponent component : components)
-			if (component instanceof Button)
-				if (((Button) component).onClick != null && ((Button) component).onClick.getName() != null)
+		for (GUIComponent component : components) {
+			if (component instanceof Button button) {
+				if (button.onClick != null && button.onClick.getName() != null)
 					return true;
+			} else if (component instanceof ImageButton imageButton) {
+				if (imageButton.onClick != null && imageButton.onClick.getName() != null)
+					return true;
+			}
+		}
 		return false;
 	}
 
