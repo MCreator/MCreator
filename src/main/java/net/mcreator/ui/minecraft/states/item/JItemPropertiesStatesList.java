@@ -31,6 +31,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
@@ -85,17 +86,26 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		Map<String, DataListEntry> properties = DataListLoader.loadDataMap("itemproperties");
 		builtinPropertyNames = List.copyOf(properties.keySet());
 		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
+			float min, max;
+			if (e.getOther() instanceof Map<?, ?> other) {
+				min = Float.parseFloat((String) other.get("min"));
+				max = Float.parseFloat((String) other.get("max"));
+			} else {
+				min = 0F;
+				max = 1F;
+			}
+
 			if ("Number".equals(e.getType())) {
-				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), 0F, 1F));
+				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max));
 			} else if ("Logic".equals(e.getType())) {
 				PropertyData.Logic logic = new PropertyData.Logic(e.getName());
-				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), 0F, 1F) {
+				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max) {
 					@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-						return logic.getComponent(mcreator, value != null && (Float) value == 1F);
+						return logic.getComponent(mcreator, value != null && (Float) value == max);
 					}
 
 					@Override public Float getValue(JComponent component) {
-						return logic.getValue(component) ? 1F : 0F;
+						return logic.getValue(component) ? max : min;
 					}
 				});
 			}
@@ -137,7 +147,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		topbar.add(addProperty);
 
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
-		addState.addActionListener(e -> editState(null));
+		addState.addActionListener(e -> editState(null)); // passing null here means a new entry should be created
 		topbar.add(addState);
 
 		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
@@ -200,7 +210,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private void editState(JItemStatesListEntry entry) {
-		if (new AggregatedValidationResult(propertiesList.stream().map(e -> e.getNameField().getTextField())
+		if (new AggregatedValidationResult(propertiesList.stream().map(JItemPropertiesListEntry::getNameField)
 				.toArray(IValidable[]::new)).validateIsErrorFree()) {
 			LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
 			if (entry != null) // copy state definition map if in editing mode
@@ -211,11 +221,11 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			if (stateMap.isEmpty()) { // all properties were unchecked - not acceptable by items
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_empty"),
 						L10N.t("elementgui.item.custom_states.error_empty.title"), JOptionPane.ERROR_MESSAGE);
-			} else if (statesList.stream()
+			} else if (statesList.stream() // check if any other entry defines the same state
 					.anyMatch(s -> s != entry && s.getStateLabel().getStateMap().equals(stateMap))) {
 				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_duplicate"),
 						L10N.t("elementgui.item.custom_states.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
-			} else {
+			} else { // all good, add new entry or update existing one
 				(entry != null ? entry : addStatesEntry()).getStateLabel().setStateMap(stateMap);
 			}
 		} else {
@@ -236,7 +246,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setProperties(LinkedHashMap<String, Procedure> properties) {
-		properties.forEach((name, value) -> addPropertiesEntry().setEntry(name, value));
+		properties.forEach(addPropertiesEntry()::setEntry);
 	}
 
 	public LinkedHashMap<String, Item.ModelEntry> getStates() {
@@ -246,7 +256,12 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setStates(LinkedHashMap<String, Item.ModelEntry> states) {
-		states.forEach((state, model) -> addStatesEntry().setEntry(state, model));
+		Set<LinkedHashMap<PropertyData<?>, Object>> duplicateFilter = new HashSet<>();
+		states.forEach((state, model) -> {
+			LinkedHashMap<PropertyData<?>, Object> stateMap = JStateLabel.passStateToMap(state, buildPropertiesList());
+			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
+				addStatesEntry().setEntry(state, model);
+		});
 	}
 
 	public AggregatedValidationResult getValidationResult() {

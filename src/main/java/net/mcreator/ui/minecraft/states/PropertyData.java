@@ -24,7 +24,6 @@ import net.mcreator.ui.MCreator;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -127,13 +126,12 @@ public abstract class PropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Objects.requireNonNullElse(value, false);
 			JCheckBox box = new JCheckBox() {
 				@Override public String getText() {
 					return isSelected() ? "True" : "False";
 				}
 			};
-			box.setSelected((boolean) value);
+			box.setSelected(Objects.requireNonNullElse((Boolean) value, false));
 			box.setPreferredSize(new Dimension(54, 25));
 			return box;
 		}
@@ -147,8 +145,7 @@ public abstract class PropertyData<T> {
 	 * A subclass for integer number type properties.
 	 */
 	public static class IntNumber extends PropertyData<Integer> {
-		private final int min;
-		private final int max;
+		private final int min, max;
 
 		public IntNumber(String name, int min, int max) {
 			super(name);
@@ -165,7 +162,7 @@ public abstract class PropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, (int) Objects.requireNonNullElse(value, 0)));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Integer) value, 0)));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
@@ -180,8 +177,7 @@ public abstract class PropertyData<T> {
 	 * A subclass for float number type properties.
 	 */
 	public static class FloatNumber extends PropertyData<Float> {
-		private final float min;
-		private final float max;
+		private final float min, max;
 
 		public FloatNumber(String name, float min, float max) {
 			super(name);
@@ -198,7 +194,7 @@ public abstract class PropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, (float) Objects.requireNonNullElse(value, 0F)));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Float) value, 0F)));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((float) value, min, max, 0.001));
 			box.setPreferredSize(new Dimension(130, 22));
 			return box;
@@ -230,10 +226,9 @@ public abstract class PropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Objects.requireNonNullElse(value, "");
 			JComboBox<String> box = new JComboBox<>(arrayData);
 			box.setEditable(false);
-			box.setSelectedIndex(Math.max(0, Arrays.asList(arrayData).indexOf((String) value)));
+			box.setSelectedItem(Objects.requireNonNullElse((String) value, ""));
 			return box;
 		}
 

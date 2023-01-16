@@ -32,7 +32,6 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -61,19 +60,17 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		name = new JPropertyNameField("property" + propertyId);
-
-		VTextField textField = name.getTextField();
-		textField.setValidator(validator.apply(textField::getText).wrapValidator(
-				new RegistryNameValidator(textField, L10N.t("elementgui.item.custom_property.validator"))));
-		textField.enableRealtimeValidation();
-		textField.addKeyListener(new KeyAdapter() {
+		name.setValidator(validator.apply(name::getPropertyName).wrapValidator(
+				new RegistryNameValidator(name.getTextField(), L10N.t("elementgui.item.custom_property.validator"))));
+		name.getTextField().enableRealtimeValidation();
+		name.getTextField().addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (!textField.isEnabled())
+				if (!name.isEnabled())
 					return;
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
-						&& textField.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					String newName = textField.getText();
+						&& name.getValidationStatus() == Validator.ValidationResult.PASSED) {
+					String newName = name.getPropertyName();
 					editButtonListener.accept(name, newName);
 					name.stopRenaming();
 					name.renameTo(newName);

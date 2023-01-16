@@ -21,6 +21,8 @@ package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
 import javax.swing.*;
@@ -28,7 +30,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class JPropertyNameField extends JPanel {
+public class JPropertyNameField extends JPanel implements IValidable {
 	private final VTextField field = new VTextField(20);
 	private String cachedName;
 	private final JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
@@ -41,9 +43,8 @@ public class JPropertyNameField extends JPanel {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 7));
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		field.setOpaque(true);
-		field.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
 		field.setEditable(false);
+		field.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
 		field.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		field.addPropertyChangeListener("enabled", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
 		field.addPropertyChangeListener("editable", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
@@ -96,5 +97,17 @@ public class JPropertyNameField extends JPanel {
 
 	public void stopRenaming() {
 		field.dispatchEvent(new FocusEvent(field, FocusEvent.FOCUS_LOST));
+	}
+
+	@Override public Validator.ValidationResult getValidationStatus() {
+		return field.getValidationStatus();
+	}
+
+	@Override public void setValidator(Validator validator) {
+		field.setValidator(validator);
+	}
+
+	@Override public Validator getValidator() {
+		return field.getValidator();
 	}
 }

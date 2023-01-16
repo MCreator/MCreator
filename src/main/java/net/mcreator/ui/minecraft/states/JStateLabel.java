@@ -26,10 +26,8 @@ import net.mcreator.util.StringUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -97,18 +95,12 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setState(String state) {
-		this.stateMap = new LinkedHashMap<>();
-		Map<String, String> values = Arrays.stream(state.split(","))
-				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-		for (PropertyData<?> property : properties.get()) {
-			if (values.containsKey(property.getName()))
-				stateMap.put(property, property.parseObj(values.get(property.getName())));
-		}
+		stateMap = passStateToMap(state, properties.get());
 		refreshState();
 	}
 
 	public LinkedHashMap<PropertyData<?>, Object> getStateMap() {
-		return stateMap;
+		return this.stateMap;
 	}
 
 	public void setStateMap(LinkedHashMap<PropertyData<?>, Object> stateMap) {
@@ -127,10 +119,21 @@ public class JStateLabel extends JPanel {
 	}
 
 	private void refreshState() {
-		label.setText(L10N.t("elementgui.common.custom_state.when", stateMap.isEmpty() ?
-				L10N.t("elementgui.common.custom_state.empty") :
-				stateMap.entrySet().stream()
-						.map(e -> StringUtils.snakeToCamel(e.getKey().getName()) + " = " + e.getKey()
-								.toString(e.getValue())).collect(Collectors.joining("; "))));
+		List<String> stateParts = new ArrayList<>();
+		stateMap.forEach((k, v) -> stateParts.add(StringUtils.snakeToCamel(k.getName()) + " = " + k.toString(v)));
+		label.setText(L10N.t("elementgui.common.custom_state.when",
+				stateParts.isEmpty() ? L10N.t("elementgui.common.custom_state.empty") : String.join("; ", stateParts)));
+	}
+
+	public static LinkedHashMap<PropertyData<?>, Object> passStateToMap(String state,
+			List<PropertyData<?>> properties) {
+		LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
+		Map<String, String> values = Arrays.stream(state.split(","))
+				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
+		for (PropertyData<?> property : properties) {
+			if (values.containsKey(property.getName()))
+				stateMap.put(property, property.parseObj(values.get(property.getName())));
+		}
+		return stateMap;
 	}
 }
