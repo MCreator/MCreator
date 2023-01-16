@@ -500,7 +500,6 @@ public class TestWorkspaceDataProvider {
 			}
 			fluid.frequencyOnChunks = 13;
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
-			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
@@ -790,7 +789,6 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
-			dimension.getModElement().putMetadata("ep", dimension.enablePortal);
 			return dimension;
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
@@ -888,10 +886,6 @@ public class TestWorkspaceDataProvider {
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
-			armor.getModElement().putMetadata("eh", armor.enableHelmet);
-			armor.getModElement().putMetadata("ec", armor.enableBody);
-			armor.getModElement().putMetadata("el", armor.enableLeggings);
-			armor.getModElement().putMetadata("eb", armor.enableBoots);
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);

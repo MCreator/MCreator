@@ -214,8 +214,8 @@ public final class MCreatorApplication {
 					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 		}
 
-		discordClient.updatePresence(L10N.t("dialog.discord_rpc.just_opened"),
-				L10N.t("dialog.discord_rpc.version") + Launcher.version.getMajorString());
+		// Do not externalize this text
+		discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
 
 		boolean directLaunch = false;
 		if (launchArguments.size() > 0) {
