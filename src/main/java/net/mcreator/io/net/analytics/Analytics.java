@@ -18,63 +18,40 @@
 
 package net.mcreator.io.net.analytics;
 
-import net.mcreator.Launcher;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+// TODO: do we need this class?
 public class Analytics {
 
 	private final GoogleAnalytics ga;
-	private final DeviceInfo deviceInfo;
 
 	public Analytics(DeviceInfo deviceInfo) {
-		this.deviceInfo = deviceInfo;
-		ga = new GoogleAnalytics();
-		ga.setUserAgent("MCreator " + Launcher.version.getFullString() + " / " + deviceInfo.getOsName() + " / "
-				+ deviceInfo.getJvmVersion());
-		ga.setClientUUID(UUID.randomUUID().toString());
+		ga = new GoogleAnalytics(deviceInfo, UUID.randomUUID().toString());
 	}
 
 	public Analytics trackMCreatorLaunch() {
-		trackPageViewImpl(AnalyticsConstants.PAGE_LAUNCH, new HashMap<>() {{
-			put("sc", "start");
-		}});
+		trackPageViewImpl(AnalyticsConstants.PAGE_LAUNCH);
 		return this;
 	}
 
 	public Analytics trackMCreatorClose() {
-		trackPageViewImpl(AnalyticsConstants.PAGE_CLOSE, new HashMap<>() {{
-			put("sc", "end");
-		}});
+		trackPageViewImpl(AnalyticsConstants.PAGE_CLOSE);
 		return this;
 	}
 
 	public Analytics trackEvent(String category, String action, String label, String value) {
-		Map<String, Object> payload = new HashMap<>();
-		addDeviceInfoPayload(payload);
-		ga.trackEvent(category, action, label, value, payload);
+		ga.trackEvent(category, action, label, value);
 		return this;
 	}
 
+	// TODO: check where this is used
 	public void async(Supplier<Analytics> run) {
 		new Thread(run::get).start();
 	}
 
-	private void trackPageViewImpl(String page, Map<String, Object> payload) {
-		addDeviceInfoPayload(payload);
-		ga.trackPageview("/" + Launcher.version.major + "/" + page, payload);
-	}
-
-	private void addDeviceInfoPayload(Map<String, Object> payload) {
-		payload.put("sr", deviceInfo.getScreenWidth() + "x" + deviceInfo.getScreenHeight());
-		payload.put("cm1", deviceInfo.getSystemBits());
-		payload.put("cm2", deviceInfo.getRamAmountMB());
-		payload.put("cd1", deviceInfo.getOsName());
-		payload.put("cd2", deviceInfo.getJvmVersion());
-		payload.put("cd3", Launcher.version.getFullString());
+	private void trackPageViewImpl(String page) {
+		ga.trackPage("/" + page);
 	}
 
 }

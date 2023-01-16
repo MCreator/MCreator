@@ -21,7 +21,6 @@ package net.mcreator.io.net.analytics;
 public class AnalyticsConstants {
 
 	public static final String EVENT_NEW_MOD_ELEMENT = "new_mod_element";
-	public static final String EVENT_WORKSPACE_IMPORT = "workspace_import";
 
 	static final String PAGE_LAUNCH = "launch";
 	static final String PAGE_CLOSE = "close";

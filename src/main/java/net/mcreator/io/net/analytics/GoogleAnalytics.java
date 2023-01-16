@@ -18,7 +18,9 @@
 
 package net.mcreator.io.net.analytics;
 
+import net.mcreator.Launcher;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,32 +28,55 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 class GoogleAnalytics {
 
 	private static final Logger LOG = LogManager.getLogger("GA");
 
-	private String userAgent;
-	private String clientUUID;
+	private final String clientUUID;
+	private final DeviceInfo deviceInfo;
 
-	void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
-	}
+	// Session info
+	private final long sessionID;
+	private boolean newSession = true;
 
-	void setClientUUID(String clientUUID) {
+	// Page info
+	// TODO: add page info
+
+	public GoogleAnalytics(DeviceInfo deviceInfo, String clientUUID) {
 		this.clientUUID = clientUUID;
+		this.deviceInfo = deviceInfo;
+		this.sessionID = System.currentTimeMillis();
 	}
 
-	private String getGATrackURL(String hitType, Map<String, Object> payload) {
-		StringBuilder actionRequestURL = new StringBuilder("https://www.google-analytics.com/collect?v=1");
+	private String getGATrackURL(Map<String, Object> payload) {
+		StringBuilder actionRequestURL = new StringBuilder("https://www.google-analytics.com/g/collect?v=2");
 
-		payload.put("aip", 1);
+		payload.put("tid", "G-V6EPB4SPL8");
 		payload.put("cid", clientUUID);
-		payload.put("tid", "UA-27875746-8");
 		payload.put("dh", "app.mcreator.net");
-		payload.put("ua", userAgent);
-		payload.put("t", hitType);
+		payload.put("sr", deviceInfo.getScreenWidth() + "x" + deviceInfo.getScreenHeight());
+		payload.put("ul", L10N.getLocaleString().toLowerCase(Locale.ENGLISH).replace("_", "-"));
+		payload.put("sid", sessionID);
+		payload.put("_nsi", newSession ? "1" : "0"); // new session ID
+		payload.put("_ss", newSession ? "1" : "0"); // session start
+
+		// https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
+
+		// dl - http://localhost/test2.html - document location
+		// dt - Title - document title
+		// _p - random page load hash
+		// dr - document referrer - previous page
+
+		// uafvl - full version of MCreator
+		// uam - user agent model - version of mcreator
+		// uap - user agent platform: windows, macos, linux
+
+		// up.* - user parameter string
+		// upn.* - user parameter number
 
 		for (Map.Entry<String, Object> entry : payload.entrySet()) {
 			if (entry.getValue() != null)
@@ -59,10 +84,16 @@ class GoogleAnalytics {
 						.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
 		}
 
+		// Once session is started, it is not new anymore
+		newSession = false;
+
 		return actionRequestURL.toString();
 	}
 
 	private void processRequestURL(String requesturl) {
+		// TODO: remove me
+		System.err.println("DEMO: " + requesturl);
+
 		if (MCreatorApplication.isInternet) {
 			try {
 				HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
@@ -70,34 +101,47 @@ class GoogleAnalytics {
 				conn.setRequestMethod("GET");
 				conn.setUseCaches(false);
 				conn.setDefaultUseCaches(false);
-				conn.setRequestProperty("User-Agent", userAgent);
+				conn.setRequestProperty("User-Agent", "MCreator " + Launcher.version.getFullString());
 				conn.connect();
-				if (conn.getResponseCode() != 200) {
-					LOG.warn("GA track failed! Error" + conn.getResponseCode());
+				if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
+					LOG.warn("GA track failed! Response code: " + conn.getResponseCode() + "/"
+							+ conn.getResponseMessage());
 				}
 			} catch (Exception e) {
-				LOG.warn("GA error: " + e.getMessage());
+				LOG.warn("GA error: ", e);
 			}
 		}
 	}
 
-	void trackPageview(String page, Map<String, Object> payload) {
+	void trackPage(String page) {
 		LOG.info("Tracking page: " + page);
 
-		payload.put("dp", "/" + page);
-		processRequestURL(getGATrackURL("pageview", payload));
+		// TODO: on page tracking, set also (and keep for events on that page):
+		// dl - http://localhost/test2.html - document location
+		// dt - Title - document title
+		// _p - random page load hash
+
+		processRequestURL(getGATrackURL(new HashMap<>()));
 	}
 
-	void trackEvent(String category, String action, String label, String value, Map<String, Object> payload) {
+	void trackEvent(String category, String action, String label, String value) {
 		if (category == null || action == null)
 			return;
 
 		LOG.info("Tracking event: " + category + " - " + action);
 
+		Map<String, Object> payload = new HashMap<>();
+
+		// Events:
+		// en - event name
+		// ep.* - event parameter string
+		// epn.* - event parameter number
+
+		// TODO: fix those
 		payload.put("ec", category);
 		payload.put("ea", action);
 		payload.put("el", label);
 		payload.put("ev", value);
-		processRequestURL(getGATrackURL("event", payload));
+		processRequestURL(getGATrackURL(payload));
 	}
 }
