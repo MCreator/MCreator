@@ -86,9 +86,9 @@ class PluginsPanel {
 		opts.add(new JEmptyBox(5, 5));
 
 		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
-		box.setSelected(PreferencesManager.PREFERENCES.enableJavaPlugins.getValue());
+		box.setSelected(PreferencesManager.PREFERENCES.enableJavaPlugins.get());
 
-		box.addActionListener(e -> PreferencesManager.PREFERENCES.enableJavaPlugins.setValue(box.isSelected()));
+		box.addActionListener(e -> PreferencesManager.PREFERENCES.enableJavaPlugins.set(box.isSelected()));
 
 		openPluginFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));

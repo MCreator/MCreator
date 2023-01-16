@@ -38,11 +38,11 @@ public class UIRES {
 		ImageIO.setUseCache(false); // we use custom image cache for this
 
 		// preload texutres of the current theme
-		PluginLoader.INSTANCE.getResources("themes." + PreferencesManager.PREFERENCES.uiTheme.getValue() + ".images",
+		PluginLoader.INSTANCE.getResources("themes." + PreferencesManager.PREFERENCES.uiTheme.get() + ".images",
 				imagePattern).parallelStream().forEach(element -> getImageFromResourceID(element.replace("/", ".")));
 
 		// we also load default textures in non-default theme does not specify all textures
-		if (!PreferencesManager.PREFERENCES.uiTheme.getValue().equals("default_dark")) {
+		if (!PreferencesManager.PREFERENCES.uiTheme.get().equals("default_dark")) {
 			PluginLoader.INSTANCE.getResources("themes.default_dark.images", imagePattern).parallelStream()
 					.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
 		}
@@ -55,7 +55,7 @@ public class UIRES {
 			identifier += ".png";
 
 		String themedTextureIdentifier =
-				"themes." + PreferencesManager.PREFERENCES.uiTheme.getValue() + ".images." + identifier;
+				"themes." + PreferencesManager.PREFERENCES.uiTheme.get() + ".images." + identifier;
 
 		// we start by checking if the loaded pack contains the image
 		if (PluginLoader.INSTANCE.getResource(identifierToResourcePath(themedTextureIdentifier)) != null) {

@@ -95,16 +95,16 @@ public class PreferencesManager {
 				// Convert values from the file to properly work
 				Arrays.stream(list).forEach(entry -> getPreferenceEntries(identifier).stream()
 						.filter(preference -> preference.getID().equals(entry.getID())).forEach(preference -> {
-							if (preference.getValue() instanceof Locale)
-								preference.setValue(
-										Locale.forLanguageTag(((String) entry.getValue()).replace("_", "-")));
-							else if (preference.getValue() instanceof Color) {
-								preference.setValue(new Color((int) (double) entry.getValue()));
+							if (preference.get() instanceof Locale)
+								preference.set(
+										Locale.forLanguageTag(((String) entry.get()).replace("_", "-")));
+							else if (preference.get() instanceof Color) {
+								preference.set(new Color((int) (double) entry.get()));
 							}
-							else if (entry.getValue() instanceof Double val) // fix a problem where Gson read numbers as double values
-								preference.setValue(val.intValue());
+							else if (entry.get() instanceof Double val) // fix a problem where Gson read numbers as double values
+								preference.set(val.intValue());
 							else
-								preference.setValue(entry.getValue());
+								preference.set(entry.get());
 						}));
 			} catch (Exception e) {
 				LOG.error("Failed to load preferences. Reloading defaults!", e);
@@ -130,8 +130,8 @@ public class PreferencesManager {
 		List<PreferenceEntry<?>> list = new ArrayList<>(getPreferenceEntries(identifier));
 		list.forEach(entry -> {
 			// We change the full Color object to the RGB code, so we can decode it when loading preferences (fixing a problem)
-			if (entry.getValue() instanceof Color color && getFile("mcreator").exists())
-				entry.setValue(color.getRGB());
+			if (entry.get() instanceof Color color && getFile("mcreator").exists())
+				entry.set(color.getRGB());
 		});
 		FileIO.writeStringToFile(gson.toJson(list), getFile(identifier));
 	}
@@ -149,20 +149,20 @@ public class PreferencesManager {
 			if (value == null)
 				return; // we use the default value
 
-			if (entry.getValue() instanceof Number)
-				entry.setValue(value.getAsInt());
-			else if (entry.getValue() instanceof String)
-				entry.setValue(value.getAsString());
-			else if (entry.getValue() instanceof Boolean)
-				entry.setValue(value.getAsBoolean());
-			else if (entry.getValue() instanceof Locale)
-				entry.setValue(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
-			else if (entry.getValue() instanceof Color)
-				entry.setValue(new Color(value.getAsJsonObject().get("value").getAsInt()));
-			else if (entry.getValue() instanceof WorkspacePreferenceEnums.IconSize)
-				entry.setValue(WorkspacePreferenceEnums.IconSize.valueOf(value.getAsString()));
-			else if (entry.getValue() instanceof WorkspacePreferenceEnums.SortType)
-				entry.setValue(WorkspacePreferenceEnums.SortType.valueOf(value.getAsString()));
+			if (entry.get() instanceof Number)
+				entry.set(value.getAsInt());
+			else if (entry.get() instanceof String)
+				entry.set(value.getAsString());
+			else if (entry.get() instanceof Boolean)
+				entry.set(value.getAsBoolean());
+			else if (entry.get() instanceof Locale)
+				entry.set(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
+			else if (entry.get() instanceof Color)
+				entry.set(new Color(value.getAsJsonObject().get("value").getAsInt()));
+			else if (entry.get() instanceof WorkspacePreferenceEnums.IconSize)
+				entry.set(WorkspacePreferenceEnums.IconSize.valueOf(value.getAsString()));
+			else if (entry.get() instanceof WorkspacePreferenceEnums.SortType)
+				entry.set(WorkspacePreferenceEnums.SortType.valueOf(value.getAsString()));
 		});
 		savePreferences("mcreator");
 	}

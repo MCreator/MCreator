@@ -66,11 +66,11 @@ public class PreferenceEntry<T> {
 		return id;
 	}
 
-	public T getValue() {
+	public T get() {
 		return value;
 	}
 
-	public void setValue(Object object) {
+	public void set(Object object) {
 		this.value = (T) object;
 	}
 

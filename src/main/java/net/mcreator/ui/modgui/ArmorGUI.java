@@ -354,7 +354,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
 
-		helmetCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
+		helmetCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.get());
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -400,7 +400,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"),
 				PanelUtils.northAndCenterElement(bodyModelComponent, bodySubPanel));
-		bodyCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
+		bodyCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.get());
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName),
@@ -438,7 +438,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
 				PanelUtils.northAndCenterElement(leggingsModelComponent, leggingsSubPanel));
-		leggingsCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
+		leggingsCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.get());
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -476,7 +476,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
 				PanelUtils.northAndCenterElement(bootsModelComponent, bootsSubPanel));
-		bootsCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.getValue());
+		bootsCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.get());
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),

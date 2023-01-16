@@ -45,7 +45,7 @@ public class NumberEntry extends PreferenceEntry<Integer> {
 	}
 
 	@Override public JSpinner getComponent(Window parent, Consumer<EventObject> fct) {
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(getValue().intValue(), min, max, 1));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(get().intValue(), min, max, 1));
 		spinner.addChangeListener(fct::accept);
 		return spinner;
 	}

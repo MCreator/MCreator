@@ -73,7 +73,7 @@ public class BedrockUtils {
 							if (WindowsProcessUtil.isProcessRunning(MC_PROCESS)) {
 								String[] options = new String[] { "Close and reload",
 										"Close and reload (don't ask again)", "Cancel test run" };
-								int option = PreferencesManager.PREFERENCES.silentReload.getValue() ?
+								int option = PreferencesManager.PREFERENCES.silentReload.get() ?
 										0 :
 										JOptionPane.showOptionDialog(mcreator,
 												"<html>Minecraft Bedrock Edition was detected to be already running. You can: <ol>"
@@ -84,7 +84,7 @@ public class BedrockUtils {
 												JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 								if (option != 2) {
 									if (option == 1) {
-										PreferencesManager.PREFERENCES.silentReload.setValue(true);
+										PreferencesManager.PREFERENCES.silentReload.set(true);
 										PreferencesManager.savePreferences();
 									}
 

@@ -105,7 +105,7 @@ public class PluginLoader extends URLClassLoader {
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.enableJavaPlugins.getValue() && plugin.getJavaPlugin() != null) {
+				if (PreferencesManager.PREFERENCES.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
 					javaPluginCL.addURL(plugin.toURL());
 
 					Class<?> clazz = javaPluginCL.loadClass(plugin.getJavaPlugin());

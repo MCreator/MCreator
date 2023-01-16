@@ -219,17 +219,17 @@ public class PreferencesDialog extends MCreatorDialog {
 			preferences.forEach(entry -> {
 				JComponent component = entries.get(entry);
 				if (component instanceof JSpinner spinner) {
-					entry.setValue(spinner.getValue());
+					entry.set(spinner.getValue());
 				} else if (component instanceof JCheckBox box) {
-					entry.setValue(box.isSelected());
+					entry.set(box.isSelected());
 				} else if (component instanceof JComboBox<?> box) {
-					entry.setValue(box.getSelectedItem());
+					entry.set(box.getSelectedItem());
 				} else if (component instanceof JColor color) {
-					entry.setValue(color.getColor());
+					entry.set(color.getColor());
 				}
 			});
 		});
-		PreferencesManager.PREFERENCES.uiTheme.setValue(themes.getSelectedTheme());
+		PreferencesManager.PREFERENCES.uiTheme.set(themes.getSelectedTheme());
 		PreferencesManager.savePreferences();
 	}
 

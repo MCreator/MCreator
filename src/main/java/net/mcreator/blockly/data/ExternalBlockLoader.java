@@ -134,7 +134,7 @@ public class ExternalBlockLoader {
 		toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks());
 
 		// and then sort them for toolbox display
-		if (PreferencesManager.PREFERENCES.useSmartSort.getValue()) {
+		if (PreferencesManager.PREFERENCES.useSmartSort.get()) {
 			toolboxBlocksList.sort(
 					Comparator.comparing(ToolboxBlock::getGroupEstimate).thenComparing(ToolboxBlock::getName));
 		} else {

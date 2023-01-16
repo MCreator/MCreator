@@ -406,11 +406,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem tilesIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.tiles"));
 		tilesIcons.addActionListener(e -> {
 			if (tilesIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.workspaceModElementIconSize.setValue(WorkspacePreferenceEnums.IconSize.TILES);
+				PreferencesManager.PREFERENCES.workspaceModElementIconSize.set(WorkspacePreferenceEnums.IconSize.TILES);
 				updateElementListRenderer();
 			}
 		});
-		tilesIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue() == WorkspacePreferenceEnums.IconSize.TILES);
+		tilesIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.get() == WorkspacePreferenceEnums.IconSize.TILES);
 		Arrays.stream(tilesIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(tilesIcons)));
 		ComponentUtils.deriveFont(tilesIcons, 12);
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -418,11 +418,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
 		largeIcons.addActionListener(e -> {
 			if (largeIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.workspaceModElementIconSize.setValue(WorkspacePreferenceEnums.IconSize.LARGE);
+				PreferencesManager.PREFERENCES.workspaceModElementIconSize.set(WorkspacePreferenceEnums.IconSize.LARGE);
 				updateElementListRenderer();
 			}
 		});
-		largeIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		largeIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.LARGE);
 		Arrays.stream(largeIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(largeIcons)));
 		ComponentUtils.deriveFont(largeIcons, 12);
@@ -431,11 +431,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem mediumIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.medium"));
 		mediumIcons.addActionListener(e -> {
 			if (mediumIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.workspaceModElementIconSize.setValue(WorkspacePreferenceEnums.IconSize.MEDIUM);
+				PreferencesManager.PREFERENCES.workspaceModElementIconSize.set(WorkspacePreferenceEnums.IconSize.MEDIUM);
 				updateElementListRenderer();
 			}
 		});
-		mediumIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		mediumIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.MEDIUM);
 		Arrays.stream(mediumIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(mediumIcons)));
 		ComponentUtils.deriveFont(mediumIcons, 12);
@@ -444,11 +444,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem smallIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.small"));
 		smallIcons.addActionListener(e -> {
 			if (smallIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.workspaceModElementIconSize.setValue(WorkspacePreferenceEnums.IconSize.SMALL);
+				PreferencesManager.PREFERENCES.workspaceModElementIconSize.set(WorkspacePreferenceEnums.IconSize.SMALL);
 				updateElementListRenderer();
 			}
 		});
-		smallIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		smallIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.SMALL);
 		Arrays.stream(smallIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(smallIcons)));
 		ComponentUtils.deriveFont(smallIcons, 12);
@@ -457,11 +457,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
 		listIcons.addActionListener(e -> {
 			if (listIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.workspaceModElementIconSize.setValue(WorkspacePreferenceEnums.IconSize.LIST);
+				PreferencesManager.PREFERENCES.workspaceModElementIconSize.set(WorkspacePreferenceEnums.IconSize.LIST);
 				updateElementListRenderer();
 			}
 		});
-		listIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		listIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.LIST);
 		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
 		ComponentUtils.deriveFont(listIcons, 12);
@@ -470,11 +470,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem detailsIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.details"));
 		detailsIcons.addActionListener(e -> {
 			if (detailsIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.workspaceModElementIconSize.setValue(WorkspacePreferenceEnums.IconSize.DETAILS);
+				PreferencesManager.PREFERENCES.workspaceModElementIconSize.set(WorkspacePreferenceEnums.IconSize.DETAILS);
 				updateElementListRenderer();
 			}
 		});
-		detailsIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		detailsIcons.setSelected(PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.DETAILS);
 		Arrays.stream(detailsIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(detailsIcons)));
 		ComponentUtils.deriveFont(detailsIcons, 12);
@@ -572,8 +572,8 @@ import java.util.stream.Collectors;
 		EventButtonGroup sortOne = new EventButtonGroup();
 		sortOne.addActionListener(e -> resort());
 		JRadioButtonMenuItem asc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.ascending"));
-		asc.setSelected(PreferencesManager.PREFERENCES.workspaceSortAscending.getValue());
-		desc.setSelected(!PreferencesManager.PREFERENCES.workspaceSortAscending.getValue());
+		asc.setSelected(PreferencesManager.PREFERENCES.workspaceSortAscending.get());
+		desc.setSelected(!PreferencesManager.PREFERENCES.workspaceSortAscending.get());
 		sortOne.add(asc);
 		sortOne.add(desc);
 		sortPopup.add(asc);
@@ -614,11 +614,11 @@ import java.util.stream.Collectors;
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
-		if (PreferencesManager.PREFERENCES.workspaceSortType.getValue() == WorkspacePreferenceEnums.SortType.NAME) {
+		if (PreferencesManager.PREFERENCES.workspaceSortType.get() == WorkspacePreferenceEnums.SortType.NAME) {
 			sortName.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.workspaceSortType.getValue() == WorkspacePreferenceEnums.SortType.TYPE) {
+		} else if (PreferencesManager.PREFERENCES.workspaceSortType.get() == WorkspacePreferenceEnums.SortType.TYPE) {
 			sortType.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.workspaceSortType.getValue()
+		} else if (PreferencesManager.PREFERENCES.workspaceSortType.get()
 				== WorkspacePreferenceEnums.SortType.LOADORDER) {
 			sortLoadingOrder.setSelected(true);
 		} else {
@@ -981,22 +981,22 @@ import java.util.stream.Collectors;
 
 	private void resort() {
 		if (sortName.isSelected()) {
-			PreferencesManager.PREFERENCES.workspaceSortType.setValue(WorkspacePreferenceEnums.SortType.NAME);
+			PreferencesManager.PREFERENCES.workspaceSortType.set(WorkspacePreferenceEnums.SortType.NAME);
 		} else if (sortType.isSelected()) {
-			PreferencesManager.PREFERENCES.workspaceSortType.setValue(WorkspacePreferenceEnums.SortType.TYPE);
+			PreferencesManager.PREFERENCES.workspaceSortType.set(WorkspacePreferenceEnums.SortType.TYPE);
 		} else if (sortLoadingOrder.isSelected()) {
-			PreferencesManager.PREFERENCES.workspaceSortType.setValue(WorkspacePreferenceEnums.SortType.LOADORDER);
+			PreferencesManager.PREFERENCES.workspaceSortType.set(WorkspacePreferenceEnums.SortType.LOADORDER);
 		} else {
-			PreferencesManager.PREFERENCES.workspaceSortType.setValue(WorkspacePreferenceEnums.SortType.CREATED);
+			PreferencesManager.PREFERENCES.workspaceSortType.set(WorkspacePreferenceEnums.SortType.CREATED);
 		}
 
-		PreferencesManager.PREFERENCES.workspaceSortAscending.setValue(!desc.isSelected());
+		PreferencesManager.PREFERENCES.workspaceSortAscending.set(!desc.isSelected());
 
 		refilterElements();
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.TILES) {
 			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(72);
@@ -1005,7 +1005,7 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.tiles.gif"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender());
 			list.setFixedCellHeight(97);
@@ -1014,7 +1014,7 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.large.gif"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.MEDIUM) {
 			list.setCellRenderer(new MediumIconModListRender());
 			list.setFixedCellHeight(52);
@@ -1023,7 +1023,7 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.medium.gif"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.SMALL) {
 			list.setCellRenderer(new SmallIconModListRender(true));
 			list.setFixedCellHeight(32);
@@ -1032,7 +1032,7 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.small.gif"));
 			view.setText(L10N.t("workspace.elements.list.small"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.LIST) {
 			list.setCellRenderer(new ListIconModListRender());
 			list.setFixedCellHeight(28);
@@ -1041,7 +1041,7 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.list.gif"));
 			view.setText(L10N.t("workspace.elements.list.list"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.getValue()
+		} else if (PreferencesManager.PREFERENCES.workspaceModElementIconSize.get()
 				== WorkspacePreferenceEnums.IconSize.DETAILS) {
 			list.setCellRenderer(new DetailsIconModListRender());
 			list.setFixedCellHeight(24);

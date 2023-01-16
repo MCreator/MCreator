@@ -112,14 +112,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// reload data lists in a background thread
 		this.tabIn.setTabShownListener(tab -> {
-			if (PreferencesManager.PREFERENCES.autoReloadTabs.getValue()) {
+			if (PreferencesManager.PREFERENCES.autoReloadTabs.get()) {
 				listeningEnabled = false;
 				reloadDataLists();
 				listeningEnabled = true;
 			}
 		});
 		this.tabIn.setTabClosingListener(tab -> {
-			if (changed && PreferencesManager.PREFERENCES.remindOfUnsavedChanges.getValue())
+			if (changed && PreferencesManager.PREFERENCES.remindOfUnsavedChanges.get())
 				return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
 						L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
 						JOptionPane.YES_NO_OPTION);
@@ -536,7 +536,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		afterGeneratableElementGenerated();
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.compileOnSave.getValue() && mcreator.getModElementManager()
+		if (PreferencesManager.PREFERENCES.compileOnSave.get() && mcreator.getModElementManager()
 				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 
