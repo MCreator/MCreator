@@ -73,7 +73,6 @@ public class TextureMappingDialog {
 
 		JTabbedPane pane = new JTabbedPane();
 		pane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		pane.setForeground(Color.white);
 
 		if (supportMultiple) {
 			pane.addTab(L10N.t("dialog.textures_mapping.add_new"), null);

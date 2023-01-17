@@ -348,6 +348,16 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					}
 				}
 			});
+			recentsList.addKeyListener(new KeyAdapter() {
+				@Override public void keyReleased(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+						removeRecentWorkspace(recentsList.getSelectedValue());
+						reloadRecents();
+					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+					}
+				}
+			});
 			recentsList.setCellRenderer(new RecentWorkspacesRenderer());
 			JScrollPane scrollPane = new JScrollPane(recentsList);
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

@@ -29,7 +29,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
@@ -89,7 +88,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(), displayCondition.getSelectedProcedure());
+					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
+							displayCondition.getSelectedProcedure());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);

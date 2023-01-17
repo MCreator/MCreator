@@ -110,12 +110,13 @@ public class TemplateExpressionParser {
 		try {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
-			dataModel.put("_retVal", retVal);
 			dataModel.put("data", dataHolder);
+			dataModel.put("_retVal", retVal);
 
 			Template t = new Template("INLINE EXPRESSION", new StringReader("${_retVal.set(" + expression + ")}"),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
-			t.process(dataModel, new StringWriter());
+			t.process(dataModel, new StringWriter(),
+					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getBeansWrapper());
 
 			return retVal.get();
 		} catch (Exception e) {

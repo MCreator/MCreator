@@ -18,6 +18,13 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.ui.blockly.BlocklyEditorType;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 public class BlocklyLoader {
 
 	public static BlocklyLoader INSTANCE;
@@ -26,41 +33,72 @@ public class BlocklyLoader {
 		INSTANCE = new BlocklyLoader();
 	}
 
-	private final ExternalBlockLoader procedureBlockLoader;
-	private final ExternalBlockLoader jsonTriggerLoader;
-	private final ExternalBlockLoader aitaskBlockLoader;
-	private final ExternalBlockLoader cmdargsBlockLoader;
-	private final ExternalBlockLoader featureBlockLoader;
+	private static final List<String> builtinCategories = new ArrayList<>() {{
+		add("other");
+		add("apis");
+		add("mcelements");
+		add("mcvariables");
+		add("customvariables");
+		add("logicloops");
+		add("logicoperations");
+		add("math");
+		add("text");
+		add("time");
+		add("advanced");
+		add("actions");
+		add("aiadvanced");
+		add("features");
+		add("intproviders");
+		add("placements");
+		add("heightplacements");
+		add("blockpredicates");
+	}};
+	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;
 
 	private BlocklyLoader() {
-		procedureBlockLoader = new ExternalBlockLoader("procedures");
-		aitaskBlockLoader = new ExternalBlockLoader("aitasks");
-		cmdargsBlockLoader = new ExternalBlockLoader("cmdargs");
+		blockLoaders = new LinkedHashMap<>();
 		externalTriggerLoader = new ExternalTriggerLoader("triggers");
-		jsonTriggerLoader = new ExternalBlockLoader("jsontriggers");
-		featureBlockLoader = new ExternalBlockLoader("features");
+
+		addBlockLoader(BlocklyEditorType.PROCEDURE);
+		addBlockLoader(BlocklyEditorType.AI_TASK);
+		addBlockLoader(BlocklyEditorType.JSON_TRIGGER);
+		addBlockLoader(BlocklyEditorType.COMMAND_ARG);
+		addBlockLoader(BlocklyEditorType.FEATURE);
 	}
 
-	public ExternalBlockLoader getProcedureBlockLoader() {
-		return procedureBlockLoader;
+	/**
+	 * Create a new {@link ExternalBlockLoader} to load blocks for a specific Blockly panel.
+	 *
+	 * @param type The type of Blockly editor to register
+	 */
+	public void addBlockLoader(BlocklyEditorType type) {
+		blockLoaders.put(type, new ExternalBlockLoader(type.registryName()));
 	}
 
-	public ExternalBlockLoader getAITaskBlockLoader() {
-		return aitaskBlockLoader;
+	/**
+	 * Add a usable category for JSON file blocks that has been created inside the custom XML {@link ToolboxType} file.
+	 * All custom categories used by a {@link ToolboxType} have to be added before blocks are loaded.
+	 *
+	 * @param name The category's name as written inside the XML file (e.g. <i>&lt;custom-thisName/&gt;</i>).
+	 */
+	public static void addBuiltinCategory(String name) {
+		builtinCategories.add(name);
 	}
 
-	public ExternalBlockLoader getCmdArgsBlockLoader() {return cmdargsBlockLoader;}
+	public Map<BlocklyEditorType, ExternalBlockLoader> getAllBlockLoaders() {
+		return blockLoaders;
+	}
+
+	public static List<String> getBuiltinCategories() {
+		return builtinCategories;
+	}
+
+	public ExternalBlockLoader getBlockLoader(BlocklyEditorType type) {
+		return blockLoaders.get(type);
+	}
 
 	public ExternalTriggerLoader getExternalTriggerLoader() {
 		return externalTriggerLoader;
-	}
-
-	public ExternalBlockLoader getJSONTriggerLoader() {
-		return jsonTriggerLoader;
-	}
-
-	public ExternalBlockLoader getFeatureBlockLoader() {
-		return featureBlockLoader;
 	}
 }

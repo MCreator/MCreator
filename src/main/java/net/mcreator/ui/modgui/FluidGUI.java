@@ -580,13 +580,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		return fluid;
 	}
 
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
-		modElement.clearMetadata();
-		modElement.putMetadata("gb", generateBucket.isSelected());
-		modElement.reinit();
-	}
-
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-fluid");
 	}

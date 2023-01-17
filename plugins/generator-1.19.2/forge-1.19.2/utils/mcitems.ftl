@@ -64,7 +64,7 @@
     <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
         <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
     <#else>
-        <#return "BlockStateProvider.simple(" + mappedBlockToBlockStateCode(mappedBlock) + ")">
+        <#return '{"type": "minecraft:simple_state_provider", "state": ' + mappedBlock + '}'>
     </#if>
 </#function>
 

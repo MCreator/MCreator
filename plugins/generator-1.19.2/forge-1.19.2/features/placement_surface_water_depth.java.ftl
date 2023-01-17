@@ -1,1 +1,0 @@
-SurfaceWaterDepthFilter.forMaxDepth(${field$depth}),
