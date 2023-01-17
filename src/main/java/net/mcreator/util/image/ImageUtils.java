@@ -501,4 +501,26 @@ public class ImageUtils {
 		g2d.dispose();
 		return out;
 	}
+
+	/**
+	 * Merges two images to make a single image
+	 *
+	 * @param first   <p>The first image to draw on the new image</p>
+	 * @param second  <p>The second image to draw on the new image</p>
+	 * @param width   <p>The width of the final image</p>
+	 * @param height  <p>The height of the final image</p>
+	 * @param xFirst  <p>The x position of the first image on the final image</p>
+	 * @param yFirst  <p>The y position of the first image on the final image<</p>
+	 * @param xSecond <p>The x position of the second image on the final image<</p>
+	 * @param ySecond <p>The y position of the second image on the final image<</p>
+	 * @return <p>Returns the generated image.</p>
+	 */
+	public static BufferedImage merge2Images(Image first, Image second, int width, int height, int xFirst, int yFirst,
+			int xSecond, int ySecond) {
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = bi.createGraphics();
+		graphics.drawImage(first, xFirst, yFirst, null);
+		graphics.drawImage(second, xSecond, ySecond, null);
+		return bi;
+	}
 }

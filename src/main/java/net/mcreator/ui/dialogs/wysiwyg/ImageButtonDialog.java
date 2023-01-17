@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.ImageButton;
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -31,6 +32,7 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
@@ -55,9 +57,17 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		textureSelector.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
-		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_resize")));
+		VComboBox<String> hoveredTextureSelector = new SearchableComboBox<>(
+				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
+						.toArray(String[]::new));
+		hoveredTextureSelector.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
-		options.add(PanelUtils.join(L10N.label("dialog.gui.image_texture"), textureSelector));
+		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_size")));
+
+		options.add(PanelUtils.northAndCenterElement(
+				PanelUtils.join(L10N.label("dialog.gui.image_texture"), textureSelector),
+				PanelUtils.join(L10N.label("dialog.gui.hovered_image_texture"), hoveredTextureSelector)));
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -84,6 +94,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setSelectedItem(button.image);
+			hoveredTextureSelector.setSelectedItem(button.hoveredImage);
 			onClick.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
@@ -96,7 +107,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 							TextureType.SCREEN).getAbsolutePath()).getImage();
 			if (button == null) {
 				ImageButton component = new ImageButton(0, 0, imageTexture.getWidth(null), imageTexture.getHeight(null),
-						textureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
+						textureSelector.getSelectedItem(), hoveredTextureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
 						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
@@ -107,7 +118,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 				int idx = editor.components.indexOf(button);
 				editor.components.remove(button);
 				ImageButton buttonNew = new ImageButton(button.getX(), button.getY(), button.width, button.height,
-						textureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
+						textureSelector.getSelectedItem(), hoveredTextureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
 						displayCondition.getSelectedProcedure());
 				editor.components.add(idx, buttonNew);
 				setEditingComponent(buttonNew);

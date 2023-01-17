@@ -20,27 +20,30 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Image;
+import java.awt.*;
 
 public class ImageButton extends GUIComponent {
 
 	public String image;
+	public String hoveredImage;
 	public int width, height;
 	public Procedure onClick;
 	public Procedure displayCondition;
 
-	public ImageButton(int x, int y, int width, int height, String image, Procedure onClick,
+	public ImageButton(int x, int y, int width, int height, String image, String hoveredImage, Procedure onClick,
 			Procedure displayCondition) {
 		super(x, y);
 		this.image = image;
+		this.hoveredImage = hoveredImage;
 		this.width = width;
 		this.height = height;
 		this.onClick = onClick;
@@ -51,16 +54,24 @@ public class ImageButton extends GUIComponent {
 		return "image_button_" + FilenameUtilsPatched.removeExtension(image);
 	}
 
-	public java.awt.Image getImage(Workspace workspace) {
+	public Image getImage(Workspace workspace) {
 		return new ImageIcon(workspace.getFolderManager()
 				.getTextureFile(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN)
 				.getAbsolutePath()).getImage();
 	}
 
+	public Image getHoveredImage(Workspace workspace) {
+		if (hoveredImage != null && !hoveredImage.isEmpty())
+			return new ImageIcon(workspace.getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(hoveredImage), TextureType.SCREEN)
+					.getAbsolutePath()).getImage();
+		else
+			return getImage(workspace);
+	}
+
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		Image image = this.getImage(wysiwygEditor.mcreator.getWorkspace());
 		g.drawImage(image, cx, cy, width, height, wysiwygEditor);
-
 	}
 
 	@Override public int getWidth(Workspace workspace) {

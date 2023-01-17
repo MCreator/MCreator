@@ -204,14 +204,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("ImageButton") as component>
 				this.addRenderableWidget(new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, 0, 0, 0, new ResourceLocation("${modid}:textures/screens/${component.image}"), ${component.width}, ${component.height}, e -> {
+					${component.width}, ${component.height}, 0, 0, ${component.height}, new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"), ${component.width}, ${component.height * 2}, e -> {
 							<#if hasProcedure(component.onClick)>
 								if (<@procedureOBJToConditionCode component.displayCondition/>) {
 									${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
 									${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 								}
 							</#if>
-					}
+					}, TextComponent.EMPTY
 				)
 				<#if hasProcedure(component.displayCondition)>
 				{
