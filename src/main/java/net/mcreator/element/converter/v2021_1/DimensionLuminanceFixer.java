@@ -17,32 +17,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2020_6;
+package net.mcreator.element.converter.v2021_1;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Block;
+import net.mcreator.element.types.Dimension;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class BlockLuminanceFixer implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(BlockLuminanceFixer.class);
+public class DimensionLuminanceFixer implements IConverter {
+	private static final Logger LOG = LogManager.getLogger(DimensionLuminanceFixer.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Block block = (Block) input;
+		Dimension dimension = (Dimension) input;
 		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("luminance") != null) {
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("portalLuminance") != null) {
 				double oldLuminance = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("luminance").getAsDouble();
-				block.luminance = (int) Math.floor(oldLuminance * 15);
+						.get("portalLuminance").getAsDouble();
+				dimension.portalLuminance = (int) Math.floor(oldLuminance * 15);
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update luminance field of: " + block.getModElement().getName());
+			LOG.warn("Could not update luminance field of: " + dimension.getModElement().getName());
 		}
-		return block;
+		return dimension;
 	}
 
 	@Override public int getVersionConvertingTo() {
