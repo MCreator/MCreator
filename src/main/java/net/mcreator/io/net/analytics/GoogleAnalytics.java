@@ -24,59 +24,64 @@ import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 class GoogleAnalytics {
 
 	private static final Logger LOG = LogManager.getLogger("GA");
 
+	private static final String DH = "app.mcreator.net";
+	private static final String BASE_URL = "https://" + DH;
+
 	private final String clientUUID;
 	private final DeviceInfo deviceInfo;
+
+	private final Random random;
 
 	// Session info
 	private final long sessionID;
 	private boolean newSession = true;
 
 	// Page info
-	// TODO: add page info
+	private String currentPageHash = "";
+	private String currentPage = "";
+	private String previousPage = "";
 
-	public GoogleAnalytics(DeviceInfo deviceInfo, String clientUUID) {
-		this.clientUUID = clientUUID;
+	// TODO: executor pool for async requests (all requests should be async but close)
+
+	public GoogleAnalytics(DeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
 		this.sessionID = System.currentTimeMillis();
+
+		this.random = new Random();
+
+		this.clientUUID = (random.nextInt() & Integer.MAX_VALUE) + "." + sessionID;
 	}
 
 	private String getGATrackURL(Map<String, Object> payload) {
+		// https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
 		StringBuilder actionRequestURL = new StringBuilder("https://www.google-analytics.com/g/collect?v=2");
 
 		payload.put("tid", "G-V6EPB4SPL8");
+		payload.put("_p", currentPageHash); // page hash
 		payload.put("cid", clientUUID);
-		payload.put("dh", "app.mcreator.net");
-		payload.put("sr", deviceInfo.getScreenWidth() + "x" + deviceInfo.getScreenHeight());
 		payload.put("ul", L10N.getLocaleString().toLowerCase(Locale.ENGLISH).replace("_", "-"));
+		payload.put("sr", deviceInfo.getScreenWidth() + "x" + deviceInfo.getScreenHeight());
+		payload.put("dh", DH);
 		payload.put("sid", sessionID);
-		payload.put("_nsi", newSession ? "1" : "0"); // new session ID
-		payload.put("_ss", newSession ? "1" : "0"); // session start
-
-		// https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
-
-		// dl - http://localhost/test2.html - document location
-		// dt - Title - document title
-		// _p - random page load hash
-		// dr - document referrer - previous page
-
-		// uafvl - full version of MCreator
-		// uam - user agent model - version of mcreator
-		// uap - user agent platform: windows, macos, linux
-
-		// up.* - user parameter string
-		// upn.* - user parameter number
+		payload.put("_nsi", newSession ? 1: 0); // new session ID
+		payload.put("_ss", newSession ? 1 : 0); // session start
+		payload.put("_s", 1); // hit counter
+		payload.put("dl", BASE_URL + currentPage); // document location
+		payload.put("dr", BASE_URL + previousPage); // document referrer
+		payload.put("uafvl", Launcher.version.getFullString()); // user agent full version list
+		payload.put("uam", Launcher.version.getMajorString()); // user agent model
+		payload.put("uap", System.getProperty("os.name")); // user agent platform
 
 		for (Map.Entry<String, Object> entry : payload.entrySet()) {
 			if (entry.getValue() != null)
@@ -90,38 +95,17 @@ class GoogleAnalytics {
 		return actionRequestURL.toString();
 	}
 
-	private void processRequestURL(String requesturl) {
-		// TODO: remove me
-		System.err.println("DEMO: " + requesturl);
-
-		if (MCreatorApplication.isInternet) {
-			try {
-				HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
-				conn.setInstanceFollowRedirects(true);
-				conn.setRequestMethod("GET");
-				conn.setUseCaches(false);
-				conn.setDefaultUseCaches(false);
-				conn.setRequestProperty("User-Agent", "MCreator " + Launcher.version.getFullString());
-				conn.connect();
-				if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
-					LOG.warn("GA track failed! Response code: " + conn.getResponseCode() + "/"
-							+ conn.getResponseMessage());
-				}
-			} catch (Exception e) {
-				LOG.warn("GA error: ", e);
-			}
-		}
-	}
-
 	void trackPage(String page) {
 		LOG.info("Tracking page: " + page);
 
-		// TODO: on page tracking, set also (and keep for events on that page):
-		// dl - http://localhost/test2.html - document location
-		// dt - Title - document title
-		// _p - random page load hash
+		currentPageHash = String.valueOf(random.nextInt() & Integer.MAX_VALUE);
+		previousPage = currentPage;
+		currentPage = page;
 
-		processRequestURL(getGATrackURL(new HashMap<>()));
+		Map<String, Object> payload = new LinkedHashMap<>();
+		payload.put("en", "page_view");
+
+		processRequestURL(getGATrackURL(payload));
 	}
 
 	void trackEvent(String category, String action, String label, String value) {
@@ -130,7 +114,7 @@ class GoogleAnalytics {
 
 		LOG.info("Tracking event: " + category + " - " + action);
 
-		Map<String, Object> payload = new HashMap<>();
+		Map<String, Object> payload = new LinkedHashMap<>();
 
 		// Events:
 		// en - event name
@@ -144,4 +128,34 @@ class GoogleAnalytics {
 		payload.put("ev", value);
 		processRequestURL(getGATrackURL(payload));
 	}
+
+	private void processRequestURL(String requesturl) {
+		// TODO: remove me
+		System.err.println("DEMO: " + requesturl);
+
+		if (MCreatorApplication.isInternet) {
+			try {
+				HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
+				conn.setInstanceFollowRedirects(true);
+				conn.setUseCaches(false);
+				conn.setDefaultUseCaches(false);
+				conn.setRequestProperty("User-Agent", "MCreator " + Launcher.version.getFullString());
+
+				conn.setRequestMethod("POST");
+				conn.setDoOutput(true);
+				OutputStream os = conn.getOutputStream();
+				os.flush();
+				os.close();
+
+				conn.connect();
+				if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
+					LOG.warn("GA track failed! Response code: " + conn.getResponseCode() + "/"
+							+ conn.getResponseMessage());
+				}
+			} catch (Exception e) {
+				LOG.warn("GA error: ", e);
+			}
+		}
+	}
+
 }

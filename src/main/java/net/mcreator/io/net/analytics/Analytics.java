@@ -18,7 +18,6 @@
 
 package net.mcreator.io.net.analytics;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 // TODO: do we need this class?
@@ -27,7 +26,7 @@ public class Analytics {
 	private final GoogleAnalytics ga;
 
 	public Analytics(DeviceInfo deviceInfo) {
-		ga = new GoogleAnalytics(deviceInfo, UUID.randomUUID().toString());
+		ga = new GoogleAnalytics(deviceInfo);
 	}
 
 	public Analytics trackMCreatorLaunch() {
