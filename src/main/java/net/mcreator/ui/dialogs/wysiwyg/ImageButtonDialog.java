@@ -43,7 +43,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 	public ImageButtonDialog(WYSIWYGEditor editor, @Nullable ImageButton button) {
 		super(editor, button);
 		setModal(true);
-		setSize(480, 200);
+		setSize(480, 300);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JPanel options = new JPanel();
@@ -55,17 +55,14 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		textureSelector.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
-		if (button == null)
-			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")));
-		else
-			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
+		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_resize")));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.image_texture"), textureSelector));
 
-		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
+		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		eh.refreshList();
+		onClick.refreshList();
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/button_display_condition"), editor.mcreator,
@@ -74,7 +71,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		options.add(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition));
+		options.add(PanelUtils.gridElements(1, 2, 5, 5, onClick, displayCondition));
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(options)));
 
@@ -87,7 +84,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setSelectedItem(button.image);
-			eh.setSelectedProcedure(button.onClick);
+			onClick.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
@@ -99,7 +96,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 							TextureType.SCREEN).getAbsolutePath()).getImage();
 			if (button == null) {
 				ImageButton component = new ImageButton(0, 0, imageTexture.getWidth(null), imageTexture.getHeight(null),
-						textureSelector.getSelectedItem(), eh.getSelectedProcedure(),
+						textureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
 						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
@@ -110,7 +107,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 				int idx = editor.components.indexOf(button);
 				editor.components.remove(button);
 				ImageButton buttonNew = new ImageButton(button.getX(), button.getY(), button.width, button.height,
-						textureSelector.getSelectedItem(), eh.getSelectedProcedure(),
+						textureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
 						displayCondition.getSelectedProcedure());
 				editor.components.add(idx, buttonNew);
 				setEditingComponent(buttonNew);

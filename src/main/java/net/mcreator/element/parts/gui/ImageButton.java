@@ -59,8 +59,6 @@ public class ImageButton extends GUIComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		Image image = this.getImage(wysiwygEditor.mcreator.getWorkspace());
-		g.drawImage(MinecraftImageGenerator.generateButton(this.width, this.height), cx, cy, this.width, this.height,
-				wysiwygEditor);
 		g.drawImage(image, cx, cy, width, height, wysiwygEditor);
 
 	}
