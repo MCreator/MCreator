@@ -30,10 +30,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-class GoogleAnalytics {
+public class GoogleAnalytics {
 
-	private static final Logger LOG = LogManager.getLogger("GA");
+	public static boolean ANALYTICS_ENABLED = true;
+
+	private static final Logger LOG = LogManager.getLogger("GA4");
 
 	private static final String DH = "app.mcreator.net";
 	private static final String BASE_URL = "https://" + DH;
@@ -52,7 +56,7 @@ class GoogleAnalytics {
 	private String currentPage = "";
 	private String previousPage = "";
 
-	// TODO: executor pool for async requests (all requests should be async but close)
+	private final ExecutorService requestExecutor = Executors.newSingleThreadExecutor();
 
 	public GoogleAnalytics(DeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
@@ -64,9 +68,9 @@ class GoogleAnalytics {
 	}
 
 	private String getGATrackURL(Map<String, Object> payload) {
-		// https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
 		StringBuilder actionRequestURL = new StringBuilder("https://www.google-analytics.com/g/collect?v=2");
 
+		// Thanks to https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
 		payload.put("tid", "G-V6EPB4SPL8");
 		payload.put("_p", currentPageHash); // page hash
 		payload.put("cid", clientUUID);
@@ -77,6 +81,7 @@ class GoogleAnalytics {
 		payload.put("_nsi", newSession ? 1: 0); // new session ID
 		payload.put("_ss", newSession ? 1 : 0); // session start
 		payload.put("_s", 1); // hit counter
+		payload.put("_et", 1); // engagement time, fixed at 1ms
 		payload.put("dl", BASE_URL + currentPage); // document location
 		payload.put("dr", BASE_URL + previousPage); // document referrer
 		payload.put("uafvl", Launcher.version.getFullString()); // user agent full version list
@@ -95,7 +100,7 @@ class GoogleAnalytics {
 		return actionRequestURL.toString();
 	}
 
-	void trackPage(String page) {
+	public void trackPageSync(String page) {
 		LOG.info("Tracking page: " + page);
 
 		currentPageHash = String.valueOf(random.nextInt() & Integer.MAX_VALUE);
@@ -108,32 +113,26 @@ class GoogleAnalytics {
 		processRequestURL(getGATrackURL(payload));
 	}
 
-	void trackEvent(String category, String action, String label, String value) {
-		if (category == null || action == null)
-			return;
-
-		LOG.info("Tracking event: " + category + " - " + action);
+	private void trackEventSync(String name, String context) {
+		LOG.info("Tracking event: " + name + ", context: " + context);
 
 		Map<String, Object> payload = new LinkedHashMap<>();
 
-		// Events:
-		// en - event name
-		// ep.* - event parameter string
-		// epn.* - event parameter number
-
-		// TODO: fix those
-		payload.put("ec", category);
-		payload.put("ea", action);
-		payload.put("el", label);
-		payload.put("ev", value);
+		payload.put("en", name);
+		payload.put("ep.ctx", context);
 		processRequestURL(getGATrackURL(payload));
 	}
 
-	private void processRequestURL(String requesturl) {
-		// TODO: remove me
-		System.err.println("DEMO: " + requesturl);
+	public void trackPage(String page) {
+		requestExecutor.submit(() -> trackPageSync(page));
+	}
 
-		if (MCreatorApplication.isInternet) {
+	public void trackEvent(String name, String context) {
+		requestExecutor.submit(() -> trackEventSync(name, context));
+	}
+
+	private void processRequestURL(String requesturl) {
+		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED) {
 			try {
 				HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
 				conn.setInstanceFollowRedirects(true);
