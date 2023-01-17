@@ -25,7 +25,8 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.net.analytics.Analytics;
+import net.mcreator.io.net.analytics.AnalyticsConstants;
+import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
@@ -72,7 +73,7 @@ public final class MCreatorApplication {
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 
-	private final Analytics analytics;
+	private final GoogleAnalytics analytics;
 	private final DeviceInfo deviceInfo;
 	private static boolean applicationStarted = false;
 	private final WorkspaceSelector workspaceSelector;
@@ -182,7 +183,7 @@ public final class MCreatorApplication {
 		splashScreen.setProgress(93, "Initiating user session");
 
 		deviceInfo = new DeviceInfo();
-		analytics = new Analytics(deviceInfo);
+		analytics = new GoogleAnalytics(deviceInfo);
 
 		isInternet = MCreatorApplication.WEB_API.initAPI();
 
@@ -236,10 +237,10 @@ public final class MCreatorApplication {
 		splashScreen.setVisible(false);
 
 		//track after the setup is done
-		analytics.async(analytics::trackMCreatorLaunch);
+		analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
 	}
 
-	public Analytics getAnalytics() {
+	public GoogleAnalytics getAnalytics() {
 		return analytics;
 	}
 
@@ -286,6 +287,8 @@ public final class MCreatorApplication {
 				this.workspaceSelector.addOrUpdateRecentWorkspace(
 						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 			}
+
+			analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
 
@@ -336,7 +339,7 @@ public final class MCreatorApplication {
 
 		LOG.debug("Performing exit tasks");
 		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
-		analytics.trackMCreatorClose(); // track app close in sync mode
+		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
 		discordClient.close(); // close discord client
 
