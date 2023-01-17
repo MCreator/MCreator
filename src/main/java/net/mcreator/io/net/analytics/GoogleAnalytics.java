@@ -24,12 +24,16 @@ import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -78,7 +82,7 @@ public class GoogleAnalytics {
 		payload.put("sr", deviceInfo.getScreenWidth() + "x" + deviceInfo.getScreenHeight());
 		payload.put("dh", DH);
 		payload.put("sid", sessionID);
-		payload.put("_nsi", newSession ? 1: 0); // new session ID
+		payload.put("_nsi", newSession ? 1 : 0); // new session ID
 		payload.put("_ss", newSession ? 1 : 0); // session start
 		payload.put("_s", 1); // hit counter
 		payload.put("_et", 1); // engagement time, fixed at 1ms
@@ -101,26 +105,34 @@ public class GoogleAnalytics {
 	}
 
 	public void trackPageSync(String page) {
-		LOG.info("Tracking page: " + page);
+		try {
+			currentPageHash = String.valueOf(random.nextInt() & Integer.MAX_VALUE);
+			previousPage = currentPage;
+			currentPage = page;
 
-		currentPageHash = String.valueOf(random.nextInt() & Integer.MAX_VALUE);
-		previousPage = currentPage;
-		currentPage = page;
+			Map<String, Object> payload = new LinkedHashMap<>();
+			payload.put("en", "page_view");
 
-		Map<String, Object> payload = new LinkedHashMap<>();
-		payload.put("en", "page_view");
+			processRequestURL(getGATrackURL(payload));
 
-		processRequestURL(getGATrackURL(payload));
+			LOG.info("Tracked page: " + page);
+		} catch (Exception e) {
+			LOG.warn("Failed to track page: " + page, e);
+		}
 	}
 
 	private void trackEventSync(String name, String context) {
-		LOG.info("Tracking event: " + name + ", context: " + context);
+		try {
+			Map<String, Object> payload = new LinkedHashMap<>();
 
-		Map<String, Object> payload = new LinkedHashMap<>();
+			payload.put("en", name);
+			payload.put("ep.ctx", context);
+			processRequestURL(getGATrackURL(payload));
 
-		payload.put("en", name);
-		payload.put("ep.ctx", context);
-		processRequestURL(getGATrackURL(payload));
+			LOG.info("Tracked event: " + name + ", context: " + context);
+		} catch (Exception e) {
+			LOG.warn("Failed to track event: " + name + ", context: " + context, e);
+		}
 	}
 
 	public void trackPage(String page) {
@@ -131,28 +143,24 @@ public class GoogleAnalytics {
 		requestExecutor.submit(() -> trackEventSync(name, context));
 	}
 
-	private void processRequestURL(String requesturl) {
+	private void processRequestURL(String requesturl) throws IOException {
 		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED) {
-			try {
-				HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
-				conn.setInstanceFollowRedirects(true);
-				conn.setUseCaches(false);
-				conn.setDefaultUseCaches(false);
-				conn.setRequestProperty("User-Agent", "MCreator " + Launcher.version.getFullString());
+			HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
+			conn.setInstanceFollowRedirects(true);
+			conn.setUseCaches(false);
+			conn.setDefaultUseCaches(false);
+			conn.setRequestProperty("User-Agent", "MCreator " + Launcher.version.getFullString());
 
-				conn.setRequestMethod("POST");
-				conn.setDoOutput(true);
-				OutputStream os = conn.getOutputStream();
-				os.flush();
-				os.close();
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			OutputStream os = conn.getOutputStream();
+			os.flush();
+			os.close();
 
-				conn.connect();
-				if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
-					LOG.warn("GA track failed! Response code: " + conn.getResponseCode() + "/"
-							+ conn.getResponseMessage());
-				}
-			} catch (Exception e) {
-				LOG.warn("GA error: ", e);
+			conn.connect();
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
+				throw new IOException(
+						"GA track failed! Response code: " + conn.getResponseCode() + "/" + conn.getResponseMessage());
 			}
 		}
 	}
