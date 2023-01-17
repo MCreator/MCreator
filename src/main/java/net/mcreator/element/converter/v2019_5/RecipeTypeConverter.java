@@ -17,52 +17,41 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.legacy;
+package net.mcreator.element.converter.v2019_5;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.types.Biome;
+import net.mcreator.element.types.Recipe;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class BiomeSpawnListConverter implements IConverter {
+public class RecipeTypeConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(BiomeSpawnListConverter.class);
+	private static final Logger LOG = LogManager.getLogger("RecipeTypeConverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Biome biome = (Biome) input;
-
+		Recipe recipe = (Recipe) input;
 		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("spawnList") != null) {
-				JsonArray spawnList = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("spawnList").getAsJsonArray();
-				for (JsonElement spawn : spawnList) {
-					String name = spawn.getAsJsonObject().get("value").getAsString();
-
-					Biome.SpawnEntry spawnEntry = new Biome.SpawnEntry();
-					spawnEntry.entity = new EntityEntry(workspace, name);
-					spawnEntry.spawnType = "creature";
-					spawnEntry.weight = 15;
-					spawnEntry.minGroup = 1;
-					spawnEntry.maxGroup = 15;
-
-					biome.spawnEntries.add(spawnEntry);
-				}
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack") != null
+					&& !jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack")
+					.getAsJsonObject().get("value").getAsString().trim().equals("")) { // treat as crafting
+				recipe.recipeType = "Crafting";
+			} else { // treat as smelting
+				recipe.recipeType = "Smelting";
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to update biome spawn list to new format", e);
+			LOG.warn("Could not determine recipe type for " + input.getModElement().getName()
+					+ ", falling back to crafting type.");
+			recipe.recipeType = "Crafting";
 		}
-
-		return biome;
+		return recipe;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 10;
+		return 4;
 	}
 
 }

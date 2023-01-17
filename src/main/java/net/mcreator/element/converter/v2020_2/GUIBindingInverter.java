@@ -17,41 +17,47 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.legacy;
+package net.mcreator.element.converter.v2020_2;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Recipe;
+import net.mcreator.element.types.Block;
+import net.mcreator.element.types.GUI;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RecipeTypeConverter implements IConverter {
+public class GUIBindingInverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("RecipeTypeConverter");
+	private static final Logger LOG = LogManager.getLogger("GUIBindingInverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Recipe recipe = (Recipe) input;
+		GUI gui = (GUI) input;
 		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack") != null
-					&& !jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack")
-					.getAsJsonObject().get("value").getAsString().trim().equals("")) { // treat as crafting
-				recipe.recipeType = "Crafting";
-			} else { // treat as smelting
-				recipe.recipeType = "Smelting";
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("containerBlock")
+					!= null) { // treat as crafting
+				String containerBlock = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+						.get("containerBlock").getAsString();
+				ModElement blockelement = workspace.getModElementByName(containerBlock);
+				if (blockelement != null) {
+					Block block = (Block) blockelement.getGeneratableElement();
+					if (block != null) {
+						block.guiBoundTo = input.getModElement().getName();
+						workspace.getModElementManager().storeModElement(block);
+					}
+				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not determine recipe type for " + input.getModElement().getName()
-					+ ", falling back to crafting type.");
-			recipe.recipeType = "Crafting";
+			LOG.warn("Could not get bound block for " + input.getModElement().getName());
 		}
-		return recipe;
+		return gui;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 4;
+		return 6;
 	}
 
 }

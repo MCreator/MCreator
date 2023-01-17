@@ -17,47 +17,52 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.legacy;
+package net.mcreator.element.converter.v2020_4;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Block;
-import net.mcreator.element.types.GUI;
+import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.types.Biome;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GUIBindingInverter implements IConverter {
+public class BiomeSpawnListConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("GUIBindingInverter");
+	private static final Logger LOG = LogManager.getLogger(BiomeSpawnListConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GUI gui = (GUI) input;
+		Biome biome = (Biome) input;
+
 		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("containerBlock")
-					!= null) { // treat as crafting
-				String containerBlock = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("containerBlock").getAsString();
-				ModElement blockelement = workspace.getModElementByName(containerBlock);
-				if (blockelement != null) {
-					Block block = (Block) blockelement.getGeneratableElement();
-					if (block != null) {
-						block.guiBoundTo = input.getModElement().getName();
-						workspace.getModElementManager().storeModElement(block);
-					}
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("spawnList") != null) {
+				JsonArray spawnList = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+						.get("spawnList").getAsJsonArray();
+				for (JsonElement spawn : spawnList) {
+					String name = spawn.getAsJsonObject().get("value").getAsString();
+
+					Biome.SpawnEntry spawnEntry = new Biome.SpawnEntry();
+					spawnEntry.entity = new EntityEntry(workspace, name);
+					spawnEntry.spawnType = "creature";
+					spawnEntry.weight = 15;
+					spawnEntry.minGroup = 1;
+					spawnEntry.maxGroup = 15;
+
+					biome.spawnEntries.add(spawnEntry);
 				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not get bound block for " + input.getModElement().getName());
+			LOG.warn("Failed to update biome spawn list to new format", e);
 		}
-		return gui;
+
+		return biome;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 6;
+		return 10;
 	}
 
 }

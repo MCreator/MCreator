@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.legacy;
+package net.mcreator.element.converter.v2020_4;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;

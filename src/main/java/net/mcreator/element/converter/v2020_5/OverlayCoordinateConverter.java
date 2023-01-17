@@ -17,28 +17,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.legacy;
+package net.mcreator.element.converter.v2020_5;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Achievement;
+import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.types.Overlay;
 import net.mcreator.workspace.Workspace;
 
-public class AchievementFixer implements IConverter {
+public class OverlayCoordinateConverter implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Achievement achievement = (Achievement) input;
-		achievement.showPopup = true;
-		achievement.announceToChat = true;
-		achievement.triggerxml = "<xml><block type=\"custom_trigger\" x=\"40\" y=\"80\"><next>"
-				+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
-		return achievement;
+		Overlay gui = (Overlay) input;
+
+		for (GUIComponent component : gui.components) {
+			component.x = convert(component.getX());
+			component.y = convert(component.getY());
+		}
+
+		return gui;
+	}
+
+	private int convert(int original) {
+		return (int) Math.round(original / 2.0);
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 5;
+		return 11;
 	}
 
 }

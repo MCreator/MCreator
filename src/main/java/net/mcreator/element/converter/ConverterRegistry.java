@@ -20,8 +20,16 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.converter.legacy.*;
+import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
+import net.mcreator.element.converter.v2020_1.AchievementFixer;
+import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
+import net.mcreator.element.converter.v2020_3.OpenGUIProcedureDepFixer;
+import net.mcreator.element.converter.v2020_3.ProcedureEntityDepFixer;
+import net.mcreator.element.converter.v2020_4.BiomeSpawnListConverter;
+import net.mcreator.element.converter.v2020_4.ProcedureGlobalTriggerFixer;
 import net.mcreator.element.converter.v2020_5.BiomeDefaultFeaturesConverter;
+import net.mcreator.element.converter.v2020_5.GUICoordinateConverter;
+import net.mcreator.element.converter.v2020_5.OverlayCoordinateConverter;
 import net.mcreator.element.converter.v2020_5.ProcedureSpawnGemPickupDelayFixer;
 import net.mcreator.element.converter.v2020_6.BlockLuminanceFixer;
 import net.mcreator.element.converter.v2020_6.DimensionLuminanceFixer;

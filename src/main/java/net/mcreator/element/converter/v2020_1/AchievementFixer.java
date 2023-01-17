@@ -17,43 +17,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.legacy;
+package net.mcreator.element.converter.v2020_1;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.SizedComponent;
-import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.Achievement;
 import net.mcreator.workspace.Workspace;
 
-public class GUICoordinateConverter implements IConverter {
+public class AchievementFixer implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GUI gui = (GUI) input;
-
-		gui.width = convert(gui.width);
-		gui.height = convert(gui.height);
-
-		for (GUIComponent component : gui.components) {
-			component.x = convert(component.getX());
-			component.y = convert(component.getY());
-			if (component instanceof SizedComponent) {
-				((SizedComponent) component).width = convert(((SizedComponent) component).width);
-				((SizedComponent) component).height = convert(((SizedComponent) component).height);
-			}
-		}
-
-		return gui;
-	}
-
-	private int convert(int original) {
-		return (int) Math.round(original / 2.0);
+		Achievement achievement = (Achievement) input;
+		achievement.showPopup = true;
+		achievement.announceToChat = true;
+		achievement.triggerxml = "<xml><block type=\"custom_trigger\" x=\"40\" y=\"80\"><next>"
+				+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
+		return achievement;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 11;
+		return 5;
 	}
 
 }
