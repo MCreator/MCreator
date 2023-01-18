@@ -38,6 +38,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 
 import javax.annotation.Nullable;
@@ -59,6 +60,18 @@ import javax.annotation.Nullable;
 </#if>
 
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
+
+    <#if data.entityDataEntries?has_content>
+        <#list data.entityDataEntries as entry>
+            <#if entry.type == "Number">
+                public static final EntityDataAccessor<Integer> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+            <#elseif entry.type == "Logic">
+                public static final EntityDataAccessor<Boolean> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
+            <#elseif entry.type == "String">
+                public static final EntityDataAccessor<String> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
+            </#if>
+        </#list>
+    </#if>
 
 	<#if data.isBoss>
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
@@ -149,6 +162,22 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
+
+	<#if data.entityDataEntries?has_content>
+	    @Override
+        	protected void defineSynchedData() {
+        		super.defineSynchedData();
+        		<#list data.entityDataEntries as entry>
+                    <#if entry.type == "Number">
+        		        this.entityData.define(${entry.name}, ${entry.defaultNumberValue});
+                    <#elseif entry.type == "Logic">
+        		        this.entityData.define(${entry.name}, ${entry.defaultLogicValue});
+                    <#elseif entry.type == "String">
+        		        this.entityData.define(${entry.name}, "${entry.defaultStringValue}");
+                    </#if>
+                </#list>
+        	}
+    </#if>
 
 	<#if data.flyingMob>
 	@Override protected PathNavigation createNavigation(Level world) {

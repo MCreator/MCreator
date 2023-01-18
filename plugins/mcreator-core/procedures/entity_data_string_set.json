@@ -7,24 +7,26 @@
     },
     {
       "type": "input_value",
-      "name": "value"
+      "name": "value",
+      "check": "String"
     }
   ],
   "extensions": [
-    "custom_entity_with_entity_data_list_provider"
+    "entity_data_string_list_provider"
   ],
   "inputsInline": true,
-  "colour": 195,
+  "colour": "%{BKY_TEXTS_HUE}",
   "previousStatement": null,
   "nextStatement": null,
   "mcreator": {
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"value\"><block type=\"text\"><field name=\"TEXT\"></field></block></value>"
     ],
     "fields": [
       "customentity",
-      "dataName"
+      "accessor"
     ],
     "inputs": [
       "entity",

@@ -31,6 +31,15 @@ Blockly.Extensions.register('direction_list_provider', appendDropDown('direction
 
 Blockly.Extensions.register('dimension_custom_list_provider', appendDropDown('dimension_custom', 'dimension'));
 
+Blockly.Extensions.register('entity_data_logic_list_provider',
+    appendAutoReloadingDropDown('customentity', 'customentity', 'accessor', 'entitydata_logic'));
+
+Blockly.Extensions.register('entity_data_number_list_provider',
+    appendAutoReloadingDropDown('customentity', 'customentity', 'accessor', 'entitydata_number'));
+
+Blockly.Extensions.register('entity_data_string_list_provider',
+    appendAutoReloadingDropDown('customentity', 'customentity', 'accessor', 'entitydata_string'));
+
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {

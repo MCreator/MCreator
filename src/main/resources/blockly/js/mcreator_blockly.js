@@ -107,6 +107,35 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
     };
 }
 
+// Helper function to use in Blockly extensions that register one dropdown to update contents of another
+function appendAutoReloadingDropDown(sourceName, sourceList, targetName, targetList) {
+    return function () {
+        const source = new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf(sourceList)));
+        this.appendDummyInput().appendField(source, sourceName);
+        const targetData = function () {
+            return javabridge.getListOfFrom(targetList, this.getValue());
+        };
+        const dummy = this.appendDummyInput();
+        dummy.appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(targetData.call(source))), targetName);
+        const sourceLoadState = source.loadState; // without this override field tries to parse field value
+        source.loadState = function (state) { // using textToDom method which then fails as its argument is not xml text
+            sourceLoadState.call(this, state);
+        };
+        const sourceFromXml = source.fromXml;
+        source.fromXml = function (fieldElement) {
+            sourceFromXml.call(this, fieldElement);
+            dummy.removeField(targetName);
+            dummy.appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+        };
+        const sourceOnItemSelected = source.onItemSelected_;
+        source.onItemSelected_ = function (menu, menuItem) {
+            sourceOnItemSelected.call(this, menu, menuItem);
+            dummy.removeField(targetName);
+            dummy.appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+        };
+    };
+}
+
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
     const treeXml = Blockly.Xml.workspaceToDom(workspace, true);

@@ -211,17 +211,18 @@ public class ElementUtil {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
 		retval.addAll(
 				DataListLoader.loadDataList("entities").stream().filter(e -> e.getReadableName().startsWith("CUSTOM:"))
-						.collect(Collectors.toList()));
+						.toList());
 		Collections.sort(retval);
 		return retval;
 	}
 
-	public static String[] loadEntityDataListFromCustomEntity(Workspace workspace, String entityName) {
-		LivingEntity entity = ((LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", "")).getGeneratableElement());
-		if (entity != null)
-			return entity.entityDataEntries.stream().map(e -> e.name).toArray(String[]::new);
-		else
-			return new String[]{};
+	public static String[] loadEntityDataListFromCustomEntity(Workspace workspace, String entityName, String type) {
+		LivingEntity entity = ((LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
+				.getGeneratableElement());
+		if (entity == null)
+			return new String[] {};
+		return entity.entityDataEntries.stream().filter(e -> type.equals(e.type)).map(e -> e.name)
+				.toArray(String[]::new);
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {

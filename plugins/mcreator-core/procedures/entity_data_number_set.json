@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    }
+  ],
+  "extensions": [
+    "entity_data_number_list_provider"
+  ],
+  "inputsInline": true,
+  "colour": "%{BKY_MATH_HUE}",
+  "previousStatement": null,
+  "nextStatement": null,
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "fields": [
+      "customentity",
+      "accessor"
+    ],
+    "inputs": [
+      "entity",
+      "value"
+    ]
+  }
+}

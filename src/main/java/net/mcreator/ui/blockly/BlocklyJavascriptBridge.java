@@ -265,15 +265,19 @@ public class BlocklyJavascriptBridge {
 		return new Gson().toJson(ext_triggers, Map.class);
 	}
 
-	@SuppressWarnings("unused") public String[] getCustomEntityDataList(String entityName) {
-		return ElementUtil.loadEntityDataListFromCustomEntity(mcreator.getWorkspace(), entityName);
+	@SuppressWarnings("unused") public String[] getListOf(String type) {
+		return getListOfForWorkspace(mcreator.getWorkspace(), type, null);
 	}
 
-	@SuppressWarnings("unused") public String[] getListOf(String type) {
-		return getListOfForWorkspace(mcreator.getWorkspace(), type);
+	@SuppressWarnings("unused") public String[] getListOfFrom(String type, String source) {
+		return getListOfForWorkspace(mcreator.getWorkspace(), type, source);
 	}
 
 	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
+		return getListOfForWorkspace(workspace, type, null);
+	}
+
+	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type, String source) {
 		List<String> retval;
 		//We check for general cases
 		switch (type) {
@@ -287,7 +291,14 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "customentity":
-			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "entitydata_logic":
+			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Logic");
+		case "entitydata_number":
+			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Number");
+		case "entitydata_string":
+			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "String");
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;

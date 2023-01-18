@@ -7,11 +7,11 @@
     }
   ],
   "extensions": [
-    "custom_entity_with_entity_data_list_provider"
+    "entity_data_number_list_provider"
   ],
   "inputsInline": true,
-  "colour": 195,
-  "output": null,
+  "colour": "%{BKY_MATH_HUE}",
+  "output": "Number",
   "mcreator": {
     "toolbox_id": "entitydata",
     "toolbox_init": [
@@ -19,7 +19,7 @@
     ],
     "fields": [
       "customentity",
-      "dataName"
+      "accessor"
     ],
     "inputs": [
       "entity"
