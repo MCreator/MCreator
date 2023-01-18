@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -42,6 +43,8 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 		String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
 
+		String version = value.getMCRVersion() != null ? value.getMCRVersion() : L10N.t("common.unknown");
+
 		if (value.getType() != GeneratorFlavor.UNKNOWN) {
 			ImageIcon icon = new ImageIcon(
 					ImageUtils.darken(ImageUtils.toBufferedImage(value.getType().getIcon().getImage())));
@@ -54,13 +57,13 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 			setIconTextGap(10);
 			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 18)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 34));
+					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 34) + "<br>" + version);
 		} else {
 			setIcon(null);
 
 			setIconTextGap(0);
 			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 20)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
+					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37) + "<br>" + version);
 		}
 
 		return this;
