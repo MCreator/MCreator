@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -235,11 +236,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
+		removeModElement(element, element.getGeneratableElement());
+	}
+
+	public void removeModElement(ModElement element, GeneratableElement generatableElement) {
 		if (mod_elements.contains(element)) {
 			// first we ask generator to remove all related files
 			try {
 				if (generator != null)
-					generator.removeElementFilesAndLangKeys(Objects.requireNonNull(element.getGeneratableElement()));
+					generator.removeElementFilesAndLangKeys(Objects.requireNonNull(generatableElement));
 			} catch (Exception e) {
 				LOG.warn("Failed to remove element files for element " + element, e);
 			}
