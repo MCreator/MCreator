@@ -39,13 +39,7 @@ import net.mcreator.element.converter.v2022_1.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
-import net.mcreator.element.converter.v2023_1.BiomeGenParametersConverter;
-import net.mcreator.element.converter.v2023_1.GUIComponentNamer;
-import net.mcreator.element.converter.v2023_1.SlotInteractionsConverter;
-import net.mcreator.element.converter.v2023_1.ToolToItemTypeProcedureConverter;
-import net.mcreator.element.converter.fv39.EntitiesRangedAttackConverter;
-import net.mcreator.element.converter.fv39.ProcedureArrowProjectileFixer;
-import net.mcreator.element.converter.fv39.RangedItemToProjectileAndItemConverter;
+import net.mcreator.element.converter.v2023_1.*;
 
 import java.util.HashMap;
 import java.util.List;
