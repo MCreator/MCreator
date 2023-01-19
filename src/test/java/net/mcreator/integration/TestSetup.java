@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
@@ -63,6 +64,9 @@ public class TestSetup {
 		WebConsoleListener.registerLogger(LOG);
 
 		MCreatorApplication.isInternet = MCreatorApplication.WEB_API.initAPI();
+
+		// Do not track unit tests
+		GoogleAnalytics.ANALYTICS_ENABLED = false;
 
 		// print version of Java
 		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")

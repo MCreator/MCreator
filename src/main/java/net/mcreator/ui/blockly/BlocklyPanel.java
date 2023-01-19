@@ -57,8 +57,6 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly");
 
-	public static boolean DISABLE_WEBVIEW = false;
-
 	@Nullable private WebEngine webEngine;
 
 	private final BlocklyJavascriptBridge bridge;
@@ -84,9 +82,6 @@ public class BlocklyPanel extends JFXPanel {
 			if (newXml.length() > MINIMAL_XML.length())
 				this.currentXML = newXml;
 		});
-
-		if (DISABLE_WEBVIEW)
-			return;
 
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();

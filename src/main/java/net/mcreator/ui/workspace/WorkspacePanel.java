@@ -50,7 +50,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
@@ -259,6 +259,21 @@ import java.util.stream.Collectors;
 				}
 
 				renameFolder.setEnabled(selected instanceof FolderElement);
+			}
+		});
+
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelectedModElement();
+				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+					}
+				}
 			}
 		});
 
@@ -1137,8 +1152,8 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
-								return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
-										(VTextField) component, L10N.t("common.mod_element_name")).validate();
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
@@ -1218,10 +1233,12 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu.getGeneratableElement());
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
+				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
 				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
-		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator().getModElementListTemplates(mu.getGeneratableElement());
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
+				.getModElementListTemplates(mu.getGeneratableElement());
 
 		if (mu.getGeneratableElement() instanceof ICommonType) {
 			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
@@ -1411,7 +1428,7 @@ import java.util.stream.Collectors;
 		vcsPan.refilterElements();
 	}
 
-	public MCreator getMcreator() {
+	public MCreator getMCreator() {
 		return mcreator;
 	}
 

@@ -47,6 +47,11 @@ public class BlocklyLoader {
 		add("advanced");
 		add("actions");
 		add("aiadvanced");
+		add("features");
+		add("intproviders");
+		add("placements");
+		add("heightplacements");
+		add("blockpredicates");
 	}};
 	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;

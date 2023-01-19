@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Fluid;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -29,6 +28,7 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -131,6 +131,11 @@ import java.util.stream.Collectors;
 	public int breakHarvestLevel;
 
 	public Procedure placingCondition;
+
+	public boolean isBonemealable;
+	public Procedure isBonemealTargetCondition;
+	public Procedure bonemealSuccessCondition;
+	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
 	public String guiBoundTo;
@@ -311,6 +316,10 @@ import java.util.stream.Collectors;
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
 	private Image getMainTexture() {

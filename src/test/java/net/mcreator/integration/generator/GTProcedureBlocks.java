@@ -42,12 +42,16 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
+
+	private static final List<String> specialCases = List.of("compare_mcitems", "compare_blockstates",
+			"compare_dimensionids", "compare_mcblocks", "compare_directions", "item_nbt_copy");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if procedures are not supported by this generator
@@ -58,8 +62,8 @@ public class GTProcedureBlocks {
 
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE);
 
-		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks()
-				.values()) {
+		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
+				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip procedure blocks not supported by this generator
@@ -127,7 +131,7 @@ public class GTProcedureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined) {
+				if (!templatesDefined && !specialCases.contains(procedureBlock.machine_name)) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
 							+ procedureBlock.machine_name);
 					continue;
@@ -187,7 +191,8 @@ public class GTProcedureBlocks {
 									String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 
 									JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
-									String customEntryProviders = optCustomEntryProviders == null ? null :
+									String customEntryProviders = optCustomEntryProviders == null ?
+											null :
 											optCustomEntryProviders.getAsString();
 
 									String[] values = getDataListFieldValues(workspace, type, typeFilter,
@@ -290,6 +295,25 @@ public class GTProcedureBlocks {
 				}
 			}
 
+			// Add missing inputs for the hardcoded feature blocks (fix incomplete templates)
+			switch (procedureBlock.machine_name) {
+			case "compare_mcitems" -> additionalXML.append("""
+					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
+					<value name="b"><block type="mcitem_all"><field name="value"></field></block></value>""");
+			case "compare_blockstates", "compare_mcblocks" -> additionalXML.append("""
+					<value name="a"><block type="mcitem_allblocks"><field name="value"></field></block></value>
+					<value name="b"><block type="mcitem_allblocks"><field name="value"></field></block></value>""");
+			case "compare_dimensionids" -> additionalXML.append("""
+					<value name="a"><block type="provided_dimensionid"></block></value>
+					<value name="b"><block type="provided_dimensionid"></block></value>""");
+			case "compare_directions" -> additionalXML.append("""
+					<value name="a"><block type="direction_from_deps"></block></value>
+					<value name="b"><block type="direction_from_deps"></block></value>""");
+			case "item_nbt_copy" -> additionalXML.append("""
+					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
+					<value name="b"><block type="itemstack_to_mcitem"></block></value>""");
+			}
+
 			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.machine_name,
 					ModElementType.PROCEDURE);
 
@@ -311,7 +335,11 @@ public class GTProcedureBlocks {
 			testXML = testXML.replace("<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>",
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
 
-			// replace common itemstack blocks with blocks that contain logic variable
+			// add additional xml to the block definition
+			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
+					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
+
+			// replace common itemstack blocks with blocks that contain local variable
 			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
 					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
@@ -322,15 +350,6 @@ public class GTProcedureBlocks {
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
-
-			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
-							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
-							+ "</field></block>");
-
-			// add additional xml to the block definition
-			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
-					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
 
 			Procedure procedure = new Procedure(modElement);
 
@@ -358,12 +377,12 @@ public class GTProcedureBlocks {
 					break;
 				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
 					procedure.procedurexml = wrapWithBaseTestXML("""
-						<block type="projectile_shoot_from_entity">
-							<value name="projectile">%s</value>
-							<value name="entity"><block type="entity_from_deps"></block></value>
-							<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
-							<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
-						</block>""".formatted(testXML));
+							<block type="projectile_shoot_from_entity">
+								<value name="projectile">%s</value>
+								<value name="entity"><block type="entity_from_deps"></block></value>
+								<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
+								<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
+							</block>""".formatted(testXML));
 					break;
 				default:
 					procedure.procedurexml = wrapWithBaseTestXML(
@@ -406,18 +425,21 @@ public class GTProcedureBlocks {
 	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
 			String customEntryProviders) {
 		switch (datalist) {
-		case "entity": return ElementUtil.loadAllEntities(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "spawnableEntity": return ElementUtil.loadAllSpawnableEntities(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "biome": return ElementUtil.loadAllBiomes(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "sound": return ElementUtil.getAllSounds(workspace);
-		case "procedure": return workspace.getModElements()
-				.stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-				.map(ModElement::getName).toArray(String[]::new);
-		case "arrowProjectile": return ElementUtil.loadArrowProjectiles(workspace)
-				.stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "entity":
+			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "spawnableEntity":
+			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "biome":
+			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "sound":
+			return ElementUtil.getAllSounds(workspace);
+		case "procedure":
+			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+					.map(ModElement::getName).toArray(String[]::new);
+		case "arrowProjectile":
+			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		default: {
 			if (datalist.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -426,11 +448,11 @@ public class GTProcedureBlocks {
 			}
 			if (!DataListLoader.loadDataList(datalist).isEmpty()) {
 				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
-								StringUtils.split(customEntryProviders, ','))
-						.stream().map(DataListEntry::getName).toArray(String[]::new);
+								StringUtils.split(customEntryProviders, ',')).stream().map(DataListEntry::getName)
+						.toArray(String[]::new);
 			}
 		}
 		}
-		return new String[]{""};
+		return new String[] { "" };
 	}
 }

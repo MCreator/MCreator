@@ -78,8 +78,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ArmorGUI extends ModElementGUI<Armor> {
@@ -135,10 +135,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final Model normal = new Model.BuiltInModel("Normal");
 	private final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> helmetItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private final SearchableComboBox<Model> helmetItemRenderType = new SearchableComboBox<>(
+			new Model[] { normal, tool });
 	private final SearchableComboBox<Model> bodyItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
-	private final SearchableComboBox<Model> leggingsItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
-	private final SearchableComboBox<Model> bootsItemRenderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private final SearchableComboBox<Model> leggingsItemRenderType = new SearchableComboBox<>(
+			new Model[] { normal, tool });
+	private final SearchableComboBox<Model> bootsItemRenderType = new SearchableComboBox<>(
+			new Model[] { normal, tool });
 
 	private final JCheckBox helmetImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bodyImmuneToFire = L10N.checkbox("elementgui.common.enable");
@@ -341,8 +344,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		helmetSubPanel.add(helmetModelTexture);
 
-		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.common.item_model")));
+		helmetSubPanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		helmetSubPanel.add(helmetItemRenderType);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
@@ -387,15 +390,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bodySubPanel.add(bodyModelTexture);
 
-		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.common.item_model")));
+		bodySubPanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bodySubPanel.add(bodyItemRenderType);
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bodySubPanel.add(bodySpecialInfo);
 
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-						L10N.label("elementgui.item.is_immune_to_fire")));
+				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"),
@@ -416,8 +419,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
-				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL,
-						new JLabel("R"), leggingsModelPartR));
+				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL, new JLabel("R"),
+						leggingsModelPartR));
 
 		JPanel leggingsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		leggingsSubPanel.setOpaque(false);
@@ -425,8 +428,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		leggingsSubPanel.add(leggingsModelTexture);
 
-		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.common.item_model")));
+		leggingsSubPanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		leggingsSubPanel.add(leggingsItemRenderType);
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
@@ -454,8 +457,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
-				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL,
-						new JLabel("R"), bootsModelPartR));
+				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL, new JLabel("R"),
+						bootsModelPartR));
 
 		JPanel bootsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bootsSubPanel.setOpaque(false);
@@ -463,8 +466,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bootsSubPanel.add(bootsModelTexture);
 
-		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"),
-				L10N.label("elementgui.common.item_model")));
+		bootsSubPanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bootsSubPanel.add(bootsItemRenderType);
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
@@ -1038,7 +1041,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			armor.helmetItemRenderType = 1;
 		else if (helmetModelType == Model.Type.OBJ)
 			armor.helmetItemRenderType = 2;
-		armor.helmetItemCustomModelName = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getReadableName();
+		armor.helmetItemCustomModelName = Objects.requireNonNull(helmetItemRenderType.getSelectedItem())
+				.getReadableName();
 
 		Model.Type bodyModelType = Objects.requireNonNull(bodyItemRenderType.getSelectedItem()).getType();
 		armor.bodyItemRenderType = 0;
@@ -1054,7 +1058,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			armor.leggingsItemRenderType = 1;
 		else if (leggingsModelType == Model.Type.OBJ)
 			armor.leggingsItemRenderType = 2;
-		armor.leggingsItemCustomModelName = Objects.requireNonNull(leggingsItemRenderType.getSelectedItem()).getReadableName();
+		armor.leggingsItemCustomModelName = Objects.requireNonNull(leggingsItemRenderType.getSelectedItem())
+				.getReadableName();
 
 		Model.Type bootsModelType = Objects.requireNonNull(bootsItemRenderType.getSelectedItem()).getType();
 		armor.bootsItemRenderType = 0;
@@ -1062,19 +1067,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			armor.bootsItemRenderType = 1;
 		else if (bootsModelType == Model.Type.OBJ)
 			armor.bootsItemRenderType = 2;
-		armor.bootsItemCustomModelName = Objects.requireNonNull(bootsItemRenderType.getSelectedItem()).getReadableName();
+		armor.bootsItemCustomModelName = Objects.requireNonNull(bootsItemRenderType.getSelectedItem())
+				.getReadableName();
 
 		return armor;
-	}
-
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
-		modElement.clearMetadata();
-		modElement.putMetadata("eh", enableHelmet.isSelected());
-		modElement.putMetadata("ec", enableBody.isSelected());
-		modElement.putMetadata("el", enableLeggings.isSelected());
-		modElement.putMetadata("eb", enableBoots.isSelected());
-		modElement.reinit();
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

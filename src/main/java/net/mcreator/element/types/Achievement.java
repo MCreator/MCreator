@@ -77,13 +77,14 @@ import java.util.List;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
+					this.getModElement().getGenerator()
+							.getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
 					additionalData).setTemplateExtension("json");
 
 			// load blocklytojsontrigger with custom generators loaded
 			BlocklyToJSONTrigger blocklyToJSONTrigger = new BlocklyToJSONTrigger(this.getModElement().getWorkspace(),
-					this.getModElement(), this.triggerxml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
+					this.getModElement(), this.triggerxml, this.getModElement().getGenerator()
+					.getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();

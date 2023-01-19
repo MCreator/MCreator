@@ -26,7 +26,7 @@ import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.MCreatorLoadedEvent;
+import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
@@ -388,6 +388,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				tabAddition = " - " + mcreatorTabs.getCurrentTab().getText();
 			}
 
+			// Do not externalize this text
 			application.getDiscordClient()
 					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
 							Launcher.version.getMajorString() + " for " + workspace.getGenerator()

@@ -21,9 +21,6 @@ package net.mcreator.integration;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.procedure.LogicProcedure;
-import net.mcreator.element.parts.procedure.NumberProcedure;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -31,6 +28,9 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
+import net.mcreator.element.parts.procedure.LogicProcedure;
+import net.mcreator.element.parts.procedure.NumberProcedure;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
@@ -299,8 +299,9 @@ public class TestWorkspaceDataProvider {
 				achievement.rewardRecipes.add("ExampleRecipe1");
 				achievement.rewardRecipes.add("ExampleRecipe2");
 			}
-			achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
-					+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
+			achievement.triggerxml =
+					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
+							+ "<block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>";
 			return achievement;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
@@ -499,7 +500,6 @@ public class TestWorkspaceDataProvider {
 			}
 			fluid.frequencyOnChunks = 13;
 			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
-			fluid.getModElement().putMetadata("gb", fluid.generateBucket);
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
@@ -572,21 +572,23 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
-						new LogicProcedure("condition1", true) , _true, new Procedure("procedure3"), new Procedure("procedure10"),
-						new Procedure("procedure2"), new MItemBlock(modElement.getWorkspace(), "")));
+						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
+						new Procedure("procedure10"), new Procedure("procedure2"),
+						new MItemBlock(modElement.getWorkspace(), "")));
 				components.add(new InputSlot(3, 20, 30, Color.white, new LogicProcedure(null, true),
 						new LogicProcedure("condition1", true), !_true, new Procedure("procedure4"), null, null,
 						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName())));
-				new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true), new LogicProcedure(null, true),
-						!_true, new Procedure("procedure4"), null, null, new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItems).getName()));
+				new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true),
+						new LogicProcedure(null, true), !_true, new Procedure("procedure4"), null, null,
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
 				components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, _true),
 						new LogicProcedure("condition1", !_true), _true, new Procedure("procedure5"), null, null,
 						new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
 				components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", _true), !_true,
 						new Procedure("procedure10"), new Procedure("procedure2"), new Procedure("procedure3")));
-				components.add(new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true, null,
-						null, null));
+				components.add(
+						new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true, null,
+								null, null));
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
@@ -691,13 +693,14 @@ public class TestWorkspaceDataProvider {
 				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
 						"panic_when_attacked") && aiTasks.contains("attack_action") && aiTasks.contains(
 						"swim_in_water")) {
-					livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
-							+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
-							+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
-							+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
-							+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
-							+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
-							+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
+					livingEntity.aixml =
+							"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
+									+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
+									+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
+									+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
+									+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
+									+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
+									+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
 				}
 			}
 			if (livingEntity.aixml == null) // fallback
@@ -731,7 +734,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 			}
 			livingEntity.spawnInDungeons = _true;
@@ -785,7 +789,6 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
-			dimension.getModElement().putMetadata("ep", dimension.enablePortal);
 			return dimension;
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
@@ -883,10 +886,6 @@ public class TestWorkspaceDataProvider {
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
-			armor.getModElement().putMetadata("eh", armor.enableHelmet);
-			armor.getModElement().putMetadata("ec", armor.enableBody);
-			armor.getModElement().putMetadata("el", armor.enableLeggings);
-			armor.getModElement().putMetadata("eb", armor.enableBoots);
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
@@ -1004,6 +1003,12 @@ public class TestWorkspaceDataProvider {
 			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
 					"Cross model" }[valueIndex];
 			plant.isItemTinted = _true;
+			if (!emptyLists) {
+				plant.isBonemealable = true;
+				plant.isBonemealTargetCondition = new Procedure("condition3");
+				plant.bonemealSuccessCondition = new Procedure("condition4");
+				plant.onBonemealSuccess = new Procedure("procedure13");
+			}
 			return plant;
 		} else if (ModElementType.ITEM.equals(modElement.getType())) {
 			Item item = new Item(modElement);
@@ -1296,6 +1301,7 @@ public class TestWorkspaceDataProvider {
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
 			if (!emptyLists) {
+				block.isBonemealable = true;
 				block.onBlockAdded = new Procedure("procedure10");
 				block.onNeighbourBlockChanges = new Procedure("procedure2");
 				block.onTickUpdate = new Procedure("procedure3");
@@ -1312,6 +1318,9 @@ public class TestWorkspaceDataProvider {
 				block.onHitByProjectile = new Procedure("procedure14");
 				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
+				block.isBonemealTargetCondition = new Procedure("condition3");
+				block.bonemealSuccessCondition = new Procedure("condition4");
+				block.onBonemealSuccess = new Procedure("procedure15");
 			}
 			block.itemTexture = emptyLists ? "" : "itest";
 			block.particleTexture = emptyLists ? "" : "test7";

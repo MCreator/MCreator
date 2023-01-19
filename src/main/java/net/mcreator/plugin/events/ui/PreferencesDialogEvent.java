@@ -35,7 +35,7 @@ public class PreferencesDialogEvent extends MCREvent {
 	 *
 	 * @param preferencesDialog <p>The {@link PreferencesDialog} window that will be shown to the user.</p>
 	 */
-	public PreferencesDialogEvent(PreferencesDialog preferencesDialog) {
+	protected PreferencesDialogEvent(PreferencesDialog preferencesDialog) {
 		this.preferencesDialog = preferencesDialog;
 	}
 

@@ -162,7 +162,8 @@ public class GeneratorSelector {
 
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
-			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> addStatsBar(L10N.t(covpfx + key), key, supportedProcedures, stats));
+			stats.getGeneratorBlocklyBlocks()
+					.forEach((key, value) -> addStatsBar(L10N.t(covpfx + key), key, supportedProcedures, stats));
 
 			addStatsBar(L10N.t(covpfx + "triggers"), "triggers", supportedProcedures, stats);
 

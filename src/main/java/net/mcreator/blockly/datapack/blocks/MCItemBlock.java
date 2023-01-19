@@ -41,10 +41,9 @@ public class MCItemBlock implements IBlockGenerator {
 			// Forge 1.18 features are still in Java
 			if (master instanceof BlocklyToFeature && master.getWorkspace().getGeneratorConfiguration()
 					.getGeneratorName().equals("forge-1.18.2")) {
-				master.append(new NameMapper(master.getWorkspace(), "blocksitems")
-						.getMapping(element.getTextContent()));
-			}
-			else if (master.getTemplateGenerator() != null) {
+				master.append(
+						new NameMapper(master.getWorkspace(), "blocksitems").getMapping(element.getTextContent()));
+			} else if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), element.getTextContent()));
 				String code = master.getTemplateGenerator().generateFromTemplate("_mcitemblock.json.ftl", dataModel);

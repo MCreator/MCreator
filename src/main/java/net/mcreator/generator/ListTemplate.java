@@ -32,9 +32,9 @@ public class ListTemplate extends GeneratorTemplate {
 	private final GeneratorTemplatesList templatesList;
 	private final int listItemIndex;
 
-	ListTemplate(File file, String templateIdentificator, GeneratorTemplatesList templatesList, int listItemIndex,
+	ListTemplate(File file, String templateIdentifier, GeneratorTemplatesList templatesList, int listItemIndex,
 			Map<?, ?> templateData) {
-		super(file, templateIdentificator, templateData);
+		super(file, templateIdentifier, templateData);
 		this.templatesList = templatesList;
 		this.listItemIndex = listItemIndex;
 	}
