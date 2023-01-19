@@ -112,7 +112,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(FeatureGUI.this::regenerateFeature).start());
 			if (!isEditingMode()) {
@@ -143,7 +143,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		addPage(page1);
 	}
 
-	private void regenerateFeature() {
+	private synchronized void regenerateFeature() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 

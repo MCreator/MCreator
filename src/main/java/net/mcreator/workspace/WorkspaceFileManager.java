@@ -21,6 +21,8 @@ package net.mcreator.workspace;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.io.FileIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.WorkspaceSavedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
@@ -105,11 +107,15 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	private void saveWorkspaceIfChanged() {
+		MCREvent.event(new WorkspaceSavedEvent.CalledSavingMethod(workspace));
+
 		if (!workspace.isDirty()) // if the workspace file was not changed, we do not perform save
 			return;
 
 		String workspacestring = gson.toJson(workspace);
 		if (workspacestring != null && !workspacestring.equals("")) {
+			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
+
 			// first we backup workspace file
 			rotateWorkspaceFileBackup();
 
@@ -136,6 +142,8 @@ public class WorkspaceFileManager implements Closeable {
 
 			if (dataSavedListener != null)
 				dataSavedListener.dataSaved();
+
+			MCREvent.event(new WorkspaceSavedEvent.AfterSaving(workspace));
 
 			LOG.debug("Workspace stored on the FS");
 		} else {

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,86 +20,71 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.converter.fv10.BiomeSpawnListConverter;
-import net.mcreator.element.converter.fv11.GUICoordinateConverter;
-import net.mcreator.element.converter.fv11.OverlayCoordinateConverter;
-import net.mcreator.element.converter.fv12.BiomeDefaultFeaturesConverter;
-import net.mcreator.element.converter.fv13.ProcedureSpawnGemPickupDelayFixer;
-import net.mcreator.element.converter.fv14.BlockLuminanceFixer;
-import net.mcreator.element.converter.fv14.DimensionLuminanceFixer;
-import net.mcreator.element.converter.fv14.PlantLuminanceFixer;
-import net.mcreator.element.converter.fv15.DimensionPortalSelectedFixer;
-import net.mcreator.element.converter.fv16.BlockBoundingBoxFixer;
-import net.mcreator.element.converter.fv17.GameruleDisplayNameFixer;
-import net.mcreator.element.converter.fv18.BiomeFrozenTopLayerConverter;
-import net.mcreator.element.converter.fv19.FluidBucketSelectedFixer;
-import net.mcreator.element.converter.fv20.FluidNameFixer;
-import net.mcreator.element.converter.fv21.BooleanGameRulesConverter;
-import net.mcreator.element.converter.fv21.ProcedureVariablesConverter;
-import net.mcreator.element.converter.fv22.BlockLightOpacityFixer;
-import net.mcreator.element.converter.fv23.PotionToEffectConverter;
-import net.mcreator.element.converter.fv24.ProcedureVariablesEntityFixer;
-import net.mcreator.element.converter.fv25.LegacyProcedureBlockRemover;
-import net.mcreator.element.converter.fv26.LegacyBlockPosProcedureRemover;
-import net.mcreator.element.converter.fv27.ProcedureShootArrowFixer;
-import net.mcreator.element.converter.fv28.FoodToItemConverter;
-import net.mcreator.element.converter.fv29.CommandParameterBlockFixer;
-import net.mcreator.element.converter.fv30.BlockRequiresCorrectToolConverter;
-import net.mcreator.element.converter.fv31.*;
-import net.mcreator.element.converter.fv32.FuelToItemExtensionConverter;
-import net.mcreator.element.converter.fv32.ItemDispenseBehaviorToItemExtensionConverter;
-import net.mcreator.element.converter.fv33.LegacyShootArrowProcedureRemover;
-import net.mcreator.element.converter.fv34.BiomeDictionaryProcedureConverter;
-import net.mcreator.element.converter.fv35.ToolToItemTypeProcedureConverter;
-import net.mcreator.element.converter.fv36.GUIComponentNamer;
-import net.mcreator.element.converter.fv37.SlotInteractionsConverter;
-import net.mcreator.element.converter.fv38.BiomeGenParametersConverter;
+import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
+import net.mcreator.element.converter.v2020_1.AchievementFixer;
+import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
+import net.mcreator.element.converter.v2020_3.OpenGUIProcedureDepFixer;
+import net.mcreator.element.converter.v2020_3.ProcedureEntityDepFixer;
+import net.mcreator.element.converter.v2020_4.BiomeSpawnListConverter;
+import net.mcreator.element.converter.v2020_4.ProcedureGlobalTriggerFixer;
+import net.mcreator.element.converter.v2020_5.BiomeDefaultFeaturesConverter;
+import net.mcreator.element.converter.v2020_5.GUICoordinateConverter;
+import net.mcreator.element.converter.v2020_5.OverlayCoordinateConverter;
+import net.mcreator.element.converter.v2020_5.ProcedureSpawnGemPickupDelayFixer;
+import net.mcreator.element.converter.v2021_1.*;
+import net.mcreator.element.converter.v2021_2.*;
+import net.mcreator.element.converter.v2021_3.LegacyProcedureBlockRemover;
+import net.mcreator.element.converter.v2022_1.FoodToItemConverter;
+import net.mcreator.element.converter.v2022_1.LegacyBlockPosProcedureRemover;
+import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
+import net.mcreator.element.converter.v2022_2.*;
+import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
+import net.mcreator.element.converter.v2023_1.BiomeGenParametersConverter;
+import net.mcreator.element.converter.v2023_1.GUIComponentNamer;
+import net.mcreator.element.converter.v2023_1.SlotInteractionsConverter;
+import net.mcreator.element.converter.v2023_1.ToolToItemTypeProcedureConverter;
 import net.mcreator.element.converter.fv39.EntitiesRangedAttackConverter;
 import net.mcreator.element.converter.fv39.ProcedureArrowProjectileFixer;
 import net.mcreator.element.converter.fv39.RangedItemToProjectileAndItemConverter;
-import net.mcreator.element.converter.fv4.RecipeTypeConverter;
-import net.mcreator.element.converter.fv5.AchievementFixer;
-import net.mcreator.element.converter.fv6.GUIBindingInverter;
-import net.mcreator.element.converter.fv7.ProcedureEntityDepFixer;
-import net.mcreator.element.converter.fv8.OpenGUIProcedureDepFixer;
-import net.mcreator.element.converter.fv9.ProcedureGlobalTriggerFixer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
-		put(ModElementType.ADVANCEMENT, Arrays.asList(new AchievementFixer(), new AdvancementTextureConverter()));
-		put(ModElementType.ARMOR, Collections.singletonList(new ArmorTexturesConverter()));
-		put(ModElementType.BIOME, Arrays.asList(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
+		put(ModElementType.ADVANCEMENT, List.of(new AchievementFixer(), new AdvancementTextureConverter()));
+		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter()));
+		put(ModElementType.BIOME, List.of(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter()));
 		put(ModElementType.BLOCK,
-				Arrays.asList(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
+				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.DIMENSION, Arrays.asList(new DimensionLuminanceFixer(), new DimensionPortalSelectedFixer()));
-		put(ModElementType.FLUID, Arrays.asList(new FluidBucketSelectedFixer(), new FluidNameFixer()));
-		put(ModElementType.COMMAND, Collections.singletonList(new CommandParameterBlockFixer()));
-		put(ModElementType.GAMERULE, Arrays.asList(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
+		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
+		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
+		put(ModElementType.FLUID, List.of(new FluidNameFixer()));
+		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
+		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
-				Arrays.asList(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
+				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
-		put(ModElementType.LIVINGENTITY, Arrays.asList(new EntityTexturesConverter(), new EntitiesRangedAttackConverter()));
-		put(ModElementType.OVERLAY, Arrays.asList(new OverlayCoordinateConverter(), new OverlayTexturesConverter(),
-				new GUIComponentNamer()));
-		put(ModElementType.PARTICLE, Collections.singletonList(new ParticleTextureConverter()));
-		put(ModElementType.PLANT, Collections.singletonList(new PlantLuminanceFixer()));
-		put(ModElementType.POTION, Collections.singletonList(new PotionToEffectConverter()));
-		put(ModElementType.POTIONEFFECT, Collections.singletonList(new EffectTextureConverter()));
-		put(ModElementType.PROCEDURE, Arrays.asList(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
+		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter(), new EntitiesRangedAttackConverter()));
+		put(ModElementType.OVERLAY,
+				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
+		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
+		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
+		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
+		put(ModElementType.POTIONEFFECT, List.of(new EffectTextureConverter()));
+		put(ModElementType.PROCEDURE, List.of(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
 				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
 				new ToolToItemTypeProcedureConverter(), new ProcedureArrowProjectileFixer()));
-		put(ModElementType.RECIPE, Collections.singletonList(new RecipeTypeConverter()));
-		put(ModElementType.ITEM, Collections.singletonList(new ItemDispenseBehaviorToItemExtensionConverter()));
+		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
+		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

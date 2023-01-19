@@ -78,7 +78,7 @@ public class ${JavaModName}Items {
 					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
 			</#if>
 		<#elseif item.getModElement().getTypeString() == "livingentity">
-            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
 					${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties() <#if item.creativeTab??>.tab(${item.creativeTab})<#else>
                     .tab(CreativeModeTab.TAB_MISC)</#if>));

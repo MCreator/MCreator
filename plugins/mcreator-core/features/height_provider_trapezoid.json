@@ -1,0 +1,37 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "min",
+      "check": "VerticalAnchor"
+    },
+    {
+      "type": "input_value",
+      "name": "max",
+      "check": "VerticalAnchor"
+    },
+    {
+      "type": "field_number",
+      "name": "plateau",
+      "value": 0,
+      "min": 0,
+      "precision": 1
+    }
+  ],
+  "output": "HeightProvider",
+  "colour": 190,
+  "mcreator": {
+    "toolbox_id": "heightplacements",
+    "toolbox_init": [
+      "<value name=\"min\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">0</field></block></value>",
+      "<value name=\"max\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value>"
+    ],
+    "inputs": [
+      "min",
+      "max"
+    ],
+    "fields": [
+      "plateau"
+    ]
+  }
+}

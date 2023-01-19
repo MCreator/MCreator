@@ -27,6 +27,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -139,6 +140,10 @@ import java.util.Map;
 
 	@Override public String getTexture() {
 		return texture;
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
 	public boolean hasNormalModel() {
