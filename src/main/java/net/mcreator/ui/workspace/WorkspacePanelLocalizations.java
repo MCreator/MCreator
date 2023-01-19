@@ -25,6 +25,7 @@ import com.univocity.parsers.csv.CsvWriterSettings;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -35,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -60,6 +62,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 	private final JButton del;
 	private final JButton exp;
 	private final JButton imp;
+	private final JButton use;
 
 	WorkspacePanelLocalizations(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
@@ -69,7 +72,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
-		pane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+		pane.setUI(new BasicTabbedPaneUI() {
 			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
@@ -116,6 +119,13 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		imp.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(imp);
 
+		use = L10N.button("workspace.localization.show_usages");
+		use.setIcon(UIRES.get("16px.open.gif"));
+		use.setOpaque(false);
+		use.setContentAreaFilled(false);
+		use.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(use);
+
 		add("North", bar);
 
 		add.addActionListener(e -> {
@@ -138,6 +148,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 		for (var al : exp.getActionListeners())
 			exp.removeActionListener(al);
+
+		for (var al : use.getActionListeners())
+			use.removeActionListener(al);
 
 		pane.removeAll();
 		sorters = new ArrayList<>();
@@ -340,6 +353,14 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 					SwingUtilities.invokeLater(this::reloadElements);
 				}
 
+			});
+
+			use.addActionListener(a -> {
+				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
+					SearchUsagesDialog.open(workspacePanel.getMCreator(),
+							elements.getValueAt(elements.getSelectedRow(), 0),
+							L10N.t("workspace.localization.show_usages.type"));
+				}
 			});
 		}
 

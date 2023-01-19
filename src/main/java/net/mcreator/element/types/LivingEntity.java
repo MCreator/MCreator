@@ -28,10 +28,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -51,7 +48,7 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
+		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider, IXMLProvider {
 
 	public String mobName;
 	public String mobLabel;
@@ -247,5 +244,9 @@ import java.util.List;
 		}
 
 		return null;
+	}
+
+	@Override public String getXML() {
+		return aixml;
 	}
 }

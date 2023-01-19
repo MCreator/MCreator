@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Procedure extends GeneratableElement {
+public class Procedure extends GeneratableElement implements IXMLProvider {
 
 	public String procedurexml;
 
@@ -156,4 +157,7 @@ public class Procedure extends GeneratableElement {
 		this.skipDependencyRegeneration = true;
 	}
 
+	@Override public String getXML() {
+		return procedurexml;
+	}
 }

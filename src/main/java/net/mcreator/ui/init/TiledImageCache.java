@@ -51,6 +51,7 @@ public class TiledImageCache {
 	public static ImageIcon workspaceDuplicate;
 	public static ImageIcon workspaceToggle;
 	public static ImageIcon workspaceModElementIDs;
+	public static ImageIcon workspaceModElementUsages = null; // TODO: New icon
 
 	public static ImageIcon bucket;
 	public static ImageIcon bucketMask;

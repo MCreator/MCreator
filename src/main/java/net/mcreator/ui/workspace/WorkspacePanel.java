@@ -38,6 +38,7 @@ import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ModElementIDsDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
@@ -110,8 +111,10 @@ import java.util.stream.Collectors;
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
+	private final JLabel but7 = new JLabel(TiledImageCache.workspaceCode/*ModElementUsages*/);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
+	private final JMenuItem searchElement = new JMenuItem(L10N.t("workspace.elements.list.edit.usages"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
@@ -231,12 +234,14 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
+						searchElement.setVisible(false);
 						duplicateElement.setVisible(false);
 						codeElement.setVisible(false);
 						lockElement.setVisible(false);
 						idElement.setVisible(false);
 						renameElementFolder.setVisible(true);
 					} else {
+						searchElement.setVisible(true);
 						duplicateElement.setVisible(true);
 						codeElement.setVisible(true);
 						lockElement.setVisible(true);
@@ -685,9 +690,7 @@ import java.util.stream.Collectors;
 		btt1.setFocusPainted(false);
 		btt1.setOpaque(true);
 		btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		btt1.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
+		btt1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btt1.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -875,6 +878,16 @@ import java.util.stream.Collectors;
 		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but6);
 
+		but7.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (but7.isEnabled() && list.getSelectedValue() instanceof ModElement mu)
+					SearchUsagesDialog.open(mcreator, mu, L10N.t("workspace.elements.list.edit.usages.type"));
+			}
+		});
+		but7.setToolTipText(L10N.t("workspace.elements.search_element_usages.tooltip"));
+		but7.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		pne.add(but7);
+
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
 				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
@@ -921,13 +934,14 @@ import java.util.stream.Collectors;
 		deleteElement.setIcon(UIRES.get("16px.clear"));
 		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
 
+		searchElement.setIcon(UIRES.get("16px.search"));
+		searchElement.addActionListener(e -> {
+			if (list.getSelectedValue() instanceof ModElement mu)
+				SearchUsagesDialog.open(mcreator, mu, L10N.t("workspace.elements.list.edit.usages.type"));
+		});
+
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
-		codeElement.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-			}
-		});
 		codeElement.addActionListener(e -> {
 			IElement selected = list.getSelectedValue();
 			if (selected instanceof ModElement) {
@@ -967,6 +981,7 @@ import java.util.stream.Collectors;
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
+		contextMenu.add(searchElement);
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);

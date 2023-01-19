@@ -26,6 +26,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -39,7 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType, IXMLProvider {
 
 	public String generationStep;
 	public List<String> restrictionDimensions;
@@ -88,5 +89,9 @@ import java.util.List;
 			return List.of(BaseType.FEATURE);
 		}
 		return Collections.emptyList();
+	}
+
+	@Override public String getXML() {
+		return featurexml;
 	}
 }
