@@ -28,9 +28,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class DataListLoader {
 
@@ -51,76 +49,67 @@ public class DataListLoader {
 	}
 
 	public static List<DataListEntry> loadDataList(String listName) {
-		return new ArrayList<>(loadDataMap(listName).values());
+		return loadDataMap(listName).values().stream().toList();
 	}
 
 	public static Map<String, DataListEntry> loadDataMap(String listName) {
-		if (cache.get(listName) != null)
-			return cache.get(listName);
+		if (!cache.containsKey(listName)) {
+			LinkedHashMap<String, DataListEntry> list = new LinkedHashMap<>();
 
-		AtomicReference<LinkedHashMap<String, DataListEntry>> list = new AtomicReference<>();
-		list.set(new LinkedHashMap<>());
+			try {
+				Enumeration<URL> res = PluginLoader.INSTANCE.getResources("datalists/" + listName + ".yaml");
+				Collections.list(res).forEach(resource -> {
+					YamlReader reader = new YamlReader(FileIO.readResourceToString(resource));
+					try {
+						List<?> objects = (List<?>) reader.read();
+						for (Object elementObj : objects) {
+							if (elementObj instanceof String stringObj) {
+								if (list.containsKey(stringObj))
+									LOG.warn("Duplicate datalist key: " + elementObj);
+								list.put(stringObj, new DataListEntry(stringObj));
+							} else if (elementObj instanceof Map<?, ?> element) {
+								for (Map.Entry<?, ?> mapEntry : element.entrySet()) {
+									if (mapEntry.getValue() == null) {
+										String elementName = (String) mapEntry.getKey();
 
-		try {
-			Enumeration<URL> res = PluginLoader.INSTANCE.getResources("datalists/" + listName + ".yaml");
-			Collections.list(res).forEach(resource -> {
-				String config = FileIO.readResourceToString(resource);
+										DataListEntry entry = new DataListEntry(elementName);
+										entry.setReadableName((String) element.get("readable_name"));
+										entry.setType((String) element.get("type"));
+										entry.setDescription((String) element.get("description"));
+										entry.setOther(element.get("other"));
+										entry.setTexture((String) element.get("texture"));
 
-				YamlReader reader = new YamlReader(config);
-				try {
-					((List<?>) reader.read()).forEach(elementObj -> {
-						if (elementObj instanceof String) {
-							if (list.get().containsKey(elementObj))
-								LOG.warn("Duplicate datalist key: " + elementObj);
-							list.get().put((String) elementObj, new DataListEntry((String) elementObj));
-						} else if (elementObj instanceof Map<?, ?> element) {
-							String elementName = null;
-							for (Map.Entry<?, ?> entry : element.entrySet())
-								if (entry.getValue() == null)
-									elementName = (String) entry.getKey();
+										if (element.get("required_apis") instanceof List<?> apis)
+											entry.setRequiredAPIs(apis.stream().map(Object::toString).toList());
 
-							if (elementName != null) {
-								DataListEntry entry = new DataListEntry(elementName);
-								entry.setReadableName((String) element.get("readable_name"));
-								entry.setType((String) element.get("type"));
-								entry.setDescription((String) element.get("description"));
-								entry.setOther(element.get("other"));
-								entry.setTexture((String) element.get("texture"));
-
-								if (element.get("required_apis") instanceof List)
-									entry.setRequiredAPIs(
-											((List<?>) element.get("required_apis")).stream().map(Object::toString)
-													.collect(Collectors.toList()));
-
-								if (listName.equals("blocksitems")) {
-									MCItem mcitem = new MCItem(entry);
-									if (element.get("subtypes") != null) {
-										mcitem.setSubtypes(Boolean.parseBoolean((String) element.get("subtypes")));
+										if (list.containsKey(elementName))
+											LOG.warn("Duplicate datalist key: " + elementName);
+										if (listName.equals("blocksitems")) {
+											MCItem mcitem = new MCItem(entry);
+											if (element.get("subtypes") != null) {
+												mcitem.setSubtypes(
+														Boolean.parseBoolean((String) element.get("subtypes")));
+											}
+											list.put(elementName, mcitem);
+										} else {
+											list.put(elementName, entry);
+										}
 									}
-									if (list.get().containsKey(elementName))
-										LOG.warn("Duplicate datalist key: " + elementName);
-									list.get().put(elementName, mcitem);
-								} else {
-									if (list.get().containsKey(elementName))
-										LOG.warn("Duplicate datalist key: " + elementName);
-									list.get().put(elementName, entry);
 								}
 							}
 						}
-					});
-				} catch (YamlException e) {
-					LOG.error(e.getMessage(), e);
-				}
-			});
-		} catch (IOException e) {
-			LOG.error("Failed to load datalist resource", e);
+					} catch (YamlException e) {
+						LOG.error(e.getMessage(), e);
+					}
+				});
+			} catch (IOException e) {
+				LOG.error("Failed to load datalist resource", e);
+			}
+
+			cache.put(listName, list);
+			LOG.debug("Added " + listName + " datamap to cache");
 		}
 
-		LOG.debug("Added " + listName + " datamap to cache");
-
-		cache.put(listName, list.get());
-
-		return list.get();
+		return cache.get(listName);
 	}
-
 }
