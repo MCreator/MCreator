@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 		put("label", Label.class);
 		put("textfield", TextField.class);
 		put("checkbox", Checkbox.class);
+		put("entitymodel", EntityModel.class); //weight 7
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()

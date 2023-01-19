@@ -64,6 +64,7 @@ public class WYSIWYGEditor extends JPanel {
 				InputSlotDialog.class));
 		add(new WYSIWYGComponentRegistration<>("output_slot", "addoutslot", false, OutputSlot.class,
 				OutputSlotDialog.class));
+		add(new WYSIWYGComponentRegistration<>("entity_model", "addmodel", true, EntityModel.class, EntityModelDialog.class));
 	}};
 
 	public WYSIWYG editor = new WYSIWYG(this);
