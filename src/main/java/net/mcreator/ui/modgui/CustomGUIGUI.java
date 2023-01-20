@@ -36,7 +36,8 @@ import java.awt.*;
 public class CustomGUIGUI extends ModElementGUI<GUI> {
 
 	private WYSIWYGEditor editor;
-	public static WYSIWYGEditor staticComponentList;
+	private static MCreator mCreator;
+	public static WYSIWYGEditor staticComponentList = new WYSIWYGEditor(null, true);
 
 	private ProcedureSelector onOpen;
 	private ProcedureSelector onTick;
@@ -60,6 +61,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 				L10N.t("elementgui.gui.gui_closed"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 
+		mCreator = mcreator;
 		staticComponentList = editor;
 
 		CollapsiblePanel events = new CollapsiblePanel(L10N.t("elementgui.gui.gui_triggers"),
