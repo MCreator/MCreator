@@ -160,8 +160,7 @@ public abstract class GeneratableElement {
 							GeneratableElement result = converter.convert(this.workspace,
 									new Unknown(this.lastModElement), jsonElement);
 							if (result != null) {
-								workspace.removeModElement(this.lastModElement,
-										null); // GE is null as we don't have original GE anymore
+								workspace.removeModElement(this.lastModElement);
 
 								result.getModElement().setParentFolder(
 										FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));

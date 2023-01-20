@@ -236,11 +236,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
-		removeModElement(element, element.getGeneratableElement());
-	}
-
-	public void removeModElement(ModElement element, @Nullable GeneratableElement generatableElement) {
 		if (mod_elements.contains(element)) {
+			GeneratableElement generatableElement = element.getGeneratableElement();
+
 			// first we ask generator to remove all related files
 			if (generatableElement != null && generator != null) {
 				generator.removeElementFilesAndLangKeys(Objects.requireNonNull(generatableElement));
