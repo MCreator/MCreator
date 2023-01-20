@@ -136,33 +136,33 @@ package ${package}.client.gui;
 
 	<#if ((data.getComponentsOfType("EntityModel")?size) > 0)>
 	protected static void renderBgEntity(int param1, int param2, double param3, float param5, LivingEntity renderTarget) {
-		float f1 = (float) Math.atan((double) (param5 / 40.0F));
-		PoseStack poseStack = RenderSystem.getModelViewStack();
-		poseStack.pushPose();
-		poseStack.translate((double) param1, (double) param2, 1050.0D);
-		poseStack.scale(1.0F, 1.0F, -1.0F);
-		RenderSystem.applyModelViewMatrix();
-		PoseStack secondPoseStack = new PoseStack();
-		secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
-		secondPoseStack.scale((float) param3, (float) param3, (float) param3);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * 20.0F);
-		quaternion.mul(secondQuaternion);
-		secondPoseStack.mulPose(quaternion);
-		Lighting.setupForEntityInInventory();
-		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-		secondQuaternion.conj();
-		dispatcher.overrideCameraOrientation(secondQuaternion);
-		dispatcher.setRenderShadow(false);
-		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> {
-			dispatcher.render(renderTarget, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, secondPoseStack, buffer, 15728880);
-		});
-		buffer.endBatch();
-		dispatcher.setRenderShadow(true);
-		poseStack.popPose();
-		RenderSystem.applyModelViewMatrix();
-		Lighting.setupFor3DItems();
+	float f1 = (float) Math.atan((double) (param5 / 40.0F));
+	PoseStack poseStack = RenderSystem.getModelViewStack();
+	poseStack.pushPose();
+	poseStack.translate((double) param1, (double) param2, 1050.0D);
+	poseStack.scale(1.0F, 1.0F, -1.0F);
+	RenderSystem.applyModelViewMatrix();
+	PoseStack secondPoseStack = new PoseStack();
+	secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
+	secondPoseStack.scale((float) param3, (float) param3, (float) param3);
+	Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+	Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+	quaternion.mul(secondQuaternion);
+	secondPoseStack.mulPose(quaternion);
+	Lighting.setupForEntityInInventory();
+	EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+	secondQuaternion.conj();
+	dispatcher.overrideCameraOrientation(secondQuaternion);
+	dispatcher.setRenderShadow(false);
+	MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+	RenderSystem.runAsFancy(() -> {
+		dispatcher.render(renderTarget, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, secondPoseStack, buffer, 15728880);
+	});
+	buffer.endBatch();
+	dispatcher.setRenderShadow(true);
+	poseStack.popPose();
+	RenderSystem.applyModelViewMatrix();
+	Lighting.setupFor3DItems();
 	}
 	</#if>
 
