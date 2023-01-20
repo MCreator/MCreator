@@ -47,6 +47,8 @@ import java.util.List;
 	public List<Dependency> getDependencies(Workspace workspace) {
 		ModElement modElement = workspace.getModElementByName(name);
 		if (modElement != null) {
+			// when deserializing, at this point, workspace may not be applied to the ME yet, so we do it now just in case
+			modElement.setWorkspace(workspace);
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
 			if (generatableElement instanceof net.mcreator.element.types.Procedure) {
 				this.exists = true;
