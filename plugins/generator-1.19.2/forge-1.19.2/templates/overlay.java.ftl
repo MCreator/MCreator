@@ -94,30 +94,30 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>}</#if>
             </#list>
 
-            <#list data.getComponentsOfType("Label") as component>
-                <#assign x = component.x - 213>
-                <#assign y = component.y - 120>
-                    <#if hasProcedure(component.displayCondition)>
-                        if (<@procedureOBJToConditionCode component.displayCondition/>)
-                    </#if>
-                    Minecraft.getInstance().font.draw(event.getPoseStack(),
-                        <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-                        posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-            </#list>
+			<#list data.getComponentsOfType("Label") as component>
+				<#assign x = component.x - 213>
+				<#assign y = component.y - 120>
+					<#if hasProcedure(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+					</#if>
+					Minecraft.getInstance().font.draw(event.getPoseStack(),
+						<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+						posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+			</#list>
 
 			<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign x = component.x / 2>
 			<#assign y = (component.y + 17) / 4>
 			<#assign y1 = (component.y - 21) / 4>
 			{
-			Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
-			if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
-			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
-				renderBgEntity(posX / 2 + ${x?int}, posY / 2 + ${(y)?int},
-					${component.scale}, (float) (posY / 2 + (${y1})), entityLiving);
+				Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
+				if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
+					renderBgEntity(posX / 2 + ${x?int}, posY / 2 + ${(y)?int},
+					 ${component.scale}, (float) (posY / 2 + (${y1})), entityLiving);
 			}
 			</#list>
-        }
+		}
 
         <#if data.hasTextures()>
             RenderSystem.depthMask(true);
