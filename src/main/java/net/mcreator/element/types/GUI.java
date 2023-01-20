@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.gui.Button;
-import net.mcreator.element.parts.gui.EntityModel;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.parts.procedure.Procedure;
