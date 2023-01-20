@@ -131,7 +131,7 @@ package ${package}.client.screens;
     </#if>
 	}
 
-	<#if ((data.getComponentsOfType("EntityModel")?size) > 0)>
+	<#if !data.getComponentsOfType("EntityModel").isEmpty()>
 	protected static void renderBgEntity(int param1, int param2, double param3, float param5, LivingEntity renderTarget) {
 		float f1 = (float) Math.atan((double) (param5 / 40.0F));
 		PoseStack poseStack = RenderSystem.getModelViewStack();

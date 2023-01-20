@@ -49,7 +49,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		ProcedureSelector entityModel = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/entity_model"), editor.mcreator,
-				L10N.t("dialog.gui.entity_model_condition"), ProcedureSelector.Side.CLIENT, false,
+				L10N.t("dialog.gui.entity_model_procedure"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.ENTITY,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		entityModel.refreshList();
