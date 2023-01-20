@@ -28,6 +28,7 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -315,6 +316,10 @@ import java.util.stream.Collectors;
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
 	private Image getMainTexture() {

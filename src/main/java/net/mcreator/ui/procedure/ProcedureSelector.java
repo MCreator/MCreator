@@ -198,9 +198,6 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							refreshList();
 							setSelectedProcedure(modName);
 						});
-						mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
-								.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-										ModElementType.PROCEDURE.getReadableName(), null, null));
 					}
 				}
 			});

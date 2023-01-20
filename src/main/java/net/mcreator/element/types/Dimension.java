@@ -24,11 +24,15 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
@@ -36,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement {
+		implements ICommonType, ITabContainedElement, IMCItemProvider {
 
 	public List<BiomeEntry> biomesInDimension;
 
@@ -101,4 +105,17 @@ import java.util.List;
 			return Collections.emptyList();
 	}
 
+	@Override public List<MCItem> providedMCItems() {
+		if (this.enablePortal)
+			return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"),
+					new MCItem.Custom(this.getModElement(), "portal", "block", "Portal block"));
+		return Collections.emptyList();
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if ("portal".equals(suffix))
+			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);
+		else
+			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
+	}
 }

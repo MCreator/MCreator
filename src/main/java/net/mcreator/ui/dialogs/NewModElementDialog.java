@@ -67,8 +67,6 @@ public class NewModElementDialog {
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
 				newGUI.showView();
-				mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
-						.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, type.getReadableName(), null, null));
 			}
 		}
 	}

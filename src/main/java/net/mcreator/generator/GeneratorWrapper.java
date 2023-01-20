@@ -92,7 +92,7 @@ import java.util.stream.Collectors;
 	 * @param elementName The name to convert
 	 * @return The plain name of the element
 	 */
-	public String getElementPlainName(String elementName) {
+	public static String getElementPlainName(String elementName) {
 		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", ""), ".");
 	}
 
