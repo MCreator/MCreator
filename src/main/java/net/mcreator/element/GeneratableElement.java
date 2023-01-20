@@ -156,20 +156,32 @@ public abstract class GeneratableElement {
 				if (importedFormatVersion != GeneratableElement.formatVersion) {
 					IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
 					if (converter != null) {
-						LOG.debug("Converting mod element " + this.lastModElement.getName() + " of type " + newType
-								+ " to a potential alternative.");
+						try {
+							GeneratableElement result = converter.convert(this.workspace,
+									new Unknown(this.lastModElement), jsonElement);
+							if (result != null) {
+								workspace.removeModElement(this.lastModElement,
+										null); // GE is null as we don't have original GE anymore
 
-						GeneratableElement result = converter.convert(this.workspace, new Unknown(this.lastModElement),
-								jsonElement);
-						if (result != null) {
-							workspace.removeModElement(this.lastModElement, result);
+								result.getModElement().setParentFolder(
+										FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
+								workspace.getModElementManager().storeModElementPicture(result);
+								workspace.addModElement(result.getModElement());
+								workspace.getGenerator().generateElement(result);
+								workspace.getModElementManager().storeModElement(result);
 
-							result.getModElement()
-									.setParentFolder(FolderElement.dummyFromPath(this.lastModElement.getFolderPath()));
-							workspace.getModElementManager().storeModElementPicture(result);
-							workspace.addModElement(result.getModElement());
-							workspace.getGenerator().generateElement(result);
-							workspace.getModElementManager().storeModElement(result);
+								LOG.debug(
+										"Converted mod element " + this.lastModElement.getName() + " of type " + newType
+												+ " to " + result.getModElement().getType().getRegistryName()
+												+ " from FV");
+							} else {
+								LOG.debug(
+										"Converted mod element " + this.lastModElement.getName() + " of type " + newType
+												+ " to data format that is not a mod element");
+							}
+						} catch (Exception e2) {
+							LOG.warn("Failed to convert mod element " + this.lastModElement.getName() + " of type "
+									+ newType + " to a potential alternative.", e2);
 						}
 					}
 				}

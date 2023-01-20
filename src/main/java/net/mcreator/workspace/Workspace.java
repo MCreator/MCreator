@@ -239,14 +239,13 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		removeModElement(element, element.getGeneratableElement());
 	}
 
-	public void removeModElement(ModElement element, GeneratableElement generatableElement) {
+	public void removeModElement(ModElement element, @Nullable GeneratableElement generatableElement) {
 		if (mod_elements.contains(element)) {
 			// first we ask generator to remove all related files
-			try {
-				if (generator != null)
-					generator.removeElementFilesAndLangKeys(Objects.requireNonNull(generatableElement));
-			} catch (Exception e) {
-				LOG.warn("Failed to remove element files for element " + element, e);
+			if (generatableElement != null && generator != null) {
+				generator.removeElementFilesAndLangKeys(Objects.requireNonNull(generatableElement));
+			} else {
+				LOG.warn("Failed to remove element files for element " + element);
 			}
 
 			// after we don't need the definition anymore, remove actual files
