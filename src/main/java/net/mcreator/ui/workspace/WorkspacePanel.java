@@ -111,7 +111,7 @@ import java.util.stream.Collectors;
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
-	private final JLabel but7 = new JLabel(TiledImageCache.workspaceCode/*ModElementUsages*/);
+	private final JLabel but7 = new JLabel(TiledImageCache.workspaceModElementUsages);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem searchElement = new JMenuItem(L10N.t("workspace.elements.list.edit.usages"));
@@ -147,7 +147,7 @@ import java.util.stream.Collectors;
 		@Override public ValidationResult validate(JComponent component) {
 			String folderName = ((JTextField) component).getText();
 
-			if (!folderName.matches("[A-Za-z0-9._ -]+")) {
+			if (!folderName.matches("[A-Za-z\\d._ -]+")) {
 				return new Validator.ValidationResult(ValidationResultType.ERROR,
 						L10N.t("workspace.elements.folders.add.error_letters"));
 			}
@@ -881,7 +881,7 @@ import java.util.stream.Collectors;
 		but7.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but7.isEnabled() && list.getSelectedValue() instanceof ModElement mu)
-					SearchUsagesDialog.open(mcreator, mu, L10N.t("workspace.elements.list.edit.usages.type"));
+					SearchUsagesDialog.searchModElementUsages(mcreator, mu);
 			}
 		});
 		but7.setToolTipText(L10N.t("workspace.elements.search_element_usages.tooltip"));
@@ -937,7 +937,7 @@ import java.util.stream.Collectors;
 		searchElement.setIcon(UIRES.get("16px.search"));
 		searchElement.addActionListener(e -> {
 			if (list.getSelectedValue() instanceof ModElement mu)
-				SearchUsagesDialog.open(mcreator, mu, L10N.t("workspace.elements.list.edit.usages.type"));
+				SearchUsagesDialog.searchModElementUsages(mcreator, mu);
 		});
 
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());

@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -81,13 +82,27 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		importmc.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importmc);
 
-		JButton del = L10N.button("workspace.sounds.delete_selected");
+		JButton search = L10N.button("workspace.structure.search_usages");
+		search.setIcon(UIRES.get("16px.search"));
+		search.setContentAreaFilled(false);
+		search.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
+		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(search);
+
+		JButton del = L10N.button("workspace.structure.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
+		search.addActionListener(a -> {
+			if (!structureElementList.isSelectionEmpty()) {
+				SearchUsagesDialog.searchStructureUsages(workspacePanel.getMCreator(),
+						structureElementList.getSelectedValue());
+			}
+		});
 		del.addActionListener(a -> deleteCurrentlySelected(structureElementList));
 
 		structureElementList.addKeyListener(new KeyAdapter() {

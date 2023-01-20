@@ -20,15 +20,20 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.IDataListEntriesProvider;
+import net.mcreator.element.types.interfaces.IDataListEntriesDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
+import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.resources.Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,44 +41,91 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class SearchUsagesDialog {
 
-	// TODO: Probably add an enum for possible elementType arguments
-	public static void open(MCreator mcreator, Object searchTarget, String elementType) {
-		String searchQuery;
-		if (searchTarget instanceof String str)
-			searchQuery = str;
-		else if (searchTarget instanceof ModElement modEl)
-			searchQuery = new DataListEntry.Custom(modEl).getName();
-		else
-			return; // can't recognize type of the object we are looking for
+	public static void searchModElementUsages(MCreator mcreator, ModElement modElement) {
+		String searchQuery = new DataListEntry.Custom(modElement).getName();
+		show(mcreator, modElement.getName(), L10N.t("dialog.search_usages.types.mod_element"),
+				e -> e instanceof IDataListEntriesDependent dle && dle.getUsedDataListEntries().stream()
+						.anyMatch(d -> d.getUnmappedValue().equals(searchQuery))
+						|| e instanceof IXMLProvider provider && provider.getXML().contains(searchQuery));
+	}
 
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title", searchTarget), true);
+	public static void searchTextureUsages(MCreator mcreator, File texture) {
+		show(mcreator, mcreator.getFolderManager().getPathInWorkspace(texture),
+				L10N.t("dialog.search_usages.types.resource.texture"),
+				e -> e instanceof IResourcesDependent res && Stream.of(TextureType.getTypes(true)).anyMatch(type -> {
+					for (String t : res.getTextures(type)) {
+						if (e.getModElement().getFolderManager()
+								.getTextureFile(FilenameUtilsPatched.removeExtension(t), type).equals(texture))
+							return true;
+					}
+					return false;
+				}));
+	}
 
-		mcreator.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+	public static void searchModelUsages(MCreator mcreator, Model model) {
+		show(mcreator, model.getReadableName(), L10N.t("dialog.search_usages.types.resource.model"),
+				e -> e instanceof IResourcesDependent res && res.getModels().contains(model));
+	}
+
+	public static void searchSoundUsages(MCreator mcreator, SoundElement sound) {
+		show(mcreator, sound.getName(), L10N.t("dialog.search_usages.types.resource.sound"),
+				e -> e instanceof IResourcesDependent res && res.getSounds().stream()
+						.anyMatch(s -> s.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())));
+	}
+
+	public static void searchStructureUsages(MCreator mcreator, String structure) {
+		show(mcreator, structure, L10N.t("dialog.search_usages.types.resource.structure"),
+				e -> e instanceof IResourcesDependent res && res.getStructures().contains(structure));
+	}
+
+	public static void searchGlobalVariableUsages(MCreator mcreator, String variableName) {
+		String searchQuery = "<field name=\"VAR\">global:" + variableName + "</field>";
+		show(mcreator, variableName, L10N.t("dialog.search_usages.types.global_variable"),
+				e -> e instanceof IXMLProvider provider && provider.getXML().contains(searchQuery));
+	}
+
+	public static void searchTranslationKeyUsages(MCreator mcreator, String translationKey) {
+		show(mcreator, translationKey, L10N.t("dialog.search_usages.types.translation_key"),
+				e -> e instanceof IXMLProvider provider && provider.getXML().contains(translationKey)/*
+						|| mcreator.getGenerator().getLocalizationKeys(e).contains(translationKey)*/); // TODO
+	}
+
+	public static void show(MCreator mcreator, String query, String targetType, Predicate<GeneratableElement> matcher) {
+		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title", query), true);
+		JButton close = L10N.button("dialog.search_usages.close");
+		close.addActionListener(e -> dialog.setVisible(false));
+
+		mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		Set<ModElement> referencingMods = new HashSet<>();
 		for (ModElement modEl : mcreator.getWorkspace().getModElements()) {
-			if (modEl.isCodeLocked() || !mcreator.getModElementManager().hasModElementGeneratableElement(modEl))
-				continue;
-
-			GeneratableElement genEl = modEl.getGeneratableElement();
-
-			if (genEl instanceof IDataListEntriesProvider dle && dle.getUsedDataListEntries().contains(searchQuery))
-				referencingMods.add(modEl);
-
-			if (genEl instanceof IXMLProvider provider && provider.getXML().contains(searchQuery))
-				referencingMods.add(modEl);
+			if (!modEl.isCodeLocked() && mcreator.getModElementManager().hasModElementGeneratableElement(modEl)) {
+				if (matcher.test(modEl.getGeneratableElement()))
+					referencingMods.add(modEl);
+			}
 		}
 
 		mcreator.setCursor(Cursor.getDefaultCursor());
+		if (referencingMods.isEmpty()) {
+			JOptionPane.showOptionDialog(mcreator,
+					L10N.t("dialog.search_usages.list.empty", targetType, query),
+					L10N.t("dialog.search_usages.title", query), JOptionPane.DEFAULT_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, new Object[] { close.getText() }, close.getText());
+			return;
+		}
 
 		JList<ModElement> referencingElements = new JList<>(referencingMods.toArray(ModElement[]::new));
-		referencingElements.setFixedCellHeight(40);
 		referencingElements.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		referencingElements.setSelectedIndex(0);
+		referencingElements.setFixedCellHeight(40);
 		referencingElements.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		referencingElements.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
 			JLabel label = L10N.label("dialog.search_usages.list.item", value.getName(),
@@ -93,13 +145,13 @@ public class SearchUsagesDialog {
 		referencingElements.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
-					editSelected(referencingElements.getSelectedValue(), mcreator, dialog);
+					editSelected(mcreator, referencingElements.getSelectedValue(), dialog);
 			}
 		});
 		referencingElements.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					editSelected(referencingElements.getSelectedValue(), mcreator, dialog);
+					editSelected(mcreator, referencingElements.getSelectedValue(), dialog);
 			}
 		});
 
@@ -108,33 +160,24 @@ public class SearchUsagesDialog {
 		sp.setPreferredSize(new Dimension(150, 140));
 
 		JButton edit = L10N.button("dialog.search_usages.open_selected");
-		JButton close = L10N.button("dialog.search_usages.close");
-
 		edit.addActionListener(e -> {
 			if (edit.isEnabled() && !referencingElements.isSelectionEmpty())
-				editSelected(referencingElements.getSelectedValue(), mcreator, dialog);
+				editSelected(mcreator, referencingElements.getSelectedValue(), dialog);
 		});
-		close.addActionListener(e -> dialog.setVisible(false));
 
 		JPanel list = new JPanel(new BorderLayout(10, 10));
 		list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		if (referencingMods.isEmpty()) {
-			list.add("North", L10N.label("dialog.search_usages.list.empty", elementType, searchTarget));
-			list.add("South", PanelUtils.centerInPanel(close));
-		} else {
-			referencingElements.setSelectedIndex(0);
-			list.add("North", L10N.label("dialog.search_usages.list", elementType, searchTarget));
-			list.add("Center", sp);
-			list.add("South", PanelUtils.join(edit, close));
-		}
+		list.add("North", L10N.label("dialog.search_usages.list", targetType, query));
+		list.add("Center", sp);
+		list.add("South", PanelUtils.join(edit, close));
 
 		dialog.getContentPane().add(list);
-		dialog.setSize(new Dimension(400, 300));
+		dialog.pack();
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}
 
-	private static void editSelected(ModElement element, MCreator mcreator, MCreatorDialog dialog) {
+	private static void editSelected(MCreator mcreator, ModElement element, MCreatorDialog dialog) {
 		ModElementGUI<?> gui = element.getType().getModElementGUI(mcreator, element, true);
 		if (gui != null) {
 			gui.showView();

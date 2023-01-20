@@ -60,7 +60,7 @@ public abstract class MappableElement {
 		return value;
 	}
 
-	public boolean canProperlyMap() {
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted") public boolean canProperlyMap() {
 		String mapped = mapper.getMapping(value);
 		return !mapped.contains("@") && !mapped.contains(
 				NameMapper.UNKNOWN_ELEMENT); // if there are still @tokens, we failed to map some values
@@ -85,6 +85,14 @@ public abstract class MappableElement {
 		return element instanceof MappableElement && value.equals(((MappableElement) element).value);
 	}
 
+	public static class Dummy extends MappableElement {
+
+		public Dummy(NameMapper mapper, String value) {
+			super(mapper);
+			this.value = value;
+		}
+	}
+
 	public static class Unique extends MappableElement {
 
 		public Unique(MappableElement original) {
@@ -102,5 +110,4 @@ public abstract class MappableElement {
 		}
 
 	}
-
 }

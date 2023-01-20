@@ -60,7 +60,7 @@ public class WorkspaceFolderManager {
 
 	public static File getSuggestedWorkspaceFoldersRoot() {
 		File workspacesFolder = new File(System.getProperty("user.home"), "MCreatorWorkspaces");
-		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
+		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z\\d_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
 			if (OS.getOS() == OS.WINDOWS)
 				workspacesFolder = new File("C:/", "MCreatorWorkspaces");
 		}
@@ -69,6 +69,12 @@ public class WorkspaceFolderManager {
 
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
+	}
+
+	public String getPathInWorkspace(File file) {
+		if (isFileInWorkspace(file))
+			return workspaceFolder.toPath().relativize(file.toPath()).toString();
+		return file.getPath();
 	}
 
 	/**

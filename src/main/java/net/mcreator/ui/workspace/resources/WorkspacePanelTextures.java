@@ -25,6 +25,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
@@ -153,6 +154,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
+		JButton search = L10N.button("workspace.textures.search_usages");
+		search.setIcon(UIRES.get("16px.search"));
+		search.setContentAreaFilled(false);
+		search.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
+		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(search);
+
 		JButton duplicate = L10N.button("workspace.textures.duplicate_selected");
 		duplicate.setIcon(UIRES.get("16px.duplicate.gif"));
 		duplicate.setContentAreaFilled(false);
@@ -179,6 +188,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		del.addActionListener(a -> deleteCurrentlySelected());
 
 		edit.addActionListener(e -> editSelectedFile());
+		search.addActionListener(e -> {
+			if (listGroup.getSelectedItem() != null)
+				SearchUsagesDialog.searchTextureUsages(workspacePanel.getMCreator(), listGroup.getSelectedItem());
+		});
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 
 		add("North", bar);

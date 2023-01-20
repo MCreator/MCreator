@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
 import net.mcreator.ui.component.util.TableUtil;
 import net.mcreator.ui.dialogs.NewVariableDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -207,6 +208,14 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		addvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(addvar);
 
+		JButton search = L10N.button("workspace.variables.search_selected");
+		search.setIcon(UIRES.get("16px.search")); // TODO: Proper icon
+		search.setContentAreaFilled(false);
+		search.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
+		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(search);
+
 		JButton delvar = L10N.button("workspace.variables.remove_selected");
 		delvar.setIcon(UIRES.get("16px.delete.gif"));
 		delvar.setContentAreaFilled(false);
@@ -244,6 +253,13 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			if (element != null) {
 				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
+			}
+		});
+
+		search.addActionListener(e -> {
+			if (elements.getSelectedRow() != -1) {
+				SearchUsagesDialog.searchGlobalVariableUsages(workspacePanel.getMCreator(),
+						(String) elements.getValueAt(elements.getSelectedRow(), 0));
 			}
 		});
 

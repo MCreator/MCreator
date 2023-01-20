@@ -26,6 +26,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -145,6 +146,17 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		editModelAnimations.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(editModelAnimations);
 		editModelAnimations.addActionListener(e -> editSelectedModelAnimations());
+
+		JButton searchModelUsages = L10N.button("workspace.3dmodels.search_usages");
+		searchModelUsages.setIcon(UIRES.get("16px.search"));
+		searchModelUsages.setOpaque(false);
+		searchModelUsages.setContentAreaFilled(false);
+		searchModelUsages.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(searchModelUsages);
+		searchModelUsages.addActionListener(e -> {
+			if (!modelList.isSelectionEmpty())
+				SearchUsagesDialog.searchModelUsages(workspacePanel.getMCreator(), modelList.getSelectedValue());
+		});
 
 		JButton del = L10N.button("workspace.3dmodels.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));

@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,28 @@
 
 package net.mcreator.element.types.interfaces;
 
-import java.util.Collection;
+import net.mcreator.element.parts.Sound;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.resources.Model;
 
-public interface IDataListEntriesProvider {
+import java.util.*;
 
-	// TODO: Implement where applicable (data list entries or strings)?
-	Collection<String> getUsedDataListEntries();
+public interface IResourcesDependent {
+
+	default Collection<String> getTextures(TextureType type) {
+		return Collections.emptyList();
+	}
+
+	default Collection<Model> getModels() {
+		return Collections.emptyList();
+	}
+
+	default Collection<String> getStructures() {
+		return Collections.emptyList();
+	}
+
+	default Collection<Sound> getSounds() {
+		return Collections.emptyList();
+	}
 
 }

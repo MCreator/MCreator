@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -97,10 +98,19 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
+		JButton search = L10N.button("workspace.sounds.search_usages");
+		search.setIcon(UIRES.get("16px.search"));
+		search.setContentAreaFilled(false);
+		search.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
+		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(search);
+
 		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
 		del.setContentAreaFilled(false);
+		del.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
@@ -142,7 +152,12 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		});
 
 		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));
+		search.addActionListener(e -> {
+			if (!soundElementList.isSelectionEmpty())
+				SearchUsagesDialog.searchSoundUsages(workspacePanel.getMCreator(), soundElementList.getSelectedValue());
+		});
 		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
+
 		add("North", bar);
 
 	}

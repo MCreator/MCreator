@@ -96,6 +96,13 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		add.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(add);
 
+		use = L10N.button("workspace.localization.show_usages");
+		use.setIcon(UIRES.get("16px.search")); // TODO: Proper icon
+		use.setOpaque(false);
+		use.setContentAreaFilled(false);
+		use.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(use);
+
 		del = L10N.button("workspace.localization.remove_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
@@ -119,13 +126,6 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		imp.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(imp);
 
-		use = L10N.button("workspace.localization.show_usages");
-		use.setIcon(UIRES.get("16px.open.gif"));
-		use.setOpaque(false);
-		use.setContentAreaFilled(false);
-		use.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(use);
-
 		add("North", bar);
 
 		add.addActionListener(e -> {
@@ -140,6 +140,9 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 	}
 
 	@Override public void reloadElements() {
+		for (var al : use.getActionListeners())
+			use.removeActionListener(al);
+
 		for (var al : del.getActionListeners())
 			del.removeActionListener(al);
 
@@ -148,9 +151,6 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 		for (var al : exp.getActionListeners())
 			exp.removeActionListener(al);
-
-		for (var al : use.getActionListeners())
-			use.removeActionListener(al);
 
 		pane.removeAll();
 		sorters = new ArrayList<>();
@@ -275,6 +275,13 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
+			use.addActionListener(a -> {
+				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
+					SearchUsagesDialog.searchTranslationKeyUsages(workspacePanel.getMCreator(),
+							(String) elements.getValueAt(elements.getSelectedRow(), 0));
+				}
+			});
+
 			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
 
 			elements.addKeyListener(new KeyAdapter() {
@@ -353,14 +360,6 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 					SwingUtilities.invokeLater(this::reloadElements);
 				}
 
-			});
-
-			use.addActionListener(a -> {
-				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
-					SearchUsagesDialog.open(workspacePanel.getMCreator(),
-							elements.getValueAt(elements.getSelectedRow(), 0),
-							L10N.t("workspace.localization.show_usages.type"));
-				}
 			});
 		}
 
