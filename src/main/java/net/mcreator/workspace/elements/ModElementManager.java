@@ -85,6 +85,10 @@ public class ModElementManager {
 			return new CustomElement(element);
 		}
 
+		if (element.getType() == ModElementType.UNKNOWN) {
+			return null;
+		}
+
 		if (cache.containsKey(element))
 			return cache.get(element);
 
