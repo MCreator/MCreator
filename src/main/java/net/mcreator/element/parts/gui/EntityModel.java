@@ -59,7 +59,7 @@ public class EntityModel extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return 7;
+		return -1;
 	}
 
 	public int getID(EntityModel entityModel) {
