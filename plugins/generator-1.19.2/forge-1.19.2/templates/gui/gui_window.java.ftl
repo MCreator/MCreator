@@ -182,7 +182,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Button") as component>
-				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				this.addRenderableWidget(new ExtendedButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 					${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), e -> {
 							<#if hasProcedure(component.onClick)>
 								if (<@procedureOBJToConditionCode component.displayCondition/>) {
