@@ -62,7 +62,7 @@ public abstract class Slot extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return 4;
+		return 6;
 	}
 
 	@Override public final int getWidth(Workspace workspace) {

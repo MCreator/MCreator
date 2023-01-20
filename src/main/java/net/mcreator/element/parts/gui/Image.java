@@ -66,7 +66,7 @@ public class Image extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return 3;
+		return 5;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {

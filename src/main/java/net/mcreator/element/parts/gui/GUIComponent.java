@@ -42,12 +42,12 @@ import java.util.stream.Collectors;
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
 		put("label", Label.class); // weight 0
 		put("textfield", TextField.class); // weight 1
-		put("button", Button.class);// weight 2
-		put("image", Image.class);// weight 3
-		put("inputslot", InputSlot.class); // weight 4
-		put("outputslot", OutputSlot.class); // weight 4
-		put("checkbox", Checkbox.class); //weight 5
-		put("imagebutton", ImageButton.class); //weight 6
+		put("checkbox", Checkbox.class); //weight 2
+		put("imagebutton", ImageButton.class); //weight 3
+		put("button", Button.class);// weight 4
+		put("image", Image.class);// weight 5
+		put("inputslot", InputSlot.class); // weight 6
+		put("outputslot", OutputSlot.class); // weight 6
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
@@ -65,7 +65,6 @@ import java.util.stream.Collectors;
 
 	/**
 	 * Returns the name of the component. Name should be Java and registry name compatible.
-	 * <p>
 	 * The name should be unique for the components that need it.
 	 *
 	 * @return Component name
@@ -78,6 +77,11 @@ import java.util.stream.Collectors;
 
 	public abstract int getHeight(Workspace workspace);
 
+	/**
+	 * Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.
+	 *
+	 * @return The priority of the component (lower is more important, higher is less important)
+	 */
 	public abstract int getWeight();
 
 	public boolean isSizeKnown() {
