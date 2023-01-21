@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WorkspaceConvertersTest {
 
@@ -79,8 +80,14 @@ public class WorkspaceConvertersTest {
 				assertNotNull(generatorConfiguration);
 
 				try (Workspace workspace = Workspace.readFromFS(workspaceFile, generatorConfiguration)) {
+					// Conversions
 					for (ModElement mod : workspace.getModElements()) {
 						mod.getGeneratableElement();
+					}
+
+					// Check if all MEs have valid GE definition
+					for (ModElement mod : workspace.getModElements()) {
+						assertTrue(workspace.getModElementManager().hasModElementGeneratableElement(mod));
 					}
 				}
 			});
