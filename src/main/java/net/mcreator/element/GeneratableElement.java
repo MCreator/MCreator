@@ -175,14 +175,11 @@ public abstract class GeneratableElement {
 								workspace.getGenerator().generateElement(result);
 								workspace.getModElementManager().storeModElement(result);
 
-								LOG.debug(
-										"Converted mod element " + this.lastModElement.getName() + " of type " + newType
-												+ " to " + result.getModElement().getType().getRegistryName()
-												+ " from FV");
+								LOG.debug("Converted mod element " + this.lastModElement.getName() + " (" + newType
+										+ ") to " + result.getModElement().getType().getRegistryName());
 							} else {
-								LOG.debug(
-										"Converted mod element " + this.lastModElement.getName() + " of type " + newType
-												+ " to data format that is not a mod element");
+								LOG.debug("Converted mod element " + this.lastModElement.getName() + " (" + newType
+										+ ") to data format that is not a mod element");
 							}
 						} catch (Exception e2) {
 							LOG.warn("Failed to convert mod element " + this.lastModElement.getName() + " of type "
