@@ -26,6 +26,7 @@ import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
@@ -58,10 +59,13 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	private final Set<Plugin> plugins;
-	private final Set<String> failedPlugins; // list of plugins that failed to load and are thus not present on plugins list
-	private final Set<PluginUpdateInfo> pluginUpdates;
 
 	private final Set<JavaPlugin> javaPlugins;
+
+	// list of plugins that failed to load and are thus not present on plugins list
+	private final Set<PluginLoadFailure> failedPlugins;
+
+	private final Set<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
 
@@ -94,7 +98,7 @@ public class PluginLoader extends URLClassLoader {
 				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
 					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
 							.getDependencies());
-					plugin.loaded = false;
+					plugin.loaded_failure = "missing dependencies";
 					continue;
 				}
 			}
@@ -112,7 +116,8 @@ public class PluginLoader extends URLClassLoader {
 							try {
 								return super.findClass(name);
 							} catch (Exception e) {
-								plugin.loaded = false;
+								plugin.loaded_failure =
+										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
 								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
 								throw e;
 							}
@@ -125,17 +130,13 @@ public class PluginLoader extends URLClassLoader {
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-
-					plugin.loaded = true;
 				} else if (plugin.getJavaPlugin() != null) {
 					LOG.warn(plugin.getID() + " is Java plugin, but Java plugins are disabled in preferences");
 
-					plugin.loaded = false;
-				} else {
-					plugin.loaded = true;
+					plugin.loaded_failure = "Java plugins disabled";
 				}
 			} catch (Exception e) {
-				plugin.loaded = false;
+				plugin.loaded_failure = "Load error: " + e.getMessage();
 				LOG.error("Failed to load plugin " + plugin.getID(), e);
 			}
 		}
@@ -229,7 +230,8 @@ public class PluginLoader extends URLClassLoader {
 					plugin.file = pluginFile;
 					return validatePlugin(plugin);
 				} catch (Exception e) {
-					failedPlugins.add(pluginFile.getName());
+					failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
+							"IO error: " + e.getMessage()));
 					LOG.error("Failed to load plugin from " + pluginFile, e);
 				}
 			} else {
@@ -247,7 +249,8 @@ public class PluginLoader extends URLClassLoader {
 				plugin.file = pluginFile;
 				return validatePlugin(plugin);
 			} catch (Exception e) {
-				failedPlugins.add(pluginFile.getName());
+				failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
+						"IO error: " + e.getMessage()));
 				LOG.error("Failed to load plugin from " + pluginFile, e);
 			}
 		}
@@ -256,14 +259,14 @@ public class PluginLoader extends URLClassLoader {
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
 		if (!plugin.isCompatible()) {
-			failedPlugins.add(plugin.getID());
+			failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
 			LOG.warn("Plugin " + plugin.getID()
 					+ " is not compatible with this MCreator version! Skipping this plugin.");
 			return null;
 		}
 
 		if (plugin.getMinVersion() < 0) {
-			failedPlugins.add(plugin.getID());
+			failedPlugins.add(new PluginLoadFailure(plugin, "missing minversion"));
 			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
 			return null;
 		}
@@ -293,15 +296,15 @@ public class PluginLoader extends URLClassLoader {
 		}
 	}
 
-	public List<String> getFailedPlugins() {
-		List<String> failedPluginsAggregated = new ArrayList<>(this.failedPlugins);
+	public Collection<PluginLoadFailure> getFailedPlugins() {
+		Set<PluginLoadFailure> failedPluginsAggregated = new HashSet<>(this.failedPlugins);
 
 		for (Plugin plugin : plugins) {
 			if (!plugin.isLoaded())
-				failedPluginsAggregated.add(plugin.getID());
+				failedPluginsAggregated.add(new PluginLoadFailure(plugin, plugin.getLoadFailure()));
 		}
 
-		return failedPluginsAggregated;
+		return Collections.unmodifiableCollection(failedPluginsAggregated);
 	}
 
 }
