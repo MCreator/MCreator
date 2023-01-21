@@ -33,7 +33,7 @@ public class Plugin implements Comparable<Plugin> {
 
 	transient File file;
 	transient boolean builtin;
-	transient boolean loaded;
+	transient boolean loaded; // indicates if plugin was fully loaded without any errors
 
 	private String id;
 	private int weight = 0;
@@ -59,7 +59,7 @@ public class Plugin implements Comparable<Plugin> {
 	}
 
 	/**
-	 * A plugin is loaded when all plugin dependencies are present.
+	 * A plugin is loaded when all plugin dependencies are present and plugin loaded without errors.
 	 *
 	 * @return <p>The plugin is loaded.</p>
 	 */

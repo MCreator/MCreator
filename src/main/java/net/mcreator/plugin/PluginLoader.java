@@ -57,10 +57,11 @@ public class PluginLoader extends URLClassLoader {
 		INSTANCE = new PluginLoader();
 	}
 
-	private final List<Plugin> plugins;
-	private final List<PluginUpdateInfo> pluginUpdates;
+	private final Set<Plugin> plugins;
+	private final Set<String> failedPlugins; // list of plugins that failed to load and are thus not present on plugins list
+	private final Set<PluginUpdateInfo> pluginUpdates;
 
-	private final List<JavaPlugin> javaPlugins;
+	private final Set<JavaPlugin> javaPlugins;
 
 	private final Reflections reflections;
 
@@ -70,12 +71,10 @@ public class PluginLoader extends URLClassLoader {
 	public PluginLoader() {
 		super(new URL[] {}, null);
 
-		this.plugins = new ArrayList<>();
-		this.javaPlugins = new ArrayList<>();
-		this.pluginUpdates = new ArrayList<>();
-
-		@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {},
-				Thread.currentThread().getContextClassLoader());
+		this.plugins = new HashSet<>();
+		this.failedPlugins = new HashSet<>();
+		this.javaPlugins = new HashSet<>();
+		this.pluginUpdates = new HashSet<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -106,16 +105,37 @@ public class PluginLoader extends URLClassLoader {
 				addURL(plugin.toURL());
 
 				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins && plugin.getJavaPlugin() != null) {
+					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
+							"PluginClassLoader-" + plugin.getID(), new URL[] {},
+							Thread.currentThread().getContextClassLoader()) {
+						@Override protected Class<?> findClass(String name) throws ClassNotFoundException {
+							try {
+								return super.findClass(name);
+							} catch (Exception e) {
+								plugin.loaded = false;
+								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
+								throw e;
+							}
+						}
+					};
+
 					javaPluginCL.addURL(plugin.toURL());
 
 					Class<?> clazz = javaPluginCL.loadClass(plugin.getJavaPlugin());
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				}
 
-				plugin.loaded = true;
+					plugin.loaded = true;
+				} else if (plugin.getJavaPlugin() != null) {
+					LOG.warn(plugin.getID() + " is Java plugin, but Java plugins are disabled in preferences");
+
+					plugin.loaded = false;
+				} else {
+					plugin.loaded = true;
+				}
 			} catch (Exception e) {
+				plugin.loaded = false;
 				LOG.error("Failed to load plugin " + plugin.getID(), e);
 			}
 		}
@@ -159,22 +179,22 @@ public class PluginLoader extends URLClassLoader {
 	/**
 	 * @return <p> A {@link List} of all loaded plugins.</p>
 	 */
-	public List<Plugin> getPlugins() {
-		return plugins;
+	public Collection<Plugin> getPlugins() {
+		return Collections.unmodifiableCollection(plugins);
 	}
 
 	/**
 	 * @return <p> A {@link List} of all loaded Java plugins.</p>
 	 */
-	protected List<JavaPlugin> getJavaPlugins() {
-		return javaPlugins;
+	protected Collection<JavaPlugin> getJavaPlugins() {
+		return Collections.unmodifiableCollection(javaPlugins);
 	}
 
 	/**
 	 * @return <p>A list of all plugin updates detected.</p>
 	 */
-	public List<PluginUpdateInfo> getPluginUpdates() {
-		return pluginUpdates;
+	public Collection<PluginUpdateInfo> getPluginUpdates() {
+		return Collections.unmodifiableCollection(pluginUpdates);
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
@@ -209,6 +229,7 @@ public class PluginLoader extends URLClassLoader {
 					plugin.file = pluginFile;
 					return validatePlugin(plugin);
 				} catch (Exception e) {
+					failedPlugins.add(pluginFile.getName());
 					LOG.error("Failed to load plugin from " + pluginFile, e);
 				}
 			} else {
@@ -226,6 +247,7 @@ public class PluginLoader extends URLClassLoader {
 				plugin.file = pluginFile;
 				return validatePlugin(plugin);
 			} catch (Exception e) {
+				failedPlugins.add(pluginFile.getName());
 				LOG.error("Failed to load plugin from " + pluginFile, e);
 			}
 		}
@@ -234,12 +256,14 @@ public class PluginLoader extends URLClassLoader {
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
 		if (!plugin.isCompatible()) {
+			failedPlugins.add(plugin.getID());
 			LOG.warn("Plugin " + plugin.getID()
 					+ " is not compatible with this MCreator version! Skipping this plugin.");
 			return null;
 		}
 
 		if (plugin.getMinVersion() < 0) {
+			failedPlugins.add(plugin.getID());
 			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
 			return null;
 		}
@@ -267,6 +291,17 @@ public class PluginLoader extends URLClassLoader {
 				return null;
 			}).filter(Objects::nonNull).toList());
 		}
+	}
+
+	public List<String> getFailedPlugins() {
+		List<String> failedPluginsAggregated = new ArrayList<>(this.failedPlugins);
+
+		for (Plugin plugin : plugins) {
+			if (!plugin.isLoaded())
+				failedPluginsAggregated.add(plugin.getID());
+		}
+
+		return failedPluginsAggregated;
 	}
 
 }
