@@ -189,8 +189,13 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		edit.addActionListener(e -> editSelectedFile());
 		search.addActionListener(e -> {
-			if (listGroup.getSelectedItem() != null)
-				SearchUsagesDialog.searchTextureUsages(workspacePanel.getMCreator(), listGroup.getSelectedItem());
+			for (TextureType section : TextureType.getTypes(true)) {
+				File file = mapLists.get(section.getID()).list().getSelectedValue();
+				if (file != null) {
+					SearchUsagesDialog.showTextureUsages(workspacePanel.getMCreator(), List.of(file), section, false);
+					break;
+				}
+			}
 		});
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 
@@ -421,7 +426,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 						setIcon(icon);
 					}
 
-					if (!ma.getName().matches("[a-z0-9/._-]+")) {
+					if (!ma.getName().matches("[a-z\\d/._-]+")) {
 						if (getIcon() instanceof ImageIcon icon) {
 							icon = ImageUtils.changeSaturation(icon, 0.5f);
 							setIcon(ImageUtils.drawOver(icon, UIRES.get("18px.warning"), 0, 0, 18, 18));

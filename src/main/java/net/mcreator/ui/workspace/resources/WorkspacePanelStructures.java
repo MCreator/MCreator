@@ -99,8 +99,8 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 		search.addActionListener(a -> {
 			if (!structureElementList.isSelectionEmpty()) {
-				SearchUsagesDialog.searchStructureUsages(workspacePanel.getMCreator(),
-						structureElementList.getSelectedValue());
+				SearchUsagesDialog.showStructureUsages(workspacePanel.getMCreator(),
+						structureElementList.getSelectedValuesList(), false);
 			}
 		});
 		del.addActionListener(a -> deleteCurrentlySelected(structureElementList));

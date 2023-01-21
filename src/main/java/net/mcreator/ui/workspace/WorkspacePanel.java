@@ -881,7 +881,7 @@ import java.util.stream.Collectors;
 		but7.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but7.isEnabled() && list.getSelectedValue() instanceof ModElement mu)
-					SearchUsagesDialog.searchModElementUsages(mcreator, mu);
+					SearchUsagesDialog.showModElementUsages(mcreator, List.of(mu), false);
 			}
 		});
 		but7.setToolTipText(L10N.t("workspace.elements.search_element_usages.tooltip"));
@@ -937,7 +937,7 @@ import java.util.stream.Collectors;
 		searchElement.setIcon(UIRES.get("16px.search"));
 		searchElement.addActionListener(e -> {
 			if (list.getSelectedValue() instanceof ModElement mu)
-				SearchUsagesDialog.searchModElementUsages(mcreator, mu);
+				SearchUsagesDialog.showModElementUsages(mcreator, List.of(mu), false);
 		});
 
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());

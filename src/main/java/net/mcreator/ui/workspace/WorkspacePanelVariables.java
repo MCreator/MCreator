@@ -258,8 +258,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 		search.addActionListener(e -> {
 			if (elements.getSelectedRow() != -1) {
-				SearchUsagesDialog.searchGlobalVariableUsages(workspacePanel.getMCreator(),
-						(String) elements.getValueAt(elements.getSelectedRow(), 0));
+				SearchUsagesDialog.showGlobalVariableUsages(workspacePanel.getMCreator(),
+						(String) elements.getValueAt(elements.getSelectedRow(), 0), storingEdits);
 			}
 		});
 

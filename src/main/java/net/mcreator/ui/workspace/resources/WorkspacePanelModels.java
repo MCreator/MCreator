@@ -155,7 +155,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		bar.add(searchModelUsages);
 		searchModelUsages.addActionListener(e -> {
 			if (!modelList.isSelectionEmpty())
-				SearchUsagesDialog.searchModelUsages(workspacePanel.getMCreator(), modelList.getSelectedValue());
+				SearchUsagesDialog.showModelUsages(workspacePanel.getMCreator(), modelList.getSelectedValuesList(),
+						false);
 		});
 
 		JButton del = L10N.button("workspace.3dmodels.delete_selected");

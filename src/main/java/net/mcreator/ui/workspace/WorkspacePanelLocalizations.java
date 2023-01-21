@@ -277,8 +277,8 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 			use.addActionListener(a -> {
 				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
-					SearchUsagesDialog.searchTranslationKeyUsages(workspacePanel.getMCreator(),
-							(String) elements.getValueAt(elements.getSelectedRow(), 0));
+					SearchUsagesDialog.showTranslationKeyUsages(workspacePanel.getMCreator(),
+							(String) elements.getValueAt(elements.getSelectedRow(), 0), false);
 				}
 			});
 
