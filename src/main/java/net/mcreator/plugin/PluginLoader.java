@@ -74,7 +74,7 @@ public class PluginLoader extends URLClassLoader {
 		this.javaPlugins = new ArrayList<>();
 		this.pluginUpdates = new ArrayList<>();
 
-		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {},
+		@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {},
 				Thread.currentThread().getContextClassLoader());
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
@@ -88,7 +88,7 @@ public class PluginLoader extends URLClassLoader {
 
 		Collections.sort(pluginsLoadList);
 
-		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).toList();
+		Set<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toSet());
 
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
