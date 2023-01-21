@@ -160,27 +160,31 @@ public class RegenerateCodeAction extends GradleAction {
 				try {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 
-					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
+					if (generatableElement != null) {
+						LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
 
-					// generate mod element code
-					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
-							.generateElement(generatableElement, false);
+						// generate mod element code
+						List<GeneratorFile> generatedFiles = mcreator.getGenerator()
+								.generateElement(generatableElement, false);
 
-					if (!mod.isCodeLocked()) {
-						filesToReformat.addAll(
-								generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
+						if (!mod.isCodeLocked()) {
+							filesToReformat.addAll(
+									generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
+						}
+
+						// save custom mod element picture if it has one
+						mcreator.getModElementManager().storeModElementPicture(generatableElement);
+
+						// add mod element to workspace again, so the icons get reloaded
+						mcreator.getWorkspace().addModElement(generatableElement.getModElement());
+
+						// we reinit the mod to load new icons etc.
+						generatableElement.getModElement().reinit(mcreator.getWorkspace());
+
+						generatableElementsToSave.add(generatableElement);
+					} else {
+						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
 					}
-
-					// save custom mod element picture if it has one
-					mcreator.getModElementManager().storeModElementPicture(generatableElement);
-
-					// add mod element to workspace again, so the icons get reloaded
-					mcreator.getWorkspace().addModElement(mod);
-
-					// we reinit the mod to load new icons etc.
-					mod.reinit(mcreator.getWorkspace());
-
-					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}
