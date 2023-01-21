@@ -182,7 +182,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void addModElement(ModElement element) {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
-			element.reinit(); // if it is new element, it now probably has icons so we reinit modicons
+			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
 			markDirty();
 		} else
@@ -241,7 +241,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 			// first we ask generator to remove all related files
 			if (generatableElement != null && generator != null) {
-				generator.removeElementFilesAndLangKeys(Objects.requireNonNull(generatableElement));
+				generator.removeElementFilesAndLangKeys(generatableElement);
 			} else {
 				LOG.warn("Failed to remove element files for element " + element);
 			}
@@ -319,9 +319,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	void reloadModElements() {
-		for (ModElement modElement : mod_elements) {
-			modElement.setWorkspace(this);
-			modElement.reinit();
+		// While reiniting, list may change due to converters, so we need to copy it
+		for (ModElement modElement : Set.copyOf(mod_elements)) {
+			modElement.reinit(this);
 		}
 	}
 

@@ -51,15 +51,15 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	@Nullable private String path;
 
 	// MCItem representations of this element
-	// it is transient so it does not get serialized
-	private transient List<MCItem> mcItems = null;
+	// it is transient, so it does not get serialized
+	private transient List<MCItem> mcItems = Collections.emptyList();
 
 	// current mod icon if not obtained from mcitem - used for recipes
-	// it is transient so it does not get serialized
+	// it is transient, so it does not get serialized
 	private transient ImageIcon elementIcon;
 
 	// Workspace this ModElement is in
-	// it is transient so it does not get serialized
+	// it is transient, so it does not get serialized
 	private transient Workspace workspace;
 
 	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType<?> type) {
@@ -67,9 +67,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.type = type.getRegistryName();
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
-		setWorkspace(workspace);
-
-		reinit();
+		reinit(workspace);
 	}
 
 	/**
@@ -86,9 +84,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (mu.metadata != null)
 			this.metadata = new HashMap<>(mu.metadata);
 
-		setWorkspace(workspace);
-
-		reinit();
+		reinit(workspace);
 	}
 
 	@Nullable public GeneratableElement getGeneratableElement() {
@@ -107,14 +103,21 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.workspace = other.workspace;
 	}
 
-	public void reinit() {
-		if (type == null)
+	public void reinit(Workspace workspace) {
+		setWorkspace(workspace);
+
+		if (type == null || this.getType() == ModElementType.UNKNOWN) {
+			// to make sure mcItems is not null when serialized from JSON and unknown ME type
+			mcItems = Collections.emptyList();
+
 			return;
+		}
 
 		reloadElementIcon();
 
 		mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
-				provider.providedMCItems() : Collections.emptyList();
+				provider.providedMCItems() :
+				Collections.emptyList();
 	}
 
 	private void reloadElementIcon() {

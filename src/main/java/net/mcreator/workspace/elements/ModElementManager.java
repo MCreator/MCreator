@@ -85,10 +85,6 @@ public class ModElementManager {
 			return new CustomElement(element);
 		}
 
-		if (element.getType() == ModElementType.UNKNOWN) {
-			return null;
-		}
-
 		if (cache.containsKey(element))
 			return cache.get(element);
 
@@ -100,7 +96,7 @@ public class ModElementManager {
 		String importJSON = FileIO.readFileToString(genFile);
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
-		if (generatableElement != null) {
+		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
 
@@ -119,7 +115,8 @@ public class ModElementManager {
 			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!", e);
+			LOG.warn("Failed to load generatable element " + modElement.getName()
+					+ " from JSON. This can lead to errors further down the road!", e);
 			return null;
 		}
 	}

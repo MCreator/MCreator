@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.gradle.GradleTaskFinishedListener;
@@ -70,10 +71,12 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+				if (mod.getType() == ModElementType.UNKNOWN)
+					continue; // skip unknown MEs as we don't know what we can remove from them
+
 				List<GeneratorTemplate> templates = mcreator.getGenerator()
 						.getModElementGeneratorTemplatesList(mod.getGeneratableElement());
-				if (templates == null)
-					continue;
+
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();
 				toBePreserved.addAll(modElementFiles); // we don't delete mod element files in next step
 				if (!mod.isCodeLocked()) // but we do in this step, if the code is not locked
@@ -175,7 +178,7 @@ public class RegenerateCodeAction extends GradleAction {
 					mcreator.getWorkspace().addModElement(mod);
 
 					// we reinit the mod to load new icons etc.
-					mod.reinit();
+					mod.reinit(mcreator.getWorkspace());
 
 					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {

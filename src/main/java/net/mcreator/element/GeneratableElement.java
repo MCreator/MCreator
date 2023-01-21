@@ -33,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -157,6 +158,11 @@ public abstract class GeneratableElement {
 					IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
 					if (converter != null) {
 						try {
+							// delete GE definition as it is not valid anymore
+							// keeping this file will result in circular references trying to load same GE multiple times
+							new File(workspace.getFolderManager().getModElementsDir(),
+									this.lastModElement.getName() + ".mod.json").delete();
+
 							GeneratableElement result = converter.convert(this.workspace,
 									new Unknown(this.lastModElement), jsonElement);
 							if (result != null) {
