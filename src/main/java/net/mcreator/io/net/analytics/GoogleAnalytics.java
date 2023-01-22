@@ -144,7 +144,7 @@ public class GoogleAnalytics {
 	}
 
 	private void processRequestURL(String requesturl) throws IOException {
-		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED) {
+		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED && !Launcher.version.isDevelopment()) {
 			HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
 			conn.setInstanceFollowRedirects(true);
 			conn.setUseCaches(false);
