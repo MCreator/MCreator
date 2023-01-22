@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -27,8 +28,10 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
 
-public class Painting extends GeneratableElement {
+public class Painting extends GeneratableElement implements IResourcesDependent {
 
 	public String texture;
 	public int width;
@@ -49,5 +52,9 @@ public class Painting extends GeneratableElement {
 		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
 				"painting/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.OTHER ? Collections.singletonList(texture) : Collections.emptyList();
 	}
 }

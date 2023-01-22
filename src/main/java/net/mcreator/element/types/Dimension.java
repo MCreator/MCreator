@@ -25,7 +25,9 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -35,12 +37,11 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider {
+		implements ICommonType, ITabContainedElement, IMCItemProvider, IResourcesDependent {
 
 	public List<BiomeEntry> biomesInDimension;
 
@@ -117,5 +118,32 @@ import java.util.List;
 			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);
 		else
 			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+		entries.addAll(biomesInDimension);
+		entries.add(mainFillerBlock);
+		entries.add(fluidBlock);
+		entries.add(portalFrame);
+		entries.add(portalParticles);
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(onPlayerEntersDimension, onPlayerLeavesDimension, portalMakeCondition, portalUseCondition,
+				whenPortaTriggerlUsed, onPortalTickUpdate);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return switch (type) {
+			case ITEM -> Collections.singletonList(texture);
+			case BLOCK -> Collections.singletonList(portalTexture);
+			default -> Collections.emptyList();
+		};
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Collections.singletonList(portalSound);
 	}
 }

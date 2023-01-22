@@ -24,12 +24,16 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-@SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
+@SuppressWarnings("unused") public class Structure extends GeneratableElement
+		implements ICommonType, IOtherModElementsDependent, IResourcesDependent {
 
 	public String structure;
 
@@ -78,5 +82,22 @@ import java.util.List;
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		return List.of(BaseType.FEATURE);
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>();
+		for (String world : spawnWorldTypes)
+			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
+		entries.addAll(restrictionBlocks);
+		entries.addAll(restrictionBiomes);
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(generateCondition, onStructureGenerated);
+	}
+
+	@Override public Collection<String> getStructures() {
+		return Collections.singletonList(structure);
 	}
 }

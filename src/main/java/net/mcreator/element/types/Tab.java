@@ -20,12 +20,16 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.Collections;
 
-public class Tab extends GeneratableElement {
+public class Tab extends GeneratableElement implements IOtherModElementsDependent {
 
 	public String name;
 	public MItemBlock icon;
@@ -39,4 +43,7 @@ public class Tab extends GeneratableElement {
 		return MinecraftImageGenerator.Preview.generateCreativeTabPreviewPicture(getModElement().getWorkspace(), icon);
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		return Collections.singletonList(icon);
+	}
 }

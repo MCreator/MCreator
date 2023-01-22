@@ -35,12 +35,11 @@ public interface IResourcesDependent {
 		return Collections.emptyList();
 	}
 
-	default Collection<String> getStructures() {
-		return Collections.emptyList();
-	}
-
 	default Collection<Sound> getSounds() {
 		return Collections.emptyList();
 	}
 
+	default Collection<String> getStructures() {
+		return Collections.emptyList();
+	}
 }

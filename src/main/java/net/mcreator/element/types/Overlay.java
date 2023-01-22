@@ -31,6 +31,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.Dimension;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Overlay extends GeneratableElement implements IGUI {
@@ -95,4 +97,16 @@ import java.util.List;
 		return components;
 	}
 
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Collections.singletonList(displayCondition);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		if (type == TextureType.SCREEN) {
+			Collection<String> textures = IGUI.super.getTextures(type);
+			textures.add(baseTexture);
+			return textures;
+		}
+		return Collections.emptyList();
+	}
 }

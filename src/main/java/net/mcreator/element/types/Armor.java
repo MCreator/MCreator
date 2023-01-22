@@ -24,7 +24,9 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -39,7 +41,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
+@SuppressWarnings("unused") public class Armor extends GeneratableElement
+		implements IItem, ITabContainedElement, IResourcesDependent {
 
 	public boolean enableHelmet;
 	public String textureHelmet;
@@ -342,4 +345,31 @@ import java.util.*;
 		return creativeTab;
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+		entries.addAll(repairItems);
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(onHelmetTick, onBodyTick, onLeggingsTick, onBootsTick);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return switch (type) {
+			case ARMOR -> Collections.singletonList(armorTextureFile);
+			case ITEM -> Arrays.asList(textureHelmet, textureBody, textureLeggings, textureBoots);
+			case ENTITY -> Arrays.asList(helmetModelTexture, bodyModelTexture, leggingsModelTexture, bootsModelTexture);
+			default -> Collections.emptyList();
+		};
+	}
+
+	@Override public Collection<Model> getModels() {
+		return Arrays.asList(getHelmetModel(), getBodyModel(), getLeggingsModel(), getBootsModel(),
+				getHelmetItemModel(), getBodyItemModel(), getLeggingsItemModel(), getBootsItemModel());
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Collections.singletonList(equipSound);
+	}
 }

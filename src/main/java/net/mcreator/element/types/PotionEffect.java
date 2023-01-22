@@ -20,6 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -30,8 +32,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
-@SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
+@SuppressWarnings("unused") public class PotionEffect extends GeneratableElement
+		implements IOtherModElementsDependent, IResourcesDependent {
 
 	public String effectName;
 	public String icon;
@@ -69,5 +75,13 @@ import java.io.File;
 
 	public boolean hasCustomRenderer() {
 		return !renderStatusInHUD || !renderStatusInInventory;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(onStarted, onActiveTick, onExpired, activeTickCondition);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.EFFECT ? Collections.singletonList(icon) : Collections.emptyList();
 	}
 }

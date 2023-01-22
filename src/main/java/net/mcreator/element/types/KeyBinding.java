@@ -20,12 +20,15 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
 
-@SuppressWarnings("unused") public class KeyBinding extends GeneratableElement {
+@SuppressWarnings("unused") public class KeyBinding extends GeneratableElement implements IOtherModElementsDependent {
 
 	public String triggerKey;
 	public String keyBindingName;
@@ -48,4 +51,7 @@ import java.awt.image.BufferedImage;
 		return MinecraftImageGenerator.Preview.generateKeybindPreviewPicture(triggerKey);
 	}
 
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(onKeyPressed, onKeyReleased);
+	}
 }

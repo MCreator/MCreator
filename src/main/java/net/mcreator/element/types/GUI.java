@@ -36,6 +36,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
@@ -143,4 +145,11 @@ import java.util.List;
 		return components;
 	}
 
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		Collection<Procedure> procedures = new ArrayList<>(IGUI.super.getUsedProcedures());
+		procedures.add(onOpen);
+		procedures.add(onTick);
+		procedures.add(onClosed);
+		return procedures;
+	}
 }

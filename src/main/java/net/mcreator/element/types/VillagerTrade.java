@@ -22,12 +22,16 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.VillagerProfession;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class VillagerTrade extends GeneratableElement {
+@SuppressWarnings("unused") public class VillagerTrade extends GeneratableElement
+		implements IOtherModElementsDependent {
 
 	public List<CustomTradeEntry> tradeEntries;
 
@@ -38,6 +42,18 @@ import java.util.List;
 	public VillagerTrade(ModElement element) {
 		super(element);
 		tradeEntries = new ArrayList<>();
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>();
+		for (CustomTradeEntry tradeEntry : tradeEntries) {
+			for (CustomTradeEntry.Entry entry : tradeEntry.entries) {
+				entries.add(entry.price1);
+				entries.add(entry.price2);
+				entries.add(entry.offer);
+			}
+		}
+		return entries;
 	}
 
 	public static class CustomTradeEntry {

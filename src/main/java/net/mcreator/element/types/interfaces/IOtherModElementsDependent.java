@@ -19,12 +19,19 @@
 
 package net.mcreator.element.types.interfaces;
 
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.MappableElement;
 
 import java.util.Collection;
+import java.util.Collections;
 
-public interface IDataListEntriesDependent {
+public interface IOtherModElementsDependent {
 
-	Collection<? extends MappableElement> getUsedDataListEntries();
+	default Collection<? extends MappableElement> getUsedModElements() {
+		return Collections.emptyList();
+	}
 
+	default Collection<? extends Procedure> getUsedProcedures() {
+		return Collections.emptyList();
+	}
 }

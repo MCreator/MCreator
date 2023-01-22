@@ -31,11 +31,13 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -244,6 +246,37 @@ import java.util.List;
 		}
 
 		return null;
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+		entries.add(equipmentMainHand);
+		entries.add(equipmentOffHand);
+		entries.add(equipmentHelmet);
+		entries.add(equipmentBody);
+		entries.add(equipmentLeggings);
+		entries.add(equipmentBoots);
+		entries.add(mobDrop);
+		entries.add(rangedAttackItem);
+		entries.addAll(breedTriggerItems);
+		entries.addAll(restrictionBiomes);
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(transparentModelCondition, isShakingCondition, onStruckByLightning, whenMobFalls,
+				whenMobDies, whenMobIsHurt, onRightClickedOn, whenThisMobKillsAnother, onMobTickUpdate,
+				onPlayerCollidesWith, onInitialSpawn, spawningCondition);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.ENTITY ?
+				Arrays.asList(mobModelTexture, mobModelGlowTexture) :
+				Collections.emptyList();
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Arrays.asList(livingSound, hurtSound, deathSound, stepSound);
 	}
 
 	@Override public String getXML() {

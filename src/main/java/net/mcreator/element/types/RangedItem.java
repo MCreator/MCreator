@@ -25,6 +25,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -129,4 +130,33 @@ import java.util.*;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+		entries.add(ammoItem);
+		entries.add(bulletItemTexture);
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(glowCondition, onRangedItemUsed, onEntitySwing, useCondition, onBulletHitsBlock,
+				onBulletHitsPlayer, onBulletHitsEntity, onBulletFlyingTick);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return switch (type) {
+			case ITEM -> IItemWithTexture.super.getTextures(type);
+			case ENTITY -> Collections.singletonList(customBulletModelTexture);
+			default -> Collections.emptyList();
+		};
+	}
+
+	@Override public Collection<Model> getModels() {
+		Collection<Model> models = new ArrayList<>(IItemWithModel.super.getModels());
+		models.addAll(IEntityWithModel.super.getModels());
+		return models;
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Collections.singletonList(actionSound);
+	}
 }

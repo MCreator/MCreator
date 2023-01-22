@@ -20,7 +20,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.IDataListEntriesDependent;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.minecraft.DataListEntry;
@@ -55,8 +55,12 @@ public class SearchUsagesDialog {
 		return show(mcreator, modElements, L10N.t("dialog.search_usages.type.mod_element"), deletionRequested,
 				(e, q) -> {
 					String query = new DataListEntry.Custom(q).getName();
-					if (e instanceof IDataListEntriesDependent dle) {
-						if (dle.getUsedDataListEntries().stream().anyMatch(d -> d.getUnmappedValue().equals(query)))
+					if (e instanceof IOtherModElementsDependent dle) {
+						if (dle.getUsedModElements().stream()
+								.anyMatch(d -> d != null && d.getUnmappedValue().equals(query)))
+							return true;
+						if (dle.getUsedProcedures().stream()
+								.anyMatch(d -> d != null && q.getName().equals(d.getName())))
 							return true;
 					}
 					if (e instanceof IXMLProvider provider)
@@ -90,19 +94,19 @@ public class SearchUsagesDialog {
 	}
 
 	public static boolean showGlobalVariableUsages(MCreator mcreator, String variableName, boolean deletionRequested) {
-		return show(mcreator, List.of(variableName), L10N.t("dialog.search_usages.type.global_variable"), deletionRequested,
-				(e, q) -> e instanceof IXMLProvider provider && provider.getXML()
+		return show(mcreator, List.of(variableName), L10N.t("dialog.search_usages.type.global_variable"),
+				deletionRequested, (e, q) -> e instanceof IXMLProvider provider && provider.getXML()
 						.contains("<field name=\"VAR\">global:" + q + "</field>"));
 	}
 
 	public static boolean showTranslationKeyUsages(MCreator mcreator, String translationKey,
 			boolean deletionRequested) {
-		return show(mcreator, List.of(translationKey), L10N.t("dialog.search_usages.type.translation_key"), deletionRequested,
-				(e, q) -> e instanceof IXMLProvider provider && provider.getXML().contains(q)/*
+		return show(mcreator, List.of(translationKey), L10N.t("dialog.search_usages.type.translation_key"),
+				deletionRequested, (e, q) -> e instanceof IXMLProvider provider && provider.getXML().contains(q)/*
 						|| LocalizationUtils.getLocalizationKeys(e).contains(q)*/); // TODO
 	}
 
-	public static boolean show(MCreator mcreator, String searchQuery, List<ModElement> references, String queryType,
+	public static boolean show(MCreator mcreator, String searchQuery, String queryType, List<ModElement> references,
 			boolean deletionRequested) {
 		return false; // TODO
 	}

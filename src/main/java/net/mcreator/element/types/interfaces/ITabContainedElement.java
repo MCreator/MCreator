@@ -20,11 +20,18 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.generator.mapping.MappableElement;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
-public interface ITabContainedElement {
+public interface ITabContainedElement extends IOtherModElementsDependent {
 
 	@Nullable TabEntry getCreativeTab();
 
+	@Override default Collection<? extends MappableElement> getUsedModElements() {
+		return new ArrayList<>(Collections.singleton(getCreativeTab()));
+	}
 }

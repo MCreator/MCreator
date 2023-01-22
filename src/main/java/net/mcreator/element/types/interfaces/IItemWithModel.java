@@ -21,12 +21,18 @@ package net.mcreator.element.types.interfaces;
 
 import net.mcreator.workspace.resources.Model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
-@SuppressWarnings("unused") public interface IItemWithModel {
+@SuppressWarnings("unused") public interface IItemWithModel extends IResourcesDependent {
 
 	Model getItemModel();
 
 	Map<String, String> getTextureMap();
 
+	@Override default Collection<Model> getModels() {
+		return new ArrayList<>(Collections.singleton(getItemModel()));
+	}
 }

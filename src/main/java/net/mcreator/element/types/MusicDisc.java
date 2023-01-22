@@ -23,6 +23,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -30,9 +31,12 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement {
+public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
 	public String texture;
@@ -58,6 +62,10 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 		super(element);
 	}
 
+	@Override public String getTexture() {
+		return texture;
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return ImageUtils.resizeAndCrop(
 				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
@@ -69,5 +77,14 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
+				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing);
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Collections.singletonList(music);
 	}
 }

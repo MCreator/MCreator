@@ -23,19 +23,27 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Achievement extends GeneratableElement implements IXMLProvider {
+@SuppressWarnings("unused") public class Achievement extends GeneratableElement
+		implements IOtherModElementsDependent, IResourcesDependent, IXMLProvider {
 
 	public String achievementName;
 	public String achievementDescription;
@@ -94,6 +102,14 @@ import java.util.List;
 
 			additionalData.put("triggercode", triggerCode);
 		};
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		return Arrays.asList(achievementIcon, parent);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.SCREEN ? Collections.singletonList(background) : Collections.emptyList();
 	}
 
 	@Override public String getXML() {

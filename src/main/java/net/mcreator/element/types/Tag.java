@@ -22,14 +22,20 @@ import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("unused") public class Tag extends NamespacedGeneratableElement {
+@SuppressWarnings("unused") public class Tag extends NamespacedGeneratableElement
+		implements IOtherModElementsDependent {
 
 	public String type;
 
@@ -57,4 +63,14 @@ import java.util.Locale;
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>();
+		entries.addAll(items);
+		entries.addAll(blocks);
+		for (String func : functions)
+			entries.add(new MappableElement.Dummy(new NameMapper(null, ""), func));
+		entries.addAll(entities);
+		entries.addAll(biomes);
+		return entries;
+	}
 }

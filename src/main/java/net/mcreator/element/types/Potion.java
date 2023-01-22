@@ -21,6 +21,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.Workspace;
@@ -29,9 +31,10 @@ import net.mcreator.workspace.elements.ModElement;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class Potion extends GeneratableElement {
+public class Potion extends GeneratableElement implements IOtherModElementsDependent {
 
 	public String potionName;
 	public String splashName;
@@ -113,4 +116,7 @@ public class Potion extends GeneratableElement {
 		}
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		return effects.stream().map(e -> e.effect).toList();
+	}
 }

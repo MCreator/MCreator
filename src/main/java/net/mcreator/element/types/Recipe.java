@@ -20,14 +20,19 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
-@SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
+@SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement
+		implements IOtherModElementsDependent {
 
 	public String recipeType;
 	public double xpReward;
@@ -167,4 +172,20 @@ import java.util.Arrays;
 
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		if (recipeType.equals("Crafting")) {
+			Collection<MappableElement> entries = new ArrayList<>(Arrays.asList(recipeSlots));
+			entries.add(recipeReturnStack);
+			return entries;
+		}
+		return switch (recipeType) {
+			case "Smelting" -> Arrays.asList(smeltingInputStack, smeltingReturnStack);
+			case "Blasting" -> Arrays.asList(blastingInputStack, blastingReturnStack);
+			case "Smoking" -> Arrays.asList(smokingInputStack, smokingReturnStack);
+			case "Stone cutting" -> Arrays.asList(stoneCuttingInputStack, stoneCuttingReturnStack);
+			case "Campfire cooking" -> Arrays.asList(campfireCookingInputStack, campfireCookingReturnStack);
+			case "Smithing" -> Arrays.asList(smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
+			case "Brewing" -> Arrays.asList(brewingInputStack, brewingIngredientStack, brewingReturnStack);
+		};
+	}
 }

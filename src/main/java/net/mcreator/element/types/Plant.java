@@ -26,6 +26,8 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -223,5 +225,36 @@ import java.util.stream.Collectors;
 
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+		entries.add(soundOnStep);
+		entries.add(customDrop);
+		entries.add(creativePickItem);
+		entries.addAll(canBePlacedOn);
+		entries.addAll(restrictionBiomes);
+		for (String world : spawnWorldTypes)
+			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(placingCondition, isBonemealTargetCondition, bonemealSuccessCondition, onBonemealSuccess,
+				generateCondition, onBlockAdded, onNeighbourBlockChanges, onTickUpdate, onRandomUpdateEvent,
+				onDestroyedByPlayer, onDestroyedByExplosion, onStartToDestroy, onEntityCollides, onBlockPlacedBy,
+				onRightClicked, onEntityWalksOn, onHitByProjectile);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return switch (type) {
+			case BLOCK -> Arrays.asList(texture, textureBottom, particleTexture);
+			case ITEM -> Collections.singletonList(itemTexture);
+			default -> Collections.emptyList();
+		};
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Arrays.asList(breakSound, stepSound, placeSound, hitSound, fallSound);
 	}
 }

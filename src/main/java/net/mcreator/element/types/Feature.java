@@ -26,10 +26,13 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
@@ -40,7 +43,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType, IXMLProvider {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement
+		implements ICommonType, IOtherModElementsDependent, IXMLProvider {
 
 	public String generationStep;
 	public List<String> restrictionDimensions;
@@ -89,6 +93,17 @@ import java.util.List;
 			return List.of(BaseType.FEATURE);
 		}
 		return Collections.emptyList();
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(restrictionBiomes);
+		for (String world : restrictionDimensions)
+			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Collections.singletonList(generateCondition);
 	}
 
 	@Override public String getXML() {

@@ -147,7 +147,7 @@ import java.util.stream.Collectors;
 		@Override public ValidationResult validate(JComponent component) {
 			String folderName = ((JTextField) component).getText();
 
-			if (!folderName.matches("[A-Za-z\\d._ -]+")) {
+			if (!folderName.matches("[A-Za-z0-9._ -]+")) {
 				return new Validator.ValidationResult(ValidationResultType.ERROR,
 						L10N.t("workspace.elements.folders.add.error_letters"));
 			}

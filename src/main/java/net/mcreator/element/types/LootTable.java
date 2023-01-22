@@ -20,11 +20,16 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class LootTable extends NamespacedGeneratableElement {
+@SuppressWarnings("unused") public class LootTable extends NamespacedGeneratableElement
+		implements IOtherModElementsDependent {
 
 	public String type;
 
@@ -32,6 +37,15 @@ import java.util.List;
 
 	public LootTable(ModElement element) {
 		super(element);
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>();
+		for (Pool pool : pools) {
+			for (Pool.Entry entry : pool.entries)
+				entries.add(entry.item);
+		}
+		return entries;
 	}
 
 	public static class Pool {
@@ -56,7 +70,7 @@ import java.util.List;
 
 			public int silkTouchMode;
 
-			// initiate default values
+			// initialize default values
 			public Entry() {
 				this.weight = 1;
 				this.minCount = 1;
@@ -66,5 +80,4 @@ import java.util.List;
 		}
 
 	}
-
 }

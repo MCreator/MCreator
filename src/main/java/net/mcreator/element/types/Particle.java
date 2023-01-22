@@ -20,6 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -34,8 +36,10 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 
-public class Particle extends GeneratableElement {
+public class Particle extends GeneratableElement implements IOtherModElementsDependent, IResourcesDependent {
 
 	public String texture;
 
@@ -111,4 +115,11 @@ public class Particle extends GeneratableElement {
 				getTextureTileCount() > 1, getModElement().getName());
 	}
 
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Collections.singletonList(additionalExpiryCondition);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.PARTICLE ? Collections.singletonList(texture) : Collections.emptyList();
+	}
 }

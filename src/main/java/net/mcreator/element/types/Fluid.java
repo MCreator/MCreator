@@ -22,13 +22,16 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -36,11 +39,10 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
+@SuppressWarnings("unused") public class Fluid extends GeneratableElement
+		implements IBlock, ITabContainedElement, IResourcesDependent {
 
 	public String name;
 	public String bucketName;
@@ -184,5 +186,31 @@ import java.util.List;
 					workspace.getFolderManager().getTextureImageIcon(textureStill, TextureType.BLOCK));
 		}
 		return null;
+	}
+
+	@Override public Collection<? extends MappableElement> getUsedModElements() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+		entries.add(dripParticle);
+		for (String world : spawnWorldTypes)
+			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
+		entries.addAll(restrictionBiomes);
+		return entries;
+	}
+
+	@Override public Collection<? extends Procedure> getUsedProcedures() {
+		return Arrays.asList(generateCondition, onBlockAdded, onNeighbourChanges, onTickUpdate, onEntityCollides,
+				onRandomUpdateEvent, onDestroyedByExplosion, flowCondition, beforeReplacingBlock);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return switch (type) {
+			case BLOCK -> Arrays.asList(textureStill, textureFlowing);
+			case ITEM -> Collections.singletonList(textureBucket);
+			default -> Collections.emptyList();
+		};
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Collections.singletonList(emptySound);
 	}
 }

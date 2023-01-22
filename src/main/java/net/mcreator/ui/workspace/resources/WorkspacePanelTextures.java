@@ -426,7 +426,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 						setIcon(icon);
 					}
 
-					if (!ma.getName().matches("[a-z\\d/._-]+")) {
+					if (!ma.getName().matches("[a-z0-9/._-]+")) {
 						if (getIcon() instanceof ImageIcon icon) {
 							icon = ImageUtils.changeSaturation(icon, 0.5f);
 							setIcon(ImageUtils.drawOver(icon, UIRES.get("18px.warning"), 0, 0, 18, 18));
