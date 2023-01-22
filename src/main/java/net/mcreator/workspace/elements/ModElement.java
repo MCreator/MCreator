@@ -52,7 +52,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	// MCItem representations of this element
 	// it is transient, so it does not get serialized
-	private transient List<MCItem> mcItems = Collections.emptyList();
+	private transient List<MCItem> mcItems = null;
 
 	// current mod icon if not obtained from mcitem - used for recipes
 	// it is transient, so it does not get serialized
@@ -107,17 +107,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		setWorkspace(workspace);
 
 		if (type == null || this.getType() == ModElementType.UNKNOWN) {
-			// to make sure mcItems is not null when serialized from JSON and unknown ME type
-			mcItems = Collections.emptyList();
-
 			return;
 		}
 
 		reloadElementIcon();
 
-		mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
-				provider.providedMCItems() :
-				Collections.emptyList();
+		// revalidate mcitems cache so it is reloaded on next request
+		mcItems = null;
 	}
 
 	private void reloadElementIcon() {
@@ -158,7 +154,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public void updateIcons() {
 		// flush all the buffers of the contained icons in case if the icons changed
-		mcItems.forEach(mcItem -> mcItem.icon.getImage().flush());
+		getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush());
 
 		reloadElementIcon();
 	}
@@ -238,7 +234,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.locked_code = codeLock;
 	}
 
-	public List<MCItem> getMCItems() {
+	@Nonnull public List<MCItem> getMCItems() {
+		if (mcItems == null) {
+			mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
+					provider.providedMCItems() :
+					Collections.emptyList();
+		}
+
 		return mcItems;
 	}
 
