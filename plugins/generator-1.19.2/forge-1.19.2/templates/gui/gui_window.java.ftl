@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-
 package ${package}.client.gui;
 
 <#assign mx = data.W - data.width>
@@ -183,46 +182,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("Button") as component>
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), e -> {
-							<#if hasProcedure(component.onClick)>
-								if (<@procedureOBJToConditionCode component.displayCondition/>) {
-									${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
-									${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
-								}
-							</#if>
-					}
-				)
-				<#if hasProcedure(component.displayCondition)>
-				{
-					@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
-						if (<@procedureOBJToConditionCode component.displayCondition/>)
-							super.render(ms, gx, gy, ticks);
-					}
-				}
-				</#if>);
-				<#assign btid +=1>
+					${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+					<@buttonProcedures component false/>
 		</#list>
 
 		<#list data.getComponentsOfType("ImageButton") as component>
 				this.addRenderableWidget(new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, 0, 0, ${component.height}, new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"), ${component.width}, ${component.height * 2}, e -> {
-							<#if hasProcedure(component.onClick)>
-								if (<@procedureOBJToConditionCode component.displayCondition/>) {
-									${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
-									${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
-								}
-							</#if>
-					}, CommonComponents.EMPTY
-				)
-				<#if hasProcedure(component.displayCondition)>
-				{
-					@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
-						if (<@procedureOBJToConditionCode component.displayCondition/>)
-							super.render(ms, gx, gy, ticks);
-					}
-				}
-				</#if>);
-				<#assign btid +=1>
+					${component.width}, ${component.height}, 0, 0, ${component.height}, new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
+					${component.width}, ${component.height * 2}, <@buttonProcedures component true/>
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
@@ -235,4 +202,24 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	}
 
 }
+<#macro buttonProcedures component isImageButton>
+e -> {
+    <#if hasProcedure(component.onClick)>
+	    if (<@procedureOBJToConditionCode component.displayCondition/>) {
+			${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
+		}
+	</#if>
+}<#if isImageButton>, CommonComponents.EMPTY</#if>)
+<#if hasProcedure(component.displayCondition)>
+{
+	@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
+		if (<@procedureOBJToConditionCode component.displayCondition/>)
+		    super.render(ms, gx, gy, ticks);
+		}
+	}
+</#if>);
+<#assign btid +=1>
+</#macro>
 <#-- @formatter:on -->
+
