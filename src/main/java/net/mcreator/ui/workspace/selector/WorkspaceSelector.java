@@ -355,9 +355,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			});
 			recentsList.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 						Object[] options = { L10N.t("dialog.workspace_selector.delete_workspace.recent_list"),
-								L10N.t("dialog.workspace_selector.delete_workspace.workspace") };
+								L10N.t("dialog.workspace_selector.delete_workspace.workspace"), L10N.t("common.cancel") };
 						int n = JOptionPane.showOptionDialog(WorkspaceSelector.this,
 								L10N.t("dialog.workspace_selector.delete_workspace.message",
 										recentsList.getSelectedValue().getName()),
@@ -367,15 +367,16 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 						if (n == 0) {
 							removeRecentWorkspace(recentsList.getSelectedValue());
+							reloadRecents();
 						} else if (n == 1) {
 							int m = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
 									L10N.t("dialog.workspace_selector.delete_workspace.confirmation", recentsList.getSelectedValue().getName()),
 									L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 							if (m == JOptionPane.YES_OPTION) {
 								FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+								reloadRecents();
 							}
 						}
-						reloadRecents();
 					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
 					}
