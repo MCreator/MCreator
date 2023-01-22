@@ -40,14 +40,14 @@ import java.util.stream.Collectors;
 	public transient UUID uuid;
 
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
-		put("button", Button.class);
+		put("label", Label.class); // weight 0
+		put("textfield", TextField.class); // weight 1
+		put("checkbox", Checkbox.class); //weight 2
 		put("imagebutton", ImageButton.class); //weight 3
-		put("image", Image.class);
-		put("inputslot", InputSlot.class);
-		put("outputslot", OutputSlot.class);
-		put("label", Label.class);
-		put("textfield", TextField.class);
-		put("checkbox", Checkbox.class);
+		put("button", Button.class);// weight 4
+		put("image", Image.class);// weight 5
+		put("inputslot", InputSlot.class); // weight 6
+		put("outputslot", OutputSlot.class); // weight 6
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
