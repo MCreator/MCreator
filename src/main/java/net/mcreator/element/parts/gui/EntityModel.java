@@ -21,6 +21,7 @@ package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
@@ -40,7 +41,7 @@ public class EntityModel extends GUIComponent {
 	}
 
 	@Override public String getName() {
-		return "entity_model_" + this.procedureName(this.entityModel.getName());
+		return "entity_model_" + RegistryNameFixer.fromCamelCase(this.entityModel.getName());
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
@@ -60,10 +61,4 @@ public class EntityModel extends GUIComponent {
 		return -1;
 	}
 
-	public String procedureName(String name) {
-		String regex = "([a-z])([A-Z]+)";
-		String replacement = "$1_$2";
-		name = name.replaceAll(regex, replacement).toLowerCase();
-		return name;
-	}
 }
