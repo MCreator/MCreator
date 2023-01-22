@@ -179,7 +179,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		modElement.putMetadata("type", "Number".equals(gameruleType.getSelectedItem()) ?
 				VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 				VariableTypeLoader.BuiltInTypes.LOGIC.getName());
-		modElement.reinit(mcreator.getWorkspace());
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
