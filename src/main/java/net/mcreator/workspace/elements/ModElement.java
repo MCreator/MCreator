@@ -104,12 +104,19 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void reinit(Workspace workspace) {
-		setWorkspace(workspace);
+		this.workspace = workspace;
 
 		if (type == null || this.getType() == ModElementType.UNKNOWN) {
 			return;
 		}
 
+		// if this mod element does not have ID inside the workspace yet, define it now
+		if (sortid == null)
+			this.sortid =
+					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
+							.orElse(0) + 1;
+
+		// reload ME icon
 		reloadElementIcon();
 
 		// revalidate mcitems cache so it is reloaded on next request
@@ -130,12 +137,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public void setWorkspace(Workspace workspace) {
 		this.workspace = workspace;
-
-		// if this mod element does not have ID inside the workspace yet, define it now
-		if (sortid == null)
-			this.sortid =
-					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
-							.orElse(0) + 1;
 	}
 
 	public Integer getSortID() {
