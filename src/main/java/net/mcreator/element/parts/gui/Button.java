@@ -42,7 +42,7 @@ public class Button extends SizedComponent {
 	}
 
 	@Override public int getWeight() {
-		return 2;
+		return 3;
 	}
 
 	@Override public String getName() {
