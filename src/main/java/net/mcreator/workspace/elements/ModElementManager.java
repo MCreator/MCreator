@@ -96,7 +96,7 @@ public final class ModElementManager {
 
 	GeneratableElement loadGeneratableElement(ModElement element) {
 		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
-		// mod element that is being converted as this will try to start the conversion again
+		// mod element that is being converted as otherwise this will try to start the conversion again
 		if (element.equals(modElementInConversion))
 			return new GeneratableElement.Unknown(element);
 
