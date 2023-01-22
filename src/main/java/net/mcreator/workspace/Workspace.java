@@ -207,7 +207,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		for (ModElement el : mod_elements) {
 			if (el.getName().equals(element.getName())) {
 				el.loadDataFrom(element);
-				el.updateIcons();
+				el.reloadElementIcon(); // update ME icon
+				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
 			}
 		}
 		markDirty();

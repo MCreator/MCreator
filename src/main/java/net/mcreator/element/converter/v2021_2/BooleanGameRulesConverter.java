@@ -31,7 +31,6 @@ public class BooleanGameRulesConverter implements IConverter {
 		if (input.getModElement().getMetadata("type").equals("boolean")) {
 			input.getModElement().clearMetadata();
 			input.getModElement().putMetadata("type", VariableTypeLoader.BuiltInTypes.LOGIC.getName());
-			input.getModElement().reinit(workspace);
 		}
 
 		return input;

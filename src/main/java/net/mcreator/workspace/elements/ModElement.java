@@ -19,7 +19,9 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
-import net.mcreator.element.*;
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
@@ -103,6 +105,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.workspace = other.workspace;
 	}
 
+	/**
+	 * Call this method to reinit ME icon, mcItems cache or update associated workspace
+	 *
+	 * @param workspace Workspace this ME belongs to
+	 */
 	public void reinit(Workspace workspace) {
 		this.workspace = workspace;
 
@@ -110,20 +117,14 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			return;
 		}
 
-		// if this mod element does not have ID inside the workspace yet, define it now
-		if (sortid == null)
-			this.sortid =
-					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
-							.orElse(0) + 1;
-
 		// reload ME icon
 		reloadElementIcon();
 
-		// revalidate mcitems cache so it is reloaded on next request
+		// revalidate MCItems cache so it is reloaded on next request
 		mcItems = null;
 	}
 
-	private void reloadElementIcon() {
+	public void reloadElementIcon() {
 		if (elementIcon != null && elementIcon.getImage() != null)
 			elementIcon.getImage().flush();
 
@@ -139,10 +140,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.workspace = workspace;
 	}
 
-	public Integer getSortID() {
-		return sortid;
-	}
-
 	public void setSortID(Integer sortid) {
 		this.sortid = sortid;
 	}
@@ -151,13 +148,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (elementIcon != null && elementIcon.getImage() != null)
 			return elementIcon;
 		return null;
-	}
-
-	public void updateIcons() {
-		// flush all the buffers of the contained icons in case if the icons changed
-		getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush());
-
-		reloadElementIcon();
 	}
 
 	public ModElement putMetadata(String key, Object data) {
@@ -233,6 +223,16 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (this.getType() == ModElementType.CODE && !codeLock)
 			return;
 		this.locked_code = codeLock;
+	}
+
+	@Nonnull public Integer getSortID() {
+		if (sortid == null) {
+			this.sortid =
+					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
+							.orElse(0) + 1;
+		}
+
+		return sortid;
 	}
 
 	@Nonnull public List<MCItem> getMCItems() {

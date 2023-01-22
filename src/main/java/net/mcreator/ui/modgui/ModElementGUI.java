@@ -537,7 +537,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// save custom mod element (preview) picture if it has one
 		mcreator.getModElementManager().storeModElementPicture(element);
-		modElement.reinit(mcreator.getWorkspace()); // re-init mod element to pick up the new mod element picture
+
+		// re-init mod element to pick up the new mod element picture and reload mcitems cache
+		modElement.reinit(mcreator.getWorkspace());
 
 		afterGeneratableElementGenerated();
 
