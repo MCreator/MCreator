@@ -132,16 +132,16 @@ package ${package}.client.screens;
 	}
 
 	<#if !data.getComponentsOfType("EntityModel").isEmpty()>
-	protected static void renderBgEntity(int param1, int param2, double param3, float param5, LivingEntity renderTarget) {
-		float f1 = (float) Math.atan((double) (param5 / 40.0F));
+	protected static void renderBgEntity(int posX, int posY, double scale, float cameraOrientation, LivingEntity renderTarget) {
+		float f1 = (float) Math.atan((double) (cameraOrientation / 40.0F));
 		PoseStack poseStack = RenderSystem.getModelViewStack();
 		poseStack.pushPose();
-		poseStack.translate((double) param1, (double) param2, 1050.0D);
+		poseStack.translate((double) posX, (double) posY, 1050.0D);
 		poseStack.scale(1.0F, 1.0F, -1.0F);
 		RenderSystem.applyModelViewMatrix();
 		PoseStack secondPoseStack = new PoseStack();
 		secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
-		secondPoseStack.scale((float) param3, (float) param3, (float) param3);
+		secondPoseStack.scale((float) scale, (float) scale, (float) scale);
 		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
 		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * 20.0F);
 		quaternion.mul(secondQuaternion);
