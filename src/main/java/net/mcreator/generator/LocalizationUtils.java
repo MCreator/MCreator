@@ -78,18 +78,13 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static List<String> getLocalizationKeys(Generator generator, GeneratableElement element,
-			@Nullable List<?> localizationkeys) {
-		return new ArrayList<>(processDefinitionToLocalizationKeys(generator, element, localizationkeys).keySet());
-	}
-
 	public static void extractLocalizationKeys(Generator generator, GeneratableElement element,
 			@Nullable List<?> localizationkeys) {
 		processDefinitionToLocalizationKeys(generator, element, localizationkeys)
 				.forEach((k, v) -> addLocalizationEntry(generator, localizationkeys, v, k));
 	}
 
-	private static Map<String, Object> processDefinitionToLocalizationKeys(Generator generator,
+	static Map<String, Object> processDefinitionToLocalizationKeys(Generator generator,
 			GeneratableElement element, @Nullable List<?> localizationkeys) {
 		HashMap<String, Object> keysToEntries = new HashMap<>();
 

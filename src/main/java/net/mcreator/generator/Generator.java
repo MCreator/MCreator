@@ -289,7 +289,8 @@ public class Generator implements IGenerator, Closeable {
 			return new ArrayList<>();
 		}
 
-		return LocalizationUtils.getLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
+		return new ArrayList<>(LocalizationUtils.processDefinitionToLocalizationKeys(this, element,
+				(List<?>) map.get("localizationkeys")).keySet());
 	}
 
 	public void removeElementFilesAndLangKeys(GeneratableElement generatableElement) {
