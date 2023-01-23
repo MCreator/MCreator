@@ -42,7 +42,7 @@ public class MappingLoader {
 
 	private final Map<String, Map<?, ?>> mappings = new ConcurrentHashMap<>();
 
-	@SuppressWarnings({ "unchecked", "rawtypes" }) public MappingLoader(GeneratorConfiguration generatorConfiguration) {
+	public MappingLoader(GeneratorConfiguration generatorConfiguration) {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
 				generatorConfiguration.getGeneratorName() + ".mappings", Pattern.compile(".*\\.(yaml|json)"));
 
@@ -56,16 +56,8 @@ public class MappingLoader {
 					Collections.list(resources).forEach(resource -> {
 						YamlReader reader = new YamlReader(FileIO.readResourceToString(resource));
 						try {
-							Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
-									new LinkedHashMap<>((Map<?, ?>) reader.read()));
-							if (mappings.get(mappingName) == null) {
-								mappings.put(mappingName, mappingsFromFile);
-							} else {
-								Map merged = Collections.synchronizedMap(new LinkedHashMap());
-								merged.putAll(mappings.get(mappingName));
-								merged.putAll(mappingsFromFile);
-								mappings.put(mappingName, merged);
-							}
+							Map<?, ?> mappingsFromFile = (Map<?, ?>) reader.read();
+							addMappings(mappingName, mappingsFromFile);
 						} catch (Exception e) {
 							LOG.error("[" + mappingName + "] Error: " + e.getMessage());
 						}
@@ -73,19 +65,12 @@ public class MappingLoader {
 					continue;
 				}
 
-				Enumeration<URL> resources2 = PluginLoader.INSTANCE.getResources(mappingResource + ".json");
-				Collections.list(resources2).forEach(resource -> {
+				Enumeration<URL> resourcesJSON = PluginLoader.INSTANCE.getResources(mappingResource + ".json");
+				Collections.list(resourcesJSON).forEach(resource -> {
 					try {
-						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(new LinkedHashMap<>(
-								gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, res), Map.class)));
-						if (mappings.get(mappingName) == null) {
-							mappings.put(mappingName, mappingsFromFile);
-						} else {
-							Map merged = Collections.synchronizedMap(new LinkedHashMap());
-							merged.putAll(mappings.get(mappingName));
-							merged.putAll(mappingsFromFile);
-							mappings.put(mappingName, merged);
-						}
+						Map<?, ?> mappingsFromFile = gson.fromJson(
+								FileIO.readResourceToString(PluginLoader.INSTANCE, res), Map.class);
+						addMappings(mappingName, mappingsFromFile);
 					} catch (Exception e) {
 						LOG.error("[" + mappingName + "] Error: " + e.getMessage());
 					}
@@ -100,6 +85,19 @@ public class MappingLoader {
 			DataListLoader.loadDataList(name).stream().filter(entry -> mappingKeys.contains(entry.getName()))
 					.forEach(dataListEntry -> dataListEntry.addSupportedGenerator(generatorConfiguration));
 		});
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void addMappings(String mappingName, Map<?, ?> mappingsFromFile) {
+		Map<?, ?> newMappings = Collections.synchronizedMap(new LinkedHashMap<>(mappingsFromFile));
+		if (mappings.get(mappingName) == null) {
+			mappings.put(mappingName, newMappings);
+		} else {
+			Map merged = Collections.synchronizedMap(new LinkedHashMap());
+			merged.putAll(mappings.get(mappingName));
+			merged.putAll(newMappings);
+			mappings.put(mappingName, merged);
+		}
 	}
 
 	public Map<?, ?> getMapping(String mappingName) {
