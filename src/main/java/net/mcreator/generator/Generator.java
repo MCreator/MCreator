@@ -280,6 +280,18 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>(generatorFiles);
 	}
 
+	public List<String> getElementLocalizationKeys(GeneratableElement element) {
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
+				.getModElementDefinition(element.getModElement().getType()); // config map
+		if (map == null) {
+			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+					.getRegistryName());
+			return new ArrayList<>();
+		}
+
+		return LocalizationUtils.getLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
+	}
+
 	public void removeElementFilesAndLangKeys(GeneratableElement generatableElement) {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());

@@ -26,10 +26,7 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalizationUtils {
@@ -81,8 +78,21 @@ public class LocalizationUtils {
 		}
 	}
 
+	public static List<String> getLocalizationKeys(Generator generator, GeneratableElement element,
+			@Nullable List<?> localizationkeys) {
+		return new ArrayList<>(processDefinitionToLocalizationKeys(generator, element, localizationkeys).keySet());
+	}
+
 	public static void extractLocalizationKeys(Generator generator, GeneratableElement element,
 			@Nullable List<?> localizationkeys) {
+		processDefinitionToLocalizationKeys(generator, element, localizationkeys)
+				.forEach((k, v) -> addLocalizationEntry(generator, localizationkeys, v, k));
+	}
+
+	private static Map<String, Object> processDefinitionToLocalizationKeys(Generator generator,
+			GeneratableElement element, @Nullable List<?> localizationkeys) {
+		HashMap<String, Object> keysToEntries = new HashMap<>();
+
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
@@ -107,6 +117,8 @@ public class LocalizationUtils {
 				}
 			}
 		}
+
+		return keysToEntries;
 	}
 
 	private static void addLocalizationEntry(Generator generator, Object template, Object entry, String key) {
