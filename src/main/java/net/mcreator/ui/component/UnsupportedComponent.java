@@ -31,7 +31,11 @@ import java.util.Arrays;
 
 public class UnsupportedComponent extends JPanel {
 
-	// helper method that marks provided component as not supported
+	/**
+	 * Helper util method that marks provided component as not supported.
+	 *
+	 * @param comp The component to be marked.
+	 */
 	public static void markUnsupported(Component comp) {
 		Container parent = comp.getParent();
 		if (parent != null) {
@@ -43,6 +47,11 @@ public class UnsupportedComponent extends JPanel {
 
 	private final Image warning = UIRES.get("18px.warning").getImage();
 
+	/**
+	 * Constructs a panel that displays an overlay with "unsupported" warning over the component marked as such.
+	 *
+	 * @param origin The component to be marked.
+	 */
 	public UnsupportedComponent(Component origin) {
 		setLayout(new GridLayout());
 		setOpaque(false);
