@@ -80,13 +80,10 @@ loadScripts(document, 'script');</script>
 <dt>Record Components:</dt>
 <dd><code><span id="param-groupName">groupName</span></code> - The name of this group of templates shown in workspace panel.</dd>
 <dd><code><span id="param-listData">listData</span></code> - The collection used by workspace to generate given templates.</dd>
-<dd><code><span id="param-element">element</span></code> - The <a href="../element/GeneratableElement.html" title="class in net.mcreator.element"><code>GeneratableElement</code></a> used to process tokens in template names.</dd>
-<dd><code><span id="param-templates">templates</span></code> - The map of templates to be generated for each entry of <code>listData</code>;
-                  keys are templates themselves, values represent generation conditions of their key template
-                  for all items on the mentioned collection.</dd>
+<dd><code><span id="param-templates">templates</span></code> - The list of templates to be generated for each <code>listData</code> item.</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">GeneratorTemplatesList</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;?&gt;&nbsp;listData, <a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="GeneratorTemplate.html" title="class in net.mcreator.generator">GeneratorTemplate</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;&nbsp;templates)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">GeneratorTemplatesList</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;?&gt;&nbsp;listData, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&gt;&nbsp;templates)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">A generator templates list is used for generating several similar templates for each item on a list provided by given
  mod element.</div>
@@ -101,10 +98,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.util.List,net.mcreator.element.GeneratableElement,java.util.Map)" class="member-name-link">GeneratorTemplatesList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.util.List,java.util.List)" class="member-name-link">GeneratorTemplatesList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;?&gt;&nbsp;listData,
- <a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="GeneratorTemplate.html" title="class in net.mcreator.generator">GeneratorTemplate</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;&nbsp;templates)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&gt;&nbsp;templates)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>GeneratorTemplatesList</code> record class.</div>
 </div>
@@ -122,21 +118,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#element()" class="member-name-link">element</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the value of the <a href="#param-element"><code>element</code></a> record component.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates whether some other object is "equal to" this one.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forEachTemplate(java.util.function.Consumer,java.util.function.IntConsumer)" class="member-name-link">forEachTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&nbsp;action,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/IntConsumer.html" title="class or interface in java.util.function" class="external-link">IntConsumer</a>&nbsp;beforeNextListItem)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Iterates over all regular templates that can be produced by this templates list instance.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#groupName()" class="member-name-link">groupName</a>()</code></div>
@@ -153,7 +138,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-listData"><code>listData</code></a> record component.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="GeneratorTemplate.html" title="class in net.mcreator.generator">GeneratorTemplate</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#templates()" class="member-name-link">templates</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-templates"><code>templates</code></a> record component.</div>
@@ -181,18 +166,16 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.util.List,net.mcreator.element.GeneratableElement,java.util.Map)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.util.List,java.util.List)">
 <h3>GeneratorTemplatesList</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GeneratorTemplatesList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;?&gt;&nbsp;listData,
- <a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="GeneratorTemplate.html" title="class in net.mcreator.generator">GeneratorTemplate</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;&nbsp;templates)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&gt;&nbsp;templates)</span></div>
 <div class="block">Creates an instance of a <code>GeneratorTemplatesList</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>groupName</code> - the value for the <a href="#param-groupName"><code>groupName</code></a> record component</dd>
 <dd><code>listData</code> - the value for the <a href="#param-listData"><code>listData</code></a> record component</dd>
-<dd><code>element</code> - the value for the <a href="#param-element"><code>element</code></a> record component</dd>
 <dd><code>templates</code> - the value for the <a href="#param-templates"><code>templates</code></a> record component</dd>
 </dl>
 </section>
@@ -205,20 +188,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="forEachTemplate(java.util.function.Consumer,java.util.function.IntConsumer)">
-<h3>forEachTemplate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">forEachTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&nbsp;action,
- @Nullable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/IntConsumer.html" title="class or interface in java.util.function" class="external-link">IntConsumer</a>&nbsp;beforeNextListItem)</span></div>
-<div class="block">Iterates over all regular templates that can be produced by this templates list instance.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>action</code> - Action to be performed for each generated template.</dd>
-<dd><code>beforeNextListItem</code> - Optional action to be performed before next item from the list data is processed.</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
@@ -283,20 +252,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="element()">
-<h3>element</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></span>&nbsp;<span class="element-name">element</span>()</div>
-<div class="block">Returns the value of the <a href="#param-element"><code>element</code></a> record component.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>the value of the <a href="#param-element"><code>element</code></a> record component</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="templates()">
 <h3>templates</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="GeneratorTemplate.html" title="class in net.mcreator.generator">GeneratorTemplate</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;</span>&nbsp;<span class="element-name">templates</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ListTemplate.html" title="class in net.mcreator.generator">ListTemplate</a>&gt;&gt;</span>&nbsp;<span class="element-name">templates</span>()</div>
 <div class="block">Returns the value of the <a href="#param-templates"><code>templates</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>

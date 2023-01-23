@@ -78,7 +78,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a></code>, <code><a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a></code>, <code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code>, <code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code>, <code><a href="interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a></code>, <code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
+<dd><code><a href="interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a></code>, <code><a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a></code>, <code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code>, <code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code>, <code><a href="interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a></code>, <code><a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></code>, <code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Plant</span>
@@ -111,113 +111,125 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#aiPathNodeType" class="member-name-link">aiPathNodeType</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="interfaces/IBlockWithBoundingBox.BoxEntry.html" title="class in net.mcreator.element.types.interfaces">IBlockWithBoundingBox.BoxEntry</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#boundingBoxes" class="member-name-link">boundingBoxes</a></code></div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#bonemealSuccessCondition" class="member-name-link">bonemealSuccessCondition</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
-<div class="col-second even-row-color"><code><a href="#breakSound" class="member-name-link">breakSound</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#canBePlacedOn" class="member-name-link">canBePlacedOn</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#colorOnMap" class="member-name-link">colorOnMap</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#creativePickItem" class="member-name-link">creativePickItem</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
-<div class="col-second even-row-color"><code><a href="#creativeTab" class="member-name-link">creativeTab</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#customBoundingBox" class="member-name-link">customBoundingBox</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
-<div class="col-second even-row-color"><code><a href="#customDrop" class="member-name-link">customDrop</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#customModelName" class="member-name-link">customModelName</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#disableOffset" class="member-name-link">disableOffset</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#doublePlantGenerationType" class="member-name-link">doublePlantGenerationType</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#dropAmount" class="member-name-link">dropAmount</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#emissiveRendering" class="member-name-link">emissiveRendering</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
-<div class="col-second even-row-color"><code><a href="#fallSound" class="member-name-link">fallSound</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#fireSpreadSpeed" class="member-name-link">fireSpreadSpeed</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#flammability" class="member-name-link">flammability</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#forceTicking" class="member-name-link">forceTicking</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#frequencyOnChunks" class="member-name-link">frequencyOnChunks</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#generateAtAnyHeight" class="member-name-link">generateAtAnyHeight</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#generateCondition" class="member-name-link">generateCondition</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#growapableMaxHeight" class="member-name-link">growapableMaxHeight</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#growapableSpawnType" class="member-name-link">growapableSpawnType</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#hardness" class="member-name-link">hardness</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#hasTileEntity" class="member-name-link">hasTileEntity</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="interfaces/IBlockWithBoundingBox.BoxEntry.html" title="class in net.mcreator.element.types.interfaces">IBlockWithBoundingBox.BoxEntry</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#boundingBoxes" class="member-name-link">boundingBoxes</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#hitSound" class="member-name-link">hitSound</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#breakSound" class="member-name-link">breakSound</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isCustomSoundType" class="member-name-link">isCustomSoundType</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isItemTinted" class="member-name-link">isItemTinted</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isReplaceable" class="member-name-link">isReplaceable</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isSolid" class="member-name-link">isSolid</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#itemTexture" class="member-name-link">itemTexture</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#jumpFactor" class="member-name-link">jumpFactor</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#luminance" class="member-name-link">luminance</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#canBePlacedOn" class="member-name-link">canBePlacedOn</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#colorOnMap" class="member-name-link">colorOnMap</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
+<div class="col-second even-row-color"><code><a href="#creativePickItem" class="member-name-link">creativePickItem</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#creativeTab" class="member-name-link">creativeTab</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#customBoundingBox" class="member-name-link">customBoundingBox</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#customDrop" class="member-name-link">customDrop</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#offsetType" class="member-name-link">offsetType</a></code></div>
+<div class="col-second even-row-color"><code><a href="#customModelName" class="member-name-link">customModelName</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#disableOffset" class="member-name-link">disableOffset</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#doublePlantGenerationType" class="member-name-link">doublePlantGenerationType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#dropAmount" class="member-name-link">dropAmount</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#emissiveRendering" class="member-name-link">emissiveRendering</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#fallSound" class="member-name-link">fallSound</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#fireSpreadSpeed" class="member-name-link">fireSpreadSpeed</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#flammability" class="member-name-link">flammability</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#forceTicking" class="member-name-link">forceTicking</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#frequencyOnChunks" class="member-name-link">frequencyOnChunks</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#generateAtAnyHeight" class="member-name-link">generateAtAnyHeight</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onBlockAdded" class="member-name-link">onBlockAdded</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#generateCondition" class="member-name-link">generateCondition</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#growapableMaxHeight" class="member-name-link">growapableMaxHeight</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#growapableSpawnType" class="member-name-link">growapableSpawnType</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#hardness" class="member-name-link">hardness</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#hasTileEntity" class="member-name-link">hasTileEntity</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
+<div class="col-second even-row-color"><code><a href="#hitSound" class="member-name-link">hitSound</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isBonemealable" class="member-name-link">isBonemealable</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onBlockPlacedBy" class="member-name-link">onBlockPlacedBy</a></code></div>
+<div class="col-second even-row-color"><code><a href="#isBonemealTargetCondition" class="member-name-link">isBonemealTargetCondition</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isCustomSoundType" class="member-name-link">isCustomSoundType</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isItemTinted" class="member-name-link">isItemTinted</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isReplaceable" class="member-name-link">isReplaceable</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isSolid" class="member-name-link">isSolid</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#itemTexture" class="member-name-link">itemTexture</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#jumpFactor" class="member-name-link">jumpFactor</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#luminance" class="member-name-link">luminance</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#offsetType" class="member-name-link">offsetType</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onBlockAdded" class="member-name-link">onBlockAdded</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onBlockPlacedBy" class="member-name-link">onBlockPlacedBy</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onBonemealSuccess" class="member-name-link">onBonemealSuccess</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#onDestroyedByExplosion" class="member-name-link">onDestroyedByExplosion</a></code></div>
@@ -372,6 +384,11 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isDoubleBlock()" class="member-name-link">isDoubleBlock</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#providedMCItems()" class="member-name-link">providedMCItems</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method determines what MCItems are provided by this generatable element</div>
+</div>
 </div>
 </div>
 </div>
@@ -384,6 +401,9 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IBlockWithBoundingBox">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a></h3>
 <code><a href="interfaces/IBlockWithBoundingBox.html#isBoundingBoxEmpty()">isBoundingBoxEmpty</a>, <a href="interfaces/IBlockWithBoundingBox.html#isFullCube()">isFullCube</a>, <a href="interfaces/IBlockWithBoundingBox.html#negativeBoundingBoxes()">negativeBoundingBoxes</a>, <a href="interfaces/IBlockWithBoundingBox.html#positiveBoundingBoxes()">positiveBoundingBoxes</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IMCItemProvider">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></h3>
+<code><a href="interfaces/IMCItemProvider.html#getIconForMCItem(net.mcreator.workspace.Workspace,java.lang.String)">getIconForMCItem</a></code></div>
 </section>
 </li>
 </ul>
@@ -696,6 +716,30 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 </section>
 </li>
 <li>
+<section class="detail" id="isBonemealable">
+<h3>isBonemealable</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isBonemealable</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="isBonemealTargetCondition">
+<h3>isBonemealTargetCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">isBonemealTargetCondition</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="bonemealSuccessCondition">
+<h3>bonemealSuccessCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">bonemealSuccessCondition</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="onBonemealSuccess">
+<h3>onBonemealSuccess</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">onBonemealSuccess</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="frequencyOnChunks">
 <h3>frequencyOnChunks</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">frequencyOnChunks</span></div>
@@ -917,6 +961,20 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <dd><code><a href="interfaces/ICommonType.html#getBaseTypesProvided()">getBaseTypesProvided</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code></dd>
 <dt>Specified by:</dt>
 <dd><code><a href="interfaces/IItem.html#getBaseTypesProvided()">getBaseTypesProvided</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="providedMCItems()">
+<h3>providedMCItems</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">providedMCItems</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="interfaces/IMCItemProvider.html#providedMCItems()">IMCItemProvider</a></code></span></div>
+<div class="block">This method determines what MCItems are provided by this generatable element</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="interfaces/IMCItemProvider.html#providedMCItems()">providedMCItems</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></code></dd>
+<dt>Returns:</dt>
+<dd>A list of MCItems provided by this generatable element</dd>
 </dl>
 </section>
 </li>

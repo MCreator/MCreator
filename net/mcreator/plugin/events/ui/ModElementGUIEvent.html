@@ -80,12 +80,11 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ModElementGUIEvent.AfterLoading.html" title="class in net.mcreator.plugin.events.ui">ModElementGUIEvent.AfterLoading</a></code>, <code><a href="ModElementGUIEvent.BeforeLoading.html" title="class in net.mcreator.plugin.events.ui">ModElementGUIEvent.BeforeLoading</a></code></dd>
+<dd><code><a href="ModElementGUIEvent.AfterLoading.html" title="class in net.mcreator.plugin.events.ui">ModElementGUIEvent.AfterLoading</a></code>, <code><a href="ModElementGUIEvent.BeforeLoading.html" title="class in net.mcreator.plugin.events.ui">ModElementGUIEvent.BeforeLoading</a></code>, <code><a href="ModElementGUIEvent.WhenSaving.html" title="class in net.mcreator.plugin.events.ui">ModElementGUIEvent.WhenSaving</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ModElementGUIEvent</span>
 <span class="extends-implements">extends <a href="TabEvent.html" title="class in net.mcreator.plugin.events.ui">TabEvent</a></span></div>
-<div class="block"><p>These events are triggered at different states of a <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a> loading.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,6 +107,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">When a <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a> is about to start loading, MCreator triggers this event.</div>
 </div>
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="ModElementGUIEvent.WhenSaving.html" class="type-name-link" title="class in net.mcreator.plugin.events.ui">ModElementGUIEvent.WhenSaving</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">When a <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a> will be saved, MCreator triggers this event.</div>
+</div>
 </div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-net.mcreator.plugin.events.ui.TabEvent">Nested classes/interfaces inherited from class&nbsp;net.mcreator.plugin.events.ui.<a href="TabEvent.html" title="class in net.mcreator.plugin.events.ui">TabEvent</a></h2>
@@ -119,12 +123,17 @@ loadScripts(document, 'script');</script>
 <section class="constructor-summary" id="constructor-summary">
 <h2>Constructor Summary</h2>
 <div class="caption"><span>Constructors</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Constructor</div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreatorTabs.Tab,net.mcreator.ui.modgui.ModElementGUI)" class="member-name-link">ModElementGUIEvent</a><wbr>(<a href="../../../ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
+<div class="col-first even-row-color"><code>protected </code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.ui.MCreatorTabs.Tab,net.mcreator.ui.modgui.ModElementGUI)" class="member-name-link">ModElementGUIEvent</a><wbr>(<a href="../../../ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../../ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
  <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;?&gt;&nbsp;modElementGUI)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">These events are triggered at different states of a <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a> loading.</div>
+</div>
 </div>
 </section>
 </li>
@@ -139,9 +148,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;?&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElementGUI()" class="member-name-link">getModElementGUI</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCreator()" class="member-name-link">getMCreator</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;?&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElementGUI()" class="member-name-link">getModElementGUI</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -166,10 +178,19 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreatorTabs.Tab,net.mcreator.ui.modgui.ModElementGUI)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,net.mcreator.ui.MCreatorTabs.Tab,net.mcreator.ui.modgui.ModElementGUI)">
 <h3>ModElementGUIEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ModElementGUIEvent</span><wbr><span class="parameters">(<a href="../../../ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">ModElementGUIEvent</span><wbr><span class="parameters">(<a href="../../../ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../../ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
  <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;?&gt;&nbsp;modElementGUI)</span></div>
+<div class="block"><p>These events are triggered at different states of a <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a> loading.
+ However, this constructor is never called outside this class.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mcreator</code> - <p>The <a href="../../../ui/MCreator.html" title="class in net.mcreator.ui"><code>MCreator</code></a> instance where the mod element is.</p></dd>
+<dd><code>tab</code> - <p>The <a href="../../../ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui"><code>MCreatorTabs.Tab</code></a> that is opened for the <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a>.</p></dd>
+<dd><code>modElementGUI</code> - <p>The <a href="../../../ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui"><code>ModElementGUI</code></a> that calls each event.</p></dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -180,6 +201,12 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getMCreator()">
+<h3>getMCreator</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a></span>&nbsp;<span class="element-name">getMCreator</span>()</div>
+</section>
+</li>
 <li>
 <section class="detail" id="getModElementGUI()">
 <h3>getModElementGUI</h3>

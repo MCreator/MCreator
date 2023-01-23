@@ -78,7 +78,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code>, <code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code>, <code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
+<dd><code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code>, <code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code>, <code><a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></code>, <code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MusicDisc</span>
@@ -192,6 +192,11 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTab()" class="member-name-link">getCreativeTab</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#providedMCItems()" class="member-name-link">providedMCItems</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method determines what MCItems are provided by this generatable element</div>
+</div>
 </div>
 </div>
 </div>
@@ -204,6 +209,9 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IItem">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></h3>
 <code><a href="interfaces/IItem.html#getBaseTypesProvided()">getBaseTypesProvided</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IMCItemProvider">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></h3>
+<code><a href="interfaces/IMCItemProvider.html#getIconForMCItem(net.mcreator.workspace.Workspace,java.lang.String)">getIconForMCItem</a></code></div>
 </section>
 </li>
 </ul>
@@ -358,6 +366,20 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="interfaces/ITabContainedElement.html#getCreativeTab()">getCreativeTab</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="providedMCItems()">
+<h3>providedMCItems</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">providedMCItems</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="interfaces/IMCItemProvider.html#providedMCItems()">IMCItemProvider</a></code></span></div>
+<div class="block">This method determines what MCItems are provided by this generatable element</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="interfaces/IMCItemProvider.html#providedMCItems()">providedMCItems</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></code></dd>
+<dt>Returns:</dt>
+<dd>A list of MCItems provided by this generatable element</dd>
 </dl>
 </section>
 </li>

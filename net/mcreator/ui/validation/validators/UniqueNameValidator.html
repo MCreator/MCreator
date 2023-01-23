@@ -78,12 +78,16 @@ loadScripts(document, 'script');</script>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a></code></dd>
 </dl>
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="ModElementNameValidator.html" title="class in net.mcreator.ui.validation.validators">ModElementNameValidator</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">UniqueNameValidator</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a></span></div>
-<div class="block">While serving as a wrapper for the main validator of the text field instance, a unique name validator also checks
- that the provided text field defines a non-empty name that has no duplicates in the given elements list.</div>
+<div class="block">While serving as a wrapper for the main component validator (if specified), a unique name validator also checks
+ if that component provides a non-empty identifier that has no duplicates in the given elements list.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -104,27 +108,14 @@ implements <a href="../Validator.html" title="interface in net.mcreator.ui.valid
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Function,java.util.function.Supplier,java.util.List,net.mcreator.ui.validation.Validator)" class="member-name-link">UniqueNameValidator</a><wbr>(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.util.function.Supplier,java.util.function.Supplier,java.util.List,net.mcreator.ui.validation.Validator)" class="member-name-link">UniqueNameValidator</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;forbiddenNames,
  <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Function,java.util.function.Supplier,net.mcreator.ui.validation.Validator)" class="member-name-link">UniqueNameValidator</a><wbr>(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
- <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Supplier,java.util.List,net.mcreator.ui.validation.Validator)" class="member-name-link">UniqueNameValidator</a><wbr>(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;forbiddenNames,
- <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Supplier,net.mcreator.ui.validation.Validator)" class="member-name-link">UniqueNameValidator</a><wbr>(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.util.function.Supplier,java.util.function.Supplier,net.mcreator.ui.validation.Validator)" class="member-name-link">UniqueNameValidator</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
  <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -136,42 +127,34 @@ implements <a href="../Validator.html" title="interface in net.mcreator.ui.valid
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createModElementNameValidator(net.mcreator.workspace.Workspace,net.mcreator.ui.validation.component.VTextField,java.lang.String)" class="member-name-link">createModElementNameValidator</a><wbr>(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;textField,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates an instance of unique name validator to validate new mod element's name (formerly known as a
- separate class called <i><code>ModElementNameValidator</code></i>).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtraValidator()" class="member-name-link">getExtraValidator</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtraValidator()" class="member-name-link">getExtraValidator</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the main validator for the validated element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIgnoreCase(boolean)" class="member-name-link">setIgnoreCase</a><wbr>(boolean&nbsp;ignoreCase)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIgnoreCase(boolean)" class="member-name-link">setIgnoreCase</a><wbr>(boolean&nbsp;ignoreCase)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Use this method to define if case of validated name doesn't have to match case of
  <code>otherNames</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsPresentOnList(boolean)" class="member-name-link">setIsPresentOnList</a><wbr>(boolean&nbsp;isPresentOnList)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsPresentOnList(boolean)" class="member-name-link">setIsPresentOnList</a><wbr>(boolean&nbsp;isPresentOnList)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Use this method to define if the validated name is present on <code>otherNames</code> list.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../Validator.ValidationResult.html" title="class in net.mcreator.ui.validation">Validator.ValidationResult</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validate()" class="member-name-link">validate</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wrapValidator(net.mcreator.ui.validation.Validator)" class="member-name-link">wrapValidator</a><wbr>(<a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../Validator.ValidationResult.html" title="class in net.mcreator.ui.validation">Validator.ValidationResult</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validate()" class="member-name-link">validate</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wrapValidator(net.mcreator.ui.validation.Validator)" class="member-name-link">wrapValidator</a><wbr>(<a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a copy of this UniqueNameValidator with main validator changed to the passed one.</div>
 </div>
 </div>
@@ -195,74 +178,36 @@ implements <a href="../Validator.html" title="interface in net.mcreator.ui.valid
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Supplier,net.mcreator.ui.validation.Validator)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.util.function.Supplier,java.util.function.Supplier,net.mcreator.ui.validation.Validator)">
 <h3>UniqueNameValidator</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UniqueNameValidator</span><wbr><span class="parameters">(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UniqueNameValidator</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
  <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>holder</code> - The element to add this validator to.</dd>
-<dd><code>name</code> - The text used to describe the purpose of the <code>holder</code>.</dd>
+<dd><code>name</code> - The text used to describe the purpose of the holder.</dd>
+<dd><code>uniqueNameGetter</code> - Supplier to get unique name from the holder's text.</dd>
 <dd><code>otherNames</code> - Supplier of names of other elements in the same list. Those must all be unique names.</dd>
-<dd><code>extraValidator</code> - The main validator for the <code>holder</code>.</dd>
+<dd><code>extraValidator</code> - The main validator for the holder.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Supplier,java.util.List,net.mcreator.ui.validation.Validator)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.util.function.Supplier,java.util.function.Supplier,java.util.List,net.mcreator.ui.validation.Validator)">
 <h3>UniqueNameValidator</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UniqueNameValidator</span><wbr><span class="parameters">(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UniqueNameValidator</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;forbiddenNames,
  <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>holder</code> - The element to add this validator to.</dd>
-<dd><code>name</code> - The text used to describe the purpose of the <code>holder</code>.</dd>
+<dd><code>name</code> - The text used to describe the purpose of the holder.</dd>
+<dd><code>uniqueNameGetter</code> - Supplier to get unique name from the holder's text.</dd>
 <dd><code>otherNames</code> - Supplier of names of other elements in the same list. Those must all be unique names.</dd>
 <dd><code>forbiddenNames</code> - List of strings that must not be used as a name, e.g. names of built-in properties.</dd>
-<dd><code>extraValidator</code> - The main validator for the <code>holder</code>.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Function,java.util.function.Supplier,net.mcreator.ui.validation.Validator)">
-<h3>UniqueNameValidator</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UniqueNameValidator</span><wbr><span class="parameters">(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
- <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</span></div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>holder</code> - The element to add this validator to.</dd>
-<dd><code>name</code> - The text used to describe the purpose of the <code>holder</code>.</dd>
-<dd><code>uniqueNameGetter</code> - The function to get unique name from the <code>holder</code>'s text.</dd>
-<dd><code>otherNames</code> - Supplier of names of other elements in the same list. Those must all be unique names.</dd>
-<dd><code>extraValidator</code> - The main validator for the <code>holder</code>.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.validation.component.VTextField,java.lang.String,java.util.function.Function,java.util.function.Supplier,java.util.List,net.mcreator.ui.validation.Validator)">
-<h3>UniqueNameValidator</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UniqueNameValidator</span><wbr><span class="parameters">(<a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;holder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;uniqueNameGetter,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;otherNames,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;forbiddenNames,
- <a href="../Validator.html" title="interface in net.mcreator.ui.validation">Validator</a>&nbsp;extraValidator)</span></div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>holder</code> - The element to add this validator to.</dd>
-<dd><code>name</code> - The text used to describe the purpose of the <code>holder</code>.</dd>
-<dd><code>uniqueNameGetter</code> - The function to get unique name from the <code>holder</code>'s text.</dd>
-<dd><code>otherNames</code> - Supplier of names of other elements in the same list. Those must all be unique names.</dd>
-<dd><code>forbiddenNames</code> - List of strings that must not be used as a name, e.g. names of built-in properties.</dd>
-<dd><code>extraValidator</code> - The main validator for the <code>holder</code>.</dd>
+<dd><code>extraValidator</code> - The main validator for the holder.</dd>
 </dl>
 </section>
 </li>
@@ -309,24 +254,6 @@ implements <a href="../Validator.html" title="interface in net.mcreator.ui.valid
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>extraValidator</code> - The new main validator for the validated element.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createModElementNameValidator(net.mcreator.workspace.Workspace,net.mcreator.ui.validation.component.VTextField,java.lang.String)">
-<h3>createModElementNameValidator</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="UniqueNameValidator.html" title="class in net.mcreator.ui.validation.validators">UniqueNameValidator</a></span>&nbsp;<span class="element-name">createModElementNameValidator</span><wbr><span class="parameters">(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="../component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a>&nbsp;textField,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
-<div class="block">Creates an instance of unique name validator to validate new mod element's name (formerly known as a
- separate class called <i><code>ModElementNameValidator</code></i>).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>workspace</code> - The workspace to check for mod elements with the same name.</dd>
-<dd><code>textField</code> - The text field to be validated.</dd>
-<dd><code>name</code> - The text used to describe the purpose of the <code>textField</code>.</dd>
-<dt>Returns:</dt>
-<dd>An unique name validator to validate new mod element's name.</dd>
 </dl>
 </section>
 </li>
