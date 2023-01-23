@@ -31,6 +31,7 @@ import java.util.Arrays;
 
 public class UnsupportedComponent extends JPanel {
 
+	// helper method that marks provided component as not supported
 	public static void markUnsupported(Component comp) {
 		Container parent = comp.getParent();
 		if (parent != null) {
@@ -46,6 +47,7 @@ public class UnsupportedComponent extends JPanel {
 		setLayout(new GridLayout());
 		setOpaque(false);
 
+		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
 		origin.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
