@@ -19,6 +19,7 @@
 
 package net.mcreator.integration;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -44,8 +45,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkspaceConvertersTest {
 
@@ -88,6 +88,21 @@ public class WorkspaceConvertersTest {
 					// Check if all MEs have valid GE definition
 					for (ModElement mod : workspace.getModElements()) {
 						assertTrue(workspace.getModElementManager().hasModElementGeneratableElement(mod));
+
+						GeneratableElement ge = mod.getGeneratableElement();
+
+						assertNotNull(ge);
+
+						// test if methods below work and no exceptions are thrown
+
+						// save custom mod element picture if it has one
+						workspace.getModElementManager().storeModElementPicture(ge);
+
+						// add mod element to workspace again (update ME action)
+						workspace.addModElement(ge.getModElement());
+
+						// we reinit the mod to load new icons etc.
+						ge.getModElement().reinit(workspace);
 					}
 				}
 			});
