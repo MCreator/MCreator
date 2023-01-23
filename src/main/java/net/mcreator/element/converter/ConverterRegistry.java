@@ -20,8 +20,6 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.converter.fv39.CallProcedureBlockConverter;
-import net.mcreator.element.converter.fv39.CommandCallProcedureBlockConverter;
 import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
 import net.mcreator.element.converter.v2020_1.AchievementFixer;
 import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
@@ -41,10 +39,7 @@ import net.mcreator.element.converter.v2022_1.LegacyBlockPosProcedureRemover;
 import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
-import net.mcreator.element.converter.v2023_1.BiomeGenParametersConverter;
-import net.mcreator.element.converter.v2023_1.GUIComponentNamer;
-import net.mcreator.element.converter.v2023_1.SlotInteractionsConverter;
-import net.mcreator.element.converter.v2023_1.ToolToItemTypeProcedureConverter;
+import net.mcreator.element.converter.v2023_1.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +59,8 @@ public class ConverterRegistry {
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer()));
-		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer(), new CommandCallProcedureBlockConverter()));
+		put(ModElementType.COMMAND,
+				List.of(new CommandParameterBlockFixer(), new CommandCallProcedureBlockConverter()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
@@ -81,7 +77,7 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter(), new CallProcedureBlockConverter()));
+				new ToolToItemTypeProcedureConverter(), new CallProcedureAtBlockConverter()));
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));

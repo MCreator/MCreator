@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.fv39;
+package net.mcreator.element.converter.v2023_1;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -42,7 +42,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class CallProcedureBlockConverter implements IConverter {
+public class CallProcedureAtBlockConverter implements IConverter {
 	private static final Logger LOG = LogManager.getLogger("CallProcedureBlockConverter");
 
 	@Override
@@ -87,7 +87,7 @@ public class CallProcedureBlockConverter implements IConverter {
 				}
 
 				Element mutationXML = doc.createElement("mutation");
-				mutationXML.setAttribute("params", "3");
+				mutationXML.setAttribute("dependencies", "3");
 				element.appendChild(mutationXML);
 
 				Element callProcedureBlock = bh.createBlock("call_procedure", mutationXML, xField, xValue,
