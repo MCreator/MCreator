@@ -56,6 +56,7 @@ import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.ReferencesFinder;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -880,8 +881,19 @@ import java.util.stream.Collectors;
 
 		but7.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (but7.isEnabled() && list.getSelectedValue() instanceof ModElement mu)
-					SearchUsagesDialog.showModElementUsages(mcreator, List.of(mu), false);
+				if (but7.isEnabled() && list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
+					mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+					Set<ModElement> references = new HashSet<>();
+					for (IElement el : list.getSelectedValuesList()) {
+						if (el instanceof ModElement mod)
+							references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+					}
+
+					mcreator.setCursor(Cursor.getDefaultCursor());
+					SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+							new ArrayList<>(references), false);
+				}
 			}
 		});
 		but7.setToolTipText(L10N.t("workspace.elements.search_element_usages.tooltip"));
@@ -936,8 +948,19 @@ import java.util.stream.Collectors;
 
 		searchElement.setIcon(UIRES.get("16px.search"));
 		searchElement.addActionListener(e -> {
-			if (list.getSelectedValue() instanceof ModElement mu)
-				SearchUsagesDialog.showModElementUsages(mcreator, List.of(mu), false);
+			if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
+				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				Set<ModElement> references = new HashSet<>();
+				for (IElement el : list.getSelectedValuesList()) {
+					if (el instanceof ModElement mod)
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+				}
+
+				mcreator.setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						new ArrayList<>(references), false);
+			}
 		});
 
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
@@ -1278,11 +1301,18 @@ import java.util.stream.Collectors;
 	private void deleteCurrentlySelectedModElement() {
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
-				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				if (n == 0) {
+				Set<ModElement> references = new HashSet<>();
+				for (IElement el : list.getSelectedValuesList()) {
+					if (el instanceof ModElement mod)
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+				}
+
+				mcreator.setCursor(Cursor.getDefaultCursor());
+
+				if (SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						new ArrayList<>(references), true)) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
 					list.getSelectedValuesList().forEach(re -> {
 						if (re instanceof ModElement) {

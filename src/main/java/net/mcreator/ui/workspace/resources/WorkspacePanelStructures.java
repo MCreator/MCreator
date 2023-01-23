@@ -27,6 +27,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.workspace.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,8 +101,17 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 		search.addActionListener(a -> {
 			if (!structureElementList.isSelectionEmpty()) {
-				SearchUsagesDialog.showStructureUsages(workspacePanel.getMCreator(),
-						structureElementList.getSelectedValuesList(), false);
+				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				Set<ModElement> refs = new HashSet<>();
+				for (String structure : structureElementList.getSelectedValuesList()) {
+					refs.addAll(ReferencesFinder.searchStructureUsages(workspacePanel.getMCreator().getWorkspace(),
+							structure));
+				}
+
+				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.show(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.structure"), new ArrayList<>(refs), false);
 			}
 		});
 		del.addActionListener(a -> deleteCurrentlySelected(structureElementList));
@@ -124,10 +135,18 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
 		List<String> files = structureElementList.getSelectedValuesList();
 		if (files.size() > 0) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			for (String structure : files) {
+				references.addAll(
+						ReferencesFinder.searchStructureUsages(workspacePanel.getMCreator().getWorkspace(), structure));
+			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.structure"), new ArrayList<>(references), true)) {
 				files.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
 				reloadElements();
 			}

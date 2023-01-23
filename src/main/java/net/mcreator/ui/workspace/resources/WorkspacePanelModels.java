@@ -34,6 +34,8 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
+import net.mcreator.workspace.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -154,9 +156,16 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		searchModelUsages.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(searchModelUsages);
 		searchModelUsages.addActionListener(e -> {
-			if (!modelList.isSelectionEmpty())
-				SearchUsagesDialog.showModelUsages(workspacePanel.getMCreator(), modelList.getSelectedValuesList(),
-						false);
+			if (!modelList.isSelectionEmpty()) {
+				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				List<ModElement> references = ReferencesFinder.searchModelUsages(
+						workspacePanel.getMCreator().getWorkspace(), modelList.getSelectedValue());
+
+				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.show(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.model"), references, false);
+			}
 		});
 
 		JButton del = L10N.button("workspace.3dmodels.delete_selected");
@@ -195,11 +204,15 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 	private void deleteCurrentlySelected() {
 		Model model = modelList.getSelectedValue();
 		if (model != null) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			if (n == 0) {
+			List<ModElement> references = ReferencesFinder.searchModelUsages(
+					workspacePanel.getMCreator().getWorkspace(), model);
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.model"), references, true)) {
 				Arrays.stream(model.getFiles()).forEach(File::delete);
 				reloadElements();
 			}

@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement
 		implements IOtherModElementsDependent {
@@ -186,6 +187,7 @@ import java.util.Collection;
 			case "Campfire cooking" -> Arrays.asList(campfireCookingInputStack, campfireCookingReturnStack);
 			case "Smithing" -> Arrays.asList(smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
 			case "Brewing" -> Arrays.asList(brewingInputStack, brewingIngredientStack, brewingReturnStack);
+			default -> Collections.emptyList();
 		};
 	}
 }

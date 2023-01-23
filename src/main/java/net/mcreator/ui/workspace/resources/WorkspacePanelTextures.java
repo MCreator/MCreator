@@ -37,6 +37,8 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -189,13 +191,22 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		edit.addActionListener(e -> editSelectedFile());
 		search.addActionListener(e -> {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> refs = new HashSet<>();
 			for (TextureType section : TextureType.getTypes(true)) {
-				File file = mapLists.get(section.getID()).list().getSelectedValue();
-				if (file != null) {
-					SearchUsagesDialog.showTextureUsages(workspacePanel.getMCreator(), List.of(file), section, false);
-					break;
+				JList<File> list = mapLists.get(section.getID()).list();
+				if (list.getSelectedValue() != null) {
+					for (File texture : list.getSelectedValuesList()) {
+						refs.addAll(ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
+								texture, section));
+					}
 				}
 			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+			SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.resource.texture"),
+					new ArrayList<>(refs), false);
 		});
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 
@@ -205,11 +216,22 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void deleteCurrentlySelected() {
 		List<File> files = listGroup.getSelectedItemsList();
 		if (files.size() > 0) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			if (n == 0) {
+			Set<ModElement> references = new HashSet<>();
+			for (TextureType section : TextureType.getTypes(true)) {
+				JList<File> list = mapLists.get(section.getID()).list();
+				if (list.getSelectedValue() != null) {
+					list.getSelectedValuesList().stream()
+							.map(t -> ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
+									t, section)).forEach(references::addAll);
+				}
+			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(references), true)) {
 				files.forEach(file -> {
 					if (file != null) {
 						file.delete();

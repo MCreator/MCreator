@@ -31,6 +31,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -277,8 +279,17 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 
 			use.addActionListener(a -> {
 				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
-					SearchUsagesDialog.showTranslationKeyUsages(workspacePanel.getMCreator(),
-							(String) elements.getValueAt(elements.getSelectedRow(), 0), false);
+					workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+					Set<ModElement> references = new HashSet<>();
+					for (int i : elements.getSelectedRows()) {
+						references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
+								workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
+					}
+
+					workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+					SearchUsagesDialog.show(workspacePanel.getMCreator(),
+							L10N.t("dialog.search_usages.type.localization_key"), new ArrayList<>(references), false);
 				}
 			});
 
@@ -383,12 +394,19 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
 			return;
 
-		String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
-		if (key != null) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
+		if (elements.getValueAt(elements.getSelectedRow(), 0) != null) {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			for (int i : elements.getSelectedRows()) {
+				references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
+						workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
+			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.localization_key"), new ArrayList<>(references), true)) {
 				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 						.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
 				reloadElements();
