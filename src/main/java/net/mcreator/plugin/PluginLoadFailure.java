@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2022, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,12 @@
 
 package net.mcreator.plugin;
 
-public abstract class MCREvent {
+import java.io.File;
 
-	public static <T extends MCREvent> void event(T event) {
-		PluginLoader.INSTANCE.getJavaPlugins().forEach(javaPlugin -> javaPlugin.getListeners().get(event.getClass())
-				.forEach(listener -> javaPlugin.getEventQueue().submit(() -> listener.eventTriggered(event))));
+public record PluginLoadFailure(String pluginID, File pluginFile, String message) {
+
+	public PluginLoadFailure(Plugin plugin, String message) {
+		this(plugin.getID(), plugin.getFile(), message);
 	}
 
 }
