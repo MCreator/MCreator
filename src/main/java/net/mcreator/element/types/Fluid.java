@@ -127,8 +127,8 @@ import java.util.List;
 		return !"No tint".equals(tintType);
 	}
 
-	public boolean extendsForgeFlowingFluid() {
-		return spawnParticles || flowStrength != 1 || flowCondition != null || beforeReplacingBlock != null;
+	public boolean extendsFluidAttributes() {
+		return isFluidTinted();
 	}
 
 	@Override public String getRenderType() {
