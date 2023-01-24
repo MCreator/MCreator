@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 
@@ -152,7 +153,7 @@ public class SearchUsagesDialog {
 			JLabel label = L10N.label("dialog.search_usages.list.item", value.getName(),
 					value.getType().getReadableName());
 			label.setOpaque(true);
-			label.setIcon(ModElementManager.getModElementIcon(value));
+			label.setIcon(ImageUtils.fit(ModElementManager.getModElementIcon(value).getImage(), 32));
 			label.setIconTextGap(10);
 			label.setBackground(isSelected ?
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :

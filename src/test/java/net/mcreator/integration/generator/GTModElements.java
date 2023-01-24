@@ -59,8 +59,8 @@ public class GTModElements {
 					modElementType, random);
 
 			if (LOG != null) {
-				LOG.info("[" + generatorName + "] Testing " + modElementType.getReadableName()
-						+ " mod element type generation with " + modElementExamples.size() + " variants");
+				LOG.info("[" + generatorName + "] Testing mod element type generation: "
+						+ modElementType.getReadableName() + " with " + modElementExamples.size() + " variants");
 			}
 
 			modElementExamples.forEach(generatableElement -> {

@@ -164,7 +164,7 @@ public class ModElementUITest {
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, random);
 
-			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
+			LOG.info("Testing mod element type UI: " + modElementType.getReadableName() + " with "
 					+ generatableElements.size() + " variants");
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
