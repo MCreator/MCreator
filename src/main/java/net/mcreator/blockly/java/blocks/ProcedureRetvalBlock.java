@@ -57,19 +57,19 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				return;
 			}
 
-			int paramsCount = 0;
+			int depCount = 0;
 			Map<Integer, String> names = new HashMap<>();
 			Map<Integer, String> args = new HashMap<>();
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 			if (mutation != null) {
-				paramsCount = Integer.parseInt(mutation.getAttribute("params"));
+				depCount = Integer.parseInt(mutation.getAttribute("dependencies"));
 				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
 						.filter(e -> e.getAttribute("name").matches("name\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
 						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				for (int i = 0; i < paramsCount; i++) {
+				for (int i = 0; i < depCount; i++) {
 					names.put(i, fields.get("name" + i).getTextContent());
 					if (inputs.containsKey("arg" + i)) {
 						args.put(i, BlocklyToCode.directProcessOutputBlock(master, inputs.get("arg" + i)));
@@ -86,7 +86,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("type", type);
 				dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
-				dataModel.put("paramsCount", paramsCount);
+				dataModel.put("depCount", depCount);
 				dataModel.put("names", names.keySet().stream().sorted().map(names::get).toArray(String[]::new));
 				dataModel.put("args", args.keySet().stream().sorted().map(args::get).toArray(String[]::new));
 

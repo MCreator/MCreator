@@ -78,19 +78,19 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				}
 			}
 
-			int paramsCount = 0;
+			int depCount = 0;
 			Map<Integer, String> names = new HashMap<>();
 			Map<Integer, String> args = new HashMap<>();
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 			if (mutation != null) {
-				paramsCount = Integer.parseInt(mutation.getAttribute("params"));
+				depCount = Integer.parseInt(mutation.getAttribute("dependencies"));
 				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
 						.filter(e -> e.getAttribute("name").matches("name\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
 						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				for (int i = 0; i < paramsCount; i++) {
+				for (int i = 0; i < depCount; i++) {
 					names.put(i, fields.remove("name" + i).getTextContent());
 					if (inputs.containsKey("arg" + i)) {
 						args.put(i, BlocklyToCode.directProcessOutputBlock(master, inputs.remove("arg" + i)));
@@ -107,7 +107,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("dependencies", dependencies);
 				if (type.equals("call_procedure")) {
-					dataModel.put("paramsCount", paramsCount);
+					dataModel.put("depCount", depCount);
 					dataModel.put("names", names.keySet().stream().sorted().map(names::get).toArray(String[]::new));
 					dataModel.put("args", args.keySet().stream().sorted().map(args::get).toArray(String[]::new));
 				}
