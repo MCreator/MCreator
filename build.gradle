@@ -83,7 +83,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '6.4.0.202211300538-r'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.6'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.4.2'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.6'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
