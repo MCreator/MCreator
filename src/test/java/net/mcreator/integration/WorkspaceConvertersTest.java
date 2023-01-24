@@ -103,6 +103,9 @@ public class WorkspaceConvertersTest {
 
 						// we reinit the mod to load new icons etc.
 						ge.getModElement().reinit(workspace);
+
+						// test if GE definition is valid enough to be generated
+						workspace.getGenerator().generateElement(ge);
 					}
 				}
 			});
