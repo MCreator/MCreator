@@ -123,8 +123,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					UniqueNameValidator validator = new UniqueNameValidator(name,
-							L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
+							() -> Transliteration.transliterateString(name.getText()),
 							() -> TableUtil.getColumnContents(elements, 0).stream(),
 							new JavaMemberNameValidator(name, false));
 					name.setValidator(validator);
@@ -231,8 +231,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
-									L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+							UniqueNameValidator validator = new UniqueNameValidator(
+									L10N.t("workspace.variables.variable_name"),
+									() -> Transliteration.transliterateString(((VTextField) component).getText()),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
 									new JavaMemberNameValidator((VTextField) component, false));
 							validator.setIsPresentOnList(false);
