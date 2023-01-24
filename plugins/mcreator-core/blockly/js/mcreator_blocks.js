@@ -45,6 +45,19 @@ Blockly.Blocks['old_command'] = {
     }
 };
 
+Blockly.Blocks['call_procedure'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.call_procedure"))
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(250);
+        this.setMutator(new Blockly.Mutator(['call_procedure_mutator_input'], this));
+        this.mixin(PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN);
+    }
+};
+
 Blockly.Blocks['call_procedure_no_args'] = {
     init: function () {
         this.appendDummyInput()
@@ -52,6 +65,25 @@ Blockly.Blocks['call_procedure_no_args'] = {
             .appendField(new FieldDataListSelector('procedure'), 'procedure');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+        this.setColour(250);
+    }
+};
+
+Blockly.Blocks['call_procedure_mutator_container'] = {
+    init: function() {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.call_procedure.container'));
+        this.appendStatementInput('dependencies');
+        this.contextMenu = false;
+        this.setColour(250);
+    }
+};
+
+Blockly.Blocks['call_procedure_mutator_input'] = {
+    init: function() {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.call_procedure.input'));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
         this.setColour(250);
     }
 };
