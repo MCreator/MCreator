@@ -40,7 +40,7 @@ public class PreferencesData {
 
 	public static class UISettings {
 
-		@PreferencesEntry public Locale language = L10N.DEFAULT_LOCALE;
+		@PreferencesEntry public Locale language = Locale.getDefault();
 
 		@PreferencesEntry public Color interfaceAccentColor = MCreatorTheme.MAIN_TINT_DEFAULT;
 
