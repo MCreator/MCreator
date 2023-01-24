@@ -101,14 +101,14 @@ public class LocalizationUtils {
 										keytpl.replace("@NAME", element.getModElement().getName()).replace("@modid",
 														generator.getWorkspace().getWorkspaceSettings().getModID())
 												.replace("@registryname", element.getModElement().getRegistryName())));
-						addLocalizationEntry(generator, template, entry, key);
+						keysToEntries.put(key, entry);
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 							keytpl.replace("@NAME", element.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 									.replace("@registryname", element.getModElement().getRegistryName()));
-					addLocalizationEntry(generator, template, element, key);
+					keysToEntries.put(key, element);
 				}
 			}
 		}
