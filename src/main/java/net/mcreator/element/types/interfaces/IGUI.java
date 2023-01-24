@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 		return getComponentsOfType("Label").stream().map(c -> (Label) c).filter(c -> c.text.getName() == null).toList();
 	}
 
-	@Override default Collection<? extends MappableElement> getUsedModElements() {
+	@Override default Collection<? extends MappableElement> getUsedElementMappings() {
 		return getComponentsOfType("InputSlot").stream().map(e -> ((InputSlot) e).inputLimit)
 				.collect(Collectors.toList());
 	}

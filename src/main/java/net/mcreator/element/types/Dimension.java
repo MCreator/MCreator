@@ -120,8 +120,8 @@ import java.util.*;
 			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.addAll(biomesInDimension);
 		entries.add(mainFillerBlock);
 		entries.add(fluidBlock);

@@ -73,6 +73,7 @@ public class SearchUsagesDialog {
 		refList.setSelectedIndex(0);
 		refList.setFixedCellHeight(40);
 		refList.setFixedCellWidth(200);
+		refList.setVisibleRowCount(-1);
 		refList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		refList.setCellRenderer(new CompactModElementListCellRenderer());
 		refList.addMouseListener(new MouseAdapter() {

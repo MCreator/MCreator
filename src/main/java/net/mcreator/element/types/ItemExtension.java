@@ -49,7 +49,7 @@ public class ItemExtension extends GeneratableElement implements IOtherModElemen
 		super(element);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		return Collections.singletonList(item);
 	}
 

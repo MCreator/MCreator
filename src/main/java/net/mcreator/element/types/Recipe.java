@@ -173,7 +173,7 @@ import java.util.Collections;
 
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		if (recipeType.equals("Crafting")) {
 			Collection<MappableElement> entries = new ArrayList<>(Arrays.asList(recipeSlots));
 			entries.add(recipeReturnStack);

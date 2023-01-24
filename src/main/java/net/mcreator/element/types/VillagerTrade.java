@@ -44,7 +44,7 @@ import java.util.List;
 		tradeEntries = new ArrayList<>();
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>();
 		for (CustomTradeEntry tradeEntry : tradeEntries) {
 			for (CustomTradeEntry.Entry entry : tradeEntry.entries) {

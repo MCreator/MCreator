@@ -104,7 +104,7 @@ import java.util.List;
 		};
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		return Arrays.asList(achievementIcon, parent);
 	}
 

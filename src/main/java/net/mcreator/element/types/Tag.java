@@ -63,7 +63,7 @@ import java.util.Locale;
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>();
 		entries.addAll(items);
 		entries.addAll(blocks);

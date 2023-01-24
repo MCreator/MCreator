@@ -39,7 +39,7 @@ import java.util.List;
 		super(element);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>();
 		for (Pool pool : pools) {
 			for (Pool.Entry entry : pool.entries)

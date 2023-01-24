@@ -345,8 +345,8 @@ import java.util.*;
 		return creativeTab;
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.addAll(repairItems);
 		return entries;
 	}

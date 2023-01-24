@@ -116,7 +116,7 @@ public class Potion extends GeneratableElement implements IOtherModElementsDepen
 		}
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		return effects.stream().map(e -> e.effect).toList();
 	}
 }

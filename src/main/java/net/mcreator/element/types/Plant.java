@@ -227,8 +227,8 @@ import java.util.stream.Collectors;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(soundOnStep);
 		entries.add(customDrop);
 		entries.add(creativePickItem);

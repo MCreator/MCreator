@@ -58,8 +58,10 @@ public class GTModElements {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, random);
 
-			LOG.info("[" + generatorName + "] Testing mod element type generation " + modElementType.getReadableName()
-					+ " with " + modElementExamples.size() + " variants");
+			if (LOG != null) {
+				LOG.info("[" + generatorName + "] Testing " + modElementType.getReadableName()
+						+ " mod element type generation with " + modElementExamples.size() + " variants");
+			}
 
 			modElementExamples.forEach(generatableElement -> {
 				ModElement modElement = generatableElement.getModElement();

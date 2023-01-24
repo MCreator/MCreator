@@ -23,7 +23,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.IXMLProvider;
-import net.mcreator.generator.LocalizationUtils;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -45,7 +44,7 @@ public class ReferencesFinder {
 			GeneratableElement ge = me.getGeneratableElement();
 
 			if (ge instanceof IOtherModElementsDependent ome) {
-				if (ome.getUsedModElements().stream().anyMatch(d -> d != null && d.getUnmappedValue().equals(query))) {
+				if (ome.getUsedElementMappings().stream().anyMatch(d -> d != null && d.getUnmappedValue().equals(query))) {
 					elements.add(me);
 				} else if (ome.getUsedProcedures().stream()
 						.anyMatch(d -> d != null && element.getName().equals(d.getName()))) {
@@ -125,8 +124,8 @@ public class ReferencesFinder {
 
 		for (ModElement me : workspace.getModElements()) {
 			if (me.getGeneratableElement() instanceof IXMLProvider provider && provider.getXML()
-					.contains(localizationKey)/* || LocalizationUtils.getLocalizationKeys(me.getGeneratableElement())
-					.contains(localizationKey)*/) // TODO
+					.contains(localizationKey)/* || workspace.getGenerator()
+					.getElementLocalizationKeys(me.getGeneratableElement()).contains(localizationKey)*/) // TODO: #3499
 				elements.add(me);
 		}
 

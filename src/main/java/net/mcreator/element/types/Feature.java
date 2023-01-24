@@ -95,7 +95,7 @@ import java.util.List;
 		return Collections.emptyList();
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>(restrictionBiomes);
 		for (String world : restrictionDimensions)
 			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));

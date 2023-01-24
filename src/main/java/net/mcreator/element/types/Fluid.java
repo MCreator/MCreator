@@ -188,8 +188,8 @@ import java.util.*;
 		return null;
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(dripParticle);
 		for (String world : spawnWorldTypes)
 			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));

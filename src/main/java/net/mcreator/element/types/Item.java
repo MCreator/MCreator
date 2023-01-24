@@ -157,8 +157,8 @@ import java.util.*;
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(recipeRemainder);
 		entries.add(eatResultItem);
 		return entries;

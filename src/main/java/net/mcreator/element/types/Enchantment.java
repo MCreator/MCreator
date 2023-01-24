@@ -62,7 +62,7 @@ import java.util.List;
 		canVillagerTrade = true;
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		return new ArrayList<>(compatibleItems);
 	}
 }

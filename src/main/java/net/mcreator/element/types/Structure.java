@@ -84,7 +84,7 @@ import java.util.*;
 		return List.of(BaseType.FEATURE);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>();
 		for (String world : spawnWorldTypes)
 			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));

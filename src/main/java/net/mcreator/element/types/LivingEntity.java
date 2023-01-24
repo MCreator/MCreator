@@ -248,8 +248,8 @@ import java.util.List;
 		return null;
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(equipmentMainHand);
 		entries.add(equipmentOffHand);
 		entries.add(equipmentHelmet);

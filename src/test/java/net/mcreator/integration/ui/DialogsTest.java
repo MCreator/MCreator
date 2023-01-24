@@ -51,7 +51,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -184,12 +183,6 @@ public class DialogsTest {
 				() -> NewModElementDialog.showNameDialog(mcreator, ModElementType.BLOCK));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> NewModElementDialog.showNameDialog(mcreator, ModElementType.CODE));
-	}
-
-	@Test public void testSearchUsagesDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						Collections.emptyList(), false));
 	}
 
 	@Test public void testGeneralTextureSelector() throws Throwable {

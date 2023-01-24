@@ -71,6 +71,12 @@ public class WorkspaceFolderManager {
 		return workspaceFolder;
 	}
 
+	/**
+	 * Attempts to locate the provided file inside workspace folder and return its path relative to this folder.
+	 *
+	 * @param file The input file.
+	 * @return File path relative to workspace folder or its absolute path if not found in the workspace.
+	 */
 	public String getPathInWorkspace(File file) {
 		if (isFileInWorkspace(file))
 			return workspaceFolder.toPath().relativize(file.toPath()).toString();

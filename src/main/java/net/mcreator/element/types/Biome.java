@@ -201,7 +201,7 @@ import java.util.stream.Collectors;
 				grassColor, waterColor, groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = spawnEntries.stream().map(e -> e.entity).collect(Collectors.toList());
 		entries.addAll(Arrays.asList(groundBlock, undergroundBlock, underwaterBlock,
 				particleToSpawn, treeStem, treeBranch, treeVines, treeFruits));

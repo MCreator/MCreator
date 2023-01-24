@@ -31,7 +31,7 @@ public interface ITabContainedElement extends IOtherModElementsDependent {
 
 	@Nullable TabEntry getCreativeTab();
 
-	@Override default Collection<? extends MappableElement> getUsedModElements() {
+	@Override default Collection<? extends MappableElement> getUsedElementMappings() {
 		return new ArrayList<>(Collections.singleton(getCreativeTab()));
 	}
 }

@@ -27,7 +27,7 @@ import java.util.Collections;
 
 public interface IOtherModElementsDependent {
 
-	default Collection<? extends MappableElement> getUsedModElements() {
+	default Collection<? extends MappableElement> getUsedElementMappings() {
 		return Collections.emptyList();
 	}
 

@@ -118,8 +118,8 @@ import java.util.*;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedModElements());
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.addAll(blocksAffected);
 		entries.addAll(repairItems);
 		return entries;

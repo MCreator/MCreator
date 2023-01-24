@@ -43,7 +43,7 @@ public class Tab extends GeneratableElement implements IOtherModElementsDependen
 		return MinecraftImageGenerator.Preview.generateCreativeTabPreviewPicture(getModElement().getWorkspace(), icon);
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedModElements() {
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		return Collections.singletonList(icon);
 	}
 }
