@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.io.FileIO;
+import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
@@ -78,15 +79,16 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static void extractLocalizationKeys(Generator generator, GeneratableElement element,
+	public static void generateLocalizationKeys(Generator generator, GeneratableElement element,
 			@Nullable List<?> localizationkeys) {
 		processDefinitionToLocalizationKeys(generator, element, localizationkeys)
-				.forEach((k, v) -> addLocalizationEntry(generator, localizationkeys, v, k));
+				.forEach((k, v) -> addLocalizationEntry(generator, k, v.x(), v.y()));
 	}
 
-	static Map<String, Object> processDefinitionToLocalizationKeys(Generator generator,
+	static Map<String, Tuple<Map<?, ?>, Object>> processDefinitionToLocalizationKeys(Generator generator,
 			GeneratableElement element, @Nullable List<?> localizationkeys) {
-		HashMap<String, Object> keysToEntries = new HashMap<>();
+		// values are pairs of key's YAML definitions and objects to parse tokens with
+		HashMap<String, Tuple<Map<?, ?>, Object>> keysToEntries = new HashMap<>();
 
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
@@ -101,14 +103,14 @@ public class LocalizationUtils {
 										keytpl.replace("@NAME", element.getModElement().getName()).replace("@modid",
 														generator.getWorkspace().getWorkspaceSettings().getModID())
 												.replace("@registryname", element.getModElement().getRegistryName())));
-						keysToEntries.put(key, entry);
+						keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, entry));
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 							keytpl.replace("@NAME", element.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 									.replace("@registryname", element.getModElement().getRegistryName()));
-					keysToEntries.put(key, element);
+					keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, element));
 				}
 			}
 		}
@@ -116,18 +118,18 @@ public class LocalizationUtils {
 		return keysToEntries;
 	}
 
-	private static void addLocalizationEntry(Generator generator, Object template, Object entry, String key) {
+	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
-			String mapto = (String) ((Map<?, ?>) template).get("mapto");
+			String mapto = (String) template.get("mapto");
 			String value = (String) (mapto.contains("()") ?
 					entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
 					entry.getClass().getField(mapto.trim()).get(entry));
 
-			String suffix = (String) ((Map<?, ?>) template).get("suffix");
+			String suffix = (String) template.get("suffix");
 			if (suffix != null)
 				value += suffix;
 
-			String prefix = (String) ((Map<?, ?>) template).get("prefix");
+			String prefix = (String) template.get("prefix");
 			if (prefix != null)
 				value = prefix + value;
 
