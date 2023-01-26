@@ -85,29 +85,26 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 		Map<String, DataListEntry> properties = DataListLoader.loadDataMap("itemproperties");
 		builtinPropertyNames = List.copyOf(properties.keySet());
+
+		PropertyData.Logic logic = new PropertyData.Logic(""); // needed for hardcoded logic properties
 		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
-			float min, max;
-			if (e.getOther() instanceof Map<?, ?> other) {
-				min = Float.parseFloat((String) other.get("min"));
-				max = Float.parseFloat((String) other.get("max"));
-			} else {
-				min = 0F;
-				max = 1F;
-			}
+			if (e.getOther() instanceof Map<?, ?> other) { // only accept properties that have value bounds defined
+				float min = Float.parseFloat((String) other.get("min"));
+				float max = Float.parseFloat((String) other.get("max"));
 
-			if ("Number".equals(e.getType())) {
-				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max));
-			} else if ("Logic".equals(e.getType())) {
-				PropertyData.Logic logic = new PropertyData.Logic(e.getName());
-				builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max) {
-					@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-						return logic.getComponent(mcreator, value != null && (Float) value == max);
-					}
+				if ("Number".equals(e.getType())) {
+					builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max));
+				} else if ("Logic".equals(e.getType())) {
+					builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max) {
+						@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+							return logic.getComponent(mcreator, value != null && (Float) value == max);
+						}
 
-					@Override public Float getValue(JComponent component) {
-						return logic.getValue(component) ? max : min;
-					}
-				});
+						@Override public Float getValue(JComponent component) {
+							return logic.getValue(component) ? max : min;
+						}
+					});
+				}
 			}
 		});
 
@@ -191,8 +188,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
-				propertyId.incrementAndGet(), this::nameValidator, (nameField, newName) -> statesList.forEach(
-				s -> s.getStateLabel().rename(nameField.getCachedName(), newName)));
+				propertyId.incrementAndGet(), this::nameValidator, nameField -> statesList.forEach(
+				s -> s.getStateLabel().rename(nameField.getCachedName(), nameField.getPropertyName())));
 		registerEntryUI(pe);
 		return pe;
 	}

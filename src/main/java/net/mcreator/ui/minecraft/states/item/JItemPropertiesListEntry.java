@@ -41,7 +41,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -56,7 +56,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryList, int propertyId,
 			Function<Supplier<String>, UniqueNameValidator> validator,
-			BiConsumer<JPropertyNameField, String> editButtonListener) {
+			Consumer<JPropertyNameField> editButtonListener) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		name = new JPropertyNameField("property" + propertyId);
@@ -70,8 +70,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
 						&& name.getValidationStatus() == Validator.ValidationResult.PASSED) {
+					editButtonListener.accept(name);
 					String newName = name.getPropertyName();
-					editButtonListener.accept(name, newName);
 					name.stopRenaming();
 					name.renameTo(newName);
 				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {

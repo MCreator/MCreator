@@ -482,12 +482,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 2)
-			return new AggregatedValidationResult(name);
+		if (page == 0)
+			return new AggregatedValidationResult(page1group);
 		else if (page == 1)
 			return customProperties.getValidationResult();
-		else if (page == 0)
-			return new AggregatedValidationResult(page1group);
+		else if (page == 2)
+			return new AggregatedValidationResult(name);
 		return new AggregatedValidationResult.PASS();
 	}
 

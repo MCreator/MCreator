@@ -19,7 +19,8 @@
         {
             "predicate": {
             <#list model.getKey().split(",") as state>
-                "${state.split("=")[0]}": ${(state.split("=")[1]?number?float * 1000)?int / 1000}<#sep>,
+                <#assign prop = generator.map(state.split("=")[0], "itemproperties")>
+                "${prop}": ${(state.split("=")[1]?number?float * 1000)?int / 1000}<#sep>,
             </#list>
             },
             "model": "${modid}:item/${registryname}_${model?index}"
