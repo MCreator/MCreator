@@ -243,7 +243,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setProperties(LinkedHashMap<String, Procedure> properties) {
-		properties.forEach(addPropertiesEntry()::setEntry);
+		properties.forEach((name, value) -> addPropertiesEntry().setEntry(name, value));
 	}
 
 	public LinkedHashMap<String, Item.ModelEntry> getStates() {
