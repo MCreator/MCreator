@@ -27,6 +27,7 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -49,10 +50,26 @@ public class SearchUsagesDialog {
 	 */
 	public static boolean show(MCreator mcreator, String queryType, List<ModElement> references,
 			boolean deletionRequested) {
+		return show(mcreator, queryType, references, deletionRequested, null);
+	}
+
+	/**
+	 * Opens a dialog that shows usages of the elements selected by the user before all across the current workspace.
+	 *
+	 * @param mcreator          Workspace window calling this method.
+	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
+	 * @param references        List of referencing/dependent mod elements.
+	 * @param deletionRequested Whether user wants to delete selected elements or just view their usages.
+	 * @param messageSuffix     Additional information to be displayed by deletion dialog.
+	 * @return Whether elements deletion was requested and the user confirmed deletion.
+	 */
+	public static boolean show(MCreator mcreator, String queryType, List<ModElement> references,
+			boolean deletionRequested, @Nullable String messageSuffix) {
 		if (references.isEmpty()) { // skip custom dialog if there are no references to show
 			if (deletionRequested) {
+				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg", queryType);
 				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("dialog.search_usages.deletion_safe.confirm_msg", queryType),
+						messageSuffix != null ? msg + "<br><br><small>" + messageSuffix : msg,
 						L10N.t("common.confirmation", queryType), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 				return n == JOptionPane.YES_OPTION;
@@ -99,9 +116,9 @@ public class SearchUsagesDialog {
 		});
 		close.addActionListener(e -> dialog.setVisible(false));
 
-		if (deletionRequested) { // if deletion is pending, put focus on the close button
+		if (deletionRequested) { // if deletion is pending, focus the close button
 			dialog.getRootPane().setDefaultButton(close);
-		} else { // otherwise focus the references list
+		} else { // otherwise focus is put on the references list
 			refList.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -112,12 +129,14 @@ public class SearchUsagesDialog {
 
 		JPanel list = new JPanel(new BorderLayout(10, 10));
 		list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		list.add("North", deletionRequested ?
-				L10N.label("dialog.search_usages.deletion.confirm_msg", queryType) :
-				L10N.label("dialog.search_usages.list", queryType));
 		list.add("Center", sp);
 
-		if (deletionRequested) { // don't forget the delete button
+		if (deletionRequested) {
+			String msg = L10N.t("dialog.search_usages.deletion.confirm_msg", queryType);
+			if (messageSuffix != null)
+				msg += "<br><br><small>" + messageSuffix;
+			list.add("North", PanelUtils.centerInPanel(new JLabel(msg)));
+
 			JButton delete = L10N.button("dialog.search_usages.deletion.confirm");
 			delete.addActionListener(e -> {
 				retVal.set(true);
@@ -126,6 +145,7 @@ public class SearchUsagesDialog {
 
 			list.add("South", PanelUtils.join(edit, delete, close));
 		} else {
+			list.add("North", PanelUtils.centerInPanel(L10N.label("dialog.search_usages.list", queryType)));
 			list.add("South", PanelUtils.join(edit, close));
 		}
 

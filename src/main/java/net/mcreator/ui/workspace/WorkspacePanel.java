@@ -1312,7 +1312,7 @@ import java.util.stream.Collectors;
 				mcreator.setCursor(Cursor.getDefaultCursor());
 
 				if (SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						new ArrayList<>(references), true)) {
+						new ArrayList<>(references), true, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
 					list.getSelectedValuesList().forEach(re -> {
 						if (re instanceof ModElement) {
