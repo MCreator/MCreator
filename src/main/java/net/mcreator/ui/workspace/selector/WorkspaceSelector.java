@@ -73,8 +73,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private final WorkspaceOpenListener workspaceOpenListener;
 	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
+	@Nullable private final MCreatorApplication application;
+
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
+		this.application = application;
 
 		reloadTitle();
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
@@ -479,4 +482,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		return recentWorkspaces;
 	}
 
+	@Nullable public MCreatorApplication getApplication() {
+		return application;
+	}
 }

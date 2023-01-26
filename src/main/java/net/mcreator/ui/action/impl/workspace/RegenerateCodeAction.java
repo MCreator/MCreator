@@ -19,6 +19,7 @@
 package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.gradle.GradleTaskFinishedListener;
@@ -70,10 +71,12 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+				if (mod.getType() == ModElementType.UNKNOWN)
+					continue; // skip unknown MEs as we don't know what we can remove from them
+
 				List<GeneratorTemplate> templates = mcreator.getGenerator()
 						.getModElementGeneratorTemplatesList(mod.getGeneratableElement());
-				if (templates == null)
-					continue;
+
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();
 				toBePreserved.addAll(modElementFiles); // we don't delete mod element files in next step
 				if (!mod.isCodeLocked()) // but we do in this step, if the code is not locked
@@ -157,27 +160,31 @@ public class RegenerateCodeAction extends GradleAction {
 				try {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 
-					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
+					if (generatableElement != null) {
+						LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
 
-					// generate mod element code
-					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
-							.generateElement(generatableElement, false);
+						// generate mod element code
+						List<GeneratorFile> generatedFiles = mcreator.getGenerator()
+								.generateElement(generatableElement, false);
 
-					if (!mod.isCodeLocked()) {
-						filesToReformat.addAll(
-								generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
+						if (!mod.isCodeLocked()) {
+							filesToReformat.addAll(
+									generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
+						}
+
+						// save custom mod element picture if it has one
+						mcreator.getModElementManager().storeModElementPicture(generatableElement);
+
+						// add mod element to workspace again, so the icons get reloaded
+						mcreator.getWorkspace().addModElement(generatableElement.getModElement());
+
+						// we reinit the mod to load new icons etc.
+						generatableElement.getModElement().reinit(mcreator.getWorkspace());
+
+						generatableElementsToSave.add(generatableElement);
+					} else {
+						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
 					}
-
-					// save custom mod element picture if it has one
-					mcreator.getModElementManager().storeModElementPicture(generatableElement);
-
-					// add mod element to workspace again, so the icons get reloaded
-					mcreator.getWorkspace().addModElement(mod);
-
-					// we reinit the mod to load new icons etc.
-					mod.reinit();
-
-					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}

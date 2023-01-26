@@ -161,14 +161,6 @@ public class ArmorPackMakerTool {
 		mcreator.getGenerator().generateElement(armor);
 		mcreator.getModElementManager().storeModElement(armor);
 
-		// after mod element stored
-		armor.getModElement().clearMetadata();
-		armor.getModElement().putMetadata("eh", true);
-		armor.getModElement().putMetadata("ec", true);
-		armor.getModElement().putMetadata("el", true);
-		armor.getModElement().putMetadata("eb", true);
-		armor.getModElement().reinit();
-
 		// generate recipes
 		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.RECIPE), false)

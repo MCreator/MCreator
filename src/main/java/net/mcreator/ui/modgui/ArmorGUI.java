@@ -1073,16 +1073,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		return armor;
 	}
 
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
-		modElement.clearMetadata();
-		modElement.putMetadata("eh", enableHelmet.isSelected());
-		modElement.putMetadata("ec", enableBody.isSelected());
-		modElement.putMetadata("el", enableLeggings.isSelected());
-		modElement.putMetadata("eb", enableBoots.isSelected());
-		modElement.reinit();
-	}
-
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-armor");
 	}

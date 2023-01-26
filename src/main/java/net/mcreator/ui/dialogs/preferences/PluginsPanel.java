@@ -103,7 +103,7 @@ class PluginsPanel {
 	private void reloadPluginList() {
 		tmodel.removeAllElements();
 		PluginLoader.INSTANCE.getPlugins().stream().sorted(Comparator.comparing(Plugin::getWeight).reversed())
-				.sorted(Comparator.comparing(Plugin::isBuiltin).reversed()).forEach(tmodel::addElement);
+				.sorted(Comparator.comparing(Plugin::isBuiltin)).forEach(tmodel::addElement);
 	}
 
 	static class PluginsListCellRenderer extends JLabel implements ListCellRenderer<Plugin> {
@@ -125,21 +125,22 @@ class PluginsPanel {
 			if ((value.getInfo().getAuthor() != null) && (value.getInfo().getName() != null) && (value.getInfo()
 					.getCredits().equals("None"))) {
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
-						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: "
+						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", fully loaded: "
 						+ (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
-			} else if (value.getInfo().getAuthor() != null)
+			} else if (value.getInfo().getAuthor() != null) {
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
 						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: "
-						+ value.getInfo().getCredits() + ", loaded: " + (value.isLoaded() ?
+						+ value.getInfo().getCredits() + ", fully loaded: " + (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
-			else
+			} else {
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
-						+ value.getPluginVersion() + ", loaded: " + (value.isLoaded() ?
+						+ value.getPluginVersion() + ", fully loaded: " + (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
+			}
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));

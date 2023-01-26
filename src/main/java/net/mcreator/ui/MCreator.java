@@ -388,6 +388,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				tabAddition = " - " + mcreatorTabs.getCurrentTab().getText();
 			}
 
+			// Do not externalize this text
 			application.getDiscordClient()
 					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
 							Launcher.version.getMajorString() + " for " + workspace.getGenerator()

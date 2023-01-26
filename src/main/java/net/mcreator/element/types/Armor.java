@@ -26,12 +26,15 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
@@ -310,6 +313,29 @@ import java.util.*;
 			modelsCode.append(FileIO.readFileToString(model.getFile())).append("\n\n");
 
 		return modelsCode.toString();
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		ArrayList<MCItem> retval = new ArrayList<>();
+		if (this.enableHelmet)
+			retval.add(new MCItem.Custom(this.getModElement(), "helmet", "item", "Helmet"));
+		if (this.enableBody)
+			retval.add(new MCItem.Custom(this.getModElement(), "body", "item", "Chestplate"));
+		if (this.enableLeggings)
+			retval.add(new MCItem.Custom(this.getModElement(), "legs", "item", "Leggings"));
+		if (this.enableBoots)
+			retval.add(new MCItem.Custom(this.getModElement(), "boots", "item", "Boots"));
+		return retval;
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		return switch (suffix) {
+			case "helmet" -> workspace.getFolderManager().getTextureImageIcon(textureHelmet, TextureType.ITEM);
+			case "body" -> workspace.getFolderManager().getTextureImageIcon(textureBody, TextureType.ITEM);
+			case "legs" -> workspace.getFolderManager().getTextureImageIcon(textureLeggings, TextureType.ITEM);
+			case "boots" -> workspace.getFolderManager().getTextureImageIcon(textureBoots, TextureType.ITEM);
+			default -> null;
+		};
 	}
 
 	@Override public TabEntry getCreativeTab() {

@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -44,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * ModElementManager is not thread safe
  */
-public class ModElementManager {
+public final class ModElementManager {
 
 	private static final Logger LOG = LogManager.getLogger("ModElementManager");
 
@@ -54,6 +55,8 @@ public class ModElementManager {
 	private final Map<ModElement, GeneratableElement> cache = new ConcurrentHashMap<>();
 
 	@Nonnull private final Workspace workspace;
+
+	@Nullable private ModElement modElementInConversion = null;
 
 	public ModElementManager(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
@@ -80,7 +83,23 @@ public class ModElementManager {
 						element.getModElement().getName() + ".mod.json"));
 	}
 
+	/**
+	 * Mod element passed here will be used to prevent circular reference when converting the generatable element.
+	 * Make sure to call this method again with null argument after the conversion is done or this ME will not be
+	 * loadable anymore in the current session.
+	 *
+	 * @param modElementInConversion ME being converted or null if conversion is complete
+	 */
+	public void setModElementInConversion(@Nullable ModElement modElementInConversion) {
+		this.modElementInConversion = modElementInConversion;
+	}
+
 	GeneratableElement loadGeneratableElement(ModElement element) {
+		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
+		// mod element that is being converted as otherwise this will try to start the conversion again
+		if (element.equals(modElementInConversion))
+			return new GeneratableElement.Unknown(element);
+
 		if (element.getType() == ModElementType.CODE) {
 			return new CustomElement(element);
 		}
@@ -96,7 +115,7 @@ public class ModElementManager {
 		String importJSON = FileIO.readFileToString(genFile);
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
-		if (generatableElement != null) {
+		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
 
@@ -115,7 +134,8 @@ public class ModElementManager {
 			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element from JSON. This can lead to errors further down the road!", e);
+			LOG.warn("Failed to load generatable element " + modElement.getName()
+					+ " from JSON. This can lead to errors further down the road!", e);
 			return null;
 		}
 	}

@@ -98,7 +98,7 @@ import java.util.stream.Collectors;
 		Set<MappableElement.Unique> retval = new HashSet<>();
 		for (T t : input) {
 			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.getModElementByName(internalWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
+				if (workspace.getModElementByName(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
 					retval.add(new MappableElement.Unique(t));
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
