@@ -42,12 +42,12 @@ public class ReferencesFinder {
 		String query = new DataListEntry.Custom(element).getName();
 		for (ModElement me : workspace.getModElements()) {
 			GeneratableElement ge = me.getGeneratableElement();
-
 			if (ge instanceof IOtherModElementsDependent ome) {
-				if (ome.getUsedElementMappings().stream().anyMatch(d -> d != null && d.getUnmappedValue().equals(query))) {
+				if (ome.getUsedElementMappings().stream()
+						.anyMatch(e -> e != null && e.getUnmappedValue().equals(query))) {
 					elements.add(me);
 				} else if (ome.getUsedProcedures().stream()
-						.anyMatch(d -> d != null && element.getName().equals(d.getName()))) {
+						.anyMatch(e -> e != null && element.getName().equals(e.getName()))) {
 					elements.add(me);
 				}
 			} else if (ge instanceof IXMLProvider provider && provider.getXML().contains(query)) {
@@ -63,8 +63,8 @@ public class ReferencesFinder {
 
 		for (ModElement me : workspace.getModElements()) {
 			if (me.getGeneratableElement() instanceof IResourcesDependent res && res.getTextures(type).stream()
-					.anyMatch(t -> !t.equals("") && workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(t), type).equals(texture))) {
+					.anyMatch(e -> !e.equals("") && workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(e), type).equals(texture))) {
 				elements.add(me);
 			}
 		}
@@ -88,7 +88,7 @@ public class ReferencesFinder {
 
 		for (ModElement me : workspace.getModElements()) {
 			if (me.getGeneratableElement() instanceof IResourcesDependent res && res.getSounds().stream()
-					.anyMatch(s -> s.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
+					.anyMatch(e -> e.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
 				elements.add(me);
 		}
 
@@ -124,8 +124,8 @@ public class ReferencesFinder {
 
 		for (ModElement me : workspace.getModElements()) {
 			if (me.getGeneratableElement() instanceof IXMLProvider provider && provider.getXML()
-					.contains(localizationKey)/* || workspace.getGenerator()
-					.getElementLocalizationKeys(me.getGeneratableElement()).contains(localizationKey)*/) // TODO: #3499
+					.contains(localizationKey) || me.getGeneratableElement() != null && workspace.getGenerator()
+					.getElementLocalizationKeys(me.getGeneratableElement()).contains(localizationKey))
 				elements.add(me);
 		}
 
