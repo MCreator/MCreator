@@ -448,10 +448,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 						field.setAccessible(true);
 						Component obj = (Component) field.get(hierarchy.peek());
-						if (obj != null)
-							hierarchy.push(obj);
+						if (obj == null) {
+							hierarchy.clear(); // clear hierarchy cache to skip current entry
+							break;
+						}
+
+						hierarchy.push(obj);
 					}
-					if (hierarchy.size() < 2) // only process current entry if its target component is found
+
+					// only process current entry if its target component is found
+					if (hierarchy.size() < 2)
 						continue;
 
 					Component c = hierarchy.pop();
