@@ -434,7 +434,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (exclusions != null && inclusions != null) { // can't exclude and include together
 			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
 		} else if (exclusions != null && !exclusions.isEmpty() || inclusions != null && !inclusions.isEmpty()) {
-			Map<Container, List<Component>> unsupportedComps = new HashMap<>();
+			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
 					Stack<Component> hierarchy = new Stack<>();
@@ -462,7 +462,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 					Component c = hierarchy.pop();
 					if (inclusions != null) // register component to exclude its "neighbors" later
-						unsupportedComps.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
+						includedComponents.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
 					else // exclude the component itself
 						UnsupportedComponent.markUnsupported(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
@@ -471,7 +471,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 
 			if (inclusions != null) { // "include" components registered before
-				unsupportedComps.forEach((k, v) -> {
+				includedComponents.forEach((k, v) -> {
 					for (Field field : k.getClass().getDeclaredFields()) {
 						if (!Component.class.isAssignableFrom(field.getType()))
 							continue;
