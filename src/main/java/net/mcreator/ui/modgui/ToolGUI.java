@@ -73,7 +73,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special",
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
 					"MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
@@ -323,7 +323,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
+			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem().equals("Shield")) {
 				harvestLevel.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);

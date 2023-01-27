@@ -39,7 +39,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#compress>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
-		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "MultiTool">
+		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
 	public ${name}Item () {
 		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword"
@@ -87,7 +87,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			 	<#if data.immuneToFire>
 			 	.fireResistant()
 			 	</#if>
-		<#elseif data.toolType=="Shears">
+		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
 			new Item.Properties()
 				.tab(${data.creativeTab})
 				.durability(${data.usageCount})
@@ -96,6 +96,16 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				</#if>
 		</#if>);
 	}
+
+	<#if data.toolType == "Shield" && data.repairItems?has_content>
+	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		return List.of(
+			<#list data.repairItems as repairItem>
+				${mappedMCItemToItem(repairItem)}<#sep>,
+				</#list>
+		).contains(repairitem.getItem());
+	}
+	</#if>
 
 	<#if data.toolType=="Shears">
 		@Override public int getEnchantmentValue() {
