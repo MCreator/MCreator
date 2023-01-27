@@ -107,10 +107,10 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File guiTextureFile = getModElement().getFolderManager()
-				.getTextureFile(getModElement().getRegistryName(), TextureType.SCREEN);
-
 		if (renderBgLayer) {
+			File guiTextureFile = getModElement().getFolderManager()
+					.getTextureFile(getModElement().getRegistryName(), TextureType.SCREEN);
+
 			int mx = WYSIWYG.W - width;
 			int my = WYSIWYG.H - height;
 
@@ -136,8 +136,6 @@ import java.util.List;
 
 				FileIO.writeImageToPNGFile(resizedImage, guiTextureFile);
 			}
-		} else {
-			guiTextureFile.delete();
 		}
 	}
 
