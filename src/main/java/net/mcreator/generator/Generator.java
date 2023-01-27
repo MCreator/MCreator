@@ -271,13 +271,26 @@ public class Generator implements IGenerator, Closeable {
 					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()
 							.replace(File.separator, "/")).toList());
 
-			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
+			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
 		}
 
 		return new ArrayList<>(generatorFiles);
+	}
+
+	public List<String> getElementLocalizationKeys(GeneratableElement element) {
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
+				.getModElementDefinition(element.getModElement().getType()); // config map
+		if (map == null) {
+			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+					.getRegistryName());
+			return new ArrayList<>();
+		}
+
+		return new ArrayList<>(LocalizationUtils.processDefinitionToLocalizationKeys(this, element,
+				(List<?>) map.get("localizationkeys")).keySet());
 	}
 
 	public void removeElementFilesAndLangKeys(GeneratableElement generatableElement) {
