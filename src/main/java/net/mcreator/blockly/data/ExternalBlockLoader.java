@@ -24,6 +24,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.init.BlocklyToolboxesLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.Tuple;
@@ -143,19 +144,7 @@ public class ExternalBlockLoader {
 		// setup toolbox
 
 		// add default "built-in" categories
-		toolbox.put("other", new ArrayList<>());
-		toolbox.put("apis", new ArrayList<>());
-		toolbox.put("mcelements", new ArrayList<>());
-		toolbox.put("mcvariables", new ArrayList<>());
-		toolbox.put("customvariables", new ArrayList<>());
-		toolbox.put("logicloops", new ArrayList<>());
-		toolbox.put("logicoperations", new ArrayList<>());
-		toolbox.put("math", new ArrayList<>());
-		toolbox.put("text", new ArrayList<>());
-		toolbox.put("time", new ArrayList<>());
-		toolbox.put("advanced", new ArrayList<>());
-		toolbox.put("aiadvanced", new ArrayList<>());
-		toolbox.put("actions", new ArrayList<>());
+		BlocklyLoader.getBuiltinCategories().forEach(name -> toolbox.put(name, new ArrayList<>()));
 
 		// Handle built-in categories
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
@@ -210,8 +199,8 @@ public class ExternalBlockLoader {
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
 		pane.executeJavaScriptSynchronously("Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ")");
 
-		String toolbox_xml = FileIO.readResourceToString(
-				"/blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
+		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getToolboxXML(
+				toolboxType.name().toLowerCase(Locale.ENGLISH));
 
 		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {
@@ -238,10 +227,6 @@ public class ExternalBlockLoader {
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {
 		return toolboxBlocks;
-	}
-
-	public enum ToolboxType {
-		AI_BUILDER, PROCEDURE, COMMAND, EMPTY
 	}
 
 }

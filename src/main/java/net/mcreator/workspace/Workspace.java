@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -181,7 +182,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void addModElement(ModElement element) {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
-			element.reinit(); // if it is new element, it now probably has icons so we reinit modicons
+			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
 			markDirty();
 		} else
@@ -206,7 +207,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		for (ModElement el : mod_elements) {
 			if (el.getName().equals(element.getName())) {
 				el.loadDataFrom(element);
-				el.updateIcons();
+				el.reloadElementIcon(); // update ME icon
+				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
 			}
 		}
 		markDirty();
@@ -236,12 +238,13 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void removeModElement(ModElement element) {
 		if (mod_elements.contains(element)) {
+			GeneratableElement generatableElement = element.getGeneratableElement();
+
 			// first we ask generator to remove all related files
-			try {
-				if (generator != null)
-					generator.removeElementFilesAndLangKeys(element);
-			} catch (Exception e) {
-				LOG.warn("Failed to remove element files for element " + element, e);
+			if (generatableElement != null && generator != null) {
+				generator.removeElementFilesAndLangKeys(generatableElement);
+			} else {
+				LOG.warn("Failed to remove element files for element " + element);
 			}
 
 			// after we don't need the definition anymore, remove actual files
@@ -317,9 +320,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	void reloadModElements() {
-		for (ModElement modElement : mod_elements) {
-			modElement.setWorkspace(this);
-			modElement.reinit();
+		// While reiniting, list may change due to converters, so we need to copy it
+		for (ModElement modElement : Set.copyOf(mod_elements)) {
+			modElement.reinit(this);
 		}
 	}
 

@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": 1,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 6,
+      "precision": 1
+    }
+  ],
+  "output": "IntProvider",
+  "colour": "%{BKY_MATH_HUE}",
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "intproviders",
+    "fields": [
+      "min",
+      "max"
+    ]
+  }
+}

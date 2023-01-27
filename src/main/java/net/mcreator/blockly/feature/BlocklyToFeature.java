@@ -21,6 +21,7 @@ package net.mcreator.blockly.feature;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.datapack.blocks.MCItemBlock;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -42,21 +43,20 @@ public class BlocklyToFeature extends BlocklyToJava {
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
 
-	public BlocklyToFeature(Workspace workspace, ModElement parent, String sourceXML, TemplateGenerator templateGenerator,
-			IBlockGenerator... externalGenerators) throws TemplateGeneratorException {
-		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator,
-				externalGenerators);
+	public BlocklyToFeature(Workspace workspace, ModElement parent, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+			throws TemplateGeneratorException {
+		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
 	@Override protected void preInitialization() {
-		super.preInitialization();
+		blockGenerators.add(new MCItemBlock());
+
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
 	}
 
 	@Override protected void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {
-		super.preBlocksPlacement(doc, startBlock);
-
 		// Add the feature to the feature code
 		Element feature = XMLUtil.getFirstChildrenWithName(startBlock, "value");
 		if (feature != null) {

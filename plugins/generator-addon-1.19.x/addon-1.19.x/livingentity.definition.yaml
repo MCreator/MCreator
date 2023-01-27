@@ -5,12 +5,10 @@ templates:
   - template: entity/entity_spawn_rule.json.ftl
     writer: json
     condition: spawnThisMob
-    deleteWhenConditionFalse: true
     name: "@SRCROOT/spawn_rules/@registryname.json"
   - template: entity/entity_custom_loot.json.ftl
     writer: json
     name: "@SRCROOT/loot_tables/entities/@modid_@registryname.json"
-    deleteWhenConditionFalse: true
     condition: hasDrop()
 
 # entity models

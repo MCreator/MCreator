@@ -1,0 +1,1 @@
+在斜杠(/)之后玩家要写的命令定义，例如gamemode, give, setblock等。

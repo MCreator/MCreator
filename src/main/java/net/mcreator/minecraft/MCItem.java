@@ -18,16 +18,17 @@
 
 package net.mcreator.minecraft;
 
-import net.mcreator.element.types.Armor;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +36,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
 public class MCItem extends DataListEntry {
 
@@ -78,42 +78,31 @@ public class MCItem extends DataListEntry {
 		if (name == null || name.trim().equals(""))
 			return new EmptyIcon.ImageIcon(32, 32);
 
+		if (name.startsWith("TAG:"))
+			return TAG_ICON;
+
 		ImageIcon retval = null;
 		try {
 			if (name.startsWith("CUSTOM:")) {
-				if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-						name.replace("CUSTOM:", "") + ".png").isFile()) {
-					retval = new ImageIcon(
-							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-									+ name.replace("CUSTOM:", "") + ".png");
-				} else if (name.endsWith(".helmet")) {
-					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
-									.getGeneratableElement())).textureHelmet, TextureType.ITEM);
-				} else if (name.endsWith(".body")) {
-					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
-									.getGeneratableElement())).textureBody, TextureType.ITEM);
-				} else if (name.endsWith(".legs")) {
-					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
-									.getGeneratableElement())).textureLeggings, TextureType.ITEM);
-				} else if (name.endsWith(".boots")) {
-					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
-							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
-									.getGeneratableElement())).textureBoots, TextureType.ITEM);
-				} else if (name.endsWith(".bucket")) {
-					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-							name.replace("CUSTOM:", "").replace(".bucket", "") + ".png").isFile()) {
-						retval = MinecraftImageGenerator.generateFluidBucketIcon(new ImageIcon(
-								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-										+ name.replace("CUSTOM:", "").replace(".bucket", "") + ".png"));
-					} else {
-						retval = TiledImageCache.bucket;
+				String elementName = GeneratorWrapper.getElementPlainName(name);
+				String suffix = StringUtils.substringAfterLast(name, ".");
+				boolean hasGeneratableIcon = false;
+
+				// First, try to get the icon from the generatable element
+				if (workspace.getModElementByName(elementName).getGeneratableElement() instanceof IMCItemProvider provider) {
+					ImageIcon providedIcon = provider.getIconForMCItem(workspace, suffix);
+					if (providedIcon != null) {
+						retval = providedIcon;
+						hasGeneratableIcon = true;
 					}
 				}
-			} else if (name.startsWith("TAG:")) {
-				return TAG_ICON;
+				// Otherwise, try using the mod element icon
+				if (!hasGeneratableIcon && new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+						elementName + ".png").isFile()) {
+					retval = new ImageIcon(
+							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+									+ elementName + ".png");
+				}
 			} else if (name.startsWith("POTION:")) {
 				String potion = name.replace("POTION:", "");
 				if (potion.startsWith("CUSTOM:")) {
@@ -139,7 +128,8 @@ public class MCItem extends DataListEntry {
 
 			if (retval != null && retval.getImage() != null) {
 				if (retval.getImage().getWidth(null) > -1 && retval.getImage().getHeight(null) > -1) {
-					return retval;
+					// The image is cropped to fix an issue with long animated textures
+					return new ImageIcon(ImageUtils.resizeAndCrop(retval.getImage(), 32));
 				}
 			}
 

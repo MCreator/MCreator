@@ -8,8 +8,7 @@ plugins {
 }
 
 repositories {
-    maven { url "https://repo.gradle.org/gradle/libs-releases-local/" }
-    maven { url "https://maven.scijava.org/content/repositories/public/" }
+    maven { url "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
     flatDir { dirs 'lib' }
 }
 
@@ -22,7 +21,7 @@ project.ext.builddate = new Date().format('wwuHH')
 
 javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 sourceCompatibility = 17
 targetCompatibility = 17
@@ -33,8 +32,18 @@ System.setProperty("user.dir", projectDir.toString())
 idea {
     module {
         inheritOutputDirs = true
-        excludeDirs = [file(".gradle"), file(".idea"), file(".github"), file("build"),
-                       file("gradle"), file("jdk"), file("license"), file("logs")] as Set<File>
+
+        // define exclude dirs
+        excludeDirs += file(".gradle")
+        excludeDirs += file(".idea")
+        excludeDirs += file("build")
+        excludeDirs += file("gradle")
+        excludeDirs += file("jdk")
+        excludeDirs += file("license")
+        excludeDirs += file("logs")
+
+        // additional source dirs
+        sourceDirs += file("plugins/mcreator-core/blockly/js")
     }
 }
 
@@ -60,8 +69,8 @@ dependencies {
     // from maven
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
     implementation group: 'foxtrot', name: 'foxtrot-core', version: '4.0'
-    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
+    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.32'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.28.0.Final'
     implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.28.0.Final'
@@ -74,21 +83,21 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '6.4.0.202211300538-r'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.6'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.1.1'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '7.6'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.2'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.0'
-    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.0'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.2'
+    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.13.0' // needed by discord-rpc.jar
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.1'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.2'
 
     // JFX natives
     win64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'win'
@@ -122,24 +131,45 @@ javafx {
 test {
     useJUnitPlatform()
 
-    testLogging.showStandardStreams = true
-    testLogging.exceptionFormat = 'full'
-    maxHeapSize = "1024m"
-
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+
+    // default max heap is VM RAM / 4, which may be too low on low RAM VMs
+    maxHeapSize = "2048m"
+
+    testLogging {
+        // https://stackoverflow.com/a/48709645/1627085
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+
+        showCauses true
+        showStackTraces true
+        showExceptions true
+        exceptionFormat "full"
+
+        debug {
+            events "started", "failed", "passed", "skipped", "standard_error", "standard_out"
+            exceptionFormat "full"
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+    }
 }
 
 javadoc {
     source = sourceSets.main.allJava
     classpath = configurations.runtimeClasspath
+
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
-task runMCreator(type: JavaExec, dependsOn: jar) {
+tasks.register('runMCreator', JavaExec.class) {
+    dependsOn jar
+
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
     classpath += sourceSets.main.runtimeClasspath
-    main = "net.mcreator.Launcher"
 
+    mainClass.set("net.mcreator.Launcher")
 }
 
 apply from: 'platform/setup.gradle'

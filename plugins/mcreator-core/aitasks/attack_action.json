@@ -4,10 +4,11 @@
       "type": "field_checkbox",
       "name": "callhelp",
       "checked": true
+    },
+    {
+      "type": "field_ai_condition_selector",
+      "name": "condition"
     }
-  ],
-  "extensions": [
-    "ai_condition_selector"
   ],
   "inputsInline": true,
   "previousStatement": null,

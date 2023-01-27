@@ -27,14 +27,12 @@
 
 package net.mcreator.integration.generator;
 
-import com.google.gson.Gson;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -71,24 +70,11 @@ public class GTModElements {
 
 				workspace.getModElementManager().storeModElement(generatableElement);
 
-				List<File> modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement)
-						.stream().map(GeneratorTemplate::getFile).toList();
+				List<File> modElementFiles = workspace.getGenerator()
+						.getModElementGeneratorTemplatesList(generatableElement).stream()
+						.map(GeneratorTemplate::getFile).toList();
 
-				// test generated JSON syntax (Java is tested later in the build)
-				for (File modElementFile : modElementFiles) {
-					if (modElementFile.getName().endsWith(".json")) {
-						try {
-							new Gson().fromJson(FileIO.readFileToString(modElementFile),
-									Object.class); // try to parse JSON
-						} catch (Exception e) {
-							LOG.error("Invalid JSON in: " + FileIO.readFileToString(modElementFile), e);
-							fail("Invalid JSON");
-						}
-					}
-				}
-
-				// Disabled part of the test to speed up automated tests
-				/*// test mod element file detection system
+				// test mod element file detection system
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
 					if (!modElement.equals(modElement1))
@@ -97,21 +83,21 @@ public class GTModElements {
 				}
 
 				// testing if element file deletion works properly (no exception thrown)
-				workspace.getGenerator().removeElementFilesAndLangKeys(modElement);
+				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
 
 				// testing if all element files were properly deleted
-				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
-						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
+				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
+						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				for (File modElementFile : modElementFiles) {
 					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
-					if (modElement
-							.equals(modElement1)) // if now ownership can still be found, this means some files were not properly removed
+					if (modElement.equals(
+							modElement1)) // if now ownership can still be found, this means some files were not properly removed
 						fail("Filed to properly delete file of mod element type: " + modElement.getType()
 								.getReadableName() + ", file: " + modElementFile);
 				}
 
 				// generate back after removal for build testing
-				assertTrue(workspace.getGenerator().generateElement(generatableElement));*/
+				assertTrue(workspace.getGenerator().generateElement(generatableElement));
 			});
 		}
 	}

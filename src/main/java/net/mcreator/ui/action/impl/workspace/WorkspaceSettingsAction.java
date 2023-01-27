@@ -25,6 +25,8 @@ import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.StructureUtils;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.WorkspaceRefactoringEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
@@ -61,6 +63,9 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 	public static void refactorWorkspace(MCreator mcreator, WorkspaceSettingsChange change) {
 		if (change.refactorNeeded() && change.oldSettings != null) {
+
+			MCREvent.event(new WorkspaceRefactoringEvent(mcreator, change));
+
 			if (change.generatorFlavorChanged) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),

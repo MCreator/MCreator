@@ -30,4 +30,3 @@ templates:
   - template: brewingrecipe.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/recipes/brewing/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
-    deleteWhenConditionFalse: true

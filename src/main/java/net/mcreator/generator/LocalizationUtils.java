@@ -22,15 +22,12 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.io.FileIO;
+import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalizationUtils {
@@ -82,8 +79,17 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static void extractLocalizationKeys(Generator generator, GeneratableElement element,
+	public static void generateLocalizationKeys(Generator generator, GeneratableElement element,
 			@Nullable List<?> localizationkeys) {
+		processDefinitionToLocalizationKeys(generator, element, localizationkeys)
+				.forEach((k, v) -> addLocalizationEntry(generator, k, v.x(), v.y()));
+	}
+
+	static Map<String, Tuple<Map<?, ?>, Object>> processDefinitionToLocalizationKeys(Generator generator,
+			GeneratableElement element, @Nullable List<?> localizationkeys) {
+		// values are pairs of key's YAML definitions and objects to parse tokens with
+		HashMap<String, Tuple<Map<?, ?>, Object>> keysToEntries = new HashMap<>();
+
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
@@ -97,31 +103,33 @@ public class LocalizationUtils {
 										keytpl.replace("@NAME", element.getModElement().getName()).replace("@modid",
 														generator.getWorkspace().getWorkspaceSettings().getModID())
 												.replace("@registryname", element.getModElement().getRegistryName())));
-						addLocalizationEntry(generator, template, entry, key);
+						keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, entry));
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 							keytpl.replace("@NAME", element.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 									.replace("@registryname", element.getModElement().getRegistryName()));
-					addLocalizationEntry(generator, template, element, key);
+					keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, element));
 				}
 			}
 		}
+
+		return keysToEntries;
 	}
 
-	private static void addLocalizationEntry(Generator generator, Object template, Object entry, String key) {
+	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
-			String mapto = (String) ((Map<?, ?>) template).get("mapto");
+			String mapto = (String) template.get("mapto");
 			String value = (String) (mapto.contains("()") ?
 					entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
 					entry.getClass().getField(mapto.trim()).get(entry));
 
-			String suffix = (String) ((Map<?, ?>) template).get("suffix");
+			String suffix = (String) template.get("suffix");
 			if (suffix != null)
 				value += suffix;
 
-			String prefix = (String) ((Map<?, ?>) template).get("prefix");
+			String prefix = (String) template.get("prefix");
 			if (prefix != null)
 				value = prefix + value;
 
@@ -131,28 +139,30 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static void deleteLocalizationKeys(Generator generator, ModElement element,
+	public static void deleteLocalizationKeys(Generator generator, GeneratableElement generatableElement,
 			@Nullable List<?> localizationkeys) {
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
 				String keytpl = (String) ((Map<?, ?>) template).get("key");
 				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
-						(String) ((Map<?, ?>) template).get("fromlist"), element);
+						(String) ((Map<?, ?>) template).get("fromlist"), generatableElement);
 
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
 								GeneratorTokens.replaceTokens(generator.getWorkspace(),
-										keytpl.replace("@NAME", element.getName()).replace("@modid",
+										keytpl.replace("@NAME", generatableElement.getModElement().getName())
+												.replace("@modid",
 														generator.getWorkspace().getWorkspaceSettings().getModID())
-												.replace("@registryname", element.getRegistryName())));
+												.replace("@registryname",
+														generatableElement.getModElement().getRegistryName())));
 						generator.getWorkspace().removeLocalizationEntryByKey(key);
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
-							keytpl.replace("@NAME", element.getName())
+							keytpl.replace("@NAME", generatableElement.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-									.replace("@registryname", element.getRegistryName()));
+									.replace("@registryname", generatableElement.getModElement().getRegistryName()));
 					generator.getWorkspace().removeLocalizationEntryByKey(key);
 				}
 			}
