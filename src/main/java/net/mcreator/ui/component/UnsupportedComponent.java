@@ -23,10 +23,6 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 public class UnsupportedComponent extends JPanel {
@@ -58,28 +54,8 @@ public class UnsupportedComponent extends JPanel {
 
 		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
-		origin.addMouseListener(new MouseAdapter() {
-			@Override public void mousePressed(MouseEvent e) {
-				e.consume();
-			}
-
-			@Override public void mouseReleased(MouseEvent e) {
-				e.consume();
-			}
-
-			@Override public void mouseDragged(MouseEvent e) {
-				e.consume();
-			}
-		});
-		origin.addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				e.consume();
-			}
-
-			@Override public void keyReleased(KeyEvent e) {
-				e.consume();
-			}
-		});
+		Arrays.stream(origin.getMouseListeners()).forEach(origin::removeMouseListener);
+		Arrays.stream(origin.getKeyListeners()).forEach(origin::removeKeyListener);
 
 		add(origin);
 	}
