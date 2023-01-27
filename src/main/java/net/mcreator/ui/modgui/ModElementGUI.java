@@ -433,7 +433,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		if (exclusions != null && inclusions != null) { // can't exclude and include together
 			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
-		} else if (exclusions != null && !exclusions.isEmpty() || inclusions != null && !inclusions.isEmpty()) {
+		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
