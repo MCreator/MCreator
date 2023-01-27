@@ -83,12 +83,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("EntityModel") as component>
 		{
-		Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
-		if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
-		<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
+		    <#assign followMouse = component.followMouseMovement>
+			Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
+			if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
+			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
 			renderBgEntity(this.leftPos + ${((component.x - mx/2)?int) + 11}, this.topPos + ${((component.y - my/2)?int) + 27}, ${component.scale},
-			 (float) (this.leftPos + ${((component.x - mx/2)?int) + 11}) - mouseX,
-			 (float) (this.topPos + (${((component.y - my/2)?int) - 23})) - mouseY, entityLiving);
+			(float) (this.leftPos + ${((component.x - mx/2)?int) + 11})<#if followMouse> - mouseX</#if>,
+			(float) (this.topPos + (${((component.y - my/2)?int) - 23}))<#if followMouse> - mouseY</#if>,
+			<#if followMouse>true<#else>false</#if>, entityLiving);
 		}
 		</#list>
 	}
@@ -117,7 +119,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	<#if !data.getComponentsOfType("EntityModel").isEmpty()>
 	@OnlyIn(Dist.CLIENT)
-	protected static void renderBgEntity(int posX, int posY, double scale, float bodyRotation, float cameraOrientation, LivingEntity renderTarget) {
+	protected static void renderBgEntity(int posX, int posY, double scale, float bodyRotation, float cameraOrientation, boolean followMouse, LivingEntity renderTarget) {
 		float f = (float) Math.atan((double)(bodyRotation / 40.0F));
 		float f1 = (float) Math.atan((double)(cameraOrientation / 40.0F));
 		PoseStack poseStack = RenderSystem.getModelViewStack();
@@ -129,7 +131,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
 		secondPoseStack.scale((float) scale, (float) scale, (float) scale);
 		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * (followMouse ? 20.0F : 1.0F));
 		quaternion.mul(secondQuaternion);
 		secondPoseStack.mulPose(quaternion);
 		float f2 = renderTarget.yBodyRot;
@@ -137,11 +139,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		float f4 = renderTarget.getXRot();
 		float f5 = renderTarget.yHeadRotO;
 		float f6 = renderTarget.yHeadRot;
-		renderTarget.yBodyRot = 180.0F + f * 20.0F;
-		renderTarget.setYRot(180.0F + f * 40.0F);
-		renderTarget.setXRot(-f1 * 20.0F);
-		renderTarget.yHeadRot = renderTarget.getYRot();
-		renderTarget.yHeadRotO = renderTarget.getYRot();
+		if (followMouse) {
+		    renderTarget.yBodyRot = 180.0F + f * 20.0F;
+		    renderTarget.setYRot(180.0F + f * 40.0F);
+		    renderTarget.setXRot(-f1 * 20.0F);
+		    renderTarget.yHeadRot = renderTarget.getYRot();
+		    renderTarget.yHeadRotO = renderTarget.getYRot();
+		}
 		Lighting.setupForEntityInInventory();
 		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
 		secondQuaternion.conj();
@@ -153,11 +157,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		});
 		buffer.endBatch();
 		dispatcher.setRenderShadow(true);
-		renderTarget.yBodyRot = f2;
-		renderTarget.setYRot(f3);
-		renderTarget.setXRot(f4);
-		renderTarget.yHeadRotO = f5;
-		renderTarget.yHeadRot = f6;
+		if (followMouse) {
+		    renderTarget.yBodyRot = f2;
+		    renderTarget.setYRot(f3);
+		    renderTarget.setXRot(f4);
+		    renderTarget.yHeadRotO = f5;
+		    renderTarget.yHeadRot = f6;
+		}
 		poseStack.popPose();
 		RenderSystem.applyModelViewMatrix();
 		Lighting.setupFor3DItems();
