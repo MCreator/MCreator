@@ -23,7 +23,7 @@ public abstract class MCREvent {
 
 	public static <T extends MCREvent> void event(T event) {
 		PluginLoader.INSTANCE.getJavaPlugins().forEach(javaPlugin -> javaPlugin.getListeners().get(event.getClass())
-				.forEach(listener -> listener.eventTriggered(event)));
+				.forEach(listener -> javaPlugin.getEventQueue().submit(() -> listener.eventTriggered(event))));
 	}
 
 }
