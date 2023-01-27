@@ -53,7 +53,8 @@ public abstract class PropertyData<T> {
 	}
 
 	/**
-	 * Sets the name of this property to the passed one (used within UI to rename properties).
+	 * Sets the name of this property to the passed one (used within UI to rename custom properties).<br>
+	 * <b>NOTE:</b> Should not be used on {@code PropertyData} instances created for built-in/external properties.
 	 *
 	 * @param name The new name of this property.
 	 */
