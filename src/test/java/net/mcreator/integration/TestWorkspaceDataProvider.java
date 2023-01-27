@@ -604,7 +604,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 			livingEntity.transparentModelCondition = new Procedure("condition1");
 			livingEntity.isShakingCondition = new Procedure("condition2");
-			livingEntity.solidBoundingBox = new Procedure("condition3");
+			livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;
