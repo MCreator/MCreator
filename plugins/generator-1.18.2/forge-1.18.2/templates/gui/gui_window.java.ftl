@@ -83,7 +83,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("EntityModel") as component>
 		{
-		    <#assign followMouse = component.followMouseMovement>
+			<#assign followMouse = component.followMouseMovement>
 			Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
 			if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
