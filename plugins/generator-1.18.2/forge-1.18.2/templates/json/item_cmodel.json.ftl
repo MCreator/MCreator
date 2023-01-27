@@ -1,5 +1,5 @@
 {
-<#assign shield = ((data.getModElement().getTypeString() == "tool") && (data.toolType == "Shield"))>
+<#assign shield = data.getModElement().getTypeString() == "tool" && data.toolType == "Shield">
 <#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
   "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
   "textures": {
