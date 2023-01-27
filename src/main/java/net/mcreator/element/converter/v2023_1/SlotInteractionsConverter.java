@@ -48,14 +48,17 @@ public class SlotInteractionsConverter implements IConverter {
 						gui.components.forEach(component -> {
 							if (component instanceof Slot slot) {
 								if (slot.id == c.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsInt()) {
-									slot.disablePickup = new LogicProcedure(null,
-											c.getAsJsonObject().get("data").getAsJsonObject()
-													.get("disableStackInteraction").getAsBoolean());
+									boolean disableStackInteraction = false;
+									if (c.getAsJsonObject().get("data").getAsJsonObject()
+											.has("disableStackInteraction")) {
+										disableStackInteraction = c.getAsJsonObject().get("data").getAsJsonObject()
+												.get("disableStackInteraction").getAsBoolean();
+									}
+
+									slot.disablePickup = new LogicProcedure(null, disableStackInteraction);
 
 									if (slot instanceof InputSlot inputSlot) {
-										inputSlot.disablePlacement = new LogicProcedure(null,
-												c.getAsJsonObject().get("data").getAsJsonObject()
-														.get("disableStackInteraction").getAsBoolean());
+										inputSlot.disablePlacement = new LogicProcedure(null, disableStackInteraction);
 									}
 								}
 							}

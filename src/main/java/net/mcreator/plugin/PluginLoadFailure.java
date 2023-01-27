@@ -17,26 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2021_2;
+package net.mcreator.plugin;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
-import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.VariableTypeLoader;
+import java.io.File;
 
-public class BooleanGameRulesConverter implements IConverter {
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		if (input.getModElement().getMetadata("type").equals("boolean")) {
-			input.getModElement().clearMetadata();
-			input.getModElement().putMetadata("type", VariableTypeLoader.BuiltInTypes.LOGIC.getName());
-		}
+public record PluginLoadFailure(String pluginID, File pluginFile, String message) {
 
-		return input;
+	public PluginLoadFailure(Plugin plugin, String message) {
+		this(plugin.getID(), plugin.getFile(), message);
 	}
 
-	@Override public int getVersionConvertingTo() {
-		return 21;
-	}
 }

@@ -3,4 +3,4 @@ templates:
     writer: json
     name: "@SRCROOT/loot_tables/@[getName()].json"
 
-field_inclusions: [name]
+field_inclusions: [name, lootTablePools]
