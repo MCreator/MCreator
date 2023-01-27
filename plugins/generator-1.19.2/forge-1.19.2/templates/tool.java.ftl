@@ -102,7 +102,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		return List.of(
 			<#list data.repairItems as repairItem>
 				${mappedMCItemToItem(repairItem)}<#sep>,
-				</#list>
+			</#list>
 		).contains(repairitem.getItem());
 	}
 	</#if>

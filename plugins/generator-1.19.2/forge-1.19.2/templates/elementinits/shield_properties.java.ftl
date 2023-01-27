@@ -38,13 +38,13 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class ${JavaModName}ShieldProperties {
-	private static final List<RegistryObject<Item>> shields = new ArrayList<>(List.of(
-	<#list tools as tool>
-	<#if tool.toolType == "Shield">
-	${JavaModName}Items.${tool.getModElement().getRegistryNameUpper()}<#if tool?has_next>,</#if>
-	</#if>
-	</#list>
-	));
+	private static final List<RegistryObject<Item>> shields = List.of(
+		<#list tools as tool>
+			<#if tool.toolType == "Shield">
+			${JavaModName}Items.${tool.getModElement().getRegistryNameUpper()}<#sep>,
+			</#if>
+		</#list>
+	);
 
 	@SubscribeEvent
 	public static void initShields(final FMLClientSetupEvent event) {
