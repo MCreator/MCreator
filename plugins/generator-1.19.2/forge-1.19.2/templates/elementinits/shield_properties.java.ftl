@@ -49,9 +49,8 @@ public class ${JavaModName}ShieldProperties {
 	@SubscribeEvent
 	public static void initShields(final FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			ItemPropertyFunction blockFn = (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
 			for (RegistryObject<Item> shieldItem : shields)
-				ItemProperties.register(shieldItem.get(), new ResourceLocation("minecraft:blocking"), blockFn);
+				ItemProperties.register(shieldItem.get(), new ResourceLocation("blocking"), ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
 		});
 
 	}
