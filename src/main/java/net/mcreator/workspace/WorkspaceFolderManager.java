@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.generator.GeneratorUtils;
+import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -29,7 +30,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +69,19 @@ public class WorkspaceFolderManager {
 
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
+	}
+
+	/**
+	 * Attempts to locate the provided file inside workspace folder and return its path relative to this folder.
+	 *
+	 * @param file The input file.
+	 * @return File path relative to workspace folder or its absolute path if not found in the workspace.
+	 */
+	public String getPathInWorkspace(File file) {
+		if (!isFileInWorkspace(file))
+			throw new RuntimeException(file.getAbsolutePath() + " is not in workspace path!");
+
+		return workspaceFolder.toPath().relativize(file.toPath()).toString();
 	}
 
 	/**
@@ -160,15 +173,11 @@ public class WorkspaceFolderManager {
 	}
 
 	public boolean isFileInWorkspace(File file) {
-		try {
-			boolean inworkspace = file.getCanonicalPath().startsWith(workspaceFolder.getCanonicalPath());
-			if (!inworkspace)
-				LOG.warn(file.getAbsolutePath() + " is not in workspace path!");
-			return inworkspace;
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+		if (FileIO.isFileSomewhereInDirectory(file, workspaceFolder)) {
+			return true;
+		} else {
+			LOG.warn(file.getAbsolutePath() + " is not in workspace path!");
 			return false;
 		}
 	}
-
 }
