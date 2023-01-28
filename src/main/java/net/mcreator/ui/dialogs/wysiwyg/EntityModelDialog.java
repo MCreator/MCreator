@@ -67,7 +67,6 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		JCheckBox followMouseMovement = new JCheckBox();
 		followMouseMovement.setOpaque(false);
-		followMouseMovement.setEnabled(editor.isNotOverlayType);
 
 		parameters.add(PanelUtils.join(entityModel, displayCondition));
 
@@ -77,11 +76,17 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
-		parameters.add(PanelUtils.centerInPanel
-				(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_scale"),
-				L10N.label("dialog.gui.model_scale")), scale,
-				(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_follow_mouse"),
-				L10N.label("dialog.gui.model_follow_mouse")), followMouseMovement)))));
+		JPanel opts = new JPanel();
+
+		opts.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_scale"),
+				L10N.label("dialog.gui.model_scale")), scale));
+
+		if (editor.isNotOverlayType) {
+			opts.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_follow_mouse"),
+							L10N.label("dialog.gui.model_follow_mouse")), followMouseMovement));
+		}
+
+		parameters.add(opts);
 
 		options.add("Center", parameters);
 		options.add("South", PanelUtils.join(ok, cancel));
