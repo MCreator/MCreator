@@ -426,7 +426,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateRangedPanel();
 
-		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2,2));
+		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2, 2));
 		rangedProperties.setOpaque(false);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
@@ -450,8 +450,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedTriggers.add(useCondition);
 		rangedTriggers.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.item.ranged_events"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("elementgui.item.ranged_events"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		rangedPanel.setOpaque(false);
 		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));

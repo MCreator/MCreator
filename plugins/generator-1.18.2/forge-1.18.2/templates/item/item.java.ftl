@@ -156,13 +156,13 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-    <#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged>
-    @Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged>
+	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
-		    InteractionResultHolder<ItemStack> ar = new InteractionResultHolder<>(InteractionResult.SUCCESS, entity.getItemInHand(hand));
-		    entity.startUsingItem(hand);
-        <#else>
-            InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+			InteractionResultHolder<ItemStack> ar = new InteractionResultHolder<>(InteractionResult.SUCCESS, entity.getItemInHand(hand));
+			entity.startUsingItem(hand);
+		<#else>
+			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		</#if>
 		ItemStack itemstack = ar.getObject();
 		double x = entity.getX();

@@ -159,10 +159,10 @@ public class ${name}Item extends Item {
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
-		    InteractionResultHolder<ItemStack> ar = new InteractionResultHolder<>(InteractionResult.SUCCESS, entity.getItemInHand(hand));
-		    entity.startUsingItem(hand);
-        <#else>
-            InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+			InteractionResultHolder<ItemStack> ar = new InteractionResultHolder<>(InteractionResult.SUCCESS, entity.getItemInHand(hand));
+			entity.startUsingItem(hand);
+		<#else>
+			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		</#if>
 		ItemStack itemstack = ar.getObject();
 		double x = entity.getX();
@@ -300,15 +300,15 @@ public class ${name}Item extends Item {
 	}
 
 	if (entity.getAbilities().instabuild || stack != ItemStack.EMPTY) {
-	    <#assign projectile = data.projectile.getUnmappedValue()>
-	    <#assign projectileClass = generator.map(data.projectile.getUnmappedValue(), "projectiles", 0)>
-	    <#if projectile.startsWith("CUSTOM:")>
-		    ${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
+		<#assign projectile = data.projectile.getUnmappedValue()>
+		<#assign projectileClass = generator.map(data.projectile.getUnmappedValue(), "projectiles", 0)>
+		<#if projectile.startsWith("CUSTOM:")>
+			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
 		<#elseif projectile.endsWith("Arrow")>
-		    ${projectileClass} projectile = new ${projectileClass}(world, entity);
-		    projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
-		    world.addFreshEntity(projectile);
-		    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
+			${projectileClass} projectile = new ${projectileClass}(world, entity);
+			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
+			world.addFreshEntity(projectile);
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
 		</#if>
 

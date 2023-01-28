@@ -78,8 +78,8 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				projectile.entityModel = rangedItem.get("bulletModel").getAsString();
 			if (rangedItem.get("customBulletModelTexture") != null) {
 				// We need to include the old fv31 texture converter of ranged items as the mod element has been deleted.
-				if (jsonElementInput.getAsJsonObject().get("_fv").getAsInt() < 31 && !rangedItem.get("customBulletModelTexture")
-						.getAsString().isEmpty()) {
+				if (jsonElementInput.getAsJsonObject().get("_fv").getAsInt() < 31 && !rangedItem.get(
+						"customBulletModelTexture").getAsString().isEmpty()) {
 					FileIO.copyFile(workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(
 									rangedItem.get("customBulletModelTexture").getAsString()), TextureType.OTHER),
 							workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(
