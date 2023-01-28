@@ -6,7 +6,7 @@ _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "@NAMEEntity"
   - "@JavaModNameEntities.@REGISTRYNAME.get()"
-  - "@NAMEEntity.PROJECTILE_ITEM"
+  - "@NAMEEntity.PROJECTILE_ITEM.getItem()"
 Snowball:
   - Snowball
   - EntityType.SNOWBALL
