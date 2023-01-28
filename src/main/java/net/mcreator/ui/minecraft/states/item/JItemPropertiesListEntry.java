@@ -32,6 +32,7 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -86,6 +87,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
+		value.setValidator(new ProcedureSelectorValidator(value));
 		reloadDataLists(); // we make sure that selector can be properly shown
 
 		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
@@ -144,11 +146,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		if (result != Validator.ValidationResult.PASSED)
 			return result;
 
-		if (value.getSelectedProcedure() == null)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("elementgui.item.custom_property.value.error_missing", name.getPropertyName()));
-
-		return Validator.ValidationResult.PASSED;
+		return value.getValidationStatus();
 	}
 
 	@Override public void setValidator(Validator validator) {
