@@ -135,8 +135,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 								L10N.t("dialog.workspace_selector.clone.setup_failed", ex.getMessage()),
 								L10N.t("dialog.workspace_selector.clone.setup_failed.title"),
 								JOptionPane.ERROR_MESSAGE);
+					} finally {
+						setCursor(Cursor.getDefaultCursor());
 					}
-					setCursor(Cursor.getDefaultCursor());
 				}
 			}
 		}, actions);

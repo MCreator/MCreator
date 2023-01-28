@@ -344,8 +344,9 @@ public final class MCreatorApplication {
 			}
 		} catch (IOException | UnsupportedGeneratorException e) {
 			reportFailedWorkspaceOpen(e);
+		} finally {
+			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
-		this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 		return null;
 	}
