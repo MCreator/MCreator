@@ -111,16 +111,12 @@ package ${package}.client.gui;
 	            </#list>
 
 				<#list data.getComponentsOfType("EntityModel") as component>
-				<#assign x = component.x / 2>
-				<#assign y = (component.y + 17) / 4>
-				<#assign y1 = (component.y - 21) / 4>
-				{
-					Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
-					if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
-					<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
-					renderBgEntity(posX / 2 + ${x?int}, posY / 2 + ${(y)?int},
-					${component.scale}, (float) (posY / 2 + (${y1})), entityLiving);
-				}
+					if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
+						<#if hasProcedure(component.displayCondition)>
+							if (<@procedureOBJToConditionCode component.displayCondition/>)
+						</#if>
+						renderBgEntity(livingEntity, posX + ${x}, posY + ${y}, ${component.scale}f);
+					}
 				</#list>
 			}
 
@@ -135,29 +131,26 @@ package ${package}.client.gui;
 	}
 
 	<#if !data.getComponentsOfType("EntityModel").isEmpty()>
-	protected static void renderBgEntity(int posX, int posY, double scale, float cameraOrientation, LivingEntity renderTarget) {
-		float f1 = (float) Math.atan((double) (cameraOrientation / 40.0F));
+	private static void renderBgEntity(LivingEntity entity, int posX, int posY, float scale) {
 		PoseStack poseStack = RenderSystem.getModelViewStack();
 		poseStack.pushPose();
-		poseStack.translate((double) posX, (double) posY, 1050.0D);
-		poseStack.scale(1.0F, 1.0F, -1.0F);
+		poseStack.translate(posX, posY, 1050);
+		poseStack.scale(1, 1, -1);
 		RenderSystem.applyModelViewMatrix();
 		PoseStack secondPoseStack = new PoseStack();
-		secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
-		secondPoseStack.scale((float) scale, (float) scale, (float) scale);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1);
+		secondPoseStack.translate(0, 0, 1000);
+		secondPoseStack.scale(scale, scale, scale);
+		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180);
+		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees((float) Math.atan(0));
 		quaternion.mul(secondQuaternion);
 		secondPoseStack.mulPose(quaternion);
 		Lighting.setupForEntityInInventory();
-		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
 		secondQuaternion.conj();
+		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
 		dispatcher.overrideCameraOrientation(secondQuaternion);
 		dispatcher.setRenderShadow(false);
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> {
-			dispatcher.render(renderTarget, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, secondPoseStack, buffer, 15728880);
-		});
+		RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0, 0, 0, 0, 1, secondPoseStack, buffer, 15728880));
 		buffer.endBatch();
 		dispatcher.setRenderShadow(true);
 		poseStack.popPose();
