@@ -868,7 +868,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
-		addPage(L10N.t("elementgui.living_entity.entity_data_accessors"),entityDataListPanel);
+		addPage(L10N.t("elementgui.living_entity.entity_data_accessors"), entityDataListPanel);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
