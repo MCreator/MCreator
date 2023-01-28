@@ -429,18 +429,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2,2));
 		rangedProperties.setOpaque(false);
 
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
-				L10N.label("elementgui.item_enable_ranged_item")));
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
+				L10N.label("elementgui.item.enable_ranged_item")));
 		enableRanged.setOpaque(false);
 		enableRanged.addActionListener(e -> updateRangedPanel());
 		rangedProperties.add(enableRanged);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
-				L10N.label("elementgui.ranged_item.projectile")));
+				L10N.label("elementgui.item.projectile")));
 		rangedProperties.add(projectile);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("rangeditem/shoot_constantly"),
-				L10N.label("elementgui.ranged_item.shoot_constantly")));
+				L10N.label("elementgui.item.shoot_constantly")));
 		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
 

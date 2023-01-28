@@ -1,0 +1,2 @@
+C'est le type de projectile qui pourra être lancé par cet objet.
+Vous pouvez soit utiliser un projectile vanilla ou, soit utilisée un projectile personnalisé en créant un nouvel élément de projectile.
