@@ -501,9 +501,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(new JEmptyBox());
 		spo2.add(isShakingCondition);
 
-		spo2.add(new JEmptyBox());
-		spo2.add(solidBoundingBox);
-
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
@@ -612,6 +609,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.bounding_box")));
 		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(7, 7), modelHeight, new JEmptyBox(7, 7), modelShadowSize,
 				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
+
+		spo2.add(new JEmptyBox());
+		spo2.add(solidBoundingBox);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
