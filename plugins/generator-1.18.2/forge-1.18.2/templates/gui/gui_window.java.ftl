@@ -82,16 +82,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("EntityModel") as component>
-		{
 			<#assign followMouse = component.followMouseMovement>
-			Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
-			if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
-			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
-			renderBgEntity(this.leftPos + ${((component.x - mx/2)?int) + 11}, this.topPos + ${((component.y - my/2)?int) + 27}, ${component.scale},
-			(float) (this.leftPos + ${((component.x - mx/2)?int) + 11})<#if followMouse> - mouseX</#if>,
-			(float) (this.topPos + (${((component.y - my/2)?int) - 23}))<#if followMouse> - mouseY</#if>,
-			<#if followMouse>true<#else>false</#if>, entityLiving);
-		}
+			<#assign x = (component.x - mx/2)?int>
+			<#assign y = (component.y - my/2)?int>
+			if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
+				<#if hasProcedure(component.displayCondition)>
+					if (<@procedureOBJToConditionCode component.displayCondition/>)
+				</#if>
+				renderBgEntity(this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale}, (float) this.leftPos + ${x + 11}<#if followMouse> - mouseX</#if>, (float) (this.topPos + ${y - 29})<#if followMouse> - mouseY</#if>, <#if followMouse>true<#else>false</#if>, livingEntity);
+			}
 		</#list>
 	}
 
@@ -119,19 +118,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	<#if !data.getComponentsOfType("EntityModel").isEmpty()>
 	@OnlyIn(Dist.CLIENT)
-	protected static void renderBgEntity(int posX, int posY, double scale, float bodyRotation, float cameraOrientation, boolean followMouse, LivingEntity renderTarget) {
-		float f = (float) Math.atan((double)(bodyRotation / 40.0F));
-		float f1 = (float) Math.atan((double)(cameraOrientation / 40.0F));
+	protected static void renderBgEntity(int posX, int posY, float scale, float bodyRotation, float cameraOrientation, boolean followMouse, LivingEntity renderTarget) {
+		float f = (float) Math.atan((double)(bodyRotation / 40));
+		float f1 = (float) Math.atan((double)(cameraOrientation / 40));
 		PoseStack poseStack = RenderSystem.getModelViewStack();
 		poseStack.pushPose();
-		poseStack.translate((double) posX, (double) posY, 1050.0D);
-		poseStack.scale(1.0F, 1.0F, -1.0F);
+		poseStack.translate(posX, posY, 1050);
+		poseStack.scale(1, 1, -1);
 		RenderSystem.applyModelViewMatrix();
 		PoseStack secondPoseStack = new PoseStack();
-		secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
-		secondPoseStack.scale((float) scale, (float) scale, (float) scale);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * (followMouse ? 20.0F : 1.0F));
+		secondPoseStack.translate(0, 0, 1000);
+		secondPoseStack.scale(scale, scale, scale);
+		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180);
+		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * (followMouse ? 20 : 1));
 		quaternion.mul(secondQuaternion);
 		secondPoseStack.mulPose(quaternion);
 		float f2 = renderTarget.yBodyRot;
@@ -140,11 +139,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		float f5 = renderTarget.yHeadRotO;
 		float f6 = renderTarget.yHeadRot;
 		if (followMouse) {
-		    renderTarget.yBodyRot = 180.0F + f * 20.0F;
-		    renderTarget.setYRot(180.0F + f * 40.0F);
-		    renderTarget.setXRot(-f1 * 20.0F);
-		    renderTarget.yHeadRot = renderTarget.getYRot();
-		    renderTarget.yHeadRotO = renderTarget.getYRot();
+			renderTarget.yBodyRot = 180 + f * 20;
+			renderTarget.setYRot(180 + f * 40);
+			renderTarget.setXRot(-f1 * 20);
+			renderTarget.yHeadRot = renderTarget.getYRot();
+			renderTarget.yHeadRotO = renderTarget.getYRot();
 		}
 		Lighting.setupForEntityInInventory();
 		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
@@ -152,17 +151,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		dispatcher.overrideCameraOrientation(secondQuaternion);
 		dispatcher.setRenderShadow(false);
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> {
-			dispatcher.render(renderTarget, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, secondPoseStack, buffer, 15728880);
-		});
+		RenderSystem.runAsFancy(() -> dispatcher.render(renderTarget, 0, 0, 0, 0, 1, secondPoseStack, buffer, 15728880));
 		buffer.endBatch();
 		dispatcher.setRenderShadow(true);
 		if (followMouse) {
-		    renderTarget.yBodyRot = f2;
-		    renderTarget.setYRot(f3);
-		    renderTarget.setXRot(f4);
-		    renderTarget.yHeadRotO = f5;
-		    renderTarget.yHeadRot = f6;
+			renderTarget.yBodyRot = f2;
+			renderTarget.setYRot(f3);
+			renderTarget.setXRot(f4);
+			renderTarget.yHeadRotO = f5;
+			renderTarget.yHeadRot = f6;
 		}
 		poseStack.popPose();
 		RenderSystem.applyModelViewMatrix();
