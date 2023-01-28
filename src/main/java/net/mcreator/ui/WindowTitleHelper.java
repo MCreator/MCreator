@@ -21,6 +21,7 @@ package net.mcreator.ui;
 import net.mcreator.Launcher;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import java.io.IOException;
 
@@ -38,6 +39,13 @@ public class WindowTitleHelper {
 				appendix = " - " + mcreator.getFolderManager().getPathInWorkspace(codeEditorView.fileWorkingOn);
 			} catch (Exception e) {
 				appendix = " - " + codeEditorView.fileWorkingOn.toPath();
+			}
+		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
+				.getContent() instanceof ImageMakerView imageMakerView) {
+			try {
+				appendix = " - " + mcreator.getFolderManager().getPathInWorkspace(imageMakerView.getImageFile());
+			} catch (Exception e) {
+				appendix = " - " + imageMakerView.getImageFile().toPath();
 			}
 		}
 		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
