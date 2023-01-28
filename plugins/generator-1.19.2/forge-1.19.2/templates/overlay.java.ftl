@@ -110,7 +110,7 @@ package ${package}.client.screens;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-			    	renderBgEntity(livingEntity, posX + ${component.x + 10}, posY + ${component.y + 10}, ${component.scale}f);
+			    	renderBgEntity(livingEntity, posX + ${component.x - 202}, posY + ${component.y - 100}, ${component.scale});
 			    }
 			</#list>
         }
