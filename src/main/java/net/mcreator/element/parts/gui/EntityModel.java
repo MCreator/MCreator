@@ -20,17 +20,20 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
+import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class EntityModel extends GUIComponent {
 
 	public Procedure entityModel;
 	public Procedure displayCondition;
+
 	public double scale;
 
 	public boolean followMouseMovement;
@@ -44,12 +47,18 @@ public class EntityModel extends GUIComponent {
 	}
 
 	@Override public String getName() {
-		return "entity_model_" + RegistryNameFixer.fromCamelCase(this.entityModel.getName());
+		return "entity_model_" + RegistryNameFixer.fromCamelCase(Objects.requireNonNull(this.entityModel.getName()));
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.drawImage(MinecraftImageGenerator.generateSpawnEggIcon(Color.blue, Color.pink).getImage(), cx, cy, 20, 20,
-				wysiwygEditor);
+		g.setColor(Color.darkGray);
+		g.drawLine(cx, cy, cx + 20, cy + 20);
+		g.drawLine(cx + 20, cy, cx, cy + 20);
+
+		g.setFont(g.getFont().deriveFont(5f));
+		g.setColor(VariableTypeLoader.BuiltInTypes.ENTITY.getBlocklyColor());
+		int textwidth = (int) (g.getFont().getStringBounds(this.entityModel.getName(), WYSIWYG.frc).getWidth());
+		g.drawString(this.entityModel.getName(), cx + 10 - textwidth / 2, cy + 12);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
@@ -61,7 +70,7 @@ public class EntityModel extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return -1;
+		return -10;
 	}
 
 }
