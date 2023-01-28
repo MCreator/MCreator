@@ -115,7 +115,7 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						renderBgEntity(livingEntity, posX + ${x}, posY + ${y}, ${component.scale}f);
+						renderBgEntity(livingEntity, posX + ${x + 10}, posY + ${y + 10}, ${component.scale}f);
 					}
 				</#list>
 			}
