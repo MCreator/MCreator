@@ -27,6 +27,8 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -53,6 +55,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				VariableTypeLoader.BuiltInTypes.ENTITY,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		entityModel.refreshList();
+
+		entityModel.setValidator(new ProcedureSelectorValidator(entityModel));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/entity_model_display_condition"), editor.mcreator,
@@ -95,8 +99,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
-			Procedure entModel = entityModel.getSelectedProcedure();
-			if (entModel != null) {
+			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
@@ -113,10 +116,6 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}
-			} else {
-				StringBuilder stringBuilder = new StringBuilder(L10N.t("dialog.gui.procedure_required"));
-				JOptionPane.showMessageDialog(editor.mcreator, stringBuilder.toString(),
-						L10N.t("dialog.gui.no_procedure_selected"), JOptionPane.WARNING_MESSAGE);
 			}
 		});
 
