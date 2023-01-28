@@ -508,11 +508,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			useCondition.setEnabled(true);
+			if ((int) useDuration.getValue() == 0)
+				useDuration.setValue(72000);
 		} else {
 			shootConstantly.setEnabled(false);
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			useCondition.setEnabled(false);
+			if ((int) useDuration.getValue() == 72000)
+				useDuration.setValue(0);
 		}
 	}
 
@@ -604,6 +608,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateGlowElements();
 		updateFoodPanel();
+		updateRangedPanel();
 
 		Model model = item.getItemModel();
 		if (model != null)
