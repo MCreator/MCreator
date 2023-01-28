@@ -30,23 +30,24 @@ public class WindowTitleHelper {
 		String appendix = "";
 		if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof ModElementGUI<?> modElementGUI) {
-			appendix = " - " + modElementGUI.getModElement().getName() + " (" + modElementGUI.getModElement().getType()
+			appendix = "- " + modElementGUI.getModElement().getName() + " (" + modElementGUI.getModElement().getType()
 					.getReadableName() + ")";
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof CodeEditorView codeEditorView) {
 			try {
-				appendix = " - " + mcreator.getFolderManager().getPathInWorkspace(codeEditorView.fileWorkingOn);
+				appendix =
+						"- " + mcreator.getWorkspaceFolder().toPath().relativize(codeEditorView.fileWorkingOn.toPath());
 			} catch (Exception e) {
-				appendix = " - " + codeEditorView.fileWorkingOn.toPath();
+				appendix = "- " + codeEditorView.fileWorkingOn.toPath();
 			}
 		}
 		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
 		try {
-			return workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getCanonicalPath() + "]" + appendix
-					+ " - MCreator " + Launcher.version.getMajorString();
+			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getCanonicalPath() + "] " + appendix
+					+ " - MCreator " + Launcher.version.getMajorString());
 		} catch (IOException e) {
-			return workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getAbsolutePath() + "]" + appendix
-					+ " - MCreator " + Launcher.version.getMajorString();
+			return (workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getAbsolutePath() + "] " + appendix
+					+ " - MCreator " + Launcher.version.getMajorString());
 		}
 	}
 
