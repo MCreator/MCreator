@@ -595,7 +595,7 @@ public class TestWorkspaceDataProvider {
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
 				components.add(new Checkbox("checkbox2", 125, 125, "Other text", new Procedure("condition2")));
-				components.add(new EntityModel(60, 20, new Procedure("entity1") , new Procedure("condition3"), 30, true));
+				components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, true));
 				components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null), 30, false));
 			}
 			gui.components = components;
