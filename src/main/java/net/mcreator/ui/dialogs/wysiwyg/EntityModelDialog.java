@@ -43,8 +43,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		setTitle(L10N.t("dialog.gui.add_entity_model"));
 
 		JPanel options = new JPanel();
-		JPanel procedures = new JPanel();
-		procedures.setLayout(new BoxLayout(procedures, BoxLayout.PAGE_AXIS));
+		JPanel parameters = new JPanel();
+		parameters.setLayout(new BoxLayout(parameters, BoxLayout.PAGE_AXIS));
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		ProcedureSelector entityModel = new ProcedureSelector(
@@ -62,8 +62,11 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		displayCondition.refreshList();
 
 		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 0.1, 100, 0.1));
+		JCheckBox followMouseMovement = new JCheckBox();
+		followMouseMovement.setOpaque(false);
+		followMouseMovement.setEnabled(editor.isNotOverlayType);
 
-		procedures.add(PanelUtils.join(entityModel, displayCondition));
+		parameters.add(PanelUtils.join(entityModel, displayCondition));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
@@ -71,10 +74,13 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
-		procedures.add(PanelUtils.centerInPanel(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_scale"),
-				L10N.label("dialog.gui.model_scale")), scale)));
+		parameters.add(PanelUtils.centerInPanel
+				(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_scale"),
+				L10N.label("dialog.gui.model_scale")), scale,
+				(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_follow_mouse"),
+				L10N.label("dialog.gui.model_follow_mouse")), followMouseMovement)))));
 
-		options.add("Center", procedures);
+		options.add("Center", parameters);
 		options.add("South", PanelUtils.join(ok, cancel));
 
 		add("Center", options);
@@ -84,6 +90,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			entityModel.setSelectedProcedure(model.entityModel);
 			displayCondition.setSelectedProcedure(model.displayCondition);
 			scale.setValue(model.scale);
+			followMouseMovement.setSelected(model.followMouseMovement);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -93,7 +100,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				setVisible(false);
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (double) scale.getValue());
+							displayCondition.getSelectedProcedure(), (double) scale.getValue(), followMouseMovement.isSelected());
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -102,10 +109,14 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 					int idx = editor.components.indexOf(model);
 					editor.components.remove(model);
 					EntityModel modelNew = new EntityModel(model.getX(), model.getY(), entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (double) scale.getValue());
+							displayCondition.getSelectedProcedure(), (double) scale.getValue(), followMouseMovement.isSelected());
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}
+			} else {
+				StringBuilder stringBuilder = new StringBuilder(L10N.t("dialog.gui.procedure_required"));
+				JOptionPane.showMessageDialog(editor.mcreator, stringBuilder.toString(),
+						L10N.t("dialog.gui.no_procedure_selected"), JOptionPane.WARNING_MESSAGE);
 			}
 		});
 

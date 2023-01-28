@@ -110,11 +110,11 @@ package ${package}.client.screens;
 			<#assign y = (component.y + 17) / 4>
 			<#assign y1 = (component.y - 21) / 4>
 			{
-			Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
-			if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
-			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
+				Entity modelEntity = <@procedureOBJToConditionCode component.entityModel/>;
+				if (modelEntity instanceof LivingEntity entityLiving && modelEntity != null)
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) </#if>
 				renderBgEntity(posX / 2 + ${x?int}, posY / 2 + ${(y)?int},
-					${component.scale}, (float) (posY / 2 + (${y1})), entityLiving);
+				${component.scale}, (float) (posY / 2 + (${y1})), entityLiving);
 			}
 			</#list>
         }
@@ -143,7 +143,7 @@ package ${package}.client.screens;
 		secondPoseStack.translate(0.0D, 0.0D, 1000.0D);
 		secondPoseStack.scale((float) scale, (float) scale, (float) scale);
 		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees(f1);
 		quaternion.mul(secondQuaternion);
 		secondPoseStack.mulPose(quaternion);
 		Lighting.setupForEntityInInventory();

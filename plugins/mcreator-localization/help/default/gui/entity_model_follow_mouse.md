@@ -1,0 +1,1 @@
+If checked, the displayed entity model will rotate towards the mouse's position.
