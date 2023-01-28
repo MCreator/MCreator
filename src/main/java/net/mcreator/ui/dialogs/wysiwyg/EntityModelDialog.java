@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.EntityModel;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -55,7 +54,6 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				VariableTypeLoader.BuiltInTypes.ENTITY,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		entityModel.refreshList();
-
 		entityModel.setValidator(new ProcedureSelectorValidator(entityModel));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
@@ -66,6 +64,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		displayCondition.refreshList();
 
 		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 0.1, 100, 0.1));
+
 		JCheckBox followMouseMovement = new JCheckBox();
 		followMouseMovement.setOpaque(false);
 		followMouseMovement.setEnabled(editor.isNotOverlayType);
