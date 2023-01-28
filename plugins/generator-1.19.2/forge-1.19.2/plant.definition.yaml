@@ -53,12 +53,10 @@ templates:
   - template: json/block_states.json.ftl
     writer: json
     condition: "plantType %= normal"
-    variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block_states.json.ftl
     writer: json
     condition: "plantType %= growapable"
-    variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block_states_double_plant.json.ftl
     writer: json
