@@ -511,12 +511,31 @@ public class ImageUtils {
 	 * @param ySecond <p>The y position of the second image on the final image<</p>
 	 * @return <p>Returns the generated image.</p>
 	 */
-	public static BufferedImage merge2Images(Image first, Image second, int width, int height, int xFirst, int yFirst,
+	public static BufferedImage mergeTwoImages(Image first, Image second, int width, int height, int xFirst, int yFirst,
 			int xSecond, int ySecond) {
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = bi.createGraphics();
 		graphics.drawImage(first, xFirst, yFirst, null);
 		graphics.drawImage(second, xSecond, ySecond, null);
 		return bi;
+	}
+
+	public static boolean checkIfSameWidth(Image first, Image second) {
+		return first.getWidth(null) == second.getWidth(null);
+	}
+
+	public static boolean checkIfSameHeight(Image first, Image second) {
+		return first.getHeight(null) == second.getHeight(null);
+	}
+
+	/**
+	 * Checks if two images have the same width and the same height
+	 *
+	 * @param first <p>The first image</p>
+	 * @param second <p>The second image</p>
+	 * @return <p>Returns true if the provided images have the same width and the same height</p>
+	 */
+	public static boolean checkIfSameSize(Image first, Image second) {
+		return checkIfSameWidth(first, second) && checkIfSameHeight(first, second);
 	}
 }

@@ -20,7 +20,6 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -61,12 +60,15 @@ public class ImageButton extends GUIComponent {
 	}
 
 	public Image getHoveredImage(Workspace workspace) {
-		if (hoveredImage != null && !hoveredImage.isEmpty())
-			return new ImageIcon(workspace.getFolderManager()
+		if (hoveredImage != null && !hoveredImage.isEmpty()) {
+			Image hovered = new ImageIcon(workspace.getFolderManager()
 					.getTextureFile(FilenameUtilsPatched.removeExtension(hoveredImage), TextureType.SCREEN)
 					.getAbsolutePath()).getImage();
-		else
-			return getImage(workspace);
+
+			return ImageUtils.checkIfSameSize(getImage(workspace), hovered) ? hovered : getImage(workspace);
+		}
+
+		return getImage(workspace);
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {

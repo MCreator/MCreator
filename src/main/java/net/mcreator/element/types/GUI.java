@@ -147,7 +147,7 @@ import java.util.List;
 		// Create the texture atlas for image buttons that will be used by Minecraft
 		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(
 				imageButton -> FileIO.writeImageToPNGFile(
-						ImageUtils.merge2Images(imageButton.getImage(getModElement().getWorkspace()),
+						ImageUtils.mergeTwoImages(imageButton.getImage(getModElement().getWorkspace()),
 								imageButton.getHoveredImage(getModElement().getWorkspace()), imageButton.width,
 								imageButton.height * 2, 0, 0, 0, imageButton.height),
 						getModElement().getWorkspace().getFolderManager()
