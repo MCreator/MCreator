@@ -267,9 +267,8 @@ public class Generator implements IGenerator, Closeable {
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// store paths of generated files
-			element.getModElement().putMetadata("files", generatorFiles.stream()
-					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()
-							.replace(File.separator, "/")).toList());
+			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
+					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
 			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
