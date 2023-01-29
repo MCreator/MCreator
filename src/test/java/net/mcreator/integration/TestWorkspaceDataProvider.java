@@ -881,12 +881,11 @@ public class TestWorkspaceDataProvider {
 			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
-				List<MItemBlock> repairItems = new ArrayList<>(
+				armor.repairItems = new ArrayList<>(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-				armor.repairItems.addAll(repairItems);
+				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
@@ -1293,11 +1292,10 @@ public class TestWorkspaceDataProvider {
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
-				List<MItemBlock> blocksToReplace = new ArrayList<>(
+				block.blocksToReplace = new ArrayList<>(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-				block.blocksToReplace.addAll(blocksToReplace);
+				block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 6;
@@ -1476,12 +1474,11 @@ public class TestWorkspaceDataProvider {
 			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
-				List<MItemBlock> compatibleItems = new ArrayList<>(
+				enchantment.compatibleItems = new ArrayList<>(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-				enchantment.compatibleItems.addAll(compatibleItems);
+				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 				enchantment.excludeEnchantments = _true;
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
