@@ -112,7 +112,6 @@ import java.util.stream.Collectors;
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
-	private final JLabel but7 = new JLabel(TiledImageCache.workspaceModElementUsages);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem searchElement = new JMenuItem(L10N.t("workspace.elements.list.edit.usages"));
@@ -878,27 +877,6 @@ import java.util.stream.Collectors;
 		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip"));
 		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but6);
-
-		but7.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (but7.isEnabled() && list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
-					mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-					Set<ModElement> references = new HashSet<>();
-					for (IElement el : list.getSelectedValuesList()) {
-						if (el instanceof ModElement mod)
-							references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-					}
-
-					mcreator.setCursor(Cursor.getDefaultCursor());
-					SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-							new ArrayList<>(references), false);
-				}
-			}
-		});
-		but7.setToolTipText(L10N.t("workspace.elements.search_element_usages.tooltip"));
-		but7.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		pne.add(but7);
 
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {

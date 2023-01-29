@@ -99,7 +99,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		bar.add(add);
 
 		use = L10N.button("workspace.localization.show_usages");
-		use.setIcon(UIRES.get("16px.search")); // TODO: Proper icon
+		use.setIcon(UIRES.get("16px.search"));
 		use.setOpaque(false);
 		use.setContentAreaFilled(false);
 		use.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));

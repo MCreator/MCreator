@@ -210,7 +210,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		bar.add(addvar);
 
 		JButton search = L10N.button("workspace.variables.search_selected");
-		search.setIcon(UIRES.get("16px.search")); // TODO: Proper icon
+		search.setIcon(UIRES.get("16px.search"));
 		search.setContentAreaFilled(false);
 		search.setOpaque(false);
 		ComponentUtils.deriveFont(search, 12);

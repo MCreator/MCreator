@@ -51,7 +51,6 @@ public class TiledImageCache {
 	public static ImageIcon workspaceDuplicate;
 	public static ImageIcon workspaceToggle;
 	public static ImageIcon workspaceModElementIDs;
-	public static ImageIcon workspaceModElementUsages; // TODO: New icon
 
 	public static ImageIcon bucket;
 	public static ImageIcon bucketMask;
@@ -88,7 +87,6 @@ public class TiledImageCache {
 			workspaceDuplicate = workspaceIcons.getIcon(7, 1);
 			workspaceToggle = workspaceIcons.getIcon(8, 1);
 			workspaceModElementIDs = workspaceIcons.getIcon(6, 1);
-			workspaceModElementUsages = workspaceIcons.getIcon(9, 1);
 
 			bucket = bucketIcons.getIcon(1, 1);
 			bucketMask = bucketIcons.getIcon(2, 1);
