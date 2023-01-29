@@ -124,8 +124,12 @@ import java.util.stream.Collectors;
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			String elementType = jsonElement.getAsJsonObject().get("type").getAsString();
 
+			Class<? extends GUIComponent> typeMapping = typeMappings.get(elementType);
+			if (typeMapping == null)
+				typeMapping = Unknown.class; // fallback to Unknown (e.g. plugin component that no longer exists)
+
 			GUIComponent component = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"),
-					typeMappings.get(elementType));
+					typeMapping);
 			component.uuid = UUID.randomUUID(); // init UUID for deserialized component
 			return component;
 		}
@@ -139,6 +143,29 @@ import java.util.stream.Collectors;
 			return root;
 		}
 
+	}
+
+	public static final class Unknown extends GUIComponent {
+
+		@Override public String getName() {
+			return "unknown_element";
+		}
+
+		@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
+
+		}
+
+		@Override public int getWidth(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getHeight(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getWeight() {
+			return 0;
+		}
 	}
 
 }
