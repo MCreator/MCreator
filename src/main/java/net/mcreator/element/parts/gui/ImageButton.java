@@ -34,17 +34,15 @@ public class ImageButton extends GUIComponent {
 
 	public String image;
 	public String hoveredImage;
-	public int width, height;
+
 	public Procedure onClick;
 	public Procedure displayCondition;
 
-	public ImageButton(int x, int y, int width, int height, String image, String hoveredImage, Procedure onClick,
+	public ImageButton(int x, int y, String image, String hoveredImage, Procedure onClick,
 			Procedure displayCondition) {
 		super(x, y);
 		this.image = image;
 		this.hoveredImage = hoveredImage;
-		this.width = width;
-		this.height = height;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;
 	}
@@ -73,15 +71,15 @@ public class ImageButton extends GUIComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		Image image = this.getImage(wysiwygEditor.mcreator.getWorkspace());
-		g.drawImage(image, cx, cy, width, height, wysiwygEditor);
+		g.drawImage(image, cx, cy, wysiwygEditor);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
-		return width;
+		return getImage(workspace).getWidth(null);
 	}
 
 	@Override public int getHeight(Workspace workspace) {
-		return height;
+		return getImage(workspace).getHeight(null);
 	}
 
 	@Override public int getWeight() {

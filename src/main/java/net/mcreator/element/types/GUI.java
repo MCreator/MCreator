@@ -145,13 +145,14 @@ import java.util.List;
 		}
 
 		// Create the texture atlas for image buttons that will be used by Minecraft
-		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(
-				imageButton -> FileIO.writeImageToPNGFile(
-						ImageUtils.mergeTwoImages(imageButton.getImage(getModElement().getWorkspace()),
-								imageButton.getHoveredImage(getModElement().getWorkspace()), imageButton.width,
-								imageButton.height * 2, 0, 0, 0, imageButton.height),
-						getModElement().getWorkspace().getFolderManager()
-								.getTextureFile("atlas/" + imageButton.getName(), TextureType.SCREEN)));
+		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(imageButton -> {
+			Image normal = imageButton.getImage(getModElement().getWorkspace());
+			Image hovered = imageButton.getHoveredImage(getModElement().getWorkspace());
+			FileIO.writeImageToPNGFile(
+					ImageUtils.mergeTwoImages(normal, hovered, normal.getWidth(null), normal.getHeight(null) * 2, 0, 0,
+							0, normal.getHeight(null)), getModElement().getWorkspace().getFolderManager()
+							.getTextureFile("atlas/" + imageButton.getName(), TextureType.SCREEN));
+		});
 	}
 
 	@Override public List<GUIComponent> getComponents() {

@@ -571,10 +571,10 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
-				components.add(new ImageButton(0, 48, 16, 16, "picture1", "picture2", new Procedure("procedure10"), null));
-				components.add(new ImageButton(16, 32, 16, 16, "picture2", "picture1", null, null));
-				components.add(new ImageButton(32, 16, 16, 16, "picture1", "picture2", null, new Procedure("condition3")));
-				components.add(new ImageButton(48, 0, 16, 16, "picture2", "picture1",  new Procedure("procedure2"), new Procedure("condition4")));
+				components.add(new ImageButton(0, 48, "picture1", "picture2", new Procedure("procedure10"), null));
+				components.add(new ImageButton(16, 32, "picture2", "", null, null));
+				components.add(new ImageButton(32, 16, "picture1", "picture2", null, new Procedure("condition3")));
+				components.add(new ImageButton(48, 0, "picture2", "",  new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
 						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"),
