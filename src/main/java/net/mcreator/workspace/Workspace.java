@@ -462,6 +462,40 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
+	/**
+	 * Unsafe version of readFromFS with many checks ommited. Only intended to be used by tests
+	 *
+	 * @param workspaceFile workspace file
+	 * @param generatorConfiguration generator configuration. If same as workspace, nothing is done, if different, regenerateRequired is set to true
+	 * @return Workspace object for the given file
+	 */
+	public static Workspace readFromFS(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
+		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
+		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+
+		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
+				!= generatorConfiguration) {
+			retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
+
+			retval.generator = new Generator(retval);
+			retval.regenerateRequired = true;
+
+			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
+					Generator.GENERATOR_CACHE.get(retval.workspaceSettings.getCurrentGenerator()));
+
+			WorkspaceGeneratorSetup.requestSetup(retval);
+		} else {
+			retval.generator = new Generator(retval);
+		}
+
+		retval.getWorkspaceSettings().setWorkspace(retval);
+
+		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
+		retval.reloadFolderStructure(); // assign parents to the folders
+		LOG.info("Loaded workspace file " + workspaceFile);
+		return retval;
+	}
+
 	public static Workspace createWorkspace(File workspaceFile, WorkspaceSettings workspaceSettings) {
 		Workspace retval = new Workspace(workspaceSettings);
 		workspaceFile.getParentFile().mkdirs();
