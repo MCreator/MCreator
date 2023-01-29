@@ -63,9 +63,16 @@ public abstract class ${name}Item extends ArmorItem {
 
 			@Override public Ingredient getRepairIngredient() {
 				<#if data.repairItems?has_content>
-					return Ingredient.fromValues(Stream.of(<#list data.repairItems as item><#if item.getUnmappedValue().startsWith("TAG:")>
-						new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))<#else>
-						new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})</#if><#sep>,</#list>));
+					return Ingredient.fromValues(Stream.of(
+						<#list data.repairItems as item>
+							<#if item.getUnmappedValue().startsWith("TAG:")>
+								new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
+							<#else>
+								new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
+							</#if>
+							<#sep>,
+						</#list>
+					));
 				<#else>
 					return Ingredient.EMPTY;
 				</#if>
