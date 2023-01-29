@@ -48,7 +48,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		setModal(true);
 		setSize(480, 310);
 		setLocationRelativeTo(editor.mcreator);
-		setTitle(L10N.t("dialog.gui.button_add_title"));
+		setTitle(L10N.t("dialog.gui.image_button_add_title"));
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
