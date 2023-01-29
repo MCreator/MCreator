@@ -33,20 +33,22 @@ import java.util.stream.Collectors;
 public class MCItemListField extends JItemListField<MItemBlock> {
 
 	private final MCItem.ListProvider supplier;
+	private final boolean supportTags;
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier) {
-		this(mcreator, supplier, false);
+		this(mcreator, supplier, false, false);
 	}
 
-	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier, boolean excludeButton) {
+	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier, boolean excludeButton, boolean supportTags) {
 		super(mcreator, excludeButton);
 		this.supplier = supplier;
+		this.supportTags = supportTags;
 
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 	}
 
 	@Override public List<MItemBlock> getElementsToAdd() {
-		return MCItemSelectorDialog.openMultiSelectorDialog(mcreator, supplier).stream()
+		return MCItemSelectorDialog.openMultiSelectorDialog(mcreator, supplier, supportTags).stream()
 				.map(e -> new MItemBlock(mcreator.getWorkspace(), e.getName())).collect(Collectors.toList());
 	}
 
