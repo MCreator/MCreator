@@ -115,17 +115,34 @@ public class ${name}Feature extends OreFeature {
 		}
 
 		private List<Block> base_blocks = null;
+		private List<TagKey<Block>> block_tags = null;
 
 		public boolean test(BlockState blockAt, Random random) {
+		    <#assign blocks = []>
+		    <#assign tags = []>
+			<#list data.blocksToReplace as replacementBlock>
+				<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+					<#assign tags += [replacementBlock]>
+				<#else>
+					<#assign blocks += [replacementBlock]>
+				</#if>
+			</#list>
 			if (base_blocks == null) {
 				base_blocks = List.of(
-					<#list data.blocksToReplace as replacementBlock>
-						${mappedBlockToBlock(replacementBlock)}<#sep>,
+					<#list blocks as block>
+						${mappedBlockToBlock(block)}<#sep>,
+					</#list>
+				);
+			}
+			if (block_tags == null) {
+			    block_tags = List.of(
+					<#list tags as tag>
+						BlockTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
 					</#list>
 				);
 			}
 
-			return base_blocks.contains(blockAt.getBlock());
+			return base_blocks.contains(blockAt.getBlock()) || block_tags.stream().anyMatch(blockAt::is);
 		}
 
 		protected RuleTestType<?> getType() {
