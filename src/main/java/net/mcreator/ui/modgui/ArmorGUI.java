@@ -201,7 +201,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
 		armorTextureFile.setRenderer(new WTextureComboBoxRenderer(element -> {
 			File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(element);
