@@ -48,11 +48,11 @@ public class ${name}Feature extends OreFeature {
 				List.of(
 					<#list data.blocksToReplace as replacementBlock>
 						OreConfiguration.target(
-						    <#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-							    new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))), REPLACED_BLOCK)
-						    <#else>
-							    new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}), REPLACED_BLOCK)
-						    </#if><#sep>,
+							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))), REPLACED_BLOCK)
+							<#else>
+								new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}), REPLACED_BLOCK)
+							</#if><#sep>,
 					</#list>
 				),
 				${data.frequencyOnChunk}

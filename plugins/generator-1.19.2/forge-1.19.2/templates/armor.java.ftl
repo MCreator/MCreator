@@ -69,7 +69,7 @@ public abstract class ${name}Item extends ArmorItem {
 						new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))<#else>
 						new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})</#if><#sep>,</#list>));
 				<#else>
-				return Ingredient.EMPTY;
+					return Ingredient.EMPTY;
 				</#if>
 			}
 

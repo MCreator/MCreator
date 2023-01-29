@@ -118,8 +118,8 @@ public class ${name}Feature extends OreFeature {
 		private List<TagKey<Block>> block_tags = null;
 
 		public boolean test(BlockState blockAt, Random random) {
-		    <#assign blocks = []>
-		    <#assign tags = []>
+			<#assign blocks = []>
+			<#assign tags = []>
 			<#list data.blocksToReplace as replacementBlock>
 				<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
 					<#assign tags += [replacementBlock]>
@@ -135,7 +135,7 @@ public class ${name}Feature extends OreFeature {
 				);
 			}
 			if (block_tags == null) {
-			    block_tags = List.of(
+				block_tags = List.of(
 					<#list tags as tag>
 						BlockTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
 					</#list>
