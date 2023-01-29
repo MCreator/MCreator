@@ -881,10 +881,12 @@ public class TestWorkspaceDataProvider {
 			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
-				armor.repairItems.addAll(
+				List<MItemBlock> repairItems = new ArrayList<>(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				armor.repairItems.addAll(repairItems);
 			}
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
@@ -1291,9 +1293,11 @@ public class TestWorkspaceDataProvider {
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
-				block.blocksToReplace.addAll(
+				List<MItemBlock> blocksToReplace = new ArrayList<>(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				block.blocksToReplace.addAll(blocksToReplace);
 			}
 			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 6;
@@ -1472,10 +1476,12 @@ public class TestWorkspaceDataProvider {
 			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleItems.addAll(
+				List<MItemBlock> compatibleItems = new ArrayList<>(
 						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
 								.limit(blocksAndItems.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				enchantment.compatibleItems.addAll(compatibleItems);
 				enchantment.excludeEnchantments = _true;
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
@@ -1642,6 +1648,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 		}
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
@@ -1675,6 +1682,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
