@@ -188,6 +188,8 @@ Blockly.Extensions.register('delta_feature_validator', validateIntProviderInputs
 
 Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInputs(['radius', 0, 12]));
 
+Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
+
 // Helper function to provide a mixin for mutators that add a single repeating input
 // The mutator container block must have a "STACK" statement input for this to work
 // The input/empty messages are localized as "blockly.block.block_type.input" and "blockly.block.block_type.empty"
