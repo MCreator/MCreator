@@ -182,6 +182,12 @@ function validateIntProviderInputs(...inputs) {
 
 Blockly.Extensions.register('count_placement_validator', validateIntProviderInputs(['count', 0, 256]));
 
+Blockly.Extensions.register('offset_placement_validator', validateIntProviderInputs(['xz', -16, 16], ['y', -16, 16]));
+
+Blockly.Extensions.register('delta_feature_validator', validateIntProviderInputs(['size', 0, 16], ['rimSize', 0, 16]));
+
+Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInputs(['radius', 0, 12]));
+
 // Helper function to provide a mixin for mutators that add a single repeating input
 // The mutator container block must have a "STACK" statement input for this to work
 // The input/empty messages are localized as "blockly.block.block_type.input" and "blockly.block.block_type.empty"

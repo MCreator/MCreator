@@ -42,3 +42,19 @@ feature_huge_fungus:
   - HugeFungusFeature
   - HugeFungusConfiguration
   - "minecraft:huge_fungus"
+feature_delta:
+  - DeltaFeature
+  - DeltaFeatureConfiguration
+  - "minecraft:delta_feature"
+feature_replace_sphere:
+  - ReplaceBlobsFeature
+  - ReplaceSphereConfiguration
+  - "minecraft:netherrack_replace_blobs"
+feature_seagrass:
+  - SeagrassFeature
+  - ProbabilityFeatureConfiguration
+  - "minecraft:seagrass"
+feature_bamboo:
+  - BambooFeature
+  - ProbabilityFeatureConfiguration
+  - "minecraft:bamboo"

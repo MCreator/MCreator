@@ -31,3 +31,15 @@ feature_forest_rock:
 feature_huge_fungus:
   - HugeFungusFeature
   - HugeFungusConfiguration
+feature_delta:
+  - DeltaFeature
+  - DeltaFeatureConfiguration
+feature_replace_sphere:
+  - ReplaceBlobsFeature
+  - ReplaceSphereConfiguration
+feature_seagrass:
+  - SeagrassFeature
+  - ProbabilityFeatureConfiguration
+feature_bamboo:
+  - BambooFeature
+  - ProbabilityFeatureConfiguration
