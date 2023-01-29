@@ -67,14 +67,12 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 				public Ingredient getRepairIngredient() {
 					<#if data.repairItems?has_content>
-					return Ingredient.of(
-						<#list data.repairItems as repairItem>
-						${mappedMCItemToItemStackCode(repairItem,1)}<#sep>,
-						</#list>
-					);
+						return Ingredient.fromValues(Stream.of(<#list data.repairItems as item><#if item.getUnmappedValue().startsWith("TAG:")>
+							new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))<#else>
+							new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})</#if><#sep>,</#list>));
 					<#else>
-					return Ingredient.EMPTY;
-					</#if>
+						return Ingredient.EMPTY;
+				    </#if>
 				}
 			},
 
@@ -176,11 +174,25 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
+		<#assign blocks = []>
+		<#assign tags = []>
+		<#list data.blocksAffected as block>
+			<#if block.getUnmappedValue().startsWith("TAG:")>
+				<#assign tags += [block]>
+			<#else>
+				<#assign blocks += [block]>
+			</#if>
+		</#list>
 		return List.of(
-			<#list data.blocksAffected as restrictionBlock>
-			${mappedBlockToBlock(restrictionBlock)}<#sep>,
+			<#list blocks as block>
+				${mappedBlockToBlock(block)}<#sep>,
 			</#list>
-		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
+		).contains(blockstate.getBlock())<#if tags?has_content> ||
+		List.of(
+			<#list tags as tag>
+				BlockTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+			</#list>
+		).stream().anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
