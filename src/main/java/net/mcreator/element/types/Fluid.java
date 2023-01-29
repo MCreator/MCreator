@@ -28,7 +28,6 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -170,15 +169,12 @@ import java.util.*;
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(dripParticle);
-		for (String world : spawnWorldTypes)
-			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
-		entries.addAll(restrictionBiomes);
 		return entries;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(generateCondition, onBlockAdded, onNeighbourChanges, onTickUpdate, onEntityCollides,
-				onRandomUpdateEvent, onDestroyedByExplosion, flowCondition, beforeReplacingBlock);
+		return Arrays.asList(onBlockAdded, onNeighbourChanges, onTickUpdate, onEntityCollides, onRandomUpdateEvent,
+				onDestroyedByExplosion, flowCondition, beforeReplacingBlock);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
