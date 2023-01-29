@@ -65,8 +65,8 @@ public class ${name}Enchantment extends Enchantment {
 	</#if>
 
 	<#if data.compatibleItems?has_content>
-		@Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
-			Item item = stack.getItem();
+		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
+			Item item = itemstack.getItem();
 			<#assign items = []>
 			<#assign tags = []>
 			<#list data.compatibleItems as compatibleItem>
@@ -80,7 +80,7 @@ public class ${name}Enchantment extends Enchantment {
 			return <#if data.excludeItems>!</#if>List.of(
 				<#list items as item>${mappedMCItemToItem(item)}<#sep>,</#list>).contains(item)<#if tags?has_content> ||
 				Stream.of(<#list tags as tag>ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,</#list>)
-				.<#if data.excludeItems>noneMatch<#else>anyMatch</#if>(stack::is)</#if>;
+				.<#if data.excludeItems>noneMatch<#else>anyMatch</#if>(itemstack::is)</#if>;
 		}
 	</#if>
 

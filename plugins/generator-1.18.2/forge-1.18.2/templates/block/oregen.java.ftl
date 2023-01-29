@@ -117,7 +117,7 @@ public class ${name}Feature extends OreFeature {
 		private List<Block> base_blocks = null;
 		private List<TagKey<Block>> block_tags = null;
 
-		public boolean test(BlockState blockAt, Random random) {
+		public boolean test(BlockState blockstate, Random random) {
 			<#assign blocks = []>
 			<#assign tags = []>
 			<#list data.blocksToReplace as replacementBlock>
@@ -142,7 +142,7 @@ public class ${name}Feature extends OreFeature {
 				);
 			}
 
-			return base_blocks.contains(blockAt.getBlock()) || block_tags.stream().anyMatch(blockAt::is);
+			return base_blocks.contains(blockstate.getBlock()) || block_tags.stream().anyMatch(blockstate::is);
 		}
 
 		protected RuleTestType<?> getType() {

@@ -234,11 +234,19 @@ public class ${name}Item extends FishingRodItem {
 
 	<#if data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		<#assign items = []>
+		<#assign tags = []>
+		<#list data.repairItems as repairItem>
+			<#if repairItem.getUnmappedValue().startsWith("TAG:")>
+				<#assign tags += [repairItem]>
+			<#else>
+				<#assign items += [repairItem]>
+			</#if>
+		</#list>
 		return List.of(
-			<#list data.repairItems as repairItem>
-				${mappedMCItemToItem(repairItem)}<#sep>,
-				</#list>
-		).contains(repairitem.getItem());
+			<#list items as item>${mappedMCItemToItem(item)}<#sep>,</#list>).contains(repairitem.getItem())<#if tags?has_content> ||
+			Stream.of(<#list tags as tag>ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,</#list>)
+			.anyMatch(repairitem::is)</#if>;
 	}
 	</#if>
 
