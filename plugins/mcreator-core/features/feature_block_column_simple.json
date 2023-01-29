@@ -24,7 +24,7 @@
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
     ],
     "inputs": [
-	  "height",
+      "height",
       "block"
     ]
   }

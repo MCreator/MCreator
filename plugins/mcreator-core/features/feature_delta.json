@@ -36,7 +36,7 @@
       "<value name=\"rimSize\"><block type=\"int_provider_constant\"><field name=\"value\">1</field></block></value>"
     ],
     "inputs": [
-	  "contents",
+      "contents",
       "rim",
       "size",
       "rimSize"
