@@ -27,8 +27,7 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_model_blocking.json.ftl
     writer: json
-    condition:
-      - "toolType %= Shield"
+    condition: "toolType %= Shield"
     name: "@MODASSETSROOT/models/item/@registryname_blocking.json"
 
 localizationkeys:
