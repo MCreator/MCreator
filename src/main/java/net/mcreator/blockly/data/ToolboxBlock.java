@@ -32,6 +32,7 @@ import java.util.List;
 	public IBlockGenerator.BlockType type;
 
 	@Nullable private List<String> fields;
+	@Nullable private List<String> repeating_fields;
 	@Nullable private List<IInput> inputs;
 	@Nullable private List<StatementInput> statements;
 	@Nullable private List<IInput> repeating_inputs;
@@ -52,6 +53,10 @@ import java.util.List;
 
 	@Nullable public List<String> getFields() {
 		return fields;
+	}
+
+	@Nullable public List<String> getRepeatingFields() {
+		return repeating_fields;
 	}
 
 	public List<String> getInputs() {

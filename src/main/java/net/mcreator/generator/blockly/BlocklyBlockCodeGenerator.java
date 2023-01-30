@@ -224,6 +224,31 @@ public class BlocklyBlockCodeGenerator {
 			}
 		}
 
+		// next we check for field groups if they are defined, we process them and add to data model
+		if (toolboxBlock.getRepeatingFields() != null) {
+			for (String fieldName : toolboxBlock.getRepeatingFields()) {
+				Map<String, Element> matchingElements = elements.stream()
+						.filter(e -> e.getNodeName().equals("field") && e.getAttribute("name")
+								.matches(fieldName + "\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<Integer, String> processedElements = new HashMap<>();
+				int idx = 0;
+				while (!matchingElements.isEmpty()) {
+					if (matchingElements.containsKey(fieldName + idx)) {
+						processedElements.put(idx, matchingElements.remove(fieldName + idx).getTextContent());
+					} else {
+						processedElements.put(idx, null); // we add null at this index to not shift other elements
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.field_not_defined", fieldName + idx, type)));
+					}
+					idx++;
+				}
+				dataModel.put("field_list$" + fieldName,
+						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+			}
+		}
+
 		// next we check for input groups if they are defined, we process them and add to data model
 		if (!toolboxBlock.getRepeatingInputs().isEmpty()) {
 			for (String inputName : toolboxBlock.getRepeatingInputs()) {
