@@ -6,7 +6,8 @@
         <#else>
             "layer0": "${modid}:items/${data.texture}"
         </#if>
-    }<#if data.getModElement().getTypeString() == "tool" && data.toolType == "Shield">,
+    }
+<#if data.getModElement().getTypeString() == "tool" && data.toolType == "Shield">,
   "overrides": [
       {
           "predicate": {

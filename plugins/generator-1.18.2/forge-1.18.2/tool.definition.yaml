@@ -1,6 +1,6 @@
 global_templates:
   - template: elementinits/shield_properties.java.ftl
-    condition: ${w.hasShields()}
+    condition: hasShields()
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameShieldProperties.java"
 
 templates:
