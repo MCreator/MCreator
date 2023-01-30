@@ -52,13 +52,21 @@ public class EntityModel extends GUIComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		g.setColor(Color.darkGray);
-		g.drawLine(cx, cy, cx + 20, cy + 20);
-		g.drawLine(cx + 20, cy, cx, cy + 20);
+
+		g.drawLine(cx, cy + 20, cx + 20, cy + 20);
+
+		Stroke original = g.getStroke();
+		g.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 1 }, 0));
+		g.drawLine(cx + 10, cy, cx + 10, cy + 20);
+		g.setStroke(original);
+
+		g.setColor(VariableTypeLoader.BuiltInTypes.ENTITY.getBlocklyColor());
+
+		g.fillRect(cx + 9, cy + 19, 2, 2);
 
 		g.setFont(g.getFont().deriveFont(5f));
-		g.setColor(VariableTypeLoader.BuiltInTypes.ENTITY.getBlocklyColor());
 		int textwidth = (int) (g.getFont().getStringBounds(this.entityModel.getName(), WYSIWYG.frc).getWidth());
-		g.drawString(this.entityModel.getName(), cx + 10 - textwidth / 2, cy + 12);
+		g.drawString(this.entityModel.getName(), cx + 10 - textwidth / 2, cy + 17);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
