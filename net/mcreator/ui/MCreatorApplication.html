@@ -136,7 +136,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="workspace/selector/WorkspaceSelector.html" title="class in net.mcreator.ui.workspace.selector">WorkspaceSelector</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceSelector()" class="member-name-link">getWorkspaceSelector</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openWorkspaceInMCreator(java.io.File)" class="member-name-link">openWorkspaceInMCreator</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
@@ -217,7 +217,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="openWorkspaceInMCreator(java.io.File)">
 <h3>openWorkspaceInMCreator</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">openWorkspaceInMCreator</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a></span>&nbsp;<span class="element-name">openWorkspaceInMCreator</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>workspaceFile</code> - File of the .mcreator workspace definition</dd>
+<dt>Returns:</dt>
+<dd>MCreator if new instance, null if existing is open or open failed</dd>
+</dl>
 </section>
 </li>
 <li>
