@@ -1689,6 +1689,8 @@ public class TestWorkspaceDataProvider {
 		tool.texture = "test";
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
+		tool.blockingRenderType = 0;
+		tool.blockingModelName = "Normal";
 		return tool;
 	}
 
