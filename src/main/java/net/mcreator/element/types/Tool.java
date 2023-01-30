@@ -43,8 +43,10 @@ import java.util.Map;
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
+	public int blockingRenderType;
 	public String texture;
 	public String customModelName;
+	public String blockingModelName;
 
 	public String name;
 	public List<String> specialInfo;
@@ -85,6 +87,22 @@ import java.util.Map;
 		this.attackSpeed = 2.8;
 
 		this.specialInfo = new ArrayList<>();
+	}
+
+	public Model getBlockingModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (blockingRenderType == 1)
+			modelType = Model.Type.JSON;
+		else if (blockingRenderType == 2)
+			modelType = Model.Type.OBJ;
+		return Model.getModelByParams(getModElement().getWorkspace(), blockingModelName, modelType);
+	}
+
+	public Map<String, String> getBlockingTextureMap() {
+		Model model = getBlockingModel();
+		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
+			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		return new HashMap<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
