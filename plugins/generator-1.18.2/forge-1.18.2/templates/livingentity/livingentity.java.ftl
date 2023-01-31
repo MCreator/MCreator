@@ -620,11 +620,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	@Override
 	public boolean canBeCollidedWith() {
+		<#if hasProcedure(data.solidBoundingBox)>
 		Entity entity = this;
 		Level world = entity.level;
 		double x = entity.getX();
 		double y = entity.getY();
 		double z = entity.getZ();
+		</#if>
 		return <@procedureOBJToConditionCode data.solidBoundingBox true false/>;
 	}
 	</#if>
