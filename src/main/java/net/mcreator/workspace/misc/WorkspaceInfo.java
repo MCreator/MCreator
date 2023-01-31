@@ -37,7 +37,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
 
@@ -108,8 +107,7 @@ import java.util.stream.Collectors;
 
 	public List<ModElement> getElementsOfType(ModElementType<?> type) {
 		try {
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
-					.collect(Collectors.toList());
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
@@ -119,12 +117,8 @@ import java.util.stream.Collectors;
 	public List<ModElement> getRecipesOfType(String typestring) {
 		try {
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)
-					.filter(e -> {
-						GeneratableElement ge = e.getGeneratableElement();
-						if (ge instanceof Recipe)
-							return ((Recipe) ge).recipeType.equals(typestring);
-						return false;
-					}).collect(Collectors.toList());
+					.filter(e -> e.getGeneratableElement() instanceof Recipe re && re.recipeType.equals(typestring))
+					.toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
