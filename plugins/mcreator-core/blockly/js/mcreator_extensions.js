@@ -181,3 +181,114 @@ function validateIntProviderInputs(...inputs) {
 }
 
 Blockly.Extensions.register('count_placement_validator', validateIntProviderInputs(['count', 0, 256]));
+
+// Helper function to provide a mixin for mutators that add a single repeating input
+// The mutator container block must have a "STACK" statement input for this to work
+// The input/empty messages are localized as "blockly.block.block_type.input" and "blockly.block.block_type.empty"
+function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputType) {
+    return {
+        // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
+        mutationToDom: function () {
+            var container = document.createElement('mutation');
+            container.setAttribute('inputs', this.inputCount_);
+            return container;
+        },
+
+        // Retrieve number of inputs from XML
+        domToMutation: function (xmlElement) {
+            this.inputCount_ = parseInt(xmlElement.getAttribute('inputs'), 10);
+            this.updateShape_();
+        },
+
+        // Store number of inputs in JSON
+        saveExtraState: function() {
+            return {
+                'inputCount': this.inputCount_
+            };
+        },
+
+        // Retrieve number of inputs from JSON
+        loadExtraState: function(state) {
+            this.inputCount_ = state['inputCount'];
+            this.updateShape_();
+        },
+
+        // "Split" this block into the correct number of inputs in the mutator UI
+        decompose: function(workspace) {
+            const containerBlock = workspace.newBlock(mutatorContainer);
+            containerBlock.initSvg();
+            var connection = containerBlock.getInput('STACK').connection;
+            for (let i = 0; i < this.inputCount_; i++) {
+                const inputBlock = workspace.newBlock(mutatorInput);
+                inputBlock.initSvg();
+                connection.connect(inputBlock.previousConnection);
+                connection = inputBlock.nextConnection;
+            }
+            return containerBlock;
+        },
+
+        // Rebuild this block based on the number of inputs in the mutator UI
+        compose: function(containerBlock) {
+            let inputBlock = containerBlock.getInputTargetBlock('STACK');
+            // Count number of inputs.
+            const connections = [];
+            while (inputBlock && !inputBlock.isInsertionMarker()) {
+                connections.push(inputBlock.valueConnection_);
+                inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
+            }
+            // Disconnect any children that don't belong.
+            for (let i = 0; i < this.inputCount_; i++) {
+                const connection = this.getInput(inputName + i) && this.getInput(inputName + i).connection.targetConnection;
+                if (connection && connections.indexOf(connection) == -1) {
+                    connection.disconnect();
+                }
+            }
+            this.inputCount_ = connections.length;
+            this.updateShape_();
+            // Reconnect any child blocks.
+            for (let i = 0; i < this.inputCount_; i++) {
+                Blockly.Mutator.reconnect(connections[i], this, inputName + i);
+            }
+        },
+
+        // Keep track of the connected blocks, so that they don't get disconnected whenever an input is added or moved
+        saveConnections: function(containerBlock) {
+            let inputBlock = containerBlock.getInputTargetBlock('STACK');
+            let i = 0;
+            while (inputBlock) {
+                if (inputBlock.isInsertionMarker()) {
+                    inputBlock = inputBlock.getNextBlock();
+                    continue;
+                }
+                const input = this.getInput(inputName + i);
+                inputBlock.valueConnection_ = input && input.connection.targetConnection;
+                inputBlock = inputBlock.getNextBlock();
+                i++;
+            }
+        },
+
+        // Add/remove inputs from this block
+        updateShape_: function() {
+            // Handle the dummy "empty" input for when there are no proper inputs
+            if (this.inputCount_ && this.getInput('EMPTY')) {
+                this.removeInput('EMPTY');
+            } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
+                this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
+            }
+            // Add proper inputs
+            for (let i = 0; i < this.inputCount_; i++) {
+                if (!this.getInput(inputName + i))
+                    this.appendValueInput(inputName + i).setCheck(inputType).setAlign(Blockly.Input.Align.RIGHT)
+                            .appendField(javabridge.t('blockly.block.' + this.type + '.input'));
+            }
+            // Remove extra inputs
+            for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
+                this.removeInput(inputName + i);
+            }
+        }
+    }
+}
+
+Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
+        'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition', 'BlockPredicate'),
+        undefined, ['block_predicate_mutator_input']);

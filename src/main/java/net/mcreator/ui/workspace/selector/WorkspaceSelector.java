@@ -137,8 +137,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 								L10N.t("dialog.workspace_selector.clone.setup_failed", ex.getMessage()),
 								L10N.t("dialog.workspace_selector.clone.setup_failed.title"),
 								JOptionPane.ERROR_MESSAGE);
+					} finally {
+						setCursor(Cursor.getDefaultCursor());
 					}
-					setCursor(Cursor.getDefaultCursor());
 				}
 			}
 		}, actions);
@@ -354,7 +355,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 			recentsList.addKeyListener(new KeyAdapter() {
-				@Override public void keyReleased(KeyEvent e) {
+				@Override public void keyPressed(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 						Object[] options = { L10N.t("dialog.workspace_selector.delete_workspace.recent_list"),
 								L10N.t("dialog.workspace_selector.delete_workspace.workspace"), L10N.t("common.cancel") };
