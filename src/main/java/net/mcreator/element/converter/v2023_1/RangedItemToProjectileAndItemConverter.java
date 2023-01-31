@@ -122,7 +122,8 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
 			item.specialInfo = specialInfo;
 			item.stackSize = rangedItem.get("stackSize").getAsInt();
-			item.animation = rangedItem.get("animation").getAsString();
+			if (rangedItem.get("animation") != null)
+				item.animation = rangedItem.get("animation").getAsString();
 			item.hasGlow = rangedItem.get("hasGlow").getAsBoolean();
 			if (rangedItem.get("glowCondition") != null)
 				item.glowCondition = new Procedure(

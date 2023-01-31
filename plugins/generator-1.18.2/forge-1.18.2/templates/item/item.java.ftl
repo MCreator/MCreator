@@ -274,7 +274,7 @@ public class ${name}Item extends Item {
 					"time": "time"
 				}/>
 			</#if>
-			<#if !data.shootConstantly>
+			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
