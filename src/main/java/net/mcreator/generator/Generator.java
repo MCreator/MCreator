@@ -221,8 +221,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -283,8 +284,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -297,8 +299,9 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return;
 		}
 
@@ -437,8 +440,9 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return new ArrayList<>();
 		}
 

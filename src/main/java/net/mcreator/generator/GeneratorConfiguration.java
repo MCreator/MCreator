@@ -238,6 +238,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	@Nullable public List<String> getSupportedDefinitionFields(ModElementType<?> type) {
+		if (type == ModElementType.UNKNOWN)
+			return null; // silently return null for unknown mod element type
+
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
@@ -253,6 +256,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType<?> type) {
+		if (type == ModElementType.UNKNOWN)
+			return null; // silently return null for unknown mod element type
+
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
