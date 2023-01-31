@@ -39,18 +39,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused") public class WorkspaceInfo {
+@SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace info");
-
-	private final Workspace workspace;
-
-	private final GeneratorWrapper internalWrapper;
-
-	public WorkspaceInfo(Workspace workspace) {
-		this.workspace = workspace;
-		this.internalWrapper = new GeneratorWrapper(workspace.getGenerator());
-	}
 
 	public boolean hasVariables() {
 		return workspace.getVariableElements().size() > 0;
@@ -169,82 +160,98 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasGameRulesOfType(String type) {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.GAMERULE) {
-				if (element.getGeneratableElement() instanceof GameRule gr)
+				if (element.getGeneratableElement() instanceof GameRule gr) {
 					if (gr.type.equalsIgnoreCase(type))
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasVillagerTrades(boolean wandering) {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.VILLAGERTRADE) {
-				if (element.getGeneratableElement() instanceof VillagerTrade vt)
+				if (element.getGeneratableElement() instanceof VillagerTrade vt) {
 					if (vt.hasVillagerTrades(wandering))
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasBlocksMineableWith(String tool) {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block)
+				if (element.getGeneratableElement() instanceof Block block) {
 					if (block.destroyTool.equalsIgnoreCase(tool))
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasToolsOfType(String type) {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.TOOL) {
-				if (element.getGeneratableElement() instanceof Tool tool)
+				if (element.getGeneratableElement() instanceof Tool tool) {
 					if (tool.toolType.equalsIgnoreCase(type))
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasFluidsOfType(String type) {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.FLUID) {
-				if (element.getGeneratableElement() instanceof Fluid fluid)
+				if (element.getGeneratableElement() instanceof Fluid fluid) {
 					if (fluid.type.equalsIgnoreCase(type))
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasBiomesWithStructure(String type) {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.BIOME) {
-				if (element.getGeneratableElement() instanceof Biome biome)
+				if (element.getGeneratableElement() instanceof Biome biome) {
 					if (biome.hasStructure(type))
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasFuels() {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.ITEMEXTENSION) {
-				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
+				if (element.getGeneratableElement() instanceof ItemExtension itemExtension) {
 					if (itemExtension.enableFuel)
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
 	public boolean hasCompostableItems() {
-		for (ModElement element : workspace.getModElements())
+		for (ModElement element : workspace.getModElements()) {
 			if (element.getType() == ModElementType.ITEMEXTENSION) {
-				if (element.getGeneratableElement() instanceof ItemExtension itemExtension)
+				if (element.getGeneratableElement() instanceof ItemExtension itemExtension) {
 					if (itemExtension.compostLayerChance > 0)
 						return true;
+				}
 			}
+		}
 		return false;
 	}
 
@@ -255,5 +262,4 @@ import java.util.stream.Collectors;
 	public Workspace getWorkspace() {
 		return workspace;
 	}
-
 }

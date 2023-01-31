@@ -238,27 +238,27 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
-		if (mod_elements.contains(element)) {
+		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
+			return;
+
+		// first we ask generator to remove all related files
+		if (element.getType() != ModElementType.UNKNOWN) {
 			GeneratableElement generatableElement = element.getGeneratableElement();
-
-			// first we ask generator to remove all related files
-			if (element.getType() != ModElementType.UNKNOWN) {
-				if (generatableElement != null && generator != null)
-					generator.removeElementFilesAndLangKeys(generatableElement);
-				else
-					LOG.warn("Failed to remove element files for element " + element);
-			}
-
-			// after we don't need the definition anymore, remove actual files
-			new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
-			new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
-					element.getName() + ".png").delete();
-
-			// finally remove element form the list
-			mod_elements.remove(element);
-
-			markDirty();
+			if (generatableElement != null && generator != null)
+				generator.removeElementFilesAndLangKeys(generatableElement);
+			else
+				LOG.warn("Failed to remove element files for element " + element);
 		}
+
+		// after we don't need the definition anymore, remove actual files
+		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
+		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
+				element.getName() + ".png").delete();
+
+		// finally remove element form the list
+		mod_elements.remove(element);
+
+		markDirty();
 	}
 
 	public void removeVariableElement(VariableElement element) {
