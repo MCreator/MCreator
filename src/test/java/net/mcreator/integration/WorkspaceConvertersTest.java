@@ -24,6 +24,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.WorkspaceUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -53,6 +54,8 @@ public class WorkspaceConvertersTest {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 
 		TestSetup.setupIntegrationTestEnvironment();
+
+		ImageMakerTexturesCache.init();
 	}
 
 	public @TestFactory Stream<DynamicTest> testWorkspaceConversions() {
