@@ -135,7 +135,7 @@ public class LocalizationUtils {
 
 			generator.getWorkspace().setLocalization(key, value);
 		} catch (ReflectiveOperationException e) {
-			generator.LOG.error("Failed to parse values", e);
+			generator.getLogger().error("Failed to parse values", e);
 		}
 	}
 

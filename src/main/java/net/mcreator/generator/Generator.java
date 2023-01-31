@@ -59,7 +59,7 @@ public class Generator implements IGenerator, Closeable {
 	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections.synchronizedMap(
 			new LinkedHashMap<>());
 
-	protected final Logger LOG;
+	private final Logger LOG;
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 

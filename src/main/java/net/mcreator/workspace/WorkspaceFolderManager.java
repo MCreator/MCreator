@@ -23,8 +23,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,8 +33,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class WorkspaceFolderManager {
-
-	private static final Logger LOG = LogManager.getLogger("Workspace Folder Manager");
 
 	private final File workspaceFolder;
 	private final Workspace workspace;
@@ -173,11 +169,6 @@ public class WorkspaceFolderManager {
 	}
 
 	public boolean isFileInWorkspace(File file) {
-		if (FileIO.isFileSomewhereInDirectory(file, workspaceFolder)) {
-			return true;
-		} else {
-			LOG.warn(file.getAbsolutePath() + " is not in workspace path!");
-			return false;
-		}
+		return FileIO.isFileSomewhereInDirectory(file, workspaceFolder);
 	}
 }
