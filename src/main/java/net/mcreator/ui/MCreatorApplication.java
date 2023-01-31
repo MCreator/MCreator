@@ -312,7 +312,7 @@ public final class MCreatorApplication {
 					}
 				}
 				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile, Launcher.version.getFullString()));
 			}
 
 			analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
