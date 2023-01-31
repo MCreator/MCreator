@@ -1,2 +1,4 @@
 C'est le type de projectile qui pourra être lancé par cet objet.
-Vous pouvez soit utiliser un projectile vanilla ou, soit utilisée un projectile personnalisé en créant un nouvel élément de projectile.
+
+Vous pouvez soit créer et utiliser un projectile personnalisé, soit utiliser un projectile vanilla.
+Lorsque vous sélectionnez un projectile vanilla, les valeurs utilisées dans le jeu seront utilisées.

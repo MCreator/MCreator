@@ -110,7 +110,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
 		propertiesPanel.add(PanelUtils.totalCenterInPanel(projectileItem));
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/particles"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/show_particles"),
 				L10N.label("elementgui.projectile.show_particles")));
 		showParticles.setOpaque(false);
 		propertiesPanel.add(showParticles);
