@@ -163,7 +163,7 @@ public class GTProcedureBlocks {
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
-								processed += appendFieldXML(workspace,  random, additionalXML, arg, field);
+								processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 								break;
 							}
 						}
