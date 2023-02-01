@@ -163,48 +163,7 @@ public class GTProcedureBlocks {
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
-								switch (arg.get("type").getAsString()) {
-								case "field_checkbox" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-									processed++;
-								}
-								case "field_number" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
-									processed++;
-								}
-								case "field_input", "field_javaname" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-									processed++;
-								}
-								case "field_dropdown" -> {
-									JsonArray opts = arg.get("options").getAsJsonArray();
-									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-									additionalXML.append("<field name=\"").append(field).append("\">")
-											.append(opt.get(1).getAsString()).append("</field>");
-									processed++;
-								}
-								case "field_data_list_selector" -> {
-									String type = arg.get("datalist").getAsString();
-
-									// Get the optional properties
-									JsonElement optTypeFilter = arg.get("typeFilter");
-									String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
-
-									JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
-									String customEntryProviders = optCustomEntryProviders == null ?
-											null :
-											optCustomEntryProviders.getAsString();
-
-									String[] values = getDataListFieldValues(workspace, type, typeFilter,
-											customEntryProviders);
-									if (values.length > 0 && !values[0].equals("")) {
-										String value = ListUtils.getRandomItem(random, values);
-										additionalXML.append("<field name=\"").append(field).append("\">").append(value)
-												.append("</field>");
-										processed++;
-									}
-								}
-								}
+								processed += appendFieldXML(workspace,  random, additionalXML, arg, field);
 								break;
 							}
 						}
@@ -263,6 +222,25 @@ public class GTProcedureBlocks {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
 							+ procedureBlock.machine_name);
 					continue;
+				}
+			}
+
+			if (procedureBlock.getRepeatingFields() != null) {
+				try {
+					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+					for (int i = 0; i < args0.size(); i++) {
+						JsonObject arg = args0.get(i).getAsJsonObject();
+						if (arg.get("type").getAsString().startsWith("field")) {
+							String name = arg.get("name").getAsString();
+							for (String field : procedureBlock.getRepeatingFields()) {
+								if (name.matches(field + "\\d+")) {
+									appendFieldXML(workspace, random, additionalXML, arg, field + i);
+									break;
+								}
+							}
+						}
+					}
+				} catch (Exception ignored) {
 				}
 			}
 
@@ -454,5 +432,52 @@ public class GTProcedureBlocks {
 		}
 		}
 		return new String[] { "" };
+	}
+
+	private static int appendFieldXML(Workspace workspace, Random random, StringBuilder additionalXML, JsonObject arg,
+			String field) {
+		int processed = 0;
+		switch (arg.get("type").getAsString()) {
+		case "field_checkbox" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
+			processed++;
+		}
+		case "field_number" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
+			processed++;
+		}
+		case "field_input", "field_javaname" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+			processed++;
+		}
+		case "field_dropdown" -> {
+			JsonArray opts = arg.get("options").getAsJsonArray();
+			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
+			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString()).append("</field>");
+			processed++;
+		}
+		case "field_mcitem_selector" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
+			processed++;
+		}
+		case "field_data_list_selector" -> {
+			String type = arg.get("datalist").getAsString();
+
+			// Get the optional properties
+			JsonElement optTypeFilter = arg.get("typeFilter");
+			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+
+			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+			String customEntryProviders = optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
+
+			String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
+			if (values.length > 0 && !values[0].equals("")) {
+				String value = ListUtils.getRandomItem(random, values);
+				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
+				processed++;
+			}
+		}
+		}
+		return processed;
 	}
 }
