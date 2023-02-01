@@ -58,7 +58,7 @@ public class ConverterRegistry {
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
-		put(ModElementType.FLUID, List.of(new FluidNameFixer()));
+		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter()));
 		put(ModElementType.COMMAND,
 				List.of(new CommandParameterBlockFixer(), new CommandCallProcedureBlockConverter()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
