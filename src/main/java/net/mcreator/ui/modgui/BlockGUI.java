@@ -433,8 +433,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipOnX(true);
-		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipOnX(true);
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
 
 		textureLeft = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
@@ -1248,38 +1248,31 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateTextureOptions() {
-		texture.setVisible(false);
-		texture.setFlipOnX(false);
+		texture.setFlipUV(false);
+		textureTop.setFlipUV(false);
 		textureTop.setVisible(false);
-		textureTop.setFlipOnX(false);
 		textureLeft.setVisible(false);
 		textureFront.setVisible(false);
 		textureRight.setVisible(false);
 		textureBack.setVisible(false);
 
 		if (normal.equals(renderType.getSelectedItem())) {
-			texture.setVisible(true);
-			texture.setFlipOnX(true);
+			texture.setFlipUV(true);
+			textureTop.setFlipUV(true);
 			textureTop.setVisible(true);
-			textureTop.setFlipOnX(true);
 			textureLeft.setVisible(true);
 			textureFront.setVisible(true);
 			textureRight.setVisible(true);
 			textureBack.setVisible(true);
 		} else if (grassBlock.equals(renderType.getSelectedItem())) {
-			texture.setVisible(true);
 			textureTop.setVisible(true);
 			textureLeft.setVisible(true);
 			textureFront.setVisible(true);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
-			texture.setVisible(true);
 		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
-			texture.setVisible(true);
-		} else {
-			texture.setVisible(true);
 		}
 	}
 
