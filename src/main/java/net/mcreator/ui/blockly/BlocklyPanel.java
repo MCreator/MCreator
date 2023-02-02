@@ -98,6 +98,7 @@ public class BlocklyPanel extends JFXPanel {
 					(ListChangeListener<Node>) change -> browser.lookupAll(".scroll-bar")
 							.forEach(bar -> bar.setVisible(false)));
 			webEngine = browser.getEngine();
+			//noinspection ConstantConditions
 			webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
 			webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
 				if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
@@ -129,7 +130,7 @@ public class BlocklyPanel extends JFXPanel {
 							.appendChild(styleNode);
 
 					// @formatter:off
-					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
+					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
