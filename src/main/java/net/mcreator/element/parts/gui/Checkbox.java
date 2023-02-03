@@ -60,6 +60,6 @@ public class Checkbox extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return 2;
+		return 20;
 	}
 }

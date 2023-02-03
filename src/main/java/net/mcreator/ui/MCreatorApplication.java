@@ -26,13 +26,14 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
-import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
+import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
@@ -50,6 +51,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.SoundUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -226,7 +228,8 @@ public final class MCreatorApplication {
 			File passedFile = new File(lastArg);
 			if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 				splashScreen.setVisible(false);
-				openWorkspaceInMCreator(passedFile);
+				MCreator mcreator = openWorkspaceInMCreator(passedFile);
+				showPluginLoadingFailures(mcreator);
 				directLaunch = true;
 			}
 		}
@@ -238,6 +241,25 @@ public final class MCreatorApplication {
 
 		//track after the setup is done
 		analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
+	}
+
+	private void showPluginLoadingFailures(Window parent) {
+		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
+		if (!failedPlugins.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("<html>");
+			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
+			sb.append("<ul>");
+			for (PluginLoadFailure plugin : failedPlugins) {
+				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ").append(StringUtils.abbreviateString(plugin.message(), 100, true))
+						.append("<br><small>Location: ").append(plugin.pluginFile()).append("</small></li>");
+			}
+			sb.append("</ul><br>");
+			sb.append(L10N.t("dialog.plugin_load_failed.msg2"));
+
+			JOptionPane.showMessageDialog(parent, sb.toString(), L10N.t("dialog.plugin_load_failed.title"),
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	public GoogleAnalytics getAnalytics() {
@@ -259,7 +281,11 @@ public final class MCreatorApplication {
 		return workspaceSelector;
 	}
 
-	public void openWorkspaceInMCreator(File workspaceFile) {
+	/**
+	 * @param workspaceFile File of the .mcreator workspace definition
+	 * @return MCreator if new instance, null if existing is open or open failed
+	 */
+	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
@@ -275,6 +301,7 @@ public final class MCreatorApplication {
 					mcreator.setVisible(true);
 					mcreator.requestFocusInWindow();
 					mcreator.toFront();
+					return mcreator;
 				} else { // already open, just focus it
 					LOG.warn("Trying to open already open workspace, bringing it to the front.");
 					for (MCreator openmcreator : openMCreators) {
@@ -285,7 +312,7 @@ public final class MCreatorApplication {
 					}
 				}
 				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile, Launcher.version.getFullString()));
 			}
 
 			analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
@@ -317,8 +344,11 @@ public final class MCreatorApplication {
 			}
 		} catch (IOException | UnsupportedGeneratorException e) {
 			reportFailedWorkspaceOpen(e);
+		} finally {
+			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
-		this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+		return null;
 	}
 
 	private void reportFailedWorkspaceOpen(Exception e) {
@@ -370,6 +400,7 @@ public final class MCreatorApplication {
 
 	void showWorkspaceSelector() {
 		workspaceSelector.setVisible(true);
+		showPluginLoadingFailures(workspaceSelector);
 	}
 
 	List<RecentWorkspaceEntry> getRecentWorkspaces() {

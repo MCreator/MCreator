@@ -205,12 +205,12 @@ public class Generator implements IGenerator, Closeable {
 		}
 	}
 
-	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports)
+	@Nonnull public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports)
 			throws TemplateGeneratorException {
 		return this.generateElement(element, formatAndOrganiseImports, true);
 	}
 
-	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
+	@Nonnull public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
 			boolean performFSTasks) throws TemplateGeneratorException {
 		if (element.getModElement().isCodeLocked()) {
 			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
@@ -221,8 +221,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -267,11 +268,10 @@ public class Generator implements IGenerator, Closeable {
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// store paths of generated files
-			element.getModElement().putMetadata("files", generatorFiles.stream()
-					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()
-							.replace(File.separator, "/")).toList());
+			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
+					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
-			LocalizationUtils.extractLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
+			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
@@ -280,13 +280,28 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>(generatorFiles);
 	}
 
+	public List<String> getElementLocalizationKeys(GeneratableElement element) {
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
+				.getModElementDefinition(element.getModElement().getType()); // config map
+		if (map == null) {
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
+			return new ArrayList<>();
+		}
+
+		return new ArrayList<>(LocalizationUtils.processDefinitionToLocalizationKeys(this, element,
+				(List<?>) map.get("localizationkeys")).keySet());
+	}
+
 	public void removeElementFilesAndLangKeys(GeneratableElement generatableElement) {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return;
 		}
 
@@ -299,7 +314,7 @@ public class Generator implements IGenerator, Closeable {
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));
 	}
 
-	public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
+	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
 		AtomicInteger templateID = new AtomicInteger();
 
 		List<GeneratorTemplate> files = new ArrayList<>(
@@ -417,7 +432,7 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>(files);
 	}
 
-	public List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement) {
+	@Nonnull public List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement) {
 		if (generatableElement == null)
 			throw new RuntimeException("GeneratableElement is null");
 
@@ -425,8 +440,9 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -463,7 +479,7 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>(files);
 	}
 
-	public List<GeneratorTemplatesList> getModElementListTemplates(GeneratableElement generatableElement) {
+	@Nonnull public List<GeneratorTemplatesList> getModElementListTemplates(GeneratableElement generatableElement) {
 		if (generatableElement == null)
 			throw new RuntimeException("GeneratableElement is null");
 

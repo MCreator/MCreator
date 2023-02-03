@@ -40,14 +40,14 @@ import java.util.stream.Collectors;
 	public transient UUID uuid;
 
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
-		put("label", Label.class); // weight 0
-		put("textfield", TextField.class); // weight 1
-		put("checkbox", Checkbox.class); //weight 2
-		put("imagebutton", ImageButton.class); //weight 3
-		put("button", Button.class);// weight 4
-		put("image", Image.class);// weight 5
-		put("inputslot", InputSlot.class); // weight 6
-		put("outputslot", OutputSlot.class); // weight 6
+		put("textfield", TextField.class); // weight 0
+		put("label", Label.class); // weight 10
+		put("checkbox", Checkbox.class); //weight 20
+		put("imagebutton", ImageButton.class); //weight 30
+		put("button", Button.class);// weight 30
+		put("image", Image.class);// weight 40
+		put("inputslot", InputSlot.class); // weight 50
+		put("outputslot", OutputSlot.class); // weight 50
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
@@ -129,8 +129,12 @@ import java.util.stream.Collectors;
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			String elementType = jsonElement.getAsJsonObject().get("type").getAsString();
 
+			Class<? extends GUIComponent> typeMapping = typeMappings.get(elementType);
+			if (typeMapping == null)
+				typeMapping = Unknown.class; // fallback to Unknown (e.g. plugin component that no longer exists)
+
 			GUIComponent component = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"),
-					typeMappings.get(elementType));
+					typeMapping);
 			component.uuid = UUID.randomUUID(); // init UUID for deserialized component
 			return component;
 		}
@@ -144,6 +148,29 @@ import java.util.stream.Collectors;
 			return root;
 		}
 
+	}
+
+	public static final class Unknown extends GUIComponent {
+
+		@Override public String getName() {
+			return "unknown_element";
+		}
+
+		@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
+
+		}
+
+		@Override public int getWidth(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getHeight(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getWeight() {
+			return 0;
+		}
 	}
 
 }

@@ -160,7 +160,6 @@ public class ArmorPackMakerTool {
 		mcreator.getWorkspace().addModElement(armor.getModElement());
 		mcreator.getGenerator().generateElement(armor);
 		mcreator.getModElementManager().storeModElement(armor);
-		armor.getModElement().reinit();
 
 		// generate recipes
 		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,

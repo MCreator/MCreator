@@ -372,4 +372,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public LayerPanel getLayerPanel() {
 		return layerPanel;
 	}
+
+	public File getImageFile() {
+		return image;
+	}
+
 }
