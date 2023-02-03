@@ -186,7 +186,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 		renderType.addActionListener((e) -> {
-			if(renderType.getSelectedItem() != null)
+			if (renderType.getSelectedItem() != null)
 				updateFields();
 		});
 
