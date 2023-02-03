@@ -27,7 +27,7 @@ import org.gradle.internal.FileUtils;
 
 import javax.swing.*;
 
-public class ImageSizeValidator implements Validator {
+public class ImageSizeMatchValidator implements Validator {
 
 	private String firstImage, secondImage;
 	private final TextureType type;
@@ -35,7 +35,7 @@ public class ImageSizeValidator implements Validator {
 	private final boolean passIfSecondEmpty;
 
 	/**
-	 * This validator takes 2 images from a same {@link TextureType} and check if they have the same width and height.
+	 * This validator takes 2 images from a same {@link TextureType} and checks if they have the same width and height.
 	 *
 	 * @param firstImage        This is the first image of the check. This image can never be null or empty.
 	 * @param secondImage This
@@ -43,7 +43,7 @@ public class ImageSizeValidator implements Validator {
 	 * @param workspace
 	 * @param passIfSecondEmpty
 	 */
-	public ImageSizeValidator(String firstImage, String secondImage, TextureType type, Workspace workspace,
+	public ImageSizeMatchValidator(String firstImage, String secondImage, TextureType type, Workspace workspace,
 			boolean passIfSecondEmpty) {
 		this.firstImage = firstImage;
 		this.secondImage = secondImage;

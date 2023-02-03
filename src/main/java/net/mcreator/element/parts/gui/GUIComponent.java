@@ -81,7 +81,7 @@ import java.util.stream.Collectors;
 	/**
 	 * Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.
 	 *
-	 * @return The priority of the component (lower is more important, higher is less important)
+	 * @return The priority of the component (lower means it will be rendered closer to the screen and higher means it will "sink" more behind other components)
 	 */
 	public abstract int getWeight();
 

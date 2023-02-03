@@ -30,7 +30,7 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.ImageSizeValidator;
+import net.mcreator.ui.validation.validators.ImageSizeMatchValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
@@ -64,7 +64,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		VComboBox<String> hoveredTexture = new SearchableComboBox<>(ListUtils.merge(Collections.singleton(""),
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.collect(Collectors.toList())).toArray(String[]::new));
-		ImageSizeValidator validator = new ImageSizeValidator(textureSelector.getSelectedItem(),
+		ImageSizeMatchValidator validator = new ImageSizeMatchValidator(textureSelector.getSelectedItem(),
 				hoveredTexture.getSelectedItem(), TextureType.SCREEN, editor.mcreator.getWorkspace(), true);
 		hoveredTexture.setValidator(validator);
 		hoveredTexture.enableRealtimeValidation();
