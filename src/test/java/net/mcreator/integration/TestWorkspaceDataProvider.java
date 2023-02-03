@@ -254,6 +254,10 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.SCREEN) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test", TextureType.SCREEN));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("picture1", TextureType.SCREEN));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("picture2", TextureType.SCREEN));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
