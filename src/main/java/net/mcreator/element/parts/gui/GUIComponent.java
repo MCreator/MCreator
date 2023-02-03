@@ -44,10 +44,10 @@ import java.util.stream.Collectors;
 		put("label", Label.class); // weight 10
 		put("checkbox", Checkbox.class); //weight 20
 		put("imagebutton", ImageButton.class); //weight 30
-		put("button", Button.class);// weight 30
-		put("image", Image.class);// weight 40
-		put("inputslot", InputSlot.class); // weight 50
-		put("outputslot", OutputSlot.class); // weight 50
+		put("button", Button.class);// weight 40
+		put("image", Image.class);// weight 50
+		put("inputslot", InputSlot.class); // weight 60
+		put("outputslot", OutputSlot.class); // weight 60
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
