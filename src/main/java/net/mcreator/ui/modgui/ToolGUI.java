@@ -335,7 +335,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			repairItems.setEnabled(true);
 			blockingModel.setEnabled(true);
 
-			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() != null ? renderType.getSelectedItem().getType() == Model.Type.BUILTIN : true))
+			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null || renderType.getSelectedItem().getType() == Model.Type.BUILTIN))
 				blockingModel.setEnabled(false);
 
 			if (toolType.getSelectedItem().equals("Special")) {
