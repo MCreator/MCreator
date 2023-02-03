@@ -67,12 +67,19 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 				public Ingredient getRepairIngredient() {
 					<#if data.repairItems?has_content>
-						return Ingredient.fromValues(Stream.of(<#list data.repairItems as item><#if item.getUnmappedValue().startsWith("TAG:")>
-							new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))<#else>
-							new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})</#if><#sep>,</#list>));
+						return Ingredient.fromValues(Stream.of(
+							<#list data.repairItems as item>
+								<#if item.getUnmappedValue().startsWith("TAG:")>
+									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
+								<#else>
+									new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
+								</#if>
+								<#sep>,
+							</#list>
+						));
 					<#else>
 						return Ingredient.EMPTY;
-				    </#if>
+					</#if>
 				}
 			},
 
@@ -233,21 +240,29 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-		<#assign items = []>
-		<#assign tags = []>
-		<#list data.repairItems as repairItem>
-			<#if repairItem.getUnmappedValue().startsWith("TAG:")>
-				<#assign tags += [repairItem]>
-			<#else>
-				<#assign items += [repairItem]>
-			</#if>
-		</#list>
-		return List.of(
-			<#list items as item>${mappedMCItemToItem(item)}<#sep>,</#list>).contains(repairitem.getItem())<#if tags?has_content> ||
-			Stream.of(<#list tags as tag>ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,</#list>)
-			.anyMatch(repairitem::is)</#if>;
-	}
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+			<#assign items = []>
+			<#assign tags = []>
+			<#list data.repairItems as repairItem>
+				<#if repairItem.getUnmappedValue().startsWith("TAG:")>
+					<#assign tags += [repairItem]>
+				<#else>
+					<#assign items += [repairItem]>
+				</#if>
+			</#list>
+			return List.of(
+				<#list items as item>
+					${mappedMCItemToItem(item)}<#sep>,
+				</#list>
+				).contains(repairitem.getItem())
+				<#if tags?has_content> ||
+					Stream.of(
+						<#list tags as tag>
+							ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+						</#list>)
+					.anyMatch(repairitem::is)
+				</#if>;
+		}
 	</#if>
 
 	@Override public int getEnchantmentValue() {

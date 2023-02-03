@@ -77,10 +77,20 @@ public class ${name}Enchantment extends Enchantment {
 				</#if>
 			</#list>
 
-			return <#if data.excludeItems>!</#if>List.of(
-				<#list items as item>${mappedMCItemToItem(item)}<#sep>,</#list>).contains(item)<#if tags?has_content> ||
-				Stream.of(<#list tags as tag>ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,</#list>)
-				.<#if data.excludeItems>noneMatch<#else>anyMatch</#if>(stack::is)</#if>;
+			return <#if data.excludeItems>!</#if>
+				List.of(
+					<#list items as item>
+						${mappedMCItemToItem(item)}<#sep>,
+					</#list>
+				).contains(item)
+				<#if tags?has_content>
+					|| Stream.of(
+						<#list tags as tag>
+							ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+						</#list>
+					).
+					<#if data.excludeItems>noneMatch<#else>anyMatch</#if>(stack::is)
+				</#if>;
 		}
 	</#if>
 
