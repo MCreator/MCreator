@@ -151,4 +151,27 @@ import java.util.stream.Collectors;
 
 	}
 
+	public static final class Unknown extends GUIComponent {
+
+		@Override public String getName() {
+			return "unknown_element";
+		}
+
+		@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
+
+		}
+
+		@Override public int getWidth(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getHeight(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getWeight() {
+			return 0;
+		}
+	}
+
 }
