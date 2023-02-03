@@ -81,8 +81,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
+	private final Model mirrored = new Model.BuiltInModel("Mirrored");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
-	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { normal });
+	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { mirrored });
 
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
@@ -184,6 +185,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+		renderType.addActionListener((e) -> {
+			if(renderType.getSelectedItem() != null)
+				updateFields();
+		});
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -330,7 +335,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			repairItems.setEnabled(true);
 			blockingModel.setEnabled(true);
 
-			if (!toolType.getSelectedItem().equals("Shield"))
+			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() != null ? renderType.getSelectedItem().getType() == Model.Type.BUILTIN : true))
 				blockingModel.setEnabled(false);
 
 			if (toolType.getSelectedItem().equals("Special")) {
@@ -379,7 +384,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(normal),
+		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(mirrored),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
