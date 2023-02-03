@@ -46,6 +46,7 @@ import net.mcreator.vcs.CloneWorkspace;
 import net.mcreator.vcs.VCSInfo;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.WorkspaceUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,6 +61,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -135,8 +137,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 								L10N.t("dialog.workspace_selector.clone.setup_failed", ex.getMessage()),
 								L10N.t("dialog.workspace_selector.clone.setup_failed.title"),
 								JOptionPane.ERROR_MESSAGE);
+					} finally {
+						setCursor(Cursor.getDefaultCursor());
 					}
-					setCursor(Cursor.getDefaultCursor());
 				}
 			}
 		}, actions);
@@ -352,10 +355,29 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 			recentsList.addKeyListener(new KeyAdapter() {
-				@Override public void keyReleased(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-						removeRecentWorkspace(recentsList.getSelectedValue());
-						reloadRecents();
+				@Override public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+						Object[] options = { L10N.t("dialog.workspace_selector.delete_workspace.recent_list"),
+								L10N.t("dialog.workspace_selector.delete_workspace.workspace"), L10N.t("common.cancel") };
+						int n = JOptionPane.showOptionDialog(WorkspaceSelector.this,
+								L10N.t("dialog.workspace_selector.delete_workspace.message",
+										recentsList.getSelectedValue().getName()),
+								L10N.t("dialog.workspace_selector.delete_workspace.title"),
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+								options[0]);
+
+						if (n == 0) {
+							removeRecentWorkspace(recentsList.getSelectedValue());
+							reloadRecents();
+						} else if (n == 1) {
+							int m = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
+									L10N.t("dialog.workspace_selector.delete_workspace.confirmation", recentsList.getSelectedValue().getName()),
+									L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if (m == JOptionPane.YES_OPTION) {
+								FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+								reloadRecents();
+							}
+						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
 					}

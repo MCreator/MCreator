@@ -76,14 +76,17 @@ public class ShareableZIPManager {
 				int modstoload = workspace.getModElements().size();
 
 				int i = 0;
+				// In exported ZIPs, mod element images are not stored, so we regenerate them here
+				// If workspace MCR version is the same, regeneration will not run and thus ME icons will be missing
+				// This is "fixed" by "preloading mod elements" here
 				for (ModElement mod : workspace.getModElements()) {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 
 					if (generatableElement != null) {
 						workspace.getModElementManager().storeModElementPicture(
 								generatableElement); // save custom mod element picture if it has one
-						workspace.addModElement(mod); // add mod element to workspace again, so the icons get reloaded
-						mod.reinit(); // we reinit the mod to load new icons etc.
+						workspace.addModElement(generatableElement.getModElement()); // add mod element to workspace again, so the icons get reloaded
+						generatableElement.getModElement().reinit(workspace); // we reinit the mod to load new icons etc.
 					}
 
 					i++;

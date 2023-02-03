@@ -118,7 +118,14 @@ public class L10N {
 		return getLocale().toString();
 	}
 
-	public static String getLangString() {
+	public static String getBlocklyLangName() {
+		Locale locale = getLocale();
+
+		if (new Locale("zh", "TW").equals(locale)) // Chinese Traditional
+			return "zh-hant";
+		else if (new Locale("zh", "CN").equals(locale)) // Chinese Simplified
+			return "zh-hans";
+
 		return getLocaleString().split("_")[0].replace("iw", "he");
 	}
 

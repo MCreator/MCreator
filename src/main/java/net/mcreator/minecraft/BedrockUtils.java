@@ -25,6 +25,7 @@ import net.mcreator.io.OS;
 import net.mcreator.io.WindowsProcessUtil;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,12 +56,8 @@ public class BedrockUtils {
 				boolean detected_rp = detectAndDeletePack(rpdev, workspace.getWorkspaceInfo().getUUID("resourcepack"));
 
 				if (!detected_bp || !detected_rp) {
-					JOptionPane.showMessageDialog(mcreator,
-							"<html>Your Add-On was not added to your Minecraft Bedrock Edition before.<br><br>"
-									+ "Make sure you <b>enable your addon</b> and <b>enable it for selected world</b>.<br>"
-									+ "In order for the addon to work, make sure your test world has both"
-									+ "<br><b>Cheats and experimental gameplay enabled</b> for the Add-On to work properly.",
-							"Enabling Add-On", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.bedrock.enable_addons"),
+							L10N.t("dialog.bedrock.enable_addons.title"), JOptionPane.INFORMATION_MESSAGE);
 				}
 
 				mcreator.getGradleConsole().exec("build", taskResult -> {
@@ -71,16 +68,13 @@ public class BedrockUtils {
 						try {
 							// stop running MC if any
 							if (WindowsProcessUtil.isProcessRunning(MC_PROCESS)) {
-								String[] options = new String[] { "Close and reload",
-										"Close and reload (don't ask again)", "Cancel test run" };
+								String[] options = new String[] { L10N.t("dialog.bedrock.options.close_reload"),
+										L10N.t("dialog.bedrock.options.close_reload_always"), L10N.t("dialog.bedrock.options.cancel") };
 								int option = PreferencesManager.PREFERENCES.silentReload.get() ?
 										0 :
 										JOptionPane.showOptionDialog(mcreator,
-												"<html>Minecraft Bedrock Edition was detected to be already running. You can: <ol>"
-														+ "<li>Close it (<b>any open world will not be saved</b>), reload addon and start it again</li>"
-														+ "<li>Do as the first option and disable this message for the future runs</li>"
-														+ "<li>Cancel this run so you can close Minecraft BE manually and then manually press the play button again",
-												"Minecraft Bedrock Edition already open", JOptionPane.YES_NO_OPTION,
+												L10N.t("dialog.bedrock.already_opened"),
+												L10N.t("dialog.bedrock.already_opened.title"), JOptionPane.YES_NO_OPTION,
 												JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 								if (option != 2) {
 									if (option == 1) {
@@ -95,21 +89,19 @@ public class BedrockUtils {
 								loadPackAndRun(bpdev, rpdev, workspace);
 							}
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(mcreator,
-									"<html>Failed to open Minecraft Bedrock edition.<br>Make sure you have it installed from the store.",
-									"Run client failed", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.bedrock.failed"),
+									L10N.t("dialog.bedrock.failed.title"), JOptionPane.WARNING_MESSAGE);
 							LOG.warn("Failed to open add-on", e);
 						}
 					}
 				});
 			} else {
-				JOptionPane.showMessageDialog(mcreator,
-						"It seems you do not have Bedrock Edition installed from store.", "Run client not supported",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.bedrock.unsupported"),
+						L10N.t("dialog.bedrock.unsupported.title"), JOptionPane.WARNING_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(mcreator, "Bedrock Edition is only supported on Windows 10+ at the moment",
-					"Run client not supported", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.bedrock.unsupported.windows"),
+					L10N.t("dialog.bedrock.unsupported"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
