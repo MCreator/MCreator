@@ -62,7 +62,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		CollapsiblePanel events = new CollapsiblePanel(L10N.t("elementgui.gui.gui_triggers"),
 				PanelUtils.join(FlowLayout.LEFT, 1, 1, PanelUtils.gridElements(1, 3, 5, 0, onOpen, onTick, onClosed)));
 		events.setOpaque(false);
-		events.toggleVisibility(PreferencesManager.PREFERENCES.expandSectionsByDefault.get());
+		events.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault.get());
 
 		JPanel main = new JPanel(new BorderLayout(0, 5));
 		main.setOpaque(false);

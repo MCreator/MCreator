@@ -87,10 +87,10 @@ public class Launcher {
 
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
-				Boolean.toString(PreferencesManager.PREFERENCES.usemacOSMenuBar.get()));
-		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.textAntialiasingType.get());
-		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.aaText.get()));
-		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.use2DAcceleration.get()));
+				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar.get()));
+		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType.get());
+		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aaText.get()));
+		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration.get()));
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 

@@ -48,19 +48,7 @@ public class Preferences {
 	public static final String NOTIFICATIONS = "notifications";
 	public static final String HIDDEN = "hidden";
 
-	// UI
-	public PreferenceEntry<Locale> language;
-	public PreferenceEntry<Color> interfaceAccentColor;
-	public StringEntry backgroundSource;
-	public BooleanEntry aaText;
-	public StringEntry textAntialiasingType;
-	public BooleanEntry usemacOSMenuBar;
-	public BooleanEntry useNativeFileChooser;
-	public BooleanEntry expandSectionsByDefault;
-	public BooleanEntry use2DAcceleration;
-	public BooleanEntry autoReloadTabs;
-	public BooleanEntry remindOfUnsavedChanges;
-	public BooleanEntry discordRichPresenceEnable;
+	public UI ui;
 
 	// Notifications
 	public BooleanEntry openWhatsNextPage;
@@ -117,8 +105,8 @@ public class Preferences {
 	public BooleanEntry enableJavaPlugins;
 
 	public Preferences() {
-		// UI
-		language = register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, UI) {
+		ui = new UI();
+		ui.language = register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, UI) {
 			@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 				List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
 				locales.sort((a, b) -> {
@@ -136,19 +124,19 @@ public class Preferences {
 				return box;
 			}
 		});
-		interfaceAccentColor = register(new PreferenceEntry<>("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, UI));
-		backgroundSource = register(new StringEntry("backgroundSource", "All", UI,
+		ui.interfaceAccentColor = register(new PreferenceEntry<>("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, UI));
+		ui.backgroundSource = register(new StringEntry("backgroundSource", "All", UI,
 				"All", "Current theme", "Custom", "None"));
-		aaText = register(new BooleanEntry("aaText", true, UI));
-		textAntialiasingType = register(new StringEntry("textAntialiasingType", "All", UI,
+		ui.aaText = register(new BooleanEntry("aaText", true, UI));
+		ui.textAntialiasingType = register(new StringEntry("textAntialiasingType", "All", UI,
 				"on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb", "lcd_vbgr"));
-		usemacOSMenuBar = register(new BooleanEntry("useMacOSMenuBar", true, UI));
-		useNativeFileChooser = register(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS, UI));
-		expandSectionsByDefault = register(new BooleanEntry("expandSectionsByDefault", false, UI));
-		use2DAcceleration = register(new BooleanEntry("use2DAcceleration", false, UI));
-		autoReloadTabs = register(new BooleanEntry("autoReloadTabs", true, UI));
-		remindOfUnsavedChanges = register(new BooleanEntry("remindOfUnsavedChanges", false, UI));
-		discordRichPresenceEnable = register(new BooleanEntry("discordRichPresenceEnable", true, UI));
+		ui.usemacOSMenuBar = register(new BooleanEntry("useMacOSMenuBar", true, UI));
+		ui.useNativeFileChooser = register(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS, UI));
+		ui.expandSectionsByDefault = register(new BooleanEntry("expandSectionsByDefault", false, UI));
+		ui.use2DAcceleration = register(new BooleanEntry("use2DAcceleration", false, UI));
+		ui.autoReloadTabs = register(new BooleanEntry("autoReloadTabs", true, UI));
+		ui.remindOfUnsavedChanges = register(new BooleanEntry("remindOfUnsavedChanges", false, UI));
+		ui.discordRichPresenceEnable = register(new BooleanEntry("discordRichPresenceEnable", true, UI));
 
 		// Notifications
 		openWhatsNextPage = register(new BooleanEntry("openWhatsNextPage", true, NOTIFICATIONS));
@@ -208,5 +196,20 @@ public class Preferences {
 	private static <T, S extends PreferenceEntry<T>> S register(S entry) {
 		PreferencesManager.register("mcreator", entry);
 		return entry;
+	}
+
+	public static class UI {
+		public PreferenceEntry<Locale> language;
+		public PreferenceEntry<Color> interfaceAccentColor;
+		public StringEntry backgroundSource;
+		public BooleanEntry aaText;
+		public StringEntry textAntialiasingType;
+		public BooleanEntry usemacOSMenuBar;
+		public BooleanEntry useNativeFileChooser;
+		public BooleanEntry expandSectionsByDefault;
+		public BooleanEntry use2DAcceleration;
+		public BooleanEntry autoReloadTabs;
+		public BooleanEntry remindOfUnsavedChanges;
+		public BooleanEntry discordRichPresenceEnable;
 	}
 }
