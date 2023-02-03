@@ -87,6 +87,7 @@ import java.util.Map;
 		this.attackSpeed = 2.8;
 
 		this.specialInfo = new ArrayList<>();
+		
 		this.blockingModelName = "Normal";
 	}
 

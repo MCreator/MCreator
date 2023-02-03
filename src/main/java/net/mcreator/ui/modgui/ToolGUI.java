@@ -317,7 +317,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
-			blockingModel.setSelectedItem("Normal");
 		}
 	}
 
