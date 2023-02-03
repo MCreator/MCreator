@@ -28,7 +28,9 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.validators.ImageSizeValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
@@ -59,18 +61,21 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		textureSelector.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
-		VComboBox<String> hoveredTextureSelector = new SearchableComboBox<>(ListUtils.merge(Collections.singleton(""),
+		VComboBox<String> hoveredTexture = new SearchableComboBox<>(ListUtils.merge(Collections.singleton(""),
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.collect(Collectors.toList())).toArray(String[]::new));
-		hoveredTextureSelector.setRenderer(
+		ImageSizeValidator validator = new ImageSizeValidator(textureSelector.getSelectedItem(),
+				hoveredTexture.getSelectedItem(), TextureType.SCREEN, editor.mcreator.getWorkspace(), true);
+		hoveredTexture.setValidator(validator);
+		hoveredTexture.enableRealtimeValidation();
+		hoveredTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
 		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_size")));
 
 		options.add(PanelUtils.northAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"),
-						hoveredTextureSelector)));
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"), hoveredTexture)));
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -99,31 +104,35 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setSelectedItem(button.image);
-			hoveredTextureSelector.setSelectedItem(button.hoveredImage);
+			hoveredTexture.setSelectedItem(button.hoveredImage);
 			onClick.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
-			if (button == null) {
-				ImageButton component = new ImageButton(0, 0, textureSelector.getSelectedItem(),
-						hoveredTextureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
-						displayCondition.getSelectedProcedure());
+			validator.setFirstImage(textureSelector.getSelectedItem());
+			validator.setSecondImage(hoveredTexture.getSelectedItem());
+			if (hoveredTexture.getValidationStatus().getValidationResultType()
+					!= Validator.ValidationResultType.ERROR) {
+				if (button == null) {
+					ImageButton component = new ImageButton(0, 0, textureSelector.getSelectedItem(),
+							hoveredTexture.getSelectedItem(), onClick.getSelectedProcedure(),
+							displayCondition.getSelectedProcedure());
 
-				setEditingComponent(component);
-				editor.editor.addComponent(component);
-				editor.list.setSelectedValue(component, true);
-				editor.editor.moveMode();
-			} else {
-				int idx = editor.components.indexOf(button);
-				editor.components.remove(button);
-				ImageButton buttonNew = new ImageButton(button.getX(), button.getY(), textureSelector.getSelectedItem(),
-						hoveredTextureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
-						displayCondition.getSelectedProcedure());
-				editor.components.add(idx, buttonNew);
-				setEditingComponent(buttonNew);
+					setEditingComponent(component);
+					editor.editor.addComponent(component);
+					editor.list.setSelectedValue(component, true);
+					editor.editor.moveMode();
+				} else {
+					int idx = editor.components.indexOf(button);
+					editor.components.remove(button);
+					ImageButton buttonNew = new ImageButton(button.getX(), button.getY(),
+							textureSelector.getSelectedItem(), hoveredTexture.getSelectedItem(),
+							onClick.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+					editor.components.add(idx, buttonNew);
+					setEditingComponent(buttonNew);
+				}
 			}
 		});
 

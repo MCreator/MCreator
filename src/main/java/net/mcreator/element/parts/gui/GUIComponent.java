@@ -43,11 +43,11 @@ import java.util.stream.Collectors;
 		put("textfield", TextField.class); // weight 0
 		put("label", Label.class); // weight 10
 		put("checkbox", Checkbox.class); //weight 20
-		put("imagebutton", ImageButton.class); //weight 30
-		put("button", Button.class);// weight 40
-		put("image", Image.class);// weight 50
-		put("inputslot", InputSlot.class); // weight 60
-		put("outputslot", OutputSlot.class); // weight 60
+		put("imagebutton", ImageButton.class); //weight 25
+		put("button", Button.class);// weight 30
+		put("image", Image.class);// weight 40
+		put("inputslot", InputSlot.class); // weight 50
+		put("outputslot", OutputSlot.class); // weight 50
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
@@ -65,6 +65,7 @@ import java.util.stream.Collectors;
 
 	/**
 	 * Returns the name of the component. Name should be Java and registry name compatible.
+	 * <p>
 	 * The name should be unique for the components that need it.
 	 *
 	 * @return Component name
@@ -148,29 +149,6 @@ import java.util.stream.Collectors;
 			return root;
 		}
 
-	}
-
-	public static final class Unknown extends GUIComponent {
-
-		@Override public String getName() {
-			return "unknown_element";
-		}
-
-		@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-
-		}
-
-		@Override public int getWidth(Workspace workspace) {
-			return 0;
-		}
-
-		@Override public int getHeight(Workspace workspace) {
-			return 0;
-		}
-
-		@Override public int getWeight() {
-			return 0;
-		}
 	}
 
 }
