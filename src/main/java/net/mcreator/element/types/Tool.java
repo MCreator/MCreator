@@ -88,7 +88,7 @@ import java.util.Map;
 
 		this.specialInfo = new ArrayList<>();
 
-		this.blockingModelName = "Normal";
+		this.blockingModelName = "Mirrored";
 	}
 
 	public Model getBlockingModel() {

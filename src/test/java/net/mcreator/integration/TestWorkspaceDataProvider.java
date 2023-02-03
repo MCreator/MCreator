@@ -1690,7 +1690,7 @@ public class TestWorkspaceDataProvider {
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
 		tool.blockingRenderType = 0;
-		tool.blockingModelName = "Normal";
+		tool.blockingModelName = "Mirrored";
 		return tool;
 	}
 
