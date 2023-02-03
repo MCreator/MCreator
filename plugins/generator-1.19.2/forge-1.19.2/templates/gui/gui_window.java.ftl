@@ -188,8 +188,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("ImageButton") as component>
 				this.addRenderableWidget(new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, 0, 0, ${component.height}, new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
-					${component.width}, ${component.height * 2}, <@buttonProcedures component true/>
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, 0, 0, ${component.getHeight(w.getWorkspace())},
+					new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace()) * 2}, <@buttonProcedures component true/>
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>

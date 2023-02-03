@@ -113,8 +113,8 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		ok.addActionListener(arg01 -> {
 			validator.setFirstImage(textureSelector.getSelectedItem());
 			validator.setSecondImage(hoveredTexture.getSelectedItem());
-			if (hoveredTexture.getValidationStatus().getValidationResultType()
-					!= Validator.ValidationResultType.ERROR) {
+			if (hoveredTexture.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+				setVisible(false);
 				if (button == null) {
 					ImageButton component = new ImageButton(0, 0, textureSelector.getSelectedItem(),
 							hoveredTexture.getSelectedItem(), onClick.getSelectedProcedure(),

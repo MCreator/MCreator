@@ -62,7 +62,7 @@ public class ImageSizeValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		// The first image can never be null as this is the reference
-		if (firstImage != null && !firstImage.isEmpty())
+		if (firstImage == null || firstImage.isEmpty())
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					L10N.t("validator.image_size.empty"));
 
