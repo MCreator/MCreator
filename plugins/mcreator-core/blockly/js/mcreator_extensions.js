@@ -119,31 +119,46 @@ Blockly.Extensions.register('min_max_fields_validator',
         });
     });
 
-// Helper function to check if the value of a given int provider is within a certain range
-function isIntProviderWithinBounds(providerBlock, min, max) {
-    // If the int provider block is missing, don't perform any validation
+// Helper function to get the min and max values of a given int provider as an array of [min, max]
+function getIntProviderMinMax(providerBlock) {
+    // If the int provider block is missing, return undefined
     if (!providerBlock)
-        return true;
+        return undefined;
 
     // Check the value of the constant int provider
     if (providerBlock.type === 'int_provider_constant') {
         let blockValue = providerBlock.getField('value').getValue();
-        return blockValue >= min && blockValue <= max;
+        return [blockValue, blockValue];
     }
     // Check the values for the other "terminal" int providers
     else if (providerBlock.type !== 'int_provider_clamped') {
         let blockMin = providerBlock.getField('min').getValue();
         let blockMax = providerBlock.getField('max').getValue();
-        return blockMin >= min && blockMax <= max;
+        return [blockMin, blockMax];
     }
     // Check the values for the clamped int provider
     else {
         let blockMin = providerBlock.getField('min').getValue();
         let blockMax = providerBlock.getField('max').getValue();
-        let clampedBlock = providerBlock.getInput('toClamp').connection.targetBlock();
-        // If the input block is being clamped within bounds, stop checking. Otherwise, check the input as well
-        return (blockMin >= min && blockMax <= max) || isIntProviderWithinBounds(clampedBlock, min, max);
+        let clampedBlockMinMax = getIntProviderMinMax(providerBlock.getInput('toClamp').connection.targetBlock());
+        // If the clamped block input is missing, return undefined
+        if (!clampedBlockMinMax)
+            return undefined;
+        // Otherwise, compare the endpoints of the int provider ranges, then clamp them accordingly
+        else
+            return [Math.min(Math.max(blockMin, clampedBlockMinMax[0]), blockMax),
+                    Math.max(Math.min(blockMax, clampedBlockMinMax[1]), blockMin)];
     }
+}
+
+// Helper function to check if the value of a given int provider is within a certain range
+function isIntProviderWithinBounds(providerBlock, min, max) {
+    let intProviderMinMax = getIntProviderMinMax(providerBlock);
+    // If the int provider block is missing or doesn't have all the inputs, don't perform any validation
+    if (!intProviderMinMax)
+        return true;
+
+    return intProviderMinMax[0] >= min && intProviderMinMax[1] <= max;
 }
 
 // Helper function for extensions that validate one or more int provider inputs
@@ -181,6 +196,14 @@ function validateIntProviderInputs(...inputs) {
 }
 
 Blockly.Extensions.register('count_placement_validator', validateIntProviderInputs(['count', 0, 256]));
+
+Blockly.Extensions.register('offset_placement_validator', validateIntProviderInputs(['xz', -16, 16], ['y', -16, 16]));
+
+Blockly.Extensions.register('delta_feature_validator', validateIntProviderInputs(['size', 0, 16], ['rimSize', 0, 16]));
+
+Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInputs(['radius', 0, 12]));
+
+Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
 
 // Helper function to provide a mixin for mutators that add a single repeating input
 // The mutator container block must have a "STACK" statement input for this to work
