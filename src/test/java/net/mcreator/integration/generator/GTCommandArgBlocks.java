@@ -37,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -67,13 +68,42 @@ public class GTCommandArgBlocks {
 				continue;
 			}
 
-			if (!commandArg.getInputs().isEmpty()) {
-				boolean templatesDefined = false;
+			if (!commandArg.getAllInputs().isEmpty() || !commandArg.getAllRepeatingInputs().isEmpty()) {
+				boolean templatesDefined = true;
 
 				if (commandArg.toolbox_init != null) {
-					templatesDefined = commandArg.getInputs().stream().noneMatch(
-							input -> commandArg.toolbox_init.stream().noneMatch(
-									toolboxTemplate -> toolboxTemplate.contains("<value name=\"" + input + "\">")));
+					for (String input : commandArg.getAllInputs()) {
+						boolean match = false;
+						for (String toolboxtemplate : commandArg.toolbox_init) {
+							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
+								match = true;
+								break;
+							}
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
+						}
+					}
+
+					for (String input : commandArg.getAllRepeatingInputs()) {
+						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
+						boolean match = false;
+						for (String toolboxtemplate : commandArg.toolbox_init) {
+							if (pattern.matcher(toolboxtemplate).find()) {
+								match = true;
+								break;
+							}
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
+						}
+					}
+				} else {
+					templatesDefined = false;
 				}
 
 				if (!templatesDefined) {

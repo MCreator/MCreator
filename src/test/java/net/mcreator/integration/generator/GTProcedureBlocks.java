@@ -45,6 +45,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -96,35 +97,19 @@ public class GTProcedureBlocks {
 						}
 					}
 
-					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
-						try {
-							JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0")
-									.getAsJsonArray();
-							for (int i = 0; i < args0.size(); i++) {
-								if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
-									String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-
-									boolean match = false;
-									for (String input : procedureBlock.getAllRepeatingInputs()) {
-										if (name.matches(input + "\\d+")) {
-											for (String toolboxtemplate : procedureBlock.toolbox_init) {
-												if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
-													match = true;
-													break;
-												}
-											}
-											if (match)
-												break;
-										}
-									}
-
-									if (!match) {
-										templatesDefined = false;
-										break;
-									}
-								}
+					for (String input : procedureBlock.getAllRepeatingInputs()) {
+						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
+						boolean match = false;
+						for (String toolboxtemplate : procedureBlock.toolbox_init) {
+							if (pattern.matcher(toolboxtemplate).find()) {
+								match = true;
+								break;
 							}
-						} catch (Exception ignored) {
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
 						}
 					}
 				} else {
@@ -276,22 +261,19 @@ public class GTProcedureBlocks {
 			}
 
 			if (procedureBlock.getRepeatingStatements() != null) {
-				try {
-					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
-					for (int i = 0; i < args0.size(); i++) {
-						if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
-							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-							for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
-								if (name.matches(statement.name + "\\d+")) {
-									additionalXML.append("<statement name=\"").append(name).append("\">")
-											.append("<block type=\"text_print\"><value name=\"TEXT\">"
-													+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
-											.append("</block></value></block></statement>\n");
-								}
+				JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+				for (int i = 0; i < args0.size(); i++) {
+					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
+						String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+						for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
+							if (name.matches(statement.name + "\\d+")) {
+								additionalXML.append("<statement name=\"").append(name).append("\">")
+										.append("<block type=\"text_print\"><value name=\"TEXT\">"
+												+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
+										.append("</block></value></block></statement>\n");
 							}
 						}
 					}
-				} catch (Exception ignored) {
 				}
 			}
 

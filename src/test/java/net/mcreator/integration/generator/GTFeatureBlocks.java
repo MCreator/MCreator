@@ -36,6 +36,7 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -69,14 +70,30 @@ public class GTFeatureBlocks {
 				continue;
 			}
 
-			if (featureBlock.getInputs() != null && !featureBlock.getInputs().isEmpty()) {
+			if (!featureBlock.getAllInputs().isEmpty() || !featureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
 				if (featureBlock.toolbox_init != null) {
-					for (String input : featureBlock.getInputs()) {
+					for (String input : featureBlock.getAllInputs()) {
 						boolean match = false;
 						for (String toolboxtemplate : featureBlock.toolbox_init) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
+								match = true;
+								break;
+							}
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
+						}
+					}
+
+					for (String input : featureBlock.getAllRepeatingInputs()) {
+						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
+						boolean match = false;
+						for (String toolboxtemplate : featureBlock.toolbox_init) {
+							if (pattern.matcher(toolboxtemplate).find()) {
 								match = true;
 								break;
 							}
@@ -155,13 +172,13 @@ public class GTFeatureBlocks {
 
 			// Add missing inputs for the hardcoded feature blocks
 			switch (featureBlock.machine_name) {
-				case "block_predicate_not" -> additionalXML.append("""
-						<value name="condition"><block type="block_predicate_is_air"></block></value>""");
-				case "int_provider_clamped" -> additionalXML.append("""
-						<value name="toClamp"><block type="int_provider_constant"><field name="value">2</field></block></value>""");
-				case "block_predicate_all_of", "block_predicate_any_of" -> additionalXML.append("""
-						<value name="condition0"><block type="block_predicate_is_air"></block></value>
-						<value name="condition1"><block type="block_predicate_is_air"></block></value>""");
+			case "block_predicate_not" -> additionalXML.append("""
+					<value name="condition"><block type="block_predicate_is_air"></block></value>""");
+			case "int_provider_clamped" -> additionalXML.append("""
+					<value name="toClamp"><block type="int_provider_constant"><field name="value">2</field></block></value>""");
+			case "block_predicate_all_of", "block_predicate_any_of" -> additionalXML.append("""
+					<value name="condition0"><block type="block_predicate_is_air"></block></value>
+					<value name="condition1"><block type="block_predicate_is_air"></block></value>""");
 			}
 
 			testXML = testXML.replace("<block type=\"" + featureBlock.machine_name + "\">",
