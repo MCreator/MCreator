@@ -218,7 +218,7 @@ e -> {
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 		}
 	</#if>
-}<#if isImageButton>, TextComponent.EMPTY)</#if>
+}<#if isImageButton>, TextComponent.EMPTY</#if>)
 <#if hasProcedure(component.displayCondition)>
 {
 	@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
@@ -226,7 +226,7 @@ e -> {
 		    super.render(ms, gx, gy, ticks);
 		}
 	}
-</#if><#if !isImageButton>))</#if>;
+</#if><#if !isImageButton>)</#if>;
 <#assign btid +=1>
 </#macro>
 <#-- @formatter:on -->
