@@ -71,6 +71,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 							<#list data.repairItems as item>
 								<#if item.getUnmappedValue().startsWith("TAG:")>
 									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
+								<#elseif generator.map(item.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1)}")))
 								<#else>
 									new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
 								</#if>
@@ -185,19 +187,21 @@ public class ${name}Item extends Item {
 		<#assign tags = []>
 		<#list data.blocksAffected as block>
 			<#if block.getUnmappedValue().startsWith("TAG:")>
-				<#assign tags += [block]>
+				<#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
+			<#elseif generator.map(block.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+				<#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1)]>
 			<#else>
-				<#assign blocks += [block]>
+				<#assign blocks += [mappedBlockToBlock(block)]>
 			</#if>
 		</#list>
 		return List.of(
 			<#list blocks as block>
-				${mappedBlockToBlock(block)}<#sep>,
+				${block}<#sep>,
 			</#list>
 		).contains(blockstate.getBlock())<#if tags?has_content> ||
 		List.of(
 			<#list tags as tag>
-				BlockTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+				BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
 			</#list>
 		).stream().anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
 	}
@@ -245,20 +249,22 @@ public class ${name}Item extends FishingRodItem {
 			<#assign tags = []>
 			<#list data.repairItems as repairItem>
 				<#if repairItem.getUnmappedValue().startsWith("TAG:")>
-					<#assign tags += [repairItem]>
+					<#assign tags += [repairItem.getUnmappedValue().replace("TAG:", "")]>
+				<#elseif generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+					<#assign tags += [generator.map(repairItem.getUnmappedValue(), "blocksitems", 1)]>
 				<#else>
-					<#assign items += [repairItem]>
+					<#assign items += [mappedMCItemToItem(repairItem)]>
 				</#if>
 			</#list>
 			return List.of(
 				<#list items as item>
-					${mappedMCItemToItem(item)}<#sep>,
+					${item}<#sep>,
 				</#list>
 				).contains(repairitem.getItem())
 				<#if tags?has_content> ||
 					Stream.of(
 						<#list tags as tag>
-							ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+							ItemTags.create(new ResourceLocation("${tag}"))<#sep>,
 						</#list>)
 					.anyMatch(repairitem::is)
 				</#if>;

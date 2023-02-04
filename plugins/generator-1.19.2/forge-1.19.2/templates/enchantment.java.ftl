@@ -71,22 +71,24 @@ public class ${name}Enchantment extends Enchantment {
 			<#assign tags = []>
 			<#list data.compatibleItems as compatibleItem>
 				<#if compatibleItem.getUnmappedValue().startsWith("TAG:")>
-					<#assign tags += [compatibleItem]>
+					<#assign tags += [compatibleItem.getUnmappedValue().replace("TAG:", "")]>
+				<#elseif generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+					<#assign tags += [generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1)]>
 				<#else>
-					<#assign items += [compatibleItem]>
+					<#assign items += [mappedMCItemToItem(compatibleItem)]>
 				</#if>
 			</#list>
 
 			return <#if data.excludeItems>!</#if>
 				List.of(
 					<#list items as item>
-						${mappedMCItemToItem(item)}<#sep>,
+						${item}<#sep>,
 					</#list>
 				).contains(item)
 				<#if tags?has_content>
 					|| Stream.of(
 						<#list tags as tag>
-							ItemTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+							ItemTags.create(new ResourceLocation("${tag}"))<#sep>,
 						</#list>
 					).
 					<#if data.excludeItems>noneMatch<#else>anyMatch</#if>(itemstack::is)

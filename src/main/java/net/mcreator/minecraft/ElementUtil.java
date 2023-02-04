@@ -158,6 +158,16 @@ public class ElementUtil {
 		return elements;
 	}
 
+	public static List<MCItem> loadBlocksAndTags(Workspace workspace) {
+		List<MCItem> elements = new ArrayList<>();
+		workspace.getModElements().forEach(modElement -> elements.addAll(
+				modElement.getMCItems().stream().filter(e -> e.getType().equals("block")).toList()));
+		elements.addAll(
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.filter(typeMatches("block")).map(e -> (MCItem) e).toList());
+		return elements;
+	}
+
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
 		return loadDataListAndElements(workspace, "achievements", false, null, "achievement");
 	}

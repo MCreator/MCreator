@@ -122,22 +122,24 @@ public class ${name}Feature extends OreFeature {
 			<#assign tags = []>
 			<#list data.blocksToReplace as replacementBlock>
 				<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-					<#assign tags += [replacementBlock]>
+					<#assign tags += [replacementBlock.getUnmappedValue().replace("TAG:", "")]>
+				<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+					<#assign tags += [generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1)]>
 				<#else>
-					<#assign blocks += [replacementBlock]>
+					<#assign blocks += [mappedBlockToBlock(replacementBlock)]>
 				</#if>
 			</#list>
 			if (base_blocks == null) {
 				base_blocks = List.of(
 					<#list blocks as block>
-						${mappedBlockToBlock(block)}<#sep>,
+						${block}<#sep>,
 					</#list>
 				);
 			}
 			if (block_tags == null) {
 				block_tags = List.of(
 					<#list tags as tag>
-						BlockTags.create(new ResourceLocation("${tag.getUnmappedValue().replace("TAG:", "")}"))<#sep>,
+						BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
 					</#list>
 				);
 			}

@@ -50,6 +50,8 @@ public class ${name}Feature extends OreFeature {
 						OreConfiguration.target(
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
 								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))), REPLACED_BLOCK)
+							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1)}"))), REPLACED_BLOCK)
 							<#else>
 								new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}), REPLACED_BLOCK)
 							</#if><#sep>,

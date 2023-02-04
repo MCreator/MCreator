@@ -145,7 +145,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
-		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
+		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
