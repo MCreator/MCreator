@@ -188,8 +188,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
-				propertyId.incrementAndGet(), this::nameValidator, nameField -> statesList.forEach(
-				s -> s.getStateLabel().rename(nameField.getCachedName(), nameField.getPropertyName())));
+				propertyId.incrementAndGet(), this::nameValidator, entry -> statesList.forEach(s -> s.getStateLabel()
+				.rename(entry.getNameField().getCachedName(), entry.getNameField().getPropertyName())));
 		registerEntryUI(pe);
 		return pe;
 	}

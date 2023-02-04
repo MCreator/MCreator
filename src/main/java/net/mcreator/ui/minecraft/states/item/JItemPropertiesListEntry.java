@@ -57,7 +57,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryList, int propertyId,
 			Function<Supplier<String>, UniqueNameValidator> validator,
-			Consumer<JPropertyNameField> editButtonListener) {
+			Consumer<JItemPropertiesListEntry> editButtonListener) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
 		name = new JPropertyNameField("property" + propertyId);
@@ -71,7 +71,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
 						&& name.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					editButtonListener.accept(name);
+					editButtonListener.accept(JItemPropertiesListEntry.this);
 					String newName = name.getPropertyName();
 					name.stopRenaming();
 					name.renameTo(newName);
