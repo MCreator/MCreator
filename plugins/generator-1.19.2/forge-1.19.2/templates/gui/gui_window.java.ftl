@@ -51,6 +51,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		Checkbox ${component.getName()};
 	</#list>
 
+	<#list data.getComponentsOfType("ImageButton") as component>
+		ImageButton ${component.getName()};
+	</#list>
+
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
 		super(container, inventory, text);
 		this.world = container.world;
@@ -187,10 +191,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("ImageButton") as component>
-				this.addRenderableWidget(new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, 0, 0, ${component.getHeight(w.getWorkspace())},
-					new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
-					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace()) * 2}, <@buttonProcedures component true/>
+		    ${component.getName()} = new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+                ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, 0, 0, ${component.getHeight(w.getWorkspace())},
+                new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
+                ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace()) * 2}, <@buttonProcedures component true/>
+			guistate.put("imagebutton:${component.getName()}", ${component.getName()});
+			this.addRenderableWidget(${component.getName()});
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
@@ -211,7 +217,7 @@ e -> {
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 		}
 	</#if>
-}<#if isImageButton>, CommonComponents.EMPTY</#if>)
+}<#if isImageButton>, CommonComponents.EMPTY)</#if>
 <#if hasProcedure(component.displayCondition)>
 {
 	@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
@@ -219,8 +225,7 @@ e -> {
 		    super.render(ms, gx, gy, ticks);
 		}
 	}
-</#if>);
+</#if><#if !isImageButton>))</#if>;
 <#assign btid +=1>
 </#macro>
 <#-- @formatter:on -->
-

@@ -38,10 +38,10 @@ public class ImageSizeMatchValidator implements Validator {
 	 * This validator takes 2 images from a same {@link TextureType} and checks if they have the same width and height.
 	 *
 	 * @param firstImage        This is the first image of the check. This image can never be null or empty.
-	 * @param secondImage This
-	 * @param type
-	 * @param workspace
-	 * @param passIfSecondEmpty
+	 * @param secondImage       This is the second image of the check. It can allow a null or empty image if <i>passIfSecondEmpty</i> is true
+	 * @param type              This is the folder where both images need to saved
+	 * @param workspace         The workspace containing images
+	 * @param passIfSecondEmpty If true, <i>secondImage</i> can be null or empty and the validation will still pass
 	 */
 	public ImageSizeMatchValidator(String firstImage, String secondImage, TextureType type, Workspace workspace,
 			boolean passIfSecondEmpty) {

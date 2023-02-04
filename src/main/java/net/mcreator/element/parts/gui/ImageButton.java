@@ -32,54 +32,58 @@ import java.awt.*;
 
 public class ImageButton extends GUIComponent {
 
-	public String image;
-	public String hoveredImage;
+	public String name;
+	public String image, hoveredImage;
 
-	public Procedure onClick;
-	public Procedure displayCondition;
+	public Procedure onClick, displayCondition;
 
-	public ImageButton(int x, int y, String image, String hoveredImage, Procedure onClick,
-			Procedure displayCondition) {
+	private final transient Image imageIcon, hoveredImageIcon;
+
+	public ImageButton(String name, int x, int y, String image, String hoveredImage, Procedure onClick,
+			Procedure displayCondition, Workspace workspace) {
 		super(x, y);
+		this.name = name;
 		this.image = image;
 		this.hoveredImage = hoveredImage;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;
-	}
 
-	@Override public String getName() {
-		return "image_button_" + FilenameUtilsPatched.removeExtension(image);
-	}
-
-	public Image getImage(Workspace workspace) {
-		return new ImageIcon(workspace.getFolderManager()
+		imageIcon = new ImageIcon(workspace.getFolderManager()
 				.getTextureFile(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN)
 				.getAbsolutePath()).getImage();
-	}
 
-	public Image getHoveredImage(Workspace workspace) {
 		if (hoveredImage != null && !hoveredImage.isEmpty()) {
 			Image hovered = new ImageIcon(workspace.getFolderManager()
 					.getTextureFile(FilenameUtilsPatched.removeExtension(hoveredImage), TextureType.SCREEN)
 					.getAbsolutePath()).getImage();
-
-			return ImageUtils.checkIfSameSize(getImage(workspace), hovered) ? hovered : getImage(workspace);
+			hoveredImageIcon = ImageUtils.checkIfSameSize(imageIcon, hovered) ? hovered : imageIcon;
+		} else {
+			hoveredImageIcon = imageIcon;
 		}
+	}
 
-		return getImage(workspace);
+	@Override public String getName() {
+		return name;
+	}
+
+	public Image getImage() {
+		return imageIcon;
+	}
+
+	public Image getHoveredImage() {
+		return hoveredImageIcon;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		Image image = this.getImage(wysiwygEditor.mcreator.getWorkspace());
-		g.drawImage(image, cx, cy, wysiwygEditor);
+		g.drawImage(imageIcon, cx, cy, wysiwygEditor);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
-		return getImage(workspace).getWidth(null);
+		return imageIcon.getWidth(null);
 	}
 
 	@Override public int getHeight(Workspace workspace) {
-		return getImage(workspace).getHeight(null);
+		return imageIcon.getHeight(null);
 	}
 
 	@Override public int getWeight() {

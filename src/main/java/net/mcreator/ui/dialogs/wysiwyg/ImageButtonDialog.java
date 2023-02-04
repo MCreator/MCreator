@@ -20,7 +20,9 @@
 package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.ImageButton;
+import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -30,7 +32,10 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ImageSizeMatchValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
@@ -54,6 +59,17 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+
+		VTextField nameField = new VTextField(20);
+		nameField.setPreferredSize(new Dimension(200, 28));
+		UniqueNameValidator nameValidator = new UniqueNameValidator(L10N.t("dialog.gui.button_name"),
+				() -> Transliteration.transliterateString(nameField.getText()),
+				() -> editor.getComponentList().stream().map(GUIComponent::getName),
+				new JavaMemberNameValidator(nameField, false));
+		nameValidator.setIsPresentOnList(button != null);
+		nameField.setValidator(nameValidator);
+		nameField.enableRealtimeValidation();
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_name"), nameField));
 
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
@@ -103,6 +119,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
+			nameField.setText(button.name);
 			textureSelector.setSelectedItem(button.image);
 			hoveredTexture.setSelectedItem(button.hoveredImage);
 			onClick.setSelectedProcedure(button.onClick);
@@ -113,25 +130,30 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		ok.addActionListener(arg01 -> {
 			validator.setFirstImage(textureSelector.getSelectedItem());
 			validator.setSecondImage(hoveredTexture.getSelectedItem());
-			if (hoveredTexture.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (hoveredTexture.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+					&& nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
-				if (button == null) {
-					ImageButton component = new ImageButton(0, 0, textureSelector.getSelectedItem(),
-							hoveredTexture.getSelectedItem(), onClick.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure());
+				String buttonName = nameField.getText();
+				if (!buttonName.isEmpty()) {
+					if (button == null) {
+						ImageButton component = new ImageButton(buttonName, 0, 0, textureSelector.getSelectedItem(),
+								hoveredTexture.getSelectedItem(), onClick.getSelectedProcedure(),
+								displayCondition.getSelectedProcedure(), editor.mcreator.getWorkspace());
 
-					setEditingComponent(component);
-					editor.editor.addComponent(component);
-					editor.list.setSelectedValue(component, true);
-					editor.editor.moveMode();
-				} else {
-					int idx = editor.components.indexOf(button);
-					editor.components.remove(button);
-					ImageButton buttonNew = new ImageButton(button.getX(), button.getY(),
-							textureSelector.getSelectedItem(), hoveredTexture.getSelectedItem(),
-							onClick.getSelectedProcedure(), displayCondition.getSelectedProcedure());
-					editor.components.add(idx, buttonNew);
-					setEditingComponent(buttonNew);
+						setEditingComponent(component);
+						editor.editor.addComponent(component);
+						editor.list.setSelectedValue(component, true);
+						editor.editor.moveMode();
+					} else {
+						int idx = editor.components.indexOf(button);
+						editor.components.remove(button);
+						ImageButton buttonNew = new ImageButton(buttonName, button.getX(), button.getY(),
+								textureSelector.getSelectedItem(), hoveredTexture.getSelectedItem(),
+								onClick.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
+								editor.mcreator.getWorkspace());
+						editor.components.add(idx, buttonNew);
+						setEditingComponent(buttonNew);
+					}
 				}
 			}
 		});
