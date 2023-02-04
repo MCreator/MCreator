@@ -33,13 +33,13 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ImageSizeMatchValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import org.gradle.internal.FileUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -80,9 +80,29 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		VComboBox<String> hoveredTexture = new SearchableComboBox<>(ListUtils.merge(Collections.singleton(""),
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.collect(Collectors.toList())).toArray(String[]::new));
-		ImageSizeMatchValidator validator = new ImageSizeMatchValidator(textureSelector.getSelectedItem(),
-				hoveredTexture.getSelectedItem(), TextureType.SCREEN, editor.mcreator.getWorkspace(), true);
-		hoveredTexture.setValidator(validator);
+		hoveredTexture.setValidator(() -> {
+			String texture = textureSelector.getSelectedItem();
+			String secondTexture = hoveredTexture.getSelectedItem();
+			// The first image can never be null as this is the reference
+			if (texture == null || texture.isEmpty())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("validator.image_size.empty"));
+
+			if (secondTexture == null || secondTexture.isEmpty())
+				return Validator.ValidationResult.PASSED;
+
+			// Finally, we can check if both images have the same height and width
+			ImageIcon image1 = editor.mcreator.getWorkspace().getFolderManager()
+					.getTextureImageIcon(FileUtils.removeExtension(texture), TextureType.SCREEN);
+			ImageIcon image2 = editor.mcreator.getWorkspace().getFolderManager()
+					.getTextureImageIcon(FileUtils.removeExtension(secondTexture), TextureType.SCREEN);
+
+			if (image1.getIconHeight() == image2.getIconHeight() && image1.getIconWidth() == image2.getIconWidth())
+				return Validator.ValidationResult.PASSED;
+			else
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("validator.image_size"));
+		});
 		hoveredTexture.enableRealtimeValidation();
 		hoveredTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
@@ -128,10 +148,9 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
-			validator.setFirstImage(textureSelector.getSelectedItem());
-			validator.setSecondImage(hoveredTexture.getSelectedItem());
 			if (hoveredTexture.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
-					&& nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+					&& nameField.getValidationStatus().getValidationResultType()
+					!= Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				String buttonName = nameField.getText();
 				if (!buttonName.isEmpty()) {

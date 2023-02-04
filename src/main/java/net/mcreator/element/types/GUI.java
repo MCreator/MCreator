@@ -144,10 +144,12 @@ import java.util.List;
 
 		// Create the texture atlas for image buttons that will be used by Minecraft
 		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(imageButton -> {
-			FileIO.writeImageToPNGFile(ImageUtils.mergeTwoImages(imageButton.getImage(), imageButton.getHoveredImage(),
-					imageButton.getImage().getWidth(null), imageButton.getImage().getHeight(null) * 2, 0, 0, 0,
-					imageButton.getImage().getHeight(null)), getModElement().getWorkspace().getFolderManager()
-					.getTextureFile("atlas/" + imageButton.getName(), TextureType.SCREEN));
+			Image normal = imageButton.getImage(getModElement().getWorkspace());
+			Image hovered = imageButton.getHoveredImage(getModElement().getWorkspace());
+			FileIO.writeImageToPNGFile(
+					ImageUtils.mergeTwoImages(normal, hovered, normal.getWidth(null), normal.getHeight(null) * 2, 0, 0,
+							0, normal.getHeight(null)), getModElement().getWorkspace().getFolderManager()
+							.getTextureFile("atlas/" + imageButton.getName(), TextureType.SCREEN));
 		});
 	}
 

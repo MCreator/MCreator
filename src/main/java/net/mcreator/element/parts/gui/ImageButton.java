@@ -37,7 +37,7 @@ public class ImageButton extends GUIComponent {
 
 	public Procedure onClick, displayCondition;
 
-	private final transient Image imageIcon, hoveredImageIcon;
+	private transient Image imageIcon, hoveredImageIcon;
 
 	public ImageButton(String name, int x, int y, String image, String hoveredImage, Procedure onClick,
 			Procedure displayCondition, Workspace workspace) {
@@ -47,43 +47,45 @@ public class ImageButton extends GUIComponent {
 		this.hoveredImage = hoveredImage;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;
-
-		imageIcon = new ImageIcon(workspace.getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN)
-				.getAbsolutePath()).getImage();
-
-		if (hoveredImage != null && !hoveredImage.isEmpty()) {
-			Image hovered = new ImageIcon(workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(hoveredImage), TextureType.SCREEN)
-					.getAbsolutePath()).getImage();
-			hoveredImageIcon = ImageUtils.checkIfSameSize(imageIcon, hovered) ? hovered : imageIcon;
-		} else {
-			hoveredImageIcon = imageIcon;
-		}
 	}
 
 	@Override public String getName() {
 		return name;
 	}
 
-	public Image getImage() {
+	public Image getImage(Workspace workspace) {
+		if (imageIcon == null) {
+			imageIcon = new ImageIcon(workspace.getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN)
+					.getAbsolutePath()).getImage();
+		}
 		return imageIcon;
 	}
 
-	public Image getHoveredImage() {
+	public Image getHoveredImage(Workspace workspace) {
+		if (hoveredImageIcon == null) {
+			if (hoveredImage != null && !hoveredImage.isEmpty()) {
+				Image hovered = new ImageIcon(workspace.getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(hoveredImage), TextureType.SCREEN)
+						.getAbsolutePath()).getImage();
+				hoveredImageIcon = ImageUtils.checkIfSameSize(getImage(workspace), hovered) ? hovered : getImage(workspace);
+			} else {
+				hoveredImageIcon = getImage(workspace);
+			}
+		}
 		return hoveredImageIcon;
 	}
 
-	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.drawImage(imageIcon, cx, cy, wysiwygEditor);
+	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor editor, Graphics2D g) {
+		g.drawImage(getImage(editor.mcreator.getWorkspace()), cx, cy, editor);
 	}
 
 	@Override public int getWidth(Workspace workspace) {
-		return imageIcon.getWidth(null);
+		return getImage(workspace).getWidth(null);
 	}
 
 	@Override public int getHeight(Workspace workspace) {
-		return imageIcon.getHeight(null);
+		return getImage(workspace).getHeight(null);
 	}
 
 	@Override public int getWeight() {
