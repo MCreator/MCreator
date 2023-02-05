@@ -19,6 +19,7 @@
 package net.mcreator.blockly.data;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -152,8 +153,8 @@ import java.util.List;
 		return toolboxTestXML;
 	}
 
-	public JsonElement getBlocklyJSON() {
-		return blocklyJSON;
+	public JsonObject getBlocklyJSON() {
+		return blocklyJSON.getAsJsonObject();
 	}
 
 	public String getName() {

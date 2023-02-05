@@ -120,7 +120,7 @@ public class GTFeatureBlocks {
 
 				for (String field : featureBlock.getFields()) {
 					try {
-						JsonArray args0 = featureBlock.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
+						JsonArray args0 = featureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {

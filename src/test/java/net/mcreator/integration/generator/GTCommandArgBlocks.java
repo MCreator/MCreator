@@ -118,7 +118,7 @@ public class GTCommandArgBlocks {
 
 				for (String field : commandArg.getFields()) {
 					try {
-						JsonArray args0 = commandArg.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
+						JsonArray args0 = commandArg.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
@@ -151,8 +151,8 @@ public class GTCommandArgBlocks {
 					}
 				}
 
-				if (commandArg.getBlocklyJSON().getAsJsonObject().get("extensions") != null) {
-					JsonArray extensions = commandArg.getBlocklyJSON().getAsJsonObject().get("extensions").getAsJsonArray();
+				if (commandArg.getBlocklyJSON().get("extensions") != null) {
+					JsonArray extensions = commandArg.getBlocklyJSON().get("extensions").getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
 						String suggestedFieldName = extension;

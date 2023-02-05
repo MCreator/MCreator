@@ -144,7 +144,7 @@ public class GTProcedureBlocks {
 
 				for (String field : procedureBlock.getFields()) {
 					try {
-						JsonArray args0 = procedureBlock.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
+						JsonArray args0 = procedureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
@@ -197,8 +197,8 @@ public class GTProcedureBlocks {
 					}
 				}
 
-				if (procedureBlock.getBlocklyJSON().getAsJsonObject().get("extensions") != null) {
-					JsonArray extensions = procedureBlock.getBlocklyJSON().getAsJsonObject().get("extensions")
+				if (procedureBlock.getBlocklyJSON().get("extensions") != null) {
+					JsonArray extensions = procedureBlock.getBlocklyJSON().get("extensions")
 							.getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
@@ -261,7 +261,7 @@ public class GTProcedureBlocks {
 			}
 
 			if (procedureBlock.getRepeatingStatements() != null) {
-				JsonArray args0 = procedureBlock.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
+				JsonArray args0 = procedureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
 				for (int i = 0; i < args0.size(); i++) {
 					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
 						String name = args0.get(i).getAsJsonObject().get("name").getAsString();
