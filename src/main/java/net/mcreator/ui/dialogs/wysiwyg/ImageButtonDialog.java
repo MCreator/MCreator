@@ -20,9 +20,7 @@
 package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.ImageButton;
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -32,11 +30,9 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.gradle.internal.FileUtils;
@@ -46,6 +42,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Collections;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
@@ -60,29 +58,18 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
-		VTextField nameField = new VTextField(20);
-		nameField.setPreferredSize(new Dimension(200, 28));
-		UniqueNameValidator nameValidator = new UniqueNameValidator(L10N.t("dialog.gui.button_name"),
-				() -> Transliteration.transliterateString(nameField.getText()),
-				() -> editor.getComponentList().stream().map(GUIComponent::getName),
-				new JavaMemberNameValidator(nameField, false));
-		nameValidator.setIsPresentOnList(button != null);
-		nameField.setValidator(nameValidator);
-		nameField.enableRealtimeValidation();
-		options.add(PanelUtils.join(L10N.label("dialog.gui.button_name"), nameField));
-
 		VComboBox<String> textureSelector = new SearchableComboBox<>(
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.toArray(String[]::new));
 		textureSelector.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
-		VComboBox<String> hoveredTexture = new SearchableComboBox<>(ListUtils.merge(Collections.singleton(""),
+		VComboBox<String> hoveredTextureSelector = new SearchableComboBox<>(ListUtils.merge(Collections.singleton(""),
 				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
 						.collect(Collectors.toList())).toArray(String[]::new));
-		hoveredTexture.setValidator(() -> {
+		hoveredTextureSelector.setValidator(() -> {
 			String texture = textureSelector.getSelectedItem();
-			String secondTexture = hoveredTexture.getSelectedItem();
+			String secondTexture = hoveredTextureSelector.getSelectedItem();
 			// The first image can never be null as this is the reference
 			if (texture == null || texture.isEmpty())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
@@ -103,15 +90,15 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("validator.image_size"));
 		});
-		hoveredTexture.enableRealtimeValidation();
-		hoveredTexture.setRenderer(
+		hoveredTextureSelector.enableRealtimeValidation();
+		hoveredTextureSelector.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
 
 		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_size")));
 
 		options.add(PanelUtils.northAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"), hoveredTexture)));
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"), hoveredTextureSelector)));
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -139,24 +126,26 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			nameField.setText(button.name);
 			textureSelector.setSelectedItem(button.image);
-			hoveredTexture.setSelectedItem(button.hoveredImage);
+			hoveredTextureSelector.setSelectedItem(button.hoveredImage);
 			onClick.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
-			if (hoveredTexture.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
-					&& nameField.getValidationStatus().getValidationResultType()
+			if (hoveredTextureSelector.getValidationStatus().getValidationResultType()
 					!= Validator.ValidationResultType.ERROR) {
 				setVisible(false);
-				String buttonName = nameField.getText();
-				if (!buttonName.isEmpty()) {
+				String imageTxt = textureSelector.getSelectedItem();
+				if (imageTxt != null) {
 					if (button == null) {
-						ImageButton component = new ImageButton(buttonName, 0, 0, textureSelector.getSelectedItem(),
-								hoveredTexture.getSelectedItem(), onClick.getSelectedProcedure(),
+						String name = textToMachineName(editor.getComponentList(), "imagebutton_", Objects.requireNonNull(
+										FilenameUtilsPatched.removeExtension(imageTxt))
+								.toLowerCase(Locale.ENGLISH));
+
+						ImageButton component = new ImageButton(name, 0, 0, imageTxt,
+								hoveredTextureSelector.getSelectedItem(), onClick.getSelectedProcedure(),
 								displayCondition.getSelectedProcedure());
 
 						setEditingComponent(component);
@@ -166,8 +155,8 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 					} else {
 						int idx = editor.components.indexOf(button);
 						editor.components.remove(button);
-						ImageButton buttonNew = new ImageButton(buttonName, button.getX(), button.getY(),
-								textureSelector.getSelectedItem(), hoveredTexture.getSelectedItem(),
+						ImageButton buttonNew = new ImageButton(button.name, button.getX(), button.getY(),
+								textureSelector.getSelectedItem(), hoveredTextureSelector.getSelectedItem(),
 								onClick.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 						editor.components.add(idx, buttonNew);
 						setEditingComponent(buttonNew);
