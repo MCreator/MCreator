@@ -58,25 +58,25 @@ public class GTFeatureBlocks {
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
-			if (!generatorBlocks.contains(featureBlock.machine_name)) {
+			if (!generatorBlocks.contains(featureBlock.getMachineName())) {
 				LOG.warn("[" + generatorName + "] Skipping feature block that is not defined by generator: "
-						+ featureBlock.machine_name);
+						+ featureBlock.getMachineName());
 				continue;
 			}
 
-			if (featureBlock.toolboxXML == null) {
+			if (featureBlock.getToolboxTestXML() == null) {
 				LOG.warn("[" + generatorName + "] Skipping feature block without default XML defined: "
-						+ featureBlock.machine_name);
+						+ featureBlock.getMachineName());
 				continue;
 			}
 
 			if (!featureBlock.getAllInputs().isEmpty() || !featureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
-				if (featureBlock.toolbox_init != null) {
+				if (featureBlock.getToolboxInitStatements() != null) {
 					for (String input : featureBlock.getAllInputs()) {
 						boolean match = false;
-						for (String toolboxtemplate : featureBlock.toolbox_init) {
+						for (String toolboxtemplate : featureBlock.getToolboxInitStatements()) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
 								match = true;
 								break;
@@ -92,7 +92,7 @@ public class GTFeatureBlocks {
 					for (String input : featureBlock.getAllRepeatingInputs()) {
 						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
 						boolean match = false;
-						for (String toolboxtemplate : featureBlock.toolbox_init) {
+						for (String toolboxtemplate : featureBlock.getToolboxInitStatements()) {
 							if (pattern.matcher(toolboxtemplate).find()) {
 								match = true;
 								break;
@@ -108,9 +108,9 @@ public class GTFeatureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined && !specialCases.contains(featureBlock.machine_name)) {
+				if (!templatesDefined && !specialCases.contains(featureBlock.getMachineName())) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
-							+ featureBlock.machine_name);
+							+ featureBlock.getMachineName());
 					continue;
 				}
 			}
@@ -120,7 +120,7 @@ public class GTFeatureBlocks {
 
 				for (String field : featureBlock.getFields()) {
 					try {
-						JsonArray args0 = featureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+						JsonArray args0 = featureBlock.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
@@ -154,15 +154,15 @@ public class GTFeatureBlocks {
 
 				if (processed != featureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
-							+ featureBlock.machine_name);
+							+ featureBlock.getMachineName());
 					continue;
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestFeatureBlock" + featureBlock.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestFeatureBlock" + featureBlock.getMachineName(),
 					ModElementType.FEATURE);
 
-			String testXML = featureBlock.toolboxXML;
+			String testXML = featureBlock.getToolboxTestXML();
 
 			// Set block selectors to some value
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
@@ -171,7 +171,7 @@ public class GTFeatureBlocks {
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
 
 			// Add missing inputs for the hardcoded feature blocks
-			switch (featureBlock.machine_name) {
+			switch (featureBlock.getMachineName()) {
 			case "block_predicate_not" -> additionalXML.append("""
 					<value name="condition"><block type="block_predicate_is_air"></block></value>""");
 			case "int_provider_clamped" -> additionalXML.append("""
@@ -181,8 +181,8 @@ public class GTFeatureBlocks {
 					<value name="condition1"><block type="block_predicate_is_air"></block></value>""");
 			}
 
-			testXML = testXML.replace("<block type=\"" + featureBlock.machine_name + "\">",
-					"<block type=\"" + featureBlock.machine_name + "\">" + additionalXML);
+			testXML = testXML.replace("<block type=\"" + featureBlock.getMachineName() + "\">",
+					"<block type=\"" + featureBlock.getMachineName() + "\">" + additionalXML);
 
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
@@ -193,7 +193,7 @@ public class GTFeatureBlocks {
 			feature.restrictionBiomes = new ArrayList<>();
 			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
 
-			if (featureBlock.type
+			if (featureBlock.getType()
 					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the lake feature
 				feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
@@ -227,7 +227,7 @@ public class GTFeatureBlocks {
 				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
 				default -> {
 					LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
-							+ featureBlock.machine_name);
+							+ featureBlock.getMachineName());
 					continue;
 				}
 				}
@@ -238,7 +238,7 @@ public class GTFeatureBlocks {
 				assertTrue(workspace.getGenerator().generateElement(feature));
 				workspace.getModElementManager().storeModElement(feature);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + featureBlock.machine_name);
+				fail("[" + generatorName + "] Failed generating procedure block: " + featureBlock.getMachineName());
 				t.printStackTrace();
 			}
 		}

@@ -68,23 +68,23 @@ public class GTProcedureBlocks {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip procedure blocks not supported by this generator
-			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
+			if (!generatorBlocks.contains(procedureBlock.getMachineName())) {
 				continue;
 			}
 
-			if (procedureBlock.toolboxXML == null) {
+			if (procedureBlock.getToolboxTestXML() == null) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block without default XML defined: "
-						+ procedureBlock.machine_name);
+						+ procedureBlock.getMachineName());
 				continue;
 			}
 
 			if (!procedureBlock.getAllInputs().isEmpty() || !procedureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
-				if (procedureBlock.toolbox_init != null) {
+				if (procedureBlock.getToolboxInitStatements() != null) {
 					for (String input : procedureBlock.getAllInputs()) {
 						boolean match = false;
-						for (String toolboxtemplate : procedureBlock.toolbox_init) {
+						for (String toolboxtemplate : procedureBlock.getToolboxInitStatements()) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
 								match = true;
 								break;
@@ -100,7 +100,7 @@ public class GTProcedureBlocks {
 					for (String input : procedureBlock.getAllRepeatingInputs()) {
 						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
 						boolean match = false;
-						for (String toolboxtemplate : procedureBlock.toolbox_init) {
+						for (String toolboxtemplate : procedureBlock.getToolboxInitStatements()) {
 							if (pattern.matcher(toolboxtemplate).find()) {
 								match = true;
 								break;
@@ -116,9 +116,9 @@ public class GTProcedureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined && !specialCases.contains(procedureBlock.machine_name)) {
+				if (!templatesDefined && !specialCases.contains(procedureBlock.getMachineName())) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
-							+ procedureBlock.machine_name);
+							+ procedureBlock.getMachineName());
 					continue;
 				}
 			}
@@ -144,7 +144,7 @@ public class GTProcedureBlocks {
 
 				for (String field : procedureBlock.getFields()) {
 					try {
-						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+						JsonArray args0 = procedureBlock.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.get("name").getAsString().equals(field)) {
@@ -197,8 +197,8 @@ public class GTProcedureBlocks {
 					}
 				}
 
-				if (procedureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
-					JsonArray extensions = procedureBlock.blocklyJSON.getAsJsonObject().get("extensions")
+				if (procedureBlock.getBlocklyJSON().getAsJsonObject().get("extensions") != null) {
+					JsonArray extensions = procedureBlock.getBlocklyJSON().getAsJsonObject().get("extensions")
 							.getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
@@ -246,7 +246,7 @@ public class GTProcedureBlocks {
 
 				if (processed != procedureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
-							+ procedureBlock.machine_name);
+							+ procedureBlock.getMachineName());
 					continue;
 				}
 			}
@@ -261,7 +261,7 @@ public class GTProcedureBlocks {
 			}
 
 			if (procedureBlock.getRepeatingStatements() != null) {
-				JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+				JsonArray args0 = procedureBlock.getBlocklyJSON().getAsJsonObject().get("args0").getAsJsonArray();
 				for (int i = 0; i < args0.size(); i++) {
 					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
 						String name = args0.get(i).getAsJsonObject().get("name").getAsString();
@@ -278,7 +278,7 @@ public class GTProcedureBlocks {
 			}
 
 			// Add missing inputs for the hardcoded feature blocks (fix incomplete templates)
-			switch (procedureBlock.machine_name) {
+			switch (procedureBlock.getMachineName()) {
 			case "compare_mcitems" -> additionalXML.append("""
 					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
 					<value name="b"><block type="mcitem_all"><field name="value"></field></block></value>""");
@@ -296,10 +296,10 @@ public class GTProcedureBlocks {
 					<value name="b"><block type="itemstack_to_mcitem"></block></value>""");
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.getMachineName(),
 					ModElementType.PROCEDURE);
 
-			String testXML = procedureBlock.toolboxXML;
+			String testXML = procedureBlock.getToolboxTestXML();
 
 			// replace common math blocks with blocks that contain double variable to verify things like type casting
 			testXML = testXML.replace("<block type=\"coord_x\"></block>",
@@ -318,8 +318,8 @@ public class GTProcedureBlocks {
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
 
 			// add additional xml to the block definition
-			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
-					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
+			testXML = testXML.replace("<block type=\"" + procedureBlock.getMachineName() + "\">",
+					"<block type=\"" + procedureBlock.getMachineName() + "\">" + additionalXML);
 
 			// replace common itemstack blocks with blocks that contain local variable
 			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
@@ -335,7 +335,7 @@ public class GTProcedureBlocks {
 
 			Procedure procedure = new Procedure(modElement);
 
-			if (procedureBlock.type == IBlockGenerator.BlockType.PROCEDURAL) {
+			if (procedureBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				procedure.procedurexml = wrapWithBaseTestXML(testXML);
 			} else { // output block type
 				String rettype = procedureBlock.getOutputType();
@@ -379,7 +379,7 @@ public class GTProcedureBlocks {
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
 				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName());
 			}
 		}
 
