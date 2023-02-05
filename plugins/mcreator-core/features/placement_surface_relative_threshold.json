@@ -1,0 +1,61 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "heightmap",
+      "options": [
+        [
+          "Motion blocking (worldgen)",
+          "OCEAN_FLOOR_WG"
+        ],
+        [
+          "Motion blocking",
+          "OCEAN_FLOOR"
+        ],
+        [
+          "Non-air block (worldgen)",
+          "WORLD_SURFACE_WG"
+        ],
+        [
+          "Non-air block",
+          "WORLD_SURFACE"
+        ],
+        [
+          "Motion blocking or liquid",
+          "MOTION_BLOCKING"
+        ],
+        [
+          "Motion blocking or liquid (except leaves)",
+          "MOTION_BLOCKING_NO_LEAVES"
+        ]
+      ]
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": -8,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 8,
+      "precision": 1
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "heightplacements",
+    "fields": [
+      "heightmap",
+      "min",
+      "max"
+    ]
+  }
+}
