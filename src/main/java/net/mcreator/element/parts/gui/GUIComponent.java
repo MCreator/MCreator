@@ -138,7 +138,12 @@ import java.util.stream.Collectors;
 		public JsonElement serialize(GUIComponent element, Type type,
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
-			root.add("type", new JsonPrimitive(typeMappingsReverse.get(element.getClass())));
+
+			String typeMapping = typeMappingsReverse.get(element.getClass());
+			if (typeMapping == null)
+				typeMapping = "unknown";
+
+			root.add("type", new JsonPrimitive(typeMapping));
 			root.add("data", gson.toJsonTree(element));
 			return root;
 		}
