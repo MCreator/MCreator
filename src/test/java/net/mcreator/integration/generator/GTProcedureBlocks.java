@@ -42,7 +42,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -50,9 +49,6 @@ import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
-
-	private static final List<String> specialCases = List.of("compare_mcitems", "compare_blockstates",
-			"compare_dimensionids", "compare_mcblocks", "compare_directions", "item_nbt_copy");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if procedures are not supported by this generator
@@ -116,7 +112,7 @@ public class GTProcedureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined && !specialCases.contains(procedureBlock.getMachineName())) {
+				if (!templatesDefined) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
 							+ procedureBlock.getMachineName());
 					continue;
@@ -275,25 +271,6 @@ public class GTProcedureBlocks {
 						}
 					}
 				}
-			}
-
-			// Add missing inputs for the hardcoded feature blocks (fix incomplete templates)
-			switch (procedureBlock.getMachineName()) {
-			case "compare_mcitems" -> additionalXML.append("""
-					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
-					<value name="b"><block type="mcitem_all"><field name="value"></field></block></value>""");
-			case "compare_blockstates", "compare_mcblocks" -> additionalXML.append("""
-					<value name="a"><block type="mcitem_allblocks"><field name="value"></field></block></value>
-					<value name="b"><block type="mcitem_allblocks"><field name="value"></field></block></value>""");
-			case "compare_dimensionids" -> additionalXML.append("""
-					<value name="a"><block type="provided_dimensionid"></block></value>
-					<value name="b"><block type="provided_dimensionid"></block></value>""");
-			case "compare_directions" -> additionalXML.append("""
-					<value name="a"><block type="direction_from_deps"></block></value>
-					<value name="b"><block type="direction_from_deps"></block></value>""");
-			case "item_nbt_copy" -> additionalXML.append("""
-					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
-					<value name="b"><block type="itemstack_to_mcitem"></block></value>""");
 			}
 
 			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.getMachineName(),
