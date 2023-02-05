@@ -34,6 +34,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.gradle.internal.FileUtils;
 
@@ -84,7 +85,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 			ImageIcon image2 = editor.mcreator.getWorkspace().getFolderManager()
 					.getTextureImageIcon(FileUtils.removeExtension(secondTexture), TextureType.SCREEN);
 
-			if (image1.getIconHeight() == image2.getIconHeight() && image1.getIconWidth() == image2.getIconWidth())
+			if (ImageUtils.checkIfSameSize(image1.getImage(), image2.getImage()))
 				return Validator.ValidationResult.PASSED;
 			else
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
