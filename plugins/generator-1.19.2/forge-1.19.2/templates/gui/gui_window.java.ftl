@@ -101,12 +101,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
-				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-					this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-				<#if hasProcedure(component.displayCondition)>}</#if>
+			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+				this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
 		RenderSystem.disableBlend();
@@ -135,12 +135,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	@Override protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
 		<#list data.getComponentsOfType("Label") as component>
-				<#if hasProcedure(component.displayCondition)>
-					if (<@procedureOBJToConditionCode component.displayCondition/>)
-				</#if>
-				this.font.draw(poseStack,
-					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+			<#if hasProcedure(component.displayCondition)>
+				if (<@procedureOBJToConditionCode component.displayCondition/>)
+			</#if>
+			this.font.draw(poseStack,
+				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
 		</#list>
 	}
 
@@ -155,36 +155,37 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		<#list data.getComponentsOfType("TextField") as component>
-				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-				${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
-				<#if component.placeholder?has_content>
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
+			<#if component.placeholder?has_content>
+			{
 				{
-					{
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					}
-
-					@Override public void insertText(String text) {
-						super.insertText(text);
-
-						if (getValue().isEmpty())
-							setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-						else
-							setSuggestion(null);
-					}
-
-					@Override public void moveCursorTo(int pos) {
-						super.moveCursorTo(pos);
-
-						if (getValue().isEmpty())
-							setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-						else
-							setSuggestion(null);
-					}
+					setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 				}
-				</#if>;
-				guistate.put("text:${component.getName()}", ${component.getName()});
-				${component.getName()}.setMaxLength(32767);
-				this.addWidget(this.${component.getName()});
+
+				@Override public void insertText(String text) {
+					super.insertText(text);
+
+					if (getValue().isEmpty())
+						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+					else
+						setSuggestion(null);
+				}
+
+				@Override public void moveCursorTo(int pos) {
+					super.moveCursorTo(pos);
+
+					if (getValue().isEmpty())
+						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+					else
+						setSuggestion(null);
+				}
+			}
+			</#if>;
+			${component.getName()}.setMaxLength(32767);
+
+			guistate.put("text:${component.getName()}", ${component.getName()});
+			this.addWidget(this.${component.getName()});
 		</#list>
 
 		<#assign btid = 0>
@@ -221,11 +222,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
-				${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-						20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
-					<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
-				guistate.put("checkbox:${component.getName()}", ${component.getName()});
-				this.addRenderableWidget(${component.getName()});
+			${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
+				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
+
+			guistate.put("checkbox:${component.getName()}", ${component.getName()});
+			this.addRenderableWidget(${component.getName()});
 		</#list>
 	}
 
