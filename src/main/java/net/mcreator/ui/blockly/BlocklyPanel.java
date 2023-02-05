@@ -79,8 +79,12 @@ public class BlocklyPanel extends JFXPanel {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
 			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 
-			if (newXml.length() > MINIMAL_XML.length())
+			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
+				return true;
+			}
+
+			return false;
 		});
 
 		ThreadUtil.runOnFxThread(() -> {

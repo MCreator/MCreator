@@ -83,8 +83,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.type = mu.type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
-		if (mu.metadata != null)
+		if (mu.metadata != null) {
 			this.metadata = new HashMap<>(mu.metadata);
+
+			// remove files cache from metadata as otherwise on the first re-generation,
+			// files from original mod element (mu) will be deleted
+			this.metadata.remove("files");
+		}
 
 		reinit(workspace);
 	}

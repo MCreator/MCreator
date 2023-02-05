@@ -433,8 +433,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).flipOnX();
-		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).flipOnX();
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
 
 		textureLeft = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
@@ -1248,7 +1248,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateTextureOptions() {
-		texture.setVisible(false);
+		texture.setFlipUV(false);
+		textureTop.setFlipUV(false);
 		textureTop.setVisible(false);
 		textureLeft.setVisible(false);
 		textureFront.setVisible(false);
@@ -1256,26 +1257,22 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setVisible(false);
 
 		if (normal.equals(renderType.getSelectedItem())) {
-			texture.setVisible(true);
+			texture.setFlipUV(true);
+			textureTop.setFlipUV(true);
 			textureTop.setVisible(true);
 			textureLeft.setVisible(true);
 			textureFront.setVisible(true);
 			textureRight.setVisible(true);
 			textureBack.setVisible(true);
 		} else if (grassBlock.equals(renderType.getSelectedItem())) {
-			texture.setVisible(true);
 			textureTop.setVisible(true);
 			textureLeft.setVisible(true);
 			textureFront.setVisible(true);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
-			texture.setVisible(true);
 		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
-			texture.setVisible(true);
-		} else {
-			texture.setVisible(true);
 		}
 	}
 

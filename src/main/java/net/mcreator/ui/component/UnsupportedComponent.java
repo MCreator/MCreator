@@ -23,20 +23,41 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class UnsupportedComponent extends JPanel {
 
+	/**
+	 * Helper util method that marks provided component as not supported.
+	 *
+	 * @param comp The component to be marked.
+	 */
+	public static void markUnsupported(Component comp) {
+		Container parent = comp.getParent();
+		if (parent != null) {
+			int index = Arrays.asList(parent.getComponents()).indexOf(comp);
+			parent.remove(index);
+			parent.add(new UnsupportedComponent(comp), index);
+		}
+	}
+
 	private final Image warning = UIRES.get("18px.warning").getImage();
 
+	/**
+	 * Constructs a panel that displays an overlay with "unsupported" warning over the component marked as such.
+	 *
+	 * @param origin The component to be marked.
+	 */
 	public UnsupportedComponent(Component origin) {
 		setLayout(new GridLayout());
-
-		if (!(origin instanceof JSpinner))
-			add(origin);
-
 		setOpaque(false);
 
+		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
+		Arrays.stream(origin.getMouseListeners()).forEach(origin::removeMouseListener);
+		Arrays.stream(origin.getKeyListeners()).forEach(origin::removeKeyListener);
+
+		add(origin);
 	}
 
 	@Override public void paint(Graphics g) {

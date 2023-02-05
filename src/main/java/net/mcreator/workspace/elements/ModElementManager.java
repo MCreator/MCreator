@@ -181,7 +181,7 @@ public final class ModElementManager {
 						new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 								element.getModElement().getName() + ".png"));
 		} catch (Exception e1) {
-			LOG.warn("Failed to generate mod element picture for " + element.getModElement().getName());
+			LOG.warn("Failed to generate mod element picture for " + element.getModElement().getName(), e1);
 		}
 	}
 

@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -237,26 +238,27 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
-		if (mod_elements.contains(element)) {
+		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
+			return;
+
+		// first we ask generator to remove all related files
+		if (element.getType() != ModElementType.UNKNOWN) {
 			GeneratableElement generatableElement = element.getGeneratableElement();
-
-			// first we ask generator to remove all related files
-			if (generatableElement != null && generator != null) {
+			if (generatableElement != null && generator != null)
 				generator.removeElementFilesAndLangKeys(generatableElement);
-			} else {
+			else
 				LOG.warn("Failed to remove element files for element " + element);
-			}
-
-			// after we don't need the definition anymore, remove actual files
-			new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
-			new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
-					element.getName() + ".png").delete();
-
-			// finally remove element form the list
-			mod_elements.remove(element);
-
-			markDirty();
 		}
+
+		// after we don't need the definition anymore, remove actual files
+		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
+		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
+				element.getName() + ".png").delete();
+
+		// finally remove element form the list
+		mod_elements.remove(element);
+
+		markDirty();
 	}
 
 	public void removeVariableElement(VariableElement element) {
@@ -460,6 +462,40 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		} else {
 			throw new FileNotFoundException();
 		}
+	}
+
+	/**
+	 * Unsafe version of readFromFS with many checks omitted. Only intended to be used by tests.
+	 *
+	 * @param workspaceFile          File containing the output workspace definition.
+	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
+	 * @return Workspace object for the given file
+	 */
+	public static Workspace readFromFS(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
+		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
+		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+
+		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
+				!= generatorConfiguration) {
+			retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
+
+			retval.generator = new Generator(retval);
+			retval.regenerateRequired = true;
+
+			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
+					Generator.GENERATOR_CACHE.get(retval.workspaceSettings.getCurrentGenerator()));
+
+			WorkspaceGeneratorSetup.requestSetup(retval);
+		} else {
+			retval.generator = new Generator(retval);
+		}
+
+		retval.getWorkspaceSettings().setWorkspace(retval);
+
+		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
+		retval.reloadFolderStructure(); // assign parents to the folders
+		LOG.info("Loaded workspace file " + workspaceFile);
+		return retval;
 	}
 
 	public static Workspace createWorkspace(File workspaceFile, WorkspaceSettings workspaceSettings) {
