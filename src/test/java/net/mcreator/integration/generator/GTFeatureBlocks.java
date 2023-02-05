@@ -37,7 +37,10 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -118,12 +121,12 @@ public class GTFeatureBlocks {
 			if (featureBlock.getFields() != null) {
 				int processed = 0;
 
-				for (String field : featureBlock.getFields()) {
-					try {
+				if (featureBlock.getBlocklyJSON().has("args0")) {
+					for (String field : featureBlock.getFields()) {
 						JsonArray args0 = featureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.get("name").getAsString().equals(field)) {
+							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
 								case "field_checkbox" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
@@ -148,13 +151,11 @@ public class GTFeatureBlocks {
 								break;
 							}
 						}
-					} catch (Exception ignored) {
 					}
 				}
 
 				if (featureBlock.getBlocklyJSON().get("extensions") != null) {
-					JsonArray extensions = featureBlock.getBlocklyJSON().get("extensions")
-							.getAsJsonArray();
+					JsonArray extensions = featureBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
 						String fieldName = extension.replace("_list_provider", "");

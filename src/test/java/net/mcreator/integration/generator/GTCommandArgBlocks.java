@@ -116,12 +116,12 @@ public class GTCommandArgBlocks {
 			if (commandArg.getFields() != null) {
 				int processed = 0;
 
-				for (String field : commandArg.getFields()) {
-					try {
+				if (commandArg.getBlocklyJSON().has("args0")) {
+					for (String field : commandArg.getFields()) {
 						JsonArray args0 = commandArg.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.get("name").getAsString().equals(field)) {
+							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
 								case "field_checkbox":
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
@@ -147,7 +147,6 @@ public class GTCommandArgBlocks {
 								break;
 							}
 						}
-					} catch (Exception ignored) {
 					}
 				}
 
@@ -213,7 +212,8 @@ public class GTCommandArgBlocks {
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
 				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.getMachineName());
+				fail("[" + generatorName + "] Failed generating command argument block: "
+						+ commandArg.getMachineName());
 			}
 		}
 

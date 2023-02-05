@@ -138,12 +138,12 @@ public class GTProcedureBlocks {
 			if (procedureBlock.getFields() != null) {
 				int processed = 0;
 
-				for (String field : procedureBlock.getFields()) {
-					try {
+				if (procedureBlock.getBlocklyJSON().has("args0")) {
+					for (String field : procedureBlock.getFields()) {
 						JsonArray args0 = procedureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.get("name").getAsString().equals(field)) {
+							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
 								case "field_checkbox" -> {
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
@@ -189,13 +189,11 @@ public class GTProcedureBlocks {
 								break;
 							}
 						}
-					} catch (Exception ignored) {
 					}
 				}
 
 				if (procedureBlock.getBlocklyJSON().get("extensions") != null) {
-					JsonArray extensions = procedureBlock.getBlocklyJSON().get("extensions")
-							.getAsJsonArray();
+					JsonArray extensions = procedureBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
 						String suggestedFieldName = extension.replace("_list_provider", "");
