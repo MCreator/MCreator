@@ -33,6 +33,7 @@ import java.awt.*;
 public class ImageButton extends GUIComponent {
 
 	public String name;
+
 	public String image, hoveredImage;
 
 	public Procedure onClick, displayCondition;
@@ -40,7 +41,7 @@ public class ImageButton extends GUIComponent {
 	private transient Image imageIcon, hoveredImageIcon;
 
 	public ImageButton(String name, int x, int y, String image, String hoveredImage, Procedure onClick,
-			Procedure displayCondition, Workspace workspace) {
+			Procedure displayCondition) {
 		super(x, y);
 		this.name = name;
 		this.image = image;

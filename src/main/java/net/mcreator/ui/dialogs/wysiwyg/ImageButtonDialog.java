@@ -157,7 +157,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 					if (button == null) {
 						ImageButton component = new ImageButton(buttonName, 0, 0, textureSelector.getSelectedItem(),
 								hoveredTexture.getSelectedItem(), onClick.getSelectedProcedure(),
-								displayCondition.getSelectedProcedure(), editor.mcreator.getWorkspace());
+								displayCondition.getSelectedProcedure());
 
 						setEditingComponent(component);
 						editor.editor.addComponent(component);
@@ -168,8 +168,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 						editor.components.remove(button);
 						ImageButton buttonNew = new ImageButton(buttonName, button.getX(), button.getY(),
 								textureSelector.getSelectedItem(), hoveredTexture.getSelectedItem(),
-								onClick.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
-								editor.mcreator.getWorkspace());
+								onClick.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 						editor.components.add(idx, buttonNew);
 						setEditingComponent(buttonNew);
 					}

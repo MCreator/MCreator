@@ -567,13 +567,13 @@ public class TestWorkspaceDataProvider {
 						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(
 						new ImageButton("imagebutton1", 0, 48, "picture1", "picture2", new Procedure("procedure10"),
-								null, modElement.getWorkspace()));
+								null));
 				components.add(
-						new ImageButton("imagebutton2", 16, 32, "picture2", "", null, null, modElement.getWorkspace()));
+						new ImageButton("imagebutton2", 16, 32, "picture2", "", new Procedure(""), new Procedure("")));
 				components.add(new ImageButton("imagebutton3", 32, 16, "picture1", "picture2", null,
-						new Procedure("condition3"), modElement.getWorkspace()));
+						new Procedure("condition3")));
 				components.add(new ImageButton("imagebutton4", 48, 0, "picture2", "", new Procedure("procedure2"),
-						new Procedure("condition4"), modElement.getWorkspace()));
+						new Procedure("condition4")));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
 						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"),
