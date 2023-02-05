@@ -51,6 +51,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		Checkbox ${component.getName()};
 	</#list>
 
+	<#list data.getComponentsOfType("Button") as component>
+		Button ${component.getName()};
+	</#list>
+
 	<#list data.getComponentsOfType("ImageButton") as component>
 		ImageButton ${component.getName()};
 	</#list>
@@ -150,7 +154,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-		<#assign btid = 0>
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 				${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
@@ -184,19 +187,37 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.addWidget(this.${component.getName()});
 		</#list>
 
+		<#assign btid = 0>
+
 		<#list data.getComponentsOfType("Button") as component>
-				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-					<@buttonProcedures component false/>
+			${component.getName()} = new Button(
+				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.width}, ${component.height},
+				Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+				<@buttonOnClick component/>
+			)<@buttonDisplayCondition component/>;
+
+			guistate.put("button:${component.getName()}", ${component.getName()});
+			this.addRenderableWidget(${component.getName()});
+
+			<#assign btid +=1>
 		</#list>
 
 		<#list data.getComponentsOfType("ImageButton") as component>
-		    ${component.getName()} = new ImageButton(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-                ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, 0, 0, ${component.getHeight(w.getWorkspace())},
-                new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
-                ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace()) * 2}, <@buttonProcedures component true/>
-			guistate.put("imagebutton:${component.getName()}", ${component.getName()});
+		    ${component.getName()} = new ImageButton(
+				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+            	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+				0, 0, ${component.getHeight(w.getWorkspace())},
+            	new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
+            	${component.getWidth(w.getWorkspace())},
+				${component.getHeight(w.getWorkspace()) * 2},
+				<@buttonOnClick component/>
+			)<@buttonDisplayCondition component/>;
+
+			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
+
+			<#assign btid +=1>
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
@@ -209,7 +230,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	}
 
 }
-<#macro buttonProcedures component isImageButton>
+
+<#macro buttonOnClick component>
 e -> {
     <#if hasProcedure(component.onClick)>
 	    if (<@procedureOBJToConditionCode component.displayCondition/>) {
@@ -217,15 +239,17 @@ e -> {
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 		}
 	</#if>
-}<#if isImageButton>, CommonComponents.EMPTY</#if>)
+}
+</#macro>
+
+<#macro buttonDisplayCondition component>
 <#if hasProcedure(component.displayCondition)>
 {
 	@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
 		if (<@procedureOBJToConditionCode component.displayCondition/>)
-		    super.render(ms, gx, gy, ticks);
-		}
+			super.render(ms, gx, gy, ticks);
 	}
-</#if><#if !isImageButton>)</#if>;
-<#assign btid +=1>
+}
+</#if>
 </#macro>
 <#-- @formatter:on -->
