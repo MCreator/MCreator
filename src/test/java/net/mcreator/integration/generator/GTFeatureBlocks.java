@@ -31,6 +31,8 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -147,6 +149,29 @@ public class GTFeatureBlocks {
 							}
 						}
 					} catch (Exception ignored) {
+					}
+				}
+
+				if (featureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
+					JsonArray extensions = featureBlock.blocklyJSON.getAsJsonObject().get("extensions")
+							.getAsJsonArray();
+					for (int i = 0; i < extensions.size(); i++) {
+						String extension = extensions.get(i).getAsString();
+						String fieldName = extension.replace("_list_provider", "");
+						// Unlike for procedures, we can skip the conversion to proper field names because those extensions aren't used by features
+
+						if (featureBlock.getFields().contains(fieldName)) {
+							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, fieldName);
+
+							if (values.length == 0 || values[0].equals(""))
+								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, fieldName + "s");
+
+							if (values.length > 0 && !values[0].equals("")) {
+								additionalXML.append("<field name=\"").append(fieldName).append("\">")
+										.append(ListUtils.getRandomItem(random, values)).append("</field>");
+								processed++;
+							}
+						}
 					}
 				}
 

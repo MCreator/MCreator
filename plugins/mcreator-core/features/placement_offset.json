@@ -1,0 +1,32 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "xz",
+      "check": "IntProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "IntProvider"
+    }
+  ],
+  "extensions": [
+    "offset_placement_validator"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "placements",
+    "toolbox_init": [
+      "<value name=\"xz\"><block type=\"int_provider_uniform\"><field name=\"min\">-4</field><field name=\"max\">4</field></block></value>",
+      "<value name=\"y\"><block type=\"int_provider_uniform\"><field name=\"min\">-4</field><field name=\"max\">4</field></block></value>"
+    ],
+    "inputs": [
+      "xz",
+      "y"
+    ]
+  }
+}
