@@ -152,8 +152,8 @@ public class GTFeatureBlocks {
 					}
 				}
 
-				if (featureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
-					JsonArray extensions = featureBlock.blocklyJSON.getAsJsonObject().get("extensions")
+				if (featureBlock.getBlocklyJSON().get("extensions") != null) {
+					JsonArray extensions = featureBlock.getBlocklyJSON().get("extensions")
 							.getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
