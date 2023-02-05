@@ -64,14 +64,16 @@ public class ImageButton extends GUIComponent {
 	}
 
 	public Image getHoveredImage(Workspace workspace) {
+		Image image = getImage(workspace);
+
 		if (hoveredImageIcon == null) {
 			if (hoveredImage != null && !hoveredImage.isEmpty()) {
 				Image hovered = new ImageIcon(workspace.getFolderManager()
 						.getTextureFile(FilenameUtilsPatched.removeExtension(hoveredImage), TextureType.SCREEN)
 						.getAbsolutePath()).getImage();
-				hoveredImageIcon = ImageUtils.checkIfSameSize(getImage(workspace), hovered) ? hovered : getImage(workspace);
+				hoveredImageIcon = ImageUtils.checkIfSameSize(image, hovered) ? hovered : image;
 			} else {
-				hoveredImageIcon = getImage(workspace);
+				hoveredImageIcon = image;
 			}
 		}
 		return hoveredImageIcon;
@@ -92,4 +94,5 @@ public class ImageButton extends GUIComponent {
 	@Override public int getWeight() {
 		return 25;
 	}
+
 }
