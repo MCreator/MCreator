@@ -42,8 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTFeatureBlocks {
-	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped",
-			"block_predicate_all_of", "block_predicate_any_of");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if features are not supported by this generator
@@ -108,7 +106,7 @@ public class GTFeatureBlocks {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined && !specialCases.contains(featureBlock.getMachineName())) {
+				if (!templatesDefined) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
 							+ featureBlock.getMachineName());
 					continue;
@@ -169,17 +167,6 @@ public class GTFeatureBlocks {
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
-
-			// Add missing inputs for the hardcoded feature blocks
-			switch (featureBlock.getMachineName()) {
-			case "block_predicate_not" -> additionalXML.append("""
-					<value name="condition"><block type="block_predicate_is_air"></block></value>""");
-			case "int_provider_clamped" -> additionalXML.append("""
-					<value name="toClamp"><block type="int_provider_constant"><field name="value">2</field></block></value>""");
-			case "block_predicate_all_of", "block_predicate_any_of" -> additionalXML.append("""
-					<value name="condition0"><block type="block_predicate_is_air"></block></value>
-					<value name="condition1"><block type="block_predicate_is_air"></block></value>""");
-			}
 
 			testXML = testXML.replace("<block type=\"" + featureBlock.getMachineName() + "\">",
 					"<block type=\"" + featureBlock.getMachineName() + "\">" + additionalXML);
