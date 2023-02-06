@@ -58,7 +58,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	private final VTextField displayName = new VTextField(30);
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-	private final MCItemHolder savedPointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
@@ -197,7 +196,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public void openInEditingMode(VillagerProfession profession) {
 		displayName.setText(profession.displayName);
-		savedPointOfInterest.setBlock(profession.pointOfInterest);
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		hat.setSelectedItem(profession.hat);
