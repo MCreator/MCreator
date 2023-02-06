@@ -135,6 +135,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		page1group.addValidationElement(pointOfInterest);
 		page1group.addValidationElement(actionSound.getVTextField());
 		page1group.addValidationElement(professionTextureFile);
+		page1group.addValidationElement(zombifiedProfessionTextureFile);
 
 		displayName.setValidator(new TextFieldValidator(displayName,
 				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
@@ -146,6 +147,12 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			if (professionTextureFile.getSelectedItem() == null || professionTextureFile.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.villager_profession.profession_needs_texture"));
+			return Validator.ValidationResult.PASSED;
+		});
+		zombifiedProfessionTextureFile.setValidator(() -> {
+			if (zombifiedProfessionTextureFile.getSelectedItem() == null || zombifiedProfessionTextureFile.getSelectedItem().equals(""))
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.villager_profession.profession_needs_zombified_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
