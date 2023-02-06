@@ -98,7 +98,8 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
-				|| type == ModElementType.KEYBIND) {
+				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
+				|| type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), random, true,
 							true, 0));
@@ -1578,6 +1579,33 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			return villagerTrade;
+		} else if (ModElementType.PROCEDURE.equals(modElement.getType())) {
+			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
+			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
+			return procedure;
+		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
+			Command command = new Command(modElement);
+			command.commandName = modElement.getName();
+			command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
+			command.argsxml = Command.XML_BASE;
+			return command;
+		}  else if (ModElementType.FEATURE.equals(modElement.getType())) {
+			Feature feature = new Feature(modElement);
+			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.restrictionDimensions = emptyLists ?
+					new ArrayList<>() :
+					new ArrayList<>(Arrays.asList("Surface", "Nether"));
+			feature.restrictionBiomes = new ArrayList<>();
+			if (!emptyLists) {
+				feature.restrictionBiomes.addAll(
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			}
+			feature.generateCondition = _true ? new Procedure("condition1") : null;
+			feature.featurexml = Feature.XML_BASE;
+			return feature;
 		}
 		return null;
 	}
