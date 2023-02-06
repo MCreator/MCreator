@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.VillagerProfession;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -38,8 +39,8 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.PointOfInterestValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -48,6 +49,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -140,7 +142,16 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.setValidator(new TextFieldValidator(displayName,
 				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
 		displayName.enableRealtimeValidation();
-		pointOfInterest.setValidator(new PointOfInterestValidator(mcreator, pointOfInterest, savedPointOfInterest));
+		pointOfInterest.setValidator(
+				new UniqueNameValidator("Point of interest", () -> pointOfInterest.getBlock().getUnmappedValue(),
+						() -> ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream()
+								.map(MItemBlock::getUnmappedValue),
+						Arrays.asList("Blocks.BEE_NEST", "Blocks.BEEHIVE", "Blocks.LIGHTNING_ROD", "Blocks.LODESTONE",
+								"Blocks.BELL", "Blocks.NETHER_PORTAL", "Blocks.BED", "Blocks.ORANGE_BED",
+								"Blocks.MAGENTA_BED", "Blocks.LIGHT_BLUE_BED", "Blocks.YELLOW_BED", "Blocks.LIME_BED",
+								"Blocks.PINK_BED", "Blocks.GRAY_BED", "Blocks.LIGHT_GRAY_BED", "Blocks.CYAN_BED",
+								"Blocks.PURPLE_BED", "Blocks.BLUE_BED", "Blocks.BROWN_BED", "Blocks.GREEN_BED",
+								"Blocks.RED_BED", "Blocks.BLACK_BED"), null));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
@@ -150,7 +161,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return Validator.ValidationResult.PASSED;
 		});
 		zombifiedProfessionTextureFile.setValidator(() -> {
-			if (zombifiedProfessionTextureFile.getSelectedItem() == null || zombifiedProfessionTextureFile.getSelectedItem().equals(""))
+			if (zombifiedProfessionTextureFile.getSelectedItem() == null
+					|| zombifiedProfessionTextureFile.getSelectedItem().equals(""))
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.villager_profession.profession_needs_zombified_texture"));
 			return Validator.ValidationResult.PASSED;
