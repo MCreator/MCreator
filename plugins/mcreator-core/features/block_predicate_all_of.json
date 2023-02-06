@@ -5,7 +5,9 @@
   "mcreator": {
     "toolbox_id": "blockpredicates",
     "toolbox_init": [
-      "<mutation inputs=\"2\"></mutation>"
+      "<mutation inputs=\"2\"></mutation>",
+      "~<value name=\"condition0\"><block type=\"block_predicate_is_air\"></block></value>",
+      "~<value name=\"condition1\"><block type=\"block_predicate_is_air\"></block></value>"
     ],
     "repeating_inputs": [
       "condition"
