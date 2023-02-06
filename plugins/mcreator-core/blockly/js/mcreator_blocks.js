@@ -416,14 +416,6 @@ Blockly.Blocks['time_hours'] = {
     }
 };
 
-Blockly.Blocks['time_month'] = {
-    init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_month"));
-        this.setColour('%{BKY_MATH_HUE}');
-        this.setOutput(true, 'Number');
-    }
-};
-
 Blockly.Blocks['time_minutes'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.time_minutes"));
@@ -432,9 +424,9 @@ Blockly.Blocks['time_minutes'] = {
     }
 };
 
-Blockly.Blocks['time_year'] = {
+Blockly.Blocks['time_month'] = {
     init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_year"));
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_month"));
         this.setColour('%{BKY_MATH_HUE}');
         this.setOutput(true, 'Number');
     }
@@ -443,6 +435,14 @@ Blockly.Blocks['time_year'] = {
 Blockly.Blocks['time_seconds'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.time_seconds"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_year'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_year"));
         this.setColour('%{BKY_MATH_HUE}');
         this.setOutput(true, 'Number');
     }
