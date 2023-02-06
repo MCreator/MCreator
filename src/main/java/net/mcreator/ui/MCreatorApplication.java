@@ -301,7 +301,7 @@ public final class MCreatorApplication {
 					mcreator.setVisible(true);
 					mcreator.requestFocusInWindow();
 					mcreator.toFront();
-					return mcreator;
+					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 				} else { // already open, just focus it
 					LOG.warn("Trying to open already open workspace, bringing it to the front.");
 					for (MCreator openmcreator : openMCreators) {
@@ -311,11 +311,12 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile, Launcher.version.getFullString()));
-			}
 
-			analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile,
+								Launcher.version.getFullString()));
+				return mcreator;
+			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
 
