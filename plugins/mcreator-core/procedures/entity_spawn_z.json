@@ -16,6 +16,12 @@
     "inputs": [
       "entity"
     ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ],
     "warnings": [
       "no_side_sync"
     ]
