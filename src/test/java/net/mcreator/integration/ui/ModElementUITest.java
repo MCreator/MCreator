@@ -202,7 +202,7 @@ public class ModElementUITest {
 				if (Arrays.stream(modElementGUI.getClass().getDeclaredFields())
 						.anyMatch(f -> f.getType() == BlocklyPanel.class)) {
 					// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
-					Thread.sleep(5000);
+					Thread.sleep(3500);
 				}
 
 				// test if data remains the same after reloading the data lists

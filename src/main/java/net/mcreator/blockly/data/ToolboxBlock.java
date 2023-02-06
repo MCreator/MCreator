@@ -19,6 +19,7 @@
 package net.mcreator.blockly.data;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,9 +28,9 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "MismatchedQueryAndUpdateOfCollection" }) public class ToolboxBlock {
+	String machine_name;
 	String toolbox_id;
-	public String machine_name;
-	public IBlockGenerator.BlockType type;
+	IBlockGenerator.BlockType type;
 
 	@Nullable private List<String> fields;
 	@Nullable private List<String> repeating_fields;
@@ -42,14 +43,16 @@ import java.util.List;
 	@Nullable private List<String> warnings;
 	@Nullable private List<String> required_apis;
 	@Nullable private String group;
-	@Nullable public List<String> toolbox_init;
+
+	@Nullable private List<String> toolbox_init;
 
 	public boolean error_in_statement_blocks = false;
 
 	/* Fields below are not included in block JSON but loaded dynamically */
-	public JsonElement blocklyJSON;
-	@Nullable public String toolboxXML;
-	@Nullable public ToolboxCategory toolboxCategory;
+	transient JsonElement blocklyJSON;
+	@Nullable private transient String toolboxXML;
+	@Nullable private transient String toolboxTestXML; // XML setup used in tests
+	@Nullable transient ToolboxCategory toolboxCategory;
 
 	@Nullable public List<String> getFields() {
 		return fields;
@@ -111,6 +114,52 @@ import java.util.List;
 
 	@Nullable public List<String> getRequiredAPIs() {
 		return required_apis;
+	}
+
+	@Nullable public ToolboxCategory getToolboxCategory() {
+		return toolboxCategory;
+	}
+
+	public IBlockGenerator.BlockType getType() {
+		return type;
+	}
+
+	public String getMachineName() {
+		return machine_name;
+	}
+
+	@Nullable public List<String> getToolboxInitStatements() {
+		return toolbox_init;
+	}
+
+	public String getToolboxXML() {
+		if (toolboxXML == null) {
+			StringBuilder toolboxXMLBuilder = new StringBuilder();
+			toolboxXMLBuilder.append("<block type=\"").append(machine_name).append("\">");
+			if (toolbox_init != null)
+				toolbox_init.stream().filter(e -> !e.startsWith("~")).forEach(toolboxXMLBuilder::append);
+			toolboxXMLBuilder.append("</block>");
+			toolboxXML = toolboxXMLBuilder.toString();
+		}
+
+		return toolboxXML;
+	}
+
+	public String getToolboxTestXML() {
+		if (toolboxTestXML == null) {
+			StringBuilder toolboxXMLBuilder = new StringBuilder();
+			toolboxXMLBuilder.append("<block type=\"").append(machine_name).append("\">");
+			if (toolbox_init != null)
+				toolbox_init.stream().map(e -> e.startsWith("~") ? e.substring(1) : e).forEach(toolboxXMLBuilder::append);
+			toolboxXMLBuilder.append("</block>");
+			toolboxTestXML = toolboxXMLBuilder.toString();
+		}
+
+		return toolboxTestXML;
+	}
+
+	public JsonObject getBlocklyJSON() {
+		return blocklyJSON.getAsJsonObject();
 	}
 
 	public String getName() {

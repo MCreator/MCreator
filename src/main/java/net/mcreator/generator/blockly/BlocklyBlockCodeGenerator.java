@@ -76,13 +76,13 @@ public class BlocklyBlockCodeGenerator {
 			return;
 
 		if (supportedBlocksGenerator != null) {
-			if (toolboxBlock.type == IBlockGenerator.BlockType.PROCEDURAL) {
+			if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				if (!supportedBlocksGenerator.contains(type)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("blockly.warnings.block_not_supported", type)));
 					return;
 				}
-			} else if (toolboxBlock.type == IBlockGenerator.BlockType.OUTPUT) {
+			} else if (toolboxBlock.getType() == IBlockGenerator.BlockType.OUTPUT) {
 				if (!supportedBlocksGenerator.contains(type)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.block_not_supported", type)));
@@ -400,8 +400,8 @@ public class BlocklyBlockCodeGenerator {
 		if (blocks_machine_names.containsKey(blockType)) {
 			return blocks_machine_names.get(blockType);
 		} else {
-			String[] retval = blocks.values().stream().filter(block -> block.type == blockType)
-					.map(block -> block.machine_name).toArray(String[]::new);
+			String[] retval = blocks.values().stream().filter(block -> block.getType() == blockType)
+					.map(ToolboxBlock::getMachineName).toArray(String[]::new);
 			blocks_machine_names.put(blockType, retval);
 			return retval;
 		}

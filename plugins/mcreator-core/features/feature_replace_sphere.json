@@ -1,0 +1,38 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "targetState",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "newState",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "radius",
+      "check": "IntProvider"
+    }
+  ],
+  "extensions": [
+    "replace_sphere_validator"
+  ],
+  "inputsInline": true,
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"targetState\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"newState\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"radius\"><block type=\"int_provider_constant\"><field name=\"value\">5</field></block></value>"
+    ],
+    "inputs": [
+      "targetState",
+      "newState",
+      "radius"
+    ]
+  }
+}
