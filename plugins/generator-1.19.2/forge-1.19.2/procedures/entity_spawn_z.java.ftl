@@ -1,0 +1,1 @@
+(${input$entity} instanceof ServerPlayer _spe${customBlockIndex} && _spe${customBlockIndex}.getRespawnDimension().equals(_spe${customBlockIndex}.level.dimension()) && _spe${customBlockIndex}.getRespawnPosition() != null ? _spe${customBlockIndex}.getRespawnPosition().getZ() : world.getLevelData().getZSpawn())
