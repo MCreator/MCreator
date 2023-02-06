@@ -110,7 +110,7 @@ package ${package}.client.screens;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-			    	renderBgEntity(livingEntity, posX + ${component.x - 202}, posY + ${component.y - 100}, ${component.scale});
+			InventoryScreen.renderEntityInInventory(posX + ${component.x - 202}, posY + ${component.y - 100},${component.scale}, (float) posX - 211, (float) posY - 120, livingEntity);
 			    }
 			</#list>
         }
@@ -126,35 +126,6 @@ package ${package}.client.screens;
         }
     </#if>
 	}
-
-	<#if !data.getComponentsOfType("EntityModel").isEmpty()>
-	private static void renderBgEntity(LivingEntity entity, int posX, int posY, float scale) {
-		PoseStack poseStack = RenderSystem.getModelViewStack();
-		poseStack.pushPose();
-		poseStack.translate(posX, posY, 1050);
-		poseStack.scale(1, 1, -1);
-		RenderSystem.applyModelViewMatrix();
-		PoseStack secondPoseStack = new PoseStack();
-		secondPoseStack.translate(0, 0, 1000);
-		secondPoseStack.scale(scale, scale, scale);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180);
-		Quaternion secondQuaternion = Vector3f.XP.rotationDegrees((float) Math.atan(0));
-		quaternion.mul(secondQuaternion);
-		secondPoseStack.mulPose(quaternion);
-		Lighting.setupForEntityInInventory();
-		secondQuaternion.conj();
-		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-		dispatcher.overrideCameraOrientation(secondQuaternion);
-		dispatcher.setRenderShadow(false);
-		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0, 0, 0, 0, 1, secondPoseStack, buffer, 15728880));
-		buffer.endBatch();
-		dispatcher.setRenderShadow(true);
-		poseStack.popPose();
-		RenderSystem.applyModelViewMatrix();
-		Lighting.setupFor3DItems();
-	}
-	</#if>
 
 }
 <#-- @formatter:on -->
