@@ -227,7 +227,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readFromFS(java.io.File,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">readFromFS</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
  <a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Unsafe version of readFromFS with many checks ommited.</div>
+<div class="block">Unsafe version of readFromFS with many checks omitted.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadFromFS()" class="member-name-link">reloadFromFS</a>()</code></div>
@@ -649,11 +649,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>readFromFS</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></span>&nbsp;<span class="element-name">readFromFS</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
  <a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</span></div>
-<div class="block">Unsafe version of readFromFS with many checks ommited. Only intended to be used by tests</div>
+<div class="block">Unsafe version of readFromFS with many checks omitted. Only intended to be used by tests.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>workspaceFile</code> - workspace file</dd>
-<dd><code>generatorConfiguration</code> - generator configuration. If same as workspace, nothing is done, if different, regenerateRequired is set to true</dd>
+<dd><code>workspaceFile</code> - File containing the output workspace definition.</dd>
+<dd><code>generatorConfiguration</code> - If same as workspace, nothing is done, otherwise regenerateRequired is set to true.</dd>
 <dt>Returns:</dt>
 <dd>Workspace object for the given file</dd>
 </dl>

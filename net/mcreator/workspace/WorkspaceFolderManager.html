@@ -163,10 +163,18 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFileInWorkspace(java.io.File)" class="member-name-link">isFileInWorkspace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks if the provided file is contained in the workspace folder.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFileInWorkspace(java.io.File,boolean)" class="member-name-link">isFileInWorkspace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
+ boolean&nbsp;silent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks if the provided file is contained in the workspace folder.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStructure(java.lang.String)" class="member-name-link">removeStructure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStructure(java.lang.String)" class="member-name-link">removeStructure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -211,6 +219,34 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getWorkspaceFolder()">
 <h3>getWorkspaceFolder</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getWorkspaceFolder</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isFileInWorkspace(java.io.File)">
+<h3>isFileInWorkspace</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isFileInWorkspace</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span></div>
+<div class="block">Checks if the provided file is contained in the workspace folder.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>file</code> - The file to check.</dd>
+<dt>Returns:</dt>
+<dd>True if the provided file is inside the workspace folder.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isFileInWorkspace(java.io.File,boolean)">
+<h3>isFileInWorkspace</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isFileInWorkspace</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
+ boolean&nbsp;silent)</span></div>
+<div class="block">Checks if the provided file is contained in the workspace folder.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>file</code> - The file to check.</dd>
+<dd><code>silent</code> - Determines whether non-presence of input file in the workspace should be logged or not.</dd>
+<dt>Returns:</dt>
+<dd>True if the provided file is inside the workspace folder.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -341,12 +377,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getWorkspaceBackupsCacheDir()">
 <h3>getWorkspaceBackupsCacheDir</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getWorkspaceBackupsCacheDir</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="isFileInWorkspace(java.io.File)">
-<h3>isFileInWorkspace</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isFileInWorkspace</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span></div>
 </section>
 </li>
 </ul>
