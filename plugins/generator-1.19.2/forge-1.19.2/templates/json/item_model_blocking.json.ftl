@@ -1,6 +1,9 @@
 {
 <#if data.blockingRenderType == 0>
-  "parent": "${modid}:item/${registryname}",
+  "parent": "${modid}:item/handheld",
+  "textures": {
+    "layer0": "${modid}:items/${data.texture}"
+  }
   "display": {
     "thirdperson_righthand": {
         "rotation": [ 45, -35, 0 ]

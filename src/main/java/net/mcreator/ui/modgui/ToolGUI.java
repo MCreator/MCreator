@@ -81,9 +81,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model mirrored = new Model.BuiltInModel("Mirrored");
+	private final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
-	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { mirrored });
+	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { normalBlocking });
 
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
@@ -384,7 +384,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(mirrored),
+		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(normalBlocking),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
