@@ -63,7 +63,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 0.1, 100, 1));
+		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
 
 		JCheckBox followMouseMovement = new JCheckBox();
 		followMouseMovement.setOpaque(false);
