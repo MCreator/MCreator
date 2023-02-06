@@ -287,8 +287,9 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		Workspace workspace = null;
 		try {
-			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
+			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
@@ -312,9 +313,6 @@ public final class MCreatorApplication {
 					}
 				}
 
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile,
-								Launcher.version.getFullString()));
 				return mcreator;
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
@@ -346,6 +344,10 @@ public final class MCreatorApplication {
 		} catch (IOException | UnsupportedGeneratorException e) {
 			reportFailedWorkspaceOpen(e);
 		} finally {
+			if (workspace != null) {
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
+			}
 			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
