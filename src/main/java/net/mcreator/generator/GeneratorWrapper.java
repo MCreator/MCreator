@@ -30,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({ "unused", "ClassCanBeRecord" }) public class GeneratorWrapper {
+@SuppressWarnings("unused") public class GeneratorWrapper {
 
 	private final Generator generator;
 
@@ -92,7 +92,7 @@ import java.util.stream.Collectors;
 	 * @param elementName The name to convert
 	 * @return The plain name of the element
 	 */
-	public String getElementPlainName(String elementName) {
+	public static String getElementPlainName(String elementName) {
 		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", ""), ".");
 	}
 
@@ -101,7 +101,7 @@ import java.util.stream.Collectors;
 		if (element != null)
 			return element.getRegistryName();
 
-		generator.LOG.warn("Failed to determine registry name for: " + modElement);
+		generator.getLogger().warn("Failed to determine registry name for: " + modElement);
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -111,7 +111,7 @@ import java.util.stream.Collectors;
 			return getResourceLocationForModElement(element);
 		}
 
-		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
+		generator.getLogger().warn("Failed to determine resource location for mod element: " + modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 

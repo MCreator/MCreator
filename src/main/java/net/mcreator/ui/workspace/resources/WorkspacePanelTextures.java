@@ -39,6 +39,8 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -174,33 +176,35 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		del.addActionListener(actionEvent -> {
-			List<File> files = listGroup.getSelectedItemsList();
-			if (files.size() > 0) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-						L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-
-				if (n == 0) {
-					files.forEach(file -> {
-						if (file != null) {
-							file.delete();
-
-							// try to delete mcmeta file if it exists too
-							File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
-							if (mcmeta.isFile())
-								mcmeta.delete();
-						}
-					});
-					reloadElements();
-				}
-			}
-		});
+		del.addActionListener(a -> deleteCurrentlySelected());
 
 		edit.addActionListener(e -> editSelectedFile());
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 
 		add("North", bar);
+	}
+
+	private void deleteCurrentlySelected() {
+		List<File> files = listGroup.getSelectedItemsList();
+		if (files.size() > 0) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+
+			if (n == 0) {
+				files.forEach(file -> {
+					if (file != null) {
+						file.delete();
+
+						// try to delete mcmeta file if it exists too
+						File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
+						if (mcmeta.isFile())
+							mcmeta.delete();
+					}
+				});
+				reloadElements();
+			}
+		}
 	}
 
 	private void exportSelectedImages() {
@@ -241,6 +245,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.setFixedCellWidth(57);
 		listElement.addMouseListener(mouseAdapter);
 		listGroup.addList(listElement);
+		listElement.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_DELETE -> deleteCurrentlySelected();
+				case KeyEvent.VK_ENTER -> editSelectedFile();
+				}
+			}
+		});
 		listElement.setBorder(
 				BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
 						listElement.getFont().deriveFont(24.0f), Color.white));

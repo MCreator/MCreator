@@ -533,7 +533,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp22));
 
-		JPanel enderpanel = new JPanel(new GridLayout(9, 2, 20, 10));
+		JPanel enderpanel = new JPanel(new GridLayout(9, 2, 20, 2));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
 				L10N.label("elementgui.armor.layer_texture")));
@@ -1071,16 +1071,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				.getReadableName();
 
 		return armor;
-	}
-
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
-		modElement.clearMetadata();
-		modElement.putMetadata("eh", enableHelmet.isSelected());
-		modElement.putMetadata("ec", enableBody.isSelected());
-		modElement.putMetadata("el", enableLeggings.isSelected());
-		modElement.putMetadata("eb", enableBoots.isSelected());
-		modElement.reinit();
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

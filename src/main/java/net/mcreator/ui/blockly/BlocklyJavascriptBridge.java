@@ -51,6 +51,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class BlocklyJavascriptBridge {
@@ -58,18 +59,18 @@ public class BlocklyJavascriptBridge {
 	private static final Logger LOG = LogManager.getLogger("Blockly JS Bridge");
 
 	private JavaScriptEventListener listener;
-	private final Runnable blocklyEvent;
+	private final Supplier<Boolean> blocklyEvent;
 	private final MCreator mcreator;
 
-	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
+	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Supplier<Boolean> blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
 		this.mcreator = mcreator;
 	}
 
 	// these methods are called from JavaScript so we suppress warnings
 	@SuppressWarnings("unused") public void triggerEvent() {
-		blocklyEvent.run();
-		if (listener != null)
+		boolean success = blocklyEvent.get();
+		if (success && listener != null)
 			listener.event();
 	}
 

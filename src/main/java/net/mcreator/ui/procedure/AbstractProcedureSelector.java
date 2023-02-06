@@ -29,15 +29,21 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 
-public abstract class AbstractProcedureSelector extends JPanel {
+public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
 
 	private static final Gson gson = new GsonBuilder().setLenient().create();
 
@@ -198,6 +204,51 @@ public abstract class AbstractProcedureSelector extends JPanel {
 	public AbstractProcedureSelector makeReturnValueOptional() {
 		returnTypeOptional = true;
 		return this;
+	}
+
+	public void enableRealtimeValidation() {
+		procedures.addActionListener(e -> getValidationStatus());
+	}
+
+	@Override public void paint(Graphics g) {
+		super.paint(g);
+
+		if (validator != null && currentValidationResult != null) {
+			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+				g.setColor(new Color(238, 229, 113));
+				g.drawRect(0, 0, getWidth(), getHeight());
+
+				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
+			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+				g.setColor(new Color(204, 108, 108));
+				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+
+				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 11, 11, null);
+			}
+		}
+	}
+
+	//validation code
+	private Validator validator = null;
+	private Validator.ValidationResult currentValidationResult = null;
+
+	@Override public Validator.ValidationResult getValidationStatus() {
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+
+		this.currentValidationResult = validationResult;
+
+		//repaint as new validation status might have to be rendered
+		repaint();
+
+		return validationResult;
+	}
+
+	@Override public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	@Override public Validator getValidator() {
+		return validator;
 	}
 
 	public enum Side {

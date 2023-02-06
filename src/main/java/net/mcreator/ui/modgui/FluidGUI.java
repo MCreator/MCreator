@@ -53,7 +53,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
@@ -106,11 +105,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector flowCondition;
 	private ProcedureSelector beforeReplacingBlock;
 
-	private ProcedureSelector generateCondition;
-	private final JSpinner lakeRarity = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
-	private DimensionListField spawnWorldTypes;
-	private BiomeListField restrictionBiomes;
-
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public FluidGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -120,8 +114,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	@Override protected void initGUI() {
-		restrictionBiomes = new BiomeListField(mcreator);
-
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.fluid.when_added"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
@@ -148,14 +140,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		beforeReplacingBlock = new ProcedureSelector(this.withEntry("fluid/before_replacing_block"), mcreator,
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
-
-		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				"Additional generation condition", VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
-				L10N.t("condition.common.no_additional")).makeInline();
-
-		spawnWorldTypes = new DimensionListField(mcreator);
-		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
 		fluidtype.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -290,7 +274,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluidBucketProperties.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
 
-		JPanel pane1 = new JPanel(new BorderLayout(10, 2));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
@@ -380,7 +363,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		properties.setOpaque(false);
 
 		pane2.setOpaque(false);
-		pane1.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(properties));
 
 		JPanel events = new JPanel();
@@ -401,28 +383,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		JPanel spawning = new JPanel(new GridLayout(3, 2, 2, 2));
-		spawning.setOpaque(false);
-
-		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/generate_lakes"),
-				L10N.label("elementgui.fluid.generate_lakes")));
-		spawning.add(spawnWorldTypes);
-
-		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/gen_frequency"),
-				L10N.label("elementgui.fluid.lake_rarity")));
-		spawning.add(lakeRarity);
-
-		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				L10N.label("elementgui.common.restrict_to_biomes")));
-		spawning.add(restrictionBiomes);
-
-		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
-
-		pane1.add("Center", spawning);
-		pane1.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
-
-		pane1.setOpaque(false);
-
 		textureStill.setValidator(new TileHolderValidator(textureStill));
 		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.fluid.error_fluid_needs_name")));
@@ -440,7 +400,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		addPage(L10N.t("elementgui.fluid.page_visual_and_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane1));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -459,8 +418,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onDestroyedByExplosion.refreshListKeepSelected();
 		flowCondition.refreshListKeepSelected();
 		beforeReplacingBlock.refreshListKeepSelected();
-
-		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
@@ -508,7 +465,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		flammability.setValue(fluid.flammability);
 		fireSpreadSpeed.setValue(fluid.fireSpreadSpeed);
 		colorOnMap.setSelectedItem(fluid.colorOnMap);
-		spawnWorldTypes.setListElements(fluid.spawnWorldTypes);
 		onBlockAdded.setSelectedProcedure(fluid.onBlockAdded);
 		onNeighbourChanges.setSelectedProcedure(fluid.onNeighbourChanges);
 		onTickUpdate.setSelectedProcedure(fluid.onTickUpdate);
@@ -518,9 +474,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		flowCondition.setSelectedProcedure(fluid.flowCondition);
 		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
-		lakeRarity.setValue(fluid.frequencyOnChunks);
-		generateCondition.setSelectedProcedure(fluid.generateCondition);
-		restrictionBiomes.setListElements(fluid.restrictionBiomes);
 		if (fluid.creativeTab != null)
 			creativeTab.setSelectedItem(fluid.creativeTab);
 
@@ -572,19 +525,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.flowCondition = flowCondition.getSelectedProcedure();
 		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
-		fluid.spawnWorldTypes = spawnWorldTypes.getListElements();
-		fluid.restrictionBiomes = restrictionBiomes.getListElements();
-		fluid.generateCondition = generateCondition.getSelectedProcedure();
-		fluid.frequencyOnChunks = (int) lakeRarity.getValue();
 		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		return fluid;
-	}
-
-	@Override protected void afterGeneratableElementStored() {
-		super.afterGeneratableElementStored();
-		modElement.clearMetadata();
-		modElement.putMetadata("gb", generateBucket.isSelected());
-		modElement.reinit();
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

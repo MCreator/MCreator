@@ -44,6 +44,8 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -121,8 +123,8 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					UniqueNameValidator validator = new UniqueNameValidator(name,
-							L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
+							() -> Transliteration.transliterateString(name.getText()),
 							() -> TableUtil.getColumnContents(elements, 0).stream(),
 							new JavaMemberNameValidator(name, false));
 					name.setValidator(validator);
@@ -229,8 +231,9 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
-									L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+							UniqueNameValidator validator = new UniqueNameValidator(
+									L10N.t("workspace.variables.variable_name"),
+									() -> Transliteration.transliterateString(((VTextField) component).getText()),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
 									new JavaMemberNameValidator((VTextField) component, false));
 							validator.setIsPresentOnList(false);
@@ -244,21 +247,13 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			}
 		});
 
-		delvar.addActionListener(e -> {
-			if (elements.getSelectedRow() == -1)
-				return;
+		delvar.addActionListener(a -> deleteCurrentlySelected());
 
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == JOptionPane.YES_OPTION) {
-				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-						.forEach(el -> {
-							VariableElement element = new VariableElement();
-							element.setName(el);
-							workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
-						});
-				reloadElements();
+		elements.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelected();
+				}
 			}
 		});
 
@@ -294,6 +289,24 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			}
 		}).start());
 
+	}
+
+	private void deleteCurrentlySelected() {
+		if (elements.getSelectedRow() == -1)
+			return;
+
+		int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+				L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (n == JOptionPane.YES_OPTION) {
+			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
+					.forEach(el -> {
+						VariableElement element = new VariableElement();
+						element.setName(el);
+						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
+					});
+			reloadElements();
+		}
 	}
 
 	@Override public void reloadElements() {

@@ -38,6 +38,8 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -150,16 +152,13 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
-		del.addActionListener(e -> {
-			Model model = modelList.getSelectedValue();
-			if (model != null) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-						L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
-				if (n == 0) {
-					Arrays.stream(model.getFiles()).forEach(File::delete);
-					reloadElements();
+		del.addActionListener(e -> deleteCurrentlySelected());
+
+		modelList.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelected();
 				}
 			}
 		});
@@ -178,6 +177,20 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		});
 
 		add("North", bar);
+	}
+
+	private void deleteCurrentlySelected() {
+		Model model = modelList.getSelectedValue();
+		if (model != null) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+
+			if (n == 0) {
+				Arrays.stream(model.getFiles()).forEach(File::delete);
+				reloadElements();
+			}
+		}
 	}
 
 	private void editSelectedModelAnimations() {

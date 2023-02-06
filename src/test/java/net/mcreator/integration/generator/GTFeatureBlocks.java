@@ -31,6 +31,8 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTFeatureBlocks {
-	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped");
+	private static final List<String> specialCases = List.of("block_predicate_not", "int_provider_clamped",
+			"block_predicate_all_of", "block_predicate_any_of");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if features are not supported by this generator
@@ -134,6 +137,29 @@ public class GTFeatureBlocks {
 					}
 				}
 
+				if (featureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
+					JsonArray extensions = featureBlock.blocklyJSON.getAsJsonObject().get("extensions")
+							.getAsJsonArray();
+					for (int i = 0; i < extensions.size(); i++) {
+						String extension = extensions.get(i).getAsString();
+						String fieldName = extension.replace("_list_provider", "");
+						// Unlike for procedures, we can skip the conversion to proper field names because those extensions aren't used by features
+
+						if (featureBlock.getFields().contains(fieldName)) {
+							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, fieldName);
+
+							if (values.length == 0 || values[0].equals(""))
+								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, fieldName + "s");
+
+							if (values.length > 0 && !values[0].equals("")) {
+								additionalXML.append("<field name=\"").append(fieldName).append("\">")
+										.append(ListUtils.getRandomItem(random, values)).append("</field>");
+								processed++;
+							}
+						}
+					}
+				}
+
 				if (processed != featureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
 							+ featureBlock.machine_name);
@@ -158,6 +184,9 @@ public class GTFeatureBlocks {
 						<value name="condition"><block type="block_predicate_is_air"></block></value>""");
 				case "int_provider_clamped" -> additionalXML.append("""
 						<value name="toClamp"><block type="int_provider_constant"><field name="value">2</field></block></value>""");
+				case "block_predicate_all_of", "block_predicate_any_of" -> additionalXML.append("""
+						<value name="condition0"><block type="block_predicate_is_air"></block></value>
+						<value name="condition1"><block type="block_predicate_is_air"></block></value>""");
 			}
 
 			testXML = testXML.replace("<block type=\"" + featureBlock.machine_name + "\">",

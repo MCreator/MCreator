@@ -20,17 +20,20 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.Particle;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,11 +79,6 @@ import java.util.List;
 	public int fireSpreadSpeed;
 	public String colorOnMap;
 
-	public int frequencyOnChunks;
-	public List<String> spawnWorldTypes;
-	public List<BiomeEntry> restrictionBiomes;
-	public Procedure generateCondition;
-
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourChanges;
 	public Procedure onTickUpdate;
@@ -114,10 +112,6 @@ import java.util.List;
 
 		this.resistance = 100;
 		this.colorOnMap = "DEFAULT";
-
-		this.spawnWorldTypes = new ArrayList<>();
-		this.frequencyOnChunks = 5;
-		this.restrictionBiomes = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -137,14 +131,6 @@ import java.util.List;
 		return isFluidTinted();
 	}
 
-	public boolean extendsForgeFlowingFluid() {
-		return spawnParticles || flowStrength != 1 || flowCondition != null || beforeReplacingBlock != null;
-	}
-
-	public boolean doesGenerateInWorld() {
-		return spawnWorldTypes.size() > 0;
-	}
-
 	@Override public String getRenderType() {
 		return "translucent";
 	}
@@ -155,10 +141,27 @@ import java.util.List;
 		if (generateBucket)
 			baseTypes.add(BaseType.ITEM);
 
-		if (doesGenerateInWorld())
-			baseTypes.add(BaseType.FEATURE);
-
 		return baseTypes;
 	}
 
+	@Override public List<MCItem> providedMCItems() {
+		ArrayList<MCItem> retval = new ArrayList<>();
+		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Fluid block"));
+		if (this.generateBucket)
+			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Fluid bucket"));
+		return retval;
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if ("bucket".equals(suffix)) {
+			// Use the custom bucket texture if present
+			if (!textureBucket.isEmpty()) {
+				return workspace.getFolderManager().getTextureImageIcon(textureBucket, TextureType.ITEM);
+			}
+			// Otherwise, fallback to the generated fluid bucket icon
+			return MinecraftImageGenerator.generateFluidBucketIcon(
+					workspace.getFolderManager().getTextureImageIcon(textureStill, TextureType.BLOCK));
+		}
+		return null;
+	}
 }

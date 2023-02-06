@@ -152,8 +152,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().stream().filter(element -> element.getType().getBaseType() == BaseType.BLOCK)
-				.forEach(modElement -> elements.addAll(
+		workspace.getModElements().forEach(modElement -> elements.addAll(
 						modElement.getMCItems().stream().filter(e -> e.getType().equals("block")).toList()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))

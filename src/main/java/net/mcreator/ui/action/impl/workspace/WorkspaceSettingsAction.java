@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
+import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
@@ -25,6 +26,8 @@ import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.StructureUtils;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.WorkspaceRefactoringEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
@@ -61,6 +64,9 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 	public static void refactorWorkspace(MCreator mcreator, WorkspaceSettingsChange change) {
 		if (change.refactorNeeded() && change.oldSettings != null) {
+
+			MCREvent.event(new WorkspaceRefactoringEvent(mcreator, change));
+
 			if (change.generatorFlavorChanged) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
@@ -131,7 +137,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
 				mcreator.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile));
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile, Launcher.version.getFullString()));
 			}
 
 			// handle change of generator in a different manner
