@@ -127,27 +127,7 @@ public class GTFeatureBlocks {
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
-								switch (arg.get("type").getAsString()) {
-								case "field_checkbox" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-									processed++;
-								}
-								case "field_number" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">4</field>");
-									processed++;
-								}
-								case "field_input" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-									processed++;
-								}
-								case "field_dropdown" -> {
-									JsonArray opts = arg.get("options").getAsJsonArray();
-									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-									additionalXML.append("<field name=\"").append(field).append("\">")
-											.append(opt.get(1).getAsString()).append("</field>");
-									processed++;
-								}
-								}
+								processed += appendFieldXML(additionalXML, arg, field);
 								break;
 							}
 						}
@@ -179,6 +159,35 @@ public class GTFeatureBlocks {
 				if (processed != featureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
 							+ featureBlock.getMachineName());
+					continue;
+				}
+			}
+
+			if (featureBlock.getRepeatingFields() != null) {
+				int processedFields = 0;
+				int totalFields = 0;
+				boolean countMissing = false;
+				for (JsonObject fieldEntry : featureBlock.getRepeatingFields()) {
+					if (fieldEntry.has("count")) {
+						totalFields += fieldEntry.get("count").getAsInt();
+						for (int i = 0; i < fieldEntry.get("count").getAsInt(); i++) {
+							processedFields += appendFieldXML(additionalXML,
+									fieldEntry.get("field_definition").getAsJsonObject(),
+									fieldEntry.get("name").getAsString() + i);
+						}
+					} else {
+						countMissing = true;
+						break;
+					}
+				}
+				if (countMissing) {
+					LOG.warn("[" + generatorName + "] Skipping procedure block that doesn't specify repeating field "
+							+ "initial count: " + featureBlock.getMachineName());
+					continue;
+				}
+				if (processedFields != totalFields) {
+					LOG.warn("[" + generatorName + "] Skipping procedure block with incorrectly "
+							+ "defined repeating field: " + featureBlock.getMachineName());
 					continue;
 				}
 			}
@@ -275,5 +284,34 @@ public class GTFeatureBlocks {
 				</block></value><next><block type="%s">
 					<value name="%s">%s</value></block></next></block></xml>
 				""".formatted(placementType, valueName, testXML);
+	}
+
+	private static int appendFieldXML( StringBuilder additionalXML, JsonObject arg, String field) {
+		int processed = 0;
+		switch (arg.get("type").getAsString()) {
+		case "field_checkbox" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
+			processed++;
+		}
+		case "field_number" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">4</field>");
+			processed++;
+		}
+		case "field_input", "field_javaname" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+			processed++;
+		}
+		case "field_dropdown" -> {
+			JsonArray opts = arg.get("options").getAsJsonArray();
+			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
+			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString()).append("</field>");
+			processed++;
+		}
+		case "field_mcitem_selector" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
+			processed++;
+		}
+		}
+		return processed;
 	}
 }
