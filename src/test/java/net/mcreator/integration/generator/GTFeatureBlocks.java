@@ -286,7 +286,7 @@ public class GTFeatureBlocks {
 				""".formatted(placementType, valueName, testXML);
 	}
 
-	private static int appendFieldXML( StringBuilder additionalXML, JsonObject arg, String field) {
+	private static int appendFieldXML(StringBuilder additionalXML, JsonObject arg, String field) {
 		int processed = 0;
 		switch (arg.get("type").getAsString()) {
 		case "field_checkbox" -> {
