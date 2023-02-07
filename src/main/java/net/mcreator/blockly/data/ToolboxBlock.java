@@ -33,7 +33,7 @@ import java.util.List;
 	IBlockGenerator.BlockType type;
 
 	@Nullable private List<String> fields;
-	@Nullable private List<String> repeating_fields;
+	@Nullable private List<JsonObject> repeating_fields;
 	@Nullable private List<IInput> inputs;
 	@Nullable private List<StatementInput> statements;
 	@Nullable private List<IInput> repeating_inputs;
@@ -58,7 +58,7 @@ import java.util.List;
 		return fields;
 	}
 
-	@Nullable public List<String> getRepeatingFields() {
+	@Nullable public List<JsonObject> getRepeatingFields() {
 		return repeating_fields;
 	}
 

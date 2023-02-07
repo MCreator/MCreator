@@ -18,6 +18,7 @@
 
 package net.mcreator.generator.blockly;
 
+import com.google.gson.JsonObject;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -226,7 +227,8 @@ public class BlocklyBlockCodeGenerator {
 
 		// next we check for field groups if they are defined, we process them and add to data model
 		if (toolboxBlock.getRepeatingFields() != null) {
-			for (String fieldName : toolboxBlock.getRepeatingFields()) {
+			for (JsonObject fieldEntry : toolboxBlock.getRepeatingFields()) {
+				String fieldName = fieldEntry.get("name").getAsString();
 				Map<String, Element> matchingElements = elements.stream()
 						.filter(e -> e.getNodeName().equals("field") && e.getAttribute("name")
 								.matches(fieldName + "\\d+"))
