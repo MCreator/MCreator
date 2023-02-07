@@ -1,1 +1,7 @@
-(${input$entity} instanceof ServerPlayer _plr${customBlockIndex} && _plr${customBlockIndex}.getRespawnDimension().equals(((Level) world).dimension()) && _plr${customBlockIndex}.getRespawnPosition() != null ? _plr${customBlockIndex}.getRespawnPosition().getX() : world.getLevelData().getXSpawn())
+(new Object() {
+	public double getXSpawn(Entity _entity) {
+		if (_entity instanceof ServerPlayer _player && _player.getRespawnDimension().equals(_entity.level.dimension()) && _player.getRespawnPosition() != null)
+			return _player.getRespawnPosition().getX();
+		return _entity.level.getLevelData().getXSpawn();
+	}
+}.getXSpawn(${input$entity}))
