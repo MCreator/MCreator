@@ -410,7 +410,10 @@ public class GTProcedureBlocks {
 			processed++;
 		}
 		case "field_number" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
+			if (arg.has("precision") && arg.get("precision").getAsInt() == 1)
+				additionalXML.append("<field name=\"").append(field).append("\">1</field>");
+			else
+				additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
 			processed++;
 		}
 		case "field_input", "field_javaname" -> {
