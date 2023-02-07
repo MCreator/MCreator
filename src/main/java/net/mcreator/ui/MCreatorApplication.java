@@ -303,6 +303,7 @@ public final class MCreatorApplication {
 					mcreator.requestFocusInWindow();
 					mcreator.toFront();
 					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+					return mcreator;
 				} else { // already open, just focus it
 					LOG.warn("Trying to open already open workspace, bringing it to the front.");
 					for (MCreator openmcreator : openMCreators) {
@@ -312,8 +313,6 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-
-				return mcreator;
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
