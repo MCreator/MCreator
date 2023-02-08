@@ -107,7 +107,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				setVisible(false);
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (double) scale.getValue(), followMouseMovement.isSelected());
+							displayCondition.getSelectedProcedure(), (int) scale.getValue(), followMouseMovement.isSelected());
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -116,7 +116,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 					int idx = editor.components.indexOf(model);
 					editor.components.remove(model);
 					EntityModel modelNew = new EntityModel(model.getX(), model.getY(), entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (double) scale.getValue(), followMouseMovement.isSelected());
+							displayCondition.getSelectedProcedure(), (int) scale.getValue(), followMouseMovement.isSelected());
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}
