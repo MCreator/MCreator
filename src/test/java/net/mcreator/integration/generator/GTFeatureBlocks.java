@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -166,24 +167,13 @@ public class GTFeatureBlocks {
 			if (featureBlock.getRepeatingFields() != null) {
 				int processedFields = 0;
 				int totalFields = 0;
-				boolean countMissing = false;
-				for (JsonObject fieldEntry : featureBlock.getRepeatingFields()) {
-					if (fieldEntry.has("count")) {
-						totalFields += fieldEntry.get("count").getAsInt();
-						for (int i = 0; i < fieldEntry.get("count").getAsInt(); i++) {
-							processedFields += appendFieldXML(additionalXML,
-									fieldEntry.get("field_definition").getAsJsonObject(),
-									fieldEntry.get("name").getAsString() + i);
-						}
-					} else {
-						countMissing = true;
-						break;
+				for (RepeatingField fieldEntry : featureBlock.getRepeatingFields()) {
+					int count = fieldEntry.count() == 0 ? 1 : fieldEntry.count();
+					totalFields += count;
+					for (int i = 0; i < count; i++) {
+						processedFields += appendFieldXML(additionalXML, fieldEntry.field_definition(),
+								fieldEntry.name() + i);
 					}
-				}
-				if (countMissing) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block that doesn't specify repeating field "
-							+ "initial count: " + featureBlock.getMachineName());
-					continue;
 				}
 				if (processedFields != totalFields) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with incorrectly "
