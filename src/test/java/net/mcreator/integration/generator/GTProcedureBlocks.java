@@ -210,7 +210,7 @@ public class GTProcedureBlocks {
 				int totalFields = 0;
 				for (RepeatingField fieldEntry : procedureBlock.getRepeatingFields()) {
 					if (fieldEntry.field_definition() != null) {
-						int count = 3;
+						int count = 1;
 						if (fieldEntry.field_definition().has("testCount")) {
 							count = fieldEntry.field_definition().get("testCount").getAsInt();
 						}
