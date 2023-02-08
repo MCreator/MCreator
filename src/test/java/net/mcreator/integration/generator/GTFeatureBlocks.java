@@ -168,11 +168,18 @@ public class GTFeatureBlocks {
 				int processedFields = 0;
 				int totalFields = 0;
 				for (RepeatingField fieldEntry : featureBlock.getRepeatingFields()) {
-					int count = fieldEntry.count() == 0 ? 1 : fieldEntry.count();
-					totalFields += count;
-					for (int i = 0; i < count; i++) {
-						processedFields += appendFieldXML(additionalXML, fieldEntry.field_definition(),
-								fieldEntry.name() + i);
+					if (fieldEntry.field_definition() != null) {
+						int count = 1;
+						if (fieldEntry.field_definition().has("testCount")) {
+							count = fieldEntry.field_definition().get("testCount").getAsInt();
+						}
+						totalFields += count;
+						for (int i = 0; i < count; i++) {
+							processedFields += appendFieldXML(additionalXML, fieldEntry.field_definition(),
+									fieldEntry.name() + i);
+						}
+					} else {
+						totalFields++; // increase total fields by 1 if field definition is null, so warning is emmited
 					}
 				}
 				if (processedFields != totalFields) {

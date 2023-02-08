@@ -209,11 +209,16 @@ public class GTProcedureBlocks {
 				int processedFields = 0;
 				int totalFields = 0;
 				for (RepeatingField fieldEntry : procedureBlock.getRepeatingFields()) {
-					int count = fieldEntry.count() == 0 ? 1 : fieldEntry.count();
-					totalFields += count;
-					for (int i = 0; i < count; i++) {
-						processedFields += appendFieldXML(workspace, random, additionalXML,
-								fieldEntry.field_definition(), fieldEntry.name() + i);
+					if (fieldEntry.field_definition() != null) {
+						int count = 3;
+						if (fieldEntry.field_definition().has("testCount")) {
+							count = fieldEntry.field_definition().get("testCount").getAsInt();
+						}
+						totalFields += count;
+						for (int i = 0; i < count; i++) {
+							processedFields += appendFieldXML(workspace, random, additionalXML,
+									fieldEntry.field_definition(), fieldEntry.name() + i);
+						}
 					}
 				}
 				if (processedFields != totalFields) {
@@ -413,7 +418,8 @@ public class GTProcedureBlocks {
 		case "field_dropdown" -> {
 			JsonArray opts = arg.get("options").getAsJsonArray();
 			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString()).append("</field>");
+			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString())
+					.append("</field>");
 			processed++;
 		}
 		case "field_mcitem_selector" -> {
@@ -428,7 +434,8 @@ public class GTProcedureBlocks {
 			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 
 			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
-			String customEntryProviders = optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
+			String customEntryProviders =
+					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
 
 			String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
 			if (values.length > 0 && !values[0].equals("")) {

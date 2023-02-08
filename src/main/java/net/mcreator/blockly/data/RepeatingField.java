@@ -21,4 +21,6 @@ package net.mcreator.blockly.data;
 
 import com.google.gson.JsonObject;
 
-public record RepeatingField(String name, int count, JsonObject field_definition) {}
+import javax.annotation.Nullable;
+
+public record RepeatingField(String name, @Nullable JsonObject field_definition) {}
