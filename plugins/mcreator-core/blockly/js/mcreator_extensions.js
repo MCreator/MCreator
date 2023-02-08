@@ -315,3 +315,20 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition', 'BlockPredicate'),
         undefined, ['block_predicate_mutator_input']);
+
+// Helper function for extensions that validate one or more resource location text fields
+function validateResourceLocationFields(...fields) {
+    return function() {
+        for (let i = 0; i < fields.length; i++) {
+            let field = this.getField(fields[i]);
+            // The validator checks if the new input value is a valid resource location
+            field.setValidator(function(newValue) {
+                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
+                    return newValue;
+                return null;
+            });
+        }
+    }
+}
+
+Blockly.Extensions.register('holder_set_tag_validator', validateResourceLocationFields('tag'));

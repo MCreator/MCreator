@@ -1,0 +1,49 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "blockSet",
+      "check": "BlockHolderSet"
+    },
+    {
+      "type": "field_number",
+      "name": "x",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    },
+    {
+      "type": "field_number",
+      "name": "y",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    },
+    {
+      "type": "field_number",
+      "name": "z",
+      "value": 0,
+      "precision": 1,
+      "min": -15,
+      "max": 15
+    }
+  ],
+  "output": "BlockPredicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+    "toolbox_init": [
+      "<value name=\"blockSet\"><block type=\"block_holder_set_tag\"><field name=\"tag\">minecraft:dirt</field></block></value>"
+    ],
+    "inputs": [
+      "blockSet"
+    ],
+    "fields": [
+      "x",
+      "y",
+      "z"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "tag",
+      "text": "minecraft:dirt"
+    }
+  ],
+  "extensions": [
+    "holder_set_tag_validator"
+  ],
+  "output": "BlockHolderSet",
+  "colour": "45",
+  "mcreator": {
+    "toolbox_id": "blocks",
+    "fields": [
+      "tag"
+    ]
+  }
+}
