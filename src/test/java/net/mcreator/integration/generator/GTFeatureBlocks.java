@@ -169,7 +169,7 @@ public class GTFeatureBlocks {
 				int totalFields = 0;
 				for (RepeatingField fieldEntry : featureBlock.getRepeatingFields()) {
 					if (fieldEntry.field_definition() != null) {
-						int count = 1;
+						int count = 3;
 						if (fieldEntry.field_definition().has("testCount")) {
 							count = fieldEntry.field_definition().get("testCount").getAsInt();
 						}
