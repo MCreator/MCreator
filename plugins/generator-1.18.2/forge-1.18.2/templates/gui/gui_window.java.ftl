@@ -89,9 +89,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				InventoryScreen.renderEntityInInventoryRaw(this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale},
-					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 11} - mouseX) / 40.0)</#if>,
-					${component.rotationY / 20.0}f <#if followMouse> + (float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)</#if>,
+				InventoryScreen.renderEntityInInventory(this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale},
+					<#if followMouse> + (float) Math.atan((this.leftPos + ${x + 11} - mouseX) / 40.0)<#else>0</#if>,
+					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
 					livingEntity
 				);
 			}

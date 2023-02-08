@@ -115,8 +115,8 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						InventoryScreen.renderEntityInInventoryRaw(posX + ${component.x - 202}, posY + ${component.y - 100},
-							${component.scale}, ${component.rotationX / 20.0}f, ${component.rotationY / 20.0}f, livingEntity);
+						InventoryScreen.renderEntityInInventory(posX + ${component.x - 202}, posY + ${component.y - 100},
+							${component.scale}, 0, 0, livingEntity);
 					}
 				</#list>
 			}

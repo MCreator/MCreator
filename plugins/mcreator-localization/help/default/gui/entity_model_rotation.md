@@ -1,2 +1,1 @@
-Entity x and y rotation parameters define initial 
-rendered entity model rotation in degrees.
+Entity yaw rotation parameter defines initial rotation of the rendered entity model in degrees.
