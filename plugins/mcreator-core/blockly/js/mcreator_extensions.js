@@ -328,6 +328,15 @@ Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepe
         }),
         undefined, ['block_predicate_mutator_input']);
 
+Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMixin(
+        'block_list_mutator_container', 'block_list_mutator_input', 'condition',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldMCItemSelector('allblocks'), 'block' + index)
+        }, false),
+        undefined, ['block_list_mutator_input']);
+
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
     return function() {
