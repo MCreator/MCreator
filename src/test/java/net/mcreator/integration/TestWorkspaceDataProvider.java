@@ -490,16 +490,6 @@ public class TestWorkspaceDataProvider {
 			fluid.flowCondition = new Procedure("condition1");
 			fluid.beforeReplacingBlock = new Procedure("procedure7");
 			fluid.type = _true ? "WATER" : "LAVA";
-			fluid.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "End"));
-			fluid.restrictionBiomes = new ArrayList<>();
-			if (!emptyLists) {
-				fluid.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
-								.limit(biomes.size() / 4)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-			}
-			fluid.frequencyOnChunks = 13;
-			fluid.generateCondition = emptyLists ? null : new Procedure("condition1");
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
