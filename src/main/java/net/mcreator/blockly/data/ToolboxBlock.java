@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings({ "unused", "MismatchedQueryAndUpdateOfCollection" }) public class ToolboxBlock {
 	String machine_name;
@@ -137,7 +138,7 @@ import java.util.List;
 			StringBuilder toolboxXMLBuilder = new StringBuilder();
 			toolboxXMLBuilder.append("<block type=\"").append(machine_name).append("\">");
 			if (toolbox_init != null)
-				toolbox_init.stream().filter(e -> !e.startsWith("~")).forEach(toolboxXMLBuilder::append);
+				toolbox_init.stream().filter(Objects::nonNull).filter(e -> !e.startsWith("~")).forEach(toolboxXMLBuilder::append);
 			toolboxXMLBuilder.append("</block>");
 			toolboxXML = toolboxXMLBuilder.toString();
 		}
@@ -150,7 +151,7 @@ import java.util.List;
 			StringBuilder toolboxXMLBuilder = new StringBuilder();
 			toolboxXMLBuilder.append("<block type=\"").append(machine_name).append("\">");
 			if (toolbox_init != null)
-				toolbox_init.stream().map(e -> e.startsWith("~") ? e.substring(1) : e).forEach(toolboxXMLBuilder::append);
+				toolbox_init.stream().filter(Objects::nonNull).map(e -> e.startsWith("~") ? e.substring(1) : e).forEach(toolboxXMLBuilder::append);
 			toolboxXMLBuilder.append("</block>");
 			toolboxTestXML = toolboxXMLBuilder.toString();
 		}
