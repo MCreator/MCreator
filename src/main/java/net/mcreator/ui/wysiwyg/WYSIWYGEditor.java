@@ -60,11 +60,11 @@ public class WYSIWYGEditor extends JPanel {
 		add(new WYSIWYGComponentRegistration<>("checkbox", "addcheckbox", false, Checkbox.class, CheckboxDialog.class));
 		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class,
 				TextFieldDialog.class));
+		add(new WYSIWYGComponentRegistration<>("entity_model", "addmodel", true, EntityModel.class, EntityModelDialog.class));
 		add(new WYSIWYGComponentRegistration<>("input_slot", "addinslot", false, InputSlot.class,
 				InputSlotDialog.class));
 		add(new WYSIWYGComponentRegistration<>("output_slot", "addoutslot", false, OutputSlot.class,
 				OutputSlotDialog.class));
-		add(new WYSIWYGComponentRegistration<>("entity_model", "addmodel", true, EntityModel.class, EntityModelDialog.class));
 	}};
 
 	public WYSIWYG editor = new WYSIWYG(this);
