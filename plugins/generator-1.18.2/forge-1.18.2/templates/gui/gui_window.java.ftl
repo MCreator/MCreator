@@ -89,7 +89,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				InventoryScreen.renderEntityInInventory(this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale}, (float) this.leftPos <#if followMouse>+ ${x + 11} - mouseX<#else>- 125</#if>, (float) this.topPos <#if followMouse>+ ${y - 29} - mouseY<#else>- 33</#if>, livingEntity);
+				InventoryScreen.renderEntityInInventoryRaw(this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale},
+					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 11} - mouseX) / 40.0)</#if>,
+					${component.rotationY / 20.0}f <#if followMouse> + (float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)</#if>,
+					livingEntity
+				);
 			}
 		</#list>
 	}

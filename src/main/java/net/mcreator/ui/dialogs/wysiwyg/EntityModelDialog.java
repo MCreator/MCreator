@@ -33,24 +33,21 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 	public EntityModelDialog(WYSIWYGEditor editor, @Nullable EntityModel model) {
 		super(editor, model);
 		setModal(true);
-		setSize(480, 200);
+		setSize(480, editor.isNotOverlayType ? 280 : 250);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.add_entity_model"));
 
-		JPanel options = new JPanel();
-		JPanel parameters = new JPanel();
-		parameters.setLayout(new BoxLayout(parameters, BoxLayout.PAGE_AXIS));
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		JPanel options = new JPanel(new BorderLayout(15, 15));
 
-		ProcedureSelector entityModel = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/entity_model"), editor.mcreator,
-				L10N.t("dialog.gui.entity_model_procedure"), ProcedureSelector.Side.CLIENT, false,
+		ProcedureSelector entityModel = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/entity_model"),
+				editor.mcreator, L10N.t("dialog.gui.entity_model_procedure"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.ENTITY,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		entityModel.refreshList();
@@ -64,11 +61,11 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		displayCondition.refreshList();
 
 		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
+		JSpinner rotationX = new JSpinner(new SpinnerNumberModel(0, -360, 360, 1));
+		JSpinner rotationY = new JSpinner(new SpinnerNumberModel(0, -360, 360, 1));
 
 		JCheckBox followMouseMovement = new JCheckBox();
 		followMouseMovement.setOpaque(false);
-
-		parameters.add(PanelUtils.join(entityModel, displayCondition));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
@@ -76,19 +73,28 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
-		JPanel opts = new JPanel();
+		JPanel opts = new JPanel(new GridLayout(0, 2, 2, 2));
 
-		opts.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_scale"),
-				L10N.label("dialog.gui.model_scale")), scale));
+		opts.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_scale"),
+				L10N.label("dialog.gui.model_scale")));
+		opts.add(scale);
 
 		if (editor.isNotOverlayType) {
-			opts.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_follow_mouse"),
-							L10N.label("dialog.gui.model_follow_mouse")), followMouseMovement));
+			opts.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_follow_mouse"),
+					L10N.label("dialog.gui.model_follow_mouse")));
+			opts.add(followMouseMovement);
 		}
 
-		parameters.add(opts);
+		opts.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_rotation"),
+				L10N.label("dialog.gui.model_rotation_x")));
+		opts.add(rotationX);
 
-		options.add("Center", parameters);
+		opts.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/entity_model_rotation"),
+				L10N.label("dialog.gui.model_rotation_y")));
+		opts.add(rotationY);
+
+		options.add("North", PanelUtils.join(entityModel, displayCondition));
+		options.add("Center", opts);
 		options.add("South", PanelUtils.join(ok, cancel));
 
 		add("Center", options);
@@ -98,16 +104,19 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			entityModel.setSelectedProcedure(model.entityModel);
 			displayCondition.setSelectedProcedure(model.displayCondition);
 			scale.setValue(model.scale);
+			rotationX.setValue(model.rotationX);
+			rotationY.setValue(model.rotationY);
 			followMouseMovement.setSelected(model.followMouseMovement);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
-		ok.addActionListener(arg01 -> {
+		cancel.addActionListener(e -> setVisible(false));
+		ok.addActionListener(e -> {
 			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (int) scale.getValue(), followMouseMovement.isSelected());
+							displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
+							(int) rotationY.getValue(), followMouseMovement.isSelected());
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -115,8 +124,10 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				} else {
 					int idx = editor.components.indexOf(model);
 					editor.components.remove(model);
-					EntityModel modelNew = new EntityModel(model.getX(), model.getY(), entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (int) scale.getValue(), followMouseMovement.isSelected());
+					EntityModel modelNew = new EntityModel(model.getX(), model.getY(),
+							entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
+							(int) scale.getValue(), (int) rotationX.getValue(), (int) rotationY.getValue(),
+							followMouseMovement.isSelected());
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}
