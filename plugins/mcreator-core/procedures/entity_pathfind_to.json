@@ -24,7 +24,7 @@
       "type": "field_number",
       "name": "speed",
       "value": 1.0
-    },
+    }
   ],
   "inputsInline": true,
   "previousStatement": null,
