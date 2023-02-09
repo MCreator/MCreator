@@ -61,7 +61,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		displayCondition.refreshList();
 
 		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
-		JSpinner rotationX = new JSpinner(new SpinnerNumberModel(0, 0, 360, 1));
+		JSpinner rotationX = new JSpinner(new SpinnerNumberModel(0, -360, 360, 1));
 
 		JCheckBox followMouseMovement = new JCheckBox();
 		followMouseMovement.setOpaque(false);
