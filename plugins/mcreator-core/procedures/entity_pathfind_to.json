@@ -24,7 +24,7 @@
       "type": "input_value",
       "name": "speed",
       "check": "Number"
-    },
+    }
   ],
   "inputsInline": true,
   "previousStatement": null,
