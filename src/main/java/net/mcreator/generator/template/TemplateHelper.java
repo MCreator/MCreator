@@ -59,8 +59,4 @@ import java.util.Random;
 		return new Gson().toJson(object);
 	}
 
-	public double tan(double x) {
-		return Math.tan(x);
-	}
-
 }
