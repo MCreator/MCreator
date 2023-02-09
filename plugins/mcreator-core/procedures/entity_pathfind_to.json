@@ -21,9 +21,9 @@
       "check": "Number"
     },
     {
-      "type": "field_number",
+      "type": "input_value",
       "name": "speed",
-      "value": 1.0
+      "check": "Number"
     },
   ],
   "inputsInline": true,
@@ -36,16 +36,15 @@
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+	  "<value name=\"speed\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "inputs": [
       "entity",
       "x",
       "y",
-      "z"
-    ],
-    "fields": [
-      "speed"
+      "z",
+	  "speed"
     ]
   }
 }
