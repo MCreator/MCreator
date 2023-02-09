@@ -1,0 +1,1 @@
+Registry.BLOCK.getTag(BlockTags.create(new ResourceLocation("${field$tag}")).orElseThrow())
