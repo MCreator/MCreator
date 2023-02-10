@@ -199,11 +199,11 @@ public class ${name}Item extends Item {
 				${block}<#sep>,
 			</#list>
 		).contains(blockstate.getBlock())<#if tags?has_content> ||
-		List.of(
+		Stream.of(
 			<#list tags as tag>
 				BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
 			</#list>
-		).stream().anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
+		).anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
