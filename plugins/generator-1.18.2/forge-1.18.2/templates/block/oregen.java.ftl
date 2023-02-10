@@ -124,7 +124,7 @@ public class ${name}Feature extends OreFeature {
 				<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
 					<#assign tags += [replacementBlock.getUnmappedValue().replace("TAG:", "")]>
 				<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1)]>
+					<#assign tags += [generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
 				<#else>
 					<#assign blocks += [mappedBlockToBlock(replacementBlock)]>
 				</#if>

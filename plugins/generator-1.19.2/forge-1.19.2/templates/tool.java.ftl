@@ -72,7 +72,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 								<#if item.getUnmappedValue().startsWith("TAG:")>
 									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
 								<#elseif generator.map(item.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1)}")))
+									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")))
 								<#else>
 									new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
 								</#if>
@@ -189,7 +189,7 @@ public class ${name}Item extends Item {
 			<#if block.getUnmappedValue().startsWith("TAG:")>
 				<#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
 			<#elseif generator.map(block.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-				<#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1)]>
+				<#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
 			<#else>
 				<#assign blocks += [mappedBlockToBlock(block)]>
 			</#if>
@@ -251,7 +251,7 @@ public class ${name}Item extends FishingRodItem {
 				<#if repairItem.getUnmappedValue().startsWith("TAG:")>
 					<#assign tags += [repairItem.getUnmappedValue().replace("TAG:", "")]>
 				<#elseif generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(repairItem.getUnmappedValue(), "blocksitems", 1)]>
+					<#assign tags += [generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
 				<#else>
 					<#assign items += [mappedMCItemToItem(repairItem)]>
 				</#if>
