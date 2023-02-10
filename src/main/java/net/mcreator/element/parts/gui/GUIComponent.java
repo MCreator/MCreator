@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 		put("textfield", TextField.class); // weight 0
 		put("label", Label.class); // weight 10
 		put("checkbox", Checkbox.class); //weight 20
+		put("imagebutton", ImageButton.class); //weight 25
 		put("button", Button.class);// weight 30
 		put("image", Image.class);// weight 40
 		put("inputslot", InputSlot.class); // weight 50
@@ -77,6 +78,11 @@ import java.util.stream.Collectors;
 
 	public abstract int getHeight(Workspace workspace);
 
+	/**
+	 * Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.
+	 *
+	 * @return The priority of the component (lower means it will be rendered closer to the screen and higher means it will "sink" more behind other components)
+	 */
 	public abstract int getWeight();
 
 	public boolean isSizeKnown() {
