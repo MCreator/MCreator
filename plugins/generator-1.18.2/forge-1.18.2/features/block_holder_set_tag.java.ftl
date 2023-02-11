@@ -1,1 +1,1 @@
-Registry.BLOCK.getTag(BlockTags.create(new ResourceLocation("${field$tag}")).orElseThrow())
+/*@Tag*/BlockTags.create(new ResourceLocation("${field$tag}"))
