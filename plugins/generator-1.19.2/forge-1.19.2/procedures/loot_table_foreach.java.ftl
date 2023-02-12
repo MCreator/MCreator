@@ -1,12 +1,12 @@
 <#include "mcelements.ftl">
-if (${input$entity} instanceof LivingEntity _ent${customBlockIndex} && !_ent${customBlockIndex}.level.isClientSide() && _ent${customBlockIndex}.getServer() != null) {
+if (${input$entity} instanceof LivingEntity _entity && !_entity.level.isClientSide() && _entity.getServer() != null) {
 	try {
-		for (ItemStack itemstackiterator : _ent${customBlockIndex}.getServer().getLootTables().get(${toResourceLocation(input$location)})
+		for (ItemStack itemstackiterator : _entity.getServer().getLootTables().get(${toResourceLocation(input$location)})
 				.getRandomItems(((LootContext.Builder) ObfuscationReflectionHelper.findMethod(LivingEntity.class, "m_7771_", boolean.class, DamageSource.class)
-						.invoke(_ent${customBlockIndex}, true, (_ent${customBlockIndex}.getLastDamageSource() != null ? _ent${customBlockIndex}.getLastDamageSource() : DamageSource.GENERIC)))
-						.withParameter(LootContextParams.BLOCK_STATE, _ent${customBlockIndex}.level.getBlockState(_ent${customBlockIndex}.blockPosition()))
-						.withOptionalParameter(LootContextParams.BLOCK_ENTITY, _ent${customBlockIndex}.level.getBlockEntity(_ent${customBlockIndex}.blockPosition()))
-						.withParameter(LootContextParams.TOOL, _ent${customBlockIndex} instanceof Player _plr${customBlockIndex} ? _plr${customBlockIndex}.getInventory().getSelected() : _ent${customBlockIndex}.getUseItem())
+						.invoke(_entity, true, (_entity.getLastDamageSource() != null ? _entity.getLastDamageSource() : DamageSource.GENERIC)))
+						.withParameter(LootContextParams.BLOCK_STATE, _entity.level.getBlockState(_entity.blockPosition()))
+						.withOptionalParameter(LootContextParams.BLOCK_ENTITY, _entity.level.getBlockEntity(_entity.blockPosition()))
+						.withParameter(LootContextParams.TOOL, _entity instanceof Player _player ? _player.getInventory().getSelected() : _entity.getUseItem())
 						.withParameter(LootContextParams.EXPLOSION_RADIUS, 0F).create(LootContextParamSets.EMPTY))) {
 			${statement$foreach}
 		}
