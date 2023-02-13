@@ -26,6 +26,7 @@
   "nextStatement": null,
   "colour": 195,
   "mcreator": {
+    "group": "movement",
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
