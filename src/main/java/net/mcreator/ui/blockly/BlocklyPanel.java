@@ -133,7 +133,7 @@ public class BlocklyPanel extends JFXPanel {
 							.appendChild(styleNode);
 
 					// @formatter:off
-					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
+					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
