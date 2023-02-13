@@ -184,6 +184,7 @@ Blockly.Extensions.register('count_placement_validator', validateIntProviderInpu
 
 const PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN = {
     depCount_: 0,
+    depMap_: {},
 
     mutationToDom: function() {
         const container = Blockly.utils.xml.createElement('mutation');
@@ -208,12 +209,17 @@ const PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN = {
     },
 
     decompose: function(workspace) {
+        const mixin = this;
         const containerBlock = workspace.newBlock('call_procedure_mutator_container');
         containerBlock.initSvg();
         let connection = containerBlock.getInput('dependencies').connection;
         for (let i = 1; i <= this.depCount_; i++) {
             const depBlock = workspace.newBlock('call_procedure_mutator_input');
             depBlock.initSvg();
+            depBlock.setOnChange(function (changeEvent) {
+                if (changeEvent.type === Blockly.Events.BLOCK_DELETE)
+                    mixin.depMap_.delete(this.valueConnection_);
+            });
             connection.connect(depBlock.previousConnection);
             connection = depBlock.nextConnection;
         }
@@ -228,19 +234,16 @@ const PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN = {
                 connections.push(depBlock.valueConnection_);
             depBlock = depBlock.getNextBlock();
         }
-        const names = {};
         for (let i = 0; i < this.depCount_; i++) {
             const connection = this.getInput('arg' + i).connection.targetConnection;
             if (connection && connections.indexOf(connection) === -1)
                 connection.disconnect();
-            else
-                names[connection] = this.getField('name' + i).getValue();
         }
         this.depCount_ = connections.length;
         this.updateShape_();
         for (let i = 0; i < this.depCount_; i++) {
-            if (Blockly.Mutator.reconnect(connections[i], this, 'arg' + i))
-                this.getField('name' + i).setValue(names[connections[i]]);
+            if (Blockly.Mutator.reconnect(connections[i], this, 'arg' + i) && this.depMap_[connections[i]])
+                this.getField('name' + i).setValue(this.depMap_[connections[i]].fieldRow[1].getValue());
         }
     },
 
@@ -248,14 +251,15 @@ const PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN = {
         let depBlock = containerBlock.getInputTargetBlock('dependencies');
         let i = 0;
         while (depBlock) {
-            if (depBlock.isInsertionMarker()) {
-                depBlock = depBlock.getNextBlock();
-                continue;
+            if (!depBlock.isInsertionMarker()) {
+                const input = this.getInput('arg' + i);
+                if (input) {
+                    depBlock.valueConnection_ = input.connection.targetConnection;
+                    this.depMap_[depBlock.valueConnection_] = input;
+                }
+                i++;
             }
-            const input = this.getInput('arg' + i);
-            depBlock.valueConnection_ = input && input.connection.targetConnection;
             depBlock = depBlock.getNextBlock();
-            i++;
         }
     },
 
