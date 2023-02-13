@@ -164,7 +164,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWeight()" class="member-name-link">getWeight</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWidth(net.mcreator.workspace.Workspace)" class="member-name-link">getWidth</a><wbr>(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -288,9 +290,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getWeight()">
 <h3>getWeight</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getWeight</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="GUIComponent.html#getWeight()">GUIComponent</a></code></span></div>
+<div class="block">Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="GUIComponent.html#getWeight()">getWeight</a></code>&nbsp;in class&nbsp;<code><a href="GUIComponent.html" title="class in net.mcreator.element.parts.gui">GUIComponent</a></code></dd>
+<dt>Returns:</dt>
+<dd>The priority of the component (lower means it will be rendered closer to the screen and higher means it will "sink" more behind other components)</dd>
 </dl>
 </section>
 </li>

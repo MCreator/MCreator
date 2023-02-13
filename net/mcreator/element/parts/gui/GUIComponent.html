@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="Checkbox.html" title="class in net.mcreator.element.parts.gui">Checkbox</a></code>, <code><a href="GUIComponent.Unknown.html" title="class in net.mcreator.element.parts.gui">GUIComponent.Unknown</a></code>, <code><a href="Image.html" title="class in net.mcreator.element.parts.gui">Image</a></code>, <code><a href="Label.html" title="class in net.mcreator.element.parts.gui">Label</a></code>, <code><a href="SizedComponent.html" title="class in net.mcreator.element.parts.gui">SizedComponent</a></code>, <code><a href="Slot.html" title="class in net.mcreator.element.parts.gui">Slot</a></code></dd>
+<dd><code><a href="Checkbox.html" title="class in net.mcreator.element.parts.gui">Checkbox</a></code>, <code><a href="GUIComponent.Unknown.html" title="class in net.mcreator.element.parts.gui">GUIComponent.Unknown</a></code>, <code><a href="Image.html" title="class in net.mcreator.element.parts.gui">Image</a></code>, <code><a href="ImageButton.html" title="class in net.mcreator.element.parts.gui">ImageButton</a></code>, <code><a href="Label.html" title="class in net.mcreator.element.parts.gui">Label</a></code>, <code><a href="SizedComponent.html" title="class in net.mcreator.element.parts.gui">SizedComponent</a></code>, <code><a href="Slot.html" title="class in net.mcreator.element.parts.gui">Slot</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">GUIComponent</span>
@@ -155,7 +155,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getWeight()" class="member-name-link">getWeight</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getWidth(net.mcreator.workspace.Workspace)" class="member-name-link">getWidth</a><wbr>(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
@@ -261,6 +263,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getWeight()">
 <h3>getWeight</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getWeight</span>()</div>
+<div class="block">Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The priority of the component (lower means it will be rendered closer to the screen and higher means it will "sink" more behind other components)</dd>
+</dl>
 </section>
 </li>
 <li>
