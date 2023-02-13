@@ -68,7 +68,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static List<GeneratableElement> getModElementExamplesFor(Workspace workspace, ModElementType<?> type,
-			Random random) {
+			boolean uiTest, Random random) {
 		List<GeneratableElement> generatableElements = new ArrayList<>();
 
 		if (type == ModElementType.RECIPE) {
@@ -95,22 +95,23 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
 		} else if (type == ModElementType.TAB) {
-			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
-			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
-				|| type == ModElementType.KEYBIND) {
+				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
+				|| type == ModElementType.CODE) {
 			generatableElements.add(
-					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), random, true,
+					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random, true,
 							true, 0));
 		} else {
-			generatableElements.add(getExampleFor(me(workspace, type, "1"), random, true, true, 0));
-			generatableElements.add(getExampleFor(me(workspace, type, "2"), random, true, false, 1));
-			generatableElements.add(getExampleFor(me(workspace, type, "3"), random, false, true, 2));
-			generatableElements.add(getExampleFor(me(workspace, type, "4"), random, false, false, 3));
-			generatableElements.add(getExampleFor(me(workspace, type, "5"), random, true, true, 3));
-			generatableElements.add(getExampleFor(me(workspace, type, "6"), random, true, false, 2));
-			generatableElements.add(getExampleFor(me(workspace, type, "7"), random, false, true, 1));
-			generatableElements.add(getExampleFor(me(workspace, type, "8"), random, false, false, 0));
+			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
+			generatableElements.add(getExampleFor(me(workspace, type, "4"), uiTest, random, false, false, 3));
+			generatableElements.add(getExampleFor(me(workspace, type, "5"), uiTest, random, true, true, 3));
+			generatableElements.add(getExampleFor(me(workspace, type, "6"), uiTest, random, true, false, 2));
+			generatableElements.add(getExampleFor(me(workspace, type, "7"), uiTest, random, false, true, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "8"), uiTest, random, false, false, 0));
 		}
 
 		generatableElements.removeAll(Collections.singleton(null));
@@ -254,6 +255,10 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.SCREEN) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test", TextureType.SCREEN));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("picture1", TextureType.SCREEN));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("picture2", TextureType.SCREEN));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
@@ -267,7 +272,14 @@ public class TestWorkspaceDataProvider {
 		}
 	}
 
-	private static GeneratableElement getExampleFor(ModElement modElement, Random random, boolean _true,
+	/**
+	 * Provides list of GEs for tests
+	 *
+	 * @param modElement ME for this GE
+	 * @param uiTest true if test is UI test and not generator test
+	 * @return List of GEs for tests
+	 */
+	private static GeneratableElement getExampleFor(ModElement modElement, boolean uiTest, Random random, boolean _true,
 			boolean emptyLists, int valueIndex) {
 		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
 		List<MCItem> blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
@@ -566,6 +578,15 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
+				components.add(
+						new ImageButton("imagebutton1", 0, 48, "picture1", "picture2", new Procedure("procedure10"),
+								null));
+				components.add(
+						new ImageButton("imagebutton2", 16, 32, "picture2", "", new Procedure(""), new Procedure("")));
+				components.add(new ImageButton("imagebutton3", 32, 16, "picture1", "picture2", null,
+						new Procedure("condition3")));
+				components.add(new ImageButton("imagebutton4", 48, 0, "picture2", "", new Procedure("procedure2"),
+						new Procedure("condition4")));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
 						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"),
@@ -604,6 +625,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 			livingEntity.transparentModelCondition = new Procedure("condition1");
 			livingEntity.isShakingCondition = new Procedure("condition2");
+			livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
 			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 			livingEntity.spawnEggBaseColor = Color.red;
 			livingEntity.spawnEggDotColor = Color.green;
@@ -1588,6 +1610,36 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			return villagerTrade;
+		} else if (ModElementType.PROCEDURE.equals(modElement.getType())) {
+			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
+			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
+			return procedure;
+		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
+			Command command = new Command(modElement);
+			command.commandName = modElement.getName();
+			command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
+			command.argsxml = Command.XML_BASE;
+			return command;
+		}
+		// As feature requires placement and feature to place, this GE is only returned for uiTests
+		// For generator tests, it will be tested by GTFeatureBlocks anyway
+		else if (ModElementType.FEATURE.equals(modElement.getType()) && uiTest) {
+			Feature feature = new Feature(modElement);
+			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.restrictionDimensions = emptyLists ?
+					new ArrayList<>() :
+					new ArrayList<>(Arrays.asList("Surface", "Nether"));
+			feature.restrictionBiomes = new ArrayList<>();
+			if (!emptyLists) {
+				feature.restrictionBiomes.addAll(
+						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
+								.limit(biomes.size() / 4)
+								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			}
+			feature.generateCondition = _true ? new Procedure("condition1") : null;
+			feature.featurexml = Feature.XML_BASE;
+			return feature;
 		}
 		return null;
 	}
