@@ -57,6 +57,7 @@ public class WYSIWYGEditor extends JPanel {
 		add(new WYSIWYGComponentRegistration<>("text_label", "addlabel", true, Label.class, LabelDialog.class));
 		add(new WYSIWYGComponentRegistration<>("image", "addimage", true, Image.class, ImageDialog.class));
 		add(new WYSIWYGComponentRegistration<>("button", "addbutton", false, Button.class, ButtonDialog.class));
+		add(new WYSIWYGComponentRegistration<>("imagebutton", "addimagebutton", false, ImageButton.class, ImageButtonDialog.class));
 		add(new WYSIWYGComponentRegistration<>("checkbox", "addcheckbox", false, Checkbox.class, CheckboxDialog.class));
 		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class,
 				TextFieldDialog.class));

@@ -59,7 +59,7 @@ public class Generator implements IGenerator, Closeable {
 	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections.synchronizedMap(
 			new LinkedHashMap<>());
 
-	protected final Logger LOG;
+	private final Logger LOG;
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 
@@ -221,8 +221,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -267,9 +268,8 @@ public class Generator implements IGenerator, Closeable {
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// store paths of generated files
-			element.getModElement().putMetadata("files", generatorFiles.stream()
-					.map(e -> getWorkspaceFolder().toPath().relativize(e.getFile().toPath()).toString()
-							.replace(File.separator, "/")).toList());
+			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
+					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
 			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
@@ -284,8 +284,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -298,8 +299,9 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return;
 		}
 
@@ -438,8 +440,9 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
