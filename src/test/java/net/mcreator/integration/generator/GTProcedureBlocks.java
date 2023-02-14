@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
@@ -42,16 +43,13 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTProcedureBlocks {
-
-	private static final List<String> specialCases = List.of("compare_mcitems", "compare_blockstates",
-			"compare_dimensionids", "compare_mcblocks", "compare_directions", "item_nbt_copy");
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		// silently skip if procedures are not supported by this generator
@@ -67,23 +65,23 @@ public class GTProcedureBlocks {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip procedure blocks not supported by this generator
-			if (!generatorBlocks.contains(procedureBlock.machine_name)) {
+			if (!generatorBlocks.contains(procedureBlock.getMachineName())) {
 				continue;
 			}
 
-			if (procedureBlock.toolboxXML == null) {
+			if (procedureBlock.getToolboxTestXML() == null) {
 				LOG.warn("[" + generatorName + "] Skipping procedure block without default XML defined: "
-						+ procedureBlock.machine_name);
+						+ procedureBlock.getMachineName());
 				continue;
 			}
 
 			if (!procedureBlock.getAllInputs().isEmpty() || !procedureBlock.getAllRepeatingInputs().isEmpty()) {
 				boolean templatesDefined = true;
 
-				if (procedureBlock.toolbox_init != null) {
+				if (procedureBlock.getToolboxInitStatements() != null) {
 					for (String input : procedureBlock.getAllInputs()) {
 						boolean match = false;
-						for (String toolboxtemplate : procedureBlock.toolbox_init) {
+						for (String toolboxtemplate : procedureBlock.getToolboxInitStatements()) {
 							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
 								match = true;
 								break;
@@ -96,44 +94,28 @@ public class GTProcedureBlocks {
 						}
 					}
 
-					if (!procedureBlock.getAllRepeatingInputs().isEmpty()) {
-						try {
-							JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0")
-									.getAsJsonArray();
-							for (int i = 0; i < args0.size(); i++) {
-								if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_value")) {
-									String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-
-									boolean match = false;
-									for (String input : procedureBlock.getAllRepeatingInputs()) {
-										if (name.matches(input + "\\d+")) {
-											for (String toolboxtemplate : procedureBlock.toolbox_init) {
-												if (toolboxtemplate.contains("<value name=\"" + name + "\">")) {
-													match = true;
-													break;
-												}
-											}
-											if (match)
-												break;
-										}
-									}
-
-									if (!match) {
-										templatesDefined = false;
-										break;
-									}
-								}
+					for (String input : procedureBlock.getAllRepeatingInputs()) {
+						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
+						boolean match = false;
+						for (String toolboxtemplate : procedureBlock.getToolboxInitStatements()) {
+							if (pattern.matcher(toolboxtemplate).find()) {
+								match = true;
+								break;
 							}
-						} catch (Exception ignored) {
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
 						}
 					}
 				} else {
 					templatesDefined = false;
 				}
 
-				if (!templatesDefined && !specialCases.contains(procedureBlock.machine_name)) {
+				if (!templatesDefined) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
-							+ procedureBlock.machine_name);
+							+ procedureBlock.getMachineName());
 					continue;
 				}
 			}
@@ -157,64 +139,21 @@ public class GTProcedureBlocks {
 			if (procedureBlock.getFields() != null) {
 				int processed = 0;
 
-				for (String field : procedureBlock.getFields()) {
-					try {
-						JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+				if (procedureBlock.getBlocklyJSON().has("args0")) {
+					for (String field : procedureBlock.getFields()) {
+						JsonArray args0 = procedureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.get("name").getAsString().equals(field)) {
-								switch (arg.get("type").getAsString()) {
-								case "field_checkbox" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-									processed++;
-								}
-								case "field_number" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
-									processed++;
-								}
-								case "field_input", "field_javaname" -> {
-									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-									processed++;
-								}
-								case "field_dropdown" -> {
-									JsonArray opts = arg.get("options").getAsJsonArray();
-									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-									additionalXML.append("<field name=\"").append(field).append("\">")
-											.append(opt.get(1).getAsString()).append("</field>");
-									processed++;
-								}
-								case "field_data_list_selector" -> {
-									String type = arg.get("datalist").getAsString();
-
-									// Get the optional properties
-									JsonElement optTypeFilter = arg.get("typeFilter");
-									String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
-
-									JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
-									String customEntryProviders = optCustomEntryProviders == null ?
-											null :
-											optCustomEntryProviders.getAsString();
-
-									String[] values = getDataListFieldValues(workspace, type, typeFilter,
-											customEntryProviders);
-									if (values.length > 0 && !values[0].equals("")) {
-										String value = ListUtils.getRandomItem(random, values);
-										additionalXML.append("<field name=\"").append(field).append("\">").append(value)
-												.append("</field>");
-										processed++;
-									}
-								}
-								}
+							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
+								processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 								break;
 							}
 						}
-					} catch (Exception ignored) {
 					}
 				}
 
-				if (procedureBlock.blocklyJSON.getAsJsonObject().get("extensions") != null) {
-					JsonArray extensions = procedureBlock.blocklyJSON.getAsJsonObject().get("extensions")
-							.getAsJsonArray();
+				if (procedureBlock.getBlocklyJSON().get("extensions") != null) {
+					JsonArray extensions = procedureBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
 						String suggestedFieldName = extension.replace("_list_provider", "");
@@ -261,7 +200,30 @@ public class GTProcedureBlocks {
 
 				if (processed != procedureBlock.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
-							+ procedureBlock.machine_name);
+							+ procedureBlock.getMachineName());
+					continue;
+				}
+			}
+
+			if (procedureBlock.getRepeatingFields() != null) {
+				int processedFields = 0;
+				int totalFields = 0;
+				for (RepeatingField fieldEntry : procedureBlock.getRepeatingFields()) {
+					if (fieldEntry.field_definition() != null) {
+						int count = 3;
+						if (fieldEntry.field_definition().has("testCount")) {
+							count = fieldEntry.field_definition().get("testCount").getAsInt();
+						}
+						totalFields += count;
+						for (int i = 0; i < count; i++) {
+							processedFields += appendFieldXML(workspace, random, additionalXML,
+									fieldEntry.field_definition(), fieldEntry.name() + i);
+						}
+					}
+				}
+				if (processedFields != totalFields) {
+					LOG.warn("[" + generatorName + "] Skipping procedure block with incorrectly "
+							+ "defined repeating field: " + procedureBlock.getMachineName());
 					continue;
 				}
 			}
@@ -276,48 +238,26 @@ public class GTProcedureBlocks {
 			}
 
 			if (procedureBlock.getRepeatingStatements() != null) {
-				try {
-					JsonArray args0 = procedureBlock.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
-					for (int i = 0; i < args0.size(); i++) {
-						if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
-							String name = args0.get(i).getAsJsonObject().get("name").getAsString();
-							for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
-								if (name.matches(statement.name + "\\d+")) {
-									additionalXML.append("<statement name=\"").append(name).append("\">")
-											.append("<block type=\"text_print\"><value name=\"TEXT\">"
-													+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
-											.append("</block></value></block></statement>\n");
-								}
+				JsonArray args0 = procedureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
+				for (int i = 0; i < args0.size(); i++) {
+					if (args0.get(i).getAsJsonObject().get("type").getAsString().equals("input_statement")) {
+						String name = args0.get(i).getAsJsonObject().get("name").getAsString();
+						for (StatementInput statement : procedureBlock.getRepeatingStatements()) {
+							if (name.matches(statement.name + "\\d+")) {
+								additionalXML.append("<statement name=\"").append(name).append("\">")
+										.append("<block type=\"text_print\"><value name=\"TEXT\">"
+												+ "<block type=\"math_number\"><field name=\"NUM\">123.456</field>")
+										.append("</block></value></block></statement>\n");
 							}
 						}
 					}
-				} catch (Exception ignored) {
 				}
 			}
 
-			// Add missing inputs for the hardcoded feature blocks (fix incomplete templates)
-			switch (procedureBlock.machine_name) {
-			case "compare_mcitems" -> additionalXML.append("""
-					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
-					<value name="b"><block type="mcitem_all"><field name="value"></field></block></value>""");
-			case "compare_blockstates", "compare_mcblocks" -> additionalXML.append("""
-					<value name="a"><block type="mcitem_allblocks"><field name="value"></field></block></value>
-					<value name="b"><block type="mcitem_allblocks"><field name="value"></field></block></value>""");
-			case "compare_dimensionids" -> additionalXML.append("""
-					<value name="a"><block type="provided_dimensionid"></block></value>
-					<value name="b"><block type="provided_dimensionid"></block></value>""");
-			case "compare_directions" -> additionalXML.append("""
-					<value name="a"><block type="direction_from_deps"></block></value>
-					<value name="b"><block type="direction_from_deps"></block></value>""");
-			case "item_nbt_copy" -> additionalXML.append("""
-					<value name="a"><block type="mcitem_all"><field name="value"></field></block></value>
-					<value name="b"><block type="itemstack_to_mcitem"></block></value>""");
-			}
-
-			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.getMachineName(),
 					ModElementType.PROCEDURE);
 
-			String testXML = procedureBlock.toolboxXML;
+			String testXML = procedureBlock.getToolboxTestXML();
 
 			// replace common math blocks with blocks that contain double variable to verify things like type casting
 			testXML = testXML.replace("<block type=\"coord_x\"></block>",
@@ -336,8 +276,8 @@ public class GTProcedureBlocks {
 					"<block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field></block>");
 
 			// add additional xml to the block definition
-			testXML = testXML.replace("<block type=\"" + procedureBlock.machine_name + "\">",
-					"<block type=\"" + procedureBlock.machine_name + "\">" + additionalXML);
+			testXML = testXML.replace("<block type=\"" + procedureBlock.getMachineName() + "\">",
+					"<block type=\"" + procedureBlock.getMachineName() + "\">" + additionalXML);
 
 			// replace common itemstack blocks with blocks that contain local variable
 			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
@@ -353,7 +293,7 @@ public class GTProcedureBlocks {
 
 			Procedure procedure = new Procedure(modElement);
 
-			if (procedureBlock.type == IBlockGenerator.BlockType.PROCEDURAL) {
+			if (procedureBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				procedure.procedurexml = wrapWithBaseTestXML(testXML);
 			} else { // output block type
 				String rettype = procedureBlock.getOutputType();
@@ -397,7 +337,7 @@ public class GTProcedureBlocks {
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
 				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.machine_name);
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName());
 			}
 		}
 
@@ -454,5 +394,57 @@ public class GTProcedureBlocks {
 		}
 		}
 		return new String[] { "" };
+	}
+
+	private static int appendFieldXML(Workspace workspace, Random random, StringBuilder additionalXML, JsonObject arg,
+			String field) {
+		int processed = 0;
+		switch (arg.get("type").getAsString()) {
+		case "field_checkbox" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
+			processed++;
+		}
+		case "field_number" -> {
+			if (arg.has("precision") && arg.get("precision").getAsInt() == 1)
+				additionalXML.append("<field name=\"").append(field).append("\">1</field>");
+			else
+				additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
+			processed++;
+		}
+		case "field_input", "field_javaname" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+			processed++;
+		}
+		case "field_dropdown" -> {
+			JsonArray opts = arg.get("options").getAsJsonArray();
+			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
+			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString())
+					.append("</field>");
+			processed++;
+		}
+		case "field_mcitem_selector" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
+			processed++;
+		}
+		case "field_data_list_selector" -> {
+			String type = arg.get("datalist").getAsString();
+
+			// Get the optional properties
+			JsonElement optTypeFilter = arg.get("typeFilter");
+			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+
+			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+			String customEntryProviders =
+					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
+
+			String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
+			if (values.length > 0 && !values[0].equals("")) {
+				String value = ListUtils.getRandomItem(random, values);
+				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
+				processed++;
+			}
+		}
+		}
+		return processed;
 	}
 }

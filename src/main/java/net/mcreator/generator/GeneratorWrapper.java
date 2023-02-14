@@ -30,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({ "unused", "ClassCanBeRecord" }) public class GeneratorWrapper {
+@SuppressWarnings("unused") public class GeneratorWrapper {
 
 	private final Generator generator;
 
@@ -101,7 +101,7 @@ import java.util.stream.Collectors;
 		if (element != null)
 			return element.getRegistryName();
 
-		generator.LOG.warn("Failed to determine registry name for: " + modElement);
+		generator.getLogger().warn("Failed to determine registry name for: " + modElement);
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -111,7 +111,7 @@ import java.util.stream.Collectors;
 			return getResourceLocationForModElement(element);
 		}
 
-		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
+		generator.getLogger().warn("Failed to determine resource location for mod element: " + modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 
