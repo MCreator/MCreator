@@ -20,6 +20,8 @@ package net.mcreator.ui.workspace.selector;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -76,6 +78,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
 	@Nullable private final MCreatorApplication application;
+
+	private final JComponent centerComponent;
+
+	private final List<BalloonTip> tips = new ArrayList<>();
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -222,8 +228,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 		southcenter.add(prefs);
 
-		add("Center",
-				PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(logoPanel, actions), southcenter));
+		centerComponent = PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(logoPanel, actions), southcenter);
+
+		add("Center", centerComponent);
 
 		recentPanel.setBorder(
 				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
@@ -232,6 +239,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		initWebsitePanel();
 
 		add("West", recentPanel);
+
+		addTip("Tip 1");
+		addTip("Tip 2");
+		addTip("Tip 3");
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
@@ -495,6 +506,32 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		soim.add(south);
 
 		add("South", soim);
+	}
+
+	private void addTip(String text) {
+		BalloonTip balloonTip = new BalloonTip(centerComponent, new JLabel(text),
+				new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.RIGHT_ABOVE,
+				BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
+
+		JButton closeButton = new JButton();
+		closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		closeButton.setContentAreaFilled(false);
+		closeButton.setIcon(UIRES.get("close_small"));
+		balloonTip.setCloseButton(closeButton, false);
+
+		balloonTip.setVisible(true);
+
+		if (tips.size() > 0) {
+			BalloonTip previous = tips.get(tips.size() - 1);
+			previous.setVisible(false);
+			closeButton.addActionListener(e -> {
+				previous.setVisible(true);
+				tips.remove(balloonTip);
+			});
+		}
+
+		tips.add(balloonTip);
 	}
 
 	@Nonnull public RecentWorkspaces getRecentWorkspaces() {
