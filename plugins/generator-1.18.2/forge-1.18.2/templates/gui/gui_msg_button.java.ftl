@@ -80,10 +80,18 @@ package ${package}.network;
 			return;
 
 		<#assign btid = 0>
-        <#list data.getComponentsOfType("Button") as component>
+		<#list data.getComponentsOfType("Button") as component>
 				<#if hasProcedure(component.onClick)>
-        	    	if (buttonID == ${btid}) {
-        	    	    <@procedureOBJToCode component.onClick/>
+					if (buttonID == ${btid}) {
+						<@procedureOBJToCode component.onClick/>
+					}
+				</#if>
+				<#assign btid +=1>
+		</#list>
+		<#list data.getComponentsOfType("ImageButton") as component>
+				<#if hasProcedure(component.onClick)>
+					if (buttonID == ${btid}) {
+						<@procedureOBJToCode component.onClick/>
 					}
 				</#if>
 				<#assign btid +=1>

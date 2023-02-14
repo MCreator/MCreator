@@ -287,8 +287,9 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		Workspace workspace = null;
 		try {
-			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
+			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
@@ -301,6 +302,7 @@ public final class MCreatorApplication {
 					mcreator.setVisible(true);
 					mcreator.requestFocusInWindow();
 					mcreator.toFront();
+					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 					return mcreator;
 				} else { // already open, just focus it
 					LOG.warn("Trying to open already open workspace, bringing it to the front.");
@@ -311,11 +313,7 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 			}
-
-			analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
 
@@ -345,6 +343,10 @@ public final class MCreatorApplication {
 		} catch (IOException | UnsupportedGeneratorException e) {
 			reportFailedWorkspaceOpen(e);
 		} finally {
+			if (workspace != null) {
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
+			}
 			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
