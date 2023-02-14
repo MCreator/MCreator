@@ -590,6 +590,25 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
    	}
 	</#if>
 
+	<#if data.solidBoundingBox?? && (hasProcedure(data.solidBoundingBox) || data.solidBoundingBox.getFixedValue())>
+	@Override
+	public boolean canCollideWith(Entity entity) {
+		return true;
+	}
+
+	@Override
+	public boolean canBeCollidedWith() {
+		<#if hasProcedure(data.solidBoundingBox)>
+		Entity entity = this;
+		Level world = entity.level;
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		</#if>
+		return <@procedureOBJToConditionCode data.solidBoundingBox true false/>;
+	}
+	</#if>
+
 	<#if data.isBoss>
 	@Override public boolean canChangeDimensions() {
 		return false;
