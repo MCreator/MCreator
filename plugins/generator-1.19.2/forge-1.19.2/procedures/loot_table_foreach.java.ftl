@@ -9,7 +9,7 @@ if (${input$entity} instanceof LivingEntity _entity && !_entity.level.isClientSi
 			.withParameter(LootContextParams.ORIGIN, _entity.position()).withParameter(LootContextParams.BLOCK_STATE, _entity.level.getBlockState(_entity.blockPosition()))
 			.withOptionalParameter(LootContextParams.BLOCK_ENTITY, _entity.level.getBlockEntity(_entity.blockPosition()))
 			.withParameter(LootContextParams.TOOL, _entity instanceof Player _player ? _player.getInventory().getSelected() : _entity.getUseItem())
-			.withParameter(LootContextParams.EXPLOSION_RADIUS, 0F).withLuck(_entity.getLuck()).create(LootContextParamSets.EMPTY))) {
+			.withParameter(LootContextParams.EXPLOSION_RADIUS, 0f).withLuck(_entity instanceof Player _player ? _player.getLuck() : 0f).create(LootContextParamSets.EMPTY))) {
 		${statement$foreach}
 	}
 }
