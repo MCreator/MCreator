@@ -7,7 +7,7 @@
     }
   ],
   "extensions": [
-    "holder_set_tag_validator"
+    "tag_input_field_validator"
   ],
   "output": "BlockHolderSet",
   "colour": "45",

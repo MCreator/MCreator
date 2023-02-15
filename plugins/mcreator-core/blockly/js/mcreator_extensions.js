@@ -366,4 +366,4 @@ function validateResourceLocationFields(...fields) {
     }
 }
 
-Blockly.Extensions.register('holder_set_tag_validator', validateResourceLocationFields('tag'));
+Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
