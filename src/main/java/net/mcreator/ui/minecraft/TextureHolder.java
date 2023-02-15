@@ -39,7 +39,7 @@ public class TextureHolder extends VButton {
 
 	private boolean removeButtonHover;
 
-	private boolean xFlip;
+	private boolean uvFlip;
 
 	public TextureHolder(TypedTextureSelectorDialog td) {
 		this(td, 70);
@@ -115,11 +115,6 @@ public class TextureHolder extends VButton {
 		return id;
 	}
 
-	public TextureHolder flipOnX() {
-		this.xFlip = true;
-		return this;
-	}
-
 	public void setTextureFromTextureName(String texture) {
 		if (texture != null && !texture.equals("")) {
 			id = texture;
@@ -138,12 +133,17 @@ public class TextureHolder extends VButton {
 		this.actionListener = actionListener;
 	}
 
+	public TextureHolder setFlipUV(boolean uvFlip) {
+		this.uvFlip = uvFlip;
+		repaint();
+		return this;
+	}
+
 	@Override public void setIcon(Icon icon) {
-		if (!xFlip || icon == null) {
-			super.setIcon(icon);
+		if (icon == null) {
+			super.setIcon(null);
 		} else {
 			super.setIcon(new Icon() {
-
 				@Override public int getIconHeight() {
 					return icon.getIconHeight();
 				}
@@ -154,9 +154,12 @@ public class TextureHolder extends VButton {
 
 				@Override public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
 					Graphics2D g2 = (Graphics2D) g.create();
-					g2.translate(0, icon.getIconHeight());
-					g2.scale(1, -1);
+					if (uvFlip) {
+						g2.translate(icon.getIconWidth(), icon.getIconHeight());
+						g2.scale(-1, -1);
+					}
 					icon.paintIcon(c, g2, x, y);
+					g2.dispose();
 				}
 			});
 		}

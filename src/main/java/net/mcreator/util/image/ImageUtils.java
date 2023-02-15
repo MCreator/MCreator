@@ -27,45 +27,6 @@ import java.util.Random;
 
 public class ImageUtils {
 
-	public static Color getAverageColor(BufferedImage image) {
-		long redBucket = 0;
-		long greenBucket = 0;
-		long blueBucket = 0;
-		long pixelCount = 0;
-		for (int y = 0; y < image.getHeight(); y++) {
-			for (int x = 0; x < image.getWidth(); x++) {
-				Color c = new Color(image.getRGB(x, y));
-				if (c.getAlpha() >= 127) {
-					redBucket += c.getRed();
-					greenBucket += c.getGreen();
-					blueBucket += c.getBlue();
-					pixelCount++;
-				}
-			}
-		}
-		return new Color((int) Math.min(redBucket / pixelCount, 255), (int) Math.min(greenBucket / pixelCount, 255),
-				(int) Math.min(blueBucket / pixelCount, 255));
-	}
-
-	public static float getAverageLuminance(BufferedImage image) {
-		float luminance = 0;
-		long pixelCount = 0;
-		for (int y = 0; y < image.getHeight(); y++) {
-			for (int x = 0; x < image.getWidth(); x++) {
-				int color = image.getRGB(x, y);
-				int red = (color >>> 16) & 0xFF;
-				int green = (color >>> 8) & 0xFF;
-				int blue = color & 0xFF;
-
-				// SRGB luminance constants
-				luminance += (red * 0.2126f + green * 0.7152f + blue * 0.0722f) / 255;
-
-				pixelCount++;
-			}
-		}
-		return luminance / (float) pixelCount;
-	}
-
 	public static ImageIcon drawOver(ImageIcon i, ImageIcon wh) {
 		Image original = i.getImage();
 		Image over = wh.getImage();
@@ -98,55 +59,8 @@ public class ImageUtils {
 		return new ImageIcon(resizedImage);
 	}
 
-	private static Color[][] bufferedImageToColorArray(BufferedImage buf) {
-		Color[][] car = new Color[buf.getHeight()][buf.getWidth()];
-		for (int i = 0; i < buf.getHeight(); i++)
-			for (int j = 0; j < buf.getWidth(); j++)
-				car[i][j] = new Color(buf.getRGB(j, i), true);
-		return car;
-	}
-
-	private static BufferedImage colorArrayToBufferedImage(Color[][] car) {
-		BufferedImage buf = new BufferedImage(car[0].length, car.length, BufferedImage.TYPE_INT_ARGB);
-		for (int i = 0; i < car.length; i++)
-			for (int j = 0; j < car[0].length; j++)
-				buf.setRGB(j, i, car[i][j].getRGB());
-		return buf;
-	}
-
 	public static ImageIcon colorize(ImageIcon icon, Color modifier, boolean type) {
-		if (type)
-			return colorize1(icon, modifier);
-		else
-			return colorize2(icon, modifier);
-	}
-
-	private static ImageIcon colorize1(ImageIcon icon, Color modifier) {
-		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = bi.createGraphics();
-		icon.paintIcon(null, g, 0, 0);
-		g.dispose();
-		BufferedImageOp colorizeFilter = createColorizeOp((short) modifier.getRed(), (short) modifier.getGreen(),
-				(short) modifier.getBlue());
-		BufferedImage targetImage = colorizeFilter.filter(bi, null);
-		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(targetImage.getSource()));
-	}
-
-	private static ImageIcon colorize2(ImageIcon icon, Color modifier) {
-		float[] mod = Color.RGBtoHSB(modifier.getRed(), modifier.getGreen(), modifier.getBlue(), null);
-		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = bi.createGraphics();
-		icon.paintIcon(null, g, 0, 0);
-		g.dispose();
-		Color[][] car = bufferedImageToColorArray(bi);
-		for (int i = 0; i < car.length; i++)
-			for (int j = 0; j < car[0].length; j++) {
-				int alpha = car[i][j].getAlpha();
-				float[] colr = Color.RGBtoHSB(car[i][j].getRed(), car[i][j].getGreen(), car[i][j].getBlue(), null);
-				Color hsb = Color.getHSBColor(mod[0], mod[1], colr[2]);
-				car[i][j] = new Color(hsb.getRed(), hsb.getGreen(), hsb.getBlue(), alpha);
-			}
-		return new ImageIcon(colorArrayToBufferedImage(car));
+		return type ? colorize1(icon, modifier) : colorize2(icon, modifier);
 	}
 
 	public static ImageIcon changeSaturation(ImageIcon icon, float modifier) {
@@ -167,39 +81,24 @@ public class ImageUtils {
 		return new ImageIcon(colorArrayToBufferedImage(car));
 	}
 
-	private static LookupOp createColorizeOp(short R1, short G1, short B1) {
-		short[] alpha = new short[256];
-		short[] red = new short[256];
-		short[] green = new short[256];
-		short[] blue = new short[256];
-
-		for (short i = 0; i < 256; i++) {
-			alpha[i] = i;
-			red[i] = (short) ((R1 + i) / 2);
-			green[i] = (short) ((G1 + i) / 2);
-			blue[i] = (short) ((B1 + i) / 2);
-		}
-
-		short[][] data = new short[][] { red, green, blue, alpha };
-
-		LookupTable lookupTable = new ShortLookupTable(0, data);
-		return new LookupOp(lookupTable, null);
-	}
-
 	public static BufferedImage resize(Image image, int size) {
-		return resizeImage(toBufferedImage(image), size, size);
+		return toBufferedImage(resizeImage(image, size, size));
 	}
 
 	public static BufferedImage resize(Image image, int w, int h) {
-		return resizeImage(toBufferedImage(image), w, h);
+		return toBufferedImage(resizeImage(image, w, h));
 	}
 
 	public static BufferedImage resizeAA(Image image, int size) {
-		return resizeImageWithAA(toBufferedImage(image), size, size);
+		return toBufferedImage(resizeImageWithAA(image, size, size));
 	}
 
 	public static BufferedImage resizeAA(Image image, int w, int h) {
-		return resizeImageWithAA(toBufferedImage(image), w, h);
+		return toBufferedImage(resizeImageWithAA(image, w, h));
+	}
+
+	public static BufferedImage resizeAndCrop(Image image, int size) {
+		return toBufferedImage(resizeImage(autoCropTile(toBufferedImage(image)), size, size));
 	}
 
 	public static BufferedImage emptyImageWithSize(int size, int y, Color color) {
@@ -209,31 +108,6 @@ public class ImageUtils {
 			g.setColor(color);
 			g.fillRect(0, 0, size, y);
 		}
-		g.dispose();
-		return resizedImage;
-	}
-
-	private static BufferedImage resizeImage(BufferedImage originalImage, int w, int h) {
-		// Optimization to not resize images that are already the correct size
-		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
-			return originalImage;
-
-		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(originalImage, 0, 0, w, h, null);
-		g.dispose();
-		return resizedImage;
-	}
-
-	private static BufferedImage resizeImageWithAA(BufferedImage originalImage, int w, int h) {
-		// Optimization to not resize images that are already the correct size
-		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
-			return originalImage;
-
-		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(originalImage, 0, 0, w, h, null);
 		g.dispose();
 		return resizedImage;
 	}
@@ -377,11 +251,10 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage noiseHSV(BufferedImage image, float hfactor, float sfactor, float vfactor, long seed) {
-		BufferedImage copy = deepCopy(image);
 		Random generator = new Random(seed);
-		for (int x = 0; x < copy.getWidth(); x++)
-			for (int y = 0; y < copy.getHeight(); y++) {
-				Color c = new Color(copy.getRGB(x, y), true);
+		for (int x = 0; x < image.getWidth(); x++)
+			for (int y = 0; y < image.getHeight(); y++) {
+				Color c = new Color(image.getRGB(x, y), true);
 				int alpha = c.getAlpha();
 				if (alpha != 0) {
 					float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
@@ -391,11 +264,11 @@ public class ImageUtils {
 					float b = limitDeviation(hsb[2], generator.nextFloat() * vfactor, nextSign(generator));
 
 					Color noalpha = Color.getHSBColor(h, s, b);
-					copy.setRGB(x, y,
+					image.setRGB(x, y,
 							new Color(noalpha.getRed(), noalpha.getGreen(), noalpha.getBlue(), alpha).getRGB());
 				}
 			}
-		return copy;
+		return image;
 	}
 
 	public static ImageIcon fit(Image image, int size) {
@@ -416,14 +289,6 @@ public class ImageUtils {
 		return new ImageIcon(fit);
 	}
 
-	private static int nextSign(Random random) {
-		return random.nextBoolean() ? 1 : -1;
-	}
-
-	private static float limitDeviation(float original, float deviation, int sign) {
-		return Math.max(Math.min(original + deviation * sign, 1), 0);
-	}
-
 	public static BufferedImage autoCropTile(BufferedImage tile) {
 		if (tile.getHeight() > tile.getWidth())
 			return crop(tile, new Rectangle(0, 0, tile.getWidth(), tile.getWidth()));
@@ -442,10 +307,6 @@ public class ImageUtils {
 		} catch (InvalidTileSizeException e) {
 			return autoCropTile(tile);
 		}
-	}
-
-	public static BufferedImage resizeAndCrop(Image image, int size) {
-		return resizeImage(autoCropTile(toBufferedImage(image)), size, size);
 	}
 
 	public static BufferedImage generateCuboidImage(Image texture, int x, int y, int z, int xOff, int yOff, int zOff) {
@@ -500,5 +361,181 @@ public class ImageUtils {
 
 		g2d.dispose();
 		return out;
+	}
+
+	public static Color getAverageColor(BufferedImage image) {
+		long redBucket = 0;
+		long greenBucket = 0;
+		long blueBucket = 0;
+		long pixelCount = 0;
+		for (int y = 0; y < image.getHeight(); y++) {
+			for (int x = 0; x < image.getWidth(); x++) {
+				Color c = new Color(image.getRGB(x, y));
+				if (c.getAlpha() >= 127) {
+					redBucket += c.getRed();
+					greenBucket += c.getGreen();
+					blueBucket += c.getBlue();
+					pixelCount++;
+				}
+			}
+		}
+		return new Color((int) Math.min(redBucket / pixelCount, 255), (int) Math.min(greenBucket / pixelCount, 255),
+				(int) Math.min(blueBucket / pixelCount, 255));
+	}
+
+	public static float getAverageLuminance(BufferedImage image) {
+		float luminance = 0;
+		long pixelCount = 0;
+		for (int y = 0; y < image.getHeight(); y++) {
+			for (int x = 0; x < image.getWidth(); x++) {
+				int color = image.getRGB(x, y);
+				int red = (color >>> 16) & 0xFF;
+				int green = (color >>> 8) & 0xFF;
+				int blue = color & 0xFF;
+
+				// SRGB luminance constants
+				luminance += (red * 0.2126f + green * 0.7152f + blue * 0.0722f) / 255;
+
+				pixelCount++;
+			}
+		}
+		return luminance / (float) pixelCount;
+	}
+
+	private static Image resizeImage(Image originalImage, int w, int h) {
+		// Optimization to not resize images that are already the correct size
+		if (originalImage.getWidth(null) == w && originalImage.getHeight(null) == h)
+			return originalImage;
+
+		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, w, h, null);
+		g.dispose();
+		return resizedImage;
+	}
+
+	private static Image resizeImageWithAA(Image originalImage, int w, int h) {
+		// Optimization to not resize images that are already the correct size
+		if (originalImage.getWidth(null) == w && originalImage.getHeight(null) == h)
+			return originalImage;
+
+		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g.drawImage(originalImage, 0, 0, w, h, null);
+		g.dispose();
+		return resizedImage;
+	}
+
+	private static Color[][] bufferedImageToColorArray(BufferedImage buf) {
+		Color[][] car = new Color[buf.getHeight()][buf.getWidth()];
+		for (int i = 0; i < buf.getHeight(); i++)
+			for (int j = 0; j < buf.getWidth(); j++)
+				car[i][j] = new Color(buf.getRGB(j, i), true);
+		return car;
+	}
+
+	private static BufferedImage colorArrayToBufferedImage(Color[][] car) {
+		BufferedImage buf = new BufferedImage(car[0].length, car.length, BufferedImage.TYPE_INT_ARGB);
+		for (int i = 0; i < car.length; i++)
+			for (int j = 0; j < car[0].length; j++)
+				buf.setRGB(j, i, car[i][j].getRGB());
+		return buf;
+	}
+
+	private static ImageIcon colorize1(ImageIcon icon, Color modifier) {
+		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		icon.paintIcon(null, g, 0, 0);
+		g.dispose();
+		return new ImageIcon(createColorizeOp(modifier).filter(bi, null));
+	}
+
+	private static LookupOp createColorizeOp(Color color) {
+		short[] alpha = new short[256];
+		short[] red = new short[256];
+		short[] green = new short[256];
+		short[] blue = new short[256];
+
+		for (short i = 0; i < 256; i++) {
+			alpha[i] = i;
+			red[i] = (short) (((short) color.getRed() + i) / 2);
+			green[i] = (short) (((short) color.getGreen() + i) / 2);
+			blue[i] = (short) (((short) color.getBlue() + i) / 2);
+		}
+
+		short[][] data = new short[][] { red, green, blue, alpha };
+
+		LookupTable lookupTable = new ShortLookupTable(0, data);
+		return new LookupOp(lookupTable, null);
+	}
+
+	private static ImageIcon colorize2(ImageIcon icon, Color modifier) {
+		float[] mod = Color.RGBtoHSB(modifier.getRed(), modifier.getGreen(), modifier.getBlue(), null);
+		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		icon.paintIcon(null, g, 0, 0);
+		g.dispose();
+		Color[][] car = bufferedImageToColorArray(bi);
+		for (int i = 0; i < car.length; i++)
+			for (int j = 0; j < car[0].length; j++) {
+				int alpha = car[i][j].getAlpha();
+				float[] colr = Color.RGBtoHSB(car[i][j].getRed(), car[i][j].getGreen(), car[i][j].getBlue(), null);
+				Color hsb = Color.getHSBColor(mod[0], mod[1], colr[2]);
+				car[i][j] = new Color(hsb.getRed(), hsb.getGreen(), hsb.getBlue(), alpha);
+			}
+		return new ImageIcon(colorArrayToBufferedImage(car));
+	}
+
+	// Internal math helpers
+
+	private static int nextSign(Random random) {
+		return random.nextBoolean() ? 1 : -1;
+	}
+
+	private static float limitDeviation(float original, float deviation, int sign) {
+		return Math.max(Math.min(original + deviation * sign, 1), 0);
+	}
+
+
+	/**
+	 * Merges two images to make a single image
+	 *
+	 * @param first   <p>The first image to draw on the new image</p>
+	 * @param second  <p>The second image to draw on the new image</p>
+	 * @param width   <p>The width of the final image</p>
+	 * @param height  <p>The height of the final image</p>
+	 * @param xFirst  <p>The x position of the first image on the final image</p>
+	 * @param yFirst  <p>The y position of the first image on the final image<</p>
+	 * @param xSecond <p>The x position of the second image on the final image<</p>
+	 * @param ySecond <p>The y position of the second image on the final image<</p>
+	 * @return <p>Returns the generated image.</p>
+	 */
+	public static BufferedImage mergeTwoImages(Image first, Image second, int width, int height, int xFirst, int yFirst,
+			int xSecond, int ySecond) {
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = bi.createGraphics();
+		graphics.drawImage(first, xFirst, yFirst, null);
+		graphics.drawImage(second, xSecond, ySecond, null);
+		return bi;
+	}
+
+	public static boolean checkIfSameWidth(Image first, Image second) {
+		return first.getWidth(null) == second.getWidth(null);
+	}
+
+	public static boolean checkIfSameHeight(Image first, Image second) {
+		return first.getHeight(null) == second.getHeight(null);
+	}
+
+	/**
+	 * Checks if two images have the same width and the same height
+	 *
+	 * @param first <p>The first image</p>
+	 * @param second <p>The second image</p>
+	 * @return <p>Returns true if the provided images have the same width and the same height</p>
+	 */
+	public static boolean checkIfSameSize(Image first, Image second) {
+		return checkIfSameWidth(first, second) && checkIfSameHeight(first, second);
 	}
 }

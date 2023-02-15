@@ -23,6 +23,8 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -31,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Procedure {
+
+	private static final Logger LOG = LogManager.getLogger(Procedure.class);
 
 	private final String name;
 
@@ -47,11 +51,15 @@ import java.util.List;
 	public List<Dependency> getDependencies(Workspace workspace) {
 		ModElement modElement = workspace.getModElementByName(name);
 		if (modElement != null) {
+			// when deserializing, at this point, workspace may not be applied to the ME yet, so we do it now just in case
+			modElement.setWorkspace(workspace);
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
 			if (generatableElement instanceof net.mcreator.element.types.Procedure) {
 				this.exists = true;
 				return ((net.mcreator.element.types.Procedure) generatableElement).getDependencies();
 			}
+		} else {
+			LOG.warn("Procedure " + name + " not found while trying to extract dependencies!");
 		}
 
 		this.exists = false;

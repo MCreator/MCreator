@@ -66,8 +66,7 @@ public class ElementOrderEditor {
 							DefaultListModel<ModElement> model = new DefaultListModel<>() {
 								@Override public void add(int idx, ModElement element) {
 									super.add(idx, element);
-									element.setWorkspace(mcreator.getWorkspace());
-									element.reinit();
+									element.reinit(mcreator.getWorkspace());
 								}
 							};
 							JList<ModElement> list = new JList<>(model);
