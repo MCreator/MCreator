@@ -108,7 +108,7 @@ public class WorkspaceConvertersTest {
 						ge.getModElement().reinit(workspace);
 
 						// test if GE definition is valid enough to be generated
-						workspace.getGenerator().generateElement(ge);
+						assertTrue(workspace.getGenerator().generateElement(ge));
 					}
 				}
 			});
