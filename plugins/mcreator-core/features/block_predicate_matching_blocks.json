@@ -35,7 +35,7 @@
   "mcreator": {
     "toolbox_id": "blockpredicates",
     "toolbox_init": [
-      "<value name=\"blockSet\"><block type=\"block_holder_set_tag\"><field name=\"tag\">minecraft:dirt</field></block></value>"
+      "<value name=\"blockSet\"><block type=\"block_holderset_tag\"><field name=\"tag\">minecraft:dirt</field></block></value>"
     ],
     "inputs": [
       "blockSet"
