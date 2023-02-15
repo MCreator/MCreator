@@ -494,6 +494,7 @@ Blockly.Blocks['block_list_mutator_input'] = {
       this.setPreviousStatement(true);
       this.setNextStatement(true);
       this.contextMenu = false;
+      this.fieldValues_ = [];
       this.setColour(45);
     }
 };
