@@ -70,7 +70,7 @@ public class SplashScreen extends JWindow {
 		if (Launcher.version != null && Launcher.version.isSnapshot()) {
 			JLabel snapshot = new JLabel("Snapshot - not for production use!");
 			snapshot.setFont(splashFont.deriveFont(14f));
-			snapshot.setForeground(new Color(255, 92, 82));
+			snapshot.setForeground(new Color(120, 239, 88));
 			snapshot.setBounds(30 + 10 - 4, 165, 500, 45);
 			imagePanel.add(snapshot);
 		}

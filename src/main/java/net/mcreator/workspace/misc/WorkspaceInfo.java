@@ -249,6 +249,18 @@ import java.util.*;
 		return false;
 	}
 
+	public boolean hasBreedableEntities() {
+		for (ModElement element : workspace.getModElements()) {
+			if (element.getType() == ModElementType.LIVINGENTITY) {
+				if (element.getGeneratableElement() instanceof LivingEntity livingEntity) {
+					if (livingEntity.breedable)
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public MItemBlock itemBlock(String itemBlock) {
 		return new MItemBlock(workspace, itemBlock);
 	}
