@@ -1,0 +1,1 @@
+Si la condition est spécifiée, le modèle d'entité sera uniquement affiché dans le cas où la condition sera validée.

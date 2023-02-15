@@ -1,0 +1,54 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "tries",
+      "value": 128,
+      "min": 1,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "xzSpread",
+      "value": 7,
+      "min": 0,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "ySpread",
+      "value": 3,
+      "min": 0,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "condition",
+      "check": "BlockPredicate"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"condition\"><block type=\"block_predicate_is_air\"></block></value>"
+    ],
+    "inputs": [
+      "block",
+      "condition"
+    ],
+    "fields": [
+      "tries",
+      "xzSpread",
+      "ySpread"
+    ]
+  }
+}

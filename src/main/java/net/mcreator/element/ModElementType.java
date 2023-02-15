@@ -93,7 +93,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		return modElementGUIProvider.get(mcreator, modElement, editingMode);
 	}
 
-	public Class<? extends GeneratableElement> getModElementStorageClass() {
+	public Class<? extends GE> getModElementStorageClass() {
 		return modElementStorageClass;
 	}
 
