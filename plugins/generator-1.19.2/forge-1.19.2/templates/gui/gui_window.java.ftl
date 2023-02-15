@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-
 package ${package}.client.gui;
 
 <#assign mx = data.W - data.width>
@@ -50,6 +49,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	<#list data.getComponentsOfType("Checkbox") as component>
 		Checkbox ${component.getName()};
+	</#list>
+
+	<#list data.getComponentsOfType("Button") as component>
+		Button ${component.getName()};
+	</#list>
+
+	<#list data.getComponentsOfType("ImageButton") as component>
+		ImageButton ${component.getName()};
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -80,6 +87,22 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(ms, mouseX, mouseY, partialTicks);
+		</#list>
+
+		<#list data.getComponentsOfType("EntityModel") as component>
+			<#assign followMouse = component.followMouseMovement>
+			<#assign x = (component.x - mx/2)?int>
+			<#assign y = (component.y - my/2)?int>
+			if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
+				<#if hasProcedure(component.displayCondition)>
+					if (<@procedureOBJToConditionCode component.displayCondition/>)
+				</#if>
+				InventoryScreen.renderEntityInInventoryRaw(this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale},
+					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 11} - mouseX) / 40.0)</#if>,
+					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
+					livingEntity
+				);
+			}
 		</#list>
 	}
 
@@ -147,7 +170,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-		<#assign btid = 0>
 		<#list data.getComponentsOfType("TextField") as component>
 			${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
@@ -182,26 +204,37 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			this.addWidget(this.${component.getName()});
 		</#list>
 
+		<#assign btid = 0>
+
 		<#list data.getComponentsOfType("Button") as component>
-				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), e -> {
-							<#if hasProcedure(component.onClick)>
-								if (<@procedureOBJToConditionCode component.displayCondition/>) {
-									${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
-									${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
-								}
-							</#if>
-					}
-				)
-				<#if hasProcedure(component.displayCondition)>
-				{
-					@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
-						if (<@procedureOBJToConditionCode component.displayCondition/>)
-							super.render(ms, gx, gy, ticks);
-					}
-				}
-				</#if>);
-				<#assign btid +=1>
+			${component.getName()} = new Button(
+				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.width}, ${component.height},
+				Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+				<@buttonOnClick component/>
+			)<@buttonDisplayCondition component/>;
+
+			guistate.put("button:${component.getName()}", ${component.getName()});
+			this.addRenderableWidget(${component.getName()});
+
+			<#assign btid +=1>
+		</#list>
+
+		<#list data.getComponentsOfType("ImageButton") as component>
+		    ${component.getName()} = new ImageButton(
+				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+            	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+				0, 0, ${component.getHeight(w.getWorkspace())},
+            	new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
+            	${component.getWidth(w.getWorkspace())},
+				${component.getHeight(w.getWorkspace()) * 2},
+				<@buttonOnClick component/>
+			)<@buttonDisplayCondition component/>;
+
+			guistate.put("button:${component.getName()}", ${component.getName()});
+			this.addRenderableWidget(${component.getName()});
+
+			<#assign btid +=1>
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
@@ -215,4 +248,26 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	}
 
 }
+
+<#macro buttonOnClick component>
+e -> {
+    <#if hasProcedure(component.onClick)>
+	    if (<@procedureOBJToConditionCode component.displayCondition/>) {
+			${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
+		}
+	</#if>
+}
+</#macro>
+
+<#macro buttonDisplayCondition component>
+<#if hasProcedure(component.displayCondition)>
+{
+	@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
+		if (<@procedureOBJToConditionCode component.displayCondition/>)
+			super.render(ms, gx, gy, ticks);
+	}
+}
+</#if>
+</#macro>
 <#-- @formatter:on -->

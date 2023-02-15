@@ -1,0 +1,1 @@
+If condition is specified, this entity model will only be displayable in case the condition is passed.

@@ -122,6 +122,12 @@ public class ModElementUITest {
 							"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
 		}
 
+		for (int i = 1; i <= 1; i++) {
+			workspace.addModElement(
+					new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE).putMetadata(
+							"dependencies", new ArrayList<String>()).putMetadata("return_type", "ENTITY"));
+		}
+
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 
@@ -162,7 +168,7 @@ public class ModElementUITest {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
-					modElementType, random);
+					modElementType, true, random);
 
 			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
 					+ generatableElements.size() + " variants");
