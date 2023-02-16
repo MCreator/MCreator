@@ -65,6 +65,7 @@ import java.util.List;
 	public Procedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
 	public NumberProcedure visualScale;
+	public NumberProcedure boundingBoxScale;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;

@@ -98,6 +98,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private ProcedureSelector isShakingCondition;
 	private LogicProcedureSelector solidBoundingBox;
 	private NumberProcedureSelector visualScale;
+	private NumberProcedureSelector boundingBoxScale;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
@@ -348,6 +349,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.05)), 300, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity"));
+		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
+				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.05)), 300, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity"));		
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -489,7 +494,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(16, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(17, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -619,6 +624,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(solidBoundingBox);
 		spo2.add(new JEmptyBox());
 		spo2.add(visualScale);
+		spo2.add(new JEmptyBox());
+		spo2.add(boundingBoxScale);
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
 		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
@@ -898,6 +905,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		isShakingCondition.refreshListKeepSelected();
 		solidBoundingBox.refreshListKeepSelected();
 		visualScale.refreshListKeepSelected();
+		boundingBoxScale.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
@@ -954,6 +962,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
 		visualScale.setSelectedProcedure(livingEntity.visualScale);
+		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1083,6 +1092,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.solidBoundingBox = solidBoundingBox.getSelectedProcedure();
 		livingEntity.visualScale = visualScale.getSelectedProcedure();
+		livingEntity.boundingBoxScale = boundingBoxScale.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();
