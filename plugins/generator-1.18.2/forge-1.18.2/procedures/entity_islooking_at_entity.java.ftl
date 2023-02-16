@@ -7,7 +7,7 @@
 		vec31 = vec31.normalize();
 		double d1 = vec3.dot(vec31);
 		if (_source instanceof LivingEntity _liv)
-			return d1 > 1.0D - 0.04D / d0 ? _liv.hasLineOfSight(_target) : false;
+			return d1 > 1.0D - ((double) ${input$range} * 0.05D) / d0 ? _liv.hasLineOfSight(_target) : false;
 		return false;
 	}
 }.isLooking(${input$entity}, ${input$lookingAt}))

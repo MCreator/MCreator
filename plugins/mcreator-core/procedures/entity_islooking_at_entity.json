@@ -9,6 +9,11 @@
       "type": "input_value",
       "name": "lookingAt",
       "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "range",
+      "check": "Number"
     }
   ],
   "inputsInline": true,
@@ -18,11 +23,13 @@
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"source_entity_from_deps\"></block></value>",
-      "<value name=\"lookingAt\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"lookingAt\"><block type=\"entity_from_deps\"></block></value>",
+	  "<value name=\"range\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "inputs": [
       "entity",
-      "lookingAt"
+      "lookingAt",
+	  "range"
     ]
   }
 }
