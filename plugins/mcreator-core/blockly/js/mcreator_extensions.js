@@ -214,14 +214,14 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         fieldNames = []) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
-        mutationToDom: function () {
+        mutationToDom: function() {
             var container = document.createElement('mutation');
             container.setAttribute('inputs', this.inputCount_);
             return container;
         },
 
         // Retrieve number of inputs from XML
-        domToMutation: function (xmlElement) {
+        domToMutation: function(xmlElement) {
             this.inputCount_ = parseInt(xmlElement.getAttribute('inputs'), 10);
             this.updateShape_();
         },
@@ -299,7 +299,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
                     const input = this.getInput(inputName + i);
                     if (input) {
                         if (isProperInput) {
-                            inputBlock.valueConnection_ = input && input.connection.targetConnection;
+                            inputBlock.valueConnection_ = input.connection.targetConnection;
                         }
                         inputBlock.fieldValues_ = [];
                         for (let j = 0; j < fieldNames.length; j++) {
