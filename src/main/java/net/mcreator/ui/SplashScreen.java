@@ -93,7 +93,13 @@ public class SplashScreen extends JWindow {
 		imagePanel.add(loadstate);
 
 		add(imagePanel);
-		setBackground(new Color(0, 0, 0, 0));
+
+		// Catch any exceptions that might get thrown when working with systems that don't support window transparency.
+		try {
+			setBackground(new Color(0, 0, 0, 0));
+		} catch (Exception ignored) {
+		}
+
 		setSize(imagePanel.getSize());
 		setLocationRelativeTo(null);
 		setVisible(true);

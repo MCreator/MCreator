@@ -542,12 +542,12 @@ public class ImageUtils {
 	/**
 	 * Generates a smooth squircle shape
 	 *
-	 * @param color				<p>Color of the generated smooth squircle</p>
-	 * @param fac				<p>Upscale factor (generates a bigger image before downscaling to get better visual results)</p>
-	 * @param radius			<p>The squircle corner radius</p>
-	 * @param width				<p>Squircle width</p>
-	 * @param height			<p>Squircle height</p>
-	 * @param observer			<p>Observer used when drawing the image (can be the current swing component)</p>
+	 * @param color    <p>Color of the generated smooth squircle</p>
+	 * @param fac      <p>Upscale factor (generates a bigger image before downscaling to get better visual results)</p>
+	 * @param radius   <p>The squircle corner radius</p>
+	 * @param width    <p>Squircle width</p>
+	 * @param height   <p>Squircle height</p>
+	 * @param observer <p>Observer used when drawing the image (can be the current swing component)</p>
 	 * @return <p>The generated image</p>
 	 */
 	public static Image generateSquircle(Color color, int fac, int radius, int width, int height,
@@ -556,11 +556,12 @@ public class ImageUtils {
 
 		Graphics2D g2d = sim.createGraphics();
 		g2d.setColor(color);
+
 		RoundRectangle2D.Double squircle = new RoundRectangle2D.Double(0, 0, width, height, radius, radius);
-		Shape oldc = g2d.getClip();
+
 		g2d.setClip(squircle);
 		g2d.fillRect(0, 0, width, height);
-		g2d.setClip(oldc);
+
 		g2d.dispose();
 
 		return cropSquircle(sim, fac, radius, width, height, observer);
@@ -569,24 +570,25 @@ public class ImageUtils {
 	/**
 	 * Crops the input image in a squircle shape
 	 *
-	 * @param original			<p>The original image</p>
-	 * @param fac				<p>Upscale factor (upscales the image before cropping to produce smooth edges after downscaling to the desired size)</p>
-	 * @param radius			<p>The squircle corner radius</p>
-	 * @param width				<p>Squircle width</p>
-	 * @param height			<p>Squircle height</p>
-	 * @param observer			<p>Observer used when drawing the image (can be the current swing component)</p>
+	 * @param original <p>The original image</p>
+	 * @param fac      <p>Upscale factor (upscales the image before cropping to produce smooth edges after downscaling to the desired size)</p>
+	 * @param radius   <p>The squircle corner radius</p>
+	 * @param width    <p>Squircle width</p>
+	 * @param height   <p>Squircle height</p>
+	 * @param observer <p>Observer used when drawing the image (can be the current swing component)</p>
 	 * @return <p>The cropped image</p>
 	 */
 	public static Image cropSquircle(Image original, int fac, int radius, int width, int height,
 			ImageObserver observer) {
 		BufferedImage sim = new BufferedImage(width * fac, height * fac, BufferedImage.TYPE_INT_ARGB);
+
 		Graphics2D g2d = sim.createGraphics();
+
 		RoundRectangle2D.Double squircle = new RoundRectangle2D.Double(0, 0, width * fac, height * fac, radius * fac,
 				radius * fac);
-		Shape oldc = g2d.getClip();
 		g2d.setClip(squircle);
 		g2d.drawImage(ImageUtils.cover(original, new Dimension(width * fac, height * fac)), 0, 0, observer);
-		g2d.setClip(oldc);
+
 		g2d.dispose();
 
 		return sim.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -595,25 +597,27 @@ public class ImageUtils {
 	/**
 	 * Generates a shadow that fits squircle cropped images.
 	 *
-	 * @param radius			<p>The squircle corner radius</p>
-	 * @param shadowRadius		<p>Width of the blur shadow</p>
-	 * @param shadowExtension	<p>The squircle extension</p>
-	 * @param width				<p>Squircle width</p>
-	 * @param height			<p>Squircle height</p>
+	 * @param radius          <p>The squircle corner radius</p>
+	 * @param shadowRadius    <p>Width of the blur shadow</p>
+	 * @param shadowExtension <p>The squircle extension</p>
+	 * @param width           <p>Squircle width</p>
+	 * @param height          <p>Squircle height</p>
 	 * @return <p>Returns the generated shadow.</p>
 	 */
 	public static Image generateShadow(int radius, int shadowRadius, int shadowExtension, int width, int height) {
 		BufferedImage im = new BufferedImage(width + 2 * ((shadowRadius * 2) + shadowExtension),
 				height + 2 * ((shadowRadius * 2) + shadowExtension), BufferedImage.TYPE_INT_ARGB);
+
 		Graphics2D g2d = im.createGraphics();
+
 		g2d.setColor(Color.black);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
 		RoundRectangle2D.Double squircle = new RoundRectangle2D.Double(shadowRadius * 2, shadowRadius * 2,
 				width + 2 * shadowExtension, height + 2 * shadowExtension, radius, radius);
-
 		g2d.fill(squircle);
+
 		g2d.dispose();
 
 		Kernel kernel = new Kernel(shadowRadius, shadowRadius, generateGaussianKernel(shadowRadius));
@@ -626,7 +630,7 @@ public class ImageUtils {
 	/**
 	 * Generates a gaussian kernel compatible with java.awt.image.Kernel objects.
 	 *
-	 * @param radius  <p>The gaussian kernel radius</p>
+	 * @param radius <p>The gaussian kernel radius</p>
 	 * @return <p>The generated kernel</p>
 	 */
 	public static float[] generateGaussianKernel(int radius) {
