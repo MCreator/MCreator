@@ -7,6 +7,21 @@
     },
     {
       "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
       "name": "_placeholder",
       "check": "MCItem"
     },
@@ -27,15 +42,21 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 350,
+  "colour": 35,
   "mcreator": {
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "worldmanagement",
     "toolbox_init": [
       "<value name=\"location\"><block type=\"text\"><field name=\"TEXT\">minecraft:chests/spawn_bonus_chest</field></block></value>",
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
       "<value name=\"_placeholder\"><block deletable=\"false\" movable=\"false\" enabled=\"false\" type=\"itemstack_iterator\"></block></value>"
     ],
     "inputs": [
-      "location"
+      "location",
+      "x",
+      "y",
+      "z"
     ],
     "statements": [
       {
