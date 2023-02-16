@@ -109,10 +109,23 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 	}
 
-	<#if data.mobModelName == "Villager">
+	<#if data.visualScale??>
 	@Override protected void scale(${name}Entity villager, PoseStack poseStack, float f) {
-		poseStack.scale(0.9375f, 0.9375f, 0.9375f);
+		<#if hasProcedure(data.visualScale)>
+			Level world = entity.level;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
+			poseStack.scale(scale, scale, scale);
+		<#else>
+			poseStack.scale(${data.visualScale.getFixedValue()}, ${data.visualScale.getFixedValue()}, ${data.visualScale.getFixedValue()});
+		</#if>
 	}
+	<#elseif data.mobModelName == "Villager">
+		@Override protected void scale(${name}Entity villager, PoseStack poseStack, float f) {
+			poseStack.scale(0.9375f, 0.9375f, 0.9375f);
+		}
 	</#if>
 
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
@@ -129,21 +142,6 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	        double z = entity.getZ();
 		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
 	    }
-	</#if>
-
-	<#if data.visualScale??>
-	@Override protected void scale(${name}Entity entity, PoseStack poseStack, float p_116462_) {
-		<#if hasProcedure(data.visualScale)>
-			Level world = entity.level;
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
-			poseStack.scale(scale, scale, scale);
-		<#else>
-			poseStack.scale(${data.visualScale.getFixedValue()}, ${data.visualScale.getFixedValue()}, ${data.visualScale.getFixedValue()});
-		</#if>
-	}
 	</#if>
 
     <#if hasProcedure(data.isShakingCondition)>
