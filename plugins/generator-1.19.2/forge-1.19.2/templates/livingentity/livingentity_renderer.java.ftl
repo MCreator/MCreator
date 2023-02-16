@@ -131,17 +131,17 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	    }
 	</#if>
 
-	<#if data.mobScale??>
+	<#if data.visualScale??>
 	@Override protected void scale(${name}Entity _ent, PoseStack poseStack, float p_116462_) {
-		<#if hasProcedure(data.mobScale)>
+		<#if hasProcedure(data.visualScale)>
 			Entity entity = _ent;
 			Level world = entity.level;
 			double x = entity.getX();
 			double y = entity.getY();
 			double z = entity.getZ();
-			poseStack.scale((float) <@procedureOBJToNumberCode data.mobScale/>, (float) <@procedureOBJToNumberCode data.mobScale/>, (float) <@procedureOBJToNumberCode data.mobScale/>);
+			poseStack.scale((float) <@procedureOBJToNumberCode data.visualScale/>, (float) <@procedureOBJToNumberCode data.visualScale/>, (float) <@procedureOBJToNumberCode data.visualScale/>);
 		<#else>
-			poseStack.scale(${data.mobScale.getFixedValue()}, ${data.mobScale.getFixedValue()}, ${data.mobScale.getFixedValue()});
+			poseStack.scale(${data.visualScale.getFixedValue()}, ${data.visualScale.getFixedValue()}, ${data.visualScale.getFixedValue()});
 		</#if>
 	}
 	</#if>
