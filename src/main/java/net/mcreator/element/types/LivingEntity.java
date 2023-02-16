@@ -27,6 +27,7 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
@@ -63,6 +64,7 @@ import java.util.List;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
+	public NumberProcedure visualScale;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;

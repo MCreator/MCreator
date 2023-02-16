@@ -131,6 +131,21 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	    }
 	</#if>
 
+	<#if data.mobScale??>
+	@Override protected void scale(${name}Entity _ent, PoseStack poseStack, float p_116462_) {
+		<#if hasProcedure(data.mobScale)>
+			Entity entity = _ent;
+			Level world = entity.level;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			poseStack.scale((float) <@procedureOBJToNumberCode data.mobScale/>, (float) <@procedureOBJToNumberCode data.mobScale/>, (float) <@procedureOBJToNumberCode data.mobScale/>);
+		<#else>
+			poseStack.scale(${data.mobScale.getFixedValue()}, ${data.mobScale.getFixedValue()}, ${data.mobScale.getFixedValue()});
+		</#if>
+	}
+	</#if>
+
     <#if hasProcedure(data.isShakingCondition)>
         @Override
 	    protected boolean isShaking(${name}Entity _ent) {
