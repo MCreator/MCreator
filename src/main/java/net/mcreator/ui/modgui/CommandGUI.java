@@ -95,8 +95,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML(
-						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure_no_args\"></block></next></block></xml>");
+				blocklyPanel.setXML(Command.XML_BASE);
 			}
 		});
 

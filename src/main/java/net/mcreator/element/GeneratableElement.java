@@ -37,6 +37,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
@@ -140,15 +141,18 @@ public abstract class GeneratableElement {
 				if (importedFormatVersion != GeneratableElement.formatVersion) {
 					List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
 					if (converters != null) {
+						AtomicInteger versionIncrementer = new AtomicInteger(importedFormatVersion);
 						converters.stream()
 								.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
 								.sorted().forEach(converter -> {
-									LOG.debug("Converting mod element " + this.lastModElement.getName() + " (" + modElementType
-											+ ") from FV" + importedFormatVersion + " to FV"
-											+ converter.getVersionConvertingTo());
+									LOG.debug(
+											"Converting " + this.lastModElement.getName() + " (" + modElementType + ") from FV"
+													+ versionIncrementer.get() + " to FV" + converter.getVersionConvertingTo()
+													+ " using " + converter.getClass().getSimpleName());
 									generatableElement[0] = converter.convert(this.workspace, generatableElement[0],
 											jsonElement);
 									generatableElement[0].conversionApplied = true;
+									versionIncrementer.set(converter.getVersionConvertingTo());
 								});
 					}
 				}
@@ -172,10 +176,12 @@ public abstract class GeneratableElement {
 								workspace.getModElementManager().storeModElement(result);
 
 								LOG.debug("Converted mod element " + this.lastModElement.getName() + " (" + newType
-										+ ") to " + result.getModElement().getType().getRegistryName());
+										+ ") to " + result.getModElement().getType().getRegistryName() + " using "
+										+ converter.getClass().getSimpleName());
 							} else {
 								LOG.debug("Converted mod element " + this.lastModElement.getName() + " (" + newType
-										+ ") to data format that is not a mod element");
+										+ ") to data format that is not a mod element using " + converter.getClass()
+										.getSimpleName());
 							}
 						} catch (Exception e2) {
 							LOG.warn("Failed to convert mod element " + this.lastModElement.getName() + " of type "

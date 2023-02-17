@@ -78,6 +78,7 @@
         <block type="time_minutes"/>
         <block type="time_hours"/>
         <block type="time_day_of_week"/>
+        <block type="time_week_of_year"/>
         <block type="time_day_of_month"/>
         <block type="time_month"/>
         <block type="time_year"/>
