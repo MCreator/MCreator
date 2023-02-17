@@ -106,6 +106,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final JSpinner attackStrength = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
 	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
+	private final JSpinner stepHeight = new JSpinner(new SpinnerNumberModel(0.6, 0, 255, 0.1));
 	private final JSpinner armorBaseValue = new JSpinner(new SpinnerNumberModel(0.0, 0, 100, 0.1));
 	private final JSpinner health = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
@@ -415,10 +416,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
-
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"),
-				L10N.label("elementgui.living_entity.movement_speed")));
-		subpane1.add(movementSpeed);
+		
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.movement_speed_step_height"),
+				HelpUtils.helpButton(this.withEntry("entity/movement_speed")),
+				HelpUtils.helpButton(this.withEntry("entity/step_height"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, movementSpeed, stepHeight));
+		
 
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.health_xp_amount"),
 				HelpUtils.helpButton(this.withEntry("entity/health")),
@@ -542,6 +545,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		armorBaseValue.setPreferredSize(new Dimension(250, 32));
 		movementSpeed.setPreferredSize(new Dimension(250, 32));
+		stepHeight.setPreferredSize(new Dimension(250, 32));
 		trackingRange.setPreferredSize(new Dimension(250, 32));
 		attackStrength.setPreferredSize(new Dimension(250, 32));
 		attackKnockback.setPreferredSize(new Dimension(250, 32));
@@ -966,6 +970,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		attackKnockback.setValue(livingEntity.attackKnockback);
 		knockbackResistance.setValue(livingEntity.knockbackResistance);
 		movementSpeed.setValue(livingEntity.movementSpeed);
+		stepHeight.setValue(livingEntity.stepHeight);
 		mobDrop.setBlock(livingEntity.mobDrop);
 		equipmentMainHand.setBlock(livingEntity.equipmentMainHand);
 		equipmentHelmet.setBlock(livingEntity.equipmentHelmet);
@@ -1092,6 +1097,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.attackKnockback = (double) attackKnockback.getValue();
 		livingEntity.knockbackResistance = (double) knockbackResistance.getValue();
 		livingEntity.movementSpeed = (double) movementSpeed.getValue();
+		livingEntity.stepHeight = (double) stepHeight.getValue();
 		livingEntity.health = (int) health.getValue();
 		livingEntity.trackingRange = (int) trackingRange.getValue();
 		livingEntity.followRange = (int) followRange.getValue();

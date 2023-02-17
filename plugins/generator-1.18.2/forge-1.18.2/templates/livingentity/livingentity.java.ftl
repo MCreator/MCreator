@@ -93,6 +93,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
+		maxUpStep = ${data.stepHeight}f;
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 

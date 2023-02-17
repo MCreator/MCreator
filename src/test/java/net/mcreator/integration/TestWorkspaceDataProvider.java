@@ -655,6 +655,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.attackKnockback = 1.5;
 			livingEntity.knockbackResistance = 0.5;
 			livingEntity.movementSpeed = 0.76;
+			livingEntity.stepHeight = 2.24;
 			livingEntity.armorBaseValue = 0.123;
 			livingEntity.health = 42;
 			livingEntity.trackingRange = 27;
