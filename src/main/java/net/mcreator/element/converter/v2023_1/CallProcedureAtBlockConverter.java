@@ -87,8 +87,7 @@ public class CallProcedureAtBlockConverter implements IConverter {
 				}
 
 				Element mutationXML = doc.createElement("mutation");
-				mutationXML.setAttribute("dependencies", "3");
-				element.appendChild(mutationXML);
+				mutationXML.setAttribute("inputs", "3");
 
 				Element callProcedureBlock = bh.createBlock("call_procedure", mutationXML, xField, xValue,
 						yField, yValue, zField, zValue);

@@ -53,7 +53,7 @@ Blockly.Blocks['call_procedure'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(250);
-        this.setMutator(new Blockly.Mutator(['call_procedure_mutator_input'], this));
+        this.setMutator(new Blockly.Mutator(['procedure_dependencies_mutator_input'], this));
         this.mixin(PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN);
     }
 };
@@ -69,7 +69,7 @@ Blockly.Blocks['call_procedure_no_args'] = {
     }
 };
 
-Blockly.Blocks['call_procedure_mutator_container'] = {
+Blockly.Blocks['procedure_dependencies_mutator_container'] = {
     init: function() {
         this.appendDummyInput().appendField(javabridge.t('blockly.block.call_procedure.container'));
         this.appendStatementInput('dependencies');
@@ -78,7 +78,7 @@ Blockly.Blocks['call_procedure_mutator_container'] = {
     }
 };
 
-Blockly.Blocks['call_procedure_mutator_input'] = {
+Blockly.Blocks['procedure_dependencies_mutator_input'] = {
     init: function() {
         this.appendDummyInput().appendField(javabridge.t('blockly.block.call_procedure.input'));
         this.setPreviousStatement(true);

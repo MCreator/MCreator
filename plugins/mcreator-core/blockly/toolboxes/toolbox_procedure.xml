@@ -98,7 +98,7 @@
         <block type="set_event_result"/>
         <block type="call_procedure"/>
         <block type="call_procedure">
-            <mutation dependencies="3"/>
+            <mutation inputs="3"/>
             <field name="name0">x</field>
             <value name="arg0">
                 <block type="coord_x"/>
