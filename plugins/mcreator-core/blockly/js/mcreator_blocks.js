@@ -72,7 +72,7 @@ Blockly.Blocks['call_procedure_no_args'] = {
 Blockly.Blocks['procedure_dependencies_mutator_container'] = {
     init: function() {
         this.appendDummyInput().appendField(javabridge.t('blockly.block.call_procedure.container'));
-        this.appendStatementInput('dependencies');
+        this.appendStatementInput('STACK');
         this.contextMenu = false;
         this.setColour(250);
     }
@@ -84,6 +84,7 @@ Blockly.Blocks['procedure_dependencies_mutator_input'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.contextMenu = false;
+        this.fieldValues_ = [];
         this.setColour(250);
     }
 };

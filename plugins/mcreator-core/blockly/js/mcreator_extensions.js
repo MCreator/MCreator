@@ -355,7 +355,7 @@ const PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN = simpleRepeatingInputMixin('procedur
         'procedure_dependencies_mutator_input', 'arg', function(thisBlock, inputName, index) {
                 thisBlock.appendValueInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
                         .appendField(javabridge.t('blockly.block.call_procedure.name'))
-                        .appendField(new FieldJavaName('dependency' + i), 'name' + i)
+                        .appendField(new FieldJavaName('dependency' + index), 'name' + index)
                         .appendField(javabridge.t('blockly.block.call_procedure.arg'));
         }, true, ['name']);
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN, undefined,
