@@ -52,13 +52,9 @@ public class ${name}AnvilRecipe {
 		Item right = ${mappedMCItemToItem(data.anvilInputAdditionStack)};
 		</#if>
 		ItemStack result = ${mappedMCItemToItemStackCode(data.anvilReturnStack)};
-		<#if leftHasTag || rightHasTag>
 		boolean showResult =
 			<#if leftHasTag> left && <#else> left == event.getLeft().getItem() && </#if>
 			<#if rightHasTag> right; <#else> right == event.getRight().getItem(); </#if>
-		<#else>
-		boolean showResult = event.getLeft().getItem() == left && event.getRight().getItem() == right;
-		</#if>
 		if (showResult) {
 			event.setCost(${data.xpCost});
 			event.setOutput(result);
