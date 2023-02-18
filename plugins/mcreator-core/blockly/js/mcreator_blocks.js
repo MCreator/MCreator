@@ -53,8 +53,7 @@ Blockly.Blocks['call_procedure'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(250);
-        this.setMutator(new Blockly.Mutator(['procedure_dependencies_mutator_input'], this));
-        this.mixin(PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN);
+        Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
     }
 };
 

@@ -351,15 +351,15 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
     }
 }
 
-const PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN = simpleRepeatingInputMixin('procedure_dependencies_mutator_container',
-        'procedure_dependencies_mutator_input', 'arg', function(thisBlock, inputName, index) {
+Blockly.Extensions.registerMutator('procedure_dependencies_mutator', simpleRepeatingInputMixin(
+        'procedure_dependencies_mutator_container', 'procedure_dependencies_mutator_input', 'arg',
+        function(thisBlock, inputName, index) {
                 thisBlock.appendValueInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
                         .appendField(javabridge.t('blockly.block.call_procedure.name'))
                         .appendField(new FieldJavaName('dependency' + index), 'name' + index)
                         .appendField(javabridge.t('blockly.block.call_procedure.arg'));
-        }, true, ['name']);
-Blockly.Extensions.registerMutator('procedure_dependencies_mutator', PROCEDURE_DEPENDENCIES_MUTATOR_MIXIN, undefined,
-        ['procedure_dependencies_mutator_input']);
+        }, true, ['name']),
+        undefined, ['procedure_dependencies_mutator_input']);
 
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
