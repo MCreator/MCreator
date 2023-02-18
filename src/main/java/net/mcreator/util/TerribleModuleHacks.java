@@ -30,10 +30,6 @@ public class TerribleModuleHacks {
 	}
 
 	public static void openMCreatorRequirements() {
-		// Foxtrot core
-		ModuleLayer.boot().findModule("java.desktop").ifPresent(
-				module -> addOpens(module, "java.awt", foxtrot.pumps.ConditionalEventPump.class.getModule()));
-
 		// MCreator theme
 		ModuleLayer.boot().findModule("java.desktop").ifPresent(
 				module -> addOpens(module, "sun.awt", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
