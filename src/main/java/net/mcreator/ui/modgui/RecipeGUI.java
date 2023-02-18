@@ -54,10 +54,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private CampfireCookingRecipeMaker ccm;
 	private SmithingRecipeMaker smcm;
 	private BrewingRecipeMaker brm;
+	private AnvilRecipeMaker arm;
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.recipe.is_shapeless");
 
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
+	private final JSpinner xpCost = new JSpinner(new SpinnerNumberModel(1, 1, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
@@ -68,7 +70,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final JComboBox<String> recipeType = new JComboBox<>(
 			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
-					"Campfire cooking", "Smithing" });
+					"Campfire cooking", "Smithing", "Anvil" });
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -90,6 +92,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		brm = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTagsAndPotions,
 				ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItemsAndPotions);
+		arm = new AnvilRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
 
 		rm.setOpaque(false);
 		fm.setOpaque(false);
@@ -99,6 +103,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		ccm.setOpaque(false);
 		smcm.setOpaque(false);
 		brm.setOpaque(false);
+		arm.setOpaque(false);
 
 		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
@@ -142,13 +147,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(ccm), "campfire cooking");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smcm), "smithing");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(brm), "brewing");
+		recipesPanel.add(PanelUtils.totalCenterInPanel(arm), "anvil");
 
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				"Recipe parameters", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 
-		JPanel northPanel = new JPanel(new GridLayout(6, 2, 10, 2));
+		JPanel northPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(
@@ -171,6 +177,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				L10N.label("elementgui.recipe.xp_reward")));
 		northPanel.add(xpReward);
 
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_cost"),
+				L10N.label("elementgui.recipe.xp_cost")));
+		northPanel.add(xpCost);
+
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"),
 				L10N.label("elementgui.recipe.cooking_time")));
 		northPanel.add(cookingTime);
@@ -180,18 +190,21 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, northPanel), recwrap, 15, 15)));
 
 		xpReward.setEnabled(false);
+		xpCost.setEnabled(false);
 		cookingTime.setEnabled(false);
 
 		recipeType.addActionListener(e -> {
 			if (recipeType.getSelectedItem() != null) {
 				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
 						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
-						&& !recipeType.getSelectedItem().equals("Brewing"));
+						&& !recipeType.getSelectedItem().equals("Brewing") && !recipeType.getSelectedItem().equals("Anvil"));
 				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
 						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
-						&& !recipeType.getSelectedItem().equals("Brewing"));
+						&& !recipeType.getSelectedItem().equals("Brewing") && !recipeType.getSelectedItem().equals("Anvil"));
 
-				group.setEnabled(!recipeType.getSelectedItem().equals("Brewing"));
+				xpCost.setEnabled(recipeType.getSelectedItem().equals("Anvil"));
+
+				group.setEnabled(!recipeType.getSelectedItem().equals("Brewing") && !recipeType.getSelectedItem().equals("Anvil"));
 
 				if (!isEditingMode() && cookingTime.isEnabled()) {
 					if (recipeType.getSelectedItem().equals("Smelting")) {
@@ -258,7 +271,13 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
 			}
+		} else if ("Anvil".equals(recipeType.getSelectedItem())) {
+			if (!arm.cb1.containsItem() || !arm.cb2.containsItem() || !arm.cb3.containsItem()) {
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.recipe.error_anvil_no_ingredient_addition_and_result"));
+			}
 		}
+
 
 		return new AggregatedValidationResult(name, group);
 	}
@@ -317,6 +336,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			brm.cb1.setBlock(recipe.brewingInputStack);
 			brm.cb2.setBlock(recipe.brewingIngredientStack);
 			brm.cb3.setBlock(recipe.brewingReturnStack);
+		} else if ("Anvil".equals(recipe.recipeType)) {
+			arm.cb1.setBlock(recipe.anvilInputStack);
+			arm.cb2.setBlock(recipe.anvilInputAdditionStack);
+			arm.cb3.setBlock(recipe.anvilReturnStack);
 		}
 	}
 
@@ -371,6 +394,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.brewingInputStack = brm.cb1.getBlock();
 			recipe.brewingIngredientStack = brm.cb2.getBlock();
 			recipe.brewingReturnStack = brm.cb3.getBlock();
+		} else if ("Anvil".equals(recipe.recipeType)) {
+			recipe.anvilInputStack = arm.cb1.getBlock();
+			recipe.anvilInputAdditionStack = arm.cb2.getBlock();
+			recipe.anvilReturnStack = arm.cb3.getBlock();
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();

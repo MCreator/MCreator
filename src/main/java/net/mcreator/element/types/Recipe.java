@@ -31,6 +31,7 @@ import java.util.Arrays;
 
 	public String recipeType;
 	public double xpReward;
+	public int xpCost;
 	public int cookingTime;
 	public int recipeRetstackSize;
 	public String group;
@@ -70,6 +71,11 @@ import java.util.Arrays;
 	public MItemBlock brewingIngredientStack;
 	public MItemBlock brewingReturnStack;
 
+	// Anvil recipe
+	public MItemBlock anvilInputStack;
+	public MItemBlock anvilInputAdditionStack;
+	public MItemBlock anvilReturnStack;
+
 	private Recipe() {
 		this(null);
 	}
@@ -83,6 +89,8 @@ import java.util.Arrays;
 		this.namespace = "mod";
 
 		this.cookingTime = 200;
+
+		this.xpCost = 1;
 	}
 
 	@Override public void setModElement(ModElement element) {
@@ -123,6 +131,10 @@ import java.util.Arrays;
 				&& !brewingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateBrewingPreviewPicture(getModElement().getWorkspace(),
 					brewingInputStack, brewingIngredientStack, brewingReturnStack);
+		} else if ("Anvil".equals(recipeType) && !anvilInputStack.isEmpty()
+				&& !anvilInputAdditionStack.isEmpty() && !anvilReturnStack.isEmpty()) {
+			mod = MinecraftImageGenerator.Preview.generateAnvilPreviewPicture(getModElement().getWorkspace(),
+					anvilInputStack, anvilInputAdditionStack, anvilReturnStack);
 		}
 		return mod;
 	}

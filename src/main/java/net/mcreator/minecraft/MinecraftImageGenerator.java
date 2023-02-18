@@ -382,6 +382,37 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 
+		/**
+		 * <p>This method generates anvil recipe images.</p>
+		 *
+		 * @param input    Input of the recipe.
+		 * @param addition Addition of the recipe
+		 * @param result   Result of the recipe.
+		 * @return Returns the generated image.
+		 */
+		public static BufferedImage generateAnvilPreviewPicture(Workspace workspace, MItemBlock input,
+				MItemBlock addition, MItemBlock result) {
+			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2D = icon.createGraphics();
+			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			graphics2D.setColor(new Color(190, 190, 190, 65));
+
+			drawTwoSlotRecipe(graphics2D, workspace, input, addition);
+
+			// TODO: implement hammer drawing (Note from Nerdy: sorry lol)
+			graphics2D.drawLine(11, 13, 12, 13);
+			graphics2D.drawLine(11, 14, 12, 14);
+
+			graphics2D.drawLine(15, 13, 16, 13);
+			graphics2D.drawLine(15, 14, 16, 14);
+
+			graphics2D.drawLine(13, 11, 13, 16);
+			graphics2D.drawLine(14, 11, 14, 16);
+			graphics2D.dispose();
+
+			return icon;
+		}
+
 		private static Polygon getStarPolygon(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
 			int[] xcoord = new int[vertexCount * 2];
 			int[] ycoord = new int[vertexCount * 2];
