@@ -81,6 +81,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getRecipeExample(me(workspace, type, "7"), "Campfire cooking", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "8"), "Smithing", random, true));
 			generatableElements.add(getRecipeExample(me(workspace, type, "9"), "Brewing", random, true));
+			generatableElements.add(getRecipeExample(me(workspace, type, "10"), "Anvil", random, true));
 		} else if (type == ModElementType.TOOL) {
 			generatableElements.add(getToolExample(me(workspace, type, "1"), "Pickaxe", random, false, false));
 			generatableElements.add(getToolExample(me(workspace, type, "2"), "Pickaxe", random, true, false));
@@ -1832,6 +1833,13 @@ public class TestWorkspaceDataProvider {
 			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
 					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+		} else if ("Anvil".equals(recipe.recipeType)) {
+			recipe.anvilInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.anvilInputAdditionStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.anvilReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
 		} else {
 			throw new RuntimeException("Unknown recipe type");
