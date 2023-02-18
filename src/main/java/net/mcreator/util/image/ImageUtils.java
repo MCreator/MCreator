@@ -645,7 +645,14 @@ public class ImageUtils {
 		float total = 1.0f;
 
 		for (int i = 0; i < data.length; i++) {
-			float distance = (float) Math.sqrt(Math.abs((radius - i) * (radius - i % shrad)));
+			int x = i % shrad;
+			int y = i / shrad;
+
+			int dx = x - radius;
+			int dy = y - radius;
+
+			double distance = Math.sqrt(dx * dx + dy * dy);
+
 			data[i] = (float) Math.exp(-distance / twoSigmaSquare) / sigmaRoot;
 			total += data[i];
 		}
