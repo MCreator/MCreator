@@ -21,7 +21,6 @@ package net.mcreator.ui;
 import net.mcreator.Launcher;
 import net.mcreator.ui.component.SplashScreenPanel;
 import net.mcreator.ui.component.ProgressBar;
-import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 
@@ -109,9 +108,10 @@ public class SplashScreen extends JWindow {
 	}
 
 	public void setProgress(int percentage, String message) {
-		initloadprogress.setCurrentValue(percentage);
-		loadstate.setText(message);
-		EDTUtils.requestNonBlockingUIRefresh();
+		SwingUtilities.invokeLater(() -> {
+			initloadprogress.setCurrentValue(percentage);
+			loadstate.setText(message);
+		});
 	}
 
 }
