@@ -274,7 +274,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		} else if ("Anvil".equals(recipeType.getSelectedItem())) {
 			if (!arm.cb1.containsItem() || !arm.cb2.containsItem() || !arm.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_anvil_no_ingredient_addition_and_result"));
+						L10N.t("elementgui.recipe.error_anvil_missing_item"));
 			}
 		}
 

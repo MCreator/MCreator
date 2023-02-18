@@ -39,14 +39,20 @@ package ${package}.recipes.anvil;
 public class ${name}AnvilRecipe {
 	@SubscribeEvent
 	public static void onAnvilUpdate(AnvilUpdateEvent event) {
-		<#if data.anvilInputStack?starts_with("TAG:")>
+		<#if data.anvilInputStack.getUnmappedValue().startsWith("TAG:")>
 		boolean left = Ingredient.of(ItemTags.create(new ResourceLocation("${data.anvilInputStack?replace("TAG:","")}"))).test(event.getLeft());
+		<#assign leftHasTag = true>
+		<#elseif generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+		boolean left = Ingredient.of(ItemTags.create(new ResourceLocation("${generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))).test(event.getLeft());
 		<#assign leftHasTag = true>
 		<#else>
 		Item left = ${mappedMCItemToItem(data.anvilInputStack)};
 		</#if>
-		<#if data.anvilInputAdditionStack?starts_with("TAG:")>
+		<#if data.anvilInputAdditionStack.getUnmappedValue().startsWith("TAG:")>
 		boolean right = Ingredient.of(ItemTags.create(new ResourceLocation("${data.anvilInputAdditionStack?replace("TAG:","")}"))).test(event.getRight());
+		<#assign rightHasTag = true>
+		<#elseif generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+		boolean right = Ingredient.of(ItemTags.create(new ResourceLocation("${generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))).test(event.getRight());
 		<#assign rightHasTag = true>
 		<#else>
 		Item right = ${mappedMCItemToItem(data.anvilInputAdditionStack)};
