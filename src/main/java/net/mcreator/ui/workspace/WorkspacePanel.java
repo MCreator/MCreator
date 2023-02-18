@@ -268,7 +268,7 @@ import java.util.stream.Collectors;
 		});
 
 		list.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
+			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelectedModElement();
 				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {

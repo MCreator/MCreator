@@ -42,24 +42,32 @@ public class FluidGenToFeatureConverter implements IConverter {
 			JsonObject fluid = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 			// If the list of restriction dimensions is empty, there's no feature to convert
 			if (fluid.get("spawnWorldTypes") != null && !fluid.getAsJsonArray("spawnWorldTypes").isEmpty()) {
-				int rarity = fluid.get("frequencyOnChunks").getAsInt();
 				String modElementName = input.getModElement().getName();
-
 				Feature feature = new Feature(new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
+
+				int rarity = 5;
+				if (fluid.get("frequencyOnChunks") != null) {
+					rarity = fluid.get("frequencyOnChunks").getAsInt();
+				}
 
 				feature.generationStep = "LAKES";
 
-				fluid.getAsJsonArray("spawnWorldTypes").iterator().forEachRemaining(
-						e -> feature.restrictionDimensions.add(e.getAsString()));
+				if (fluid.get("spawnWorldTypes") != null) {
+					fluid.getAsJsonArray("spawnWorldTypes").iterator().forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
+				} else {
+					feature.restrictionDimensions.add("Surface");
+				}
 
-				if (fluid.get("restrictionBiomes") != null && !fluid.getAsJsonArray("restrictionBiomes").isEmpty())
+				if (fluid.get("restrictionBiomes") != null && !fluid.getAsJsonArray("restrictionBiomes").isEmpty()) {
 					fluid.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
 							e -> feature.restrictionBiomes.add(
 									new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
+				}
 
-				if (fluid.get("generateCondition") != null)
+				if (fluid.get("generateCondition") != null) {
 					feature.generateCondition = new Procedure(
 							fluid.get("generateCondition").getAsJsonObject().get("name").getAsString());
+				}
 
 				feature.featurexml = """
 						<xml><block type="feature_container" deletable="false" x="40" y="40">

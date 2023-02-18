@@ -46,6 +46,8 @@ import java.util.List;
 @SuppressWarnings("unused") public class Feature extends GeneratableElement
 		implements ICommonType, IOtherModElementsDependent, IXMLProvider {
 
+	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+
 	public String generationStep;
 	public List<String> restrictionDimensions;
 	public List<BiomeEntry> restrictionBiomes;

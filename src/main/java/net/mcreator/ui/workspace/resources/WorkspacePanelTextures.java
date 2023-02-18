@@ -286,7 +286,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.addMouseListener(mouseAdapter);
 		listGroup.addList(listElement);
 		listElement.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
+			@Override public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_DELETE -> deleteCurrentlySelected();
 				case KeyEvent.VK_ENTER -> editSelectedFile();

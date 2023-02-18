@@ -35,6 +35,8 @@ import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement implements IXMLProvider {
 
+	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
+
 	public String commandName;
 
 	public String permissionLevel;

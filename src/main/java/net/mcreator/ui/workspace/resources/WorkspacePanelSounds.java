@@ -145,7 +145,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		});
 
 		soundElementList.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
+			@Override public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
 				case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());

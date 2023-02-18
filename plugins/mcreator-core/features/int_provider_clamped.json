@@ -25,6 +25,9 @@
   ],
   "mcreator": {
     "toolbox_id": "intproviders",
+    "toolbox_init": [
+      "~<value name=\"toClamp\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>"
+    ],
     "inputs": [
       "toClamp"
     ],
