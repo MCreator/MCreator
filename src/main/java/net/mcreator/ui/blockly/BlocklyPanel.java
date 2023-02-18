@@ -79,8 +79,12 @@ public class BlocklyPanel extends JFXPanel {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
 			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 
-			if (newXml.length() > MINIMAL_XML.length())
+			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
+				return true;
+			}
+
+			return false;
 		});
 
 		ThreadUtil.runOnFxThread(() -> {
@@ -129,14 +133,14 @@ public class BlocklyPanel extends JFXPanel {
 							.appendChild(styleNode);
 
 					// @formatter:off
-					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
-							+ "'comments' : " + PreferencesManager.PREFERENCES.enableComments.get() + ","
-							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
-							+ "'collapse' : " + PreferencesManager.PREFERENCES.enableCollapse.get() + ","
-							+ "'trashcan' : " + PreferencesManager.PREFERENCES.enableTrashcan.get() + ","
-							+ "'maxScale' : " + PreferencesManager.PREFERENCES.maxScale.get() / 100.0 + ","
-							+ "'minScale' : " + PreferencesManager.PREFERENCES.minScale.get() / 100.0 + ","
-							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.scaleSpeed.get() / 100.0 + ","
+					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
+							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
+							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
+							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
+							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan.get() + ","
+							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
+							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
+							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
 							+ " };");
 					// @formatter:on
 

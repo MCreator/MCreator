@@ -116,8 +116,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(FeatureGUI.this::regenerateFeature).start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML("""
-						<xml><block type="feature_container" deletable="false" x="40" y="40"/></xml>""");
+				blocklyPanel.setXML(Feature.XML_BASE);
 			}
 		});
 

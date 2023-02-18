@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -237,26 +238,27 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
-		if (mod_elements.contains(element)) {
+		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
+			return;
+
+		// first we ask generator to remove all related files
+		if (element.getType() != ModElementType.UNKNOWN) {
 			GeneratableElement generatableElement = element.getGeneratableElement();
-
-			// first we ask generator to remove all related files
-			if (generatableElement != null && generator != null) {
+			if (generatableElement != null && generator != null)
 				generator.removeElementFilesAndLangKeys(generatableElement);
-			} else {
+			else
 				LOG.warn("Failed to remove element files for element " + element);
-			}
-
-			// after we don't need the definition anymore, remove actual files
-			new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
-			new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
-					element.getName() + ".png").delete();
-
-			// finally remove element form the list
-			mod_elements.remove(element);
-
-			markDirty();
 		}
+
+		// after we don't need the definition anymore, remove actual files
+		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
+		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
+				element.getName() + ".png").delete();
+
+		// finally remove element form the list
+		mod_elements.remove(element);
+
+		markDirty();
 	}
 
 	public void removeVariableElement(VariableElement element) {
@@ -463,10 +465,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	/**
-	 * Unsafe version of readFromFS with many checks ommited. Only intended to be used by tests
+	 * Unsafe version of readFromFS with many checks omitted. Only intended to be used by tests.
 	 *
-	 * @param workspaceFile workspace file
-	 * @param generatorConfiguration generator configuration. If same as workspace, nothing is done, if different, regenerateRequired is set to true
+	 * @param workspaceFile          File containing the output workspace definition.
+	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
 	public static Workspace readFromFS(File workspaceFile, GeneratorConfiguration generatorConfiguration) {

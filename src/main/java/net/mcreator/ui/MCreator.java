@@ -32,7 +32,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -277,8 +276,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		super.setVisible(b);
 		if (b) {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
-
-			EDTUtils.requestNonBlockingUIRefresh();
 
 			if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				workspace.setMCreatorVersion(

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,29 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.component.util;
+package net.mcreator.blockly.data;
 
-import foxtrot.Job;
-import foxtrot.Worker;
-import javafx.application.Platform;
+import com.google.gson.JsonObject;
 
-import javax.swing.*;
+import javax.annotation.Nullable;
 
-public class EDTUtils {
-
-	public static void requestNonBlockingUIRefresh() {
-		if (SwingUtilities.isEventDispatchThread()
-				&& !Platform.isFxApplicationThread()) { // we can only run this on EDT
-			Worker.post(new Job() {
-				@Override public Object run() {
-					try {
-						Thread.sleep(10);
-					} catch (Exception ignored) {
-					}
-					return null;
-				}
-			});
-		}
-	}
-
-}
+public record RepeatingField(String name, @Nullable JsonObject field_definition) {}

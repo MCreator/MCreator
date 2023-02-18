@@ -75,175 +75,181 @@ public final class MCreatorApplication {
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 
-	private final GoogleAnalytics analytics;
-	private final DeviceInfo deviceInfo;
 	private static boolean applicationStarted = false;
-	private final WorkspaceSelector workspaceSelector;
 
 	private final List<MCreator> openMCreators = new ArrayList<>();
 
-	private final DiscordClient discordClient;
-
-	private final TaskbarIntegration taskbarIntegration;
+	private WorkspaceSelector workspaceSelector;
+	private DeviceInfo deviceInfo;
+	private GoogleAnalytics analytics;
+	private DiscordClient discordClient;
+	private TaskbarIntegration taskbarIntegration;
 
 	private MCreatorApplication(List<String> launchArguments) {
-
 		final SplashScreen splashScreen = new SplashScreen();
-		splashScreen.setVisible(true);
 
-		splashScreen.setProgress(5, "Loading plugins");
+		new Thread(() -> {
+			splashScreen.setProgress(5, "Loading plugins");
 
-		// Plugins are loaded before the Splash screen is visible, so every image can be changed
-		PluginLoader.initInstance();
+			PluginLoader.initInstance();
 
-		MCREvent.event(new ApplicationLoadedEvent(this));
+			MCREvent.event(new ApplicationLoadedEvent(this));
 
-		// As plugins are now loaded, preferences from Java plugins can now be loaded
-		PreferencesManager.loadPlugins();
+			// As plugins are now loaded, preferences from Java plugins can now be loaded
+			PreferencesManager.loadPlugins();
 
-		splashScreen.setProgress(10, "Loading UI Themes");
+			splashScreen.setProgress(10, "Loading UI Themes");
 
-		// We load UI themes now as theme plugins are loaded at this point
-		ThemeLoader.initUIThemes();
+			// We load UI themes now as theme plugins are loaded at this point
+			ThemeLoader.initUIThemes();
 
-		splashScreen.setProgress(15, "Loading UI core");
+			splashScreen.setProgress(15, "Loading UI core");
 
-		UIRES.preloadImages();
+			UIRES.preloadImages();
 
-		try {
-			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
-			LOG.error("Failed to set look and feel: " + e.getMessage());
-		}
-
-		SoundUtils.initSoundSystem();
-
-		taskbarIntegration = new TaskbarIntegration();
-
-		splashScreen.setProgress(25, "Loading interface components");
-
-		// preload help entries cache
-		HelpLoader.preloadCache();
-
-		// load translations after plugins are loaded
-		L10N.initTranslations();
-
-		splashScreen.setProgress(35, "Loading plugin data");
-
-		// load datalists and icons for them after plugins are loaded
-		BlockItemIcons.init();
-		DataListLoader.preloadCache();
-
-		splashScreen.setProgress(45, "Building plugin cache");
-
-		// load templates for image makers
-		ImageMakerTexturesCache.init();
-		ArmorMakerTexturesCache.init();
-
-		splashScreen.setProgress(55, "Loading plugin templates");
-
-		// load apis defined by plugins after plugins are loaded
-		ModAPIManager.initAPIs();
-
-		// load variable elements
-		VariableTypeLoader.loadVariableTypes();
-
-		// load special files for Blockly
-		BlocklyJavaScriptsLoader.init();
-		BlocklyToolboxesLoader.init();
-
-		// load blockly blocks after plugins are loaded
-		BlocklyLoader.init();
-
-		// load entity animations for the Java Model animation editor
-		EntityAnimationsLoader.init();
-
-		// register mod element types
-		ModElementTypeLoader.loadModElements();
-
-		splashScreen.setProgress(60, "Preloading resources");
-		TiledImageCache.loadAndTileImages();
-
-		splashScreen.setProgress(70, "Loading generators");
-
-		MCREvent.event(new PreGeneratorsLoadingEvent(this));
-
-		Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
-		List<String> fileNames = new ArrayList<>(fileNamesUnordered);
-		Collections.sort(fileNames);
-		int i = 0;
-		for (String generator : fileNames) {
-			splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
-					"Loading generators: " + generator.split("/")[0]);
-			LOG.info("Loading generator: " + generator);
-			generator = generator.replace("/generator.yaml", "");
 			try {
-				Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
+				UIManager.setLookAndFeel(new MCreatorLookAndFeel());
+			} catch (UnsupportedLookAndFeelException e) {
+				LOG.error("Failed to set look and feel: " + e.getMessage());
+			}
+
+			SoundUtils.initSoundSystem();
+
+			taskbarIntegration = new TaskbarIntegration();
+
+			splashScreen.setProgress(25, "Loading interface components");
+
+			// preload help entries cache
+			HelpLoader.preloadCache();
+
+			// load translations after plugins are loaded
+			L10N.initTranslations();
+
+			splashScreen.setProgress(35, "Loading plugin data");
+
+			// load datalists and icons for them after plugins are loaded
+			BlockItemIcons.init();
+			DataListLoader.preloadCache();
+
+			splashScreen.setProgress(45, "Building plugin cache");
+
+			// load templates for image makers
+			ImageMakerTexturesCache.init();
+			ArmorMakerTexturesCache.init();
+
+			splashScreen.setProgress(55, "Loading plugin templates");
+
+			// load apis defined by plugins after plugins are loaded
+			ModAPIManager.initAPIs();
+
+			// load variable elements
+			VariableTypeLoader.loadVariableTypes();
+
+			// load special files for Blockly
+			BlocklyJavaScriptsLoader.init();
+			BlocklyToolboxesLoader.init();
+
+			// load blockly blocks after plugins are loaded
+			BlocklyLoader.init();
+
+			// load entity animations for the Java Model animation editor
+			EntityAnimationsLoader.init();
+
+			// register mod element types
+			ModElementTypeLoader.loadModElements();
+
+			splashScreen.setProgress(60, "Preloading resources");
+			TiledImageCache.loadAndTileImages();
+
+			splashScreen.setProgress(70, "Loading generators");
+
+			MCREvent.event(new PreGeneratorsLoadingEvent(this));
+
+			Set<String> fileNamesUnordered = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+			List<String> fileNames = new ArrayList<>(fileNamesUnordered);
+			Collections.sort(fileNames);
+			int i = 0;
+			for (String generator : fileNames) {
+				splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
+						"Loading generators: " + generator.split("/")[0]);
+				LOG.info("Loading generator: " + generator);
+				generator = generator.replace("/generator.yaml", "");
+				try {
+					Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
+				} catch (Exception e) {
+					LOG.error("Failed to load generator: " + generator, e);
+				}
+				i++;
+			}
+
+			splashScreen.setProgress(93, "Initiating user session");
+
+			deviceInfo = new DeviceInfo();
+			analytics = new GoogleAnalytics(deviceInfo);
+			analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
+
+			isInternet = MCreatorApplication.WEB_API.initAPI();
+
+			discordClient = new DiscordClient();
+
+			// Do not externalize this text
+			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
+
+			try {
+				SwingUtilities.invokeAndWait(() -> {
+					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
+					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
+
+					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
+						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
+								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
+					}
+				});
 			} catch (Exception e) {
-				LOG.error("Failed to load generator: " + generator, e);
+				LOG.warn("Failed to check for updates", e);
 			}
-			i++;
-		}
 
-		splashScreen.setProgress(93, "Initiating user session");
+			splashScreen.setProgress(100, "Loading MCreator windows");
 
-		deviceInfo = new DeviceInfo();
-		analytics = new GoogleAnalytics(deviceInfo);
+			try {
+				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
+					Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
 
-		isInternet = MCreatorApplication.WEB_API.initAPI();
+				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
+					Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
 
-		// we do async login attempt
-		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
-		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
+				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
+					Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+			} catch (Exception e) {
+				LOG.warn("Failed to register desktop handlers", e);
+			}
 
-		splashScreen.setProgress(100, "Loading MCreator windows");
+			SwingUtilities.invokeLater(() -> {
+				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
-		try {
-			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
-				Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
+				boolean directLaunch = false;
+				if (launchArguments.size() > 0) {
+					String lastArg = launchArguments.get(launchArguments.size() - 1);
+					if (lastArg.length() >= 2 && lastArg.charAt(0) == '"'
+							&& lastArg.charAt(lastArg.length() - 1) == '"')
+						lastArg = lastArg.substring(1, lastArg.length() - 1);
+					File passedFile = new File(lastArg);
+					if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
+						splashScreen.setVisible(false);
+						MCreator mcreator = openWorkspaceInMCreator(passedFile);
+						showPluginLoadingFailures(mcreator);
+						directLaunch = true;
+					}
+				}
 
-			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
-				Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+				if (!directLaunch)
+					showWorkspaceSelector();
 
-			if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
-				Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
-		} catch (Exception e) {
-			LOG.warn("Failed to register desktop handlers", e);
-		}
-
-		discordClient = new DiscordClient();
-
-		workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
-
-		if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.snapshotMessage.get()) {
-			JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
-					L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
-		}
-
-		// Do not externalize this text
-		discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
-
-		boolean directLaunch = false;
-		if (launchArguments.size() > 0) {
-			String lastArg = launchArguments.get(launchArguments.size() - 1);
-			if (lastArg.length() >= 2 && lastArg.charAt(0) == '"' && lastArg.charAt(lastArg.length() - 1) == '"')
-				lastArg = lastArg.substring(1, lastArg.length() - 1);
-			File passedFile = new File(lastArg);
-			if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 				splashScreen.setVisible(false);
-				MCreator mcreator = openWorkspaceInMCreator(passedFile);
-				showPluginLoadingFailures(mcreator);
-				directLaunch = true;
-			}
-		}
+			});
 
-		if (!directLaunch)
-			showWorkspaceSelector();
-
-		splashScreen.setVisible(false);
-
-		//track after the setup is done
-		analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
+			LOG.debug("Application loader finished");
+		}, "Application-Loader").start();
 	}
 
 	private void showPluginLoadingFailures(Window parent) {
@@ -254,7 +260,8 @@ public final class MCreatorApplication {
 			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
 			sb.append("<ul>");
 			for (PluginLoadFailure plugin : failedPlugins) {
-				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ").append(StringUtils.abbreviateString(plugin.message(), 100, true))
+				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ")
+						.append(StringUtils.abbreviateString(plugin.message(), 100, true))
 						.append("<br><small>Location: ").append(plugin.pluginFile()).append("</small></li>");
 			}
 			sb.append("</ul><br>");
@@ -290,8 +297,9 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		Workspace workspace = null;
 		try {
-			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
+			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
@@ -304,6 +312,7 @@ public final class MCreatorApplication {
 					mcreator.setVisible(true);
 					mcreator.requestFocusInWindow();
 					mcreator.toFront();
+					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 					return mcreator;
 				} else { // already open, just focus it
 					LOG.warn("Trying to open already open workspace, bringing it to the front.");
@@ -314,11 +323,7 @@ public final class MCreatorApplication {
 						}
 					}
 				}
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile, Launcher.version.getFullString()));
 			}
-
-			analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
 
@@ -348,6 +353,10 @@ public final class MCreatorApplication {
 		} catch (IOException | UnsupportedGeneratorException e) {
 			reportFailedWorkspaceOpen(e);
 		} finally {
+			if (workspace != null) {
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
+			}
 			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
