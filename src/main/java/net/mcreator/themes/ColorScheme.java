@@ -19,6 +19,8 @@
 
 package net.mcreator.themes;
 
+import net.mcreator.preferences.data.Preferences;
+
 import javax.annotation.Nullable;
 import java.awt.*;
 
@@ -75,7 +77,7 @@ public class ColorScheme {
 	}
 
 	/**
-	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link net.mcreator.preferences.Preferences}</p>
+	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link Preferences}</p>
 	 */
 	@Nullable public String getInterfaceAccentColor() {
 		return interfaceAccentColor;

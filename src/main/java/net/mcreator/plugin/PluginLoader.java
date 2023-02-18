@@ -108,7 +108,7 @@ public class PluginLoader extends URLClassLoader {
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
+				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
 							Thread.currentThread().getContextClassLoader()) {

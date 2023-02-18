@@ -23,6 +23,7 @@ import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
+import net.mcreator.preferences.data.Preferences;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

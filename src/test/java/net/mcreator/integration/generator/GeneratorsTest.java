@@ -67,7 +67,7 @@ public class GeneratorsTest {
 		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.workspaceAutosaveInterval.set(2000);
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
 	}
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {

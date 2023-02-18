@@ -72,7 +72,7 @@ public class WorkspaceFileManager implements Closeable {
 
 		// start autosave scheduler
 		lastSchedule = dataSaveExecutor.schedule(new SaveTask(this),
-				PreferencesManager.PREFERENCES.workspaceAutosaveInterval.get().longValue(), TimeUnit.SECONDS);
+				PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.get().longValue(), TimeUnit.SECONDS);
 	}
 
 	public File getWorkspaceFile() {
@@ -152,7 +152,7 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	private void rotateWorkspaceFileBackup() {
-		int numberOfBackupsExcludingCurrent = PreferencesManager.PREFERENCES.numberOfBackupsToStore.get().intValue() - 1;
+		int numberOfBackupsExcludingCurrent = PreferencesManager.PREFERENCES.backups.numberOfBackupsToStore.get().intValue() - 1;
 		File[] existingBackupsArray = folderManager.getWorkspaceBackupsCacheDir().listFiles();
 
 		if (existingBackupsArray != null && existingBackupsArray.length > 0) { // we already have some backups
@@ -161,7 +161,7 @@ public class WorkspaceFileManager implements Closeable {
 			Collections.reverse(existingBackups);
 			long lastBackupTime = existingBackups.get(0).lastModified();
 			if ((System.currentTimeMillis() - lastBackupTime) / (1000 * 60)
-					> PreferencesManager.PREFERENCES.automatedBackupInterval.get().intValue()) {  // check if we have surpassed backup interval
+					> PreferencesManager.PREFERENCES.backups.automatedBackupInterval.get().intValue()) {  // check if we have surpassed backup interval
 				if (existingBackupsArray.length
 						> numberOfBackupsExcludingCurrent) // only delete old ones if we have more than threshold of backups
 					existingBackups.stream().skip(numberOfBackupsExcludingCurrent).forEach(File::delete);
@@ -202,7 +202,7 @@ public class WorkspaceFileManager implements Closeable {
 
 			// after we call save, we schedule a new call
 			fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
-					PreferencesManager.PREFERENCES.workspaceAutosaveInterval.get().longValue(), TimeUnit.SECONDS);
+					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.get().longValue(), TimeUnit.SECONDS);
 		}
 
 	}

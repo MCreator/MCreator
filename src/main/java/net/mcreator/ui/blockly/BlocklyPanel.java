@@ -123,7 +123,7 @@ public class BlocklyPanel extends JFXPanel {
 					}
 
 					//remove font declaration if property set so
-					if (PreferencesManager.PREFERENCES.legacyFont.get()) {
+					if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
 						css = css.replace("font-family: sans-serif;", "");
 					}
 

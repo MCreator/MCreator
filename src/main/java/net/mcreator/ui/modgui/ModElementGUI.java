@@ -558,7 +558,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.compileOnSave.get() && mcreator.getModElementManager()
+		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
 				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 

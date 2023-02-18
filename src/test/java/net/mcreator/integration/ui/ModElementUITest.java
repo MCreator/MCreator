@@ -129,7 +129,7 @@ public class ModElementUITest {
 		}
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.workspaceAutosaveInterval.set(2000);
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
 
 		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
 	}

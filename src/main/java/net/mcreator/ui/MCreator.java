@@ -142,7 +142,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (OS.getOS() == OS.MAC)
 			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
 
-		if (PreferencesManager.PREFERENCES.fullScreen.get())
+		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
@@ -261,7 +261,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
-		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.projectTreeSplitPos.get());
+		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
 
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
@@ -286,7 +286,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
-					&& PreferencesManager.PREFERENCES.backupOnVersionSwitch.get()) {
+					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch.get()) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
@@ -295,7 +295,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			// if we need to setup MCreator, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.openWhatsNextPage.get());
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage.get());
 			}
 
 			if (workspace.getMCreatorVersion()
@@ -352,9 +352,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
-			PreferencesManager.PREFERENCES.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
+			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 			if (splitPane != null)
-				PreferencesManager.PREFERENCES.projectTreeSplitPos.set(splitPane.getDividerLocation()); // this one could be stored per workspace in the future
+				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(splitPane.getDividerLocation()); // this one could be stored per workspace in the future
 
 			workspace.close();
 

@@ -21,7 +21,7 @@ package net.mcreator.ui.dialogs.preferences;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
-import net.mcreator.preferences.Preferences;
+import net.mcreator.preferences.data.Preferences;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -229,7 +229,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				}
 			});
 		});
-		PreferencesManager.PREFERENCES.uiTheme.set(themes.getSelectedTheme());
+		PreferencesManager.PREFERENCES.hidden.uiTheme.set(themes.getSelectedTheme());
 		PreferencesManager.savePreferences();
 	}
 
