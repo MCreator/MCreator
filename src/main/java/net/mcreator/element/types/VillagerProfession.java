@@ -34,17 +34,17 @@ public class VillagerProfession extends GeneratableElement {
 	public String displayName;
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
-	public String hat;
+	public boolean hasHat;
 	public String professionTextureFile;
 	public String zombifiedProfessionTextureFile;
 
 	public VillagerProfession(ModElement element) {
 		super(element);
-		this.hat = "None";
+		this.hasHat = false;
 	}
 
 	public boolean isHatEnabled() {
-		return !"None".equals(this.hat);
+		return this.hasHat;
 	}
 
 	@Override public void finalizeModElementGeneration() {

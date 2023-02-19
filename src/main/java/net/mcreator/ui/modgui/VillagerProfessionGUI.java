@@ -59,7 +59,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final VTextField displayName = new VTextField(30);
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
-	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
+	private final JCheckBox hasHat = L10N.checkbox("elementgui.villager_profession.has_hat");
 	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
 	private final VComboBox<String> zombifiedProfessionTextureFile = new SearchableComboBox<>();
 
@@ -80,7 +80,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		zombifiedProfessionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		ComponentUtils.deriveFont(displayName, 16);
-		ComponentUtils.deriveFont(hat, 16);
+		hasHat.setOpaque(false);
 
 		JPanel subpanel = new JPanel(new GridLayout(6, 2, 0, 2));
 		subpanel.setOpaque(false);
@@ -99,7 +99,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/hat"),
 				L10N.label("elementgui.villager_profession.hat")));
-		subpanel.add(hat);
+		subpanel.add(hasHat);
 
 		JButton importProfessionTexture = new JButton(UIRES.get("18px.add"));
 		importProfessionTexture.setToolTipText(L10N.t("elementgui.villager_profession.import_profession_texture"));
@@ -198,7 +198,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.setText(profession.displayName);
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
-		hat.setSelectedItem(profession.hat);
+		hasHat.setSelected(profession.hasHat);
 		professionTextureFile.setSelectedItem(profession.professionTextureFile);
 		zombifiedProfessionTextureFile.setSelectedItem(profession.zombifiedProfessionTextureFile);
 	}
@@ -208,7 +208,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		profession.displayName = displayName.getText();
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
-		profession.hat = (String) hat.getSelectedItem();
+		profession.hasHat = hasHat.isSelected();
 		profession.professionTextureFile = professionTextureFile.getSelectedItem();
 		profession.zombifiedProfessionTextureFile = zombifiedProfessionTextureFile.getSelectedItem();
 		return profession;

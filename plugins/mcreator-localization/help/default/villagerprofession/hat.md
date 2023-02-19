@@ -1,1 +1,1 @@
-Defines the type of hat that villagers with this profession have.
+Check this parameter in case villagers with this profession have a hat.

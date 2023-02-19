@@ -1544,7 +1544,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocks).getName());
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			profession.hat = getRandomString(random, Arrays.asList("None", "Partial", "Full"));
+			profession.hasHat = _true;
 			profession.professionTextureFile = "test.png";
 			profession.zombifiedProfessionTextureFile = "test.png";
 			return profession;
