@@ -29,6 +29,7 @@ import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.TexturedModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -78,8 +79,10 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (me.getGeneratableElement() instanceof IResourcesDependent res && res.getModels().contains(model))
+			if (me.getGeneratableElement() instanceof IResourcesDependent res && (res.getModels().contains(model)
+					|| res.getModels().stream().anyMatch(TexturedModel.getModelTextureMapVariations(model)::contains))) {
 				elements.add(me);
+			}
 		}
 
 		return elements;
