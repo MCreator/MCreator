@@ -27,7 +27,6 @@ import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.*;
@@ -84,10 +83,12 @@ import java.util.*;
 		return List.of(BaseType.FEATURE);
 	}
 
+	@Override public Collection<String> getUsedElementNames() {
+		return new ArrayList<>(spawnWorldTypes);
+	}
+
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>();
-		for (String world : spawnWorldTypes)
-			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
 		entries.addAll(restrictionBlocks);
 		entries.addAll(restrictionBiomes);
 		return entries;

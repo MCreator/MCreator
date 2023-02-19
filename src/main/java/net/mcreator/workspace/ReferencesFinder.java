@@ -42,11 +42,13 @@ public class ReferencesFinder {
 		String query = new DataListEntry.Custom(element).getName();
 		for (ModElement me : workspace.getModElements()) {
 			GeneratableElement ge = me.getGeneratableElement();
-			if (ge instanceof IOtherModElementsDependent ome) {
-				if (ome.getUsedElementMappings().stream()
+			if (ge instanceof IOtherModElementsDependent mod) {
+				if (mod.getUsedElementNames().contains(query)) {
+					elements.add(me);
+				} else if (mod.getUsedElementMappings().stream()
 						.anyMatch(e -> e != null && e.getUnmappedValue().equals(query))) {
 					elements.add(me);
-				} else if (ome.getUsedProcedures().stream()
+				} else if (mod.getUsedProcedures().stream()
 						.anyMatch(e -> e != null && element.getName().equals(e.getName()))) {
 					elements.add(me);
 				}

@@ -29,7 +29,6 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -354,16 +353,19 @@ import java.util.stream.Collectors;
 		return baseTypes;
 	}
 
+	@Override public Collection<String> getUsedElementNames() {
+		Collection<String> entries = new ArrayList<>(spawnWorldTypes);
+		entries.add("CUSTOM:" + guiBoundTo);
+		return entries;
+	}
+
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(customDrop);
 		entries.add(creativePickItem);
-		entries.add(new MappableElement.Dummy(new NameMapper(null, ""), "CUSTOM:" + guiBoundTo));
 		entries.addAll(fluidRestrictions);
 		entries.addAll(restrictionBiomes);
 		entries.addAll(blocksToReplace);
-		for (String world : spawnWorldTypes)
-			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
 		return entries;
 	}
 

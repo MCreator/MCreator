@@ -24,7 +24,6 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -63,12 +62,14 @@ import java.util.Locale;
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
 
+	@Override public Collection<String> getUsedElementNames() {
+		return new ArrayList<>(functions);
+	}
+
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>();
 		entries.addAll(items);
 		entries.addAll(blocks);
-		for (String func : functions)
-			entries.add(new MappableElement.Dummy(new NameMapper(null, ""), func));
 		entries.addAll(entities);
 		entries.addAll(biomes);
 		return entries;

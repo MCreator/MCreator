@@ -32,7 +32,6 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
@@ -97,11 +96,12 @@ import java.util.List;
 		return Collections.emptyList();
 	}
 
+	@Override public Collection<String> getUsedElementNames() {
+		return new ArrayList<>(restrictionDimensions);
+	}
+
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(restrictionBiomes);
-		for (String world : restrictionDimensions)
-			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
-		return entries;
+		return new ArrayList<>(restrictionBiomes);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

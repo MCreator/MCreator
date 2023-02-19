@@ -27,7 +27,6 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -227,6 +226,10 @@ import java.util.stream.Collectors;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
+	@Override public Collection<String> getUsedElementNames() {
+		return new ArrayList<>(spawnWorldTypes);
+	}
+
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(soundOnStep);
@@ -234,8 +237,6 @@ import java.util.stream.Collectors;
 		entries.add(creativePickItem);
 		entries.addAll(canBePlacedOn);
 		entries.addAll(restrictionBiomes);
-		for (String world : spawnWorldTypes)
-			entries.add(new MappableElement.Dummy(new NameMapper(null, "dimensions"), world));
 		return entries;
 	}
 

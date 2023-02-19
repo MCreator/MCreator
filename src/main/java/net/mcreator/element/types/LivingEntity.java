@@ -266,8 +266,8 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(transparentModelCondition, isShakingCondition, onStruckByLightning, whenMobFalls,
-				whenMobDies, whenMobIsHurt, onRightClickedOn, whenThisMobKillsAnother, onMobTickUpdate,
+		return Arrays.asList(transparentModelCondition, isShakingCondition, solidBoundingBox, onStruckByLightning,
+				whenMobFalls, whenMobDies, whenMobIsHurt, onRightClickedOn, whenThisMobKillsAnother, onMobTickUpdate,
 				onPlayerCollidesWith, onInitialSpawn, spawningCondition);
 	}
 

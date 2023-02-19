@@ -49,15 +49,44 @@ import java.util.stream.Collectors;
 
 	@Override default Collection<? extends Procedure> getUsedProcedures() {
 		Collection<Procedure> procedures = new ArrayList<>();
-		getComponentsOfType("Label").forEach(e -> procedures.add(((Label) e).text));
-		getComponentsOfType("Slot").forEach(e -> procedures.add(((Slot) e).disablePickup));
+		getComponentsOfType("EntityModel").forEach(e -> {
+			procedures.add(((EntityModel) e).entityModel);
+			procedures.add(((EntityModel) e).displayCondition);
+		});
+		getComponentsOfType("Label").forEach(e -> {
+			procedures.add(((Label) e).text);
+			procedures.add(((Label) e).displayCondition);
+		});
+		getComponentsOfType("Checkbox").forEach(e -> procedures.add(((Checkbox) e).isCheckedProcedure));
+		getComponentsOfType("ImageButton").forEach(e -> {
+			procedures.add(((ImageButton) e).onClick);
+			procedures.add(((ImageButton) e).displayCondition);
+		});
+		getComponentsOfType("Button").forEach(e -> {
+			procedures.add(((Button) e).onClick);
+			procedures.add(((Button) e).displayCondition);
+		});
+		getComponentsOfType("Image").forEach(e -> procedures.add(((Image) e).displayCondition));
+		getComponentsOfType("Slot").forEach(e -> {
+			procedures.add(((Slot) e).disablePickup);
+			procedures.add(((Slot) e).onSlotChanged);
+			procedures.add(((Slot) e).onTakenFromSlot);
+			procedures.add(((Slot) e).onStackTransfer);
+		});
 		getComponentsOfType("InputSlot").forEach(e -> procedures.add(((InputSlot) e).disablePlacement));
 		return procedures;
 	}
 
 	@Override default Collection<String> getTextures(TextureType type) {
-		return type == TextureType.SCREEN ?
-				getComponentsOfType("Image").stream().map(e -> ((Image) e).image).collect(Collectors.toList()) :
-				Collections.emptyList();
+		if (type == TextureType.SCREEN) {
+			List<String> textures = new ArrayList<>();
+			getComponentsOfType("Image").forEach(e -> textures.add(((Image) e).image));
+			getComponentsOfType("ImageButton").forEach(e -> {
+				textures.add(((ImageButton) e).image);
+				textures.add(((ImageButton) e).hoveredImage);
+			});
+			return textures;
+		}
+		return Collections.emptyList();
 	}
 }
