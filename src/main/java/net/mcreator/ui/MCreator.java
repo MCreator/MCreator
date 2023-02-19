@@ -55,6 +55,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -426,6 +427,15 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	public MainToolBar getToolBar() {
 		return toolBar;
+	}
+
+	public void removeStoreFiles() {
+		try {
+			Runtime.getRuntime()
+					.exec("find " + getWorkspace().getWorkspaceFolder() + " -name \".DS_Store\" -type f -delete");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

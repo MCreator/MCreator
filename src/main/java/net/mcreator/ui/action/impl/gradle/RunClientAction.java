@@ -39,6 +39,7 @@ public class RunClientAction extends GradleAction {
 			try {
 				actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 				actionRegistry.getMCreator().getGenerator().generateBase();
+				actionRegistry.getMCreator().removeStoreFiles();
 
 				if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
 					MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(),

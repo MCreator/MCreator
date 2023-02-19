@@ -46,7 +46,6 @@ import net.mcreator.vcs.CloneWorkspace;
 import net.mcreator.vcs.VCSInfo;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.WorkspaceUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -351,6 +350,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						reloadRecents();
 					} else if (mouseEvent.getClickCount() == 2) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+						try {
+							Runtime.getRuntime().exec("find " + recentsList.getSelectedValue().getPath()
+									+ " -name \".DS_Store\" -type f -delete");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			});
@@ -380,6 +385,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+						try {
+							Runtime.getRuntime().exec("find " + recentsList.getSelectedValue().getPath()
+									+ " -name \".DS_Store\" -type f -delete");
+						} catch (IOException exception) {
+							exception.printStackTrace();
+						}
 					}
 				}
 			});
