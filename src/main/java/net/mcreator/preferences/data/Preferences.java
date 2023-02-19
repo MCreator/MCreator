@@ -47,6 +47,7 @@ public class Preferences {
 		ui = new UI();
 		notifications = new Notifications();
 		backups = new Backups();
+		blockly = new Blockly();
 		ide = new IDE();
 		gradle = new Gradle();
 		bedrock = new Bedrock();
