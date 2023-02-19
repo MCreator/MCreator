@@ -20,6 +20,7 @@ package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
@@ -84,6 +85,10 @@ import java.util.stream.Collectors;
 			generator.getLogger().warn("Failed to determine mod element for: " + elementName);
 			return false;
 		}
+	}
+
+	public MItemBlock toMappedMItemBlock(String unmappedValue) {
+		return new MItemBlock(this.getWorkspace(), unmappedValue);
 	}
 
 	/**
