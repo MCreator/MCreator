@@ -2,7 +2,7 @@
 this.goalSelector.addGoal(${customBlockIndex+1}, new MeleeAttackGoal(this, ${field$speed}, ${field$longmemory?lower_case}) {
 
 	@Override protected double getAttackReachSqr(LivingEntity entity) {
-		return ${field$range} * 4;
+		return ${field$range};
     }
 
     <@conditionCode field$condition false/>
