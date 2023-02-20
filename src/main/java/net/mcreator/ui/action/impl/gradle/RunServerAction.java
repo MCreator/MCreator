@@ -99,7 +99,7 @@ public class RunServerAction extends GradleAction {
 			} else {
 				actionRegistry.getMCreator().getGradleConsole()
 						.markRunning(); // so console gets locked while we generate code already
-				actionRegistry.getMCreator().removeStoreFiles();
+				actionRegistry.getMCreator().removeStoreFiles(actionRegistry.getMCreator().getWorkspaceFolder());
 				try {
 					actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 					actionRegistry.getMCreator().getGenerator().generateBase();

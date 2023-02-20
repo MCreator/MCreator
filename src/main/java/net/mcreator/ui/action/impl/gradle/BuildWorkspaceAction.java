@@ -38,7 +38,7 @@ public class BuildWorkspaceAction extends GradleAction {
 					.markRunning(); // so console gets locked while we generate code already
 			try {
 				actionRegistry.getMCreator().getGenerator().generateBase();
-				actionRegistry.getMCreator().removeStoreFiles();
+				actionRegistry.getMCreator().removeStoreFiles(actionRegistry.getMCreator().getWorkspaceFolder());
 
 				MCREvent.event(new WorkspaceBuildStartedEvent(actionRegistry.getMCreator()));
 
