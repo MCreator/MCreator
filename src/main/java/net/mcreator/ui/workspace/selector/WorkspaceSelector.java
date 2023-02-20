@@ -60,8 +60,6 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -351,14 +349,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						reloadRecents();
 					} else if (mouseEvent.getClickCount() == 2) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
-						try {
-							try (var paths = Files.walk(recentsList.getSelectedValue().getPath().toPath())) {
-								paths.filter(p -> p.toFile().isFile() && p.getFileName().toString().equals(".DS_Store"))
-										.forEach(p -> p.toFile().delete());
-							}
-						} catch (IOException e) {
-							LOG.error(e.getMessage(), e);
-						}
 					}
 				}
 			});
@@ -388,14 +378,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
-						try {
-							try (var paths = Files.walk(recentsList.getSelectedValue().getPath().toPath())) {
-								paths.filter(p -> p.toFile().isFile() && p.getFileName().toString().equals(".DS_Store"))
-										.forEach(p -> p.toFile().delete());
-							}
-						} catch (IOException exception) {
-							LOG.error(exception.getMessage(), exception);
-						}
 					}
 				}
 			});
