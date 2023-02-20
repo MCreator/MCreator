@@ -18,25 +18,35 @@
 
 package net.mcreator.ui.minecraft.boundingboxes;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.workspace.resources.Model;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
 
 public class JBoundingBoxList extends JEntriesList {
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui) {
+		this(mcreator, gui, null);
+	}
+
+	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, Supplier<Model> modelProvider) {
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
@@ -45,6 +55,15 @@ public class JBoundingBoxList extends JEntriesList {
 
 		add.setText(L10N.t("elementgui.common.add_bounding_box"));
 		topbar.add(add);
+		if (modelProvider != null) {
+			JButton genFromModel = new JButton(L10N.t("elementgui.common.gen_from_model")) {
+				@Override public String getName() {
+					return "TechnicalButton";
+				}
+			};
+			genFromModel.addActionListener(e -> generateBoundingBoxFromModel(modelProvider.get()));
+			topbar.add(genFromModel);
+		}
 		add("North", topbar);
 
 		entries.setOpaque(false);
@@ -72,9 +91,32 @@ public class JBoundingBoxList extends JEntriesList {
 		boundingBoxList.forEach(e -> e.setEntryEnabled(enabled));
 	}
 
+	private void generateBoundingBoxFromModel(Model model) {
+		if (model.getType() == Model.Type.JSON) {
+			JsonObject modelObj = JsonParser.parseString(FileIO.readFileToString(model.getFile())).getAsJsonObject();
+			if (modelObj.has("elements")) {
+				for (JsonElement element : modelObj.get("elements").getAsJsonArray()) {
+					JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
+					JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
+
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+					box.mx = from.get(0).getAsDouble();
+					box.my = from.get(1).getAsDouble();
+					box.mz = from.get(2).getAsDouble();
+					box.Mx = to.get(0).getAsDouble();
+					box.My = to.get(1).getAsDouble();
+					box.Mz = to.get(2).getAsDouble();
+
+					JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(isEnabled());
+					registerEntryUI(entry);
+					entry.setEntry(box);
+				}
+			}
+		}
+	}
+
 	public List<IBlockWithBoundingBox.BoxEntry> getBoundingBoxes() {
-		return boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull)
-				.collect(Collectors.toList());
+		return boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull).toList();
 	}
 
 	public void setBoundingBoxes(List<IBlockWithBoundingBox.BoxEntry> box) {

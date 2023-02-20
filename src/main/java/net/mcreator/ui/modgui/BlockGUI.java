@@ -269,7 +269,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		fluidRestrictions = new FluidListField(mcreator);
 
-		boundingBoxList = new JBoundingBoxList(mcreator, this);
+		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
 		blocksToReplace.setListElements(
 				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));

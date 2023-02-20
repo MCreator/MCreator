@@ -66,8 +66,8 @@ public interface ModElementChangedListener
 					modElementChanged();
 				});
 				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button && !"AddEntryButton".equals(
-					button.getName())) { // this check resolves conflicts with JEntriesLists, letting their entries trigger the listener
+			} else if (component instanceof AbstractButton button && !"TechnicalButton".equals(
+					button.getName())) { // don't add listeners if button triggers actions not affecting mod element directly
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner spinner) {
 				spinner.addChangeListener(this);
