@@ -55,7 +55,7 @@ public class TexturedModel extends Model {
 
 	public static List<Model> getModelTextureMapVariations(Model m) {
 		List<Model> variations = new ArrayList<>();
-		if (m.getType() != null && m.getFile() != null) {
+		if (m.getType() != null && m.getFiles() != null && m.getFile() != null) {
 			Map<String, TextureMapping> textureMappingMap = getTextureMappingsForModel(m);
 			if (textureMappingMap != null) {
 				// we add all variations of texture mappings for model
