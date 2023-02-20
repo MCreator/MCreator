@@ -21,9 +21,6 @@
     ],
     "inputs": [
       "entity"
-    ],
-    "warnings": [
-      "no_side_sync"
     ]
   }
 }
