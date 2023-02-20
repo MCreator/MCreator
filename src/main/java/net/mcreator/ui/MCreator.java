@@ -430,9 +430,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return toolBar;
 	}
 
-	public void removeStoreFiles(File folder) {
+	public void removeStoreFiles() {
 		try {
-			try (var paths = Files.walk(folder.toPath())) {
+			try (var paths = Files.walk(getWorkspace().getWorkspaceFolder().toPath())) {
 				paths.filter(p -> p.toFile().isFile() && p.getFileName().toString().equals(".DS_Store"))
 						.forEach(p -> p.toFile().delete());
 			}
