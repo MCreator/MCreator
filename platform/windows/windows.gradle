@@ -1,13 +1,10 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-task dummyTask {
-}
-
 createExe {
     outfile = 'mcreator.exe'
     mainClassName = 'net.mcreator.Launcher'
     dontWrapJar = true
-    copyConfigurable = dummyTask.outputs.files
+    copyConfigurable = []
     classpath = [
             "./lib/*"
     ]
