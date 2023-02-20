@@ -71,7 +71,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 								<#if item.getUnmappedValue().startsWith("TAG:")>
 									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
 								<#elseif generator.map(item.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1)}")))
+									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")))
 								<#else>
 									new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
 								</#if>
@@ -188,7 +188,7 @@ public class ${name}Item extends Item {
 			<#if block.getUnmappedValue().startsWith("TAG:")>
 				<#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
 			<#elseif generator.map(block.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-				<#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1)]>
+				<#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
 			<#else>
 				<#assign blocks += [mappedBlockToBlock(block)]>
 			</#if>
@@ -198,11 +198,11 @@ public class ${name}Item extends Item {
 				${block}<#sep>,
 			</#list>
 		).contains(blockstate.getBlock())<#if tags?has_content> ||
-		List.of(
+		Stream.of(
 			<#list tags as tag>
 				BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
 			</#list>
-		).stream().anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
+		).anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
@@ -250,7 +250,7 @@ public class ${name}Item extends FishingRodItem {
 				<#if repairItem.getUnmappedValue().startsWith("TAG:")>
 					<#assign tags += [repairItem.getUnmappedValue().replace("TAG:", "")]>
 				<#elseif generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(repairItem.getUnmappedValue(), "blocksitems", 1)]>
+					<#assign tags += [generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
 				<#else>
 					<#assign items += [mappedMCItemToItem(repairItem)]>
 				</#if>

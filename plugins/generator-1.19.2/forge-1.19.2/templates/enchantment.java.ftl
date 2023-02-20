@@ -73,7 +73,7 @@ public class ${name}Enchantment extends Enchantment {
 				<#if compatibleItem.getUnmappedValue().startsWith("TAG:")>
 					<#assign tags += [compatibleItem.getUnmappedValue().replace("TAG:", "")]>
 				<#elseif generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1)]>
+					<#assign tags += [generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
 				<#else>
 					<#assign items += [mappedMCItemToItem(compatibleItem)]>
 				</#if>

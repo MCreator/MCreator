@@ -68,7 +68,7 @@ public abstract class ${name}Item extends ArmorItem {
 							<#if item.getUnmappedValue().startsWith("TAG:")>
 								new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
 							<#elseif generator.map(item.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1)}")))
+								new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")))
 							<#else>
 								new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
 							</#if>
