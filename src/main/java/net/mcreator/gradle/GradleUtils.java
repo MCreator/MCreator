@@ -30,6 +30,8 @@ import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +42,7 @@ public class GradleUtils {
 
 	private static ProjectConnection getGradleProjectConnection(Workspace workspace) {
 		updateMCreatorBuildFile(workspace);
+		removeStoreFiles(workspace.getWorkspaceFolder());
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
 
@@ -115,6 +118,17 @@ public class GradleUtils {
 
 			FileIO.writeStringToFile(mcreatorGradleConfBuilder.toString(),
 					new File(workspace.getWorkspaceFolder(), "mcreator.gradle"));
+		}
+	}
+
+	public static void removeStoreFiles(File folder) {
+		try {
+			try (var paths = Files.walk(folder.toPath())) {
+				paths.filter(p -> p.toFile().isFile() && p.getFileName().toString().equals(".DS_Store"))
+						.forEach(p -> p.toFile().delete());
+			}
+		} catch (IOException exception) {
+			LOG.error(exception.getMessage(), exception);
 		}
 	}
 
