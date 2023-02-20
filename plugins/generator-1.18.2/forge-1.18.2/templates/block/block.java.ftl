@@ -108,6 +108,9 @@ public class ${name}Block extends
 		<#if data.luminance != 0>
 			.lightLevel(s -> ${data.luminance})
 		</#if>
+		<#if data.requiresCorrectTool>
+			.requiresCorrectToolForDrops()
+		</#if>
 		<#if data.isNotColidable>
 			.noCollission()
 		</#if>
