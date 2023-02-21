@@ -1,0 +1,58 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "location",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "_placeholder",
+      "check": "MCItem"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "foreach"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "<value name=\"location\"><block type=\"text\"><field name=\"TEXT\">minecraft:chests/spawn_bonus_chest</field></block></value>",
+      "<value name=\"_placeholder\"><block deletable=\"false\" movable=\"false\" enabled=\"false\" type=\"itemstack_iterator\"></block></value>"
+    ],
+    "inputs": [
+      "location"
+    ],
+    "statements": [
+      {
+        "name": "foreach",
+        "provides": [
+          {
+            "name": "itemstackiterator",
+            "type": "itemstack"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

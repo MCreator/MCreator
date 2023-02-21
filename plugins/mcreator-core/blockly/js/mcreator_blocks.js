@@ -477,6 +477,28 @@ Blockly.Blocks['block_predicate_mutator_input'] = {
     }
 };
 
+// Mutator block for "Block list" mixin
+Blockly.Blocks['block_list_mutator_container'] = {
+    init: function() {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.container'));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(45);
+    }
+};
+
+// Mutator block for "Block list" mixin
+Blockly.Blocks['block_list_mutator_input'] = {
+    init: function() {
+      this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.input'));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.fieldValues_ = [];
+      this.setColour(45);
+    }
+};
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",
