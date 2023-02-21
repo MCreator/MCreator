@@ -423,7 +423,7 @@ public class GTProcedureBlocks {
 			processed++;
 		}
 		case "field_mcitem_selector" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
+			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
 			processed++;
 		}
 		case "field_data_list_selector" -> {
