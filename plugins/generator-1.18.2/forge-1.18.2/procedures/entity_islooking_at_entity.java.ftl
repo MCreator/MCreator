@@ -12,4 +12,4 @@
 		}
 		return false;
 	}
-}.isLooking(${input$entity}, ${input$lookingAt}, ${input$area} * ${input$area}, ${input$ignoreBlocks}))
+}.isLooking(${input$entity}, ${input$lookingAt}, Math.pow(${input$area}, 2), ${input$ignoreBlocks}))
