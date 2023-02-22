@@ -7,7 +7,8 @@
 		if (_source instanceof LivingEntity _liv) {
 			if (ignoreBlocks)
 				return d1 > 1.0D - (area * 0.05D) / d0;
-			return d1 > 1.0D - (area  * 0.05D) / d0 ? _liv.hasLineOfSight(_target) : false;
+			return d1 > 1.0D - (area  * 0.05D) / d0 && _liv.hasLineOfSight(_target);
+
 		}
 		return false;
 	}
