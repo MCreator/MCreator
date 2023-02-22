@@ -5,7 +5,7 @@
       "name": "speed",
       "value": 1.2
     },
-	{
+    {
       "type": "field_number",
       "name": "range",
       "value": 2
@@ -28,7 +28,7 @@
     "toolbox_id": "combattasks",
     "fields": [
       "speed",
-	  "range",
+      "range",
       "longmemory",
       "condition"
     ]
