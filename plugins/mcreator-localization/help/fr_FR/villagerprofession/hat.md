@@ -1,1 +1,1 @@
-Cochez ce paramètre si les villageois avec cette profession ont un chapeau.
+Définit le type de chapeau qu'ont les villageois avec cette profession.

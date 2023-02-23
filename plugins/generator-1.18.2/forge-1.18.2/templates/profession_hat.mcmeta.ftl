@@ -1,5 +1,5 @@
 {
     "villager": {
-        "hat": "partial"
+        "hat": "${data.hat?lower_case}"
     }
 }
