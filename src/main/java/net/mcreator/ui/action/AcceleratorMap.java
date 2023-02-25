@@ -94,6 +94,10 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorRedo,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorCopy,
+				KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorPaste,
+				KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorSave,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorSaveAs, KeyStroke.getKeyStroke(KeyEvent.VK_S,

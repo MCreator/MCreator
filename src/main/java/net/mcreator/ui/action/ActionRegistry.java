@@ -41,10 +41,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.ArmorImageMakerView;
-import net.mcreator.ui.views.editor.image.action.ImageEditorRedoAction;
-import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAction;
-import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAsAction;
-import net.mcreator.ui.views.editor.image.action.ImageEditorUndoAction;
+import net.mcreator.ui.views.editor.image.action.*;
 import net.mcreator.ui.views.editor.image.tool.action.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
@@ -179,6 +176,8 @@ public class ActionRegistry {
 	public final BasicAction imageEditorRedo;
 	public final BasicAction imageEditorSave;
 	public final BasicAction imageEditorSaveAs;
+	public final ImageEditorCopyAction imageEditorCopy;
+	public final ImageEditorPasteAction imageEditorPaste;
 	public final BasicAction imageEditorPencil;
 	public final BasicAction imageEditorLine;
 	public final BasicAction imageEditorShape;
@@ -338,6 +337,8 @@ public class ActionRegistry {
 		//Image Editor actions
 		this.imageEditorUndo = new ImageEditorUndoAction(this);
 		this.imageEditorRedo = new ImageEditorRedoAction(this);
+		this.imageEditorCopy = new ImageEditorCopyAction(this);
+		this.imageEditorPaste = new ImageEditorPasteAction(this);
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
 		this.imageEditorPencil = new PencilToolAction(this);

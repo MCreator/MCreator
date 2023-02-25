@@ -69,6 +69,13 @@ public class Layer {
 		g.dispose();
 	}
 
+	public Layer(String name, Image image) {
+		this(image.getWidth(null), image.getHeight(null), 0, 0, name);
+		Graphics2D g = createGraphics();
+		g.drawImage(image, 0, 0, null);
+		g.dispose();
+	}
+
 	public int getX() {
 		return x;
 	}

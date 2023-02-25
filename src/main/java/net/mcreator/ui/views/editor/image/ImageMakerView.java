@@ -32,6 +32,7 @@ import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
+import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
@@ -43,6 +44,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -70,6 +72,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	private final VersionManager versionManager;
 
+	private final ClipboardManager clipboardManager;
+
 	private final JLabel imageInfo = new JLabel("");
 
 	public final JButton save;
@@ -82,6 +86,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		super(f);
 
 		versionManager = new VersionManager(this);
+		clipboardManager = new ClipboardManager(this);
 
 		JPanel controls = new JPanel(new BorderLayout());
 		controls.setBorder(new EmptyBorder(2, 3, 2, 3));
@@ -363,6 +368,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public VersionManager getVersionManager() {
 		return versionManager;
+	}
+
+	public ClipboardManager getClipboardManager() {
+		return clipboardManager;
 	}
 
 	public ToolPanel getToolPanel() {
