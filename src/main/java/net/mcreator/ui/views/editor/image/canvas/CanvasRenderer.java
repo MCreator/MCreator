@@ -194,10 +194,12 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 				BufferedImage.TYPE_INT_ARGB);
 		if (canvas != null) {
 			Graphics2D layerStackGraphics2D = layerStack.createGraphics();
-			for (Layer layer : canvas)
+			for (int i = canvas.size() - 1; i >= 0; i--) {
+				Layer layer = canvas.get(i);
 				if (layer.isVisible()) {
 					layerStackGraphics2D.drawImage(layer.mergeOverlay(false), null, layer.getX(), layer.getY());
 				}
+			}
 			layerStackGraphics2D.dispose();
 		}
 		return layerStack;

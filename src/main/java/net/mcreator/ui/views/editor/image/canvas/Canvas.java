@@ -66,11 +66,11 @@ public class Canvas extends ArrayListListModel<Layer> {
 	}
 
 	@Override public boolean add(Layer layer) {
-		boolean success = super.add(layer);
+		super.add(0, layer);
 		layer.setCanvas(this);
 		layerPanel.select(indexOf(layer));
 		versionManager.addRevision(new Addition(this, layer));
-		return success;
+		return true;
 	}
 
 	@Override public void add(int index, Layer element) {
