@@ -21,6 +21,7 @@ package net.mcreator.ui;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
+import net.mcreator.ui.views.ImageAssetView;
 import net.mcreator.ui.views.NBTEditorView;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.util.DesktopUtils;
@@ -35,6 +36,9 @@ public class FileOpener {
 				ProjectFileOpener.openCodeFileRO(mcreator, node);
 			else if (file instanceof File code)
 				ProjectFileOpener.openCodeFile(mcreator, code);
+		} else if (ImageAssetView.isFileSupported(file.toString()) && file instanceof FileNode node) {
+			ImageAssetView imageAssetView = new ImageAssetView(mcreator, node);
+			imageAssetView.showView();
 		} else if (file instanceof File nbt && nbt.getName().endsWith(".nbt")) {
 			NBTEditorView nbtEditorView = new NBTEditorView(mcreator, nbt);
 			nbtEditorView.showView();
@@ -42,9 +46,8 @@ public class FileOpener {
 			ImageMakerView imageMakerView = new ImageMakerView(mcreator);
 			imageMakerView.openInEditMode(pic);
 			imageMakerView.showView();
-		} else {
-			if (file instanceof File text && text.isFile())
-				DesktopUtils.openSafe(text);
+		} else if (file instanceof File text && text.isFile()) {
+			DesktopUtils.openSafe(text);
 		}
 	}
 
