@@ -202,9 +202,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		}), "Could not read source image asset!"), name);
 		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
 		canvasRenderer.setCanvas(canvas);
+		toolPanel.setCanvas(canvas);
 		canvas.add(layer);
-
-		add(rightSplitPane, BorderLayout.CENTER);
+		toolPanel.initTools();
 		updateInfoBar(0, 0);
 	}
 
@@ -358,52 +358,38 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseClicked(MouseEvent e) {
-		if (canEdit) {
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseClicked(e));
-		}
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseClicked(e));
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		if (canEdit) {
-			zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-			canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mousePressed(e));
-		}
+		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mousePressed(e));
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		if (canEdit) {
-			zoomPane.setCursor(toolPanel.getCurrentTool().getCursor());
-			canvasRenderer.setCursor(toolPanel.getCurrentTool().getCursor());
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseReleased(e));
-		}
+		zoomPane.setCursor(toolPanel.getCurrentTool().getCursor());
+		canvasRenderer.setCursor(toolPanel.getCurrentTool().getCursor());
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseReleased(e));
 	}
 
 	@Override public void mouseEntered(MouseEvent e) {
-		if (canEdit) {
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseEntered(e));
-		}
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseEntered(e));
 	}
 
 	@Override public void mouseExited(MouseEvent e) {
-		if (canEdit) {
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseExited(e));
-		}
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseExited(e));
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		if (canEdit) {
-			zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-			canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
-		}
+		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
 		updateInfoBar(e.getX(), e.getY());
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
-		if (canEdit) {
-			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
-		}
+		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
 		updateInfoBar(e.getX(), e.getY());
 	}
 
