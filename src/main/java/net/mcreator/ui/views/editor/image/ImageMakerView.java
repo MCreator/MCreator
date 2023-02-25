@@ -19,6 +19,8 @@
 package net.mcreator.ui.views.editor.image;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.tree.FileNode;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
@@ -51,6 +53,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,7 +62,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
 
-	private String name = "Texture creator";
+	private String name;
 
 	private Canvas canvas;
 	private final CanvasRenderer canvasRenderer;
@@ -77,6 +81,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
 	private MCreatorTabs.Tab tab;
 	private File image;
+	private boolean canEdit = true;
 
 	public ImageMakerView(MCreator f) {
 		super(f);
@@ -173,10 +178,34 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			canvas.add(layer);
 			name = image.getName();
 			toolPanel.initTools();
-			updateInfobar(0, 0);
+			updateInfoBar(0, 0);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}
+	}
+
+	public void openInViewMode(FileNode image) {
+		File libFile = new File(image.incrementalPath.split(":%:")[0]);
+		String path = image.incrementalPath.split(":%:")[1];
+		if (path.startsWith("/"))
+			path = path.substring(1);
+
+		name = FilenameUtilsPatched.getName(path);
+		canEdit = false;
+		Layer layer = Layer.toLayer(Objects.requireNonNull(ZipIO.readFileInZip(libFile, path, (file, entry) -> {
+			try {
+				return ImageIO.read(file.getInputStream(entry));
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+				return null;
+			}
+		}), "Could not read source image asset!"), name);
+		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+		canvasRenderer.setCanvas(canvas);
+		canvas.add(layer);
+
+		add(rightSplitPane, BorderLayout.CENTER);
+		updateInfoBar(0, 0);
 	}
 
 	public void setSaveLocation(File location) {
@@ -200,11 +229,16 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				saveAs();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
 	public void saveAs() {
+		if (!canEdit) {
+			JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.image_maker.save.view_only"),
+					L10N.t("common.confirmation"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		}
+
 		Image image = canvasRenderer.render();
 
 		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
@@ -268,7 +302,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		toolPanel.setCanvas(canvas);
 		this.name = name + ".png";
 		toolPanel.initTools();
-		updateInfobar(0, 0);
+		updateInfoBar(0, 0);
 	}
 
 	public void newImage(Layer layer) {
@@ -276,9 +310,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
 		canvas.add(layer);
-		this.name = "Image maker";
+		this.name = L10N.t("tab.image_maker");
 		toolPanel.initTools();
-		updateInfobar(0, 0);
+		updateInfoBar(0, 0);
+	}
+
+	public static boolean isFileSupported(String fileName) {
+		return Arrays.asList("png", "gif").contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
 	@Override public ViewBase showView() {
@@ -292,7 +330,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			mcreator.mcreatorTabs.addTab(this.tab);
 			leftSplitPane.setDividerLocation(1.2 / 8);
 			rightSplitPane.setDividerLocation(5.7 / 7);
-			toolPanel.setDividerLocation(1.0 / 3);
+			toolPanel.setDividerLocation(1.2 / 3.1);
 			zoomPane.getZoomport().fitZoom();
 			refreshTab();
 			return this;
@@ -320,45 +358,65 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseClicked(MouseEvent e) {
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseClicked(e));
+		if (canEdit) {
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseClicked(e));
+		}
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mousePressed(e));
+		if (canEdit) {
+			zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+			canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mousePressed(e));
+		}
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getCursor());
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseReleased(e));
+		if (canEdit) {
+			zoomPane.setCursor(toolPanel.getCurrentTool().getCursor());
+			canvasRenderer.setCursor(toolPanel.getCurrentTool().getCursor());
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseReleased(e));
+		}
 	}
 
 	@Override public void mouseEntered(MouseEvent e) {
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseEntered(e));
+		if (canEdit) {
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseEntered(e));
+		}
 	}
 
 	@Override public void mouseExited(MouseEvent e) {
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseExited(e));
+		if (canEdit) {
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseExited(e));
+		}
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
-		updateInfobar(e.getX(), e.getY());
+		if (canEdit) {
+			zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+			canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
+		}
+		updateInfoBar(e.getX(), e.getY());
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
-		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
-		updateInfobar(e.getX(), e.getY());
+		if (canEdit) {
+			toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
+		}
+		updateInfoBar(e.getX(), e.getY());
 	}
 
-	private void updateInfobar(int x, int y) {
-		imageInfo.setText(
-				"[" + (image == null ? "New image" : "File: " + image.getName()) + ", size: " + canvas.getWidth() + "x"
-						+ canvas.getHeight() + "] Mouse location: " + x + ", " + y);
+	private void updateInfoBar(int x, int y) {
+		String title;
+		if (image != null)
+			title = L10N.t("dialog.image_maker.info_bar.file", image.getName());
+		else if (!canEdit)
+			title = L10N.t("dialog.image_maker.info_bar.source_image", name);
+		else
+			title = L10N.t("dialog.image_maker.info_bar.new_image");
+
+		imageInfo.setText(L10N.t("dialog.image_maker.info_bar", title, canvas.getWidth(), canvas.getHeight(), x, y));
 	}
 
 	public VersionManager getVersionManager() {
