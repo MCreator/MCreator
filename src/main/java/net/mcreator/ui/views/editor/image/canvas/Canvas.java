@@ -24,6 +24,7 @@ import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.views.editor.image.versioning.change.Addition;
 import net.mcreator.ui.views.editor.image.versioning.change.CanvasResize;
+import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 import net.mcreator.ui.views.editor.image.versioning.change.Removal;
 import net.mcreator.util.ArrayListListModel;
 
@@ -95,6 +96,15 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return removed;
 	}
 
+	public Layer remove(int index, UUID group, int toSelect) {
+		Removal removal = new Removal(this, get(index), layerPanel, toSelect);
+		Layer removed = super.remove(index);
+		layerPanel.select(toSelect);
+		removal.setUUID(group);
+		versionManager.addRevision(removal);
+		return removed;
+	}
+
 	@Override public Layer remove(int index) {
 		versionManager.addRevision(new Removal(this, get(index)));
 		Layer removed = super.remove(index);
@@ -120,6 +130,18 @@ public class Canvas extends ArrayListListModel<Layer> {
 		if (md)
 			layerPanel.select(index + 1);
 		return md;
+	}
+
+	public boolean mergeDown(int selectedID) {
+		UUID uuid = UUID.randomUUID();
+		Modification adt = new Modification(this, get(selectedID + 1));
+		adt.setUUID(uuid);
+		versionManager.addRevision(adt);
+		get(selectedID + 1).mergeOnTop(get(selectedID));
+
+		boolean success = remove(selectedID, uuid, selectedID) != null;
+		layerPanel.select(selectedID);
+		return success;
 	}
 
 	public void update(Layer layer) {

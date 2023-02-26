@@ -40,13 +40,7 @@ import java.awt.event.MouseEvent;
 public class LayerPanel extends JPanel {
 	private JList<Layer> layerList;
 	private final JPanel layerPanel = new JPanel(new CardLayout());
-	private final JButton add;
-	private final JButton up;
-	private final JButton down;
-	private final JButton editMeta;
-	private final JButton toggleVisibility;
-	private final JButton delete;
-	private final JButton duplicate;
+	private final JButton add, up, down, editMeta, toggleVisibility, delete, duplicate, mergeDown;
 
 	private Canvas canvas;
 	private LayerListMode mode;
@@ -73,6 +67,7 @@ public class LayerPanel extends JPanel {
 		toggleVisibility = new JButton(UIRES.get("18px.visibility"));
 		delete = new JButton(UIRES.get("18px.remove"));
 		duplicate = new JButton(UIRES.get("18px.duplicate"));
+		mergeDown = new JButton(UIRES.get("18px.merge"));
 
 		add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
 		add.setMargin(new Insets(0, 0, 0, 0));
@@ -111,6 +106,11 @@ public class LayerPanel extends JPanel {
 		duplicate.setMargin(new Insets(0, 0, 0, 0));
 		duplicate.setOpaque(false);
 		duplicate.setBorder(BorderFactory.createEmptyBorder());
+
+		mergeDown.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_merge_layers_down"));
+		mergeDown.setMargin(new Insets(0, 0, 0, 0));
+		mergeDown.setOpaque(false);
+		mergeDown.setBorder(BorderFactory.createEmptyBorder());
 
 		canEdit(false);
 
@@ -152,8 +152,14 @@ public class LayerPanel extends JPanel {
 				canvas.add(selected().copy());
 		});
 
+		mergeDown.addActionListener(e -> {
+			if (selected() != null)
+				canvas.mergeDown(selectedID());
+		});
+
 		controls.add(add);
 		controls.add(duplicate);
+		controls.add(mergeDown);
 		controls.add(up);
 		controls.add(down);
 		controls.add(toggleVisibility);
@@ -248,9 +254,11 @@ public class LayerPanel extends JPanel {
 				canEdit(true);
 				down.setEnabled(selectedID() < canvas.size() - 1);
 				up.setEnabled(selectedID() > 0);
+				mergeDown.setEnabled(selectedID() < canvas.size() - 1);
 			} else {
 				up.setEnabled(false);
 				down.setEnabled(false);
+				mergeDown.setEnabled(false);
 				canEdit(false);
 			}
 		} else

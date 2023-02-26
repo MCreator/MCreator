@@ -20,8 +20,18 @@ package net.mcreator.ui.views.editor.image.versioning.change;
 
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
+import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 
 public class Removal extends Addition {
+
+	private LayerPanel layerPanel = null;
+	private int lastIndex = -1;
+
+	public Removal(Canvas canvas, Layer layer, LayerPanel layerPanel, int lastIndex) {
+		this(canvas, layer);
+		this.layerPanel = layerPanel;
+		this.lastIndex = lastIndex;
+	}
 
 	public Removal(Canvas canvas, Layer layer) {
 		super(canvas, layer);
@@ -29,6 +39,8 @@ public class Removal extends Addition {
 
 	@Override public void apply() {
 		super.revert();
+		if (layerPanel != null && lastIndex >= 0)
+			layerPanel.select(lastIndex);
 	}
 
 	@Override public void revert() {

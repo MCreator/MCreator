@@ -186,6 +186,12 @@ public class Layer {
 		return temp;
 	}
 
+	public void mergeOnTop(Layer topLayer) {
+		Graphics2D g2d = createGraphics();
+		g2d.drawImage(topLayer.getRaster(), topLayer.x - x, topLayer.y - y, null);
+		g2d.dispose();
+	}
+
 	public BufferedImage getRaster() {
 		return raster;
 	}
