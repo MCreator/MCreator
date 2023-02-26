@@ -61,6 +61,7 @@ public class MCItem extends DataListEntry {
 		setType(entry.getType());
 		setTexture(entry.getTexture());
 		setRequiredAPIs(entry.getRequiredAPIs());
+		setOther(entry.getOther());
 		setIcon(BlockItemIcons.getIconForItem(entry.getTexture()));
 	}
 
