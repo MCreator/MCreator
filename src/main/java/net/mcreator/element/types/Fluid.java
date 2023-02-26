@@ -146,16 +146,16 @@ import java.util.List;
 
 	@Override public List<MCItem> providedMCItems() {
 		ArrayList<MCItem> retval = new ArrayList<>();
-		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Fluid block"));
+		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Block"));
 		if (this.generateBucket)
-			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Fluid bucket"));
+			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
 		return retval;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present
-			if (!textureBucket.isEmpty()) {
+			if (textureBucket != null && !textureBucket.isEmpty()) {
 				return workspace.getFolderManager().getTextureImageIcon(textureBucket, TextureType.ITEM);
 			}
 			// Otherwise, fallback to the generated fluid bucket icon

@@ -46,6 +46,7 @@ import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -292,7 +293,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 			}
 
-			// if we need to setup MCreator, we do so
+			// if we need to setup the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
 						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
@@ -303,9 +304,12 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 				workspace.setMCreatorVersion(Launcher.version.versionlong);
 				workspace.getFileManager().saveWorkspaceDirectlyAndWait();
-			} else if (workspace.isRegenerateRequired()) {
+			} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
+
+			// reinit (preload) MCItems so workspace is more snappy when loaded
+			workspace.getModElements().forEach(ModElement::getMCItems);
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
