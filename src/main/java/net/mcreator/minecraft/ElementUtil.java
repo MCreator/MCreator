@@ -224,7 +224,8 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "villagerprofessions", false, null, "villagerprofession");
 	}
 
-	public static List<MItemBlock> loadAllPointOfInterest(Workspace workspace) {
+	public static List<MItemBlock> loadAllPOIs(Workspace workspace) {
+		// TODO: load vanilla from blocksitems other field, for custom, load all that have IPOIProvider
 		List<MItemBlock> elements = new ArrayList<>();
 		workspace.getModElements().stream().filter(element -> element.getType() == ModElementType.VILLAGERPROFESSION)
 				.forEach(modElement -> elements.add(

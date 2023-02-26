@@ -332,9 +332,6 @@ public class BlocklyJavascriptBridge {
 		case "villagerprofessions":
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
-		case "villagerpoi":
-			return ElementUtil.loadAllPointOfInterest(workspace).stream().map(MItemBlock::getUnmappedValue)
-					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
 		}

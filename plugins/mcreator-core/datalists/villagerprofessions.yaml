@@ -1,41 +1,14 @@
-- ARMORER:
-  other: Blocks.BLAST_FURNACE
-
-- BUTCHER:
-  other: Blocks.SMOKER
-
-- CARTOGRAPHER:
-  other: Blocks.CARTOGRAPHY_TABLE
-
-- CLERIC:
-  other: Blocks.BREWING_STAND
-
-- FARMER:
-  other: Blocks.COMPOSTER
-
-- FISHERMAN:
-  other: Blocks.BARREL
-
-- FLETCHER:
-  other: Blocks.FLETCHING_TABLE
-
-- LEATHERWORKER:
-  other: Blocks.CAULDRON
-
-- LIBRARIAN:
-  other: Blocks.LECTERN
-
-- MASON:
-  other: Blocks.STONECUTTER
-
-- SHEPHERD:
-  other: Blocks.LOOM
-
-- TOOLSMITH:
-  other: Blocks.SMITHING_TABLE
-
-- WEAPONSMITH:
-  other: Blocks.GRINDSTONE
-
-- WANDERING_TRADER:
-  other: Blocks.AIR
+- ARMORER
+- BUTCHER
+- CARTOGRAPHER
+- CLERIC
+- FARMER
+- FISHERMAN
+- FLETCHER
+- LEATHERWORKER
+- LIBRARIAN
+- MASON
+- SHEPHERD
+- TOOLSMITH
+- WEAPONSMITH
+- WANDERING_TRADER

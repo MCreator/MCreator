@@ -51,7 +51,6 @@ import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
@@ -143,7 +142,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.enableRealtimeValidation();
 		pointOfInterest.setValidator(new UniqueNameValidator(L10N.t("elementgui.villager_profession.point_of_interest"),
 				() -> pointOfInterest.getBlock().getUnmappedValue(),
-				() -> ElementUtil.loadAllPointOfInterest(mcreator.getWorkspace()).stream()
+				() -> ElementUtil.loadAllPOIs(mcreator.getWorkspace()).stream()
 						.map(MItemBlock::getUnmappedValue),
 				Arrays.asList("Blocks.BEE_NEST", "Blocks.BEEHIVE", "Blocks.LIGHTNING_ROD", "Blocks.LODESTONE",
 						"Blocks.BELL", "Blocks.NETHER_PORTAL", "Blocks.BED", "Blocks.ORANGE_BED", "Blocks.MAGENTA_BED",
