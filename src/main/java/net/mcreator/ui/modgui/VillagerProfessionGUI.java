@@ -214,8 +214,4 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		return profession;
 	}
 
-	@Override protected void beforeGeneratableElementGenerated() {
-		super.beforeGeneratableElementGenerated();
-		modElement.setRegistryName(modElement.getName().toLowerCase(Locale.ROOT));
-	}
 }
