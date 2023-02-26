@@ -93,15 +93,22 @@ public class MCItem extends DataListEntry {
 				String suffix = StringUtils.substringAfterLast(name, ".");
 				boolean hasGeneratableIcon = false;
 
-				// First, try to get the icon from the generatable element
-				if (workspace.getModElementByName(elementName)
-						.getGeneratableElement() instanceof IMCItemProvider provider) {
+				ModElement modElement = workspace.getModElementByName(elementName);
+
+				// if the element is not found, use the default icon
+				if (modElement == null) {
+					retval = DEFAULT_ICON;
+					hasGeneratableIcon = true;
+				}
+				// try to get the icon from the generatable element
+				else if (modElement.getGeneratableElement() instanceof IMCItemProvider provider) {
 					ImageIcon providedIcon = provider.getIconForMCItem(workspace, suffix);
 					if (providedIcon != null) {
 						retval = providedIcon;
 						hasGeneratableIcon = true;
 					}
 				}
+
 				// Otherwise, try using the mod element icon
 				if (!hasGeneratableIcon && new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 						elementName + ".png").isFile()) {
