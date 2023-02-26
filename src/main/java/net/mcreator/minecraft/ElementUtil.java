@@ -221,9 +221,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.VILLAGERPROFESSION);
-		retval.addAll(DataListLoader.loadDataList("villagerprofessions"));
-		return retval;
+		return loadDataListAndElements(workspace, "villagerprofessions", false, null, "villagerprofession");
 	}
 
 	public static List<MItemBlock> loadAllPointOfInterest(Workspace workspace) {
