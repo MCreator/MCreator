@@ -69,13 +69,14 @@ public class BedrockUtils {
 							// stop running MC if any
 							if (WindowsProcessUtil.isProcessRunning(MC_PROCESS)) {
 								String[] options = new String[] { L10N.t("dialog.bedrock.options.close_reload"),
-										L10N.t("dialog.bedrock.options.close_reload_always"), L10N.t("dialog.bedrock.options.cancel") };
+										L10N.t("dialog.bedrock.options.close_reload_always"),
+										L10N.t("dialog.bedrock.options.cancel") };
 								int option = PreferencesManager.PREFERENCES.bedrock.silentReload ?
 										0 :
-										JOptionPane.showOptionDialog(mcreator,
-												L10N.t("dialog.bedrock.already_opened"),
-												L10N.t("dialog.bedrock.already_opened.title"), JOptionPane.YES_NO_OPTION,
-												JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+										JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.bedrock.already_opened"),
+												L10N.t("dialog.bedrock.already_opened.title"),
+												JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+												options[0]);
 								if (option != 2) {
 									if (option == 1) {
 										PreferencesManager.PREFERENCES.bedrock.silentReload = true;

@@ -19,7 +19,6 @@
 package net.mcreator.plugin;
 
 import net.mcreator.Launcher;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

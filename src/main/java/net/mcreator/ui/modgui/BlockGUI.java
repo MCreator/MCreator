@@ -335,8 +335,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic")).makeInline();
 		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -1168,9 +1168,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 		});
 
-		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(
-						PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
+		pane7.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(advancedWithCondition,
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
