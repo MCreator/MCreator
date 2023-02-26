@@ -54,15 +54,11 @@ public class VillagerProfession extends GeneratableElement {
 				"entity/villager/profession/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 
+		File originalZombifiedTextureFileLocation = getModElement().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(zombifiedProfessionTextureFile), TextureType.ENTITY);
 		File newZombifiedLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
 				"entity/zombie_villager/profession/" + getModElement().getRegistryName() + ".png");
-		if (zombifiedProfessionTextureFile.isEmpty()) {
-			newZombifiedLocation.delete(); // delete zombified texture if disabled as it may still be present
-		} else {
-			File originalZombifiedTextureFileLocation = getModElement().getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(zombifiedProfessionTextureFile), TextureType.ENTITY);
-			FileIO.copyFile(originalZombifiedTextureFileLocation, newZombifiedLocation);
-		}
+		FileIO.copyFile(originalZombifiedTextureFileLocation, newZombifiedLocation);
 	}
 
 }
