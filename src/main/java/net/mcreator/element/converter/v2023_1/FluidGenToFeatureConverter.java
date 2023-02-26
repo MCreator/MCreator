@@ -43,7 +43,8 @@ public class FluidGenToFeatureConverter implements IConverter {
 			// If the list of restriction dimensions is empty, there's no feature to convert
 			if (fluid.get("spawnWorldTypes") != null && !fluid.getAsJsonArray("spawnWorldTypes").isEmpty()) {
 				String modElementName = input.getModElement().getName();
-				Feature feature = new Feature(new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
+				Feature feature = new Feature(
+						new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
 
 				int rarity = 5;
 				if (fluid.get("frequencyOnChunks") != null) {
@@ -53,7 +54,8 @@ public class FluidGenToFeatureConverter implements IConverter {
 				feature.generationStep = "LAKES";
 
 				if (fluid.get("spawnWorldTypes") != null) {
-					fluid.getAsJsonArray("spawnWorldTypes").iterator().forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
+					fluid.getAsJsonArray("spawnWorldTypes").iterator()
+							.forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
 				} else {
 					feature.restrictionDimensions.add("Surface");
 				}
@@ -86,11 +88,11 @@ public class FluidGenToFeatureConverter implements IConverter {
 								<value name="condition"><block type="block_predicate_is_air"></block></value>
 							</block></value>
 						<next><block type="placement_biome_filter">
-						</block></next></block></next></block></next></block></next></block></next></block></xml>"""
-						.formatted(modElementName, rarity);
+						</block></next></block></next></block></next></block></next></block></next></block></xml>""".formatted(
+						modElementName, rarity);
 
-				feature.getModElement().setParentFolder(
-						FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+				feature.getModElement()
+						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
 				workspace.getModElementManager().storeModElementPicture(feature);
 				workspace.addModElement(feature.getModElement());
 				workspace.getGenerator().generateElement(feature);

@@ -36,10 +36,10 @@ public interface IMCItemProvider {
 	/**
 	 * This method determines what icon should be used for a custom MCItem, according to its eventual suffix
 	 *
-	 * @param workspace	The current workspace
-	 * @param suffix	The suffix of the given MCItem (for example, "bucket" for fluid buckets).
+	 * @param workspace The current workspace
+	 * @param suffix    The suffix of the given MCItem (for example, "bucket" for fluid buckets).
 	 *                  If this MCItem has no suffix, this will be the empty string.
-	 * @return 			An ImageIcon to use for the given MCItem, or null to use the element preview image.
+	 * @return An ImageIcon to use for the given MCItem, or null to use the element preview image.
 	 */
 	default ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return null;

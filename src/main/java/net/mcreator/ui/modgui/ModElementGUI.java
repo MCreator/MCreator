@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
