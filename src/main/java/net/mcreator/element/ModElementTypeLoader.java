@@ -30,11 +30,16 @@ public class ModElementTypeLoader {
 	public static List<ModElementType<?>> REGISTRY = new ArrayList<>();
 
 	public static void loadModElements() {
+		//@formatter:off
 		ModElementType.ADVANCEMENT = register(
-				new ModElementType<>("achievement", 'h', BaseType.DATAPACK, AchievementGUI::new, Achievement.class));
-		ModElementType.ARMOR = register(new ModElementType<>("armor", 'a', BaseType.ARMOR, ArmorGUI::new, Armor.class));
-		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BaseType.BIOME, BiomeGUI::new, Biome.class));
-		ModElementType.BLOCK = register(new ModElementType<>("block", 'b', BaseType.BLOCK, BlockGUI::new, Block.class));
+				new ModElementType<>("achievement", 'h', BaseType.DATAPACK, AchievementGUI::new,
+						Achievement.class));
+		ModElementType.ARMOR = register(
+				new ModElementType<>("armor", 'a', BaseType.ARMOR, ArmorGUI::new, Armor.class));
+		ModElementType.BIOME = register(
+				new ModElementType<>("biome", 'o', BaseType.BIOME, BiomeGUI::new, Biome.class));
+		ModElementType.BLOCK = register(
+				new ModElementType<>("block", 'b', BaseType.BLOCK, BlockGUI::new, Block.class));
 		ModElementType.COMMAND = register(
 				new ModElementType<>("command", 'c', BaseType.OTHER, CommandGUI::new, Command.class));
 		ModElementType.DIMENSION = register(
@@ -51,11 +56,12 @@ public class ModElementTypeLoader {
 				new ModElementType<>("function", 'u', BaseType.DATAPACK, FunctionGUI::new, Function.class));
 		ModElementType.GAMERULE = register(
 				new ModElementType<>("gamerule", null, BaseType.OTHER, GameRuleGUI::new, GameRule.class));
-		ModElementType.GUI = register(new ModElementType<>("gui", 'g', BaseType.GUI, CustomGUIGUI::new, GUI.class));
-		ModElementType.ITEM = register(new ModElementType<>("item", 'i', BaseType.ITEM, ItemGUI::new, Item.class));
+		ModElementType.GUI = register(
+				new ModElementType<>("gui", 'g', BaseType.GUI, CustomGUIGUI::new, GUI.class));
+		ModElementType.ITEM = register(
+				new ModElementType<>("item", 'i', BaseType.ITEM, ItemGUI::new, Item.class));
 		ModElementType.ITEMEXTENSION = register(
-				new ModElementType<>("itemextension", null, BaseType.OTHER, ItemExtensionGUI::new,
-						ItemExtension.class));
+				new ModElementType<>("itemextension", null, BaseType.OTHER, ItemExtensionGUI::new, ItemExtension.class));
 		ModElementType.KEYBIND = register(
 				new ModElementType<>("keybind", 'k', BaseType.OTHER, KeyBindGUI::new, KeyBinding.class));
 		ModElementType.LIVINGENTITY = register(
@@ -70,7 +76,8 @@ public class ModElementTypeLoader {
 				new ModElementType<>("painting", null, BaseType.OTHER, PaintingGUI::new, Painting.class));
 		ModElementType.PARTICLE = register(
 				new ModElementType<>("particle", 'y', BaseType.OTHER, ParticleGUI::new, Particle.class));
-		ModElementType.PLANT = register(new ModElementType<>("plant", 'n', BaseType.BLOCK, PlantGUI::new, Plant.class));
+		ModElementType.PLANT = register(
+				new ModElementType<>("plant", 'n', BaseType.BLOCK, PlantGUI::new, Plant.class));
 		ModElementType.POTION = register(
 				new ModElementType<>("potion", 'z', BaseType.OTHER, PotionGUI::new, Potion.class));
 		ModElementType.POTIONEFFECT = register(
@@ -83,16 +90,19 @@ public class ModElementTypeLoader {
 				new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeGUI::new, Recipe.class));
 		ModElementType.STRUCTURE = register(
 				new ModElementType<>("structure", 's', BaseType.FEATURE, StructureGenGUI::new, Structure.class));
-		ModElementType.TAB = register(new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
-		ModElementType.TAG = register(new ModElementType<>("tag", 'j', BaseType.DATAPACK, TagGUI::new, Tag.class));
-		ModElementType.TOOL = register(new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
+		ModElementType.TAB = register(
+				new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
+		ModElementType.TAG = register(
+				new ModElementType<>("tag", 'j', BaseType.DATAPACK, TagGUI::new, Tag.class));
+		ModElementType.TOOL = register(
+				new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
 		ModElementType.VILLAGERTRADE = register(
-				new ModElementType<>("villagertrade", null, BaseType.OTHER, VillagerTradeGUI::new,
-						VillagerTrade.class));
+				new ModElementType<>("villagertrade", null, BaseType.OTHER, VillagerTradeGUI::new, VillagerTrade.class));
+		//@formatter:on
 
 		// Unregistered type used to mask legacy removed mod element types
-		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER, (mc, me, e) -> null,
-				GeneratableElement.Unknown.class);
+		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER,
+				(mc, me, e) -> null, GeneratableElement.Unknown.class);
 	}
 
 	public static ModElementType<?> register(ModElementType<?> elementType) {
