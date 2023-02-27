@@ -43,7 +43,7 @@ public class JBoundingBoxList extends JEntriesList {
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	private final Supplier<Model> modelProvider;
-	private final JButton genFromModel = new JButton(L10N.t("elementgui.common.gen_from_model")) {
+	private final JButton genFromModel = new JButton(L10N.t("elementgui.common.gen_from_block_model")) {
 		@Override public String getName() {
 			return "TechnicalButton";
 		}
