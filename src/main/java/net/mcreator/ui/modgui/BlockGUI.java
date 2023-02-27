@@ -1158,6 +1158,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
+				boundingBoxList.modelChanged();
 				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(grassBlock)) {
 					hasTransparency.setSelected(true);
 					lightOpacity.setValue(0);

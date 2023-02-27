@@ -42,13 +42,20 @@ public class JBoundingBoxList extends JEntriesList {
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
+	private final Supplier<Model> modelProvider;
+	private final JButton genFromModel = new JButton(L10N.t("elementgui.common.gen_from_model")) {
+		@Override public String getName() {
+			return "TechnicalButton";
+		}
+	};
+
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui) {
 		this(mcreator, gui, null);
 	}
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, Supplier<Model> modelProvider) {
 		super(mcreator, new BorderLayout(), gui);
-		setOpaque(false);
+		this.modelProvider = modelProvider;
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -56,13 +63,9 @@ public class JBoundingBoxList extends JEntriesList {
 		add.setText(L10N.t("elementgui.common.add_bounding_box"));
 		topbar.add(add);
 		if (modelProvider != null) {
-			JButton genFromModel = new JButton(L10N.t("elementgui.common.gen_from_model")) {
-				@Override public String getName() {
-					return "TechnicalButton";
-				}
-			};
-			genFromModel.addActionListener(e -> generateBoundingBoxFromModel(modelProvider.get()));
+			genFromModel.addActionListener(e -> generateBoundingBoxFromModel());
 			topbar.add(genFromModel);
+			modelChanged();
 		}
 		add("North", topbar);
 
@@ -78,6 +81,7 @@ public class JBoundingBoxList extends JEntriesList {
 		entries.addPropertyChangeListener("boundingBoxChanged",
 				e -> firePropertyChange("boundingBoxChanged", false, true));
 
+		setOpaque(false);
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.bounding_box_entries"), 0, 0, getFont().deriveFont(12.0f),
@@ -91,25 +95,36 @@ public class JBoundingBoxList extends JEntriesList {
 		boundingBoxList.forEach(e -> e.setEntryEnabled(enabled));
 	}
 
-	private void generateBoundingBoxFromModel(Model model) {
-		if (model.getType() == Model.Type.JSON) {
-			JsonObject modelObj = JsonParser.parseString(FileIO.readFileToString(model.getFile())).getAsJsonObject();
-			if (modelObj.has("elements")) {
-				for (JsonElement element : modelObj.get("elements").getAsJsonArray()) {
-					JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
-					JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
+	public void modelChanged() {
+		if (modelProvider != null)
+			genFromModel.setVisible(modelProvider.get() != null && modelProvider.get().getType() == Model.Type.JSON);
+	}
 
-					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
-					box.mx = from.get(0).getAsDouble();
-					box.my = from.get(1).getAsDouble();
-					box.mz = from.get(2).getAsDouble();
-					box.Mx = to.get(0).getAsDouble();
-					box.My = to.get(1).getAsDouble();
-					box.Mz = to.get(2).getAsDouble();
+	private void generateBoundingBoxFromModel() {
+		if (modelProvider != null) {
+			Model model = modelProvider.get();
+			if (model != null && model.getType() == Model.Type.JSON) {
+				JsonObject modelObj = JsonParser.parseString(FileIO.readFileToString(model.getFile()))
+						.getAsJsonObject();
+				if (modelObj.has("elements")) {
+					List<IBlockWithBoundingBox.BoxEntry> boxEntries = new ArrayList<>();
 
-					JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(isEnabled());
-					registerEntryUI(entry);
-					entry.setEntry(box);
+					for (JsonElement element : modelObj.get("elements").getAsJsonArray()) {
+						JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
+						JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
+
+						IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+						box.mx = from.get(0).getAsDouble();
+						box.my = from.get(1).getAsDouble();
+						box.mz = from.get(2).getAsDouble();
+						box.Mx = to.get(0).getAsDouble();
+						box.My = to.get(1).getAsDouble();
+						box.Mz = to.get(2).getAsDouble();
+
+						boxEntries.add(box);
+					}
+
+					setBoundingBoxes(boxEntries);
 				}
 			}
 		}
@@ -121,6 +136,7 @@ public class JBoundingBoxList extends JEntriesList {
 
 	public void setBoundingBoxes(List<IBlockWithBoundingBox.BoxEntry> box) {
 		boundingBoxList.clear(); // Fixes failing tests
+		entries.removeAll();
 		box.forEach(e -> {
 			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(isEnabled());
 			registerEntryUI(entry);
