@@ -1401,81 +1401,113 @@
   readable_name: "White Bed"
   type: block
   texture: WHITE_BED
+  other:
+    poi: true
 
 - Blocks.ORANGE_BED:
   readable_name: "Orange Bed"
   type: block
   texture: ORANGE_BED
+  other:
+    poi: true
 
 - Blocks.MAGENTA_BED:
   readable_name: "Magenta Bed"
   type: block
   texture: MAGENTA_BED
+  other:
+    poi: true
 
 - Blocks.LIGHT_BLUE_BED:
   readable_name: "Light Blue Bed"
   type: block
   texture: LIGHT_BLUE_BED
+  other:
+    poi: true
 
 - Blocks.YELLOW_BED:
   readable_name: "Yellow Bed"
   type: block
   texture: YELLOW_BED
+  other:
+    poi: true
 
 - Blocks.LIME_BED:
   readable_name: "Lime Bed"
   type: block
   texture: LIME_BED
+  other:
+    poi: true
 
 - Blocks.PINK_BED:
   readable_name: "Pink Bed"
   type: block
   texture: PINK_BED
+  other:
+    poi: true
 
 - Blocks.GRAY_BED:
   readable_name: "Gray Bed"
   type: block
   texture: GRAY_BED
+  other:
+    poi: true
 
 - Blocks.LIGHT_GRAY_BED:
   readable_name: "Light Gray Bed"
   type: block
   texture: LIGHT_GRAY_BED
+  other:
+    poi: true
 
 - Blocks.CYAN_BED:
   readable_name: "Cyan Bed"
   type: block
   texture: CYAN_BED
+  other:
+    poi: true
 
 - Blocks.PURPLE_BED:
   readable_name: "Purple Bed"
   type: block
   texture: PURPLE_BED
+  other:
+    poi: true
 
 - Blocks.BLUE_BED:
   readable_name: "Blue Bed"
   type: block
   texture: BLUE_BED
+  other:
+    poi: true
 
 - Blocks.BROWN_BED:
   readable_name: "Brown Bed"
   type: block
   texture: BROWN_BED
+  other:
+    poi: true
 
 - Blocks.GREEN_BED:
   readable_name: "Green Bed"
   type: block
   texture: GREEN_BED
+  other:
+    poi: true
 
 - Blocks.RED_BED:
   readable_name: "Red Bed"
   type: block
   texture: RED_BED
+  other:
+    poi: true
 
 - Blocks.BLACK_BED:
   readable_name: "Black Bed"
   type: block
   texture: BLACK_BED
+  other:
+    poi: true
 
 - Blocks.WEB:
   readable_name: "Cobweb"
@@ -2379,6 +2411,8 @@
   readable_name: "Lightning Rod"
   type: block
   texture: LIGHTNING_ROD
+  other:
+    poi: true
 
 - Blocks.SCULK_SENSOR:
   readable_name: "Sculk Sensor"
@@ -2780,11 +2814,15 @@
   readable_name: "Brewing Stand"
   type: block
   texture: BREWING_STAND
+  other:
+    poi: true
 
 - Blocks.CAULDRON:
   readable_name: "Cauldron"
   type: block
   texture: CAULDRON
+  other:
+    poi: true
 
 - Blocks.WATER_CAULDRON:
   readable_name: "Water Cauldron"
@@ -3038,6 +3076,8 @@
   readable_name: "Nether Portal Block"
   type: block
   texture: PORTAL
+  other:
+    poi: true
 
 - Blocks.ANVIL:
   readable_name: "Any Anvil"
@@ -4644,71 +4684,99 @@
   readable_name: "Bell"
   type: block
   texture: BELL
+  other:
+    poi: true
 
 - Blocks.LOOM:
   readable_name: "Loom"
   type: block
   texture: LOOM
+  other:
+    poi: true
 
 - Blocks.BARREL:
   readable_name: "Barrel"
   type: block
   texture: BARREL
+  other:
+    poi: true
 
 - Blocks.SMOKER:
   readable_name: "Smoker"
   type: block
   texture: SMOKER
+  other:
+    poi: true
 
 - Blocks.BLAST_FURNACE:
   readable_name: "Blast Furnace"
   type: block
   texture: BLAST_FURNACE
+  other:
+    poi: true
 
 - Blocks.CARTOGRAPHY_TABLE:
   readable_name: "Cartography Table"
   type: block
   texture: CARTOGRAPHY_TABLE
+  other:
+    poi: true
 
 - Blocks.FLETCHING_TABLE:
   readable_name: "Fletching Table"
   type: block
   texture: FLETCHING_TABLE
+  other:
+    poi: true
 
 - Blocks.GRINDSTONE:
   readable_name: "Grindstone"
   type: block
   texture: GRINDSTONE
+  other:
+    poi: true
 
 - Blocks.LECTERN:
   readable_name: "Lectern"
   type: block
   texture: LECTERN
+  other:
+    poi: true
 
 - Blocks.SMITHING_TABLE:
   readable_name: "Smithing Table"
   type: block
   texture: SMITHING_TABLE
+  other:
+    poi: true
 
 - Blocks.STONECUTTER:
   readable_name: "Stonecutter"
   type: block
   texture: STONECUTTER
+  other:
+    poi: true
 
 - Blocks.COMPOSTER:
   readable_name: "Composter"
   type: block
   texture: COMPOSTER
+  other:
+    poi: true
 
 - Blocks.BEEHIVE:
   readable_name: "Beehive"
   type: block
   texture: BEEHIVE
+  other:
+    poi: true
 
 - Blocks.BEE_NEST:
   readable_name: "Bee nest"
   type: block
   texture: BEE_NEST
+  other:
+    poi: true
 
 - Blocks.HONEY_BLOCK:
   readable_name: "Honey block"
@@ -4779,6 +4847,8 @@
   readable_name: "Lodestone"
   type: block
   texture: LODESTONE
+  other:
+    poi: true
 
 - Blocks.CAVE_VINES:
   readable_name: "Cave Vines"

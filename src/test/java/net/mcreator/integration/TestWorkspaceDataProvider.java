@@ -60,6 +60,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
 
@@ -1550,8 +1551,11 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.VILLAGERPROFESSION.equals(modElement.getType())) {
 			VillagerProfession profession = new VillagerProfession(modElement);
 			profession.displayName = modElement.getName();
-			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocks).getName());
+			List<MItemBlock> poiBlocks = ElementUtil.loadAllPOIBlocks(modElement.getWorkspace(), null);
+			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					blocks.stream()
+							.filter(e -> !poiBlocks.contains(new MItemBlock(modElement.getWorkspace(), e.getName())))
+							.collect(Collectors.toList())).getName());
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			profession.hat = getRandomString(random, Arrays.asList("None", "Partial", "Full"));
@@ -1592,7 +1596,8 @@ public class TestWorkspaceDataProvider {
 						trade.entries.add(entry);
 					}
 					VillagerTrade.CustomTradeEntry wanderingTrade = new VillagerTrade.CustomTradeEntry();
-					wanderingTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(), "WANDERING_TRADER");
+					wanderingTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
+							"WANDERING_TRADER");
 					wanderingTrade.entries = new ArrayList<>();
 
 					int wanderingEntries = random.nextInt(10) + 1;

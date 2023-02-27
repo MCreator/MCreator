@@ -20,9 +20,10 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.VillagerProfession;
+import net.mcreator.element.types.interfaces.IPOIProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -224,14 +225,27 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "villagerprofessions", false, null, "villagerprofession");
 	}
 
-	public static List<MItemBlock> loadAllPOIs(Workspace workspace) {
-		// TODO: load vanilla from blocksitems other field, for custom, load all that have IPOIProvider
-		List<MItemBlock> elements = new ArrayList<>();
-		workspace.getModElements().stream().filter(element -> element.getType() == ModElementType.VILLAGERPROFESSION)
-				.forEach(modElement -> elements.add(
-						((VillagerProfession) modElement.getGeneratableElement()).pointOfInterest));
-		DataListLoader.loadDataList("villagerprofessions").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-				.map(DataListEntry::getOther).forEach(poi -> elements.add(new MItemBlock(workspace, (String) poi)));
+	/**
+	 * Returns list of blocks attached to a POI for this workspace
+	 *
+	 * @param workspace Workspace to return for
+	 * @param elementToSkip If not null, this ME will be skipped and its POI will not be added to the list
+	 * @return List of blocks attached to a POI for this workspace
+	 */
+	public static List<MItemBlock> loadAllPOIBlocks(Workspace workspace, @Nullable ModElement elementToSkip) {
+		List<MItemBlock> elements = loadBlocks(workspace).stream().filter(MCItem::isPOI)
+				.map(e -> new MItemBlock(workspace, e.getName())).collect(Collectors.toList());
+
+		for (ModElement modElement : workspace.getModElements()) {
+			if (modElement.equals(elementToSkip))
+				continue;
+
+			GeneratableElement ge = modElement.getGeneratableElement();
+			if (ge instanceof IPOIProvider poiProvider) {
+				elements.addAll(poiProvider.poiBlocks());
+			}
+		}
+
 		return elements;
 	}
 

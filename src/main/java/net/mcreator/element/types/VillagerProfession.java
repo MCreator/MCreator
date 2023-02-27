@@ -22,14 +22,16 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.element.types.interfaces.IPOIProvider;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.io.File;
+import java.util.List;
 
-public class VillagerProfession extends GeneratableElement {
+public class VillagerProfession extends GeneratableElement implements IPOIProvider {
 
 	public String displayName;
 	public MItemBlock pointOfInterest;
@@ -55,10 +57,15 @@ public class VillagerProfession extends GeneratableElement {
 		FileIO.copyFile(originalTextureFileLocation, newLocation);
 
 		File originalZombifiedTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(zombifiedProfessionTextureFile), TextureType.ENTITY);
+				.getTextureFile(FilenameUtilsPatched.removeExtension(zombifiedProfessionTextureFile),
+						TextureType.ENTITY);
 		File newZombifiedLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
 				"entity/zombie_villager/profession/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalZombifiedTextureFileLocation, newZombifiedLocation);
+	}
+
+	@Override public List<MItemBlock> poiBlocks() {
+		return List.of(pointOfInterest);
 	}
 
 }

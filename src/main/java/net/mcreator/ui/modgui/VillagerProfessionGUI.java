@@ -49,7 +49,6 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -142,14 +141,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.enableRealtimeValidation();
 		pointOfInterest.setValidator(new UniqueNameValidator(L10N.t("elementgui.villager_profession.point_of_interest"),
 				() -> pointOfInterest.getBlock().getUnmappedValue(),
-				() -> ElementUtil.loadAllPOIs(mcreator.getWorkspace()).stream()
-						.map(MItemBlock::getUnmappedValue),
-				Arrays.asList("Blocks.BEE_NEST", "Blocks.BEEHIVE", "Blocks.LIGHTNING_ROD", "Blocks.LODESTONE",
-						"Blocks.BELL", "Blocks.NETHER_PORTAL", "Blocks.BED", "Blocks.ORANGE_BED", "Blocks.MAGENTA_BED",
-						"Blocks.LIGHT_BLUE_BED", "Blocks.YELLOW_BED", "Blocks.LIME_BED", "Blocks.PINK_BED",
-						"Blocks.GRAY_BED", "Blocks.LIGHT_GRAY_BED", "Blocks.CYAN_BED", "Blocks.PURPLE_BED",
-						"Blocks.BLUE_BED", "Blocks.BROWN_BED", "Blocks.GREEN_BED", "Blocks.RED_BED",
-						"Blocks.BLACK_BED"), null));
+				() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace(), getModElement()).stream()
+						.map(MItemBlock::getUnmappedValue), null).setIsPresentOnList(false));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
