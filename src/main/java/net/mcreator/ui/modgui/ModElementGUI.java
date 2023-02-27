@@ -553,8 +553,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		afterGeneratableElementGenerated();
 
-		mcreator.getApplication().getAnalytics()
-				.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		if (isEditingMode()) {
+			mcreator.getApplication().getAnalytics()
+					.trackEvent(AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT, modElement.getType().getRegistryName());
+		} else {
+			mcreator.getApplication().getAnalytics()
+					.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		}
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
