@@ -530,9 +530,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
-		// we perform any custom defined before the generatable element is generated
-		beforeGeneratableElementGenerated();
-
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
 
@@ -586,9 +583,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected abstract void initGUI();
 
 	protected abstract AggregatedValidationResult validatePage(int page);
-
-	protected void beforeGeneratableElementGenerated() {
-	}
 
 	protected void afterGeneratableElementStored() {
 	}
