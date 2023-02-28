@@ -48,7 +48,7 @@ public class JBoundingBoxList extends JEntriesList {
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	private final Supplier<Model> modelProvider;
-	private final TechnicalButton genFromModel = L10N.funcbutton("elementgui.common.gen_from_block_model");
+	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, Supplier<Model> modelProvider) {
 		super(mcreator, new BorderLayout(), gui);

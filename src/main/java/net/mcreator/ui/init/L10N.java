@@ -183,7 +183,7 @@ public class L10N {
 		return new JButton(t(key, parameter));
 	}
 
-	public static TechnicalButton funcbutton(String key, Object... parameter) {
+	public static TechnicalButton technicalbutton(String key, Object... parameter) {
 		return new TechnicalButton(t(key, parameter));
 	}
 
