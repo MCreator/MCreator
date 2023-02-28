@@ -36,13 +36,18 @@
 
 package ${package}.init;
 
+<#assign shields = []>
+<#list tools as tool>
+	<#if tool.toolType == "Shield">
+		<#assign shields += [tool]>
+	</#if>
+</#list>
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class ${JavaModName}ShieldProperties {
 	private static final List<RegistryObject<Item>> shields = List.of(
-		<#list tools as tool>
-			<#if tool.toolType == "Shield">
-			${JavaModName}Items.${tool.getModElement().getRegistryNameUpper()}<#sep>,
-			</#if>
+		<#list shields as shield>
+			${JavaModName}Items.${shield.getModElement().getRegistryNameUpper()}<#sep>,
 		</#list>
 	);
 
