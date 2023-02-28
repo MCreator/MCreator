@@ -707,16 +707,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.boundingBoxScale??>
-	@Override public EntityDimensions getDimensions(Pose p_33597_) {
+	@Override public EntityDimensions getDimensions(Pose entityPose) {
 		<#if hasProcedure(data.boundingBoxScale)>
 			Entity entity = this;
 			Level world = this.level;
 			double x = this.getX();
 			double y = entity.getY();
 			double z = entity.getZ();
-			return super.getDimensions(p_33597_).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
+			return super.getDimensions(entityPose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
 		<#else>
-			return super.getDimensions(p_33597_).scale((float) ${data.boundingBoxScale.getFixedValue()});
+			return super.getDimensions(entityPose).scale((float) ${data.boundingBoxScale.getFixedValue()});
 		</#if>
 	}
 	</#if>
