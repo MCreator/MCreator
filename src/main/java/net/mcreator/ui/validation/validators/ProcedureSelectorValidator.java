@@ -42,7 +42,6 @@ public class ProcedureSelectorValidator implements Validator {
 		if (selector.getSelectedProcedure() != null || (requirement != null && !requirement.isSelected()))
 			return ValidationResult.PASSED;
 		else
-			return new ValidationResult(ValidationResultType.ERROR,
-					L10N.t("validators.select_element"));
+			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.select_element"));
 	}
 }

@@ -81,8 +81,8 @@ public class LocalizationUtils {
 
 	public static void generateLocalizationKeys(Generator generator, GeneratableElement element,
 			@Nullable List<?> localizationkeys) {
-		processDefinitionToLocalizationKeys(generator, element, localizationkeys)
-				.forEach((k, v) -> addLocalizationEntry(generator, k, v.x(), v.y()));
+		processDefinitionToLocalizationKeys(generator, element, localizationkeys).forEach(
+				(k, v) -> addLocalizationEntry(generator, k, v.x(), v.y()));
 	}
 
 	static Map<String, Tuple<Map<?, ?>, Object>> processDefinitionToLocalizationKeys(Generator generator,

@@ -22,8 +22,6 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.*;
 
 public class SplashScreenPanel extends JPanel {
 

@@ -236,8 +236,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic")).makeInline();
 		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -624,8 +624,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(
-				PanelUtils.northAndCenterElement(selp, bonemealMerger)),
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, bonemealMerger)),
 				PanelUtils.centerAndSouthElement(selp2, soundProperties))));
 		pane3.setOpaque(false);
 

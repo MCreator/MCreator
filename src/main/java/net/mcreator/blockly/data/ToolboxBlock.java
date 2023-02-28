@@ -138,7 +138,8 @@ import java.util.Objects;
 			StringBuilder toolboxXMLBuilder = new StringBuilder();
 			toolboxXMLBuilder.append("<block type=\"").append(machine_name).append("\">");
 			if (toolbox_init != null)
-				toolbox_init.stream().filter(Objects::nonNull).filter(e -> !e.startsWith("~")).forEach(toolboxXMLBuilder::append);
+				toolbox_init.stream().filter(Objects::nonNull).filter(e -> !e.startsWith("~"))
+						.forEach(toolboxXMLBuilder::append);
 			toolboxXMLBuilder.append("</block>");
 			toolboxXML = toolboxXMLBuilder.toString();
 		}
@@ -151,7 +152,8 @@ import java.util.Objects;
 			StringBuilder toolboxXMLBuilder = new StringBuilder();
 			toolboxXMLBuilder.append("<block type=\"").append(machine_name).append("\">");
 			if (toolbox_init != null)
-				toolbox_init.stream().filter(Objects::nonNull).map(e -> e.startsWith("~") ? e.substring(1) : e).forEach(toolboxXMLBuilder::append);
+				toolbox_init.stream().filter(Objects::nonNull).map(e -> e.startsWith("~") ? e.substring(1) : e)
+						.forEach(toolboxXMLBuilder::append);
 			toolboxXMLBuilder.append("</block>");
 			toolboxTestXML = toolboxXMLBuilder.toString();
 		}

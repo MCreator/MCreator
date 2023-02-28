@@ -32,7 +32,7 @@ public class WorkspaceRefactoringEvent extends MCREvent {
 	 * This is called BEFORE MCreator starts refactoring, but when the refactor is sure to happen.</p>
 	 *
 	 * @param mcreator <p>The {@link MCreator} of the workspace</p>
-	 * @param change <p>This variable contains the new workspace settings.</p>
+	 * @param change   <p>This variable contains the new workspace settings.</p>
 	 */
 	public WorkspaceRefactoringEvent(MCreator mcreator, WorkspaceSettingsChange change) {
 		this.mcreator = mcreator;
