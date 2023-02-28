@@ -159,11 +159,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 			return Validator.ValidationResult.PASSED;
 		});
 
-		JPanel mainPanel = new JPanel(new BorderLayout(0, 50));
-		mainPanel.add("Center", subpanel);
-		mainPanel.setOpaque(false);
-
-		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(mainPanel));
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel));
 
 		if (!isEditingMode()) {
 			displayName.setText(StringUtils.machineToReadableName(modElement.getName()));
@@ -172,9 +168,11 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
+
 		ComboBoxUtil.updateComboBoxContents(zombifiedProfessionTextureFile, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
