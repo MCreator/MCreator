@@ -21,6 +21,7 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -126,7 +127,7 @@ public class UniqueNameValidator implements Validator {
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
 		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList ? 1 : 0)
 				|| forbiddenNames.contains(uniqueName))
-			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate", name.toLowerCase()));
+			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate", StringUtils.lowercaseFirstLetter(name)));
 
 		return extraValidator.validate();
 	}
