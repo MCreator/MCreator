@@ -21,7 +21,6 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
