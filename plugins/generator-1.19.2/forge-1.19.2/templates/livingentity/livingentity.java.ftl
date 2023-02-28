@@ -685,7 +685,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.boundingBoxScale??>
-	@Override public EntityDimensions getDimensions(Pose p_33597_) {
+	@Override public EntityDimensions getDimensions(Pose entityPose) {
 		<#if hasProcedure(data.boundingBoxScale)>
 			Entity entity = this;
 			Level world = this.level;
