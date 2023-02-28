@@ -20,6 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.locale.LocaleRegistration;
@@ -180,6 +181,10 @@ public class L10N {
 
 	public static JButton button(String key, Object... parameter) {
 		return new JButton(t(key, parameter));
+	}
+
+	public static TechnicalButton funcbutton(String key, Object... parameter) {
+		return new TechnicalButton(t(key, parameter));
 	}
 
 	public static JRadioButton radiobutton(String key, Object... parameter) {

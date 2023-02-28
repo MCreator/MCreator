@@ -25,11 +25,14 @@ import com.google.gson.JsonParser;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.workspace.resources.Model;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,19 +42,13 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class JBoundingBoxList extends JEntriesList {
+	private static final Logger LOG = LogManager.getLogger(JBoundingBoxList.class);
+
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
 	private final Supplier<Model> modelProvider;
-	private final JButton genFromModel = new JButton(L10N.t("elementgui.common.gen_from_block_model")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
-
-	public JBoundingBoxList(MCreator mcreator, IHelpContext gui) {
-		this(mcreator, gui, null);
-	}
+	private final TechnicalButton genFromModel = L10N.funcbutton("elementgui.common.gen_from_block_model");
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, Supplier<Model> modelProvider) {
 		super(mcreator, new BorderLayout(), gui);
@@ -104,27 +101,34 @@ public class JBoundingBoxList extends JEntriesList {
 		if (modelProvider != null) {
 			Model model = modelProvider.get();
 			if (model != null && model.getType() == Model.Type.JSON) {
-				JsonObject modelObj = JsonParser.parseString(FileIO.readFileToString(model.getFile()))
-						.getAsJsonObject();
-				if (modelObj.has("elements")) {
-					List<IBlockWithBoundingBox.BoxEntry> boxEntries = new ArrayList<>();
+				try {
+					JsonObject modelJSON = JsonParser.parseString(FileIO.readFileToString(model.getFile()))
+							.getAsJsonObject();
+					if (modelJSON.has("elements")) {
+						List<IBlockWithBoundingBox.BoxEntry> boxEntries = new ArrayList<>();
 
-					for (JsonElement element : modelObj.get("elements").getAsJsonArray()) {
-						JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
-						JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
+						for (JsonElement element : modelJSON.get("elements").getAsJsonArray()) {
+							JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
+							JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
 
-						IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
-						box.mx = from.get(0).getAsDouble();
-						box.my = from.get(1).getAsDouble();
-						box.mz = from.get(2).getAsDouble();
-						box.Mx = to.get(0).getAsDouble();
-						box.My = to.get(1).getAsDouble();
-						box.Mz = to.get(2).getAsDouble();
+							IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+							box.mx = from.get(0).getAsDouble();
+							box.my = from.get(1).getAsDouble();
+							box.mz = from.get(2).getAsDouble();
+							box.Mx = to.get(0).getAsDouble();
+							box.My = to.get(1).getAsDouble();
+							box.Mz = to.get(2).getAsDouble();
 
-						boxEntries.add(box);
+							boxEntries.add(box);
+						}
+
+						setBoundingBoxes(boxEntries);
 					}
-
-					setBoundingBoxes(boxEntries);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(mcreator,
+							L10N.t("elementgui.common.gen_from_block_model_failed.message"),
+							L10N.t("elementgui.common.gen_from_block_model_failed.title"), JOptionPane.ERROR_MESSAGE);
+					LOG.error("Failed to process corrupt block model!", e);
 				}
 			}
 		}
