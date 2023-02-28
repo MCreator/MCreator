@@ -34,6 +34,7 @@ import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -47,10 +48,10 @@ public class JBoundingBoxList extends JEntriesList {
 	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	private final Supplier<Model> modelProvider;
+	@Nullable private final Supplier<Model> modelProvider;
 	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
 
-	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, Supplier<Model> modelProvider) {
+	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, @Nullable Supplier<Model> modelProvider) {
 		super(mcreator, new BorderLayout(), gui);
 		this.modelProvider = modelProvider;
 
@@ -59,11 +60,13 @@ public class JBoundingBoxList extends JEntriesList {
 
 		add.setText(L10N.t("elementgui.common.add_bounding_box"));
 		topbar.add(add);
+
 		if (modelProvider != null) {
 			genFromModel.addActionListener(e -> generateBoundingBoxFromModel());
 			topbar.add(genFromModel);
 			modelChanged();
 		}
+
 		add("North", topbar);
 
 		entries.setOpaque(false);
