@@ -692,9 +692,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double x = this.getX();
 			double y = entity.getY();
 			double z = entity.getZ();
-			return super.getDimensions(p_33597_).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
+			return super.getDimensions(entityPose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
 		<#else>
-			return super.getDimensions(p_33597_).scale((float) ${data.boundingBoxScale.getFixedValue()});
+			return super.getDimensions(entityPose).scale((float) ${data.boundingBoxScale.getFixedValue()});
 		</#if>
 	}
 	</#if>
