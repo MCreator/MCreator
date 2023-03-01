@@ -239,6 +239,17 @@ public class GTFeatureBlocks {
 							<value name="height"><block type="height_provider_constant">
 								<value name="value">%s</value></block></value></block></next></block></xml>
 						""".formatted(testXML);
+				// Block holder sets are tested with the "Only if block is in block list or tag" block predicate
+				case "BlockHolderSet" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+						</block></value><next><block type="placement_block_predicate_filter">
+							<value name="condition"><block type="block_predicate_matching_blocks">
+								<field name="x">0</field><field name="y">0</field><field name="z">0</field>
+								<value name="blockSet">%s</value></block></value></block></next></block></xml>
+						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->
@@ -301,11 +312,12 @@ public class GTFeatureBlocks {
 		case "field_dropdown" -> {
 			JsonArray opts = arg.get("options").getAsJsonArray();
 			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString()).append("</field>");
+			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString())
+					.append("</field>");
 			processed++;
 		}
 		case "field_mcitem_selector" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
+			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
 			processed++;
 		}
 		}
