@@ -49,3 +49,6 @@ feature_random_patch_simple:
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
+feature_geode_simple:
+  - GeodeFeature
+  - GeodeConfiguration
