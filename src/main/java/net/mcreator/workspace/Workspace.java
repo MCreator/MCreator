@@ -252,8 +252,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// after we don't need the definition anymore, remove actual files
 		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
-		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
-				element.getName() + ".png").delete();
+		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
 
 		// finally remove element form the list
 		mod_elements.remove(element);
