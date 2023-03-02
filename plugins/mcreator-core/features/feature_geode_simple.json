@@ -1,0 +1,97 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "size",
+      "value": 1,
+      "min": 0.01,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_input",
+      "name": "cannot_replace_tag",
+      "text": "features_cannot_replace"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "invalid_blocks_count",
+      "value": 1,
+      "min": 0,
+      "precision": 1
+    },
+    {
+      "type": "field_input",
+      "name": "invalid_blocks_tag",
+      "text": "geode_invalid_blocks"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "filling",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "inner_layer",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "alternate_inner_layer",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "middle_layer",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "outer_layer",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "inputsInline": false,
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "geode_tag_fields_validator"
+  ],
+  "mutator": "geode_crystal_mutator",
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"filling\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"inner_layer\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"alternate_inner_layer\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"middle_layer\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"outer_layer\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"crystal0\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "filling",
+      "inner_layer",
+      "alternate_inner_layer",
+      "middle_layer",
+      "outer_layer"
+    ],
+    "repeating_inputs": [
+      "crystal"
+    ],
+    "fields": [
+      "size",
+      "cannot_replace_tag",
+      "invalid_blocks_count",
+      "invalid_blocks_tag"
+    ]
+  }
+}

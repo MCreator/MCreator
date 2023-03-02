@@ -360,6 +360,14 @@ Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMix
         }, false, ['block']),
     undefined, ['block_list_mutator_input']);
 
+Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInputMixin(
+        'geode_crystal_mutator_container', 'geode_crystal_mutator_input', 'crystal',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock')
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }, true, [], true),
+    undefined, ['geode_crystal_mutator_input']);
+
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
     return function () {
@@ -376,3 +384,6 @@ function validateResourceLocationFields(...fields) {
 }
 
 Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
+
+Blockly.Extensions.register('geode_tag_fields_validator',
+        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
