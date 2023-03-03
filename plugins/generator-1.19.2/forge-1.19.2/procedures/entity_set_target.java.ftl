@@ -1,2 +1,2 @@
-if (${input$entity} instanceof Mob _livEnt && ${input$sourceentity} instanceof LivingEntity _srcEnt)
-	_livEnt.setTarget(_srcEnt);
+if (${input$entity} instanceof Mob _entity && ${input$sourceentity} instanceof LivingEntity _srcEnt)
+	_entity.setTarget(_srcEnt);

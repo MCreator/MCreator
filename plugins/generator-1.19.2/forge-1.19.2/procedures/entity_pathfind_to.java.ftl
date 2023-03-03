@@ -1,2 +1,2 @@
-if (${input$entity} instanceof Mob _livEnt)
-	_livEnt.getNavigation().moveTo(${input$x}, ${input$y}, ${input$z}, ${input$speed});
+if (${input$entity} instanceof Mob _entity)
+	_entity.getNavigation().moveTo(${input$x}, ${input$y}, ${input$z}, ${input$speed});

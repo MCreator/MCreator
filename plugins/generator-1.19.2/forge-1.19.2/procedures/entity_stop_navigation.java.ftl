@@ -1,2 +1,2 @@
-if (${input$entity} instanceof Mob _livEnt)
-	_livEnt.getNavigation().stop();
+if (${input$entity} instanceof Mob _entity)
+	_entity.getNavigation().stop();
