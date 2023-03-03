@@ -1,9 +1,9 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
 (new Object(){
-	public boolean getValue(LevelAccessor world, BlockPos pos, String tag) {
-		BlockEntity blockEntity=world.getBlockEntity(pos);
-		if(blockEntity != null) return blockEntity.getPersistentData().getBoolean(tag);
+	public boolean getValue(LevelAccessor _world, BlockPos _pos, String _tag) {
+		BlockEntity _blockEntity = _world.getBlockEntity(_pos);
+		if(_blockEntity != null) return _blockEntity.getPersistentData().getBoolean(_tag);
 		return false;
 	}
 }.getValue(world, ${toBlockPos(input$x,input$y,input$z)}, ${input$tagName}))

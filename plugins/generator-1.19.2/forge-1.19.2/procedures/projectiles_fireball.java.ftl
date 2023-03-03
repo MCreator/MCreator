@@ -4,14 +4,14 @@
 new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, projectileLevel)
 <#else>
 new Object() {
-	public Projectile getFireball(Level level<#if hasShooter>, Entity shooter</#if><#if hasAcceleration>, double ax, double ay, double az</#if>) {
-		AbstractHurtingProjectile entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, level);
-		<#if hasShooter>entityToSpawn.setOwner(shooter);</#if>
+	public Projectile getFireball(Level _level<#if hasShooter>, Entity _shooter</#if><#if hasAcceleration>, double _ax, double _ay, double _az</#if>) {
+		AbstractHurtingProjectile _entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, _level);
+		<#if hasShooter>_entityToSpawn.setOwner(_shooter);</#if>
 		<#if hasAcceleration>
-		entityToSpawn.xPower = ax;
-		entityToSpawn.yPower = ay;
-		entityToSpawn.zPower = az;
+		_entityToSpawn.xPower = _ax;
+		_entityToSpawn.yPower = _ay;
+		_entityToSpawn.zPower = _az;
 		</#if>
-		return entityToSpawn;
+		return _entityToSpawn;
 }}.getFireball(projectileLevel<#if hasShooter>, ${input$shooter}</#if><#if hasAcceleration>, ${input$ax}, ${input$ay}, ${input$az}</#if>)
 </#if>
