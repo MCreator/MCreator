@@ -4,4 +4,4 @@
 
 1 - самый распространённый уровень доступа, 4 - наивысший (для серверных команд).
 
-Уровни доступа "ванильных" команд смотрите [здесь](https://mcreator.net/wiki/command-permission-levels).
+Уровни доступа ванильных команд смотрите [здесь](https://mcreator.net/wiki/command-permission-levels).
