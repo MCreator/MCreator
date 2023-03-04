@@ -330,7 +330,7 @@ public class Generator implements IGenerator, Closeable {
 
 			List<GeneratableElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type).stream()
 					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-					.collect(Collectors.toList());
+					.filter(Objects::nonNull).collect(Collectors.toList());
 
 			if (!elementsList.isEmpty()) {
 				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s", elementsList));
