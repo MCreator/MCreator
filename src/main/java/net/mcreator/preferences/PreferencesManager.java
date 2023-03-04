@@ -28,7 +28,9 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.preferences.data.Preferences;
+import net.mcreator.preferences.entries.NumberEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
+import net.mcreator.preferences.entries.StringEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,11 +58,6 @@ public class PreferencesManager {
 	private static Map<String, List<PreferenceEntry<?>>> PREFERENCES_REGISTRY;
 
 	/**
-	 * <p>Default values for all preferences. Used when resetting preferences.</p>
-	 */
-	private static Map<String, List<PreferenceEntry<?>>> DEFAULT_PREFERENCES;
-
-	/**
 	 * <p>MCreator's preferences</p>
 	 */
 	public static Preferences PREFERENCES;
@@ -70,7 +67,6 @@ public class PreferencesManager {
 	 */
 	public static void init() {
 		PREFERENCES_REGISTRY = new HashMap<>();
-		DEFAULT_PREFERENCES = new HashMap<>();
 		PREFERENCES = new Preferences();
 
 		if (!file.isFile() && UserFolderManager.getFileFromUserFolder("preferences").exists()) {
@@ -90,7 +86,7 @@ public class PreferencesManager {
 			if (!identifier.equals("mcreator"))
 				loadPreferences(identifier);
 		});
-		savePreferences();
+		savePreferences(); // we save values in case an exception was caught and some preferences are reset
 	}
 
 	/**
@@ -143,10 +139,10 @@ public class PreferencesManager {
 				// We change the registered value for some types, so we can load them correctly
 				if (entry.get() instanceof Color color)
 					identifierPrefs.get(entrySection)
-							.add(new PreferenceEntry<>(entry.getID(), color.getRGB(), entry.getSection()));
+							.add(new NumberEntry(entry.getID(), color.getRGB(), entry.getSection()));
 				else if (entry.get() instanceof Locale locale)
 					identifierPrefs.get(entrySection)
-							.add(new PreferenceEntry<>(entry.getID(), locale.toString(), entry.getSection()));
+							.add(new StringEntry(entry.getID(), locale.toString(), entry.getSection()));
 				else
 					identifierPrefs.get(entrySection).add(entry);
 
@@ -193,25 +189,23 @@ public class PreferencesManager {
 	 */
 	public static void reset() {
 		LOG.debug("Restoring default values for all preferences");
-		PREFERENCES_REGISTRY.clear();
-		PREFERENCES_REGISTRY.putAll(DEFAULT_PREFERENCES);
+		PREFERENCES_REGISTRY.forEach((identifier, entries) -> resetFromList(entries));
 	}
 
 	public static void resetSpecific(String identifier) {
 		LOG.debug("Restoring default values for: " + identifier);
-		PREFERENCES_REGISTRY.get(identifier).clear();
-		PREFERENCES_REGISTRY.get(identifier).addAll(DEFAULT_PREFERENCES.get(identifier));
+		resetFromList(PREFERENCES_REGISTRY.get(identifier));
+	}
+
+	private static void resetFromList(List<PreferenceEntry<?>> entries) {
+		entries.forEach(PreferenceEntry::reset);
 	}
 
 	public static <T, S extends PreferenceEntry<T>> S register(String identifier, S entry) {
 		if (PREFERENCES_REGISTRY.containsKey(identifier)) {
 			PREFERENCES_REGISTRY.get(identifier).add(entry);
-			DEFAULT_PREFERENCES.get(identifier).add(entry);
 		} else {
 			PREFERENCES_REGISTRY.put(identifier, new ArrayList<>() {{
-				add(entry);
-			}});
-			DEFAULT_PREFERENCES.put(identifier, new ArrayList<>() {{
 				add(entry);
 			}});
 		}

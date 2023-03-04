@@ -21,6 +21,7 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.io.OS;
 import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.ColorEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.preferences.entries.StringEntry;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -37,7 +38,7 @@ import java.util.function.Consumer;
 
 public class UI {
 	public PreferenceEntry<Locale> language;
-	public PreferenceEntry<Color> interfaceAccentColor;
+	public ColorEntry interfaceAccentColor;
 	public StringEntry backgroundSource;
 	public BooleanEntry aaText;
 	public StringEntry textAntialiasingType;
@@ -69,7 +70,7 @@ public class UI {
 			}
 		});
 		interfaceAccentColor = Preferences.register(
-				new PreferenceEntry<>("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, Preferences.UI));
+				new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, Preferences.UI));
 		backgroundSource = Preferences.register(
 				new StringEntry("backgroundSource", "All", Preferences.UI, "All", "Current theme", "Custom", "None"));
 		aaText = Preferences.register(new BooleanEntry("aaText", true, Preferences.UI));

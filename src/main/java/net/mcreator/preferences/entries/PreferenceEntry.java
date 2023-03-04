@@ -19,29 +19,32 @@
 
 package net.mcreator.preferences.entries;
 
-import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.EventObject;
 import java.util.function.Consumer;
 
 /**
  * <p>This is the basic and the common class for all preferences of the software.
  * It stores everything the preference needs to have to be used or saved, such as an ID, its value or its {@link JComponent} for {@link PreferencesDialog}.
  * This is also the class used to save each preference inside the user's folder. However, only required (fields without transient) fields are saved.</p>
+ *
  * @param <T> <p>The type of the stored value.</p>
  */
 public class PreferenceEntry<T> {
 
 	private final String id;
 	protected T value;
+	private transient final T defaultValue;
 	private transient final String section;
 
 	public PreferenceEntry(String id, T value, String section) {
 		this.id = id;
 		this.value = value;
+		this.defaultValue = value;
 		this.section = section;
 	}
 
@@ -49,17 +52,11 @@ public class PreferenceEntry<T> {
 	 * <p>Generate a {@link JComponent} for the {@link PreferencesDialog}, so users can change the value.</p>
 	 *
 	 * @param parent <p>The component's parent, which is the opened {@link PreferencesDialog}.</p>
-	 * @param fct <p>This is the {@link Consumer} used to enable the apply button when the value of the {@link JComponent} is changed.</p>
+	 * @param fct    <p>This is the {@link Consumer} used to enable the apply button when the value of the {@link JComponent} is changed.</p>
 	 * @return <p>The {@link JComponent} to use inside the {@link PreferencesDialog} for all preference entries using the same type.</p>
 	 */
 	public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		if (value instanceof Color color) {
-			JColor box = new JColor(parent, false, false);
-			box.setColor(color);
-			box.setColorSelectedListener(fct::accept);
-			return box;
-		}
-		return null;
+		return new JEmptyBox();
 	}
 
 	public String getID() {
@@ -68,6 +65,10 @@ public class PreferenceEntry<T> {
 
 	public T get() {
 		return value;
+	}
+
+	public void reset() {
+		this.value = defaultValue;
 	}
 
 	public void set(Object object) {
