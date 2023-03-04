@@ -566,9 +566,13 @@ public class Generator implements IGenerator, Closeable {
 				continue;
 
 			try {
-				List<File> modElementFiles = getModElementGeneratorTemplatesList(
-						element.getGeneratableElement()).stream().map(GeneratorTemplate::getFile)
-						.collect(Collectors.toList());
+				GeneratableElement generatableElement = element.getGeneratableElement();
+
+				if (generatableElement == null)
+					continue;
+
+				List<File> modElementFiles = getModElementGeneratorTemplatesList(generatableElement).stream()
+						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				if (FileIO.isFileOnFileList(modElementFiles, file))
 					return element;
 
