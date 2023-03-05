@@ -19,10 +19,7 @@
 
 package net.mcreator.preferences;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -73,7 +70,11 @@ public class PreferencesManager {
 			LOG.debug("Old preferences detected. Converting them to the new format.");
 			convertOldPreferences();
 		} else {
-			loadedPreferences = gson.fromJson(FileIO.readFileToString(file), Map.class);
+			try {
+				loadedPreferences = gson.fromJson(FileIO.readFileToString(file), Map.class);
+			} catch (JsonSyntaxException e) {
+				LOG.error("The preferences file could not be loaded. Default values will be used.", e);
+			}
 			loadPreferences("mcreator");
 		}
 	}
@@ -86,7 +87,6 @@ public class PreferencesManager {
 			if (!identifier.equals("mcreator"))
 				loadPreferences(identifier);
 		});
-		savePreferences(); // we save values in case an exception was caught and some preferences are reset
 	}
 
 	/**
