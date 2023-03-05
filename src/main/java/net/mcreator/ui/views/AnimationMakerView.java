@@ -289,7 +289,6 @@ public class AnimationMakerView extends ViewBase {
 
 				});
 				t.start();
-
 				dial.setVisible(true);
 			}
 		});

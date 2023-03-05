@@ -1141,7 +1141,6 @@ import java.util.stream.Collectors;
 				dial.hideAll();
 			});
 			t.start();
-
 			dial.setVisible(true);
 		}
 	}
