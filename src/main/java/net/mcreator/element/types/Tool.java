@@ -91,22 +91,6 @@ import java.util.Map;
 		this.blockingModelName = "Normal blocking";
 	}
 
-	public Model getBlockingModel() {
-		Model.Type modelType = Model.Type.BUILTIN;
-		if (blockingRenderType == 1)
-			modelType = Model.Type.JSON;
-		else if (blockingRenderType == 2)
-			modelType = Model.Type.OBJ;
-		return Model.getModelByParams(getModElement().getWorkspace(), blockingModelName, modelType);
-	}
-
-	public Map<String, String> getBlockingTextureMap() {
-		Model model = getBlockingModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return new HashMap<>();
-	}
-
 	@Override public BufferedImage generateModElementPicture() {
 		return ImageUtils.resizeAndCrop(
 				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
@@ -121,8 +105,24 @@ import java.util.Map;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
+	public Model getBlockingModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (blockingRenderType == 1)
+			modelType = Model.Type.JSON;
+		else if (blockingRenderType == 2)
+			modelType = Model.Type.OBJ;
+		return Model.getModelByParams(getModElement().getWorkspace(), blockingModelName, modelType);
+	}
+
 	@Override public Map<String, String> getTextureMap() {
 		Model model = getItemModel();
+		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
+			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		return new HashMap<>();
+	}
+
+	public Map<String, String> getBlockingTextureMap() {
+		Model model = getBlockingModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return new HashMap<>();

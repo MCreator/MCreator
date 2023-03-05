@@ -185,9 +185,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
-		renderType.addActionListener((e) -> {
-			if (renderType.getSelectedItem() != null)
-				updateFields();
+		renderType.addActionListener(e -> {
+			updateFields();
 		});
 
 		rent.setBorder(BorderFactory.createTitledBorder(
@@ -327,16 +326,16 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
+			blockingModel.setEnabled(true);
+			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null || renderType.getSelectedItem().getType() == Model.Type.BUILTIN))
+				blockingModel.setEnabled(false);
+
 			harvestLevel.setEnabled(true);
 			efficiency.setEnabled(true);
 			damageVsEntity.setEnabled(true);
 			attackSpeed.setEnabled(true);
 			blocksAffected.setEnabled(true);
 			repairItems.setEnabled(true);
-			blockingModel.setEnabled(true);
-
-			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null || renderType.getSelectedItem().getType() == Model.Type.BUILTIN))
-				blockingModel.setEnabled(false);
 
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
@@ -436,9 +435,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
 
 		Model model = tool.getItemModel();
-		Model blockingModel = tool.getBlockingModel();
 		if (model != null)
 			this.renderType.setSelectedItem(model);
+
+		Model blockingModel = tool.getBlockingModel();
 		if (blockingModel != null)
 			this.blockingModel.setSelectedItem(tool.getBlockingModel());
 	}
@@ -476,18 +476,19 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.texture = texture.getID();
 
 		Model.Type modelType = (Objects.requireNonNull(renderType.getSelectedItem())).getType();
-		Model.Type blockingModelType = (Objects.requireNonNull(blockingModel.getSelectedItem().getType()));
 		tool.renderType = 0;
-		tool.blockingRenderType = 0;
 		if (modelType == Model.Type.JSON)
 			tool.renderType = 1;
 		else if (modelType == Model.Type.OBJ)
 			tool.renderType = 2;
+		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
+
+		Model.Type blockingModelType = (Objects.requireNonNull(blockingModel.getSelectedItem().getType()));
+		tool.blockingRenderType = 0;
 		if (blockingModelType == Model.Type.JSON)
 			tool.blockingRenderType = 1;
 		else if (blockingModelType == Model.Type.OBJ)
 			tool.blockingRenderType = 2;
-		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
 		tool.blockingModelName = (Objects.requireNonNull(blockingModel.getSelectedItem().getReadableName()));
 
 		return tool;
