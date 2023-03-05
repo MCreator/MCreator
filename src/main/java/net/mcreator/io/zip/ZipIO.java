@@ -173,7 +173,7 @@ public class ZipIO {
 
 	public static boolean checkIfZip(File zipfile) {
 		try (RandomAccessFile raf = new RandomAccessFile(zipfile, "r")) {
-			return raf.readInt() == 0x504B0304;
+			return Arrays.asList(0x504B0304, 0x4a4d0100).contains(raf.readInt());
 		} catch (IOException e) {
 			return false;
 		}
