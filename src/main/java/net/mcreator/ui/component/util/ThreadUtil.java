@@ -41,4 +41,16 @@ public class ThreadUtil {
 		}
 	}
 
+	public static void runOnSwingThreadAndWait(Runnable runnable) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			runnable.run();
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(runnable);
+			} catch (InterruptedException | InvocationTargetException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 }

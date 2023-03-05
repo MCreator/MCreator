@@ -28,6 +28,7 @@ import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.WorkspaceVCS;
@@ -410,18 +411,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 							currentGenerator.split("-")[0].toUpperCase(Locale.ENGLISH));
 
 					AtomicReference<GeneratorConfiguration> generatorConfiguration = new AtomicReference<>();
-					try {
-						SwingUtilities.invokeAndWait(() -> {
-							JOptionPane.showMessageDialog(ui,
-									L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
-									L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
-							generatorConfiguration.set(GeneratorSelector.getGeneratorSelector(ui,
-									GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-											currentFlavor), currentFlavor, false));
-						});
-					} catch (InterruptedException | InvocationTargetException e) {
-						throw new RuntimeException(e);
-					}
+					ThreadUtil.runOnSwingThreadAndWait(() -> {
+						JOptionPane.showMessageDialog(ui,
+								L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
+								L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
+						generatorConfiguration.set(GeneratorSelector.getGeneratorSelector(ui,
+								GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
+										currentFlavor), currentFlavor, false));
+					});
 					if (generatorConfiguration.get() != null) {
 						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
 

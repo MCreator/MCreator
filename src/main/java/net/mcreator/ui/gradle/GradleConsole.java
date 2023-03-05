@@ -30,6 +30,7 @@ import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.CodeErrorDialog;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
@@ -59,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -435,7 +437,7 @@ public class GradleConsole extends JPanel {
 
 			@Override public void onFailure(GradleConnectionException failure) {
 				SwingUtilities.invokeLater(() -> {
-					boolean errorhandled = false;
+					AtomicBoolean errorhandled = new AtomicBoolean(false);
 
 					boolean workspaceReportedFailingGradleDependencies = ref.getWorkspace()
 							.checkFailingGradleDependenciesAndClear();
@@ -468,10 +470,11 @@ public class GradleConsole extends JPanel {
 
 								return;
 							}
-							errorhandled = true;
+							errorhandled.set(true);
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
-							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
+							ThreadUtil.runOnSwingThreadAndWait(() -> errorhandled.set(
+									CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut)));
 						}
 						append(" ");
 						append("BUILD FAILED", new Color(0xF98771));
@@ -508,7 +511,7 @@ public class GradleConsole extends JPanel {
 
 					int resultcode = 0;
 
-					if (!errorhandled)
+					if (!errorhandled.get())
 						resultcode = GradleErrorDecoder.processErrorAndShowMessage(taskOut.toString(),
 								taskErr.toString(), ref);
 
