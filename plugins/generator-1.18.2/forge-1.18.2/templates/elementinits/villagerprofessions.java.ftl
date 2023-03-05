@@ -50,11 +50,13 @@ public class ${JavaModName}VillagerProfessions {
             registerProfession(
 			    "${villagerprofession.getModElement().getRegistryName()}",
                 ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
+                ImmutableSet.of(),
+                ImmutableSet.of(),
                 () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}"))
             );
     </#list>
 
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, Supplier<SoundEvent> soundEventSupplier) {
+	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent> soundEventSupplier) {
 		Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 
 		if (existingCheck.isPresent()) {
@@ -63,7 +65,7 @@ public class ${JavaModName}VillagerProfessions {
 		}
 
 		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
-        return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), ImmutableSet.of(), ImmutableSet.of(), soundEventSupplier));
+        return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), specificItems, relatedWorldBlocks, soundEventSupplier));
     }
 
     public static class RegistrySafeVillagerProfession extends VillagerProfession {
