@@ -28,7 +28,7 @@ public interface IPOIProvider {
 	/**
 	 * This method determines what POI blocks as MItemBlock list are provided by this generatable element
 	 *
-	 * @return A list of MItemBlock that are POIs provided by this generatable element
+	 * @return A list of MItemBlock that are POI provided by this generatable element
 	 */
 	List<MItemBlock> poiBlocks();
 
