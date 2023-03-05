@@ -107,7 +107,8 @@ public class ShareableZIPManager {
 			dial.hideAll();
 		});
 		t.start();
-		dial.setVisible(true);
+
+		SwingUtilities.invokeLater(() -> dial.setVisible(true));
 
 		return retval.get();
 	}

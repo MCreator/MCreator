@@ -239,7 +239,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					dial.hideAll();
 				});
 				t.start();
-				dial.setVisible(true);
+
+				SwingUtilities.invokeLater(() -> dial.setVisible(true));
 			}
 		} else {
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
