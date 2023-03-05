@@ -139,7 +139,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.setValidator(new TextFieldValidator(displayName,
 				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
 		displayName.enableRealtimeValidation();
-		pointOfInterest.setValidator(new UniqueNameValidator(L10N.t("elementgui.villager_profession.point_of_interest"),
+		pointOfInterest.setValidator(new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
 				() -> pointOfInterest.getBlock().getUnmappedValue(),
 				() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace(), getModElement()).stream()
 						.map(MItemBlock::getUnmappedValue), null).setIsPresentOnList(false));
