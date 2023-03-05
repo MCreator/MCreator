@@ -290,7 +290,7 @@ public class AnimationMakerView extends ViewBase {
 				});
 				t.start();
 
-				SwingUtilities.invokeLater(() -> dial.setVisible(true));
+				dial.setVisible(true);
 			}
 		});
 		add2.setIcon(UIRES.get("18px.add"));

@@ -1142,7 +1142,7 @@ import java.util.stream.Collectors;
 			});
 			t.start();
 
-			SwingUtilities.invokeLater(() -> dial.setVisible(true));
+			dial.setVisible(true);
 		}
 	}
 

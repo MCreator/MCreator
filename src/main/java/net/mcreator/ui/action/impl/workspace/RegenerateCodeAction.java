@@ -285,7 +285,7 @@ public class RegenerateCodeAction extends GradleAction {
 		});
 		thread.start();
 
-		SwingUtilities.invokeLater(() -> dial.setVisible(true));
+		dial.setVisible(true);
 	}
 
 }
