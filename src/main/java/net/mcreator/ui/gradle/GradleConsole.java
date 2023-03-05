@@ -456,21 +456,27 @@ public class GradleConsole extends JPanel {
 							}
 						} else if (workspaceReportedFailingGradleDependencies
 								|| GradleErrorDecoder.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
-							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
-									"<html><font color=gray>Do nothing" };
-							int reply = JOptionPane.showOptionDialog(ref,
-									L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
-									L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
-									JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-							if (reply == 0 || reply == 1) {
-								taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
+							AtomicBoolean shouldReturn = new AtomicBoolean(false);
+							ThreadUtil.runOnSwingThreadAndWait(() -> {
+								Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
+										"<html><font color=gray>Do nothing" };
+								int reply = JOptionPane.showOptionDialog(ref,
+										L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
+										L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
+										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+								if (reply == 0 || reply == 1) {
+									taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
 
-								ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1,
-										workspaceReportedFailingGradleDependencies);
+									ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1,
+											workspaceReportedFailingGradleDependencies);
 
+									shouldReturn.set(true);
+								}
+								errorhandled.set(true);
+							});
+
+							if (shouldReturn.get())
 								return;
-							}
-							errorhandled.set(true);
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
 							ThreadUtil.runOnSwingThreadAndWait(() -> errorhandled.set(

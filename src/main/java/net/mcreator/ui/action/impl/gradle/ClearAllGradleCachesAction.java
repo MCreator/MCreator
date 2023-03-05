@@ -130,8 +130,7 @@ public class ClearAllGradleCachesAction extends GradleAction {
 
 			progressDialog.hideAll();
 		}).start();
-
-		SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
+		progressDialog.setVisible(true);
 	}
 
 }
