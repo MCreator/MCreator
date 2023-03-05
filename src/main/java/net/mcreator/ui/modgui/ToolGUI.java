@@ -327,8 +327,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
 			blockingModel.setEnabled(true);
-			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null || renderType.getSelectedItem().getType() == Model.Type.BUILTIN))
+			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null || renderType.getSelectedItem().getType() == Model.Type.BUILTIN)) {
 				blockingModel.setEnabled(false);
+				blockingModel.setSelectedItem(normalBlocking);
+			}
 
 			harvestLevel.setEnabled(true);
 			efficiency.setEnabled(true);
