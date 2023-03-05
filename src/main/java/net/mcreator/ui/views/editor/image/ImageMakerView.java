@@ -185,14 +185,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	public void openInViewMode(FileNode image) {
-		File libFile = new File(image.incrementalPath.split(":%:")[0]);
-		String path = image.incrementalPath.split(":%:")[1];
-		if (path.startsWith("/"))
-			path = path.substring(1);
-
-		name = FilenameUtilsPatched.getName(path);
+		String[] path = image.splitPath();
+		name = FilenameUtilsPatched.getName(path[1]);
 		canEdit = false;
-		Layer layer = Layer.toLayer(Objects.requireNonNull(ZipIO.readFileInZip(libFile, path, (file, entry) -> {
+		Layer layer = Layer.toLayer(Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
 			try {
 				return ImageIO.read(file.getInputStream(entry));
 			} catch (IOException e) {
