@@ -393,10 +393,10 @@ public class WorkspaceFileBrowser extends JPanel {
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
 			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
-				File libraryFile = new File(libraryInfo.getLocationAsString());
-				if (libraryFile.isFile() && ZipIO.checkIfZip(libraryFile)) {
-					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-					if (libName.equals("rt"))
+				File libFile = new File(libraryInfo.getLocationAsString());
+				if (libFile.isFile() && (ZipIO.checkIfZip(libFile) || libFile.getName().endsWith(".jmod"))) {
+					String libName = FilenameUtilsPatched.removeExtension(libFile.getName());
+					if (libName.equals("rt") || libFile.getName().endsWith(".jmod"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
 					else
 						libName = "Gradle: " + libName;
@@ -406,8 +406,8 @@ public class WorkspaceFileBrowser extends JPanel {
 						ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
 						addFileNodeToFilterTreeNode(extDeps, libsrc.root);
 					} else {
-						FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
+						FileTree lib = new FileTree(new FileNode(libName, libFile.getAbsolutePath() + ":%:"));
+						ZipIO.iterateZip(libFile, entry -> lib.addElement(entry.getName()), true);
 						addFileNodeToFilterTreeNode(extDeps, lib.root);
 					}
 				}
