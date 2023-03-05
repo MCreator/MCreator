@@ -194,7 +194,6 @@ public final class MCreatorApplication {
 
 			try {
 				SwingUtilities.invokeAndWait(() -> {
-					// TODO: test this on macOS
 					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
 					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
 

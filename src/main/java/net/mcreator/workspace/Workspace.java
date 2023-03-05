@@ -45,9 +45,11 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class Workspace implements Closeable, IGeneratorProvider {
@@ -407,14 +409,21 @@ public class Workspace implements Closeable, IGeneratorProvider {
 					GeneratorFlavor currentFlavor = GeneratorFlavor.valueOf(
 							currentGenerator.split("-")[0].toUpperCase(Locale.ENGLISH));
 
-					JOptionPane.showMessageDialog(ui,
-							L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
-							L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
-					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
-							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-									currentFlavor), currentFlavor, false);
-					if (generatorConfiguration != null) {
-						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
+					AtomicReference<GeneratorConfiguration> generatorConfiguration = new AtomicReference<>();
+					try {
+						SwingUtilities.invokeAndWait(() -> {
+							JOptionPane.showMessageDialog(ui,
+									L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
+									L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
+							generatorConfiguration.set(GeneratorSelector.getGeneratorSelector(ui,
+									GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
+											currentFlavor), currentFlavor, false));
+						});
+					} catch (InterruptedException | InvocationTargetException e) {
+						throw new RuntimeException(e);
+					}
+					if (generatorConfiguration.get() != null) {
+						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
 
 						retval.generator = new Generator(retval);
 						retval.regenerateRequired = true;
