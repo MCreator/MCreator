@@ -54,11 +54,13 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -435,7 +437,7 @@ public class GradleConsole extends JPanel {
 
 			@Override public void onFailure(GradleConnectionException failure) {
 				SwingUtilities.invokeLater(() -> {
-					boolean errorhandled = false;
+					AtomicBoolean errorhandled = new AtomicBoolean(false);
 
 					boolean workspaceReportedFailingGradleDependencies = ref.getWorkspace()
 							.checkFailingGradleDependenciesAndClear();
@@ -468,10 +470,15 @@ public class GradleConsole extends JPanel {
 
 								return;
 							}
-							errorhandled = true;
+							errorhandled.set(true);
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
-							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
+							try {
+								SwingUtilities.invokeAndWait(() -> errorhandled.set(
+										CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut)));
+							} catch (InterruptedException | InvocationTargetException e) {
+								throw new RuntimeException(e);
+							}
 						}
 						append(" ");
 						append("BUILD FAILED", new Color(0xF98771));
@@ -508,7 +515,7 @@ public class GradleConsole extends JPanel {
 
 					int resultcode = 0;
 
-					if (!errorhandled)
+					if (!errorhandled.get())
 						resultcode = GradleErrorDecoder.processErrorAndShowMessage(taskOut.toString(),
 								taskErr.toString(), ref);
 
