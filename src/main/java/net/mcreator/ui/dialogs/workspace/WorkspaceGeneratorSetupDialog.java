@@ -100,7 +100,7 @@ public class WorkspaceGeneratorSetupDialog {
 		if (showWebsite)
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/page/what-next");
 
-		SwingUtilities.invokeLater(() -> dial.setVisible(true));
+		dial.setVisible(true);
 	}
 
 	private static void finalizeTheSetup(MCreator m, ProgressDialog dial) {
