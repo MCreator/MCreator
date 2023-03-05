@@ -33,6 +33,7 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
@@ -288,24 +289,27 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
 					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch) {
-				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
-						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
+				ThreadUtil.runOnSwingThreadAndWait(
+						() -> ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
+								new File(workspace.getFolderManager().getWorkspaceCacheDir(),
+										"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true));
 			}
 
 			// if we need to setup the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
-				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
+				ThreadUtil.runOnSwingThreadAndWait(() -> WorkspaceGeneratorSetupDialog.runSetup(this,
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage));
 			}
 
 			if (workspace.getMCreatorVersion()
 					< Launcher.version.versionlong) { // if this is the case, update the workspace files
-				RegenerateCodeAction.regenerateCode(this, true, true);
-				workspace.setMCreatorVersion(Launcher.version.versionlong);
-				workspace.getFileManager().saveWorkspaceDirectlyAndWait();
+				ThreadUtil.runOnSwingThreadAndWait(() -> {
+					RegenerateCodeAction.regenerateCode(this, true, true);
+					workspace.setMCreatorVersion(Launcher.version.versionlong);
+					workspace.getFileManager().saveWorkspaceDirectlyAndWait();
+				});
 			} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
-				RegenerateCodeAction.regenerateCode(this, true, true);
+				ThreadUtil.runOnSwingThreadAndWait(() -> RegenerateCodeAction.regenerateCode(this, true, true));
 			}
 
 			// reinit (preload) MCItems so workspace is more snappy when loaded
