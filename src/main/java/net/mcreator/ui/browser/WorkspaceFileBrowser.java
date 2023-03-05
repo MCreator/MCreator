@@ -394,7 +394,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
-				if (libraryFile.isFile() && ZipIO.checkIfZip(libraryFile)) {
+				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
 					if (libName.equals("rt") || libraryFile.getName().endsWith(".jmod"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
