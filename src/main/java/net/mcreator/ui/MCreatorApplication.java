@@ -306,17 +306,21 @@ public final class MCreatorApplication {
 				if (!this.openMCreators.contains(mcreator)) {
 					this.workspaceSelector.setVisible(false);
 					this.openMCreators.add(mcreator);
-					mcreator.setVisible(true);
-					mcreator.requestFocusInWindow();
-					mcreator.toFront();
+					SwingUtilities.invokeLater(() -> {
+						mcreator.setVisible(true);
+						mcreator.requestFocusInWindow();
+						mcreator.toFront();
+					});
 					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 					return mcreator;
 				} else { // already open, just focus it
 					LOG.warn("Trying to open already open workspace, bringing it to the front.");
 					for (MCreator openmcreator : openMCreators) {
 						if (openmcreator.equals(mcreator)) {
-							openmcreator.requestFocusInWindow();
-							openmcreator.toFront();
+							SwingUtilities.invokeLater(() -> {
+								openmcreator.requestFocusInWindow();
+								openmcreator.toFront();
+							});
 						}
 					}
 				}
