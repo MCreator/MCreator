@@ -284,7 +284,6 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.hideAll();
 		});
 		thread.start();
-
 		dial.setVisible(true);
 	}
 
