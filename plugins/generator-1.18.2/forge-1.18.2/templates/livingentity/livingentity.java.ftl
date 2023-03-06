@@ -665,7 +665,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.flyingSpeed = this.getSpeed() * 0.15F;
 				this.yBodyRot = entity.getYRot();
 				this.yHeadRot = entity.getYRot();
-				this.maxUpStep = ${opt.toFloat(data$stepHeight)};
 
 				if (entity instanceof LivingEntity passenger) {
 					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -694,7 +693,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.animationPosition += this.animationSpeed;
 				return;
 			}
-			this.maxUpStep = ${opt.toFloat(data$stepHeight)};
 			this.flyingSpeed = 0.02F;
 			</#if>
 
