@@ -81,8 +81,8 @@ public class WYSIWYGEditor extends JPanel {
 	public JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
 	public JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
 
-	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
-	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -256, 256, 1));
+	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
 	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
 	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
@@ -355,11 +355,6 @@ public class WYSIWYGEditor extends JPanel {
 						guiType.setSelectedIndex(1);
 					}
 				} else if (guiType.getSelectedIndex() == 1) {
-					if ((int) spa1.getValue() < 176)
-						spa1.setValue(176);
-					if ((int) spa2.getValue() < 166)
-						spa2.setValue(166);
-
 					setSlotComponentsEnabled(true);
 				}
 			});
