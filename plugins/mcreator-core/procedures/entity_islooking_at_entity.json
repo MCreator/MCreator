@@ -15,7 +15,7 @@
       "name": "area",
       "check": "Number"
     },
-	{
+    {
       "type": "input_value",
       "name": "ignoreBlocks",
       "check": "Boolean"
@@ -29,14 +29,14 @@
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"source_entity_from_deps\"></block></value>",
       "<value name=\"lookingAt\"><block type=\"entity_from_deps\"></block></value>",
-	  "<value name=\"area\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"area\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"ignoreBlocks\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
     ],
     "inputs": [
       "entity",
       "lookingAt",
-	  "area",
-	  "ignoreBlocks"
+      "area",
+      "ignoreBlocks"
     ]
   }
 }
