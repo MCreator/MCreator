@@ -66,6 +66,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public final class MCreatorApplication {
@@ -304,28 +305,31 @@ public final class MCreatorApplication {
 						L10N.t("dialog.workspace.open_failed_message"), L10N.t("dialog.workspace.open_failed_title"),
 						JOptionPane.ERROR_MESSAGE));
 			} else {
-				MCreator mcreator = new MCreator(this, workspace);
-				if (!this.openMCreators.contains(mcreator)) {
-					this.workspaceSelector.setVisible(false);
-					this.openMCreators.add(mcreator);
-					SwingUtilities.invokeLater(() -> {
+				AtomicReference<MCreator> openResult = new AtomicReference<>(null);
+
+				Workspace finalWorkspace = workspace;
+				ThreadUtil.runOnSwingThreadAndWait(() -> {
+					MCreator mcreator = new MCreator(this, finalWorkspace);
+					if (!this.openMCreators.contains(mcreator)) {
+						this.workspaceSelector.setVisible(false);
+						this.openMCreators.add(mcreator);
 						mcreator.setVisible(true);
 						mcreator.requestFocusInWindow();
 						mcreator.toFront();
-					});
-					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
-					return mcreator;
-				} else { // already open, just focus it
-					LOG.warn("Trying to open already open workspace, bringing it to the front.");
-					for (MCreator openmcreator : openMCreators) {
-						if (openmcreator.equals(mcreator)) {
-							SwingUtilities.invokeLater(() -> {
+						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+						openResult.set(mcreator);
+					} else { // already open, just focus it
+						LOG.warn("Trying to open already open workspace, bringing it to the front.");
+						for (MCreator openmcreator : openMCreators) {
+							if (openmcreator.equals(mcreator)) {
 								openmcreator.requestFocusInWindow();
 								openmcreator.toFront();
-							});
+							}
 						}
 					}
-				}
+				});
+
+				return openResult.get();
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
