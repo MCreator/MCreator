@@ -50,13 +50,11 @@ public class ${JavaModName}VillagerProfessions {
             registerProfession(
 			    "${villagerprofession.getModElement().getRegistryName()}",
                 ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-                ImmutableSet.of(),
-                ImmutableSet.of(),
                 () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}"))
             );
     </#list>
 
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent> soundEventSupplier) {
+	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, Supplier<SoundEvent> soundEventSupplier) {
 		Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 
 		if (existingCheck.isPresent()) {
@@ -65,15 +63,15 @@ public class ${JavaModName}VillagerProfessions {
 		}
 
 		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
-        return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), specificItems, relatedWorldBlocks, soundEventSupplier));
+        return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
     }
 
     public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
         private final Supplier<SoundEvent> soundEventSupplier;
 
-        public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, ImmutableSet<Item> specificItems, ImmutableSet<Block> relatedWorldBlocks, Supplier<SoundEvent> soundEventSupplier) {
-            super(name, pointOfInterest, specificItems, relatedWorldBlocks, null);
+        public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, Supplier<SoundEvent> soundEventSupplier) {
+            super(name, pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
             this.soundEventSupplier = soundEventSupplier;
         }
 
