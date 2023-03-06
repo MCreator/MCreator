@@ -26,11 +26,13 @@ import net.mcreator.workspace.Workspace;
 public abstract class SizedComponent extends GUIComponent {
 
 	public int width, height;
+	public boolean changesHeight;
 
-	public SizedComponent(int x, int y, int width, int height) {
+	public SizedComponent(int x, int y, int width, int height, boolean changesHeight) {
 		super(x, y);
 		this.width = width;
 		this.height = height;
+		this.changesHeight = changesHeight;
 	}
 
 	@Override public final int getWidth(Workspace workspace) {

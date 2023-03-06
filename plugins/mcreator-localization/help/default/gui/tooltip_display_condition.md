@@ -1,0 +1,1 @@
+If condition is specified, this tooltip can only be displayed in case the condition is passed.

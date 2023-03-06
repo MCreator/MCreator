@@ -21,6 +21,7 @@ package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Label;
+import net.mcreator.element.parts.gui.Tooltip;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,5 +36,9 @@ import java.util.List;
 
 	default Collection<Label> getFixedTextLabels() {
 		return getComponentsOfType("Label").stream().map(c -> (Label) c).filter(c -> c.text.getName() == null).toList();
+	}
+
+	default Collection<Tooltip> getFixedTooltips() {
+		return getComponentsOfType("Tooltip").stream().map(c -> (Tooltip) c).filter(c -> c.text.getName() == null).toList();
 	}
 }

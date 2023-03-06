@@ -30,7 +30,7 @@ public class TextField extends SizedComponent {
 	public String name;
 
 	public TextField(String name, int x, int y, int width, int height, String placeholder) {
-		super(x, y, width, height);
+		super(x, y, width, height, false);
 		this.placeholder = placeholder;
 
 		this.name = name;

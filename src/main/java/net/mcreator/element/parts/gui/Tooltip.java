@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,43 +20,50 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
 
-public class Button extends SizedComponent {
+public class Tooltip extends SizedComponent {
 
 	public String name;
-	public String text;
-	public Procedure onClick;
+
+	public StringProcedure text;
 	public Procedure displayCondition;
 
-	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick,
-			Procedure displayCondition) {
-		super(x, y, width, height, false);
+	public Tooltip(String name, int x, int y, int width, int height, StringProcedure text, Procedure displayCondition) {
+		super(x, y, width, height, true);
 		this.text = text;
-		this.onClick = onClick;
 		this.displayCondition = displayCondition;
 		this.name = name;
-	}
-
-	@Override public int getWeight() {
-		return 30;
 	}
 
 	@Override public String getName() {
 		return name;
 	}
 
-	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.drawImage(MinecraftImageGenerator.generateButton(this.width, this.height), cx, cy, this.width, this.height,
-				wysiwygEditor);
-		int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getWidth());
-		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) - 4;
-		g.drawString(this.text, cx + (this.width / 2) - (textwidth / 2),
-				cy + textheight + (this.height / 2) - (textheight / 2));
+	public String getRenderText() {
+		if (text.getName() == null)
+			return text.getFixedValue();
+		else
+			return text.getName();
 	}
 
+	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
+		g.draw3DRect(x, y, width, height,false);
+		g.drawString(text.getName() == null ? text.getFixedValue() : text.getName(), x, y - 3);
+
+		if (text.getName() != null) { // we have a procedure-based text
+			g.setColor(VariableTypeLoader.BuiltInTypes.STRING.getBlocklyColor());
+			g.drawLine(x, y - 1, (int) (x + WYSIWYG.fontMC.getStringBounds(text.getName(), WYSIWYG.frc).getWidth()), y - 1);
+		}
+	}
+
+	@Override public int getWeight() {
+		return -15;
+	}
 }

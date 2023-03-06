@@ -614,6 +614,9 @@ public class TestWorkspaceDataProvider {
 				components.add(
 						new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null),
 								30, 270, !_true));
+				components.add(new Tooltip(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 20, 40, 70, 10,
+							new StringProcedure(_true ? "string1" : null, "fixed value 1"), new Procedure("condition5")));
 			}
 			gui.components = components;
 			return gui;

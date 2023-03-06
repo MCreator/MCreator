@@ -54,6 +54,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	boolean isNotOverlayType = true;
 
 	private boolean positioningModeSettingWidth = false;
+	private boolean positioningModeSettingHeight = false;
 	private boolean componentMoveMode;
 	private boolean componentDragMode;
 
@@ -181,7 +182,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			g.drawLine(0, oy * 2, getWidth(), oy * 2);
 			g.drawLine(ox * 2, 0, ox * 2, getHeight());
 
-			if (positioningModeSettingWidth) {
+			if (positioningModeSettingWidth || positioningModeSettingHeight) {
 				if ((ow != 0 || oh != 0) && (selected == null || selected.isSizeKnown())) {
 					g.drawLine(0, oy * 2 + oh * 2, getWidth(), oy * 2 + oh * 2);
 					g.drawLine(ox * 2 + ow * 2, 0, ox * 2 + ow * 2, getHeight());
@@ -304,8 +305,11 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		ex = (int) Math.round(ex / 2.0);
 		ey = (int) Math.round(ey / 2.0);
 
-		if (positioningModeSettingWidth) {
+		if (positioningModeSettingWidth && !positioningModeSettingHeight) {
 			ow = Math.abs(ox - ex);
+		} else if (positioningModeSettingWidth && positioningModeSettingHeight) {
+			ow = Math.abs(ox - ex);
+			oh = Math.abs(oy - ey);
 		} else if (componentMoveMode) {
 			ox = ex;
 			oy = ey;
@@ -323,10 +327,12 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		ey = (int) Math.round(ey / 2.0);
 
 		if (componentMoveMode) {
-			if (e.getButton() == 1 || !(selected instanceof SizedComponent) || positioningModeSettingWidth) {
+			if (e.getButton() == 1 || !(selected instanceof SizedComponent component) || positioningModeSettingWidth) {
 				finishGUIComponentMove();
 			} else {
 				positioningModeSettingWidth = true;
+				if (component.changesHeight)
+					positioningModeSettingHeight = true;
 			}
 		} else { // "click-on-component" mode
 			GUIComponent component = getGUIComponentAt(ex, ey);
@@ -443,6 +449,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		}
 		componentMoveMode = false;
 		positioningModeSettingWidth = false;
+		positioningModeSettingHeight = false;
 
 		owner.setCursor(Cursor.getDefaultCursor());
 

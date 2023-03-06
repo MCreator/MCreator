@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 	public transient UUID uuid;
 
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
+		put("tooltip", Tooltip.class); // weight -15
 		put("entitymodel", EntityModel.class); //weight -10
 		put("textfield", TextField.class); // weight 0
 		put("label", Label.class); // weight 10
