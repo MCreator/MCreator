@@ -137,7 +137,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
 				mcreator.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile, Launcher.version.getFullString()));
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile,
+								Launcher.version.getFullString()));
 			}
 
 			// handle change of generator in a different manner

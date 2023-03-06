@@ -19,9 +19,8 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
-import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.ProgressBar;
-import net.mcreator.ui.component.util.EDTUtils;
+import net.mcreator.ui.component.SplashScreenPanel;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 
@@ -33,18 +32,22 @@ public class SplashScreen extends JWindow {
 	private final ProgressBar initloadprogress = new ProgressBar();
 	private final JLabel loadstate = new JLabel();
 
+	private final static int CORNER_RADIUS = 10;
+	private final static int SHADOW_RADIUS = 15;
+	private final static int EXTEND_BORDER = 3;
+
 	public SplashScreen() {
 		Font splashFont = new Font("Sans-Serif", Font.PLAIN, 13);
 
-		JPanel imagePanel = (Launcher.version != null && Launcher.version.isSnapshot()) ?
-				new JPanel() :
-				new ImagePanel(UIRES.getBuiltIn("splash").getImage());
+		SplashScreenPanel imagePanel = new SplashScreenPanel(UIRES.getBuiltIn("splash").getImage(), CORNER_RADIUS,
+				SHADOW_RADIUS, EXTEND_BORDER, (Launcher.version != null && Launcher.version.isSnapshot()),
+				new Color(50, 50, 50));
+		int shadowPadding = imagePanel.getBorderExtension();
 
 		imagePanel.setLayout(null);
-		imagePanel.setBackground(new Color(50, 50, 50));
 
 		JLabel pylo = new JLabel(new ImageIcon(ImageUtils.resize(UIRES.getBuiltIn("pylo").getImage(), 90, 24)));
-		pylo.setBounds(540 - 15 - 10, 348 - 15 - 10, 90, 24);
+		pylo.setBounds(shadowPadding + 540 - 15 - 10, shadowPadding + 348 - 15 - 10, 90, 24);
 		imagePanel.add(pylo);
 
 		JLabel label = new JLabel(
@@ -53,25 +56,25 @@ public class SplashScreen extends JWindow {
 						+ "<p style='margin-top:-2'>It is not approved by or associated with Mojang.</p>");
 		label.setFont(splashFont.deriveFont(10f));
 		label.setForeground(Color.white);
-		label.setBounds(30 + 10 - 4, 330 - 10 - 10, 500, 45);
+		label.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 330 - 10 - 10, 500, 45);
 		imagePanel.add(label);
 
 		JLabel logo = new JLabel(UIRES.getBuiltIn("logo"));
-		logo.setBounds(24 + 8 - 4, 70, 350, 63);
+		logo.setBounds(shadowPadding + 24 + 8 - 4, shadowPadding + 70, 350, 63);
 		imagePanel.add(logo);
 
 		JLabel version = new JLabel(
 				"VERSION " + (Launcher.version != null ? Launcher.version.getMajorString() : "1234.5"));
 		version.setFont(splashFont.deriveFont(18f));
 		version.setForeground(Color.white);
-		version.setBounds(30 + 10 - 4, 129, 500, 45);
+		version.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 129, 500, 45);
 		imagePanel.add(version);
 
 		if (Launcher.version != null && Launcher.version.isSnapshot()) {
 			JLabel snapshot = new JLabel("Snapshot - not for production use!");
 			snapshot.setFont(splashFont.deriveFont(14f));
 			snapshot.setForeground(new Color(255, 92, 82));
-			snapshot.setBounds(30 + 10 - 4, 165, 500, 45);
+			snapshot.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 165, 500, 45);
 			imagePanel.add(snapshot);
 		}
 
@@ -80,16 +83,23 @@ public class SplashScreen extends JWindow {
 		initloadprogress.setForeground(Color.white);
 		initloadprogress.setMaximalValue(100);
 		initloadprogress.init();
-		initloadprogress.setBounds(30 + 10 - 4, 283 - 10, 568, 3);
+		initloadprogress.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 283 - 10, 568, 3);
 		imagePanel.add(initloadprogress);
 
 		loadstate.setFont(splashFont.deriveFont(12f));
 		loadstate.setForeground(Color.white);
-		loadstate.setBounds(30 + 10 - 4, 283 - 39 - 10, 500, 45);
+		loadstate.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 283 - 39 - 10, 500, 45);
 		imagePanel.add(loadstate);
 
 		add(imagePanel);
-		setSize(640, 380);
+
+		// Catch any exceptions that might get thrown when working with systems that don't support window transparency.
+		try {
+			setBackground(new Color(0, 0, 0, 0));
+		} catch (Exception ignored) {
+		}
+
+		setSize(imagePanel.getSize());
 		setLocationRelativeTo(null);
 		setVisible(true);
 		requestFocus();
@@ -98,9 +108,10 @@ public class SplashScreen extends JWindow {
 	}
 
 	public void setProgress(int percentage, String message) {
-		initloadprogress.setCurrentValue(percentage);
-		loadstate.setText(message);
-		EDTUtils.requestNonBlockingUIRefresh();
+		SwingUtilities.invokeLater(() -> {
+			initloadprogress.setCurrentValue(percentage);
+			loadstate.setText(message);
+		});
 	}
 
 }
