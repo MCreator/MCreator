@@ -1,1 +1,1 @@
-${input$entity}.maxUpStep = (float) ${opt.toFloat(input$stepHeight)};
+${input$entity}.maxUpStep = ${opt.toFloat(input$stepHeight)};
