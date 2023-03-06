@@ -8,6 +8,6 @@ This condition can be represented with the following table (where TH is type-dep
 
 | TH visibility | TH = None | TH = Partial | TH = Full |
 |---------------|:---------:|:------------:|:---------:|
-| PH = Nons     |  Visible  |   Visible    |  Visible  |
+| PH = None     |  Visible  |   Visible    |  Visible  |
 | PH = Partial  |  Visible  |   Visible    |  Hidden   |
 | PH = Full     |  Hidden   |    Hidden    |  Hidden   |
