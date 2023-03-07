@@ -56,7 +56,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
-	private final boolean editingMode;
+	private boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
 
 	private boolean changed, listeningEnabled = false;
@@ -577,6 +577,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
+
+		// at this point, ME is stored so if session was not marked as editingMode before, now it is
+		editingMode = true;
 	}
 
 	public @Nonnull ModElement getModElement() {
