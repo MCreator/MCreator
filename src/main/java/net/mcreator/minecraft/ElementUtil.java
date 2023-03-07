@@ -20,7 +20,6 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.interfaces.IPOIProvider;
@@ -229,21 +228,15 @@ public class ElementUtil {
 	 * Returns list of blocks attached to a POI for this workspace
 	 *
 	 * @param workspace Workspace to return for
-	 * @param elementToSkip If not null, this ME will be skipped and its POI will not be added to the list
 	 * @return List of blocks attached to a POI for this workspace
 	 */
-	public static List<MItemBlock> loadAllPOIBlocks(Workspace workspace, @Nullable ModElement elementToSkip) {
+	public static List<MItemBlock> loadAllPOIBlocks(Workspace workspace) {
 		List<MItemBlock> elements = loadBlocks(workspace).stream().filter(MCItem::isPOI)
 				.map(e -> new MItemBlock(workspace, e.getName())).collect(Collectors.toList());
 
 		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.equals(elementToSkip))
-				continue;
-
-			GeneratableElement ge = modElement.getGeneratableElement();
-			if (ge instanceof IPOIProvider poiProvider) {
+			if (modElement.getGeneratableElement() instanceof IPOIProvider poiProvider)
 				elements.addAll(poiProvider.poiBlocks());
-			}
 		}
 
 		return elements;

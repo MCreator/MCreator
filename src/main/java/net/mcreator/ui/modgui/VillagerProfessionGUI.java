@@ -21,7 +21,9 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.VillagerProfession;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -139,10 +141,13 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		displayName.setValidator(new TextFieldValidator(displayName,
 				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
 		displayName.enableRealtimeValidation();
-		pointOfInterest.setValidator(new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
-				() -> pointOfInterest.getBlock().getUnmappedValue(),
-				() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace(), getModElement()).stream()
-						.map(MItemBlock::getUnmappedValue), null).setIsPresentOnList(false));
+		pointOfInterest.setValidator(
+				new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
+						() -> pointOfInterest.getBlock().getUnmappedValue(),
+						() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace()).stream()
+								.map(MItemBlock::getUnmappedValue),
+						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
+								.map(DataListEntry::getName).toList(), null).setIsPresentOnList(isEditingMode()));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
