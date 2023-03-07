@@ -553,7 +553,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		afterGeneratableElementGenerated();
 
-		if (isEditingMode()) {
+		if (editingMode) {
 			mcreator.getApplication().getAnalytics()
 					.trackEvent(AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT, modElement.getType().getRegistryName());
 		} else {
