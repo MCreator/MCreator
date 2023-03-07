@@ -1551,7 +1551,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.VILLAGERPROFESSION.equals(modElement.getType())) {
 			VillagerProfession profession = new VillagerProfession(modElement);
 			profession.displayName = modElement.getName();
-			List<MItemBlock> poiBlocks = ElementUtil.loadAllPOIBlocks(modElement.getWorkspace(), null);
+			List<MItemBlock> poiBlocks = ElementUtil.loadAllPOIBlocks(modElement.getWorkspace());
 			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
 					blocks.stream()
 							.filter(e -> !poiBlocks.contains(new MItemBlock(modElement.getWorkspace(), e.getName())))
