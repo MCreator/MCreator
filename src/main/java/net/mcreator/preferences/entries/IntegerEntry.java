@@ -19,18 +19,14 @@
 
 package net.mcreator.preferences.entries;
 
-import com.sun.management.OperatingSystemMXBean;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.management.ManagementFactory;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
 public class IntegerEntry extends PreferenceEntry<Integer> {
 
-	public static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
-					/ 1048576) - 1024;
 	protected transient int min;
 	protected transient int max;
 

@@ -19,7 +19,6 @@
 
 package net.mcreator.preferences.data;
 
-import net.mcreator.preferences.WorkspacePreferenceEnums;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
@@ -27,28 +26,37 @@ import net.mcreator.preferences.entries.PreferenceEntry;
 import java.io.File;
 
 public class Hidden {
-	public PreferenceEntry<WorkspacePreferenceEnums.IconSize> workspaceModElementIconSize;
+	public PreferenceEntry<IconSize> workspaceModElementIconSize;
 	public BooleanEntry fullScreen;
 	public IntegerEntry projectTreeSplitPos;
 	public BooleanEntry workspaceSortAscending;
-	public PreferenceEntry<WorkspacePreferenceEnums.SortType> workspaceSortType;
+	public PreferenceEntry<SortType> workspaceSortType;
 	public PreferenceEntry<File> java_home;
 	public PreferenceEntry<String> uiTheme;
 	public BooleanEntry enableJavaPlugins;
 
 	public Hidden() {
 		workspaceModElementIconSize = Preferences.register(
-				new PreferenceEntry<>("workspaceModElementIconSize", WorkspacePreferenceEnums.IconSize.TILES,
+				new PreferenceEntry<>("workspaceModElementIconSize", IconSize.TILES,
 						Preferences.HIDDEN));
 		fullScreen = Preferences.register(new BooleanEntry("fullScreen", false, Preferences.HIDDEN));
 		projectTreeSplitPos = Preferences.register(new IntegerEntry("projectTreeSplitPos", 0, Preferences.HIDDEN));
 		workspaceSortAscending = Preferences.register(
 				new BooleanEntry("workspaceSortAscending", false, Preferences.HIDDEN));
 		workspaceSortType = Preferences.register(
-				new PreferenceEntry<>("workspaceSortType", WorkspacePreferenceEnums.SortType.CREATED,
+				new PreferenceEntry<>("workspaceSortType", SortType.CREATED,
 						Preferences.HIDDEN));
 		java_home = Preferences.register(new PreferenceEntry<>("java_home", null, Preferences.HIDDEN));
 		uiTheme = Preferences.register(new PreferenceEntry<>("uiTheme", "default_dark", Preferences.HIDDEN));
 		enableJavaPlugins = Preferences.register(new BooleanEntry("fullScreen", false, Preferences.HIDDEN));
 	}
+
+	public enum SortType {
+		NAME, CREATED, TYPE, LOADORDER
+	}
+
+	public enum IconSize {
+		TILES, LARGE, MEDIUM, SMALL, LIST, DETAILS
+	}
+
 }

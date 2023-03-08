@@ -19,11 +19,19 @@
 
 package net.mcreator.preferences.data;
 
+import com.sun.management.OperatingSystemMXBean;
 import net.mcreator.io.OS;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 
+import java.lang.management.ManagementFactory;
+
 public class Gradle {
+
+	public static final int MAX_RAM =
+			(int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+					/ 1048576) - 1024;
+
 	public BooleanEntry compileOnSave;
 	public BooleanEntry passLangToMinecraft;
 	public IntegerEntry xms;
@@ -35,10 +43,10 @@ public class Gradle {
 		passLangToMinecraft = Preferences.register(new BooleanEntry("passLangToMinecraft", true, Preferences.GRADLE));
 		xms = Preferences.register(
 				new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, Preferences.GRADLE, 128,
-						IntegerEntry.MAX_RAM));
+						MAX_RAM));
 		xmx = Preferences.register(
 				new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, Preferences.GRADLE, 128,
-						IntegerEntry.MAX_RAM));
+						MAX_RAM));
 		offline = Preferences.register(new BooleanEntry("offline", false, Preferences.GRADLE));
 	}
 }

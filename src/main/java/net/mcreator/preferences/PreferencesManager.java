@@ -24,6 +24,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
+import net.mcreator.preferences.data.Hidden;
 import net.mcreator.preferences.data.Preferences;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
@@ -176,10 +177,10 @@ public class PreferencesManager {
 				entry.set(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
 			else if (entry.get() instanceof Color)
 				entry.set(new Color(value.getAsJsonObject().get("value").getAsInt()));
-			else if (entry.get() instanceof WorkspacePreferenceEnums.IconSize)
-				entry.set(WorkspacePreferenceEnums.IconSize.valueOf(value.getAsString()));
-			else if (entry.get() instanceof WorkspacePreferenceEnums.SortType)
-				entry.set(WorkspacePreferenceEnums.SortType.valueOf(value.getAsString()));
+			else if (entry.get() instanceof Hidden.IconSize)
+				entry.set(Hidden.IconSize.valueOf(value.getAsString()));
+			else if (entry.get() instanceof Hidden.SortType)
+				entry.set(Hidden.SortType.valueOf(value.getAsString()));
 		});
 		savePreferences();
 	}
