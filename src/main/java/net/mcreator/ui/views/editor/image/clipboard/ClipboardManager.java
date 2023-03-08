@@ -22,6 +22,7 @@ package net.mcreator.ui.views.editor.image.clipboard;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.LayerTransferable;
 import net.mcreator.ui.views.editor.image.layer.Layer;
+import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -42,10 +43,21 @@ public class ClipboardManager implements ClipboardOwner {
 	}
 
 	public void copyAll() {
-
+		// TODO: Add support for copying all layers as a single image.
 	}
 
-	private void addToClipboard(){
+	public void cut() {
+		addToClipboard();
+		Layer selected = imageMakerView.getLayerPanel().selected();
+		if (imageMakerView.getCanvas().size() > 1)
+			imageMakerView.getCanvas().remove(selected);
+		else {
+			selected.clear();
+			imageMakerView.getVersionManager().addRevision(new Modification(imageMakerView.getCanvas(), selected));
+		}
+	}
+
+	private void addToClipboard() {
 		// Prevent crashing on systems that lock clipboards to specific programs. This still crashes due to a bug in java's clipboard implementation (https://stackoverflow.com/questions/59140881/error-copying-an-image-object-to-the-clipboard).
 		try {
 			clipboard.setContents(new LayerTransferable(imageMakerView.getLayerPanel().selected()), this);
@@ -63,8 +75,7 @@ public class ClipboardManager implements ClipboardOwner {
 						imageMakerView.getCanvas()
 								.add(new Layer((String) clp.getTransferData(DataFlavor.stringFlavor), img));
 					} else {
-						imageMakerView.getCanvas()
-								.add(new Layer("Pasted layer", img));
+						imageMakerView.getCanvas().add(new Layer("Pasted layer", img));
 					}
 
 				} catch (UnsupportedFlavorException | IOException e) {

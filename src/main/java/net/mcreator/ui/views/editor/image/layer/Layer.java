@@ -192,6 +192,15 @@ public class Layer {
 		g2d.dispose();
 	}
 
+	public void clear() {
+		Graphics2D g2d = createGraphics();
+		Composite composite = g2d.getComposite();
+		g2d.setComposite(AlphaComposite.Clear);
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+		g2d.setComposite(composite);
+		g2d.dispose();
+	}
+
 	public BufferedImage getRaster() {
 		return raster;
 	}

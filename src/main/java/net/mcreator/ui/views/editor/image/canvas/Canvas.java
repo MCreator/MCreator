@@ -108,7 +108,15 @@ public class Canvas extends ArrayListListModel<Layer> {
 	@Override public Layer remove(int index) {
 		versionManager.addRevision(new Removal(this, get(index)));
 		Layer removed = super.remove(index);
-		layerPanel.select(index - 1);
+		layerPanel.select(Math.max(index - 1, 0));
+		return removed;
+	}
+
+	@Override public boolean remove(Object o) {
+		int index = indexOf(o);
+		versionManager.addRevision(new Removal(this, (Layer) o));
+		boolean removed = super.remove(o);
+		layerPanel.select(Math.max(index - 1, 0));
 		return removed;
 	}
 

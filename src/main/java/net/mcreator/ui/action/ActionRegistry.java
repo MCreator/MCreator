@@ -177,6 +177,7 @@ public class ActionRegistry {
 	public final BasicAction imageEditorSave;
 	public final BasicAction imageEditorSaveAs;
 	public final ImageEditorCopyAction imageEditorCopy;
+	public final ImageEditorCutAction imageEditorCut;
 	public final ImageEditorPasteAction imageEditorPaste;
 	public final BasicAction imageEditorPencil;
 	public final BasicAction imageEditorLine;
@@ -338,6 +339,7 @@ public class ActionRegistry {
 		this.imageEditorUndo = new ImageEditorUndoAction(this);
 		this.imageEditorRedo = new ImageEditorRedoAction(this);
 		this.imageEditorCopy = new ImageEditorCopyAction(this);
+		this.imageEditorCut = new ImageEditorCutAction(this);
 		this.imageEditorPaste = new ImageEditorPasteAction(this);
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
