@@ -24,8 +24,8 @@ import com.google.gson.internal.LinkedTreeMap;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
-import net.mcreator.preferences.data.Hidden;
-import net.mcreator.preferences.data.Preferences;
+import net.mcreator.preferences.data.HiddenSection;
+import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.preferences.entries.StringEntry;
@@ -58,14 +58,14 @@ public class PreferencesManager {
 	/**
 	 * <p>MCreator's preferences</p>
 	 */
-	public static Preferences PREFERENCES;
+	public static PreferencesData PREFERENCES;
 
 	/**
 	 * <p>Init the system and load MCreator's preferences, so entries used inside the launcher can be get.</p>
 	 */
 	public static void init() {
 		PREFERENCES_REGISTRY = new HashMap<>();
-		PREFERENCES = new Preferences();
+		PREFERENCES = new PreferencesData();
 
 		if (!file.isFile() && UserFolderManager.getFileFromUserFolder("preferences").exists()) {
 			LOG.debug("Old preferences detected. Converting them to the new format.");
@@ -177,10 +177,10 @@ public class PreferencesManager {
 				entry.set(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
 			else if (entry.get() instanceof Color)
 				entry.set(new Color(value.getAsJsonObject().get("value").getAsInt()));
-			else if (entry.get() instanceof Hidden.IconSize)
-				entry.set(Hidden.IconSize.valueOf(value.getAsString()));
-			else if (entry.get() instanceof Hidden.SortType)
-				entry.set(Hidden.SortType.valueOf(value.getAsString()));
+			else if (entry.get() instanceof HiddenSection.IconSize)
+				entry.set(HiddenSection.IconSize.valueOf(value.getAsString()));
+			else if (entry.get() instanceof HiddenSection.SortType)
+				entry.set(HiddenSection.SortType.valueOf(value.getAsString()));
 		});
 		savePreferences();
 	}

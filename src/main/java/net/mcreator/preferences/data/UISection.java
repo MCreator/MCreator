@@ -36,7 +36,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-public class UI {
+public class UISection {
+
 	public PreferenceEntry<Locale> language;
 	public ColorEntry interfaceAccentColor;
 	public StringEntry backgroundSource;
@@ -50,8 +51,28 @@ public class UI {
 	public BooleanEntry remindOfUnsavedChanges;
 	public BooleanEntry discordRichPresenceEnable;
 
-	public UI() {
-		language = Preferences.register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, Preferences.UI) {
+	public UISection() {
+		interfaceAccentColor = PreferencesData.register(
+				new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, PreferencesData.UI));
+		backgroundSource = PreferencesData.register(
+				new StringEntry("backgroundSource", "All", PreferencesData.UI, "All", "Current theme", "Custom", "None"));
+		aaText = PreferencesData.register(new BooleanEntry("aaText", true, PreferencesData.UI));
+		textAntialiasingType = PreferencesData.register(
+				new StringEntry("textAntialiasingType", "All", PreferencesData.UI, "on", "off", "gasp", "lcd", "lcd_hbgr",
+						"lcd_vrgb", "lcd_vbgr"));
+		usemacOSMenuBar = PreferencesData.register(new BooleanEntry("useMacOSMenuBar", true, PreferencesData.UI));
+		useNativeFileChooser = PreferencesData.register(
+				new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS, PreferencesData.UI));
+		expandSectionsByDefault = PreferencesData.register(
+				new BooleanEntry("expandSectionsByDefault", false, PreferencesData.UI));
+		use2DAcceleration = PreferencesData.register(new BooleanEntry("use2DAcceleration", false, PreferencesData.UI));
+		autoReloadTabs = PreferencesData.register(new BooleanEntry("autoReloadTabs", true, PreferencesData.UI));
+		remindOfUnsavedChanges = PreferencesData.register(
+				new BooleanEntry("remindOfUnsavedChanges", false, PreferencesData.UI));
+		discordRichPresenceEnable = PreferencesData.register(
+				new BooleanEntry("discordRichPresenceEnable", true, PreferencesData.UI));
+
+		language = PreferencesData.register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, PreferencesData.UI) {
 			@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 				List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
 				locales.sort((a, b) -> {
@@ -69,24 +90,6 @@ public class UI {
 				return box;
 			}
 		});
-		interfaceAccentColor = Preferences.register(
-				new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, Preferences.UI));
-		backgroundSource = Preferences.register(
-				new StringEntry("backgroundSource", "All", Preferences.UI, "All", "Current theme", "Custom", "None"));
-		aaText = Preferences.register(new BooleanEntry("aaText", true, Preferences.UI));
-		textAntialiasingType = Preferences.register(
-				new StringEntry("textAntialiasingType", "All", Preferences.UI, "on", "off", "gasp", "lcd", "lcd_hbgr",
-						"lcd_vrgb", "lcd_vbgr"));
-		usemacOSMenuBar = Preferences.register(new BooleanEntry("useMacOSMenuBar", true, Preferences.UI));
-		useNativeFileChooser = Preferences.register(
-				new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS, Preferences.UI));
-		expandSectionsByDefault = Preferences.register(
-				new BooleanEntry("expandSectionsByDefault", false, Preferences.UI));
-		use2DAcceleration = Preferences.register(new BooleanEntry("use2DAcceleration", false, Preferences.UI));
-		autoReloadTabs = Preferences.register(new BooleanEntry("autoReloadTabs", true, Preferences.UI));
-		remindOfUnsavedChanges = Preferences.register(
-				new BooleanEntry("remindOfUnsavedChanges", false, Preferences.UI));
-		discordRichPresenceEnable = Preferences.register(
-				new BooleanEntry("discordRichPresenceEnable", true, Preferences.UI));
 	}
+
 }

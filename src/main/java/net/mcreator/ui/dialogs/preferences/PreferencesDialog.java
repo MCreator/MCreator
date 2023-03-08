@@ -21,7 +21,7 @@ package net.mcreator.ui.dialogs.preferences;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
-import net.mcreator.preferences.data.Preferences;
+import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -162,7 +162,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private void loadSections() {
 		// Add preference entries
 		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.stream()
-				.filter(e -> !e.getSection().equals(Preferences.HIDDEN)).toList().forEach(entry -> {
+				.filter(e -> !e.getSection().equals(PreferencesData.HIDDEN)).toList().forEach(entry -> {
 					if (!sectionPanels.containsKey(entry.getSection()))
 						createPreferenceSection(entry.getSection());
 					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
@@ -193,7 +193,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void createPreferenceSection(String section) {
-		if (section.equals(Preferences.HIDDEN))
+		if (section.equals(PreferencesData.HIDDEN))
 			return;
 
 		String name = L10N.t("preferences.section." + section);

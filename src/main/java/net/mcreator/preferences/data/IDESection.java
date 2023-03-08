@@ -23,7 +23,7 @@ import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
-public class IDE {
+public class IDESection {
 	public StringEntry editorTheme;
 	public IntegerEntry fontSize;
 	public BooleanEntry autocomplete;
@@ -32,16 +32,17 @@ public class IDE {
 	public BooleanEntry lineNumbers;
 	public BooleanEntry errorInfoEnable;
 
-	public IDE() {
-		editorTheme = Preferences.register(
-				new StringEntry("editorTheme", "MCreator", Preferences.IDE, "MCreator", "Default", "Default-Alt",
+	IDESection() {
+		editorTheme = PreferencesData.register(
+				new StringEntry("editorTheme", "MCreator", PreferencesData.IDE, "MCreator", "Default", "Default-Alt",
 						"Dark", "Eclipse", "Idea", "Monokai", "VS"));
-		fontSize = Preferences.register(new IntegerEntry("fontSize", 12, Preferences.IDE, 5, 48));
-		autocomplete = Preferences.register(new BooleanEntry("autocomplete", true, Preferences.IDE));
-		autocompleteMode = Preferences.register(
-				new StringEntry("autocompleteMode", "Smart", Preferences.IDE, "Manual", "Trigger on dot", "Smart"));
-		autocompleteDocWindow = Preferences.register(new BooleanEntry("autocompleteDocWindow", true, Preferences.IDE));
-		lineNumbers = Preferences.register(new BooleanEntry("lineNumbers", true, Preferences.IDE));
-		errorInfoEnable = Preferences.register(new BooleanEntry("errorInfoEnable", true, Preferences.IDE));
+		fontSize = PreferencesData.register(new IntegerEntry("fontSize", 12, PreferencesData.IDE, 5, 48));
+		autocomplete = PreferencesData.register(new BooleanEntry("autocomplete", true, PreferencesData.IDE));
+		autocompleteMode = PreferencesData.register(
+				new StringEntry("autocompleteMode", "Smart", PreferencesData.IDE, "Manual", "Trigger on dot", "Smart"));
+		autocompleteDocWindow = PreferencesData.register(new BooleanEntry("autocompleteDocWindow", true, PreferencesData.IDE));
+		lineNumbers = PreferencesData.register(new BooleanEntry("lineNumbers", true, PreferencesData.IDE));
+		errorInfoEnable = PreferencesData.register(new BooleanEntry("errorInfoEnable", true, PreferencesData.IDE));
 	}
+
 }

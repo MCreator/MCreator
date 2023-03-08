@@ -25,7 +25,8 @@ import net.mcreator.preferences.entries.PreferenceEntry;
 
 import java.io.File;
 
-public class Hidden {
+public class HiddenSection {
+
 	public PreferenceEntry<IconSize> workspaceModElementIconSize;
 	public BooleanEntry fullScreen;
 	public IntegerEntry projectTreeSplitPos;
@@ -35,20 +36,19 @@ public class Hidden {
 	public PreferenceEntry<String> uiTheme;
 	public BooleanEntry enableJavaPlugins;
 
-	public Hidden() {
-		workspaceModElementIconSize = Preferences.register(
-				new PreferenceEntry<>("workspaceModElementIconSize", IconSize.TILES,
-						Preferences.HIDDEN));
-		fullScreen = Preferences.register(new BooleanEntry("fullScreen", false, Preferences.HIDDEN));
-		projectTreeSplitPos = Preferences.register(new IntegerEntry("projectTreeSplitPos", 0, Preferences.HIDDEN));
-		workspaceSortAscending = Preferences.register(
-				new BooleanEntry("workspaceSortAscending", false, Preferences.HIDDEN));
-		workspaceSortType = Preferences.register(
-				new PreferenceEntry<>("workspaceSortType", SortType.CREATED,
-						Preferences.HIDDEN));
-		java_home = Preferences.register(new PreferenceEntry<>("java_home", null, Preferences.HIDDEN));
-		uiTheme = Preferences.register(new PreferenceEntry<>("uiTheme", "default_dark", Preferences.HIDDEN));
-		enableJavaPlugins = Preferences.register(new BooleanEntry("fullScreen", false, Preferences.HIDDEN));
+	HiddenSection() {
+		workspaceModElementIconSize = PreferencesData.register(
+				new PreferenceEntry<>("workspaceModElementIconSize", IconSize.TILES, PreferencesData.HIDDEN));
+		fullScreen = PreferencesData.register(new BooleanEntry("fullScreen", false, PreferencesData.HIDDEN));
+		projectTreeSplitPos = PreferencesData.register(
+				new IntegerEntry("projectTreeSplitPos", 0, PreferencesData.HIDDEN));
+		workspaceSortAscending = PreferencesData.register(
+				new BooleanEntry("workspaceSortAscending", false, PreferencesData.HIDDEN));
+		workspaceSortType = PreferencesData.register(
+				new PreferenceEntry<>("workspaceSortType", SortType.CREATED, PreferencesData.HIDDEN));
+		java_home = PreferencesData.register(new PreferenceEntry<>("java_home", null, PreferencesData.HIDDEN));
+		uiTheme = PreferencesData.register(new PreferenceEntry<>("uiTheme", "default_dark", PreferencesData.HIDDEN));
+		enableJavaPlugins = PreferencesData.register(new BooleanEntry("fullScreen", false, PreferencesData.HIDDEN));
 	}
 
 	public enum SortType {

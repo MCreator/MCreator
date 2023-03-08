@@ -26,7 +26,7 @@ import net.mcreator.preferences.entries.IntegerEntry;
 
 import java.lang.management.ManagementFactory;
 
-public class Gradle {
+public class GradleSection {
 
 	public static final int MAX_RAM =
 			(int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
@@ -38,15 +38,16 @@ public class Gradle {
 	public IntegerEntry xmx;
 	public BooleanEntry offline;
 
-	public Gradle() {
-		compileOnSave = Preferences.register(new BooleanEntry("compileOnSave", true, Preferences.GRADLE));
-		passLangToMinecraft = Preferences.register(new BooleanEntry("passLangToMinecraft", true, Preferences.GRADLE));
-		xms = Preferences.register(
-				new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, Preferences.GRADLE, 128,
+	GradleSection() {
+		compileOnSave = PreferencesData.register(new BooleanEntry("compileOnSave", true, PreferencesData.GRADLE));
+		passLangToMinecraft = PreferencesData.register(new BooleanEntry("passLangToMinecraft", true, PreferencesData.GRADLE));
+		xms = PreferencesData.register(
+				new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, PreferencesData.GRADLE, 128,
 						MAX_RAM));
-		xmx = Preferences.register(
-				new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, Preferences.GRADLE, 128,
+		xmx = PreferencesData.register(
+				new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, PreferencesData.GRADLE, 128,
 						MAX_RAM));
-		offline = Preferences.register(new BooleanEntry("offline", false, Preferences.GRADLE));
+		offline = PreferencesData.register(new BooleanEntry("offline", false, PreferencesData.GRADLE));
 	}
+
 }

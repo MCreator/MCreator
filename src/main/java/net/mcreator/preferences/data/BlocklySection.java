@@ -23,7 +23,8 @@ import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
-public class Blockly {
+public class BlocklySection {
+
 	public StringEntry blockRenderer;
 	public BooleanEntry useSmartSort;
 	public BooleanEntry enableComments;
@@ -34,16 +35,17 @@ public class Blockly {
 	public IntegerEntry scaleSpeed;
 	public BooleanEntry legacyFont;
 
-	public Blockly() {
-		blockRenderer = Preferences.register(
-				new StringEntry("blockRenderer", "Thrasos", Preferences.BLOCKLY, "Geras", "Thrasos"));
-		useSmartSort = Preferences.register(new BooleanEntry("useSmartSort", true, Preferences.BLOCKLY));
-		enableComments = Preferences.register(new BooleanEntry("enableComments", true, Preferences.BLOCKLY));
-		enableCollapse = Preferences.register(new BooleanEntry("enableCollapse", true, Preferences.BLOCKLY));
-		enableTrashcan = Preferences.register(new BooleanEntry("enableTrashcan", true, Preferences.BLOCKLY));
-		maxScale = Preferences.register(new IntegerEntry("maxScale", 100, Preferences.BLOCKLY, 95, 200));
-		minScale = Preferences.register(new IntegerEntry("minScale", 40, Preferences.BLOCKLY, 20, 95));
-		scaleSpeed = Preferences.register(new IntegerEntry("scaleSpeed", 105, Preferences.BLOCKLY, 0, 200));
-		legacyFont = Preferences.register(new BooleanEntry("legacyFont", false, Preferences.BLOCKLY));
+	BlocklySection() {
+		blockRenderer = PreferencesData.register(
+				new StringEntry("blockRenderer", "Thrasos", PreferencesData.BLOCKLY, "Geras", "Thrasos"));
+		useSmartSort = PreferencesData.register(new BooleanEntry("useSmartSort", true, PreferencesData.BLOCKLY));
+		enableComments = PreferencesData.register(new BooleanEntry("enableComments", true, PreferencesData.BLOCKLY));
+		enableCollapse = PreferencesData.register(new BooleanEntry("enableCollapse", true, PreferencesData.BLOCKLY));
+		enableTrashcan = PreferencesData.register(new BooleanEntry("enableTrashcan", true, PreferencesData.BLOCKLY));
+		maxScale = PreferencesData.register(new IntegerEntry("maxScale", 100, PreferencesData.BLOCKLY, 95, 200));
+		minScale = PreferencesData.register(new IntegerEntry("minScale", 40, PreferencesData.BLOCKLY, 20, 95));
+		scaleSpeed = PreferencesData.register(new IntegerEntry("scaleSpeed", 105, PreferencesData.BLOCKLY, 0, 200));
+		legacyFont = PreferencesData.register(new BooleanEntry("legacyFont", false, PreferencesData.BLOCKLY));
 	}
+
 }

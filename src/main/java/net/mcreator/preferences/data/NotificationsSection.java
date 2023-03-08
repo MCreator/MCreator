@@ -21,22 +21,24 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.entries.BooleanEntry;
 
-public class Notifications {
+public class NotificationsSection {
+
 	public BooleanEntry openWhatsNextPage;
 	public BooleanEntry snapshotMessage;
 	public BooleanEntry checkAndNotifyForUpdates;
 	public BooleanEntry checkAndNotifyForPatches;
 	public BooleanEntry checkAndNotifyForPluginUpdates;
 
-	public Notifications() {
-		openWhatsNextPage = Preferences.register(
-				new BooleanEntry("openWhatsNextPage", true, Preferences.NOTIFICATIONS));
-		snapshotMessage = Preferences.register(new BooleanEntry("snapshotMessage", true, Preferences.NOTIFICATIONS));
-		checkAndNotifyForUpdates = Preferences.register(
-				new BooleanEntry("checkAndNotifyForUpdates", true, Preferences.NOTIFICATIONS));
-		checkAndNotifyForPatches = Preferences.register(
-				new BooleanEntry("checkAndNotifyForPatches", true, Preferences.NOTIFICATIONS));
-		checkAndNotifyForPluginUpdates = Preferences.register(
-				new BooleanEntry("checkAndNotifyForPluginUpdates", false, Preferences.NOTIFICATIONS));
+	NotificationsSection() {
+		openWhatsNextPage = PreferencesData.register(
+				new BooleanEntry("openWhatsNextPage", true, PreferencesData.NOTIFICATIONS));
+		snapshotMessage = PreferencesData.register(new BooleanEntry("snapshotMessage", true, PreferencesData.NOTIFICATIONS));
+		checkAndNotifyForUpdates = PreferencesData.register(
+				new BooleanEntry("checkAndNotifyForUpdates", true, PreferencesData.NOTIFICATIONS));
+		checkAndNotifyForPatches = PreferencesData.register(
+				new BooleanEntry("checkAndNotifyForPatches", true, PreferencesData.NOTIFICATIONS));
+		checkAndNotifyForPluginUpdates = PreferencesData.register(
+				new BooleanEntry("checkAndNotifyForPluginUpdates", false, PreferencesData.NOTIFICATIONS));
 	}
+
 }
