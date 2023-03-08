@@ -28,6 +28,7 @@ import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.WorkspaceVCS;
@@ -45,9 +46,11 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class Workspace implements Closeable, IGeneratorProvider {
@@ -252,8 +255,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// after we don't need the definition anymore, remove actual files
 		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
-		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(),
-				element.getName() + ".png").delete();
+		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
 
 		// finally remove element form the list
 		mod_elements.remove(element);
@@ -408,14 +410,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 					GeneratorFlavor currentFlavor = GeneratorFlavor.valueOf(
 							currentGenerator.split("-")[0].toUpperCase(Locale.ENGLISH));
 
-					JOptionPane.showMessageDialog(ui,
-							L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
-							L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
-					GeneratorConfiguration generatorConfiguration = GeneratorSelector.getGeneratorSelector(ui,
-							GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-									currentFlavor), currentFlavor, false);
-					if (generatorConfiguration != null) {
-						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
+					AtomicReference<GeneratorConfiguration> generatorConfiguration = new AtomicReference<>();
+					ThreadUtil.runOnSwingThreadAndWait(() -> {
+						JOptionPane.showMessageDialog(ui,
+								L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
+								L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
+						generatorConfiguration.set(GeneratorSelector.getGeneratorSelector(ui,
+								GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
+										currentFlavor), currentFlavor, false));
+					});
+					if (generatorConfiguration.get() != null) {
+						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
 
 						retval.generator = new Generator(retval);
 						retval.regenerateRequired = true;

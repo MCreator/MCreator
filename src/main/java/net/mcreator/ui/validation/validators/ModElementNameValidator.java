@@ -19,7 +19,6 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.java.JavaConventions;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;

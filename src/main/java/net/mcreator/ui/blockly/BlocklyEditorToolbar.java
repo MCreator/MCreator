@@ -138,9 +138,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 								.getDefinedBlocks().values()) {
 							for (String keyWord : keyWords) {
 								if (block.getName().toLowerCase(Locale.ENGLISH)
-										.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (block.getToolboxCategory() != null
-										&& block.getToolboxCategory().getName().toLowerCase(Locale.ENGLISH)
-										.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
+										.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
+										block.getToolboxCategory() != null && block.getToolboxCategory().getName()
+												.toLowerCase(Locale.ENGLISH)
+												.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
 									filtered.add(block);
 									break;
 								} else if (block.getName().toLowerCase(Locale.ENGLISH)
@@ -160,8 +161,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							for (ToolboxBlock block : filtered) {
 								JMenuItem menuItem = new JMenuItem("<html>" + (block.getToolboxCategory() != null ?
 										"<span style='background: #" + Integer.toHexString(
-												block.getToolboxCategory().getColor().getRGB()).substring(2) + ";'>&nbsp;"
-												+ block.getToolboxCategory().getName() + "&nbsp;</span>&nbsp;&nbsp;" :
+												block.getToolboxCategory().getColor().getRGB()).substring(2)
+												+ ";'>&nbsp;" + block.getToolboxCategory().getName()
+												+ "&nbsp;</span>&nbsp;&nbsp;" :
 										"") + block.getName().replaceAll("%\\d+?",
 										"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
 								menuItem.addActionListener(ev -> {
