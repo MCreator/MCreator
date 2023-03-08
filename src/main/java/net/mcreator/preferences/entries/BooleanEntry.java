@@ -19,15 +19,18 @@
 
 package net.mcreator.preferences.entries;
 
+import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesSection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class BooleanEntry extends PreferenceEntry<Boolean> {
+public class BooleanEntry extends PreferencesEntry<Boolean> {
 
-	public BooleanEntry(String id, boolean value, String section) {
-		super(id, value, section);
+	public BooleanEntry(String id, boolean value) {
+		super(id, value);
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {

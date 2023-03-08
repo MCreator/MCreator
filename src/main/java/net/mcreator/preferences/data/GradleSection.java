@@ -21,12 +21,13 @@ package net.mcreator.preferences.data;
 
 import com.sun.management.OperatingSystemMXBean;
 import net.mcreator.io.OS;
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 
 import java.lang.management.ManagementFactory;
 
-public class GradleSection {
+public class GradleSection extends PreferencesSection {
 
 	public static final int MAX_RAM =
 			(int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
@@ -38,16 +39,18 @@ public class GradleSection {
 	public IntegerEntry xmx;
 	public BooleanEntry offline;
 
-	GradleSection() {
-		compileOnSave = PreferencesData.register(new BooleanEntry("compileOnSave", true, PreferencesData.GRADLE));
-		passLangToMinecraft = PreferencesData.register(new BooleanEntry("passLangToMinecraft", true, PreferencesData.GRADLE));
-		xms = PreferencesData.register(
-				new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, PreferencesData.GRADLE, 128,
-						MAX_RAM));
-		xmx = PreferencesData.register(
-				new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, PreferencesData.GRADLE, 128,
-						MAX_RAM));
-		offline = PreferencesData.register(new BooleanEntry("offline", false, PreferencesData.GRADLE));
+	GradleSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		compileOnSave = addEntry(new BooleanEntry("compileOnSave", true));
+		passLangToMinecraft = addEntry(new BooleanEntry("passLangToMinecraft", true));
+		xms = addEntry(new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, 128, MAX_RAM));
+		xmx = addEntry(new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, 128, MAX_RAM));
+		offline = addEntry(new BooleanEntry("offline", false));
+	}
+
+	@Override public String getSectionKey() {
+		return "gradle";
 	}
 
 }

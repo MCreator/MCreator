@@ -19,11 +19,12 @@
 
 package net.mcreator.preferences.data;
 
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
-public class BlocklySection {
+public class BlocklySection extends PreferencesSection {
 
 	public StringEntry blockRenderer;
 	public BooleanEntry useSmartSort;
@@ -35,17 +36,22 @@ public class BlocklySection {
 	public IntegerEntry scaleSpeed;
 	public BooleanEntry legacyFont;
 
-	BlocklySection() {
-		blockRenderer = PreferencesData.register(
-				new StringEntry("blockRenderer", "Thrasos", PreferencesData.BLOCKLY, "Geras", "Thrasos"));
-		useSmartSort = PreferencesData.register(new BooleanEntry("useSmartSort", true, PreferencesData.BLOCKLY));
-		enableComments = PreferencesData.register(new BooleanEntry("enableComments", true, PreferencesData.BLOCKLY));
-		enableCollapse = PreferencesData.register(new BooleanEntry("enableCollapse", true, PreferencesData.BLOCKLY));
-		enableTrashcan = PreferencesData.register(new BooleanEntry("enableTrashcan", true, PreferencesData.BLOCKLY));
-		maxScale = PreferencesData.register(new IntegerEntry("maxScale", 100, PreferencesData.BLOCKLY, 95, 200));
-		minScale = PreferencesData.register(new IntegerEntry("minScale", 40, PreferencesData.BLOCKLY, 20, 95));
-		scaleSpeed = PreferencesData.register(new IntegerEntry("scaleSpeed", 105, PreferencesData.BLOCKLY, 0, 200));
-		legacyFont = PreferencesData.register(new BooleanEntry("legacyFont", false, PreferencesData.BLOCKLY));
+	BlocklySection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		blockRenderer = addEntry(new StringEntry("blockRenderer", "Thrasos", "Geras", "Thrasos"));
+		useSmartSort = addEntry(new BooleanEntry("useSmartSort", true));
+		enableComments = addEntry(new BooleanEntry("enableComments", true));
+		enableCollapse = addEntry(new BooleanEntry("enableCollapse", true));
+		enableTrashcan = addEntry(new BooleanEntry("enableTrashcan", true));
+		maxScale = addEntry(new IntegerEntry("maxScale", 100, 95, 200));
+		minScale = addEntry(new IntegerEntry("minScale", 40, 20, 95));
+		scaleSpeed = addEntry(new IntegerEntry("scaleSpeed", 105, 0, 200));
+		legacyFont = addEntry(new BooleanEntry("legacyFont", false));
+	}
+
+	@Override public String getSectionKey() {
+		return "blockly";
 	}
 
 }

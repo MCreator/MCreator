@@ -27,7 +27,6 @@ import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.preferences.data.HiddenSection;
 import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.preferences.entries.IntegerEntry;
-import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.preferences.entries.StringEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,7 +52,7 @@ public class PreferencesManager {
 	/**
 	 * <p>Store all preferences using an identifier </p>
 	 */
-	private static Map<String, List<PreferenceEntry<?>>> PREFERENCES_REGISTRY;
+	private static Map<String, List<PreferencesEntry<?>>> PREFERENCES_REGISTRY;
 
 	/**
 	 * <p>MCreator's preferences</p>
@@ -127,12 +126,12 @@ public class PreferencesManager {
 	 * <p>Save preferences of all identifiers registered inside PREFERENCES_REGISTRY.</p>
 	 */
 	public static void savePreferences() {
-		Map<String, Map<String, List<PreferenceEntry<?>>>> allPreferences = new HashMap<>();
+		Map<String, Map<String, List<PreferencesEntry<?>>>> allPreferences = new HashMap<>();
 
 		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
-			Map<String, List<PreferenceEntry<?>>> identifierPrefs = new HashMap<>();
+			Map<String, List<PreferencesEntry<?>>> identifierPrefs = new HashMap<>();
 			preferences.forEach(entry -> {
-				String entrySection = entry.getSection().toLowerCase();
+				String entrySection = entry.getSectionKey().toLowerCase();
 				// We check if the section doesn't exist to add it
 				if (!identifierPrefs.containsKey(entrySection))
 					identifierPrefs.put(entrySection, new ArrayList<>());
@@ -140,10 +139,10 @@ public class PreferencesManager {
 				// We change the registered value for some types, so we can load them correctly
 				if (entry.get() instanceof Color color)
 					identifierPrefs.get(entrySection)
-							.add(new IntegerEntry(entry.getID(), color.getRGB(), entry.getSection()));
+							.add(new IntegerEntry(entry.getID(), color.getRGB()));
 				else if (entry.get() instanceof Locale locale)
 					identifierPrefs.get(entrySection)
-							.add(new StringEntry(entry.getID(), locale.toString(), entry.getSection()));
+							.add(new StringEntry(entry.getID(), locale.toString()));
 				else
 					identifierPrefs.get(entrySection).add(entry);
 
@@ -161,7 +160,7 @@ public class PreferencesManager {
 		File file = UserFolderManager.getFileFromUserFolder("preferences");
 		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
 		PREFERENCES_REGISTRY.get("mcreator").forEach(entry -> {
-			JsonElement value = obj.get(entry.getSection()).getAsJsonObject()
+			JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject()
 					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
 							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
 			if (value == null)
@@ -198,11 +197,11 @@ public class PreferencesManager {
 		resetFromList(PREFERENCES_REGISTRY.get(identifier));
 	}
 
-	private static void resetFromList(List<PreferenceEntry<?>> entries) {
-		entries.forEach(PreferenceEntry::reset);
+	private static void resetFromList(List<PreferencesEntry<?>> entries) {
+		entries.forEach(PreferencesEntry::reset);
 	}
 
-	public static <T, S extends PreferenceEntry<T>> S register(String identifier, S entry) {
+	static <T, S extends PreferencesEntry<T>> void register(String identifier, S entry) {
 		if (PREFERENCES_REGISTRY.containsKey(identifier)) {
 			PREFERENCES_REGISTRY.get(identifier).add(entry);
 		} else {
@@ -210,10 +209,9 @@ public class PreferencesManager {
 				add(entry);
 			}});
 		}
-		return entry;
 	}
 
-	public static Map<String, List<PreferenceEntry<?>>> getPreferencesRegistry() {
+	public static Map<String, List<PreferencesEntry<?>>> getPreferencesRegistry() {
 		return PREFERENCES_REGISTRY;
 	}
 }

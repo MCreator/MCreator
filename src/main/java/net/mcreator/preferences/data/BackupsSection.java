@@ -19,25 +19,28 @@
 
 package net.mcreator.preferences.data;
 
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 
-public class BackupsSection {
+public class BackupsSection extends PreferencesSection {
 
 	public IntegerEntry workspaceAutosaveInterval;
 	public IntegerEntry automatedBackupInterval;
 	public IntegerEntry numberOfBackupsToStore;
 	public BooleanEntry backupOnVersionSwitch;
 
-	BackupsSection() {
-		workspaceAutosaveInterval = PreferencesData.register(
-				new IntegerEntry("workspaceAutosaveInterval", 30, PreferencesData.BACKUPS, 10, 2000));
-		automatedBackupInterval = PreferencesData.register(
-				new IntegerEntry("automatedBackupInterval", 5, PreferencesData.BACKUPS, 3, 120));
-		numberOfBackupsToStore = PreferencesData.register(
-				new IntegerEntry("numberOfBackupsToStore", 10, PreferencesData.BACKUPS, 2, 20));
-		backupOnVersionSwitch = PreferencesData.register(
-				new BooleanEntry("backupOnVersionSwitch", true, PreferencesData.BACKUPS));
+	public BackupsSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		workspaceAutosaveInterval = addEntry(new IntegerEntry("workspaceAutosaveInterval", 30, 10, 2000));
+		automatedBackupInterval = addEntry(new IntegerEntry("automatedBackupInterval", 5, 3, 120));
+		numberOfBackupsToStore = addEntry(new IntegerEntry("numberOfBackupsToStore", 10, 2, 20));
+		backupOnVersionSwitch = addEntry(new BooleanEntry("backupOnVersionSwitch", true));
+	}
+
+	@Override public String getSectionKey() {
+		return "backups";
 	}
 
 }

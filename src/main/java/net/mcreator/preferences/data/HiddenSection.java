@@ -19,36 +19,43 @@
 
 package net.mcreator.preferences.data;
 
+import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
-import net.mcreator.preferences.entries.PreferenceEntry;
 
 import java.io.File;
 
-public class HiddenSection {
+public class HiddenSection extends PreferencesSection {
 
-	public PreferenceEntry<IconSize> workspaceModElementIconSize;
+	public PreferencesEntry<IconSize> workspaceModElementIconSize;
 	public BooleanEntry fullScreen;
 	public IntegerEntry projectTreeSplitPos;
 	public BooleanEntry workspaceSortAscending;
-	public PreferenceEntry<SortType> workspaceSortType;
-	public PreferenceEntry<File> java_home;
-	public PreferenceEntry<String> uiTheme;
+	public PreferencesEntry<SortType> workspaceSortType;
+	public PreferencesEntry<File> java_home;
+	public PreferencesEntry<String> uiTheme;
 	public BooleanEntry enableJavaPlugins;
 
-	HiddenSection() {
-		workspaceModElementIconSize = PreferencesData.register(
-				new PreferenceEntry<>("workspaceModElementIconSize", IconSize.TILES, PreferencesData.HIDDEN));
-		fullScreen = PreferencesData.register(new BooleanEntry("fullScreen", false, PreferencesData.HIDDEN));
-		projectTreeSplitPos = PreferencesData.register(
-				new IntegerEntry("projectTreeSplitPos", 0, PreferencesData.HIDDEN));
-		workspaceSortAscending = PreferencesData.register(
-				new BooleanEntry("workspaceSortAscending", false, PreferencesData.HIDDEN));
-		workspaceSortType = PreferencesData.register(
-				new PreferenceEntry<>("workspaceSortType", SortType.CREATED, PreferencesData.HIDDEN));
-		java_home = PreferencesData.register(new PreferenceEntry<>("java_home", null, PreferencesData.HIDDEN));
-		uiTheme = PreferencesData.register(new PreferenceEntry<>("uiTheme", "default_dark", PreferencesData.HIDDEN));
-		enableJavaPlugins = PreferencesData.register(new BooleanEntry("fullScreen", false, PreferencesData.HIDDEN));
+	HiddenSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		workspaceModElementIconSize = addEntry(new PreferencesEntry<>("workspaceModElementIconSize", IconSize.TILES));
+		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
+		projectTreeSplitPos = addEntry(new IntegerEntry("projectTreeSplitPos", 0));
+		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", false));
+		workspaceSortType = addEntry(new PreferencesEntry<>("workspaceSortType", SortType.CREATED));
+		java_home = addEntry(new PreferencesEntry<>("java_home", null));
+		uiTheme = addEntry(new PreferencesEntry<>("uiTheme", "default_dark"));
+		enableJavaPlugins = addEntry(new BooleanEntry("fullScreen", false));
+	}
+
+	@Override public boolean isVisible() {
+		return false;
+	}
+
+	@Override public String getSectionKey() {
+		return "hidden";
 	}
 
 	public enum SortType {

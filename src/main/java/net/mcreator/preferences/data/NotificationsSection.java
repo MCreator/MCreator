@@ -19,9 +19,10 @@
 
 package net.mcreator.preferences.data;
 
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 
-public class NotificationsSection {
+public class NotificationsSection extends PreferencesSection {
 
 	public BooleanEntry openWhatsNextPage;
 	public BooleanEntry snapshotMessage;
@@ -29,16 +30,18 @@ public class NotificationsSection {
 	public BooleanEntry checkAndNotifyForPatches;
 	public BooleanEntry checkAndNotifyForPluginUpdates;
 
-	NotificationsSection() {
-		openWhatsNextPage = PreferencesData.register(
-				new BooleanEntry("openWhatsNextPage", true, PreferencesData.NOTIFICATIONS));
-		snapshotMessage = PreferencesData.register(new BooleanEntry("snapshotMessage", true, PreferencesData.NOTIFICATIONS));
-		checkAndNotifyForUpdates = PreferencesData.register(
-				new BooleanEntry("checkAndNotifyForUpdates", true, PreferencesData.NOTIFICATIONS));
-		checkAndNotifyForPatches = PreferencesData.register(
-				new BooleanEntry("checkAndNotifyForPatches", true, PreferencesData.NOTIFICATIONS));
-		checkAndNotifyForPluginUpdates = PreferencesData.register(
-				new BooleanEntry("checkAndNotifyForPluginUpdates", false, PreferencesData.NOTIFICATIONS));
+	NotificationsSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		openWhatsNextPage = addEntry(new BooleanEntry("openWhatsNextPage", true));
+		snapshotMessage = addEntry(new BooleanEntry("snapshotMessage", true));
+		checkAndNotifyForUpdates = addEntry(new BooleanEntry("checkAndNotifyForUpdates", true));
+		checkAndNotifyForPatches = addEntry(new BooleanEntry("checkAndNotifyForPatches", true));
+		checkAndNotifyForPluginUpdates = addEntry(new BooleanEntry("checkAndNotifyForPluginUpdates", false));
+	}
+
+	@Override public String getSectionKey() {
+		return "notifications";
 	}
 
 }

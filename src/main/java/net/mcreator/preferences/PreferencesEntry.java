@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.preferences.entries;
+package net.mcreator.preferences;
 
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -34,17 +34,22 @@ import java.util.function.Consumer;
  *
  * @param <T> <p>The type of the stored value.</p>
  */
-public class PreferenceEntry<T> {
+public class PreferencesEntry<T> {
 
 	private final String id;
 	protected T value;
-	private transient final T defaultValue;
-	private transient final String section;
 
-	public PreferenceEntry(String id, T value, String section) {
+	private transient final T defaultValue;
+
+	private transient PreferencesSection section;
+
+	public PreferencesEntry(String id, T value) {
 		this.id = id;
 		this.value = value;
 		this.defaultValue = value;
+	}
+
+	void setSection(PreferencesSection section) {
 		this.section = section;
 	}
 
@@ -75,7 +80,11 @@ public class PreferenceEntry<T> {
 		this.value = (T) object;
 	}
 
-	public String getSection() {
+	public String getSectionKey() {
+		return section.getSectionKey();
+	}
+
+	public PreferencesSection getSection() {
 		return section;
 	}
 

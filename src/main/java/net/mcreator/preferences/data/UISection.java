@@ -20,9 +20,10 @@
 package net.mcreator.preferences.data;
 
 import net.mcreator.io.OS;
+import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.ColorEntry;
-import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.preferences.entries.StringEntry;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.init.L10N;
@@ -36,9 +37,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-public class UISection {
+public class UISection extends PreferencesSection {
 
-	public PreferenceEntry<Locale> language;
+	public PreferencesEntry<Locale> language;
 	public ColorEntry interfaceAccentColor;
 	public StringEntry backgroundSource;
 	public BooleanEntry aaText;
@@ -51,28 +52,25 @@ public class UISection {
 	public BooleanEntry remindOfUnsavedChanges;
 	public BooleanEntry discordRichPresenceEnable;
 
-	public UISection() {
-		interfaceAccentColor = PreferencesData.register(
-				new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT, PreferencesData.UI));
-		backgroundSource = PreferencesData.register(
-				new StringEntry("backgroundSource", "All", PreferencesData.UI, "All", "Current theme", "Custom", "None"));
-		aaText = PreferencesData.register(new BooleanEntry("aaText", true, PreferencesData.UI));
-		textAntialiasingType = PreferencesData.register(
-				new StringEntry("textAntialiasingType", "All", PreferencesData.UI, "on", "off", "gasp", "lcd", "lcd_hbgr",
-						"lcd_vrgb", "lcd_vbgr"));
-		usemacOSMenuBar = PreferencesData.register(new BooleanEntry("useMacOSMenuBar", true, PreferencesData.UI));
-		useNativeFileChooser = PreferencesData.register(
-				new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS, PreferencesData.UI));
-		expandSectionsByDefault = PreferencesData.register(
-				new BooleanEntry("expandSectionsByDefault", false, PreferencesData.UI));
-		use2DAcceleration = PreferencesData.register(new BooleanEntry("use2DAcceleration", false, PreferencesData.UI));
-		autoReloadTabs = PreferencesData.register(new BooleanEntry("autoReloadTabs", true, PreferencesData.UI));
-		remindOfUnsavedChanges = PreferencesData.register(
-				new BooleanEntry("remindOfUnsavedChanges", false, PreferencesData.UI));
-		discordRichPresenceEnable = PreferencesData.register(
-				new BooleanEntry("discordRichPresenceEnable", true, PreferencesData.UI));
+	public UISection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
 
-		language = PreferencesData.register(new PreferenceEntry<>("language", L10N.DEFAULT_LOCALE, PreferencesData.UI) {
+		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT));
+		backgroundSource = addEntry(
+				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
+		aaText = addEntry(new BooleanEntry("aaText", true));
+		textAntialiasingType = addEntry(
+				new StringEntry("textAntialiasingType", "All", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
+						"lcd_vbgr"));
+		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
+		useNativeFileChooser = addEntry(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS));
+		expandSectionsByDefault = addEntry(new BooleanEntry("expandSectionsByDefault", false));
+		use2DAcceleration = addEntry(new BooleanEntry("use2DAcceleration", false));
+		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));
+		remindOfUnsavedChanges = addEntry(new BooleanEntry("remindOfUnsavedChanges", false));
+		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));
+
+		language = addEntry(new PreferencesEntry<>("language", L10N.DEFAULT_LOCALE) {
 			@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 				List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
 				locales.sort((a, b) -> {
@@ -92,4 +90,7 @@ public class UISection {
 		});
 	}
 
+	@Override public String getSectionKey() {
+		return "ui";
+	}
 }

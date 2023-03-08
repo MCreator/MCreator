@@ -19,11 +19,13 @@
 
 package net.mcreator.preferences.data;
 
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
-public class IDESection {
+public class IDESection extends PreferencesSection {
+
 	public StringEntry editorTheme;
 	public IntegerEntry fontSize;
 	public BooleanEntry autocomplete;
@@ -32,17 +34,23 @@ public class IDESection {
 	public BooleanEntry lineNumbers;
 	public BooleanEntry errorInfoEnable;
 
-	IDESection() {
-		editorTheme = PreferencesData.register(
-				new StringEntry("editorTheme", "MCreator", PreferencesData.IDE, "MCreator", "Default", "Default-Alt",
+	IDESection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+		
+		editorTheme = addEntry(
+				new StringEntry("editorTheme", "MCreator", "MCreator", "Default", "Default-Alt",
 						"Dark", "Eclipse", "Idea", "Monokai", "VS"));
-		fontSize = PreferencesData.register(new IntegerEntry("fontSize", 12, PreferencesData.IDE, 5, 48));
-		autocomplete = PreferencesData.register(new BooleanEntry("autocomplete", true, PreferencesData.IDE));
-		autocompleteMode = PreferencesData.register(
-				new StringEntry("autocompleteMode", "Smart", PreferencesData.IDE, "Manual", "Trigger on dot", "Smart"));
-		autocompleteDocWindow = PreferencesData.register(new BooleanEntry("autocompleteDocWindow", true, PreferencesData.IDE));
-		lineNumbers = PreferencesData.register(new BooleanEntry("lineNumbers", true, PreferencesData.IDE));
-		errorInfoEnable = PreferencesData.register(new BooleanEntry("errorInfoEnable", true, PreferencesData.IDE));
+		fontSize = addEntry(new IntegerEntry("fontSize", 12, 5, 48));
+		autocomplete = addEntry(new BooleanEntry("autocomplete", true));
+		autocompleteMode = addEntry(
+				new StringEntry("autocompleteMode", "Smart", "Manual", "Trigger on dot", "Smart"));
+		autocompleteDocWindow = addEntry(new BooleanEntry("autocompleteDocWindow", true));
+		lineNumbers = addEntry(new BooleanEntry("lineNumbers", true));
+		errorInfoEnable = addEntry(new BooleanEntry("errorInfoEnable", true));
+	}
+
+	@Override public String getSectionKey() {
+		return "ide";
 	}
 
 }

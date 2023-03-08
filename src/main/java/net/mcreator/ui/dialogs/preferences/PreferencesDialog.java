@@ -23,7 +23,7 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
 import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.preferences.entries.PreferenceEntry;
+import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -56,7 +56,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
 
-	private final Map<PreferenceEntry<?>, JComponent> entries = new HashMap<>();
+	private final Map<PreferencesEntry<?>, JComponent> entries = new HashMap<>();
 
 	private final JButton apply = L10N.button("action.common.apply");
 
@@ -162,10 +162,10 @@ public class PreferencesDialog extends MCreatorDialog {
 	private void loadSections() {
 		// Add preference entries
 		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.stream()
-				.filter(e -> !e.getSection().equals(PreferencesData.HIDDEN)).toList().forEach(entry -> {
-					if (!sectionPanels.containsKey(entry.getSection()))
-						createPreferenceSection(entry.getSection());
-					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSection())));
+				.filter(e -> e.getSection().isVisible()).toList().forEach(entry -> {
+					if (!sectionPanels.containsKey(entry.getSectionKey()))
+						createPreferenceSection(entry.getSectionKey());
+					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSectionKey())));
 				}));
 
 		sections.setSelectedIndex(0);
@@ -193,9 +193,6 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void createPreferenceSection(String section) {
-		if (section.equals(PreferencesData.HIDDEN))
-			return;
-
 		String name = L10N.t("preferences.section." + section);
 		String description = L10N.t("preferences.section." + section + ".description");
 		model.addElement(name);
@@ -233,9 +230,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		PreferencesManager.savePreferences();
 	}
 
-	private JComponent generateEntryComponent(PreferenceEntry<?> entry, JPanel placeInside) {
-		String name = L10N.t("preferences." + entry.getSection() + "." + entry.getID());
-		String description = L10N.t("preferences." + entry.getSection() + "." + entry.getID() + ".description");
+	private JComponent generateEntryComponent(PreferencesEntry<?> entry, JPanel placeInside) {
+		String name = L10N.t("preferences." + entry.getSectionKey() + "." + entry.getID());
+		String description = L10N.t("preferences." + entry.getSectionKey() + "." + entry.getID() + ".description");
 		if (description == null)
 			description = "";
 

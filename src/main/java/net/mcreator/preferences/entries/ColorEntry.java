@@ -19,6 +19,8 @@
 
 package net.mcreator.preferences.entries;
 
+import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.ui.component.JColor;
 
 import javax.swing.*;
@@ -26,16 +28,16 @@ import java.awt.*;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class ColorEntry extends PreferenceEntry<Color> {
+public class ColorEntry extends PreferencesEntry<Color> {
 
 	private final transient boolean allowNullColor, allowTransparency;
 
-	public ColorEntry(String id, Color value, String section) {
-		this(id, value, section, false, false);
+	public ColorEntry(String id, Color value) {
+		this(id, value, false, false);
 	}
 
-	public ColorEntry(String id, Color value, String section, boolean allowNullColor, boolean allowTransparency) {
-		super(id, value, section);
+	public ColorEntry(String id, Color value, boolean allowNullColor, boolean allowTransparency) {
+		super(id, value);
 		this.allowNullColor = allowNullColor;
 		this.allowTransparency = allowTransparency;
 	}

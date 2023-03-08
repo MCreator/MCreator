@@ -20,22 +20,24 @@
 package net.mcreator.preferences.entries;
 
 
+import net.mcreator.preferences.PreferencesEntry;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class IntegerEntry extends PreferenceEntry<Integer> {
+public class IntegerEntry extends PreferencesEntry<Integer> {
 
 	protected transient int min;
 	protected transient int max;
 
-	public IntegerEntry(String id, int value, String section) {
-		this(id, value, section, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	public IntegerEntry(String id, int value) {
+		this(id, value, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
-	public IntegerEntry(String id, int value, String section, int min, int max) {
-		super(id, value, section);
+	public IntegerEntry(String id, int value, int min, int max) {
+		super(id, value);
 		this.min = min;
 		this.max = max;
 	}
