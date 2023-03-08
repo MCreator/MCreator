@@ -331,7 +331,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				finishGUIComponentMove();
 			} else {
 				positioningModeSettingWidth = true;
-				if (component.changesHeight)
+				if (component.changesHeight())
 					positioningModeSettingHeight = true;
 			}
 		} else { // "click-on-component" mode

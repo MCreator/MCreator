@@ -34,7 +34,7 @@ public class Button extends SizedComponent {
 
 	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick,
 			Procedure displayCondition) {
-		super(x, y, width, height, false);
+		super(x, y, width, height);
 		this.text = text;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;

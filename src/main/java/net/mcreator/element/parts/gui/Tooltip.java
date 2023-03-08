@@ -21,7 +21,6 @@ package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
-import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -36,7 +35,7 @@ public class Tooltip extends SizedComponent {
 	public Procedure displayCondition;
 
 	public Tooltip(String name, int x, int y, int width, int height, StringProcedure text, Procedure displayCondition) {
-		super(x, y, width, height, true);
+		super(x, y, width, height);
 		this.text = text;
 		this.displayCondition = displayCondition;
 		this.name = name;
@@ -51,6 +50,11 @@ public class Tooltip extends SizedComponent {
 			return text.getFixedValue();
 		else
 			return text.getName();
+	}
+
+	@Override
+	public boolean changesHeight() {
+		return true;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
