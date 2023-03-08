@@ -171,7 +171,7 @@ public class CodeEditorView extends ViewBase {
 
 		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
 
-		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get().intValue());
+		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get());
 
 		sp.setFoldIndicatorEnabled(true);
 
