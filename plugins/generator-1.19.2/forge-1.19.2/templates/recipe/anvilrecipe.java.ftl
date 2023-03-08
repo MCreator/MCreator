@@ -36,27 +36,27 @@ package ${package}.recipes.anvil;
 @Mod.EventBusSubscriber public class ${name}AnvilRecipe {
 
 	@SubscribeEvent public static void onAnvilUpdate(AnvilUpdateEvent event) {
-		<#if data.anvilInputStack.getUnmappedValue().startsWith("TAG:")>
-			boolean left = Ingredient.of(ItemTags.create(
-					new ResourceLocation("${data.anvilInputStack?replace("TAG:","")}"))).test(event.getLeft());
-		<#elseif generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-			boolean left = Ingredient.of(ItemTags.create(
-					new ResourceLocation("${generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))).test(event.getLeft());
-		<#else>
-			boolean left = Ingredient.of(${mappedMCItemToItem(data.anvilInputStack)}).test(event.getLeft());
-		</#if>
+		boolean leftMatches = Ingredient.of(
+			<#if data.anvilInputStack.getUnmappedValue().startsWith("TAG:")>
+				ItemTags.create(new ResourceLocation("${data.anvilInputStack?replace("TAG:","")}"))
+			<#elseif generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+				ItemTags.create(new ResourceLocation("${generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))
+			<#else>
+				${mappedMCItemToItem(data.anvilInputStack)}
+			</#if>
+		).test(event.getLeft());
 
-		<#if data.anvilInputAdditionStack.getUnmappedValue().startsWith("TAG:")>
-			boolean right = Ingredient.of(ItemTags.create(
-					new ResourceLocation("${data.anvilInputAdditionStack?replace("TAG:","")}"))).test(event.getRight());
-		<#elseif generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-			boolean right = Ingredient.of(ItemTags.create(
-					new ResourceLocation("${generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))).test(event.getRight());
-		<#else>
-			boolean right = Ingredient.of(${mappedMCItemToItem(data.anvilInputAdditionStack)}).test(event.getRight());
-		</#if>
+		boolean rightMatches = Ingredient.of(
+			<#if data.anvilInputAdditionStack.getUnmappedValue().startsWith("TAG:")>
+				ItemTags.create(new ResourceLocation("${data.anvilInputAdditionStack?replace("TAG:","")}"))
+			<#elseif generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+				ItemTags.create(new ResourceLocation("${generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))
+			<#else>
+				${mappedMCItemToItem(data.anvilInputAdditionStack)}
+			</#if>
+		).test(event.getRight());
 
-		if (left && right) {
+		if (leftMatches && rightMatches) {
 			event.setCost(${data.xpCost});
 			event.setOutput(${mappedMCItemToItemStackCode(data.anvilReturnStack)});
 		}
