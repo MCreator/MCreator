@@ -340,6 +340,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			arm.cb1.setBlock(recipe.anvilInputStack);
 			arm.cb2.setBlock(recipe.anvilInputAdditionStack);
 			arm.cb3.setBlock(recipe.anvilReturnStack);
+			xpCost.setValue(recipe.xpCost);
 		}
 	}
 
@@ -398,6 +399,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.anvilInputStack = arm.cb1.getBlock();
 			recipe.anvilInputAdditionStack = arm.cb2.getBlock();
 			recipe.anvilReturnStack = arm.cb3.getBlock();
+			recipe.xpCost = (int) xpCost.getValue();
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();
