@@ -134,10 +134,11 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public boolean mergeDown(int selectedID) {
 		UUID uuid = UUID.randomUUID();
+		get(selectedID + 1).mergeOnTop(get(selectedID));
+
 		Modification adt = new Modification(this, get(selectedID + 1));
 		adt.setUUID(uuid);
 		versionManager.addRevision(adt);
-		get(selectedID + 1).mergeOnTop(get(selectedID));
 
 		boolean success = remove(selectedID, uuid, selectedID) != null;
 		layerPanel.select(selectedID);
