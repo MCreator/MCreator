@@ -131,22 +131,25 @@ public class PreferencesManager {
 		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
 			Map<String, List<PreferencesEntry<?>>> identifierPrefs = new HashMap<>();
 			preferences.forEach(entry -> {
-				String entrySection = entry.getSectionKey().toLowerCase();
 				// We check if the section doesn't exist to add it
-				if (!identifierPrefs.containsKey(entrySection))
-					identifierPrefs.put(entrySection, new ArrayList<>());
+				if (!identifierPrefs.containsKey(entry.getSectionKey()))
+					identifierPrefs.put(entry.getSectionKey(), new ArrayList<>());
 
 				// We change the registered value for some types, so we can load them correctly
 				if (entry.get() instanceof Color color)
-					identifierPrefs.get(entrySection)
+					identifierPrefs.get(entry.getSectionKey())
 							.add(new IntegerEntry(entry.getID(), color.getRGB()));
 				else if (entry.get() instanceof Locale locale)
-					identifierPrefs.get(entrySection)
+					identifierPrefs.get(entry.getSectionKey())
 							.add(new StringEntry(entry.getID(), locale.toString()));
 				else
-					identifierPrefs.get(entrySection).add(entry);
+					identifierPrefs.get(entry.getSectionKey()).add(entry);
 
-				allPreferences.put(identifier, identifierPrefs);
+				if (!allPreferences.containsKey(identifier)) {
+					allPreferences.put(identifier, identifierPrefs);
+				} else {
+					allPreferences.get(identifier).putAll(identifierPrefs);
+				}
 			});
 		});
 
