@@ -35,10 +35,9 @@
 
 package ${package}.recipes.anvil;
 
-@Mod.EventBusSubscriber
-public class ${name}AnvilRecipe {
-	@SubscribeEvent
-	public static void onAnvilUpdate(AnvilUpdateEvent event) {
+@Mod.EventBusSubscriber public class ${name}AnvilRecipe {
+
+	@SubscribeEvent public static void onAnvilUpdate(AnvilUpdateEvent event) {
 		<#if data.anvilInputStack.getUnmappedValue().startsWith("TAG:")>
 		boolean left = Ingredient.of(ItemTags.create(new ResourceLocation("${data.anvilInputStack?replace("TAG:","")}"))).test(event.getLeft());
 		<#assign leftHasTag = true>
