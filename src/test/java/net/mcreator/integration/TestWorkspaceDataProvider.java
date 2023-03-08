@@ -1841,6 +1841,7 @@ public class TestWorkspaceDataProvider {
 					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
 			recipe.anvilReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			recipe.xpCost = 5;
 		} else {
 			throw new RuntimeException("Unknown recipe type");
 		}

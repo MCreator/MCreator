@@ -30,8 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
-<#assign leftHasTag = false>
-<#assign rightHasTag = false>
 
 package ${package}.recipes.anvil;
 
@@ -41,26 +39,20 @@ public class ${name}AnvilRecipe {
 	public static void onAnvilUpdate(AnvilUpdateEvent event) {
 		<#if data.anvilInputStack.getUnmappedValue().startsWith("TAG:")>
 		boolean left = Ingredient.of(ItemTags.create(new ResourceLocation("${data.anvilInputStack?replace("TAG:","")}"))).test(event.getLeft());
-		<#assign leftHasTag = true>
 		<#elseif generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
 		boolean left = Ingredient.of(ItemTags.create(new ResourceLocation("${generator.map(data.anvilInputStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))).test(event.getLeft());
-		<#assign leftHasTag = true>
 		<#else>
-		Item left = ${mappedMCItemToItem(data.anvilInputStack)};
+		boolean left = Ingredient.of(${mappedMCItemToItem(data.anvilInputStack)}).test(event.getLeft());
 		</#if>
 		<#if data.anvilInputAdditionStack.getUnmappedValue().startsWith("TAG:")>
 		boolean right = Ingredient.of(ItemTags.create(new ResourceLocation("${data.anvilInputAdditionStack?replace("TAG:","")}"))).test(event.getRight());
-		<#assign rightHasTag = true>
 		<#elseif generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
 		boolean right = Ingredient.of(ItemTags.create(new ResourceLocation("${generator.map(data.anvilInputAdditionStack.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))).test(event.getRight());
-		<#assign rightHasTag = true>
 		<#else>
-		Item right = ${mappedMCItemToItem(data.anvilInputAdditionStack)};
+		boolean right = Ingredient.of(${mappedMCItemToItem(data.anvilInputAdditionStack)}).test(event.getRight());
 		</#if>
 		ItemStack result = ${mappedMCItemToItemStackCode(data.anvilReturnStack)};
-		boolean showResult =
-			<#if leftHasTag> left && <#else> left == event.getLeft().getItem() && </#if>
-			<#if rightHasTag> right; <#else> right == event.getRight().getItem(); </#if>
+		boolean showResult = left && right;
 		if (showResult) {
 			event.setCost(${data.xpCost});
 			event.setOutput(result);
