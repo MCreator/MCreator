@@ -32,7 +32,7 @@ public class StringEntry extends PreferencesEntry<String> {
 	private transient final boolean editable;
 
 	public StringEntry(String id, String value, String... choices) {
-		this(id, value, false);
+		this(id, value, false, choices);
 	}
 
 	public StringEntry(String id, String value, boolean editable, String... choices) {
