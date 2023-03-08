@@ -82,7 +82,7 @@ public class PreferencesManager {
 	/**
 	 * <p>Once plugins are loaded, we can now load preferences registered by them with {@link ApplicationLoadedEvent}.</p>
 	 */
-	public static void loadPlugins() {
+	public static void initNonCore() {
 		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
 			if (!identifier.equals("mcreator"))
 				loadPreferences(identifier);
