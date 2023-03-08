@@ -53,7 +53,7 @@ public class Tooltip extends SizedComponent {
 	}
 
 	@Override
-	public boolean changesHeight() {
+	public boolean canChangeHeight() {
 		return true;
 	}
 

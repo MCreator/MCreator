@@ -33,7 +33,7 @@ public abstract class SizedComponent extends GUIComponent {
 		this.height = height;
 	}
 
-	public boolean changesHeight() {
+	public boolean canChangeHeight() {
 		return false;
 	}
 
