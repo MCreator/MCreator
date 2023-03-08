@@ -20,21 +20,21 @@
 package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.NumberEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
 
 public class Backups {
-	public NumberEntry workspaceAutosaveInterval;
-	public NumberEntry automatedBackupInterval;
-	public NumberEntry numberOfBackupsToStore;
+	public IntegerEntry workspaceAutosaveInterval;
+	public IntegerEntry automatedBackupInterval;
+	public IntegerEntry numberOfBackupsToStore;
 	public BooleanEntry backupOnVersionSwitch;
 
 	public Backups() {
 		workspaceAutosaveInterval = Preferences.register(
-				new NumberEntry("workspaceAutosaveInterval", 30, Preferences.BACKUPS, 10, 2000));
+				new IntegerEntry("workspaceAutosaveInterval", 30, Preferences.BACKUPS, 10, 2000));
 		automatedBackupInterval = Preferences.register(
-				new NumberEntry("automatedBackupInterval", 5, Preferences.BACKUPS, 3, 120));
+				new IntegerEntry("automatedBackupInterval", 5, Preferences.BACKUPS, 3, 120));
 		numberOfBackupsToStore = Preferences.register(
-				new NumberEntry("numberOfBackupsToStore", 10, Preferences.BACKUPS, 2, 20));
+				new IntegerEntry("numberOfBackupsToStore", 10, Preferences.BACKUPS, 2, 20));
 		backupOnVersionSwitch = Preferences.register(
 				new BooleanEntry("backupOnVersionSwitch", true, Preferences.BACKUPS));
 	}

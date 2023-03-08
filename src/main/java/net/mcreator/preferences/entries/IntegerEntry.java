@@ -27,18 +27,18 @@ import java.lang.management.ManagementFactory;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class NumberEntry extends PreferenceEntry<Integer> {
+public class IntegerEntry extends PreferenceEntry<Integer> {
 
 	public static final int MAX_RAM = (int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
 	protected transient int min;
 	protected transient int max;
 
-	public NumberEntry(String id, int value, String section) {
+	public IntegerEntry(String id, int value, String section) {
 		this(id, value, section, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
-	public NumberEntry(String id, int value, String section, int min, int max) {
+	public IntegerEntry(String id, int value, String section, int min, int max) {
 		super(id, value, section);
 		this.min = min;
 		this.max = max;

@@ -21,7 +21,7 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.WorkspacePreferenceEnums;
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.NumberEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
 
 import java.io.File;
@@ -29,7 +29,7 @@ import java.io.File;
 public class Hidden {
 	public PreferenceEntry<WorkspacePreferenceEnums.IconSize> workspaceModElementIconSize;
 	public BooleanEntry fullScreen;
-	public NumberEntry projectTreeSplitPos;
+	public IntegerEntry projectTreeSplitPos;
 	public BooleanEntry workspaceSortAscending;
 	public PreferenceEntry<WorkspacePreferenceEnums.SortType> workspaceSortType;
 	public PreferenceEntry<File> java_home;
@@ -41,7 +41,7 @@ public class Hidden {
 				new PreferenceEntry<>("workspaceModElementIconSize", WorkspacePreferenceEnums.IconSize.TILES,
 						Preferences.HIDDEN));
 		fullScreen = Preferences.register(new BooleanEntry("fullScreen", false, Preferences.HIDDEN));
-		projectTreeSplitPos = Preferences.register(new NumberEntry("projectTreeSplitPos", 0, Preferences.HIDDEN));
+		projectTreeSplitPos = Preferences.register(new IntegerEntry("projectTreeSplitPos", 0, Preferences.HIDDEN));
 		workspaceSortAscending = Preferences.register(
 				new BooleanEntry("workspaceSortAscending", false, Preferences.HIDDEN));
 		workspaceSortType = Preferences.register(

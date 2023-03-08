@@ -20,12 +20,12 @@
 package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.NumberEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
 public class IDE {
 	public StringEntry editorTheme;
-	public NumberEntry fontSize;
+	public IntegerEntry fontSize;
 	public BooleanEntry autocomplete;
 	public StringEntry autocompleteMode;
 	public BooleanEntry autocompleteDocWindow;
@@ -36,7 +36,7 @@ public class IDE {
 		editorTheme = Preferences.register(
 				new StringEntry("editorTheme", "MCreator", Preferences.IDE, "MCreator", "Default", "Default-Alt",
 						"Dark", "Eclipse", "Idea", "Monokai", "VS"));
-		fontSize = Preferences.register(new NumberEntry("fontSize", 12, Preferences.IDE, 5, 48));
+		fontSize = Preferences.register(new IntegerEntry("fontSize", 12, Preferences.IDE, 5, 48));
 		autocomplete = Preferences.register(new BooleanEntry("autocomplete", true, Preferences.IDE));
 		autocompleteMode = Preferences.register(
 				new StringEntry("autocompleteMode", "Smart", Preferences.IDE, "Manual", "Trigger on dot", "Smart"));

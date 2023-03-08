@@ -25,7 +25,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.preferences.data.Preferences;
-import net.mcreator.preferences.entries.NumberEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.PreferenceEntry;
 import net.mcreator.preferences.entries.StringEntry;
 import org.apache.logging.log4j.LogManager;
@@ -139,7 +139,7 @@ public class PreferencesManager {
 				// We change the registered value for some types, so we can load them correctly
 				if (entry.get() instanceof Color color)
 					identifierPrefs.get(entrySection)
-							.add(new NumberEntry(entry.getID(), color.getRGB(), entry.getSection()));
+							.add(new IntegerEntry(entry.getID(), color.getRGB(), entry.getSection()));
 				else if (entry.get() instanceof Locale locale)
 					identifierPrefs.get(entrySection)
 							.add(new StringEntry(entry.getID(), locale.toString(), entry.getSection()));

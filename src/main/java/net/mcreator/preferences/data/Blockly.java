@@ -20,7 +20,7 @@
 package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.NumberEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
 public class Blockly {
@@ -29,9 +29,9 @@ public class Blockly {
 	public BooleanEntry enableComments;
 	public BooleanEntry enableCollapse;
 	public BooleanEntry enableTrashcan;
-	public NumberEntry maxScale;
-	public NumberEntry minScale;
-	public NumberEntry scaleSpeed;
+	public IntegerEntry maxScale;
+	public IntegerEntry minScale;
+	public IntegerEntry scaleSpeed;
 	public BooleanEntry legacyFont;
 
 	public Blockly() {
@@ -41,9 +41,9 @@ public class Blockly {
 		enableComments = Preferences.register(new BooleanEntry("enableComments", true, Preferences.BLOCKLY));
 		enableCollapse = Preferences.register(new BooleanEntry("enableCollapse", true, Preferences.BLOCKLY));
 		enableTrashcan = Preferences.register(new BooleanEntry("enableTrashcan", true, Preferences.BLOCKLY));
-		maxScale = Preferences.register(new NumberEntry("maxScale", 100, Preferences.BLOCKLY, 95, 200));
-		minScale = Preferences.register(new NumberEntry("minScale", 40, Preferences.BLOCKLY, 20, 95));
-		scaleSpeed = Preferences.register(new NumberEntry("scaleSpeed", 105, Preferences.BLOCKLY, 0, 200));
+		maxScale = Preferences.register(new IntegerEntry("maxScale", 100, Preferences.BLOCKLY, 95, 200));
+		minScale = Preferences.register(new IntegerEntry("minScale", 40, Preferences.BLOCKLY, 20, 95));
+		scaleSpeed = Preferences.register(new IntegerEntry("scaleSpeed", 105, Preferences.BLOCKLY, 0, 200));
 		legacyFont = Preferences.register(new BooleanEntry("legacyFont", false, Preferences.BLOCKLY));
 	}
 }
