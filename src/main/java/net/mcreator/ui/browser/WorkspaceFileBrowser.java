@@ -220,7 +220,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	/**
 	 * Reloads all the project files.
 	 */
-	public void reloadTree() {
+	public synchronized void reloadTree() {
 		if (jtf1.getText().isEmpty()) {
 			List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
 
@@ -396,7 +396,8 @@ public class WorkspaceFileBrowser extends JPanel {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-					if (libName.equals("rt") || libraryFile.getName().endsWith(".jmod"))
+
+					if (libName.equals("rt") || libName.equals("java.base"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
 					else
 						libName = "Gradle: " + libName;
