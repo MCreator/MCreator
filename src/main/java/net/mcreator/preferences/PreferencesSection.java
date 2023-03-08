@@ -33,6 +33,12 @@ public abstract class PreferencesSection {
 		return entry;
 	}
 
+	public final <T, S extends PreferencesEntry<T>> S addPluginEntry(String pluginPreferencesIdentifier, S entry) {
+		entry.setSection(this);
+		PreferencesManager.register(pluginPreferencesIdentifier, entry);
+		return entry;
+	}
+
 	public boolean isVisible() {
 		return true;
 	}
