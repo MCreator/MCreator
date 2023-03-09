@@ -147,7 +147,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 						() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace()).stream()
 								.map(MItemBlock::getUnmappedValue),
 						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
-								.map(DataListEntry::getName).toList(), null).setIsPresentOnList(isEditingMode()));
+								.map(DataListEntry::getName).toList(), null).setIsPresentOnList(this::isEditingMode));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
