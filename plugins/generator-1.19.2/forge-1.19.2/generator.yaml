@@ -2,6 +2,9 @@ name: Minecraft Forge for @minecraft (@buildfileversion)
 status: stable
 buildfileversion: 43.2.0
 
+import:
+  - datapack-1.19.x
+
 java_models:
   key: mojmap-1.19.x
   compatible: [mojmap-1.17.x, mojmap-1.18.x]
