@@ -26,13 +26,12 @@ import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.MCreatorLoadedEvent;
+import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -47,6 +46,7 @@ import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -278,8 +278,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (b) {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-			EDTUtils.requestNonBlockingUIRefresh();
-
 			if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				workspace.setMCreatorVersion(
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
@@ -295,7 +293,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 			}
 
-			// if we need to setup MCreator, we do so
+			// if we need to setup the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
 						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
@@ -306,9 +304,12 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 				workspace.setMCreatorVersion(Launcher.version.versionlong);
 				workspace.getFileManager().saveWorkspaceDirectlyAndWait();
-			} else if (workspace.isRegenerateRequired()) {
+			} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
+
+			// reinit (preload) MCItems so workspace is more snappy when loaded
+			workspace.getModElements().forEach(ModElement::getMCItems);
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
@@ -388,6 +389,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				tabAddition = " - " + mcreatorTabs.getCurrentTab().getText();
 			}
 
+			// Do not externalize this text
 			application.getDiscordClient()
 					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
 							Launcher.version.getMajorString() + " for " + workspace.getGenerator()

@@ -1,0 +1,25 @@
+<xml id="toolbox">
+    <category name="${t:blockly.category.features}" colour="0">
+        <custom-features/>
+    </category>
+    <sep/>
+    <category name="${t:blockly.category.blocks.feature}" colour="60">
+        <block type="mcitem_allblocks"/>
+        <custom-blocks/>
+    </category>
+    <category name="${t:blockly.category.intproviders}" colour="230">
+        <custom-intproviders/>
+    </category>
+    <sep/>
+    <category name="${t:blockly.category.placements}" colour="130">
+        <custom-placements/>
+    </category>
+    <category name="${t:blockly.category.heightplacements}" colour="190">
+        <custom-heightplacements/>
+    </category>
+    <category name="${t:blockly.category.blockpredicates}" colour="210">
+        <custom-blockpredicates/>
+    </category>
+    <sep/>
+    <custom-other/>
+</xml>

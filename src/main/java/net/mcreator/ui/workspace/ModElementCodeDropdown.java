@@ -30,7 +30,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 class ModElementCodeDropdown extends JPopupMenu {
 	private final MCreator mcreator;
@@ -59,23 +58,21 @@ class ModElementCodeDropdown extends JPopupMenu {
 			if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
 				addSeparator();
 
-			for (GeneratorTemplatesList fileList : modElementListFiles) {
-				if (fileList.templates().size() > 0) {
-					JMenu listMenu = new JMenu(fileList.groupName());
+			for (GeneratorTemplatesList list : modElementListFiles) {
+				if (list.templates().size() > 0) {
+					JMenu listMenu = new JMenu(list.groupName());
 					listMenu.setIcon(UIRES.get("16px.list.gif"));
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 					listMenu.setIconTextGap(8);
 					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
-					AtomicInteger files = new AtomicInteger(0);
-					fileList.forEachTemplate(listTemplate -> {
-						files.getAndIncrement();
-						listMenu.add(modElementFileMenuItem(listTemplate));
-					}, i -> {
-						if (files.getAndSet(0) > 0 && i > 0)
+					for (int i = 0; i < list.listData().size(); i++) {
+						if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
 							listMenu.addSeparator(); // separate files generated for different list items
-					});
+
+						list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
+					}
 
 					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
 						add(listMenu);
@@ -87,7 +84,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 	private JMenuItem modElementFileMenuItem(GeneratorTemplate template) {
 		JMenuItem item = new JMenuItem(
 				"<html>" + template.getFile().getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
-						.getWorkspaceFolder().toPath().relativize(template.getFile().toPath()));
+						.getFolderManager().getPathInWorkspace(template.getFile()));
 		item.setIcon(FileIcons.getIconForFile(template.getFile()));
 		item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));

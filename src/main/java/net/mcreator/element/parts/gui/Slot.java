@@ -49,8 +49,8 @@ public abstract class Slot extends GUIComponent {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public Slot(int id, int x, int y, Color color, LogicProcedure disablePickup,
-			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot, Procedure onStackTransfer) {
+	public Slot(int id, int x, int y, Color color, LogicProcedure disablePickup, boolean dropItemsWhenNotBound,
+			Procedure onSlotChanged, Procedure onTakenFromSlot, Procedure onStackTransfer) {
 		super(x, y);
 		this.color = color;
 		this.id = id;
@@ -62,7 +62,7 @@ public abstract class Slot extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return 4;
+		return 50;
 	}
 
 	@Override public final int getWidth(Workspace workspace) {

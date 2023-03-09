@@ -26,6 +26,7 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -133,6 +134,10 @@ import java.util.Map;
 
 	@Override public void setSpecialInformation(String name, String fixedValue) {
 		specialInformation = new StringProcedure(name, fixedValue);
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
 }

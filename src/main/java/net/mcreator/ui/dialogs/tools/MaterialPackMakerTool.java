@@ -32,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -71,7 +71,7 @@ public class MaterialPackMakerTool {
 		props.add(L10N.label("dialog.tools.material_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.material_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));

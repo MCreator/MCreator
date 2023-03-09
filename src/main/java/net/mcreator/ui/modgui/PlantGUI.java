@@ -139,6 +139,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 					"Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
+	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
+
 	private MCItemListField canBePlacedOn;
 
 	private ProcedureSelector onBlockAdded;
@@ -153,9 +155,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onRightClicked;
 	private ProcedureSelector onEntityWalksOn;
 	private ProcedureSelector onHitByProjectile;
+	private ProcedureSelector onBonemealSuccess;
 
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector generateCondition;
+	private ProcedureSelector isBonemealTargetCondition;
+	private ProcedureSelector bonemealSuccessCondition;
 
 	private DimensionListField spawnWorldTypes;
 	private BiomeListField restrictionBiomes;
@@ -218,6 +223,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
+		onBonemealSuccess = new ProcedureSelector(this.withEntry("block/on_bonemeal_success"), mcreator,
+				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
@@ -226,11 +234,18 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
-
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
 				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
+		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
+				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic")).makeInline();
+		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
+				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -335,6 +350,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isSolid.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
+		isBonemealable.setOpaque(false);
 
 		ActionListener planttypeselected = event -> {
 			renderType.setEnabled(true);
@@ -588,7 +604,31 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+		JPanel bonemealPanel = new JPanel(new GridLayout(1, 2, 0, 2));
+		bonemealPanel.setOpaque(false);
+
+		bonemealPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_bonemealable"),
+				L10N.label("elementgui.common.is_bonemealable")));
+		bonemealPanel.add(isBonemealable);
+
+		JPanel bonemealEvents = new JPanel(new GridLayout(3, 1, 0, 2));
+		bonemealEvents.setOpaque(false);
+
+		bonemealEvents.add(isBonemealTargetCondition);
+		bonemealEvents.add(bonemealSuccessCondition);
+		bonemealEvents.add(onBonemealSuccess);
+
+		isBonemealable.addActionListener(e -> refreshBonemealProperties());
+		refreshBonemealProperties();
+
+		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
+		bonemealMerger.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, bonemealMerger)),
 				PanelUtils.centerAndSouthElement(selp2, soundProperties))));
 		pane3.setOpaque(false);
 
@@ -758,6 +798,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 	}
 
+	private void refreshBonemealProperties() {
+		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected());
+		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected());
+		onBonemealSuccess.setEnabled(isBonemealable.isSelected());
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -772,10 +818,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onRightClicked.refreshListKeepSelected();
 		onEntityWalksOn.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
+		onBonemealSuccess.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		generateCondition.refreshListKeepSelected();
+		isBonemealTargetCondition.refreshListKeepSelected();
+		bonemealSuccessCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("DECORATIONS"));
@@ -864,6 +913,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		speedFactor.setValue(plant.speedFactor);
 		patchSize.setValue(plant.patchSize);
 		generateAtAnyHeight.setSelected(plant.generateAtAnyHeight);
+		isBonemealable.setSelected(plant.isBonemealable);
+		isBonemealTargetCondition.setSelectedProcedure(plant.isBonemealTargetCondition);
+		bonemealSuccessCondition.setSelectedProcedure(plant.bonemealSuccessCondition);
+		onBonemealSuccess.setSelectedProcedure(plant.onBonemealSuccess);
 
 		placingCondition.setSelectedProcedure(plant.placingCondition);
 		generateCondition.setSelectedProcedure(plant.generateCondition);
@@ -923,8 +976,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dbl.setIcon(TiledImageCache.plantDoubleNo);
 
 		updateSoundType();
-
 		updateTextureOptions();
+		refreshBonemealProperties();
 	}
 
 	@Override public Plant getElementFromGUI() {
@@ -997,6 +1050,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
+		plant.isBonemealable = isBonemealable.isSelected();
+		plant.isBonemealTargetCondition = isBonemealTargetCondition.getSelectedProcedure();
+		plant.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
+		plant.onBonemealSuccess = onBonemealSuccess.getSelectedProcedure();
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();

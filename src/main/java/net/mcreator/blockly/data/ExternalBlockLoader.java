@@ -69,8 +69,8 @@ public class ExternalBlockLoader {
 				if (toolboxBlock != null) {
 					toolboxBlock.machine_name = FilenameUtilsPatched.getBaseName(procedureBlock);
 
-					String localized_message = L10N.t("blockly.block." + toolboxBlock.machine_name);
-					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.machine_name);
+					String localized_message = L10N.t("blockly.block." + toolboxBlock.getMachineName());
+					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.getMachineName());
 
 					if (localized_message != null) {
 						int parameters_count = net.mcreator.util.StringUtils.countRegexMatches(localized_message,
@@ -82,7 +82,7 @@ public class ExternalBlockLoader {
 							jsonresult.add("message0", new JsonPrimitive(localized_message));
 						} else {
 							LOG.warn("Not all procedure block inputs are defined using %N for block "
-									+ toolboxBlock.machine_name + " for the selected language");
+									+ toolboxBlock.getMachineName() + " for the selected language");
 							if (localized_message_en != null) {
 								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 							}
@@ -91,12 +91,12 @@ public class ExternalBlockLoader {
 						jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 					}
 
-					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.machine_name + ".tooltip");
+					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.getMachineName() + ".tooltip");
 					if (localized_tooltip != null) {
 						jsonresult.add("tooltip", new JsonPrimitive(localized_tooltip));
 					}
 
-					jsonresult.add("type", new JsonPrimitive(toolboxBlock.machine_name));
+					jsonresult.add("type", new JsonPrimitive(toolboxBlock.getMachineName()));
 
 					toolboxBlock.blocklyJSON = jsonresult;
 					toolboxBlock.type = jsonresult.get("output") == null ?
@@ -122,7 +122,7 @@ public class ExternalBlockLoader {
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
-			toolboxBlocks.put(toolboxBlock.machine_name, toolboxBlock);
+			toolboxBlocks.put(toolboxBlock.getMachineName(), toolboxBlock);
 
 		// generate JSON for loaded blocks
 		JsonArray blocksJSON = new JsonArray();
@@ -153,15 +153,7 @@ public class ExternalBlockLoader {
 					continue;
 
 				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(entry.getKey())) {
-					StringBuilder toolboxXML = new StringBuilder();
-
-					toolboxXML.append("<block type=\"").append(toolboxBlock.machine_name).append("\">");
-					if (toolboxBlock.toolbox_init != null)
-						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
-					toolboxXML.append("</block>");
-
-					entry.getValue().add(new Tuple<>(toolboxBlock, toolboxXML.toString()));
-					toolboxBlock.toolboxXML = toolboxXML.toString();
+					entry.getValue().add(new Tuple<>(toolboxBlock, toolboxBlock.getToolboxXML()));
 				}
 			}
 		}
@@ -177,15 +169,7 @@ public class ExternalBlockLoader {
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
 				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
-					StringBuilder toolboxXML = new StringBuilder();
-
-					toolboxXML.append("<block type=\"").append(toolboxBlock.machine_name).append("\">");
-					if (toolboxBlock.toolbox_init != null)
-						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
-					toolboxXML.append("</block>");
-
-					categoryBuilder.append(toolboxXML);
-					toolboxBlock.toolboxXML = toolboxXML.toString();
+					categoryBuilder.append(toolboxBlock.getToolboxXML());
 					toolboxBlock.toolboxCategory = category;
 				}
 			}
@@ -199,7 +183,8 @@ public class ExternalBlockLoader {
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
 		pane.executeJavaScriptSynchronously("Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ")");
 
-		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getToolboxXML(toolboxType.name().toLowerCase(Locale.ENGLISH));
+		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getToolboxXML(
+				toolboxType.name().toLowerCase(Locale.ENGLISH));
 
 		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {

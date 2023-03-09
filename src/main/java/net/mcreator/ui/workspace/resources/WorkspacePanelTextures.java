@@ -39,6 +39,8 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -113,9 +115,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		createMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
-		createMenu.add(workspacePanel.getMcreator().actionRegistry.createMCItemTexture);
-		createMenu.add(workspacePanel.getMcreator().actionRegistry.createArmorTexture);
-		createMenu.add(workspacePanel.getMcreator().actionRegistry.createAnimatedTexture);
+		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
+		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
+		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
 
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
 
@@ -132,14 +134,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		importMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importBlockTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importItemTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEntityTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importEffectTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importParticleTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importScreenTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importArmorTexture);
-		importMenu.add(workspacePanel.getMcreator().actionRegistry.importOtherTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEntityTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEffectTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importParticleTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importScreenTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importArmorTexture);
+		importMenu.add(workspacePanel.getMCreator().actionRegistry.importOtherTexture);
 
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
 
@@ -174,28 +176,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		del.addActionListener(actionEvent -> {
-			List<File> files = listGroup.getSelectedItemsList();
-			if (files.size() > 0) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-						L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-
-				if (n == 0) {
-					files.forEach(file -> {
-						if (file != null) {
-							file.delete();
-
-							// try to delete mcmeta file if it exists too
-							File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
-							if (mcmeta.isFile())
-								mcmeta.delete();
-						}
-					});
-					reloadElements();
-				}
-			}
-		});
+		del.addActionListener(a -> deleteCurrentlySelected());
 
 		edit.addActionListener(e -> editSelectedFile());
 		duplicate.addActionListener(e -> duplicateSelectedFile());
@@ -203,11 +184,34 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		add("North", bar);
 	}
 
+	private void deleteCurrentlySelected() {
+		List<File> files = listGroup.getSelectedItemsList();
+		if (files.size() > 0) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+
+			if (n == 0) {
+				files.forEach(file -> {
+					if (file != null) {
+						file.delete();
+
+						// try to delete mcmeta file if it exists too
+						File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
+						if (mcmeta.isFile())
+							mcmeta.delete();
+					}
+				});
+				reloadElements();
+			}
+		}
+	}
+
 	private void exportSelectedImages() {
 		List<File> files = listGroup.getSelectedItemsList();
 		if (files.size() > 0) {
 			files.forEach(f -> {
-				File to = FileDialogs.getSaveDialog(workspacePanel.getMcreator(), new String[] { ".png" });
+				File to = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".png" });
 				if (to != null)
 					FileIO.copyFile(f, to);
 			});
@@ -217,7 +221,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void duplicateSelectedFile() {
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
-			TextureImportDialogs.importSingleTexture(workspacePanel.getMcreator(), file,
+			TextureImportDialogs.importSingleTexture(workspacePanel.getMCreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
 		}
 	}
@@ -225,7 +229,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void editSelectedFile() {
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
-			ImageMakerView imageMakerView = new ImageMakerView(workspacePanel.getMcreator());
+			ImageMakerView imageMakerView = new ImageMakerView(workspacePanel.getMCreator());
 			imageMakerView.openInEditMode(file);
 			imageMakerView.showView();
 		}
@@ -241,6 +245,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.setFixedCellWidth(57);
 		listElement.addMouseListener(mouseAdapter);
 		listGroup.addList(listElement);
+		listElement.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_DELETE -> deleteCurrentlySelected();
+				case KeyEvent.VK_ENTER -> editSelectedFile();
+				}
+			}
+		});
 		listElement.setBorder(
 				BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
 						listElement.getFont().deriveFont(24.0f), Color.white));
@@ -252,7 +264,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			Arrays.stream(TextureType.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
 				FilterModel newfm = new FilterModel();
-				workspacePanel.getMcreator().getFolderManager().getTexturesList(section).forEach(newfm::addElement);
+				workspacePanel.getMCreator().getFolderManager().getTexturesList(section).forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {
 					JList<File> list = mapLists.get(section.getID()).list();

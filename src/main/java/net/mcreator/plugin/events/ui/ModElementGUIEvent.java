@@ -19,19 +19,31 @@
 
 package net.mcreator.plugin.events.ui;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.modgui.ModElementGUI;
 
-/**
- * <p>These events are triggered at different states of a {@link ModElementGUI} loading.</p>
- */
 public class ModElementGUIEvent extends TabEvent {
 
+	private final MCreator mcreator;
 	private final ModElementGUI<?> modElementGUI;
 
-	public ModElementGUIEvent(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
+	/**
+	 * <p>These events are triggered at different states of a {@link ModElementGUI} loading.
+	 * However, this constructor is never called outside this class.</p>
+	 *
+	 * @param mcreator      <p>The {@link MCreator} instance where the mod element is.</p>
+	 * @param tab           <p>The {@link MCreatorTabs.Tab} that is opened for the {@link ModElementGUI}.</p>
+	 * @param modElementGUI <p>The {@link ModElementGUI} that calls each event.</p>
+	 */
+	protected ModElementGUIEvent(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
 		super(tab);
+		this.mcreator = mcreator;
 		this.modElementGUI = modElementGUI;
+	}
+
+	public MCreator getMCreator() {
+		return mcreator;
 	}
 
 	public ModElementGUI<?> getModElementGUI() {
@@ -44,8 +56,8 @@ public class ModElementGUIEvent extends TabEvent {
 	 * of the mod element.
 	 */
 	public static class BeforeLoading extends ModElementGUIEvent {
-		public BeforeLoading(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
-			super(tab, modElementGUI);
+		public BeforeLoading(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
+			super(mcreator, tab, modElementGUI);
 		}
 	}
 
@@ -55,8 +67,28 @@ public class ModElementGUIEvent extends TabEvent {
 	 * of the mod element.
 	 */
 	public static class AfterLoading extends ModElementGUIEvent {
-		public AfterLoading(MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
-			super(tab, modElementGUI);
+		public AfterLoading(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
+			super(mcreator, tab, modElementGUI);
+		}
+	}
+
+	/**
+	 * <p>When a {@link ModElementGUI} will be saved, MCreator triggers this event.
+	 * The process of saving the mod element happens just after this event is executed.</p>
+	 */
+	public static class WhenSaving extends ModElementGUIEvent {
+		/**
+		 * <p>{@code True} when the user clicks on Save only. {@code False} when the mod element is saved and then, closed.</p>
+		 */
+		private final boolean savesOnly;
+
+		public WhenSaving(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI, boolean savesOnly) {
+			super(mcreator, tab, modElementGUI);
+			this.savesOnly = savesOnly;
+		}
+
+		public boolean isSavedOnly() {
+			return savesOnly;
 		}
 	}
 }

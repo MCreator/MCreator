@@ -40,6 +40,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Material;
 
+<#compress>
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
@@ -51,10 +52,18 @@ public class ${name}Block extends
 		Block
 	</#if>
 
-	<#if data.isWaterloggable || data.hasInventory>
-	implements
-		<#if data.isWaterloggable>SimpleWaterloggedBlock</#if>
-		<#if data.hasInventory><#if data.isWaterloggable>,</#if>EntityBlock</#if>
+	<#assign interfaces = []>
+	<#if data.isWaterloggable>
+		<#assign interfaces += ["SimpleWaterloggedBlock"]>
+	</#if>
+	<#if data.hasInventory>
+		<#assign interfaces += ["EntityBlock"]>
+	</#if>
+	<#if data.isBonemealable>
+		<#assign interfaces += ["BonemealableBlock"]>
+	</#if>
+	<#if interfaces?size gt 0>
+		implements ${interfaces?join(",")}
 	</#if>
 {
 
@@ -456,7 +465,12 @@ public class ${name}Block extends
 
 	<#if data.requiresCorrectTool>
 	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
-		if(player.getInventory().getSelected().getItem() instanceof TieredItem tieredItem)
+		if(player.getInventory().getSelected().getItem() instanceof
+				<#if data.destroyTool == "pickaxe">PickaxeItem
+				<#elseif data.destroyTool == "axe">AxeItem
+				<#elseif data.destroyTool == "shovel">ShovelItem
+				<#elseif data.destroyTool == "hoe">HoeItem
+				<#else>TieredItem</#if> tieredItem)
 			return tieredItem.getTier().getLevel() >= ${data.breakHarvestLevel};
 		return false;
 	}
@@ -595,6 +609,10 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if data.isBonemealable>
+	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
+	</#if>
+
 	<#if data.hasInventory>
 		@Override public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
 			BlockEntity tileEntity = worldIn.getBlockEntity(pos);
@@ -695,4 +713,5 @@ public class ${name}Block extends
 	</#if>
 
 }
+</#compress>
 <#-- @formatter:on -->

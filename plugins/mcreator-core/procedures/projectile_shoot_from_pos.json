@@ -60,7 +60,8 @@
       "<value name=\"dy\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"dz\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"speed\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"inaccuracy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+      "<value name=\"inaccuracy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "~<value name=\"projectile\"><block type=\"projectiles_throwable\"><field name=\"projectile\">Snowball</field><value name=\"shooter\"><block type=\"entity_none\"></block></value></block></value>"
     ],
     "inputs": [
       "x",

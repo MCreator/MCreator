@@ -126,7 +126,7 @@
 <#else>
 {
   "variants": {
-    "${var_variant}": {
+    "": {
       "model": "${modid}:block/${registryname}"
     }
   }

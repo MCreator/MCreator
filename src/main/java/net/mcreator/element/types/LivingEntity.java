@@ -27,29 +27,32 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement, ICommonType {
+		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
 	public String mobName;
 	public String mobLabel;
@@ -59,6 +62,7 @@ import java.util.Locale;
 	public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
+	public LogicProcedure solidBoundingBox;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
@@ -214,21 +218,36 @@ import java.util.Locale;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
+					this.getModElement().getGenerator()
+							.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
-					BlocklyEditorType.AI_TASK, this.aixml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
+					BlocklyEditorType.AI_TASK, this.aixml, this.getModElement().getGenerator()
+					.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
 					.getGeneratorConfiguration().getDefinitionsProvider()
 					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases");
 			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
-					blocklyToJava.getGeneratedCode() : "");
+					blocklyToJava.getGeneratedCode() :
+					"");
 		};
 	}
 
+	@Override public List<MCItem> providedMCItems() {
+		if (hasSpawnEgg)
+			return List.of(new MCItem.Custom(this.getModElement(), "spawn_egg", "item", "Spawn egg"));
+		return Collections.emptyList();
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if ("spawn_egg".equals(suffix)) {
+			return MinecraftImageGenerator.generateSpawnEggIcon(spawnEggBaseColor, spawnEggDotColor);
+		}
+
+		return null;
+	}
 }

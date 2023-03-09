@@ -1,4 +1,4 @@
-task cleanupPlugins(type: DefaultTask) {
+tasks.register('cleanupPlugins') {
     doFirst {
         delete 'build/plugins/'
     }
@@ -6,21 +6,22 @@ task cleanupPlugins(type: DefaultTask) {
 
 // export  all plugins
 file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
-    tasks.create(name: 'export_plugin_' + it.getName().replace('.', ''), type: Zip) { task ->
-        task.archiveName = it.getName() + '.zip'
-        task.destinationDir = file('build/plugins/')
+    tasks.create('export_plugin_' + it.getName().replace('.', ''), Zip.class) { task ->
+        task.archiveFileName = it.getName() + '.zip'
+        task.destinationDirectory = file('build/plugins/')
         task.from 'plugins/' + it.getName()
         task.group "mcreatorplugins"
         task.mustRunAfter cleanupPlugins
     }
 }
 
-task exportPlugins(type: DefaultTask) {
+tasks.register('exportPlugins') {
     dependsOn tasks.matching { Task t -> t.name.startsWith("export_plugin_") }
     dependsOn cleanupPlugins
 }
 
-task exportReleasePreTask(type: DefaultTask, dependsOn: testClasses) {
+tasks.register('exportReleasePreTask') {
+    dependsOn testClasses
     doFirst {
         delete 'build/export/'
         mkdir 'build/export/'
@@ -39,13 +40,16 @@ jar {
     dependsOn exportReleasePreTask
 }
 
-task exportRelease(group: 'export') {
+tasks.register('exportRelease') {
+    group 'export'
     doLast {
         project.logger.lifecycle('\nFINISHED export for MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
-task exportSnapshot(group: 'export') {
+tasks.register('exportSnapshot') {
+    group 'export'
+
     if (gradle.startParameter.taskNames.contains(name)) { // only run this if the task started was this one
         project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + new Date().format(" 'b'wwuHH"))
         file('src/main/resources/snapshot.conf') << (String) project.mcreatorconf.getProperty('mcreator')
@@ -57,7 +61,7 @@ task exportSnapshot(group: 'export') {
     }
 }
 
-task generateExportReport {
+tasks.register('generateExportReport') {
     doLast {
         def report = ""
 
@@ -80,9 +84,9 @@ task generateExportReport {
             }
         }
 
-        report += 'mcreator=' + version + '.' + project.builddate + '\n'
-        report += 'version=' + project.mcreatorconf.getProperty('mcreator') + '\n'
-        report += 'builddate=' + project.builddate + '\n'
+        report += 'mcreator=' + version.toString() + '.' + project.builddate.toString() + '\n'
+        report += 'version=' + (String) project.mcreatorconf.getProperty('mcreator').toString() + '\n'
+        report += 'builddate=' + project.builddate.toString() + '\n'
         report += 'minecraft=Minecraft Forge ' + fg + ', Data Packs ' + dp + ', and Bedrock Edition ' + bd + '\n'
 
         new File("build/reports").mkdirs()

@@ -95,8 +95,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML(
-						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"></block></next></block></xml>");
+				blocklyPanel.setXML(Command.XML_BASE);
 			}
 		});
 
@@ -130,7 +129,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(
-					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
+					new BlocklyBlockCodeGenerator(externalBlocks,
+							mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}

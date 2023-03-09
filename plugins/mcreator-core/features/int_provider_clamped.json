@@ -1,0 +1,39 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "toClamp",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": 2,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 4,
+      "precision": 1
+    }
+  ],
+  "output": "IntProvider",
+  "colour": "%{BKY_MATH_HUE}",
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "intproviders",
+    "toolbox_init": [
+      "~<value name=\"toClamp\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>"
+    ],
+    "inputs": [
+      "toClamp"
+    ],
+    "fields": [
+      "min",
+      "max"
+    ]
+  }
+}

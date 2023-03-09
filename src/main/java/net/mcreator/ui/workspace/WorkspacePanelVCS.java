@@ -73,7 +73,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		uncommited.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(uncommited);
 
-		uncommited.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.showUnsyncedChanges.doAction());
+		uncommited.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.showUnsyncedChanges.doAction());
 
 		JButton checkout = L10N.button("workspace.vcs.jump_to_selected_commit");
 		checkout.setIcon(UIRES.get("16px.rwd"));
@@ -92,8 +92,8 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		switchBranch.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(switchBranch);
 
-		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMcreator().getWorkspace().getVCS(),
-				workspacePanel.getMcreator()).show(switchBranch, 4, 20));
+		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMCreator().getWorkspace().getVCS(),
+				workspacePanel.getMCreator()).show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
 
@@ -156,13 +156,13 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	private void checkoutToSelectedCommit() {
 		String shortCommitId = commits.getValueAt(commits.getSelectedRow(), 0).toString();
 
-		if (shortCommitId != null && workspacePanel.getMcreator().getWorkspace().getVCS() != null) {
+		if (shortCommitId != null && workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
 			try {
-				Git git = workspacePanel.getMcreator().getWorkspace().getVCS().getGit();
+				Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
-						int option = JOptionPane.showOptionDialog(workspacePanel.getMcreator(),
+						int option = JOptionPane.showOptionDialog(workspacePanel.getMCreator(),
 								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
 								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null,
@@ -199,9 +199,9 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 							} catch (Exception ignored) {
 							}
 
-							workspacePanel.getMcreator().getWorkspace().reloadFromFS();
+							workspacePanel.getMCreator().getWorkspace().reloadFromFS();
 							workspacePanel.updateMods();
-							workspacePanel.getMcreator().actionRegistry.buildWorkspace.doAction();
+							workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
 						}
 
 						break;
@@ -214,17 +214,17 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	}
 
 	boolean panelShown() {
-		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMcreator());
+		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMCreator());
 	}
 
 	@Override public void reloadElements() {
-		if (workspacePanel.getMcreator().getWorkspace().getVCS() != null) {
+		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
 			int row = commits.getSelectedRow();
 
 			DefaultTableModel model = (DefaultTableModel) commits.getModel();
 			model.setRowCount(0);
 
-			Git git = workspacePanel.getMcreator().getWorkspace().getVCS().getGit();
+			Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
 			try {
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
@@ -247,7 +247,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	}
 
 	@Override public void refilterElements() {
-		if (workspacePanel.getMcreator().getWorkspace().getVCS() != null)
+		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}
 

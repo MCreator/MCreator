@@ -29,6 +29,8 @@ import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
@@ -68,10 +70,15 @@ class EditTemplatesPanel {
 		openFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
 
-		remove.addActionListener(e -> templates.getSelectedValuesList().forEach(el -> {
-			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
-			tmodel.removeElement(el);
-		}));
+		remove.addActionListener(a -> deleteCurrentlySelected(templatesFolder, tmodel, templates));
+
+		templates.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelected(templatesFolder, tmodel, templates);
+				}
+			}
+		});
 
 		add.addActionListener(e -> {
 			File[] files = FileDialogs.getMultiOpenDialog(preferencesDialog, new String[] { templateExt });
@@ -94,6 +101,14 @@ class EditTemplatesPanel {
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(templates), 5, 5));
 
 		preferencesDialog.preferences.add(sectionPanel, name);
+	}
+
+	private void deleteCurrentlySelected(String templatesFolder, DefaultListModel<String> tmodel,
+			JList<String> templates) {
+		templates.getSelectedValuesList().forEach(el -> {
+			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
+			tmodel.removeElement(el);
+		});
 	}
 
 }

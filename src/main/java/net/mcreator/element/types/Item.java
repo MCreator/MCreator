@@ -24,6 +24,7 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -32,6 +33,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement
@@ -128,6 +130,10 @@ import java.util.Map;
 
 	@Override public String getTexture() {
 		return texture;
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
 	public boolean hasNormalModel() {

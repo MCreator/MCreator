@@ -26,6 +26,7 @@ import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -128,6 +129,11 @@ import java.util.stream.Collectors;
 	public int breakHarvestLevel;
 
 	public Procedure placingCondition;
+
+	public boolean isBonemealable;
+	public Procedure isBonemealTargetCondition;
+	public Procedure bonemealSuccessCondition;
+	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
 	public String guiBoundTo;
@@ -308,6 +314,10 @@ import java.util.stream.Collectors;
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
 	private Image getMainTexture() {
