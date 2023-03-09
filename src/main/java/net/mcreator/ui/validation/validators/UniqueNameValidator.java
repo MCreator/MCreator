@@ -39,7 +39,7 @@ public class UniqueNameValidator implements Validator {
 	private final Supplier<String> uniqueNameGetter;
 
 	private final Supplier<Stream<String>> otherNames;
-	private boolean isPresentOnList;
+	private Supplier<Boolean> isPresentOnList;
 	private boolean ignoreCase;
 	private final List<String> forbiddenNames;
 
@@ -68,7 +68,7 @@ public class UniqueNameValidator implements Validator {
 		this.name = name;
 		this.uniqueNameGetter = uniqueNameGetter;
 		this.otherNames = otherNames;
-		this.isPresentOnList = true;
+		this.isPresentOnList = () -> true;
 		this.ignoreCase = false;
 		this.forbiddenNames = forbiddenNames;
 		this.extraValidator = Objects.requireNonNullElse(extraValidator, () -> ValidationResult.PASSED);
@@ -81,6 +81,16 @@ public class UniqueNameValidator implements Validator {
 	 * @return This validator instance with {@code isPresentOnList} parameter set to passed value.
 	 */
 	public UniqueNameValidator setIsPresentOnList(boolean isPresentOnList) {
+		return setIsPresentOnList(() -> isPresentOnList);
+	}
+
+	/**
+	 * Use this method to define if the validated name is present on {@link UniqueNameValidator#otherNames} list.
+	 *
+	 * @param isPresentOnList Supplier that controls whether the validated name is present on {@code otherNames} list.
+	 * @return This validator instance with {@code isPresentOnList} parameter set to passed value.
+	 */
+	public UniqueNameValidator setIsPresentOnList(Supplier<Boolean> isPresentOnList) {
 		this.isPresentOnList = isPresentOnList;
 		return this;
 	}
@@ -124,7 +134,7 @@ public class UniqueNameValidator implements Validator {
 		String uniqueName = uniqueNameGetter.get();
 		if (uniqueName == null || uniqueName.equals(""))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
-		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList ? 1 : 0)
+		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList.get() ? 1 : 0)
 				|| forbiddenNames.contains(uniqueName))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate", name));
 
