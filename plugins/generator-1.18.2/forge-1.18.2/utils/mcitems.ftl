@@ -60,6 +60,31 @@
     </#if>
 </#function>
 
+<#function mappedMCItemToIngredient mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "new Ingredient.TagValue(ItemTags.create(new ResourceLocation(\"" + ${mappedBlock.getUnmappedValue().replace("TAG:", "")} + "\")))">
+    <#elseif generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+        <#return "new Ingredient.TagValue(ItemTags.create(new ResourceLocation(\"" + ${generator.map(item.getUnmappedValue(), "blocksitems", 1).replace("#", "")} + "\")))">
+    <#else>
+        <#return "new Ingredient.ItemValue(" + ${mappedMCItemToItemStackCode(item, 1)} + ")">
+    </#if>
+</#function>
+
+<#function mappedMCItemsToIngredient mappedBlocks...>
+    <#if mappedBlocks?size == 1>
+        <#return mappedMCItemToIngredient(mappedBlocks[0])>
+    <#elseif !mappedBlocks??>
+        <#return "Ingredient.EMPTY">
+    <#else>
+        <#assign retval = "Ingredient.fromValues(Stream.of(">
+        <#list mappedBlocks as mappedBlock>
+            <#assign retval = retval + mappedMCItemsToIngredient(mappedBlock) + ",">
+            <#sep>,
+        </#list>
+        <#return retval + "))">
+    </#if>
+</#function>
+
 <#function mappedBlockToBlockStateProvider mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
         <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
