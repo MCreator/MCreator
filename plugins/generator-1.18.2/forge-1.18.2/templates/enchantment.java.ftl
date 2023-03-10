@@ -60,14 +60,14 @@ public class ${name}Enchantment extends Enchantment {
 
 	<#if data.compatibleEnchantments?has_content>
 		@Override protected boolean checkCompatibility(Enchantment ench) {
-			return <#if data.excludeEnchantments>!</#if>List.of(
-				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
+		    return <#if data.excludeEnchantments>!</#if>List.of(
+                <#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
 		}
 	</#if>
 
 	<#if data.compatibleItems?has_content>
 		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
-		    return <@itemListBasedOnDirectChecks data.compatibleItems "itemstack" data.excludeItems/>;
+			return <@itemListBasedOnDirectChecks data.compatibleItems "itemstack" data.excludeItems/>;
 		}
 	</#if>
 

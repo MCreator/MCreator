@@ -115,9 +115,6 @@ public class ${name}Feature extends OreFeature {
 			Registry.register(Registry.RULE_TEST, new ResourceLocation("${modid}:${registryname}_match"), CUSTOM_MATCH);
 		}
 
-		private List<Block> base_blocks = null;
-		private List<TagKey<Block>> block_tags = null;
-
 		public boolean test(BlockState blockstate, Random random) {
 		    return <@blockListBasedOnDirectChecks data.blocksToReplace "blockstate"/>;
 		}
