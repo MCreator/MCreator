@@ -49,9 +49,11 @@ public class MappingLoader {
 					PluginLoader.INSTANCE.getResources(templateLoaderPath + ".mappings", Pattern.compile(".*\\.yaml")));
 		}
 
-		for (String res : fileNames) {
-			String mappingName = res.split("mappings/")[1].replace(".yaml", "");
-			String mappingResource = generatorConfiguration.getGeneratorName() + "/mappings/" + mappingName + ".yaml";
+		for (String mappingResource : fileNames) {
+			String mappingName = mappingResource.split("mappings/")[1].replace(".yaml", "");
+
+			if (mappings.containsKey(mappingName))
+				continue; // previous import or original generator already loaded this mapping (mappings for the same level are still merged in the code below)
 
 			try {
 				Enumeration<URL> resources = PluginLoader.INSTANCE.getResources(mappingResource);
