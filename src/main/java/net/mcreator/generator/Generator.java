@@ -59,7 +59,7 @@ public class Generator implements IGenerator, Closeable {
 	public static final Map<String, GeneratorConfiguration> GENERATOR_CACHE = Collections.synchronizedMap(
 			new LinkedHashMap<>());
 
-	protected final Logger LOG;
+	private final Logger LOG;
 	private final String generatorName;
 	private final GeneratorConfiguration generatorConfiguration;
 
@@ -210,7 +210,8 @@ public class Generator implements IGenerator, Closeable {
 		return this.generateElement(element, formatAndOrganiseImports, true);
 	}
 
-	@Nonnull public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
+	@Nonnull
+	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
 			boolean performFSTasks) throws TemplateGeneratorException {
 		if (element.getModElement().isCodeLocked()) {
 			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
@@ -221,8 +222,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -283,8 +285,9 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-					.getRegistryName());
+			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
+						.getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -297,8 +300,10 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType()
+					!= ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return;
 		}
 
@@ -325,7 +330,7 @@ public class Generator implements IGenerator, Closeable {
 
 			List<GeneratableElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type).stream()
 					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-					.collect(Collectors.toList());
+					.filter(Objects::nonNull).collect(Collectors.toList());
 
 			if (!elementsList.isEmpty()) {
 				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s", elementsList));
@@ -437,8 +442,10 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
-					.getType().getRegistryName());
+			if (generatableElement.getModElement().getType()
+					!= ModElementType.UNKNOWN) // silently skip unknown elements
+				LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
+						.getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -510,7 +517,8 @@ public class Generator implements IGenerator, Closeable {
 					else
 						items = List.of();
 
-					GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items, new ArrayList<>());
+					GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items,
+							new ArrayList<>());
 
 					for (int index = 0; index < items.size(); index++) {
 						Set<ListTemplate> filesForCurrentItem = new HashSet<>();
@@ -558,9 +566,13 @@ public class Generator implements IGenerator, Closeable {
 				continue;
 
 			try {
-				List<File> modElementFiles = getModElementGeneratorTemplatesList(
-						element.getGeneratableElement()).stream().map(GeneratorTemplate::getFile)
-						.collect(Collectors.toList());
+				GeneratableElement generatableElement = element.getGeneratableElement();
+
+				if (generatableElement == null)
+					continue;
+
+				List<File> modElementFiles = getModElementGeneratorTemplatesList(generatableElement).stream()
+						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				if (FileIO.isFileOnFileList(modElementFiles, file))
 					return element;
 

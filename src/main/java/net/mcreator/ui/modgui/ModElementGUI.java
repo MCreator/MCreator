@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
@@ -57,7 +56,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
-	private final boolean editingMode;
+	private boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
 
 	private boolean changed, listeningEnabled = false;
@@ -430,56 +429,67 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	private void disableUnsupportedFields() {
-		List<String> inclusions = mcreator.getGeneratorConfiguration()
-				.getSupportedDefinitionFields(modElement.getType());
-
 		List<String> exclusions = mcreator.getGeneratorConfiguration()
 				.getUnsupportedDefinitionFields(modElement.getType());
 
-		if (inclusions != null && exclusions != null) {
-			LOG.warn("Field inclusions and exclusions can not be used at the same time. Skipping them.");
-			return;
-		}
+		List<String> inclusions = mcreator.getGeneratorConfiguration()
+				.getSupportedDefinitionFields(modElement.getType());
 
-		if (inclusions != null) {
-			Field[] fields = getClass().getDeclaredFields();
-			for (Field field : fields) {
-				if (Component.class.isAssignableFrom(field.getType())) {
-					if (!inclusions.contains(field.getName())) {
-						try {
-							field.setAccessible(true);
-							Component obj = (Component) field.get(this);
-
-							Container parent = obj.getParent();
-							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-							parent.remove(index);
-							parent.add(new UnsupportedComponent(obj), index);
-						} catch (IllegalAccessException e) {
-							LOG.warn("Failed to access field", e);
+		if (exclusions != null && inclusions != null) { // can't exclude and include together
+			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
+		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
+			Map<Container, List<Component>> includedComponents = new HashMap<>();
+			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
+				try {
+					Stack<Component> hierarchy = new Stack<>();
+					hierarchy.push(this);
+					for (String next : entry.split("\\.")) {
+						Field field = hierarchy.peek().getClass().getDeclaredField(next);
+						if (!Component.class.isAssignableFrom(field.getType())) {
+							hierarchy.clear(); // clear hierarchy cache to skip current entry
+							break;
 						}
+
+						field.setAccessible(true);
+						Component obj = (Component) field.get(hierarchy.peek());
+						if (obj == null) {
+							hierarchy.clear(); // clear hierarchy cache to skip current entry
+							break;
+						}
+
+						hierarchy.push(obj);
 					}
+
+					// only process current entry if its target component is found
+					if (hierarchy.size() < 2)
+						continue;
+
+					Component c = hierarchy.pop();
+					if (inclusions != null) // register component to exclude its "neighbors" later
+						includedComponents.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
+					else // exclude the component itself
+						UnsupportedComponent.markUnsupported(c);
+				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
+					LOG.warn("Failed to access component: " + entry, e);
 				}
 			}
-		}
 
-		if (exclusions != null) {
-			Field[] fields = getClass().getDeclaredFields();
-			for (Field field : fields) {
-				if (Component.class.isAssignableFrom(field.getType())) {
-					if (exclusions.contains(field.getName())) {
+			if (inclusions != null) { // "include" components registered before
+				includedComponents.forEach((k, v) -> {
+					for (Field field : k.getClass().getDeclaredFields()) {
+						if (!Component.class.isAssignableFrom(field.getType()))
+							continue;
+
 						try {
 							field.setAccessible(true);
-							Component obj = (Component) field.get(this);
-
-							Container parent = obj.getParent();
-							int index = Arrays.asList(parent.getComponents()).indexOf(obj);
-							parent.remove(index);
-							parent.add(new UnsupportedComponent(obj), index);
+							Component obj = (Component) field.get(k);
+							if (!v.contains(obj)) // exclude child component if it was not registered as included
+								UnsupportedComponent.markUnsupported(obj);
 						} catch (IllegalAccessException e) {
-							LOG.warn("Failed to access field", e);
+							LOG.warn("Failed to access component", e);
 						}
 					}
-				}
+				});
 			}
 		}
 	}
@@ -543,8 +553,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		afterGeneratableElementGenerated();
 
-		mcreator.getApplication().getAnalytics()
-				.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		if (editingMode) {
+			mcreator.getApplication().getAnalytics()
+					.trackEvent(AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT, modElement.getType().getRegistryName());
+		} else {
+			mcreator.getApplication().getAnalytics()
+					.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		}
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
@@ -562,6 +577,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
+
+		// at this point, ME is stored so if session was not marked as editingMode before, now it is
+		editingMode = true;
 	}
 
 	public @Nonnull ModElement getModElement() {

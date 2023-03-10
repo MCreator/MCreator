@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
+import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
@@ -136,7 +137,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
 				mcreator.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile));
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile,
+								Launcher.version.getFullString()));
 			}
 
 			// handle change of generator in a different manner

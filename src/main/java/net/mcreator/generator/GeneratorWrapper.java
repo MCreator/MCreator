@@ -20,6 +20,7 @@ package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
@@ -30,7 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({ "unused", "ClassCanBeRecord" }) public class GeneratorWrapper {
+@SuppressWarnings("unused") public class GeneratorWrapper {
 
 	private final Generator generator;
 
@@ -86,6 +87,10 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	public MItemBlock toMappedMItemBlock(String unmappedValue) {
+		return new MItemBlock(this.getWorkspace(), unmappedValue);
+	}
+
 	/**
 	 * Removes the "CUSTOM:" prefix and any eventual suffix (if present, it's after the last .)
 	 *
@@ -101,7 +106,7 @@ import java.util.stream.Collectors;
 		if (element != null)
 			return element.getRegistryName();
 
-		generator.LOG.warn("Failed to determine registry name for: " + modElement);
+		generator.getLogger().warn("Failed to determine registry name for: " + modElement);
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -111,7 +116,7 @@ import java.util.stream.Collectors;
 			return getResourceLocationForModElement(element);
 		}
 
-		generator.LOG.warn("Failed to determine resource location for mod element: " + modElement);
+		generator.getLogger().warn("Failed to determine resource location for mod element: " + modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 

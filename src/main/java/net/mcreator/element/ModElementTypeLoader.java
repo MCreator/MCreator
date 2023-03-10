@@ -30,6 +30,7 @@ public class ModElementTypeLoader {
 	public static List<ModElementType<?>> REGISTRY = new ArrayList<>();
 
 	public static void loadModElements() {
+		//@formatter:off
 		ModElementType.ADVANCEMENT = register(
 				new ModElementType<>("achievement", 'h', BaseType.DATAPACK, AchievementGUI::new,
 						Achievement.class));
@@ -97,6 +98,7 @@ public class ModElementTypeLoader {
 				new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
 		ModElementType.VILLAGERTRADE = register(
 				new ModElementType<>("villagertrade", null, BaseType.OTHER, VillagerTradeGUI::new, VillagerTrade.class));
+		//@formatter:on
 
 		// Unregistered type used to mask legacy removed mod element types
 		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, BaseType.OTHER,

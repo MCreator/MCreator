@@ -119,31 +119,46 @@ Blockly.Extensions.register('min_max_fields_validator',
         });
     });
 
-// Helper function to check if the value of a given int provider is within a certain range
-function isIntProviderWithinBounds(providerBlock, min, max) {
-    // If the int provider block is missing, don't perform any validation
+// Helper function to get the min and max values of a given int provider as an array of [min, max]
+function getIntProviderMinMax(providerBlock) {
+    // If the int provider block is missing, return undefined
     if (!providerBlock)
-        return true;
+        return undefined;
 
     // Check the value of the constant int provider
     if (providerBlock.type === 'int_provider_constant') {
         let blockValue = providerBlock.getField('value').getValue();
-        return blockValue >= min && blockValue <= max;
+        return [blockValue, blockValue];
     }
     // Check the values for the other "terminal" int providers
     else if (providerBlock.type !== 'int_provider_clamped') {
         let blockMin = providerBlock.getField('min').getValue();
         let blockMax = providerBlock.getField('max').getValue();
-        return blockMin >= min && blockMax <= max;
+        return [blockMin, blockMax];
     }
     // Check the values for the clamped int provider
     else {
         let blockMin = providerBlock.getField('min').getValue();
         let blockMax = providerBlock.getField('max').getValue();
-        let clampedBlock = providerBlock.getInput('toClamp').connection.targetBlock();
-        // If the input block is being clamped within bounds, stop checking. Otherwise, check the input as well
-        return (blockMin >= min && blockMax <= max) || isIntProviderWithinBounds(clampedBlock, min, max);
+        let clampedBlockMinMax = getIntProviderMinMax(providerBlock.getInput('toClamp').connection.targetBlock());
+        // If the clamped block input is missing, return undefined
+        if (!clampedBlockMinMax)
+            return undefined;
+        // Otherwise, compare the endpoints of the int provider ranges, then clamp them accordingly
+        else
+            return [Math.min(Math.max(blockMin, clampedBlockMinMax[0]), blockMax),
+                Math.max(Math.min(blockMax, clampedBlockMinMax[1]), blockMin)];
     }
+}
+
+// Helper function to check if the value of a given int provider is within a certain range
+function isIntProviderWithinBounds(providerBlock, min, max) {
+    let intProviderMinMax = getIntProviderMinMax(providerBlock);
+    // If the int provider block is missing or doesn't have all the inputs, don't perform any validation
+    if (!intProviderMinMax)
+        return true;
+
+    return intProviderMinMax[0] >= min && intProviderMinMax[1] <= max;
 }
 
 // Helper function for extensions that validate one or more int provider inputs
@@ -182,10 +197,21 @@ function validateIntProviderInputs(...inputs) {
 
 Blockly.Extensions.register('count_placement_validator', validateIntProviderInputs(['count', 0, 256]));
 
-// Helper function to provide a mixin for mutators that add a single repeating input
+Blockly.Extensions.register('offset_placement_validator', validateIntProviderInputs(['xz', -16, 16], ['y', -16, 16]));
+
+Blockly.Extensions.register('delta_feature_validator', validateIntProviderInputs(['size', 0, 16], ['rimSize', 0, 16]));
+
+Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInputs(['radius', 0, 12]));
+
+Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
+
+// Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
-// The input/empty messages are localized as "blockly.block.block_type.input" and "blockly.block.block_type.empty"
-function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputType) {
+// The empty message is localized as "blockly.block.block_type.empty"
+// The input provider is a function that accepts the block being mutated, the input name and the input index
+// If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
+function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
+                                   fieldNames = []) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
@@ -201,20 +227,20 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         },
 
         // Store number of inputs in JSON
-        saveExtraState: function() {
+        saveExtraState: function () {
             return {
                 'inputCount': this.inputCount_
             };
         },
 
         // Retrieve number of inputs from JSON
-        loadExtraState: function(state) {
+        loadExtraState: function (state) {
             this.inputCount_ = state['inputCount'];
             this.updateShape_();
         },
 
         // "Split" this block into the correct number of inputs in the mutator UI
-        decompose: function(workspace) {
+        decompose: function (workspace) {
             const containerBlock = workspace.newBlock(mutatorContainer);
             containerBlock.initSvg();
             var connection = containerBlock.getInput('STACK').connection;
@@ -228,47 +254,67 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         },
 
         // Rebuild this block based on the number of inputs in the mutator UI
-        compose: function(containerBlock) {
+        compose: function (containerBlock) {
             let inputBlock = containerBlock.getInputTargetBlock('STACK');
             // Count number of inputs.
             const connections = [];
+            const fieldValues = [];
             while (inputBlock && !inputBlock.isInsertionMarker()) {
                 connections.push(inputBlock.valueConnection_);
+                fieldValues.push(inputBlock.fieldValues_);
                 inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
             }
-            // Disconnect any children that don't belong.
-            for (let i = 0; i < this.inputCount_; i++) {
-                const connection = this.getInput(inputName + i) && this.getInput(inputName + i).connection.targetConnection;
-                if (connection && connections.indexOf(connection) == -1) {
-                    connection.disconnect();
+            // Disconnect any children that don't belong. This is skipped if the provided input is a dummy input
+            if (isProperInput) {
+                for (let i = 0; i < this.inputCount_; i++) {
+                    const connection = this.getInput(inputName + i) && this.getInput(inputName + i).connection.targetConnection;
+                    if (connection && connections.indexOf(connection) == -1) {
+                        connection.disconnect();
+                    }
                 }
             }
             this.inputCount_ = connections.length;
             this.updateShape_();
-            // Reconnect any child blocks.
+            // Reconnect any child blocks and update the field values
             for (let i = 0; i < this.inputCount_; i++) {
-                Blockly.Mutator.reconnect(connections[i], this, inputName + i);
+                if (isProperInput) {
+                    Blockly.Mutator.reconnect(connections[i], this, inputName + i);
+                }
+                if (fieldValues[i]) {
+                    for (let j = 0; j < fieldNames.length; j++) {
+                        let currentField = this.getField(fieldNames[j] + i);
+                        currentField.setValue(fieldValues[i][j] ?? '');
+                    }
+                }
             }
         },
 
         // Keep track of the connected blocks, so that they don't get disconnected whenever an input is added or moved
-        saveConnections: function(containerBlock) {
+        // This also keeps track of the field values
+        saveConnections: function (containerBlock) {
             let inputBlock = containerBlock.getInputTargetBlock('STACK');
             let i = 0;
             while (inputBlock) {
-                if (inputBlock.isInsertionMarker()) {
-                    inputBlock = inputBlock.getNextBlock();
-                    continue;
+                if (!inputBlock.isInsertionMarker()) {
+                    const input = this.getInput(inputName + i);
+                    if (input) {
+                        if (isProperInput) {
+                            inputBlock.valueConnection_ = input.connection.targetConnection;
+                        }
+                        inputBlock.fieldValues_ = [];
+                        for (let j = 0; j < fieldNames.length; j++) {
+                            const currentFieldName = fieldNames[j] + i;
+                            inputBlock.fieldValues_[j] = this.getFieldValue(currentFieldName);
+                        }
+                    }
+                    i++;
                 }
-                const input = this.getInput(inputName + i);
-                inputBlock.valueConnection_ = input && input.connection.targetConnection;
                 inputBlock = inputBlock.getNextBlock();
-                i++;
             }
         },
 
         // Add/remove inputs from this block
-        updateShape_: function() {
+        updateShape_: function () {
             // Handle the dummy "empty" input for when there are no proper inputs
             if (this.inputCount_ && this.getInput('EMPTY')) {
                 this.removeInput('EMPTY');
@@ -278,8 +324,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
                 if (!this.getInput(inputName + i))
-                    this.appendValueInput(inputName + i).setCheck(inputType).setAlign(Blockly.Input.Align.RIGHT)
-                            .appendField(javabridge.t('blockly.block.' + this.type + '.input'));
+                    inputProvider(this, inputName, i);
             }
             // Remove extra inputs
             for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
@@ -290,5 +335,35 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 }
 
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
-        'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition', 'BlockPredicate'),
-        undefined, ['block_predicate_mutator_input']);
+        'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('BlockPredicate').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['block_predicate_mutator_input']);
+
+Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMixin(
+        'block_list_mutator_container', 'block_list_mutator_input', 'condition',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldMCItemSelector('allblocks'), 'block' + index);
+        }, false, ['block']),
+    undefined, ['block_list_mutator_input']);
+
+// Helper function for extensions that validate one or more resource location text fields
+function validateResourceLocationFields(...fields) {
+    return function () {
+        for (let i = 0; i < fields.length; i++) {
+            let field = this.getField(fields[i]);
+            // The validator checks if the new input value is a valid resource location
+            field.setValidator(function (newValue) {
+                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
+                    return newValue;
+                return null;
+            });
+        }
+    }
+}
+
+Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));

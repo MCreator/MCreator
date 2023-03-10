@@ -335,8 +335,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic")).makeInline();
 		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -433,8 +433,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).flipOnX();
-		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).flipOnX();
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
 
 		textureLeft = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
@@ -1168,9 +1168,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 		});
 
-		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(
-						PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
+		pane7.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(advancedWithCondition,
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1248,7 +1247,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateTextureOptions() {
-		texture.setVisible(false);
+		texture.setFlipUV(false);
+		textureTop.setFlipUV(false);
 		textureTop.setVisible(false);
 		textureLeft.setVisible(false);
 		textureFront.setVisible(false);
@@ -1256,26 +1256,22 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack.setVisible(false);
 
 		if (normal.equals(renderType.getSelectedItem())) {
-			texture.setVisible(true);
+			texture.setFlipUV(true);
+			textureTop.setFlipUV(true);
 			textureTop.setVisible(true);
 			textureLeft.setVisible(true);
 			textureFront.setVisible(true);
 			textureRight.setVisible(true);
 			textureBack.setVisible(true);
 		} else if (grassBlock.equals(renderType.getSelectedItem())) {
-			texture.setVisible(true);
 			textureTop.setVisible(true);
 			textureLeft.setVisible(true);
 			textureFront.setVisible(true);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
-			texture.setVisible(true);
 		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
 			textureTop.setVisible(true);
 			textureFront.setVisible(true);
-			texture.setVisible(true);
-		} else {
-			texture.setVisible(true);
 		}
 	}
 

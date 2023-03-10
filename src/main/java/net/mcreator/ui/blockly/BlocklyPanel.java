@@ -79,8 +79,12 @@ public class BlocklyPanel extends JFXPanel {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
 			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 
-			if (newXml.length() > MINIMAL_XML.length())
+			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
+				return true;
+			}
+
+			return false;
 		});
 
 		ThreadUtil.runOnFxThread(() -> {
@@ -129,7 +133,7 @@ public class BlocklyPanel extends JFXPanel {
 							.appendChild(styleNode);
 
 					// @formatter:off
-					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
+					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
@@ -142,7 +146,8 @@ public class BlocklyPanel extends JFXPanel {
 
 					// Blockly core
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
-					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
+					webEngine.executeScript(
+							FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
 					// Blockly MCreator modifications
