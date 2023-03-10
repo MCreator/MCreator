@@ -209,7 +209,7 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairItem) {
 			return <@itemListBasedOnDirectChecks data.repairItems "repairItem"/>;
 		}
 	</#if>
