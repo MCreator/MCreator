@@ -65,29 +65,24 @@ tasks.register('generateExportReport') {
     doLast {
         def report = ""
 
-        def fg = ""
-        def bd = ""
-        def dp = ""
-        file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
+        def fg = new LinkedHashSet<String>()
+        def bd = new LinkedHashSet<String>()
+        def dp = new LinkedHashSet<String>()
+        file('plugins').traverse([maxDepth: 1, type: groovy.io.FileType.DIRECTORIES]) {
             def fn = it.getName()
-            if (fn.startsWith("generator-")) {
-                if (fn.contains("addon-")) {
-                    if (!bd.isEmpty()) bd += "/"
-                    bd += fn.substring(fn.lastIndexOf("-") + 1)
-                } else if (fn.contains("datapack-")) {
-                    if (!dp.isEmpty()) dp += "/"
-                    dp += fn.substring(fn.lastIndexOf("-") + 1)
-                } else {
-                    if (!fg.isEmpty()) fg += "/"
-                    fg += fn.substring(fn.lastIndexOf("-") + 1)
-                }
+            if (fn.startsWith("addon-")) {
+                bd.add(fn.substring(fn.lastIndexOf("-") + 1))
+            } else if (fn.startsWith("datapack-")) {
+                dp.add(fn.substring(fn.lastIndexOf("-") + 1))
+            } else if (fn.startsWith("forge-")) {
+                fg.add(fn.substring(fn.lastIndexOf("-") + 1))
             }
         }
 
         report += 'mcreator=' + version.toString() + '.' + project.builddate.toString() + '\n'
         report += 'version=' + (String) project.mcreatorconf.getProperty('mcreator').toString() + '\n'
         report += 'builddate=' + project.builddate.toString() + '\n'
-        report += 'minecraft=Minecraft Forge ' + fg + ', Data Packs ' + dp + ', and Bedrock Edition ' + bd + '\n'
+        report += 'minecraft=Minecraft Forge ' + String.join("/", fg) + ', Data Packs ' + String.join("/", dp) + ', and Bedrock Edition ' + String.join("/", bd) + '\n'
 
         new File("build/reports").mkdirs()
         new File("build/reports/export.txt").text = report
