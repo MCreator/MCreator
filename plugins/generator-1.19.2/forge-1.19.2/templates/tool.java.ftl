@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
+<#include "itemlists.java.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
 
@@ -66,22 +67,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				}
 
 				public Ingredient getRepairIngredient() {
-					<#if data.repairItems?has_content>
-						return Ingredient.fromValues(Stream.of(
-							<#list data.repairItems as item>
-								<#if item.getUnmappedValue().startsWith("TAG:")>
-									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
-								<#elseif generator.map(item.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-									new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")))
-								<#else>
-									new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
-								</#if>
-								<#sep>,
-							</#list>
-						));
-					<#else>
-						return Ingredient.EMPTY;
-					</#if>
+			        return <@ingredientBasedItemList data.repairItems/>;
 				}
 			},
 
@@ -183,27 +169,7 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		<#assign blocks = []>
-		<#assign tags = []>
-		<#list data.blocksAffected as block>
-			<#if block.getUnmappedValue().startsWith("TAG:")>
-				<#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
-			<#elseif generator.map(block.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-				<#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
-			<#else>
-				<#assign blocks += [mappedBlockToBlock(block)]>
-			</#if>
-		</#list>
-		return List.of(
-			<#list blocks as block>
-				${block}<#sep>,
-			</#list>
-		).contains(blockstate.getBlock())<#if tags?has_content> ||
-		Stream.of(
-			<#list tags as tag>
-				BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
-			</#list>
-		).anyMatch(blockstate::is)</#if> ? ${data.efficiency}f : 1;
+	    return <@blockListBasedOnDirectChecks data.blocksAffected "blockstate"/> ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
@@ -244,30 +210,8 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-			<#assign items = []>
-			<#assign tags = []>
-			<#list data.repairItems as repairItem>
-				<#if repairItem.getUnmappedValue().startsWith("TAG:")>
-					<#assign tags += [repairItem.getUnmappedValue().replace("TAG:", "")]>
-				<#elseif generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(repairItem.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
-				<#else>
-					<#assign items += [mappedMCItemToItem(repairItem)]>
-				</#if>
-			</#list>
-			return List.of(
-				<#list items as item>
-					${item}<#sep>,
-				</#list>
-				).contains(repairitem.getItem())
-				<#if tags?has_content> ||
-					Stream.of(
-						<#list tags as tag>
-							ItemTags.create(new ResourceLocation("${tag}"))<#sep>,
-						</#list>)
-					.anyMatch(repairitem::is)
-				</#if>;
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairItem) {
+		    return <@itemListBasedOnDirectChecks data.repairItems "repairItem"/>;
 		}
 	</#if>
 

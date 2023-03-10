@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
+<#include "itemlists.java.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
 
@@ -64,22 +65,7 @@ public abstract class ${name}Item extends ArmorItem {
 			}
 
 			@Override public Ingredient getRepairIngredient() {
-				<#if data.repairItems?has_content>
-					return Ingredient.fromValues(Stream.of(
-						<#list data.repairItems as item>
-							<#if item.getUnmappedValue().startsWith("TAG:")>
-								new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${item.getUnmappedValue().replace("TAG:", "")}")))
-							<#elseif generator.map(item.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								new Ingredient.TagValue(ItemTags.create(new ResourceLocation("${generator.map(item.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")))
-							<#else>
-								new Ingredient.ItemValue(${mappedMCItemToItemStackCode(item,1)})
-							</#if>
-							<#sep>,
-						</#list>
-					));
-				<#else>
-					return Ingredient.EMPTY;
-				</#if>
+			    return <@ingredientBasedItemList data.repairItems/>;
 			}
 
 			@Override public String getName() {
