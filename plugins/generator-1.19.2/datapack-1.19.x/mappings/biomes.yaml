@@ -7,7 +7,6 @@ desert: desert
 mountains: windswept_hills
 forest: forest
 taiga: taiga
-mangrove_swamp: mangrove_swamp
 swamp: swamp
 river: river
 nether: nether_wastes
@@ -57,13 +56,14 @@ warped_forest: warped_forest
 basalt_deltas: basalt_deltas
 dripstone_caves: dripstone_caves
 lush_caves: lush_caves
-deep_dark: deep_dark
 meadow: meadow
 grove: grove
 snowy_slopes: snowy_slopes
 frozen_peaks: frozen_peaks
 jagged_peaks: jagged_peaks
 stony_peaks: stony_peaks
+mangrove_swamp: mangrove_swamp
+deep_dark: deep_dark
 
 # legacy (removed/merged in 1.18)
 snowy_mountains: windswept_hills
