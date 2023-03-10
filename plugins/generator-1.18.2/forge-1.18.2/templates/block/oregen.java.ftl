@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
+<#include "../itemlists.java.ftl">
 
 package ${package}.world.features.ores;
 
@@ -118,33 +119,7 @@ public class ${name}Feature extends OreFeature {
 		private List<TagKey<Block>> block_tags = null;
 
 		public boolean test(BlockState blockstate, Random random) {
-			<#assign blocks = []>
-			<#assign tags = []>
-			<#list data.blocksToReplace as replacementBlock>
-				<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-					<#assign tags += [replacementBlock.getUnmappedValue().replace("TAG:", "")]>
-				<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
-				<#else>
-					<#assign blocks += [mappedBlockToBlock(replacementBlock)]>
-				</#if>
-			</#list>
-			if (base_blocks == null) {
-				base_blocks = List.of(
-					<#list blocks as block>
-						${block}<#sep>,
-					</#list>
-				);
-			}
-			if (block_tags == null) {
-				block_tags = List.of(
-					<#list tags as tag>
-						BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
-					</#list>
-				);
-			}
-
-			return base_blocks.contains(blockstate.getBlock()) || block_tags.stream().anyMatch(blockstate::is);
+		    return <@blockListBasedOnDirectChecks data.blocksToReplace "blockstate"/>;
 		}
 
 		protected RuleTestType<?> getType() {
