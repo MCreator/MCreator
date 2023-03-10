@@ -3,7 +3,7 @@ status: stable
 buildfileversion: 43.2.0
 
 import:
-  - datapack-1.19.x
+  - datapack-1.19.2
 
 java_models:
   key: mojmap-1.19.x
