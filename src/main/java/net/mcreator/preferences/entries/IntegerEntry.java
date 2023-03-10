@@ -19,7 +19,6 @@
 
 package net.mcreator.preferences.entries;
 
-
 import net.mcreator.preferences.PreferencesEntry;
 
 import javax.swing.*;

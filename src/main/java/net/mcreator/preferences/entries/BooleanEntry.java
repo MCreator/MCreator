@@ -20,7 +20,6 @@
 package net.mcreator.preferences.entries;
 
 import net.mcreator.preferences.PreferencesEntry;
-import net.mcreator.preferences.PreferencesSection;
 
 import javax.swing.*;
 import java.awt.*;

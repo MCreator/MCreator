@@ -36,14 +36,13 @@ public class IDESection extends PreferencesSection {
 
 	IDESection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
-		
+
 		editorTheme = addEntry(
-				new StringEntry("editorTheme", "MCreator", "MCreator", "Default", "Default-Alt",
-						"Dark", "Eclipse", "Idea", "Monokai", "VS"));
+				new StringEntry("editorTheme", "MCreator", "MCreator", "Default", "Default-Alt", "Dark", "Eclipse",
+						"Idea", "Monokai", "VS"));
 		fontSize = addEntry(new IntegerEntry("fontSize", 12, 5, 48));
 		autocomplete = addEntry(new BooleanEntry("autocomplete", true));
-		autocompleteMode = addEntry(
-				new StringEntry("autocompleteMode", "Smart", "Manual", "Trigger on dot", "Smart"));
+		autocompleteMode = addEntry(new StringEntry("autocompleteMode", "Smart", "Manual", "Trigger on dot", "Smart"));
 		autocompleteDocWindow = addEntry(new BooleanEntry("autocompleteDocWindow", true));
 		lineNumbers = addEntry(new BooleanEntry("lineNumbers", true));
 		errorInfoEnable = addEntry(new BooleanEntry("errorInfoEnable", true));
