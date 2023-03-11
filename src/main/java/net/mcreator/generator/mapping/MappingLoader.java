@@ -66,8 +66,8 @@ public class MappingLoader {
 							mappings.put(mappingName, mappingsFromFile);
 						} else {
 							Map merged = Collections.synchronizedMap(new LinkedHashMap());
-							merged.putAll(mappings.get(mappingName));
-							merged.putAll(mappingsFromFile);
+							merged.putAll(mappingsFromFile); // put new mappings first
+							merged.putAll(mappings.get(mappingName)); // so they are overriden by old ones in this statement
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {
