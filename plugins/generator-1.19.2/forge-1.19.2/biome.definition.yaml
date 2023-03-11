@@ -15,157 +15,157 @@ global_templates:
   - template: elementinits/biomes.java.ftl
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
-  - template: biometag.json.ftl # loaded from datapack generator
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=mineshaft"
     condition: ${w.hasBiomesWithStructure('mineshaft')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=igloo"
     condition: ${w.hasBiomesWithStructure('igloo')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/igloo.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=stronghold"
     condition: ${w.hasBiomesWithStructure('stronghold')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/stronghold.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=mineshaft_mesa"
     condition: ${w.hasBiomesWithStructure('mineshaft_mesa')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/mineshaft_mesa.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=pillager_outpost"
     condition: ${w.hasBiomesWithStructure('pillager_outpost')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/pillager_outpost.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=woodland_mansion"
     condition: ${w.hasBiomesWithStructure('woodland_mansion')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/woodland_mansion.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=jungle_temple"
     condition: ${w.hasBiomesWithStructure('jungle_temple')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/jungle_temple.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=desert_pyramid"
     condition: ${w.hasBiomesWithStructure('desert_pyramid')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/desert_pyramid.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=swamp_hut"
     condition: ${w.hasBiomesWithStructure('swamp_hut')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/swamp_hut.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ocean_monument"
     condition: ${w.hasBiomesWithStructure('ocean_monument')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_monument.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=shipwreck"
     condition: ${w.hasBiomesWithStructure('shipwreck')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/shipwreck.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=shipwreck_beached"
     condition: ${w.hasBiomesWithStructure('shipwreck_beached')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/shipwreck_beached.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=buried_treasure"
     condition: ${w.hasBiomesWithStructure('buried_treasure')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/buried_treasure.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=nether_fortress"
     condition: ${w.hasBiomesWithStructure('nether_fortress')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/nether_fortress.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=nether_fossil"
     condition: ${w.hasBiomesWithStructure('nether_fossil')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/nether_fossil.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=bastion_remnant"
     condition: ${w.hasBiomesWithStructure('bastion_remnant')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/bastion_remnant.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=end_city"
     condition: ${w.hasBiomesWithStructure('end_city')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/end_city.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=village_desert"
     condition: ${w.hasBiomesWithStructure('village_desert')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_desert.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=village_plains"
     condition: ${w.hasBiomesWithStructure('village_plains')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_plains.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=village_savanna"
     condition: ${w.hasBiomesWithStructure('village_savanna')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_savanna.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=village_snowy"
     condition: ${w.hasBiomesWithStructure('village_snowy')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_snowy.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=village_taiga"
     condition: ${w.hasBiomesWithStructure('village_taiga')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_taiga.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ocean_ruin_cold"
     condition: ${w.hasBiomesWithStructure('ocean_ruin_cold')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_ruin_cold.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ocean_ruin_warm"
     condition: ${w.hasBiomesWithStructure('ocean_ruin_warm')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_ruin_warm.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_standard"
     condition: ${w.hasBiomesWithStructure('ruined_portal_standard')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_standard.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_desert"
     condition: ${w.hasBiomesWithStructure('ruined_portal_desert')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_desert.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_jungle"
     condition: ${w.hasBiomesWithStructure('ruined_portal_jungle')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_jungle.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_swamp"
     condition: ${w.hasBiomesWithStructure('ruined_portal_swamp')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_swamp.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_mountain"
     condition: ${w.hasBiomesWithStructure('ruined_portal_mountain')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_mountain.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_ocean"
     condition: ${w.hasBiomesWithStructure('ruined_portal_ocean')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_ocean.json"
-  - template: json/biometag.json.ftl
+  - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=ruined_portal_nether"
     condition: ${w.hasBiomesWithStructure('ruined_portal_nether')}
