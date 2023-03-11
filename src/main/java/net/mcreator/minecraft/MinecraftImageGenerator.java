@@ -1435,6 +1435,9 @@ public class MinecraftImageGenerator {
 				case "Entities" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
 								.getImage());
+				case "Fluids" -> ImageUtils.toBufferedImage(
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("fluid"), false)
+								.getImage());
 				case "Functions" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
 								.getImage());
