@@ -15,7 +15,7 @@ global_templates:
   - template: elementinits/biomes.java.ftl
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
-  - template: json/biometag.json.ftl
+  - template: biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=mineshaft"
     condition: ${w.hasBiomesWithStructure('mineshaft')}
