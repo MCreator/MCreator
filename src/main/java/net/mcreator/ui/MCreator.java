@@ -309,7 +309,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 
 			// reinit (preload) MCItems so workspace is more snappy when loaded
-			workspace.getModElements().parallelStream().forEach(ModElement::getMCItems);
+			workspace.getModElements().forEach(ModElement::getMCItems);
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
