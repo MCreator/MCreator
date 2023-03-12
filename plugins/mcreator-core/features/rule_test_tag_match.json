@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "tag",
+      "text": "minecraft:dirt"
+    }
+  ],
+  "extensions": [
+    "tag_input_field_validator"
+  ],
+  "output": "RuleTest",
+  "colour": "80",
+  "mcreator": {
+    "toolbox_id": "orefeatures",
+    "fields": [
+      "tag"
+    ]
+  }
+}

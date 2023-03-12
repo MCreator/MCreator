@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "target",
+      "check": "RuleTest"
+    },
+    {
+      "type": "input_value",
+      "name": "state",
+      "check": "MCItemBlock"
+    }
+  ],
+  "inputsInline": true,
+  "output": "OreTarget",
+  "colour": "#888888",
+  "mcreator": {
+    "toolbox_id": "orefeatures",
+    "toolbox_init": [
+      "<value name=\"target\"><block type=\"rule_test_tag_match\"><field name=\"tag\">stone_ore_replaceables</field></block></value>",
+      "<value name=\"state\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "target",
+      "state"
+    ]
+  }
+}
