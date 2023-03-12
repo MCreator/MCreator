@@ -222,6 +222,22 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("villagerprofessions");
 	}
 
+	public static List<DataListEntry> loadAllTags(Workspace workspace) {
+		return loadDataListAndElements(workspace, "tags", false, null, "tag");
+	}
+
+	public static List<DataListEntry> getAllTags(Workspace workspace, String type) {
+		List<DataListEntry> retval = getCustomElements(workspace, modElement -> {
+			if (modElement.getType() == ModElementType.TAG)
+				return modElement.getMetadata("type").equals(type);
+			return false;
+		});
+
+		retval.addAll(DataListLoader.loadDataList("tags").stream()
+				.filter(typeMatches(type)).toList());
+		return retval;
+	}
+
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)

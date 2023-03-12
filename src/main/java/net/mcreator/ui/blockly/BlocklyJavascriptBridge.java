@@ -328,6 +328,24 @@ public class BlocklyJavascriptBridge {
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "blocktag":
+			return ElementUtil.getAllTags(workspace, "block").stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "itemtag":
+			return ElementUtil.getAllTags(workspace, "item").stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "entitytag":
+			return ElementUtil.getAllTags(workspace, "entity").stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "fluidtag":
+			return ElementUtil.getAllTags(workspace, "fluid").stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "biometag":
+			return ElementUtil.getAllTags(workspace, "biome").stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "functiontag":
+			return ElementUtil.getAllTags(workspace, "function").stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
 		}
