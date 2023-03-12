@@ -49,3 +49,12 @@ feature_random_patch_simple:
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
+feature_ore:
+  - OreFeature
+  - OreConfiguration
+feature_scattered_ore:
+  - ScatteredOreFeature
+  - OreConfiguration
+feature_replace_single_block:
+  - ReplaceBlockFeature
+  - ReplaceBlockConfiguration
