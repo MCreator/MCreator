@@ -250,6 +250,27 @@ public class GTFeatureBlocks {
 								<field name="x">0</field><field name="y">0</field><field name="z">0</field>
 								<value name="blockSet">%s</value></block></value></block></next></block></xml>
 						""".formatted(testXML);
+				// Rule tests are tested with the "Replace single block" feature
+				case "RuleTest" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_replace_single_block">
+							<mutation inputs="1"></mutation>
+							<value name="target0"><block type="ore_target">
+								<value name="target">%s</value>
+								<value name="state"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							</block></value>
+						</block></value><next><block type="placement_in_square"></block></next></block></xml>
+						""".formatted(testXML);
+				// The "Ore target" block is also tested with the "Replace single block" feature
+				case "OreTarget" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_replace_single_block">
+							<mutation inputs="1"></mutation>
+							<value name="target0">%s</value>
+						</block></value><next><block type="placement_in_square"></block></next></block></xml>
+						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->
