@@ -2,6 +2,9 @@
     <category name="${t:blockly.category.features}" colour="0">
         <custom-features/>
     </category>
+    <category name="${t:blockly.category.orefeatures}" colour="80">
+        <custom-orefeatures/>
+    </category>
     <sep/>
     <category name="${t:blockly.category.blocks.feature}" colour="60">
         <block type="mcitem_allblocks"/>
