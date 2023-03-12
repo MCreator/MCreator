@@ -351,6 +351,15 @@ Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMix
         }, false, ['block']),
     undefined, ['block_list_mutator_input']);
 
+Blockly.Extensions.registerMutator('ore_feature_mutator', simpleRepeatingInputMixin(
+        'ore_mutator_container', 'ore_mutator_input', 'target',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('OreTarget').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t(
+                    index == 0 ? 'blockly.block.ore_mutator.try' : 'blockly.block.ore_mutator.else_try'));
+        }),
+        undefined, ['ore_mutator_input']);
+
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
     return function () {
