@@ -4,12 +4,10 @@
       "type": "input_value",
       "name": "entity",
       "check": "Entity"
-    },
-    {
-      "type": "input_value",
-      "name": "tag",
-      "check": "String"
     }
+  ],
+  "extensions": [
+    "entitytag_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",
@@ -18,12 +16,13 @@
     "group": "base_tag",
     "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">minecraft:skeletons</field></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
-      "entity",
-      "tag"
+      "entity"
+    ],
+    "fields": [
+      "entitytag"
     ]
   }
 }

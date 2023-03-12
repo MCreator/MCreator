@@ -4,12 +4,10 @@
       "type": "input_value",
       "name": "a",
       "check": "MCItemBlock"
-    },
-    {
-      "type": "input_value",
-      "name": "b",
-      "check": "String"
     }
+  ],
+  "extensions": [
+    "blocktag_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",
@@ -18,12 +16,13 @@
     "group": "data",
     "toolbox_id": "blockdata",
     "toolbox_init": [
-      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:logs</field></block></value>",
       "<value name=\"a\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
     ],
     "inputs": [
-      "a",
-      "b"
+      "a"
+    ],
+    "fields": [
+      "blocktag"
     ]
   }
 }

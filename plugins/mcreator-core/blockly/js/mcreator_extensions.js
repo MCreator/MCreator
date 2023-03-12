@@ -31,6 +31,16 @@ Blockly.Extensions.register('direction_list_provider', appendDropDown('direction
 
 Blockly.Extensions.register('dimension_custom_list_provider', appendDropDown('dimension_custom', 'dimension'));
 
+Blockly.Extensions.register('blocktag_list_provider', appendDropDown('blocktag', 'blocktag'));
+
+Blockly.Extensions.register('itemtag_list_provider', appendDropDown('itemtag', 'itemtag'));
+
+Blockly.Extensions.register('entitytag_list_provider', appendDropDown('entitytag', 'entitytag'));
+
+Blockly.Extensions.register('fluidtag_list_provider', appendDropDown('fluidtag', 'fluidtag'));
+
+Blockly.Extensions.register('biometag_list_provider', appendDropDown('biometag', 'biometag'));
+
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {

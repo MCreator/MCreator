@@ -4,12 +4,10 @@
       "type": "input_value",
       "name": "a",
       "check": "MCItem"
-    },
-    {
-      "type": "input_value",
-      "name": "b",
-      "check": "String"
     }
+  ],
+  "extensions": [
+    "itemtag_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",
@@ -17,12 +15,13 @@
   "mcreator": {
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
-      "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:logs</field></block></value>",
       "<value name=\"a\"><block type=\"itemstack_to_mcitem\"></block></value>"
     ],
     "inputs": [
-      "a",
-      "b"
+      "a"
+    ],
+    "fields": [
+      "itemtag"
     ]
   }
 }

@@ -1,3 +1,4 @@
-<#include "mcelements.ftl">
 <#include "mcitems.ftl">
-(${mappedMCItemToItemStackCode(input$a, 1)}.is(ItemTags.create(${toResourceLocation(input$b)})))
+<#if generator.map(field$itemtag, "tags") != "null">
+(${mappedMCItemToItemStackCode(input$a, 1)}.is(ItemTags.create(new ResourceLocation(${generator.map(field$itemtag, "tags")}))))
+<#else>(false)</#if>
