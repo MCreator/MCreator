@@ -359,11 +359,11 @@
 - water:
   type: fluid
 
-- acacia_logs:
+- acacia_logs_item:
   type: item
-- anvil:
+- anvil_item:
   type: item
-- arrows:
+- arrows_item:
   type: item
 # Coming in 1.19.4 update
 # - axes:
@@ -373,13 +373,13 @@
 # Coming in 1.20 update
 # - bamboo_blocks:
 #   type: item
-- banners:
+- banners_item:
   type: item
 - beacon_payment_items:
   type: item
-- beds:
+- beds_item:
   type: item
-- birch_logs:
+- birch_logs_item:
   type: item
 - boats:
   type: item
@@ -389,9 +389,9 @@
 # Coming in 1.19.4 update
 # - breaks_decorated_pots:
 #   type: item
-- buttons:
+- buttons_item:
   type: item
-- candles:
+- candles_item:
   type: item
 # Coming in 1.20 update
 # - cherry_logs:
@@ -400,7 +400,7 @@
   type: item
 - cluster_max_harvestables:
   type: item
-- coal_ores:
+- coal_ores_item:
   type: item
 - coals:
   type: item
@@ -408,42 +408,42 @@
   type: item
 - completes_find_tree_tutorial:
   type: item
-- copper_ores:
+- copper_ores_item:
   type: item
 - creeper_drop_music_discs:
   type: item
 - creeper_igniters:
   type: item
-- crimson_stems:
+- crimson_stems_item:
   type: item
-- dampens_vibrations:
+- dampens_vibrations_item:
   type: item
-- dark_oak_logs:
+- dark_oak_logs_item:
   type: item
 # Coming in 1.20 update
 # - decorated_pot_shards:
 #   type: item
-- diamond_ores:
+- diamond_ores_item:
   type: item
-- dirt:
+- dirt_item:
   type: item
-- doors:
+- doors_item:
   type: item
-- emerald_ores:
+- emerald_ores_item:
   type: item
-- fence_gates:
+- fence_gates_item:
   type: item
-- fences:
+- fences_item:
   type: item
 - fishes:
   type: item
-- flowers:
+- flowers_item:
   type: item
 - fox_food:
   type: item
 - freeze_immune_wearables:
   type: item
-- gold_ores:
+- gold_ores_item:
   type: item
 # Coming in 1.20 update
 # - hanging_signs:
@@ -453,21 +453,21 @@
 #   type: item
 - ignored_by_piglin_babies:
   type: item
-- iron_ores:
+- iron_ores_item:
   type: item
-- jungle_logs:
+- jungle_logs_item:
   type: item
-- lapis_ores:
+- lapis_ores_item:
   type: item
-- leaves:
+- leaves_item:
   type: item
 - lectern_books:
   type: item
-- logs:
+- logs_item:
   type: item
-- logs_that_burn:
+- logs_that_burn_item:
   type: item
-- mangrove_logs:
+- mangrove_logs_item:
   type: item
 - music_discs:
   type: item
@@ -476,7 +476,7 @@
 # Coming in 1.20 update
 # - noteblock_top_instruments:
 #   type: item
-- oak_logs:
+- oak_logs_item:
   type: item
 # Coming in 1.19.4 update
 # - pickaxes:
@@ -485,39 +485,39 @@
   type: item
 - piglin_loved:
   type: item
-- piglin_repellents:
+- piglin_repellents_item:
   type: item
-- planks:
+- planks_item:
   type: item
-- rails:
+- rails_item:
   type: item
-- redstone_ores:
+- redstone_ores_item:
   type: item
-- sand:
+- sand_item:
   type: item
-- saplings:
+- saplings_item:
   type: item
 # Coming in 1.19.4 update
 # - shovels:
 #   type: item
-- signs:
+- signs_item:
   type: item
-- slabs:
+- slabs_item:
   type: item
-- small_flowers:
+- small_flowers_item:
   type: item
-- smelts_to_glass:
+- smelts_to_glass_item:
   type: item
 # Coming in 1.20 update
 # - sniffer_food:
 #   type: item
-- soul_fire_base_blocks:
+- soul_fire_base_blocks_item:
   type: item
-- spruce_logs:
+- spruce_logs_item:
   type: item
-- stairs:
+- stairs_item:
   type: item
-- stone_bricks:
+- stone_bricks_item:
   type: item
 - stone_crafting_materials:
   type: item
@@ -526,14 +526,14 @@
 # Coming in 1.19.4 update
 # - swords:
 #   type: item
-- tall_flowers:
+- tall_flowers_item:
   type: item
-- terracotta:
+- terracotta_item:
   type: item
 # Coming in 1.19.4 update
 # - tools:
 #   type: item
-- trapdoors:
+- trapdoors_item:
   type: item
 # Coming in 1.20 update
 # - trim_materials:
@@ -544,29 +544,29 @@
 # Coming in 1.20 update
 # - trimmable_armor:
 #   type: item
-- walls:
+- walls_item:
   type: item
-- warped_stems:
+- warped_stems_item:
   type: item
-- wart_blocks:
+- wart_blocks_item:
   type: item
-- wooden_buttons:
+- wooden_buttons_item:
   type: item
-- wooden_doors:
+- wooden_doors_item:
   type: item
-- wooden_fences:
+- wooden_fences_item:
   type: item
-- wooden_pressure_plates:
+- wooden_pressure_plates_item:
   type: item
-- wooden_slabs:
+- wooden_slabs_item:
   type: item
-- wooden_stairs:
+- wooden_stairs_item:
   type: item
-- wooden_trapdoors:
+- wooden_trapdoors_item:
   type: item
-- wool_carpets:
+- wool_carpets_item:
   type: item
-- wool:
+- wool_item:
   type: item
 
 - allows_surface_slime_spawns:
@@ -693,8 +693,8 @@
 # - spawns_gold_rabbits:
 #   type: biome
 # Leaving in 1.19.4 update
-# - only_allows_snow_and_gold_rabbits:
-#   type: biome
+- only_allows_snow_and_gold_rabbits:
+  type: biome
 # Coming in 1.19.4 update
 # - spawns_snow_foxes:
 #   type: biome
