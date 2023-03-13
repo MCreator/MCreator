@@ -27,7 +27,10 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.minecraft.ModElementListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
@@ -168,6 +171,12 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		tag.name = name.getEditor().getItem().toString();
 		return tag;
+	}
+
+	@Override protected void afterGeneratableElementStored() {
+		super.afterGeneratableElementStored();
+		modElement.clearMetadata();
+		modElement.putMetadata("type", type.getSelectedItem().toString().toLowerCase());
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

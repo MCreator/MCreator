@@ -229,8 +229,8 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllTags(Workspace workspace, String type) {
 		List<DataListEntry> retval = getCustomElements(workspace, modElement -> {
-			if (modElement.getType() == ModElementType.TAG && modElement.getGeneratableElement() != null)
-				return ((Tag) modElement.getGeneratableElement()).type.toLowerCase().equals(type);
+			if (modElement.getType() == ModElementType.TAG)
+				return modElement.getMetadata("type").equals(type);
 			return false;
 		});
 
