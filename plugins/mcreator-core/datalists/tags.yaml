@@ -1,720 +1,720 @@
 - acacia_logs:
-  type: block
+  type: blocks
 # Coming in 1.20 update
 # - all_hanging_signs:
-#   type: block
+#   type: blocks
 - all_signs:
-  type: block
+  type: blocks
 - ancient_city_replaceable:
-  type: block
+  type: blocks
 - animals_spawnable_on:
-  type: block
+  type: blocks
 - anvil:
-  type: block
+  type: blocks
 - axolotls_spawnable_on:
-  type: block
+  type: blocks
 - azalea_grows_on:
-  type: block
+  type: blocks
 - azalea_root_replaceable:
-  type: block
+  type: blocks
 # Coming in 1.20 update
 # - bamboo_blocks:
-#   type: block
+#   type: blocks
 - bamboo_plantable_on:
-  type: block
+  type: blocks
 - banners:
-  type: block
+  type: blocks
 - base_stone_nether:
-  type: block
+  type: blocks
 - base_stone_overworld:
-  type: block
+  type: blocks
 - beacon_base_blocks:
-  type: block
+  type: blocks
 - beds:
-  type: block
+  type: blocks
 - beehives:
-  type: block
+  type: blocks
 - bee_growables:
-  type: block
+  type: blocks
 - big_dripleaf_placeable:
-  type: block
+  type: blocks
 - birch_logs:
-  type: block
+  type: blocks
 - buttons:
-  type: block
+  type: blocks
 - campfires:
-  type: block
+  type: blocks
 - candle_cakes:
-  type: block
+  type: blocks
 - candles:
-  type: block
+  type: blocks
 - cauldrons:
-  type: block
+  type: blocks
 - cave_vines:
-  type: block
+  type: blocks
 # Coming in 1.20 update
 # - ceiling_hanging_signs:
-#   type: block
+#   type: blocks
 # Coming in 1.20 update
 # - cherry_logs:
-#   type: block
+#   type: blocks
 - climbable:
-  type: block
+  type: blocks
 - coal_ores:
-  type: block
+  type: blocks
 - completes_find_tree_tutorial:
-  type: block
+  type: blocks
 - convertable_to_mud:
-  type: block
+  type: blocks
 - copper_ores:
-  type: block
+  type: blocks
 - corals:
-  type: block
+  type: blocks
 - coral_blocks:
-  type: block
+  type: blocks
 - coral_plants:
-  type: block
+  type: blocks
 - crimson_stems:
-  type: block
+  type: blocks
 - crops:
-  type: block
+  type: blocks
 - crystal_sound_blocks:
-  type: block
+  type: blocks
 - dampens_vibrations:
-  type: block
+  type: blocks
 - dark_oak_logs:
-  type: block
+  type: blocks
 - dead_bush_may_place_on:
-  type: block
+  type: blocks
 - deepslate_ore_replaceables:
-  type: block
+  type: blocks
 - diamond_ores:
-  type: block
+  type: blocks
 - dirt:
-  type: block
+  type: blocks
 - doors:
-  type: block
+  type: blocks
 - dragon_immune:
-  type: block
+  type: blocks
 - dragon_transparent:
-  type: block
+  type: blocks
 - dripstone_replaceable_blocks:
-  type: block
+  type: blocks
 - emerald_ores:
-  type: block
+  type: blocks
 - enderman_holdable:
-  type: block
+  type: blocks
 - fall_damage_resetting:
-  type: block
+  type: blocks
 - features_cannot_replace:
-  type: block
+  type: blocks
 - fence_gates:
-  type: block
+  type: blocks
 - fences:
-  type: block
+  type: blocks
 - fire:
-  type: block
+  type: blocks
 - flower_pots:
-  type: block
+  type: blocks
 - flowers:
-  type: block
+  type: blocks
 - foxes_spawnable_on:
-  type: block
+  type: blocks
 - frog_prefer_jump_to:
-  type: block
+  type: blocks
 - frogs_spawnable_on:
-  type: block
+  type: blocks
 - geode_invalid_blocks:
-  type: block
+  type: blocks
 - goats_spawnable_on:
-  type: block
+  type: blocks
 - gold_ores:
-  type: block
+  type: blocks
 - guarded_by_piglins:
-  type: block
+  type: blocks
 - hoglin_repellents:
-  type: block
+  type: blocks
 - ice:
-  type: block
+  type: blocks
 - impermeable:
-  type: block
+  type: blocks
 - infiniburn_end:
-  type: block
+  type: blocks
 - infiniburn_nether:
-  type: block
+  type: blocks
 - infiniburn_overworld:
-  type: block
+  type: blocks
 - inside_step_sound_blocks:
-  type: block
+  type: blocks
 - invalid_spawn_inside:
-  type: block
+  type: blocks
 - iron_ores:
-  type: block
+  type: blocks
 - jungle_logs:
-  type: block
+  type: blocks
 - lapis_ores:
-  type: block
+  type: blocks
 - lava_pool_stone_cannot_replace:
-  type: block
+  type: blocks
 - lava_pool_cannot_replace:
-  type: block
+  type: blocks
 - leaves:
-  type: block
+  type: blocks
 - logs:
-  type: block
+  type: blocks
 - logs_that_burn:
-  type: block
+  type: blocks
 - lush_ground_replaceable:
-  type: block
+  type: blocks
 - mangrove_logs:
-  type: block
+  type: blocks
 - mangrove_logs_can_grow_through:
-  type: block
+  type: blocks
 - mangrove_roots_can_grow_through:
-  type: block
+  type: blocks
 - mineable/axe:
-  type: block
+  type: blocks
 - mineable/hoe:
-  type: block
+  type: blocks
 - mineable/pickaxe:
-  type: block
+  type: blocks
 - mineable/shovel:
-  type: block
+  type: blocks
 - mooshrooms_spawnable_on:
-  type: block
+  type: blocks
 - moss_replaceable:
-  type: block
+  type: blocks
 - mushroom_grow_block:
-  type: block
+  type: blocks
 - needs_diamond_tool:
-  type: block
+  type: blocks
 - needs_iron_tool:
-  type: block
+  type: blocks
 - needs_stone_tool:
-  type: block
+  type: blocks
 - nether_carver_replaceables:
-  type: block
+  type: blocks
 - nylium:
-  type: block
+  type: blocks
 - oak_logs:
-  type: block
+  type: blocks
 - overworld_carver_replaceables:
-  type: block
+  type: blocks
 - overworld_natural_logs:
-  type: block
+  type: blocks
 - parrots_spawnable_on:
-  type: block
+  type: blocks
 - piglin_repellents:
-  type: block
+  type: blocks
 - planks:
-  type: block
+  type: blocks
 - polar_bears_spawnable_on_alternate:
-  type: block
+  type: blocks
 - portals:
-  type: block
+  type: blocks
 - pressure_plates:
-  type: block
+  type: blocks
 - prevent_mob_spawning_inside:
-  type: block
+  type: blocks
 - rabbits_spawnable_on:
-  type: block
+  type: blocks
 - rails:
-  type: block
+  type: blocks
 - redstone_ores:
-  type: block
+  type: blocks
 - replaceable_plants:
-  type: block
+  type: blocks
 - sand:
-  type: block
+  type: blocks
 - saplings:
-  type: block
+  type: blocks
 - sculk_replaceable:
-  type: block
+  type: blocks
 - sculk_replaceable_worldgen:
-  type: block
+  type: blocks
 - shulker_boxes:
-  type: block
+  type: blocks
 - signs:
-  type: block
+  type: blocks
 - slabs:
-  type: block
+  type: blocks
 - small_dripleaf_placeable:
-  type: block
+  type: blocks
 - small_flowers:
-  type: block
+  type: blocks
 - smelts_to_glass:
-  type: block
+  type: blocks
 - snaps_goat_horn:
-  type: block
+  type: blocks
 # Coming in 1.20 update
 # - sniffer_diggable_block:
-#   type: block
+#   type: blocks
 - snow_layer_can_survive_on:
-  type: block
+  type: blocks
 - snow_layer_cannot_survive_on:
-  type: block
+  type: blocks
 - snow:
-  type: block
+  type: blocks
 - soul_fire_base_blocks:
-  type: block
+  type: blocks
 - soul_speed_blocks:
-  type: block
+  type: blocks
 - spruce_logs:
-  type: block
+  type: blocks
 - stairs:
-  type: block
+  type: blocks
 - standing_signs:
-  type: block
+  type: blocks
 - stone_bricks:
-  type: block
+  type: blocks
 - stone_ore_replaceables:
-  type: block
+  type: blocks
 - stone_pressure_plates:
-  type: block
+  type: blocks
 - strider_warm_blocks:
-  type: block
+  type: blocks
 - tall_flowers:
-  type: block
+  type: blocks
 - terracotta:
-  type: block
+  type: blocks
 - trapdoors:
-  type: block
+  type: blocks
 - underwater_bonemeals:
-  type: block
+  type: blocks
 - unstable_bottom_center:
-  type: block
+  type: blocks
 - valid_spawn:
-  type: block
+  type: blocks
 - walls:
-  type: block
+  type: blocks
 - wall_corals:
-  type: block
+  type: blocks
 # Coming in 1.20 update
 # - wall_hanging_signs:
-#   type: block
+#   type: blocks
 - wall_post_override:
-  type: block
+  type: blocks
 - wall_signs:
-  type: block
+  type: blocks
 - warped_stems:
-  type: block
+  type: blocks
 - wart_blocks:
-  type: block
+  type: blocks
 - wither_immune:
-  type: block
+  type: blocks
 - wither_summon_base_blocks:
-  type: block
+  type: blocks
 - wolves_spawnable_on:
-  type: block
+  type: blocks
 - wooden_buttons:
-  type: block
+  type: blocks
 - wooden_doors:
-  type: block
+  type: blocks
 - wooden_fences:
-  type: block
+  type: blocks
 - wooden_pressure_plates:
-  type: block
+  type: blocks
 - wooden_slabs:
-  type: block
+  type: blocks
 - wooden_stairs:
-  type: block
+  type: blocks
 - wooden_trapdoors:
-  type: block
+  type: blocks
 - wool_carpets:
-  type: block
+  type: blocks
 - wool:
-  type: block
+  type: blocks
 
 - arrows:
-  type: entity
+  type: entities
 - axolotl_always_hostiles:
-  type: entity
+  type: entities
 - axolotl_hunt_targets:
-  type: entity
+  type: entities
 - beehive_inhabitors:
-  type: entity
+  type: entities
 # Coming in 1.19.4 update
 # - dismounts_underwater:
-#   type: entity
+#   type: entities
 # Coming in 1.19.4 update
 # - fall_damage_immune:
-#   type: entity
+#   type: entities
 - freeze_hurts_extra_types:
-  type: entity
+  type: entities
 - freeze_immune_entity_types:
-  type: entity
+  type: entities
 - frog_food:
-  type: entity
+  type: entities
 - impact_projectiles:
-  type: entity
+  type: entities
 - powder_snow_walkable_mobs:
-  type: entity
+  type: entities
 - raiders:
-  type: entity
+  type: entities
 - skeletons:
-  type: entity
+  type: entities
 
 - lava:
-  type: fluid
+  type: fluids
 - water:
-  type: fluid
+  type: fluids
 
 - acacia_logs_item:
-  type: item
+  type: items
 - anvil_item:
-  type: item
+  type: items
 - arrows_item:
-  type: item
+  type: items
 # Coming in 1.19.4 update
 # - axes:
-#   type: item
+#   type: items
 - axolotl_tempt_items:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - bamboo_blocks:
-#   type: item
+#   type: items
 - banners_item:
-  type: item
+  type: items
 - beacon_payment_items:
-  type: item
+  type: items
 - beds_item:
-  type: item
+  type: items
 - birch_logs_item:
-  type: item
+  type: items
 - boats:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - bookshelf_books:
-#   type: item
+#   type: items
 # Coming in 1.19.4 update
 # - breaks_decorated_pots:
-#   type: item
+#   type: items
 - buttons_item:
-  type: item
+  type: items
 - candles_item:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - cherry_logs:
-#   type: item
+#   type: items
 - chest_boats:
-  type: item
+  type: items
 - cluster_max_harvestables:
-  type: item
+  type: items
 - coal_ores_item:
-  type: item
+  type: items
 - coals:
-  type: item
+  type: items
 - compasses:
-  type: item
+  type: items
 - completes_find_tree_tutorial:
-  type: item
+  type: items
 - copper_ores_item:
-  type: item
+  type: items
 - creeper_drop_music_discs:
-  type: item
+  type: items
 - creeper_igniters:
-  type: item
+  type: items
 - crimson_stems_item:
-  type: item
+  type: items
 - dampens_vibrations_item:
-  type: item
+  type: items
 - dark_oak_logs_item:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - decorated_pot_shards:
-#   type: item
+#   type: items
 - diamond_ores_item:
-  type: item
+  type: items
 - dirt_item:
-  type: item
+  type: items
 - doors_item:
-  type: item
+  type: items
 - emerald_ores_item:
-  type: item
+  type: items
 - fence_gates_item:
-  type: item
+  type: items
 - fences_item:
-  type: item
+  type: items
 - fishes:
-  type: item
+  type: items
 - flowers_item:
-  type: item
+  type: items
 - fox_food:
-  type: item
+  type: items
 - freeze_immune_wearables:
-  type: item
+  type: items
 - gold_ores_item:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - hanging_signs:
-#   type: item
+#   type: items
 # Coming in 1.19.4 update
 # - hoes:
-#   type: item
+#   type: items
 - ignored_by_piglin_babies:
-  type: item
+  type: items
 - iron_ores_item:
-  type: item
+  type: items
 - jungle_logs_item:
-  type: item
+  type: items
 - lapis_ores_item:
-  type: item
+  type: items
 - leaves_item:
-  type: item
+  type: items
 - lectern_books:
-  type: item
+  type: items
 - logs_item:
-  type: item
+  type: items
 - logs_that_burn_item:
-  type: item
+  type: items
 - mangrove_logs_item:
-  type: item
+  type: items
 - music_discs:
-  type: item
+  type: items
 - non_flammable_wood:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - noteblock_top_instruments:
-#   type: item
+#   type: items
 - oak_logs_item:
-  type: item
+  type: items
 # Coming in 1.19.4 update
 # - pickaxes:
-#   type: item
+#   type: items
 - piglin_food:
-  type: item
+  type: items
 - piglin_loved:
-  type: item
+  type: items
 - piglin_repellents_item:
-  type: item
+  type: items
 - planks_item:
-  type: item
+  type: items
 - rails_item:
-  type: item
+  type: items
 - redstone_ores_item:
-  type: item
+  type: items
 - sand_item:
-  type: item
+  type: items
 - saplings_item:
-  type: item
+  type: items
 # Coming in 1.19.4 update
 # - shovels:
-#   type: item
+#   type: items
 - signs_item:
-  type: item
+  type: items
 - slabs_item:
-  type: item
+  type: items
 - small_flowers_item:
-  type: item
+  type: items
 - smelts_to_glass_item:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - sniffer_food:
-#   type: item
+#   type: items
 - soul_fire_base_blocks_item:
-  type: item
+  type: items
 - spruce_logs_item:
-  type: item
+  type: items
 - stairs_item:
-  type: item
+  type: items
 - stone_bricks_item:
-  type: item
+  type: items
 - stone_crafting_materials:
-  type: item
+  type: items
 - stone_tool_materials:
-  type: item
+  type: items
 # Coming in 1.19.4 update
 # - swords:
-#   type: item
+#   type: items
 - tall_flowers_item:
-  type: item
+  type: items
 - terracotta_item:
-  type: item
+  type: items
 # Coming in 1.19.4 update
 # - tools:
-#   type: item
+#   type: items
 - trapdoors_item:
-  type: item
+  type: items
 # Coming in 1.20 update
 # - trim_materials:
-#   type: item
+#   type: items
 # Coming in 1.20 update
 # - trim_templates:
-#   type: item
+#   type: items
 # Coming in 1.20 update
 # - trimmable_armor:
-#   type: item
+#   type: items
 - walls_item:
-  type: item
+  type: items
 - warped_stems_item:
-  type: item
+  type: items
 - wart_blocks_item:
-  type: item
+  type: items
 - wooden_buttons_item:
-  type: item
+  type: items
 - wooden_doors_item:
-  type: item
+  type: items
 - wooden_fences_item:
-  type: item
+  type: items
 - wooden_pressure_plates_item:
-  type: item
+  type: items
 - wooden_slabs_item:
-  type: item
+  type: items
 - wooden_stairs_item:
-  type: item
+  type: items
 - wooden_trapdoors_item:
-  type: item
+  type: items
 - wool_carpets_item:
-  type: item
+  type: items
 - wool_item:
-  type: item
+  type: items
 
 - allows_surface_slime_spawns:
-  type: biome
+  type: biomes
 - allows_tropical_fish_spawns_at_any_height:
-  type: biome
+  type: biomes
 - has_closer_water_fog:
-  type: biome
+  type: biomes
 - has_structure/ancient_city:
-  type: biome
+  type: biomes
 - has_structure/bastion_remnant:
-  type: biome
+  type: biomes
 - has_structure/buried_treasure:
-  type: biome
+  type: biomes
 - has_structure/desert_pyramid:
-  type: biome
+  type: biomes
 - has_structure/end_city:
-  type: biome
+  type: biomes
 - has_structure/igloo:
-  type: biome
+  type: biomes
 - has_structure/jungle_temple:
-  type: biome
+  type: biomes
 - has_structure/mineshaft_mesa:
-  type: biome
+  type: biomes
 - has_structure/mineshaft:
-  type: biome
+  type: biomes
 - has_structure/nether_fortress:
-  type: biome
+  type: biomes
 - has_structure/nether_fossil:
-  type: biome
+  type: biomes
 - has_structure/ocean_monument:
-  type: biome
+  type: biomes
 - has_structure/ocean_ruin_cold:
-  type: biome
+  type: biomes
 - has_structure/ocean_ruin_warm:
-  type: biome
+  type: biomes
 - has_structure/pillager_outpost:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_desert:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_jungle:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_mountain:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_nether:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_ocean:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_standard:
-  type: biome
+  type: biomes
 - has_structure/ruined_portal_swamp:
-  type: biome
+  type: biomes
 - has_structure/shipwreck_beached:
-  type: biome
+  type: biomes
 - has_structure/shipwreck:
-  type: biome
+  type: biomes
 - has_structure/stronghold:
-  type: biome
+  type: biomes
 - has_structure/swamp_hut:
-  type: biome
+  type: biomes
 - has_structure/village_desert:
-  type: biome
+  type: biomes
 - has_structure/village_plains:
-  type: biome
+  type: biomes
 - has_structure/village_savanna:
-  type: biome
+  type: biomes
 - has_structure/village_snowy:
-  type: biome
+  type: biomes
 - has_structure/village_taiga:
-  type: biome
+  type: biomes
 - has_structure/woodland_mansion:
-  type: biome
+  type: biomes
 # Coming in 1.19.4 update
 # - increased_fire_burnout:
-#   type: biome
+#   type: biomes
 - is_badlands:
-  type: biome
+  type: biomes
 - is_beach:
-  type: biome
+  type: biomes
 - is_deep_ocean:
-  type: biome
+  type: biomes
 - is_end:
-  type: biome
+  type: biomes
 - is_forest:
-  type: biome
+  type: biomes
 - is_hill:
-  type: biome
+  type: biomes
 - is_jungle:
-  type: biome
+  type: biomes
 - is_mountain:
-  type: biome
+  type: biomes
 - is_nether:
-  type: biome
+  type: biomes
 - is_ocean:
-  type: biome
+  type: biomes
 - is_overworld:
-  type: biome
+  type: biomes
 - is_river:
-  type: biome
+  type: biomes
 - is_savanna:
-  type: biome
+  type: biomes
 - is_taiga:
-  type: biome
+  type: biomes
 - mineshaft_blocking:
-  type: biome
+  type: biomes
 - more_frequent_drowned_spawns:
-  type: biome
+  type: biomes
 - plays_underwater_music:
-  type: biome
+  type: biomes
 - polar_bears_spawn_on_alternate_blocks:
-  type: biome
+  type: biomes
 - produces_corals_from_bonemeal:
-  type: biome
+  type: biomes
 - reduce_water_ambient_spawns:
-  type: biome
+  type: biomes
 - required_ocean_monument_surrounding:
-  type: biome
+  type: biomes
 # Coming in 1.19.4 update
 # - snow_golem_melts:
-#   type: biome
+#   type: biomes
 - spawns_cold_variant_frogs:
-  type: biome
+  type: biomes
 # Coming in 1.19.4 update
 # - spawns_gold_rabbits:
-#   type: biome
+#   type: biomes
 # Leaving in 1.19.4 update
 - only_allows_snow_and_gold_rabbits:
-  type: biome
+  type: biomes
 # Coming in 1.19.4 update
 # - spawns_snow_foxes:
-#   type: biome
+#   type: biomes
 - spawns_warm_variant_frogs:
-  type: biome
+  type: biomes
 # Coming in 1.19.4 update
 # - spawns_white_rabbits:
-#   type: biome
+#   type: biomes
 - stronghold_biased_to:
-  type: biome
+  type: biomes
 - water_on_map_outlines:
-  type: biome
+  type: biomes
 - without_patrol_spawns:
-  type: biome
+  type: biomes
 - without_wandering_trader_spawns:
-  type: biome
+  type: biomes
 - without_zombie_sieges:
-  type: biome
+  type: biomes
 
 - load:
-  type: function
+  type: functions
 - tick:
-  type: function
+  type: functions

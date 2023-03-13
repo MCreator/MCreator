@@ -21,6 +21,7 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Tag;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -228,8 +229,8 @@ public class ElementUtil {
 
 	public static List<DataListEntry> getAllTags(Workspace workspace, String type) {
 		List<DataListEntry> retval = getCustomElements(workspace, modElement -> {
-			if (modElement.getType() == ModElementType.TAG)
-				return modElement.getMetadata("type").equals(type);
+			if (modElement.getType() == ModElementType.TAG && modElement.getGeneratableElement() != null)
+				return ((Tag) modElement.getGeneratableElement()).type.toLowerCase().equals(type);
 			return false;
 		});
 
