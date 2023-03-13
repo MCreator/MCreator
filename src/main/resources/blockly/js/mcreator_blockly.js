@@ -90,6 +90,48 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
+// Helper function to use in Blockly extensions that check if output types of some children blocks are the same
+// If sourceInput name is provided, types of inputs are compared to input with that name
+// Otherwise, if the block is connected to a value input, types of inputs are compared to types accepted by that input
+function validateInputTypes(inputNames, sourceInput, repeatingInputs=false) {
+    return {
+        prevTargetConnection_: null,
+
+        onchange: function (changeEvent) {
+            const targetConnection = sourceInput ?
+                this.getInput(sourceInput) && this.getInput(sourceInput).connection :
+                this.outputConnection && this.outputConnection.targetConnection;
+            if (targetConnection && targetConnection.getCheck()) {
+                for (let i = 0; i < inputNames.length; i++) {
+                    if (repeatingInputs) {
+                        for (let j = 0; this.getInput(inputNames[i] + j); j++)
+                            this.checkInput_(changeEvent, inputNames[i] + j, targetConnection);
+                    } else {
+                        this.checkInput_(changeEvent, inputNames[i], targetConnection);
+                    }
+                }
+            }
+            this.prevTargetConnection_ = targetConnection;
+        },
+
+        checkInput_: function (changeEvent, inputName, targetConnection) {
+            const connection = this.getInput(inputName).connection.targetConnection;
+            const block = connection && connection.getSourceBlock();
+            if (block && !block.workspace.connectionChecker.doTypeChecks(block.outputConnection, targetConnection)) {
+                Blockly.Events.setGroup(changeEvent.group);
+                if (targetConnection === this.prevTargetConnection_) {
+                    this.unplug();
+                    parentConnection.getSourceBlock().bumpNeighbours();
+                } else {
+                    block.unplug();
+                    block.bumpNeighbours();
+                }
+                Blockly.Events.setGroup(false);
+            }
+        }
+    };
+}
+
 // Helper function to use in Blockly extensions that append a dropdown
 function appendDropDown(listType, fieldName) {
     return function () {
@@ -105,6 +147,53 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
             .appendField(new Blockly.FieldDropdown(
                 arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
     };
+}
+
+// Helper function to use in Blockly extensions that validate repeating fields' values meant to be unique
+function uniqueValueValidator(fieldName, nullValue) {
+    return function (newValue) {
+        for (let i = 0; this.getSourceBlock().getField(fieldName + i); i++) {
+            if (this.getSourceBlock().getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
+                return (nullValue ? nullValue() : null);
+        }
+        return newValue;
+    };
+}
+
+// Helper function to find first index not taken by repeating fields with a certain name
+function firstFreeIndex(block, fieldName, index=undefined) {
+    const values = [];
+    for (let i = 0; block.getField(fieldName + i); i++) {
+        const currVal = block.getFieldValue(fieldName + i);
+        if (i !== index)
+            values.push(typeof currVal == 'string' ? currVal : "" + currVal);
+    }
+    let retVal = 0;
+    while (true) {
+        if (values.indexOf("" + retVal) === -1)
+            break;
+        retVal++;
+    }
+    return parseInt(retVal, 10);
+}
+
+// Helper function to disable validators on newly created repeating fields when loading from save file
+function validOnLoad(field) {
+    const fieldFromXml = field.fromXml;
+    field.fromXml = function (fieldElement) {
+        const validator = this.validator_;
+        this.validator_ = null;
+        fieldFromXml.call(this, fieldElement);
+        this.validator_ = validator;
+    };
+    const fieldLoadState = field.loadState; // we need to "override" this one too
+    field.loadState = function (state) { // to not get caught by loadLegacyState and saveLegacyState on this field
+        const validator = this.validator_;
+        this.validator_ = null;
+        fieldLoadState.call(this, state);
+        this.validator_ = validator;
+    };
+    return field;
 }
 
 // A function to properly convert workspace to XML (google/blockly#6738)

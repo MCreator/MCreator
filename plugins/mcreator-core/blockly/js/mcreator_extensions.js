@@ -210,8 +210,8 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 // The empty message is localized as "blockly.block.block_type.empty"
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
-function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-                                   fieldNames = []) {
+function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, fieldNames = [],
+                                   isProperInput = true) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
@@ -246,6 +246,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             var connection = containerBlock.getInput('STACK').connection;
             for (let i = 0; i < this.inputCount_; i++) {
                 const inputBlock = workspace.newBlock(mutatorInput);
+                inputBlock.fieldValues_ = [];
                 inputBlock.initSvg();
                 connection.connect(inputBlock.previousConnection);
                 connection = inputBlock.nextConnection;
@@ -281,10 +282,16 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
                     Blockly.Mutator.reconnect(connections[i], this, inputName + i);
                 }
                 if (fieldValues[i]) {
+                    const validators = [];
                     for (let j = 0; j < fieldNames.length; j++) {
-                        let currentField = this.getField(fieldNames[j] + i);
-                        currentField.setValue(fieldValues[i][j] ?? '');
+                        const currentField = this.getField(fieldNames[j] + i);
+                        validators.push(currentField.getValidator());
+                        currentField.setValidator(null);
                     }
+                    for (let j = 0; j < fieldNames.length; j++)
+                        this.getField(fieldNames[j] + i).setValue(fieldValues[i][j] ?? '');
+                    for (let j = 0; j < fieldNames.length; j++)
+                        this.getField(fieldNames[j] + i).setValidator(validators[j]);
                 }
             }
         },
