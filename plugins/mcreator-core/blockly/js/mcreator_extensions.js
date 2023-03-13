@@ -37,6 +37,8 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
+Blockly.Extensions.registerMixin('controls_switch_onchange_mixin', validateInputTypes(['yield'], null, true));
+
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
@@ -341,6 +343,38 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
     }
 }
 
+Blockly.Extensions.registerMutator('controls_switch_number_mutator', simpleRepeatingInputMixin(
+        'controls_switch_mutator_container', 'controls_switch_mutator_input', 'yield',
+        function (thisBlock, inputName, index) {
+            (thisBlock.outputConnection ?
+                    thisBlock.appendValueInput(inputName + index) :
+                    thisBlock.appendStatementInput(inputName + index)).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.case'))
+                .appendField(validOnLoad(new Blockly.FieldNumber(firstFreeIndex(thisBlock, 'case'), null, null, 1,
+                    uniqueValueValidator('case', function () {
+                        return firstFreeIndex(thisBlock, 'case', index);
+                    }))), 'case' + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+            thisBlock.moveInputBefore(inputName + index, 'byDefault');
+        }, ['case']),
+    undefined, ['controls_switch_mutator_input']);
+
+Blockly.Extensions.registerMutator('controls_switch_string_mutator', simpleRepeatingInputMixin(
+        'controls_switch_mutator_container', 'controls_switch_mutator_input', 'yield',
+        function (thisBlock, inputName, index) {
+            (thisBlock.outputConnection ?
+                    thisBlock.appendValueInput(inputName + index) :
+                    thisBlock.appendStatementInput(inputName + index)).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.case'))
+                .appendField(validOnLoad(new Blockly.FieldTextInput("" + firstFreeIndex(thisBlock, 'case') ?? "0",
+                    uniqueValueValidator('case', function () {
+                        return "" + firstFreeIndex(thisBlock, 'case', index) ?? "0";
+                    }))), 'case' + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+            thisBlock.moveInputBefore(inputName + index, 'byDefault');
+        }, ['case']),
+    undefined, ['controls_switch_mutator_input']);
+
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
         function (thisBlock, inputName, index) {
@@ -355,7 +389,7 @@ Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMix
             thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
                 .appendField(new FieldMCItemSelector('allblocks'), 'block' + index);
-        }, false, ['block']),
+        }, ['block'], false),
     undefined, ['block_list_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields

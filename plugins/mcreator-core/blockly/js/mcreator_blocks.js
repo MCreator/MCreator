@@ -148,6 +148,79 @@ Blockly.Blocks['mcitem_all'] = {
     }
 };
 
+Blockly.Blocks['controls_switch_number_op'] = {
+    init: function () {
+        this.appendValueInput('value').setCheck('Number').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op"));
+        this.appendStatementInput('byDefault').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op.default"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour('%{BKY_MATH_HUE}');
+        Blockly.Extensions.apply('controls_switch_number_mutator', this, true);
+        Blockly.Extensions.apply('controls_switch_onchange_mixin', this, false);
+    }
+};
+
+Blockly.Blocks['controls_switch_string_op'] = {
+    init: function () {
+        this.appendValueInput('value').setCheck('String').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op"));
+        this.appendStatementInput('byDefault').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op.default"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour('%{BKY_TEXTS_HUE}');
+        Blockly.Extensions.apply('controls_switch_string_mutator', this, true);
+        Blockly.Extensions.apply('controls_switch_onchange_mixin', this, false);
+    }
+};
+
+Blockly.Blocks['controls_switch_number_op_get'] = {
+    init: function () {
+        this.appendValueInput('value').setCheck('Number').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op_get"));
+        this.appendValueInput('byDefault').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op_get.default"));
+        this.setOutput(true);
+        this.setColour('%{BKY_MATH_HUE}');
+        Blockly.Extensions.apply('controls_switch_number_mutator', this, true);
+        Blockly.Extensions.apply('controls_switch_onchange_mixin', this, false);
+    }
+};
+
+Blockly.Blocks['controls_switch_string_op_get'] = {
+    init: function () {
+        this.appendValueInput('value').setCheck('String').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op_get"));
+        this.appendValueInput('byDefault').setAlign(Blockly.Input.Align.RIGHT)
+            .appendField(javabridge.t("blockly.block.controls_switch_op_get.default"));
+        this.setOutput(true);
+        this.setColour('%{BKY_TEXTS_HUE}');
+        Blockly.Extensions.apply('controls_switch_string_mutator', this, true);
+        Blockly.Extensions.apply('controls_switch_onchange_mixin', this, false);
+    }
+};
+
+Blockly.Blocks['controls_switch_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.controls_switch_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
+Blockly.Blocks['controls_switch_mutator_input'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.controls_switch_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
 Blockly.Blocks['entity_from_deps'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.entity_from_deps"));

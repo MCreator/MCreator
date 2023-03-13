@@ -115,6 +115,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());
+		blockGenerators.add(new SwitchProceduralBlock());
 		blockGenerators.add(new LoopBlock());
 		blockGenerators.add(new FlowControlBlock());
 		blockGenerators.add(new SingularMathOperationsBlock());
@@ -127,6 +128,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new BinaryOperationsBlock());
 		blockGenerators.add(new TextBinaryOperationsBlock());
 		blockGenerators.add(new LogicNegateBlock());
+		blockGenerators.add(new SwitchOutputBlock());
 		blockGenerators.add(new BooleanBlock());
 		blockGenerators.add(new NumberBlock());
 		blockGenerators.add(new NumberConstantsBlock());

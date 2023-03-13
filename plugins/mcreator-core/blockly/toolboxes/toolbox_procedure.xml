@@ -29,6 +29,18 @@
             <mutation elseif="1"/>
         </block>
         <block type="logic_ternary_op"/>
+        <block type="controls_switch_number_op">
+            <mutation inputs="2"/>
+        </block>
+        <block type="controls_switch_number_op_get">
+            <mutation inputs="2"/>
+        </block>
+        <block type="controls_switch_string_op">
+            <mutation inputs="2"/>
+        </block>
+        <block type="controls_switch_string_op_get">
+            <mutation inputs="2"/>
+        </block>
         <block type="controls_repeat_ext"/>
         <block type="controls_while"/>
         <block type="controls_flow_statements"/>
