@@ -1371,13 +1371,12 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.TAG.equals(modElement.getType())) {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Fluids", "Functions", "Biomes" });
+			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes" });
 			tag.name = modElement.getName();
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
-			tag.fluids = new ArrayList<>();
 			tag.biomes = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.addAll(
@@ -1387,8 +1386,6 @@ public class TestWorkspaceDataProvider {
 						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
 						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
-				tag.fluids.addAll(Arrays.stream(ElementUtil.loadAllFluids(modElement.getWorkspace())).map(
-						e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e)).toList());
 				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
 						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 

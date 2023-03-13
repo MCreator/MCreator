@@ -95,9 +95,6 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
 
-		callables.add(addTag(mcreator, props, "water", "minecraft", "Fluids", false));
-		callables.add(addTag(mcreator, props, "lava", "minecraft", "Fluids", false));
-
 		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", false));
 		callables.add(addTag(mcreator, props, "is_nether", "minecraft", "Biomes", false));
 		callables.add(addTag(mcreator, props, "is_end", "minecraft", "Biomes", false));
@@ -144,8 +141,6 @@ public class InjectTagsTool {
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FUNCTION.getIcon().getImage(), 32)));
 		case "Entities" ->
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
-		case "Fluids" ->
-				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.FLUID.getIcon().getImage(), 32)));
 		case "Biomes" ->
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BIOME.getIcon().getImage(), 32)));
 		}
@@ -182,7 +177,6 @@ public class InjectTagsTool {
 			tag.items = Collections.emptyList();
 			tag.functions = Collections.emptyList();
 			tag.entities = Collections.emptyList();
-			tag.fluids = Collections.emptyList();
 			tag.biomes = Collections.emptyList();
 
 			workspace.getModElementManager().storeModElementPicture(tag);

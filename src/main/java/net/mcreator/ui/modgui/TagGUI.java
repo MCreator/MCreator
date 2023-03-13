@@ -45,14 +45,13 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Items", "Blocks", "Entities", "Fluids", "Biomes", "Functions" });
+			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
 
 	private ModElementListField functions;
 	private SpawnableEntityListField entities;
-	private FluidListField fluids;
 
 	private BiomeListField biomes;
 
@@ -72,7 +71,6 @@ public class TagGUI extends ModElementGUI<Tag> {
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
 		entities = new SpawnableEntityListField(mcreator);
-		fluids = new FluidListField(mcreator);
 		biomes = new BiomeListField(mcreator);
 
 		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
@@ -100,7 +98,6 @@ public class TagGUI extends ModElementGUI<Tag> {
 		valuesPan.add(blocks, "Blocks");
 		valuesPan.add(functions, "Functions");
 		valuesPan.add(entities, "Entities");
-		valuesPan.add(fluids, "Fluids");
 		valuesPan.add(biomes, "Biomes");
 
 		if (isEditingMode()) {
@@ -155,7 +152,6 @@ public class TagGUI extends ModElementGUI<Tag> {
 		blocks.setListElements(tag.blocks);
 		functions.setListElements(tag.functions);
 		entities.setListElements(tag.entities);
-		fluids.setListElements(tag.fluids);
 		biomes.setListElements(tag.biomes);
 	}
 
@@ -168,7 +164,6 @@ public class TagGUI extends ModElementGUI<Tag> {
 		tag.blocks = blocks.getListElements();
 		tag.functions = functions.getListElements();
 		tag.entities = entities.getListElements();
-		tag.fluids = fluids.getListElements();
 		tag.biomes = biomes.getListElements();
 
 		tag.name = name.getEditor().getItem().toString();
