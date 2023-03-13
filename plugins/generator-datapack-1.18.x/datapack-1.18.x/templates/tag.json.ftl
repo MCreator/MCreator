@@ -24,6 +24,15 @@
               </#if>
               <#if value?has_next>,</#if>
           </#list>
+      <#elseif data.type == "Fluids">
+          <#list w.filterBrokenReferences(data.fluids) as value>
+              <#if value.getUnmappedValue().startsWith("CUSTOM:")>
+                "${generator.getResourceLocationForModElement(value.getUnmappedValue()?replace("CUSTOM:", ""))}"
+              <#else>
+                "${generator.map(value.getUnmappedValue(), "fluids", 0)}"
+              </#if>
+              <#if value?has_next>,</#if>
+          </#list>
       <#elseif data.type == "Biomes">
           <#list w.filterBrokenReferences(data.biomes) as value>
             "${value}"<#if value?has_next>,</#if>
