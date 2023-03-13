@@ -60,7 +60,7 @@ public class UISection extends PreferencesSection {
 				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
 		aaText = addEntry(new BooleanEntry("aaText", true));
 		textAntialiasingType = addEntry(
-				new StringEntry("textAntialiasingType", "All", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
+				new StringEntry("textAntialiasingType", "on", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
 						"lcd_vbgr"));
 		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
 		useNativeFileChooser = addEntry(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS));
