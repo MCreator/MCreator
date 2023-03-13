@@ -1,0 +1,31 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "fluids",
+      "datalist": "fluids",
+      "customEntryProviders": "fluid"
+    },
+    {
+      "type": "input_value",
+      "name": "tag",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "group": "data",
+    "toolbox_id": "blockdata",
+    "toolbox_init": [
+      "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">minecraft:water</field></block></value>"
+    ],
+    "fields": [
+      "fluids"
+    ],
+    "inputs": [
+      "tag"
+    ]
+  }
+}
