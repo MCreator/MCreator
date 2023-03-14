@@ -248,7 +248,8 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             var connection = containerBlock.getInput('STACK').connection;
             for (let i = 0; i < this.inputCount_; i++) {
                 const inputBlock = workspace.newBlock(mutatorInput);
-                inputBlock.fieldValues_ = [];
+                if (fieldNames.length > 0)
+                    inputBlock.fieldValues_ = [];
                 inputBlock.initSvg();
                 connection.connect(inputBlock.previousConnection);
                 connection = inputBlock.nextConnection;
@@ -279,21 +280,26 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             this.inputCount_ = connections.length;
             this.updateShape_();
             // Reconnect any child blocks and update the field values
-            for (let i = 0; i < this.inputCount_; i++) {
-                if (isProperInput) {
+            if (isProperInput) {
+                for (let i = 0; i < this.inputCount_; i++)
                     Blockly.Mutator.reconnect(connections[i], this, inputName + i);
+            }
+            for (let i = 0; i < fieldNames.length; i++) {
+                const validators = [];
+                for (let j = 0; j < this.inputCount_; j++) {
+                    const currentField = this.getField(fieldNames[i] + j);
+                    validators.push(currentField.getValidator());
+                    currentField.setValidator(null);
                 }
-                if (fieldValues[i]) {
-                    const validators = [];
-                    for (let j = 0; j < fieldNames.length; j++) {
-                        const currentField = this.getField(fieldNames[j] + i);
-                        validators.push(currentField.getValidator());
-                        currentField.setValidator(null);
-                    }
-                    for (let j = 0; j < fieldNames.length; j++)
-                        this.getField(fieldNames[j] + i).setValue(fieldValues[i][j] ?? '');
-                    for (let j = 0; j < fieldNames.length; j++)
-                        this.getField(fieldNames[j] + i).setValidator(validators[j]);
+                for (let j = 0; j < this.inputCount_; j++) {
+                    if (fieldValues[j]) // If fields existed before, restore their values unconditionally
+                        this.setFieldValue(fieldValues[j][i] ?? '', fieldNames[i] + j);
+                }
+                for (let j = 0; j < this.inputCount_; j++) {
+                    const currentField = this.getField(fieldNames[i] + j);
+                    currentField.setValidator(validators[i]);
+                    if (fieldValues[j] == null) // Force values of newly created fields to be validated
+                        currentField.setValue(currentField.getValue());
                 }
             }
         },

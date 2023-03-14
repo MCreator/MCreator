@@ -152,8 +152,8 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
 // Helper function to use in Blockly extensions that validate repeating fields' values meant to be unique
 function uniqueValueValidator(fieldName, nullValue) {
     return function (newValue) {
-        for (let i = 0; this.getSourceBlock().getField(fieldName + i); i++) {
-            if (this.getSourceBlock().getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
+        for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
+            if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
                 return (nullValue ? nullValue() : null);
         }
         return newValue;
@@ -161,12 +161,13 @@ function uniqueValueValidator(fieldName, nullValue) {
 }
 
 // Helper function to find first index not taken by repeating fields with a certain name
-function firstFreeIndex(block, fieldName, index=undefined) {
+function firstFreeIndex(block, fieldName, index) {
     const values = [];
     for (let i = 0; block.getField(fieldName + i); i++) {
         const currVal = block.getFieldValue(fieldName + i);
-        if (i !== index)
-            values.push(typeof currVal == 'string' ? currVal : "" + currVal);
+        if (index && (i != index))
+            continue;
+        values.push(typeof currVal == 'string' ? currVal : "" + currVal);
     }
     let retVal = 0;
     while (true) {
