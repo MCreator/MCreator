@@ -1048,7 +1048,7 @@ Blocks.HARDENED_CLAY:
   - "terracotta"
 Blocks.STAINED_HARDENED_CLAY:
   - Blocks.WHITE_TERRACOTTA
-  - "white_terracotta"
+  - "#minecraft:terracotta"
 Blocks.STAINED_HARDENED_CLAY#0:
   - Blocks.WHITE_TERRACOTTA
   - "white_terracotta"

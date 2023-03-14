@@ -3414,12 +3414,12 @@
   texture: WOOL#15
 
 - Blocks.HARDENED_CLAY:
-  readable_name: "Hardened Clay"
+  readable_name: "Terracotta"
   type: block
   texture: HARDENED_CLAY
 
 - Blocks.STAINED_HARDENED_CLAY:
-  readable_name: "Terracotta"
+  readable_name: "Any Terracotta"
   type: block
   subtypes: true
   texture: STAINED_HARDENED_CLAY
