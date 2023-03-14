@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -71,8 +72,9 @@ public class SwitchOutputBlock implements IBlockGenerator {
 
 		master.append("(switch (");
 		if (isNumberType)
-			master.append("(int) ");
-		master.processOutputBlockWithoutParentheses(value);
+			master.append(ProcedureCodeOptimizer.toInt(master.directProcessOutputBlockWithoutParentheses(value)));
+		else
+			master.processOutputBlockWithoutParentheses(value);
 		master.append(") {");
 		for (String caseValue : cases.keySet()) {
 			master.append("case " + (isNumberType ? caseValue : "\"" + caseValue + "\"") + " -> ");
