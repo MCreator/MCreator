@@ -154,7 +154,7 @@ function uniqueValueValidator(fieldName, nullValue) {
     return function (newValue) {
         for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
             if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
-                return (nullValue ? nullValue() : null);
+                return this.mutationInProcess_ ? nullValue() : null;
         }
         return newValue;
     };
@@ -164,10 +164,9 @@ function uniqueValueValidator(fieldName, nullValue) {
 function firstFreeIndex(block, fieldName, index) {
     const values = [];
     for (let i = 0; block.getField(fieldName + i); i++) {
-        const currVal = block.getFieldValue(fieldName + i);
-        if (index && (i != index))
+        if (index && i == index)
             continue;
-        values.push(typeof currVal == 'string' ? currVal : "" + currVal);
+        values.push("" + block.getFieldValue(fieldName + i));
     }
     let retVal = 0;
     while (true) {
