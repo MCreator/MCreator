@@ -340,8 +340,15 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             }
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
-                if (!this.getInput(inputName + i))
+                if (!this.getInput(inputName + i)) {
                     inputProvider(this, inputName, i);
+                    for (let j = 0; j < fieldNames.length; j++) {
+                        const currentField = this.getField(fieldNames[j] + i);
+                        currentField.mutationInProcess_ = true;
+                        currentField.setValue(currentField.getValue());
+                        currentField.mutationInProcess_ = false;
+                    }
+                }
             }
             // Remove extra inputs
             for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
@@ -358,7 +365,7 @@ Blockly.Extensions.registerMutator('controls_switch_number_mutator', simpleRepea
                     thisBlock.appendValueInput(inputName + index) :
                     thisBlock.appendStatementInput(inputName + index)).setAlign(Blockly.Input.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.case'))
-                .appendField(validOnLoad(new Blockly.FieldNumber(firstFreeIndex(thisBlock, 'case'), null, null, 1,
+                .appendField(validOnLoad(new Blockly.FieldNumber(0, null, null, 1,
                     uniqueValueValidator('case', function () {
                         return firstFreeIndex(thisBlock, 'case', index);
                     }))), 'case' + index)
@@ -374,7 +381,7 @@ Blockly.Extensions.registerMutator('controls_switch_string_mutator', simpleRepea
                     thisBlock.appendValueInput(inputName + index) :
                     thisBlock.appendStatementInput(inputName + index)).setAlign(Blockly.Input.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.case'))
-                .appendField(validOnLoad(new Blockly.FieldTextInput("" + firstFreeIndex(thisBlock, 'case'),
+                .appendField(validOnLoad(new Blockly.FieldTextInput("0",
                     uniqueValueValidator('case', function () {
                         return "" + firstFreeIndex(thisBlock, 'case', index);
                     }))), 'case' + index)

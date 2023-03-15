@@ -150,6 +150,7 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
 }
 
 // Helper function to use in Blockly extensions that validate repeating fields' values meant to be unique
+// The nullValue function is used when mutator needs to set a valid value in the field right after its creation
 function uniqueValueValidator(fieldName, nullValue) {
     return function (newValue) {
         for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
@@ -174,7 +175,7 @@ function firstFreeIndex(block, fieldName, index) {
             break;
         retVal++;
     }
-    return parseInt(retVal, 10);
+    return retVal;
 }
 
 // Helper function to disable validators on newly created repeating fields when loading from save file
@@ -187,7 +188,7 @@ function validOnLoad(field) {
         this.validator_ = validator;
     };
     const fieldLoadState = field.loadState; // we need to "override" this one too
-    field.loadState = function (state) { // to not get caught by loadLegacyState and saveLegacyState on this field
+    field.loadState = function (state) { // to not get caught by loadLegacyState function on this field
         const validator = this.validator_;
         this.validator_ = null;
         fieldLoadState.call(this, state);
