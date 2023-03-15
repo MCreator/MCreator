@@ -573,11 +573,11 @@ public class TestWorkspaceDataProvider {
 				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
-						"button1", 100, 200, new Procedure("procedure10"), null));
-				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
-				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
+						"button1", 100, 200, new Procedure("procedure10"), null, _true));
+				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null, !_true));
+				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3"), _true));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
-						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
+						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4"), !_true));
 				components.add(
 						new ImageButton("imagebutton1", 0, 48, "picture1", "picture2", new Procedure("procedure10"),
 								null));

@@ -40,6 +40,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField buttonText = new JTextField(20);
+		JCheckBox isTextButton = new JCheckBox();
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
@@ -49,6 +50,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), buttonText));
+		isTextButton.setOpaque(false);
+		options.add(PanelUtils.join(L10N.label("dialog.gui.is_text_button"), isTextButton));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -75,6 +78,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		if (button != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			buttonText.setText(button.text);
+			isTextButton.setSelected(button.isTextButton);
 			eh.setSelectedProcedure(button.onClick);
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
@@ -89,7 +93,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 
 				Button component = new Button(name, 0, 0, text, textwidth + 25, 20, eh.getSelectedProcedure(),
-						displayCondition.getSelectedProcedure());
+						displayCondition.getSelectedProcedure(), isTextButton.isSelected());
 
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
@@ -99,7 +103,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 				int idx = editor.components.indexOf(button);
 				editor.components.remove(button);
 				Button buttonNew = new Button(button.name, button.getX(), button.getY(), text, button.width,
-						button.height, eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
+						button.height, eh.getSelectedProcedure(), displayCondition.getSelectedProcedure(), isTextButton.isSelected());
 				editor.components.add(idx, buttonNew);
 				setEditingComponent(buttonNew);
 			}
