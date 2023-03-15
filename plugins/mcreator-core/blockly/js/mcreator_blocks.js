@@ -158,7 +158,6 @@ Blockly.Blocks['controls_switch_number_op'] = {
         this.setNextStatement(true);
         this.setColour('%{BKY_MATH_HUE}');
         Blockly.Extensions.apply('controls_switch_number_mutator', this, true);
-        Blockly.Extensions.apply('controls_switch_onchange_mixin', this, false);
     }
 };
 
@@ -172,7 +171,6 @@ Blockly.Blocks['controls_switch_string_op'] = {
         this.setNextStatement(true);
         this.setColour('%{BKY_TEXTS_HUE}');
         Blockly.Extensions.apply('controls_switch_string_mutator', this, true);
-        Blockly.Extensions.apply('controls_switch_onchange_mixin', this, false);
     }
 };
 
