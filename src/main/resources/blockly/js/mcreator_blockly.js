@@ -93,7 +93,7 @@ function jsonToBlocklyDropDownArray(json) {
 // Helper function to use in Blockly extensions that check if output types of some children blocks are the same
 // If sourceInput name is provided, types of inputs are compared to input with that name
 // Otherwise, if the block is connected to a value input, types of inputs are compared to types accepted by that input
-function validateInputTypes(inputNames=[], repeatingInputNames=[], sourceInput) {
+function validateInputTypes(inputNames = [], repeatingInputNames = [], sourceInput) {
     if (inputNames.length == 0 && repeatingInputNames.length == 0)
         return {};
     return {
@@ -119,7 +119,7 @@ function validateInputTypes(inputNames=[], repeatingInputNames=[], sourceInput) 
             const block = connection && connection.getSourceBlock();
             if (block && !block.workspace.connectionChecker.doTypeChecks(block.outputConnection, targetConnection)) {
                 Blockly.Events.setGroup(changeEvent.group);
-                if (targetConnection === this.prevTargetConnection_) {
+                if (targetConnection == this.prevTargetConnection_) {
                     this.unplug();
                     parentConnection.getSourceBlock().bumpNeighbours();
                 } else {
