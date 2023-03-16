@@ -60,14 +60,13 @@ public class JBoundingBoxList extends JEntriesList {
 
 		add.setText(L10N.t("elementgui.common.add_bounding_box"));
 		topbar.add(add);
+		add("North", topbar);
 
 		if (modelProvider != null) {
 			genFromModel.addActionListener(e -> generateBoundingBoxFromModel());
 			topbar.add(genFromModel);
 			modelChanged();
 		}
-
-		add("North", topbar);
 
 		entries.setOpaque(false);
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
