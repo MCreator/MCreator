@@ -58,7 +58,7 @@ public class ShareableZIPManager {
 				p1.err();
 				dial.refreshDisplay();
 
-				JOptionPane.showMessageDialog(window, L10N.t("dialog.workspace.import_from_zip.failed_message"),
+				JOptionPane.showMessageDialog(dial, L10N.t("dialog.workspace.import_from_zip.failed_message"),
 						L10N.t("dialog.workspace.import_from_zip.failed_title"), JOptionPane.ERROR_MESSAGE);
 
 				dial.hideAll();
@@ -71,7 +71,7 @@ public class ShareableZIPManager {
 			dial.addProgress(p2);
 
 			try {
-				Workspace workspace = Workspace.readFromFS(retval.get(), window);
+				Workspace workspace = Workspace.readFromFS(retval.get(), dial);
 
 				int modstoload = workspace.getModElements().size();
 
@@ -85,8 +85,10 @@ public class ShareableZIPManager {
 					if (generatableElement != null) {
 						workspace.getModElementManager().storeModElementPicture(
 								generatableElement); // save custom mod element picture if it has one
-						workspace.addModElement(generatableElement.getModElement()); // add mod element to workspace again, so the icons get reloaded
-						generatableElement.getModElement().reinit(workspace); // we reinit the mod to load new icons etc.
+						workspace.addModElement(
+								generatableElement.getModElement()); // add mod element to workspace again, so the icons get reloaded
+						generatableElement.getModElement()
+								.reinit(workspace); // we reinit the mod to load new icons etc.
 					}
 
 					i++;

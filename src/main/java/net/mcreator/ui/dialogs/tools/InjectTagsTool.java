@@ -72,6 +72,7 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "walls", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "tall_flowers", "minecraft", "Blocks", false));
+		callables.add(addTag(mcreator, props, "bee_growables", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "valid_spawn", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "impermeable", "minecraft", "Blocks", false));
 		callables.add(addTag(mcreator, props, "beacon_base_blocks", "minecraft", "Blocks", false));

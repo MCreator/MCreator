@@ -25,7 +25,6 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
-import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;

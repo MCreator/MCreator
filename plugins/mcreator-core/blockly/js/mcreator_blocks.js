@@ -458,7 +458,7 @@ Blockly.Blocks['time_week_of_year'] = {
 
 // Mutator block for "Any/All of" block predicates
 Blockly.Blocks['block_predicate_mutator_container'] = {
-    init: function() {
+    init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.container"));
         this.appendStatementInput('STACK');
         this.contextMenu = false;
@@ -468,18 +468,18 @@ Blockly.Blocks['block_predicate_mutator_container'] = {
 
 // Mutator block for "Any/All of" block predicates
 Blockly.Blocks['block_predicate_mutator_input'] = {
-    init: function() {
-      this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.input"));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.setColour('%{BKY_LOGIC_HUE}');
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour('%{BKY_LOGIC_HUE}');
     }
 };
 
 // Mutator block for "Block list" mixin
 Blockly.Blocks['block_list_mutator_container'] = {
-    init: function() {
+    init: function () {
         this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.container'));
         this.appendStatementInput('STACK');
         this.contextMenu = false;
@@ -489,13 +489,13 @@ Blockly.Blocks['block_list_mutator_container'] = {
 
 // Mutator block for "Block list" mixin
 Blockly.Blocks['block_list_mutator_input'] = {
-    init: function() {
-      this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.input'));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.fieldValues_ = [];
-      this.setColour(45);
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.input'));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.fieldValues_ = [];
+        this.setColour(45);
     }
 };
 
