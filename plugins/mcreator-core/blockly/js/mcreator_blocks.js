@@ -247,10 +247,8 @@ Blockly.Blocks['controls_while'] = {
     init: function () {
         this.appendValueInput('BOOL').setCheck('Boolean')
             .appendField(javabridge.t("blockly.block.controls_while"));
-        this.appendDummyInput();
         this.appendStatementInput('DO')
             .appendField('%{BKY_CONTROLS_REPEAT_INPUT_DO}');
-        this.setInputsInline(true);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour('%{BKY_LOOPS_HUE}');
