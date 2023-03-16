@@ -1,0 +1,1 @@
+Le texte qui sera affiché dans l'info-bulle.
