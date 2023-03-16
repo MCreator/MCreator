@@ -37,7 +37,7 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
-Blockly.Extensions.registerMixin('controls_switch_onchange_mixin', validateInputTypes(['yield'], null, true));
+Blockly.Extensions.registerMixin('controls_switch_onchange_mixin', validateInputTypes([], ['yield']));
 
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',

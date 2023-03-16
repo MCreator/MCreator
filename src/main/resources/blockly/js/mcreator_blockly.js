@@ -93,7 +93,9 @@ function jsonToBlocklyDropDownArray(json) {
 // Helper function to use in Blockly extensions that check if output types of some children blocks are the same
 // If sourceInput name is provided, types of inputs are compared to input with that name
 // Otherwise, if the block is connected to a value input, types of inputs are compared to types accepted by that input
-function validateInputTypes(inputNames, sourceInput, repeatingInputs=false) {
+function validateInputTypes(inputNames=[], repeatingInputNames=[], sourceInput) {
+    if (inputNames.length == 0 && repeatingInputNames.length == 0)
+        return {};
     return {
         prevTargetConnection_: null,
 
@@ -102,13 +104,11 @@ function validateInputTypes(inputNames, sourceInput, repeatingInputs=false) {
                 this.getInput(sourceInput) && this.getInput(sourceInput).connection :
                 this.outputConnection && this.outputConnection.targetConnection;
             if (targetConnection && targetConnection.getCheck()) {
-                for (let i = 0; i < inputNames.length; i++) {
-                    if (repeatingInputs) {
-                        for (let j = 0; this.getInput(inputNames[i] + j); j++)
-                            this.checkInput_(changeEvent, inputNames[i] + j, targetConnection);
-                    } else {
-                        this.checkInput_(changeEvent, inputNames[i], targetConnection);
-                    }
+                for (let i = 0; i < inputNames.length; i++)
+                    this.checkInput_(changeEvent, inputNames[i], targetConnection);
+                for (let i = 0; i < repeatingInputNames.length; i++) {
+                    for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++)
+                        this.checkInput_(changeEvent, repeatingInputNames[i] + j, targetConnection);
                 }
             }
             this.prevTargetConnection_ = targetConnection;
