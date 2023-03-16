@@ -43,7 +43,9 @@ public class ReferencesFinder {
 		String query = new DataListEntry.Custom(element).getName();
 		for (ModElement me : workspace.getModElements()) {
 			GeneratableElement ge = me.getGeneratableElement();
-			if (ge instanceof IOtherModElementsDependent mod) {
+			if (ge instanceof IXMLProvider provider && provider.getXML().contains(query)) {
+				elements.add(me);
+			} else if (ge instanceof IOtherModElementsDependent mod) {
 				if (mod.getUsedElementNames().contains(query)) {
 					elements.add(me);
 				} else if (mod.getUsedElementMappings().stream()
@@ -53,8 +55,6 @@ public class ReferencesFinder {
 						.anyMatch(e -> e != null && element.getName().equals(e.getName()))) {
 					elements.add(me);
 				}
-			} else if (ge instanceof IXMLProvider provider && provider.getXML().contains(query)) {
-				elements.add(me);
 			}
 		}
 
@@ -80,9 +80,8 @@ public class ReferencesFinder {
 
 		for (ModElement me : workspace.getModElements()) {
 			if (me.getGeneratableElement() instanceof IResourcesDependent res && (res.getModels().contains(model)
-					|| res.getModels().stream().anyMatch(TexturedModel.getModelTextureMapVariations(model)::contains))) {
+					|| res.getModels().stream().anyMatch(TexturedModel.getModelTextureMapVariations(model)::contains)))
 				elements.add(me);
-			}
 		}
 
 		return elements;
@@ -128,9 +127,10 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (me.getGeneratableElement() instanceof IXMLProvider provider && provider.getXML()
-					.contains(localizationKey) || me.getGeneratableElement() != null && workspace.getGenerator()
-					.getElementLocalizationKeys(me.getGeneratableElement()).contains(localizationKey))
+			GeneratableElement ge = me.getGeneratableElement();
+			if (ge instanceof IXMLProvider provider && provider.getXML().contains(localizationKey))
+				elements.add(me);
+			else if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey))
 				elements.add(me);
 		}
 
