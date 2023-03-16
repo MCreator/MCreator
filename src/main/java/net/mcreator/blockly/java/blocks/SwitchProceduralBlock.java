@@ -38,26 +38,30 @@ public class SwitchProceduralBlock implements IBlockGenerator {
 		boolean isNumberType = block.getAttribute("type").equals("controls_switch_number_op");
 		Element value = null, byDefault = null;
 		Map<String, Element> cases = new LinkedHashMap<>();
-		List<Element> fields = XMLUtil.getChildrenWithName(block, "field");
+		List<Element> branches = XMLUtil.getChildrenWithName(block, "statement");
+		int fields = 0;
 		for (Element element : XMLUtil.getDirectChildren(block)) {
+			String name = element.getAttribute("name");
 			switch (element.getNodeName()) {
 			case "value" -> value = element;
 			case "statement" -> {
-				String name = element.getAttribute("name");
-				if (name.startsWith("yield")) { // find the corresponding case value for this statement
+				if (name.equals("byDefault"))
+					byDefault = element;
+			}
+			case "field" -> {
+				fields++;
+				if (name.startsWith("case")) { // find the corresponding case branch for this field
 					Element caseValue = null;
-					for (Element candidate : fields) {
-						if (candidate.getAttribute("name").equals(name.replace("yield", "case")))
+					for (Element candidate : branches) {
+						if (candidate.getAttribute("name").equals(name.replace("case", "yield")))
 							caseValue = candidate;
 					}
 					if (caseValue != null) {
-						cases.put(caseValue.getTextContent(), element);
+						cases.put(element.getTextContent(), caseValue);
 					} else {
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 								L10N.t("blockly.warnings.switch_case_branch_empty")));
 					}
-				} else if (name.equals("byDefault")) {
-					byDefault = element;
 				}
 			}
 			}
@@ -67,6 +71,12 @@ public class SwitchProceduralBlock implements IBlockGenerator {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.switch_value_missing")));
 			return;
+		} else if (byDefault == null) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.switch_default_branch_empty")));
+		} else if (fields == 0) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.switch_no_case_branches")));
 		}
 
 		master.append("switch (");
@@ -84,9 +94,6 @@ public class SwitchProceduralBlock implements IBlockGenerator {
 			master.append("default -> {");
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(byDefault));
 			master.append("}");
-		} else {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					L10N.t("blockly.warnings.switch_default_branch_empty")));
 		}
 		master.append("}");
 	}
