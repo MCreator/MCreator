@@ -294,6 +294,20 @@ Blockly.Blocks['text_substring'] = {
     }
 };
 
+Blockly.Blocks['text_substring_from'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_substring.substring"));
+        this.appendValueInput('from').setCheck('Number')
+            .appendField(javabridge.t("blockly.block.text_substring.from"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
 Blockly.Blocks['text_replace'] = {
     init: function () {
         this.appendValueInput('what').setCheck('String')
