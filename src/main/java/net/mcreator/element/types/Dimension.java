@@ -42,9 +42,6 @@ import java.util.List;
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
 		implements ICommonType, ITabContainedElement, IMCItemProvider {
 
-	public final transient int IGNITER_NEW;
-	public final transient int IGNITER_CUSTOM;
-
 	public List<BiomeEntry> biomesInDimension;
 
 	public String worldGenType;
@@ -69,7 +66,7 @@ import java.util.List;
 	public Particle portalParticles;
 	public int portalLuminance;
 	public Sound portalSound;
-	public int igniterType;
+	public boolean customIgniterType;
 	public String igniterName;
 	public TabEntry igniterTab;
 	public String texture;
@@ -87,17 +84,14 @@ import java.util.List;
 	public Dimension(ModElement element) {
 		super(element);
 
-		// RESTORE CONSTANTS (FOR GSON)
-		IGNITER_CUSTOM = 0;
-		IGNITER_NEW = 1;
-
 		// DEFAULT VALUES
 		this.enablePortal = true;
+		this.customIgniterType = false;
 		this.sleepResult = "ALLOW";
 	}
 
 	public boolean newDimensionIgniter() {
-		return enablePortal && igniterType == 1;
+		return enablePortal && !customIgniterType;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

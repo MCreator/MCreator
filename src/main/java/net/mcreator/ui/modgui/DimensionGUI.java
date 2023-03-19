@@ -306,9 +306,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.setOpaque(false);
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
-				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enablePortal, true));
+				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), newIgniter, true));
 		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
-		texture.setValidator(new TileHolderValidator(texture, enablePortal));
+		texture.setValidator(new TileHolderValidator(texture, newIgniter));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
@@ -381,6 +381,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		mainFillerBlock.setBlock(dimension.mainFillerBlock);
 		fluidBlock.setBlock(dimension.fluidBlock);
 		portalSound.setSound(dimension.portalSound);
+		newIgniter.setSelected(!dimension.customIgniterType);
+		customIgniter.setSelected(dimension.customIgniterType);
 		igniterName.setText(dimension.igniterName);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
@@ -405,14 +407,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
-		if (dimension.igniterType == dimension.IGNITER_NEW) {
-			newIgniter.setSelected(true);
-			customIgniter.setSelected(true);
-		} else {
-			newIgniter.setSelected(false);
-			customIgniter.setSelected(true);
-		}
-
 		updatePortalElements();
 	}
 
@@ -432,6 +426,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.hasSkyLight = hasSkyLight.isSelected();
 		dimension.enablePortal = enablePortal.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
+		dimension.customIgniterType = customIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();
@@ -445,10 +440,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.doesWaterVaporize = doesWaterVaporize.isSelected();
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();
-		if (newIgniter.isSelected())
-			dimension.igniterType = dimension.IGNITER_NEW;
-		else
-			dimension.igniterType = dimension.IGNITER_CUSTOM;
 		return dimension;
 	}
 
