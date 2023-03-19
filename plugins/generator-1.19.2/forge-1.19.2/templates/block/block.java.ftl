@@ -47,7 +47,7 @@ public class ${name}Block extends
 	<#elseif data.blockBase?has_content && data.blockBase == "Button">
 		<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Sign", "StandingSign")}Block
 	<#else>
 		Block
 	</#if>
@@ -160,6 +160,9 @@ public class ${name}Block extends
 		super(
 		</#if>
 			<@blockProperties/>
+			<#if data.blockBase?has_content && data.blockBase == "Sign">
+				, WoodType.OAK
+			</#if>
 		);
 
 	    <#if data.rotationMode != 0 || data.isWaterloggable>

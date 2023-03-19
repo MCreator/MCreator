@@ -28,9 +28,11 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
@@ -40,6 +42,7 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,6 +56,8 @@ import java.util.stream.Collectors;
 	public String textureFront;
 	public String textureRight;
 	public String textureBack;
+	public String signTexture;
+	public String hangingSignTexture;
 	public int renderType;
 	public String customModelName;
 	public int rotationMode;
@@ -251,7 +256,7 @@ import java.util.stream.Collectors;
 	@Override public boolean isFullCube() {
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
-				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase))
+				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase) || "Sign".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
@@ -308,6 +313,8 @@ import java.util.stream.Collectors;
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
 		} else if (blockBase != null && blockBase.equals("Button")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Sign")) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateSignIcon(getSignTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
@@ -332,6 +339,10 @@ import java.util.stream.Collectors;
 		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
 	}
 
+	private Image getSignTexture() {
+		return getModElement().getFolderManager().getTextureImageIcon("entity/signs/" + signTexture, TextureType.OTHER).getImage();
+	}
+
 	@Override public String getRenderType() {
 		if (hasTransparency && transparencyType.equals(
 				"solid")) // if hasTransparency is enabled but transparencyType is left solid, we assume cutout
@@ -350,6 +361,18 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	@Override public void finalizeModElementGeneration() {
+		File baseSignTextureLocation = getModElement().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(signTexture), TextureType.ENTITY);
+		FileIO.copyFile(baseSignTextureLocation, new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+				"entity/signs/" + getModElement().getRegistryName() + ".png"));
+
+		File baseHangingSignTextureLocation = getModElement().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(hangingSignTexture), TextureType.ENTITY);
+		FileIO.copyFile(baseHangingSignTextureLocation, new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+				"entity/signs/hanging/" + getModElement().getRegistryName() + ".png"));
 	}
 
 }

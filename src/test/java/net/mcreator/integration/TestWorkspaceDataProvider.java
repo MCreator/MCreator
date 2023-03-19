@@ -1352,6 +1352,8 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
+			block.signTexture = "test7";
+			block.hangingSignTexture = "test8";
 			block.specialInfo = new ArrayList<>();
 			if (!emptyLists) {
 				block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(

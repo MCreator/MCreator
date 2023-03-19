@@ -1074,6 +1074,31 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
+		 * <p>This method generates the block icon for sign</p>
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateSignIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+
+			g2d.scale(1, 1.15);
+
+			// base
+			g2d.translate(8, 6);
+			g2d.drawImage(
+					ImageUtils.generateCuboidImage(ImageUtils.rotate(texture, 90), texture, texture, 4, 1, 4, 10, 9, 2),
+					null, null);
+
+			// sign post
+			g2d.translate(0, -13);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 14, 2, 12, 0, 12), null, null);
+
+			g2d.dispose();
+			return out;
+		}
+
+		/**
 		 * <p>This method generates the potion bottle icon for potions.</p>
 		 *
 		 * @param color <p>Color of the potion</p>

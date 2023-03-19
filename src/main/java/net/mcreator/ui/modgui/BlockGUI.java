@@ -91,6 +91,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder textureFront;
 	private TextureHolder textureRight;
 	private TextureHolder textureBack;
+	private TextureHolder signTexture;
+	private TextureHolder hangingSignTexture;
 
 	private TextureHolder itemTexture;
 	private TextureHolder particleTexture;
@@ -247,7 +249,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> blockBase = new JComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
+					"Door", "FenceGate", "EndRod", "PressurePlate", "Button", "Sign" });
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -403,13 +405,26 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
 
+				if (blockBase.getSelectedItem().equals("Sign")) {
+					hasTransparency.setEnabled(false);
+					transparencyType.setEnabled(false);
+					connectedSides.setEnabled(false);
+					displayFluidOverlay.setEnabled(false);
+					hasInventory.setSelected(true);
+					hasInventory.setEnabled(false);
+					isBonemealable.setEnabled(false);
+					plantsGrowOn.setEnabled(false);
+					lightOpacity.setEnabled(false);
+				}
+
 				if (!isEditingMode()) {
 					lightOpacity.setValue(0);
 					if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
 							|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem()
 							.equals("Door") || blockBase.getSelectedItem().equals("FenceGate")
 							|| blockBase.getSelectedItem().equals("EndRod") || blockBase.getSelectedItem()
-							.equals("PressurePlate") || blockBase.getSelectedItem().equals("Button")) {
+							.equals("PressurePlate") || blockBase.getSelectedItem().equals("Button")
+							|| blockBase.getSelectedItem().equals("Sign")) {
 						hasTransparency.setSelected(true);
 					}
 				}
@@ -432,6 +447,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
+		JPanel signstal = new JPanel(new GridLayout(3, 4));
+		signstal.setOpaque(false);
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
 		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
@@ -440,6 +457,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureRight = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureBack = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+
+		signTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ENTITY)).setFlipUV(true);
+		hangingSignTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ENTITY)).setFlipUV(true);
 
 		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
@@ -452,6 +472,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureFront.setOpaque(false);
 		textureRight.setOpaque(false);
 		textureBack.setOpaque(false);
+		signTexture.setOpaque(false);
+		hangingSignTexture.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -483,6 +505,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(new JLabel());
 		destal.add(new JLabel());
 
+		signstal.add(new JLabel());
+		signstal.add(new JLabel());
+		signstal.add(new JLabel());
+		signstal.add(new JLabel());
+
+		signstal.add(new JLabel());
+		signstal.add(ComponentUtils.squareAndBorder(signTexture, L10N.t("elementgui.block.texture_place_sign")));
+		signstal.add(ComponentUtils.squareAndBorder(hangingSignTexture, L10N.t("elementgui.block.texture_place_hanging_sign")));
+		signstal.add(new JLabel());
+
+		signstal.add(new JLabel());
+		signstal.add(new JLabel());
+		signstal.add(new JLabel());
+		signstal.add(new JLabel());
+
 		JPanel txblock4 = new JPanel(new BorderLayout());
 		txblock4.setOpaque(false);
 		txblock4.setBorder(BorderFactory.createTitledBorder(
@@ -498,10 +535,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 						L10N.label("elementgui.block.particle_texture")), PanelUtils.centerInPanel(particleTexture)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
-
-		JPanel sbbp22 = PanelUtils.totalCenterInPanel(destal);
-
 		sbbp2.setOpaque(false);
+
+		CardLayout texturesPanelLayout = new CardLayout();
+		JPanel texturesPanel = new JPanel(texturesPanelLayout);
+		texturesPanel.setOpaque(false);
+
+		texturesPanel.add(destal, "normal");
+		texturesPanel.add(signstal, "sign");
+
+		JPanel sbbp22 = PanelUtils.totalCenterInPanel(texturesPanel);
 
 		plantsGrowOn.setOpaque(false);
 
@@ -509,6 +552,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.block.block_textures"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		blockBase.addActionListener(e -> {
+			if (blockBase.getSelectedItem() != null) {
+				texturesPanelLayout.show(texturesPanel,
+						blockBase.getSelectedItem().equals("Sign") ? "sign" : "normal");
+			}
+		});
 
 		JPanel topnbot = new JPanel(new BorderLayout());
 		topnbot.setOpaque(false);
@@ -1176,9 +1226,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane9.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(enderpanel2)));
 
-		texture.setValidator(new TileHolderValidator(texture));
-
-		page1group.addValidationElement(texture);
+		if (blockBase.getSelectedItem().equals("Sign")) {
+			signTexture.setValidator(new TileHolderValidator(signTexture));
+			hangingSignTexture.setValidator(new TileHolderValidator(hangingSignTexture));
+			page1group.addValidationElement(signTexture);
+			page1group.addValidationElement(hangingSignTexture);
+		} else {
+			texture.setValidator(new TileHolderValidator(texture));
+			page1group.addValidationElement(texture);
+		}
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
@@ -1366,6 +1422,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureFront.setTextureFromTextureName(block.textureFront);
 		textureRight.setTextureFromTextureName(block.textureRight);
 		textureBack.setTextureFromTextureName(block.textureBack);
+		signTexture.setTextureFromTextureName(block.signTexture);
+		hangingSignTexture.setTextureFromTextureName(block.hangingSignTexture);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
@@ -1600,6 +1658,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureFront = textureFront.getID();
 		block.textureRight = textureRight.getID();
 		block.textureBack = textureBack.getID();
+		block.signTexture = signTexture.getID();
+		block.hangingSignTexture = hangingSignTexture.getID();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getBoundingBoxes();
