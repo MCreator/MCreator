@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -67,6 +67,14 @@ public class ${JavaModName}Blocks {
 		<#else>
 			public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
 				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
+			<#if block.blockBase?has_content && block.blockBase == "Sign">
+				public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_WALL =
+				REGISTRY.register("${block.getModElement().getRegistryName()}_wall", () -> new ${block.getModElement().getName()}WallBlock());
+				public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_HANGING =
+				REGISTRY.register("${block.getModElement().getRegistryName()}_hanging", () -> new ${block.getModElement().getName()}HangingBlock());
+				public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_WALL_HANGING =
+				REGISTRY.register("${block.getModElement().getRegistryName()}_wall_hanging", () -> new ${block.getModElement().getName()}WallHangingBlock());
+			</#if>
 		</#if>
 	</#list>
 
