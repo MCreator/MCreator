@@ -377,6 +377,32 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+  # TX: Sign templates
+  - template: json/txblock/hanging_sign_item.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/item/hanging_@registryname.json"
+  - template: json/txblock/sign_item.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/txblock/sign_states.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/hanging_sign_states.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/hanging_@registryname.json"
+  - template: json/txblock/sign.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/blocks/@registryname.json"
+  - template: json/txblock/hanging_sign.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/blocks/hanging_@registryname.json"
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
