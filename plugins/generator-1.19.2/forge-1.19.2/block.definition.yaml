@@ -378,6 +378,8 @@ templates:
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
   # TX: Sign templates
+  - template: sign/wall_sign.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEWallBlock.java"
   - template: json/txblock/hanging_sign_item.json.ftl
     condition: "blockBase %= Sign"
     writer: json
