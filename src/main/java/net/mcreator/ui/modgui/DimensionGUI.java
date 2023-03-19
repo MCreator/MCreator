@@ -218,16 +218,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		enablePortal.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA);
 
-		JPanel portal = new JPanel(new GridLayout(5, 2, 5, 2));
-		JPanel igniter = new JPanel(new GridLayout(4, 2, 5, 2));
-		JPanel enablep = new JPanel(new BorderLayout(5, 2));
+		JPanel portal = new JPanel(new GridLayout(5, 2, 10, 2));
+		JPanel igniter = new JPanel(new GridLayout(4, 2, 10, 2));
 		portal.setOpaque(false);
 		igniter.setOpaque(false);
-		enablep.setOpaque(false);
 
-		ButtonGroup igniterSelect = new ButtonGroup();
-		igniterSelect.add(customIgniter);
-		igniterSelect.add(newIgniter);
+		ButtonGroup typeSelect = new ButtonGroup();
+		typeSelect.add(customIgniter);
+		typeSelect.add(newIgniter);
 
 		newIgniter.setSelected(true);
 		customIgniter.setOpaque(false);
@@ -242,10 +240,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		enablep.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
-				L10N.label("elementgui.dimension.enable_dimension_portal")));
-		enablep.add(PanelUtils.join(enablePortal));
 
 		portal.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
 				L10N.label("elementgui.dimension.portal_frame_block")));
@@ -287,17 +281,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
 
-		JPanel dsg = new JPanel(new BorderLayout(5, 2));
-
-		dsg.setOpaque(false);
-
-		dsg.add(PanelUtils.northAndCenterElement(enablep, PanelUtils.westAndEastElement(
-				PanelUtils.centerAndSouthElement(portal,
-						PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)), igniter), 5, 2));
-
 		pane2.setOpaque(false);
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(dsg)));
+		pane2.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
+						HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
+								L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal),
+				PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(portal,
+								PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)),
+						PanelUtils.northAndCenterElement(igniter, new JEmptyBox())), 10, 10)));
 
 		ComponentUtils.deriveFont(igniterName, 16);
 
