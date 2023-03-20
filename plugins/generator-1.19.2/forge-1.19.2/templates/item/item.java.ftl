@@ -156,6 +156,41 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
+	<#if data.dimensionIgniter?has_content && data.dimensionIgniter != "<NONE>">
+	@Override public InteractionResult useOn(UseOnContext context) {
+		Player entity = context.getPlayer();
+		BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
+		ItemStack itemstack = context.getItemInHand();
+		Level world = context.getLevel();
+		if (!entity.mayUseItemAt(pos, context.getClickedFace(), itemstack)) {
+			return InteractionResult.FAIL;
+		} else {
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			boolean success = false;
+
+			if (world.isEmptyBlock(pos) && <@procedureOBJToConditionCode data.igniterPortalMakeCondition/>) {
+				${data.dimensionIgniter}PortalBlock.portalSpawn(world, pos);
+				itemstack.hurtAndBreak(1, entity, c -> c.broadcastBreakEvent(context.getHand()));
+				success = true;
+			}
+
+			<#if hasProcedure(data.igniterWhenPortaTriggerlUsed)>
+				<#if hasReturnValueOf(data.igniterWhenPortaTriggerlUsed, "actionresulttype")>
+					InteractionResult result = <@procedureOBJToInteractionResultCode data.igniterWhenPortaTriggerlUsed/>;
+					return success ? InteractionResult.SUCCESS : result;
+				<#else>
+					<@procedureOBJToCode data.igniterWhenPortaTriggerlUsed/>
+					return InteractionResult.SUCCESS;
+				</#if>
+			<#else>
+				return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+			</#if>
+		}
+	}
+	</#if>
+
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory()>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
