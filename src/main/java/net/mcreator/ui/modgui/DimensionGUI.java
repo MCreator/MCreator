@@ -218,10 +218,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		enablePortal.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA);
 
-		JPanel portal = new JPanel(new GridLayout(5, 2, 10, 2));
-		JPanel igniter = new JPanel(new GridLayout(4, 2, 10, 2));
-		portal.setOpaque(false);
-		igniter.setOpaque(false);
+		JPanel proper = new JPanel(new GridLayout(5, 2, 10, 2));
+
+		JPanel proper22 = new JPanel(new GridLayout(4, 2, 10, 2));
+
+		proper.setOpaque(false);
+		proper22.setOpaque(false);
 
 		ButtonGroup typeSelect = new ButtonGroup();
 		typeSelect.add(customIgniter);
@@ -231,51 +233,51 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		customIgniter.setOpaque(false);
 		newIgniter.setOpaque(false);
 
-		portal.setBorder(BorderFactory.createTitledBorder(
+		proper.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		igniter.setBorder(BorderFactory.createTitledBorder(
+		proper.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		portal.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
+		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
 				L10N.label("elementgui.dimension.portal_frame_block")));
-		portal.add(PanelUtils.join(portalFrame));
+		proper.add(PanelUtils.join(portalFrame));
 
-		portal.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
+		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
 				L10N.label("elementgui.dimension.portal_block_texture")));
-		portal.add(PanelUtils.join(portalTexture));
+		proper.add(PanelUtils.join(portalTexture));
 
-		portal.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
+		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
 				L10N.label("elementgui.dimension.portal_particles")));
-		portal.add(portalParticles);
+		proper.add(portalParticles);
 
-		portal.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_sound"),
+		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_sound"),
 				L10N.label("elementgui.dimension.portal_sound")));
-		portal.add(portalSound);
+		proper.add(portalSound);
 
-		portal.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
+		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.dimension.portal_luminance")));
-		portal.add(luminance);
+		proper.add(luminance);
 
-		igniter.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/igniter_type"),
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/igniter_type"),
 				L10N.label("elementgui.dimension_igniter_type")));
-		igniter.add(PanelUtils.join(FlowLayout.LEFT, newIgniter, customIgniter));
+		proper22.add(PanelUtils.join(FlowLayout.LEFT, newIgniter, customIgniter));
 
-		igniter.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.dimension.portal_igniter_name")));
-		igniter.add(igniterName);
+		proper22.add(igniterName);
 
-		igniter.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.dimension.portal_igniter_tab")));
-		igniter.add(igniterTab);
+		proper22.add(igniterTab);
 
-		igniter.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
 				L10N.label("elementgui.dimension.portal_igniter_texture")));
-		igniter.add(PanelUtils.join(texture));
+		proper22.add(PanelUtils.join(texture));
 
 		portalSound.setText("block.portal.ambient");
 
@@ -286,9 +288,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane2.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
 						HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
 								L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal),
-				PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(portal,
+				PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(proper,
 								PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)),
-						PanelUtils.northAndCenterElement(igniter, new JEmptyBox())), 10, 10)));
+						PanelUtils.northAndCenterElement(proper22, new JEmptyBox())), 10, 10)));
 
 		ComponentUtils.deriveFont(igniterName, 16);
 
@@ -327,7 +329,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page2group.addValidationElement(fluidBlock);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.dimension.page_portal"), pane2);
+		addPage(L10N.t("elementgui.dimension.page_portal"), PanelUtils.totalCenterInPanel(pane2));
 		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
 
 		if (!isEditingMode()) {
