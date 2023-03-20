@@ -424,9 +424,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
-		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
-		listeningEnabled = true;
-
 		// disable unsupported fields
 		List<String> exclusions = mcreator.getGeneratorConfiguration()
 				.getUnsupportedDefinitionFields(modElement.getType());
@@ -438,6 +435,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
 		else
 			disableUnsupportedFields(this, exclusions, inclusions);
+
+		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
+		listeningEnabled = true;
 	}
 
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
@@ -509,7 +509,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				});
 			}
 
-			// register detected JEntriesLists to enable/disable child components of its potential entries
+			// register detected JEntriesLists to enable/disable child components of their potential entries
 			entryLists.forEach((k, v) -> k.addEntryRegisterListener(e -> {
 				if (exclusions != null)
 					disableUnsupportedFields(e, v.x(), null);
