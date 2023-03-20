@@ -74,8 +74,13 @@ public class RegenerateCodeAction extends GradleAction {
 				if (mod.getType() == ModElementType.UNKNOWN)
 					continue; // skip unknown MEs as we don't know what we can remove from them
 
+				GeneratableElement generatableElement = mod.getGeneratableElement();
+
+				if (generatableElement == null)
+					continue; // we can't remove sources for GE that lacks definition
+
 				List<GeneratorTemplate> templates = mcreator.getGenerator()
-						.getModElementGeneratorTemplatesList(mod.getGeneratableElement());
+						.getModElementGeneratorTemplatesList(generatableElement);
 
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();
 				toBePreserved.addAll(modElementFiles); // we don't delete mod element files in next step
