@@ -703,8 +703,10 @@ public class MinecraftImageGenerator {
 				graphics2D.drawImage(tex, 8, 17, 6, 6, null);
 				graphics2D.drawImage(tex, 14, 17, 6, 6, null);
 
-				BufferedImage igniter = ImageUtils.autoCropTile(ImageIO.read(triggerTexture));
-				graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
+				if (triggerTexture.isFile()) {
+					BufferedImage igniter = ImageUtils.autoCropTile(ImageIO.read(triggerTexture));
+					graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
+				}
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}

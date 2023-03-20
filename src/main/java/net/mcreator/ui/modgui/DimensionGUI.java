@@ -56,6 +56,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.Flow;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
@@ -238,7 +239,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		proper.setBorder(BorderFactory.createTitledBorder(
+		proper22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -283,14 +284,31 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
 
+		JPanel igniterPanel = new JPanel(new BorderLayout(5, 2));
+		igniterPanel.setOpaque(false);
+		igniterPanel.add("Center", proper22);
+		igniterPanel.add("South", new JEmptyBox());
+
+		JPanel conditions = new JPanel(new GridLayout(2, 1, 5, 2));
+		conditions.setOpaque(false);
+		conditions.add(portalMakeCondition);
+		conditions.add(portalUseCondition);
+
+		JPanel dsg = new JPanel(new BorderLayout(5, 2));
+		dsg.setOpaque(false);
+		dsg.add("West", PanelUtils.centerAndSouthElement(proper, conditions, 5, 2));
+		dsg.add("East", igniterPanel);
+
+		JPanel portalPanel = new JPanel(new BorderLayout(5, 2));
+		portalPanel.setOpaque(false);
+		portalPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
+						L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal));
+		portalPanel.add("Center", dsg);
+
 		pane2.setOpaque(false);
 
-		pane2.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
-						HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
-								L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal),
-				PanelUtils.westAndEastElement(PanelUtils.centerAndSouthElement(proper,
-								PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)),
-						PanelUtils.northAndCenterElement(proper22, new JEmptyBox())), 10, 10)));
+		pane2.add(PanelUtils.totalCenterInPanel(portalPanel));
 
 		ComponentUtils.deriveFont(igniterName, 16);
 
@@ -329,7 +347,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page2group.addValidationElement(fluidBlock);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.dimension.page_portal"), PanelUtils.totalCenterInPanel(pane2));
+		addPage(L10N.t("elementgui.dimension.page_portal"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
 
 		if (!isEditingMode()) {
