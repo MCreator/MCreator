@@ -427,10 +427,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 		listeningEnabled = true;
 
-		disableUnsupportedFields();
-	}
-
-	private void disableUnsupportedFields() {
+		// disable unsupported fields
 		List<String> exclusions = mcreator.getGeneratorConfiguration()
 				.getUnsupportedDefinitionFields(modElement.getType());
 
