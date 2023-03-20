@@ -35,8 +35,7 @@ public class DimensionIgniterConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Dimension dimension = (Dimension) input;
 		try {
-			dimension.customIgniterType = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-					.get("enablePortal").getAsBoolean();
+			dimension.customIgniterType = false;
 		} catch (Exception e) {
 			LOG.warn("Could not define igniter type of: " + dimension.getModElement().getName());
 		}

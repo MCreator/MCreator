@@ -1,0 +1,1 @@
+Ce paramètre définit à quelle dimension cet item est lié, et agit comme un allumeur de portail.

@@ -1048,6 +1048,7 @@ public class TestWorkspaceDataProvider {
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
 			item.guiBoundTo = "<NONE>";
+			item.dimensionIgniter = "<NONE>";
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
@@ -1063,6 +1064,8 @@ public class TestWorkspaceDataProvider {
 			item.onStoppedUsing = new Procedure("procedure7");
 			item.onEntitySwing = new Procedure("procedure8");
 			item.onDroppedByPlayer = new Procedure("procedure9");
+			item.igniterWhenPortaTriggerlUsed = new Procedure("procedure10");
+			item.igniterPortalMakeCondition = new Procedure("procedure11");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 3;
 

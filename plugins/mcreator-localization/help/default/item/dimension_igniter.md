@@ -1,0 +1,1 @@
+This parameter defines which dimension the item is linked to, and acts as an igniter.
