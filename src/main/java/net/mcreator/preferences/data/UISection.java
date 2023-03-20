@@ -55,6 +55,21 @@ public class UISection extends PreferencesSection {
 	public UISection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
+		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT));
+		backgroundSource = addEntry(
+				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
+		aaText = addEntry(new BooleanEntry("aaText", true));
+		textAntialiasingType = addEntry(
+				new StringEntry("textAntialiasingType", "on", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
+						"lcd_vbgr"));
+		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
+		useNativeFileChooser = addEntry(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS));
+		expandSectionsByDefault = addEntry(new BooleanEntry("expandSectionsByDefault", false));
+		use2DAcceleration = addEntry(new BooleanEntry("use2DAcceleration", false));
+		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));
+		remindOfUnsavedChanges = addEntry(new BooleanEntry("remindOfUnsavedChanges", false));
+		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));
+
 		language = addEntry(new PreferencesEntry<>("language", L10N.DEFAULT_LOCALE) {
 			@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 				List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
@@ -73,21 +88,6 @@ public class UISection extends PreferencesSection {
 				return box;
 			}
 		});
-
-		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT));
-		backgroundSource = addEntry(
-				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
-		aaText = addEntry(new BooleanEntry("aaText", true));
-		textAntialiasingType = addEntry(
-				new StringEntry("textAntialiasingType", "All", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
-						"lcd_vbgr"));
-		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
-		useNativeFileChooser = addEntry(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS));
-		expandSectionsByDefault = addEntry(new BooleanEntry("expandSectionsByDefault", false));
-		use2DAcceleration = addEntry(new BooleanEntry("use2DAcceleration", false));
-		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));
-		remindOfUnsavedChanges = addEntry(new BooleanEntry("remindOfUnsavedChanges", false));
-		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));
 	}
 
 	@Override public String getSectionKey() {

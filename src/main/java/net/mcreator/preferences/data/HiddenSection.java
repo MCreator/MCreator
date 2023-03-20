@@ -43,7 +43,7 @@ public class HiddenSection extends PreferencesSection {
 		workspaceModElementIconSize = addEntry(new PreferencesEntry<>("workspaceModElementIconSize", IconSize.TILES));
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
 		projectTreeSplitPos = addEntry(new IntegerEntry("projectTreeSplitPos", 0));
-		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", false));
+		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", true));
 		workspaceSortType = addEntry(new PreferencesEntry<>("workspaceSortType", SortType.CREATED));
 		java_home = addEntry(new PreferencesEntry<>("java_home", null));
 		uiTheme = addEntry(new PreferencesEntry<>("uiTheme", "default_dark"));

@@ -43,6 +43,11 @@ public class PreferencesManager {
 	private static final File file = UserFolderManager.getFileFromUserFolder("preferences.json");
 
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
+	/**
+	 * <p>When this variable is true, MCreator will not try to load preferences from an existing file.
+	 * It will skip the loading to use default values.</p>
+	 */
+	private static boolean firstLoading = false;
 
 	/**
 	 * <p>Store values when the preferences' file is loaded</p>
@@ -69,6 +74,9 @@ public class PreferencesManager {
 		if (!file.isFile() && UserFolderManager.getFileFromUserFolder("preferences").exists()) {
 			LOG.debug("Old preferences detected. Converting them to the new format.");
 			convertOldPreferences();
+		} else if (!file.exists()) {
+			LOG.debug("File not found. Generating preferences from default values");
+			firstLoading = true;
 		} else {
 			try {
 				loadedPreferences = gson.fromJson(FileIO.readFileToString(file), Map.class);
@@ -83,10 +91,14 @@ public class PreferencesManager {
 	 * <p>Once plugins are loaded, we can now load preferences registered by them with {@link ApplicationLoadedEvent}.</p>
 	 */
 	public static void initNonCore() {
-		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
-			if (!identifier.equals("mcreator"))
-				loadPreferences(identifier);
-		});
+		if (!firstLoading) {
+			PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
+				if (!identifier.equals("mcreator"))
+					loadPreferences(identifier);
+			});
+		} else {
+			savePreferences(); // if this is the first time, we save preferences for the next time
+		}
 	}
 
 	/**
