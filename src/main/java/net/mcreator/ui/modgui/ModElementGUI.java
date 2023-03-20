@@ -35,10 +35,12 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
+import net.mcreator.util.Tuple;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -435,29 +437,47 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		List<String> inclusions = mcreator.getGeneratorConfiguration()
 				.getSupportedDefinitionFields(modElement.getType());
 
-		if (exclusions != null && inclusions != null) { // can't exclude and include together
+		if (exclusions != null && inclusions != null) // can't exclude and include together
 			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
-		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
+		else
+			disableUnsupportedFields(this, exclusions, inclusions);
+	}
+
+	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
+		if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
+			Map<JEntriesList, Tuple<List<String>, List<String>>> entryLists = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
 					Stack<Component> hierarchy = new Stack<>();
-					hierarchy.push(this);
-					for (String next : entry.split("\\.")) {
-						Field field = hierarchy.peek().getClass().getDeclaredField(next);
-						if (!Component.class.isAssignableFrom(field.getType())) {
+					hierarchy.push(source);
+					String[] path = entry.split("\\.");
+					for (int i = 0; i < path.length; i++) {
+						Component prevObj = hierarchy.peek();
+						Field field = prevObj.getClass().getDeclaredField(path[i]);
+						Class<?> type = field.getType();
+						if (!Component.class.isAssignableFrom(type) && !Collection.class.isAssignableFrom(type)) {
 							hierarchy.clear(); // clear hierarchy cache to skip current entry
 							break;
 						}
 
 						field.setAccessible(true);
-						Component obj = (Component) field.get(hierarchy.peek());
-						if (obj == null) {
+						Object obj = field.get(prevObj);
+
+						if (obj instanceof Component comp) {
+							hierarchy.push(comp);
+						} else {
+							if (prevObj instanceof JEntriesList entriesList && Collection.class.isAssignableFrom(type)
+									&& i + 1 < path.length) {
+								Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(entriesList,
+										e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
+								(exclusions != null ? currTuple.x() : currTuple.y()).add(
+										String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
+							}
+
 							hierarchy.clear(); // clear hierarchy cache to skip current entry
 							break;
 						}
-
-						hierarchy.push(obj);
 					}
 
 					// only process current entry if its target component is found
@@ -491,6 +511,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					}
 				});
 			}
+
+			// register detected JEntriesLists to enable/disable child components of its potential entries
+			entryLists.forEach((k, v) -> k.addEntryRegisterListener(e -> {
+				if (exclusions != null)
+					disableUnsupportedFields(e, v.x(), null);
+				else
+					disableUnsupportedFields(e, null, v.y());
+			}));
 		}
 	}
 
