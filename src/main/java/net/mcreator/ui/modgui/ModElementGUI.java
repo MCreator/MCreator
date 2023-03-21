@@ -50,6 +50,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
@@ -443,7 +444,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
 		if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
-			Map<JEntriesList, Tuple<List<String>, List<String>>> entryLists = new HashMap<>();
+			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
 					Stack<Component> hierarchy = new Stack<>();
@@ -464,12 +465,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						if (obj instanceof Component comp) {
 							hierarchy.push(comp);
 						} else {
-							if (prevObj instanceof JEntriesList entriesList && Collection.class.isAssignableFrom(type)
-									&& i + 1 < path.length) {
-								Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(entriesList,
-										e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
-								(exclusions != null ? currTuple.x() : currTuple.y()).add(
-										String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
+							if (prevObj instanceof JEntriesList entriesList && obj instanceof Collection<?>) {
+								Class<?> childType = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+								if (Component.class.isAssignableFrom(childType) && i + 1 < path.length) {
+									Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(
+											entriesList, e -> new HashMap<>()).computeIfAbsent(childType,
+											e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
+									(exclusions != null ? currTuple.x() : currTuple.y()).add(
+											String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
+								}
 							}
 
 							hierarchy.clear(); // clear hierarchy cache to skip current entry
@@ -492,15 +496,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 
 			if (inclusions != null) { // "include" components registered before
-				includedComponents.forEach((k, v) -> {
-					for (Field field : k.getClass().getDeclaredFields()) {
+				includedComponents.forEach((parent, includes) -> {
+					for (Field field : parent.getClass().getDeclaredFields()) {
 						if (!Component.class.isAssignableFrom(field.getType()))
 							continue;
 
 						try {
 							field.setAccessible(true);
-							Component obj = (Component) field.get(k);
-							if (!v.contains(obj)) // exclude child component if it was not registered as included
+							Component obj = (Component) field.get(parent);
+							if (!includes.contains(obj)) // exclude child component if it was not registered as included
 								UnsupportedComponent.markUnsupported(obj);
 						} catch (IllegalAccessException e) {
 							LOG.warn("Failed to access component", e);
@@ -510,11 +514,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 
 			// register detected JEntriesLists to enable/disable child components of their potential entries
-			entryLists.forEach((k, v) -> k.addEntryRegisterListener(e -> {
-				if (exclusions != null)
-					disableUnsupportedFields(e, v.x(), null);
-				else
-					disableUnsupportedFields(e, null, v.y());
+			entryLists.forEach((list, classes) -> list.addEntryRegisterListener(e -> {
+				if (classes.containsKey(e.getClass())) {
+					if (exclusions != null)
+						disableUnsupportedFields(e, classes.get(e.getClass()).x(), null);
+					else
+						disableUnsupportedFields(e, null, classes.get(e.getClass()).y());
+				}
 			}));
 		}
 	}
