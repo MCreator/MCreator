@@ -101,7 +101,7 @@ public class ${name}WallBlock extends WallSignBlock implements EntityBlock {
         </#macro>
 
     public ${name}WallBlock() {
-        super(<@blockProperties/>, WoodType.OAK);
+        super(<@blockProperties/>, ${name}Block.${data.getModElement().getRegistryNameUpper()}_TYPE);
     }
 
     <#if data.specialInfo?has_content>

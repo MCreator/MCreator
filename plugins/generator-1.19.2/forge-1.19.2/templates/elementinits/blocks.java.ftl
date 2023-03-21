@@ -38,6 +38,7 @@ package ${package}.init;
 
 <#assign hasTintedBlocks = false>
 <#assign hasTintedBlockItems = false>
+<#assign hasSignBlocks = false>
 <#list blocks as block>
 	<#if block.getModElement().getTypeString() == "block">
 		<#if block.tintType != "No tint">
@@ -45,6 +46,9 @@ package ${package}.init;
 			<#if block.isItemTinted>
 				<#assign hasTintedBlockItems = true>
 			</#if>
+		</#if>
+		<#if block.blockBase?has_content && block.blockBase == "Sign">
+			<#assign hasSignBlocks = true>
 		</#if>
 	<#elseif block.getModElement().getTypeString() == "plant">
 		<#if block.tintType != "No tint">
@@ -100,6 +104,18 @@ public class ${JavaModName}Blocks {
 		}
 		</#if>
 	}
+	</#if>
+
+	<#if hasSignBlocks>
+		public static void clientSetup(final FMLClientSetupEvent event) {
+			event.enqueueWork(() -> {
+				<#list blocks as block>
+					<#if block.blockBase?has_content && block.blockBase == "Sign">
+						Sheets.addWoodType(${block.getModElement().getName()}Block.${block.getModElement().getRegistryNameUpper()}_TYPE);
+					</#if>
+				</#list>
+			});
+		}
 	</#if>
 
 }

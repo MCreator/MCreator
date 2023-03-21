@@ -147,6 +147,10 @@ public class ${name}Block extends
 		</#if>
 	</#macro>
 
+	<#if data.blockBase?has_content && data.blockBase == "Sign">
+		public static final WoodType ${data.getModElement().getRegistryNameUpper()}_TYPE = WoodType.create("${data.getModElement().getRegistryName()}");
+	</#if>
+
 	public ${name}Block() {
 		<#if data.blockBase?has_content && data.blockBase == "Stairs">
 		super(() -> Blocks.AIR.defaultBlockState(),
@@ -161,7 +165,7 @@ public class ${name}Block extends
 		</#if>
 			<@blockProperties/>
 			<#if data.blockBase?has_content && data.blockBase == "Sign">
-				, WoodType.OAK
+				, ${data.getModElement().getRegistryNameUpper()}_TYPE
 			</#if>
 		);
 
