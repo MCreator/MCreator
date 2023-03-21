@@ -5,6 +5,16 @@
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlockStateCode(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlockStateCode(outputs?keep_after("/*@:*/")) + ")">
+    <#elseif mappedBlock?contains("/*@->*/")>
+        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
+        <#assign result = mappedBlock>
+        <#list outputs as output>
+            <#if output?contains("/*@->*/")>
+                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#assign result = result.replace(output, "-> " + mappedBlockToBlockStateCode(mappedElement))>
+            </#if>
+        </#list>
+        <#return result>
     <#else>
         <#return mappedBlockToBlock(mappedBlock) + ".defaultBlockState()">
     </#if>
@@ -17,6 +27,16 @@
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlock(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
+    <#elseif mappedBlock?contains("/*@->*/")>
+        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
+        <#assign result = mappedBlock>
+        <#list outputs as output>
+            <#if output?contains("/*@->*/")>
+                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#assign result = result.replace(output, "-> " + mappedBlockToBlock(mappedElement))>
+            </#if>
+        </#list>
+        <#return result>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return mappedElementToRegistryEntry(mappedBlock)>
     <#else>
@@ -31,6 +51,16 @@
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
             + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
+    <#elseif mappedBlock?contains("/*@->*/")>
+        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
+        <#assign result = mappedBlock>
+        <#list outputs as output>
+            <#if output?contains("/*@->*/")>
+                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#assign result = result.replace(output, "-> " + mappedMCItemToItemStackCode(mappedElement))>
+            </#if>
+        </#list>
+        <#return result>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return toItemStack(mappedElementToRegistryEntry(mappedBlock), amount)>
     <#else>
@@ -53,6 +83,16 @@
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItem(outputs?keep_before("/*@:*/"))
             + ":" + mappedMCItemToItem(outputs?keep_after("/*@:*/")) + ")">
+    <#elseif mappedBlock?contains("/*@->*/")>
+        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
+        <#assign result = mappedBlock>
+        <#list outputs as output>
+            <#if output?contains("/*@->*/")>
+                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#assign result = result.replace(output, "-> " + mappedMCItemToItem(mappedElement))>
+            </#if>
+        </#list>
+        <#return result>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return mappedElementToRegistryEntry(mappedBlock) + generator.isBlock(mappedBlock)?then(".asItem()", "")>
     <#else>

@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly.java.blocks;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -35,6 +36,7 @@ public class SwitchOutputBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		boolean isNumberType = block.getAttribute("type").equals("controls_switch_number_op_get");
+		boolean useMarkers = false; // used to properly map blocks and items
 		Element value = null, byDefault = null;
 		Map<String, Element> cases = new LinkedHashMap<>();
 		List<Element> branches = XMLUtil.getChildrenWithName(block, "value");
@@ -64,6 +66,10 @@ public class SwitchOutputBlock implements IBlockGenerator {
 					}
 				}
 			}
+			case "mutation" -> {
+				if (element.getAttribute("mark").equals("true"))
+					useMarkers = true;
+			}
 			}
 		}
 
@@ -87,13 +93,24 @@ public class SwitchOutputBlock implements IBlockGenerator {
 			master.processOutputBlockWithoutParentheses(value);
 		master.append(") {");
 		for (String caseValue : cases.keySet()) {
-			master.append("case " + (isNumberType ? caseValue : "\"" + caseValue + "\"") + " -> ");
-			master.processOutputBlock(cases.get(caseValue));
-			master.append(";");
+			if (List.of(getSupportedBlocks()).contains(BlocklyBlockUtil.getInputBlockType(cases.get(caseValue)))) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.switch_operator_nesting")));
+			} else {
+				master.append("case " + (isNumberType ? caseValue : "\"" + caseValue + "\""));
+				master.append(" " + (useMarkers ? "/*@->*/" : "->"));
+				master.processOutputBlock(cases.get(caseValue));
+				master.append(useMarkers ? "/*@;*/;" : ";");
+			}
 		}
-		master.append("default -> ");
-		master.processOutputBlock(byDefault);
-		master.append("; })");
+		if (List.of(getSupportedBlocks()).contains(BlocklyBlockUtil.getInputBlockType(byDefault))) {
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.switch_operator_nesting")));
+		} else {
+			master.append("default " + (useMarkers ? "/*@->*/" : "->"));
+			master.processOutputBlock(byDefault);
+			master.append((useMarkers ? "/*@;*/" : "") + "; })");
+		}
 	}
 
 	@Override public String[] getSupportedBlocks() {

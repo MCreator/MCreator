@@ -220,12 +220,12 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             var container = document.createElement('mutation');
             container.setAttribute('inputs', this.inputCount_);
             var parentConnection = this.outputConnection && this.outputConnection.targetConnection;
-            if (parentConnection) {
+            if (parentConnection && parentConnection.getCheck()) {
                 var types = parentConnection.getCheck();
                 var markTypes = getMarkerRequiringTypes();
                 for (const mark of markTypes) {
                     if (types.indexOf(mark) != -1) {
-                        container.setAttribute('mark', mark);
+                        container.setAttribute('mark', true);
                         break;
                     }
                 }
