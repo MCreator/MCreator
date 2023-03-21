@@ -22,14 +22,12 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -115,10 +113,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 
-	private final JComboBox<String> dimensionIgniter = new JComboBox<>();
-	private Procedure igniterPortalMakeCondition;
-	private Procedure igniterWhenPortaTriggerlUsed;
-
 	// Food parameters
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
@@ -181,22 +175,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 						GeneratableElement generatableElement = element.getGeneratableElement();
 						if (generatableElement instanceof GUI) {
 							inventorySize.setValue(((GUI) generatableElement).getMaxSlotID() + 1);
-						}
-					}
-				}
-			}
-		});
-
-		dimensionIgniter.addActionListener(e -> {
-			if (!isEditingMode()) {
-				String selected = (String) dimensionIgniter.getSelectedItem();
-				if (selected != null) {
-					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
-					if (element != null) {
-						GeneratableElement generatableElement = element.getGeneratableElement();
-						if (generatableElement instanceof net.mcreator.element.types.Dimension) {
-							igniterPortalMakeCondition = ((net.mcreator.element.types.Dimension) generatableElement).portalMakeCondition;
-							igniterWhenPortaTriggerlUsed = ((net.mcreator.element.types.Dimension) generatableElement).whenPortaTriggerlUsed;
 						}
 					}
 				}
@@ -409,19 +387,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
-		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 10, 2));
 		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		inventoryProperties.setOpaque(false);
-
-		JPanel igniterProperty = new JPanel(new GridLayout(1, 2, 0, 2));
-		igniterProperty.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.item.igniter_property"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		igniterProperty.setOpaque(false);
 
 		inventoryProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
@@ -435,14 +406,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		igniterProperty.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/dimension_igniter"),
-				L10N.label("elementgui.item.set_dimension_igniter")));
-		igniterProperty.add(dimensionIgniter);
-
-		advancedProperties.setLayout(new BoxLayout(advancedProperties, BoxLayout.PAGE_AXIS));
-		advancedProperties.add(inventoryProperties);
-		advancedProperties.add(new JEmptyBox(20, 10));
-		advancedProperties.add(igniterProperty);
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(inventoryProperties));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -454,8 +418,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
-		addPage(L10N.t("elementgui.common.page_advanced_properties"),
-				PanelUtils.totalCenterInPanel(advancedProperties));
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
@@ -509,16 +472,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
-
-		ComboBoxUtil.updateComboBoxContents(dimensionIgniter, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.DIMENSION).filter(modElement -> {
-							GeneratableElement generatableElement = modElement.getGeneratableElement();
-							if (generatableElement instanceof net.mcreator.element.types.Dimension) {
-								return ((net.mcreator.element.types.Dimension) generatableElement).customIgniterType;
-							}
-							return false;
-						}).map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -560,7 +513,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setSelectedItem(item.guiBoundTo);
-		dimensionIgniter.setSelectedItem(item.dimensionIgniter);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
 		isFood.setSelected(item.isFood);
@@ -611,9 +563,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
-		item.dimensionIgniter = (String) dimensionIgniter.getSelectedItem();
-		item.igniterPortalMakeCondition = igniterPortalMakeCondition;
-		item.igniterWhenPortaTriggerlUsed = igniterWhenPortaTriggerlUsed;
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();

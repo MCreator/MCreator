@@ -71,10 +71,6 @@ import java.util.Map;
 	public int inventorySize;
 	public int inventoryStackSize;
 
-	public String dimensionIgniter;
-	public Procedure igniterPortalMakeCondition;
-	public Procedure igniterWhenPortaTriggerlUsed;
-
 	public Procedure onRightClickedInAir;
 	public Procedure onRightClickedOnBlock;
 	public Procedure onCrafted;
