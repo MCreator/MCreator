@@ -387,7 +387,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
-		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 10, 2));
+		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 35, 2));
 		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
