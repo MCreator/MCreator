@@ -57,7 +57,6 @@ import java.util.stream.Collectors;
 	public String textureRight;
 	public String textureBack;
 	public String signTexture;
-	public String hangingSignTexture;
 	public int renderType;
 	public String customModelName;
 	public int rotationMode;
@@ -368,11 +367,6 @@ import java.util.stream.Collectors;
 				.getTextureFile(FilenameUtilsPatched.removeExtension(signTexture), TextureType.ENTITY);
 		FileIO.copyFile(baseSignTextureLocation, new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
 				"entity/signs/" + getModElement().getRegistryName() + ".png"));
-
-		File baseHangingSignTextureLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(hangingSignTexture), TextureType.ENTITY);
-		FileIO.copyFile(baseHangingSignTextureLocation, new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-				"entity/signs/hanging/" + getModElement().getRegistryName() + ".png"));
 	}
 
 }

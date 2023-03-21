@@ -92,7 +92,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private TextureHolder textureRight;
 	private TextureHolder textureBack;
 	private TextureHolder signTexture;
-	private TextureHolder hangingSignTexture;
 
 	private TextureHolder itemTexture;
 	private TextureHolder particleTexture;
@@ -459,7 +458,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureBack = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 
 		signTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ENTITY)).setFlipUV(true);
-		hangingSignTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ENTITY)).setFlipUV(true);
 
 		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
@@ -473,7 +471,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureRight.setOpaque(false);
 		textureBack.setOpaque(false);
 		signTexture.setOpaque(false);
-		hangingSignTexture.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -512,7 +509,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		signstal.add(new JLabel());
 		signstal.add(ComponentUtils.squareAndBorder(signTexture, L10N.t("elementgui.block.texture_place_sign")));
-		signstal.add(ComponentUtils.squareAndBorder(hangingSignTexture, L10N.t("elementgui.block.texture_place_hanging_sign")));
+		signstal.add(new JLabel());
 		signstal.add(new JLabel());
 
 		signstal.add(new JLabel());
@@ -1228,9 +1225,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		if (blockBase.getSelectedItem().equals("Sign")) {
 			signTexture.setValidator(new TileHolderValidator(signTexture));
-			hangingSignTexture.setValidator(new TileHolderValidator(hangingSignTexture));
 			page1group.addValidationElement(signTexture);
-			page1group.addValidationElement(hangingSignTexture);
 		} else {
 			texture.setValidator(new TileHolderValidator(texture));
 			page1group.addValidationElement(texture);
@@ -1423,7 +1418,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureRight.setTextureFromTextureName(block.textureRight);
 		textureBack.setTextureFromTextureName(block.textureBack);
 		signTexture.setTextureFromTextureName(block.signTexture);
-		hangingSignTexture.setTextureFromTextureName(block.hangingSignTexture);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
@@ -1659,7 +1653,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureRight = textureRight.getID();
 		block.textureBack = textureBack.getID();
 		block.signTexture = signTexture.getID();
-		block.hangingSignTexture = hangingSignTexture.getID();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getBoundingBoxes();
