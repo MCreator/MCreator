@@ -90,6 +90,10 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
+function getMarkerRequiringTypes() {
+    return ['MCItem', 'MCItemBlock'];
+}
+
 // Helper function to use in Blockly extensions that check if output types of some children blocks are the same
 // If sourceInput name is provided, types of inputs are compared to input with that name
 // Otherwise, if the block is connected to a value input, types of inputs are compared to types accepted by that input
@@ -97,36 +101,16 @@ function validateInputTypes(inputNames = [], repeatingInputNames = [], sourceInp
     if (inputNames.length == 0 && repeatingInputNames.length == 0)
         return {};
     return {
-        prevTargetConnection_: null,
-
         onchange: function (changeEvent) {
             const targetConnection = sourceInput ?
                 this.getInput(sourceInput) && this.getInput(sourceInput).connection :
                 this.outputConnection && this.outputConnection.targetConnection;
-            if (targetConnection && targetConnection.getCheck()) {
-                for (let i = 0; i < inputNames.length; i++)
-                    this.checkInput_(changeEvent, inputNames[i], targetConnection);
-                for (let i = 0; i < repeatingInputNames.length; i++) {
-                    for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++)
-                        this.checkInput_(changeEvent, repeatingInputNames[i] + j, targetConnection);
-                }
-            }
-            this.prevTargetConnection_ = targetConnection;
-        },
-
-        checkInput_: function (changeEvent, inputName, targetConnection) {
-            const connection = this.getInput(inputName).connection.targetConnection;
-            const block = connection && connection.getSourceBlock();
-            if (block && !block.workspace.connectionChecker.doTypeChecks(block.outputConnection, targetConnection)) {
-                Blockly.Events.setGroup(changeEvent.group);
-                if (targetConnection == this.prevTargetConnection_) {
-                    this.unplug();
-                    parentConnection.getSourceBlock().bumpNeighbours();
-                } else {
-                    block.unplug();
-                    block.bumpNeighbours();
-                }
-                Blockly.Events.setGroup(false);
+            const targetTypes = targetConnection && targetConnection.getCheck();
+            for (let i = 0; i < inputNames.length; i++)
+                this.getInput(inputNames[i]).setCheck(targetTypes);
+            for (let i = 0; i < repeatingInputNames.length; i++) {
+                for (let j = 0; this.inputsCount; j++)
+                    this.getInput(repeatingInputNames[i] + j).setCheck(targetTypes);
             }
         }
     };

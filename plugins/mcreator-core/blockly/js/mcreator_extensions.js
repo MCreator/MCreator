@@ -37,7 +37,7 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
-Blockly.Extensions.registerMixin('controls_switch_onchange_mixin', validateInputTypes([], ['yield']));
+Blockly.Extensions.registerMixin('controls_switch_onchange_mixin', validateInputTypes(['byDefault'], ['yield']));
 
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
@@ -219,6 +219,17 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         mutationToDom: function () {
             var container = document.createElement('mutation');
             container.setAttribute('inputs', this.inputCount_);
+            var parentConnection = this.outputConnection && this.outputConnection.targetConnection;
+            if (parentConnection) {
+                var types = parentConnection.getCheck();
+                var markTypes = getMarkerRequiringTypes();
+                for (const mark of markTypes) {
+                    if (types.indexOf(mark) != -1) {
+                        container.setAttribute('mark', mark);
+                        break;
+                    }
+                }
+            }
             return container;
         },
 

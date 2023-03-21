@@ -71,9 +71,6 @@ public class SwitchProceduralBlock implements IBlockGenerator {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.switch_value_missing")));
 			return;
-		} else if (byDefault == null) {
-			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					L10N.t("blockly.warnings.switch_default_branch_empty")));
 		} else if (fields == 0) {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.switch_no_case_branches")));
