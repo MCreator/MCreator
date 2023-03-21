@@ -97,7 +97,7 @@
 	<#list entities as entry>
 	<#-- @formatter:off -->
     {
-		"type": "${entry.entity}",
+		"type": "${generator.map(entry.entity.getUnmappedValue(), "entities", 2)}",
 		"weight": ${entry.weight},
 		"minCount": ${entry.minGroup},
 		"maxCount": ${entry.maxGroup}

@@ -19,12 +19,12 @@
         <#assign rm = [], i = 0>
         "pattern": [
         <#list recipeArray as rl>
-        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToIngameItemName(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#if rl?has_next>,</#if>
+        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToIngameItemName(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#sep>,
         </#list>
         ],
         "key": {
         <#list rm as recipeMapping>
-            ${recipeMapping}<#if recipeMapping?has_next>,</#if>
+            ${recipeMapping}<#sep>,
         </#list>
         },
     </#if>

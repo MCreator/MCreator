@@ -39,30 +39,21 @@ package ${package}.recipes.brewing;
 		event.enqueueWork(() -> BrewingRecipeRegistry.addRecipe(new ${name}BrewingRecipe()));
 	}
 
-	@Override
-	public boolean isInput(ItemStack input) {
+	@Override public boolean isInput(ItemStack input) {
 		<#if data.brewingInputStack?starts_with("POTION:")>
 		Item inputItem = input.getItem();
 		return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
-			&& PotionUtils.getPotion(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
-		<#elseif data.brewingInputStack?starts_with("TAG:")>
-		return Ingredient.of(ItemTags.create(new ResourceLocation("${data.brewingInputStack?replace("TAG:","")}"))).test(input);
+				&& PotionUtils.getPotion(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
 		<#else>
-		return input.getItem() == ${mappedMCItemToItem(data.brewingInputStack)};
+		return ${mappedMCItemToIngredient(data.brewingInputStack)}.test(input);
 		</#if>
 	}
 
-	@Override
-	public boolean isIngredient(ItemStack ingredient) {
-		<#if data.brewingIngredientStack?starts_with("TAG:")>
-		return Ingredient.of(ItemTags.create(new ResourceLocation("${data.brewingIngredientStack?replace("TAG:","")}"))).test(ingredient);
-		<#else>
-		return ingredient.getItem() == ${mappedMCItemToItem(data.brewingIngredientStack)};
-		</#if>
+	@Override public boolean isIngredient(ItemStack ingredient) {
+		return ${mappedMCItemToIngredient(data.brewingIngredientStack)}.test(ingredient);
 	}
 
-	@Override
-	public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
+	@Override public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
 		if (isInput(input) && isIngredient(ingredient)) {
 			<#if data.brewingReturnStack?starts_with("POTION:")>
 			return PotionUtils.setPotion(

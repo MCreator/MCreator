@@ -14,18 +14,18 @@ templates:
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
-  - template: json/dimension/dimension_type.json.ftl
+  - template: dimension/dimension_type.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/dimension_type/@registryname.json"
-  - template: json/dimension/dimension_overworld.json.ftl
+  - template: dimension/dimension_overworld.json.ftl # loaded from datapack generator
     writer: json
     condition: "worldGenType %= Normal world gen"
     name: "@MODDATAROOT/dimension/@registryname.json"
-  - template: json/dimension/dimension_nether.json.ftl
+  - template: dimension/dimension_nether.json.ftl # loaded from datapack generator
     writer: json
     condition: "worldGenType %= Nether like gen"
     name: "@MODDATAROOT/dimension/@registryname.json"
-  - template: json/dimension/dimension_end.json.ftl
+  - template: dimension/dimension_end.json.ftl # loaded from datapack generator
     writer: json
     condition: "worldGenType %= End like gen"
     name: "@MODDATAROOT/dimension/@registryname.json"

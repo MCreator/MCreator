@@ -1,4 +1,4 @@
-<#include "../mcitems.ftl">
+<#include "mcitems.ftl">
 {
     "replace": false,
     "values": [
@@ -21,7 +21,7 @@
             <#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Fluids">
-          <#list w.filterBrokenReferences(data.entities) as value>
+          <#list w.filterBrokenReferences(data.fluids) as value>
             "${generator.map(value.getUnmappedValue(), "fluids", 2)}"
             <#if value?has_next>,</#if>
           </#list>
