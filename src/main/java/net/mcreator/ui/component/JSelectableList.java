@@ -69,22 +69,22 @@ public class JSelectableList<E> extends JList<E> {
 		return rubberBand;
 	}
 
-	private final Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 6 },
+	private final Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 6 },
 			0);
-	private final Composite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f);
 
 	@Override protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setPaint(new Color(0x739B3E));
-		Stroke defaultStroke = g2.getStroke();
-		g2.setStroke(dashed);
-		g2.draw(rubberBand);
-		g2.setPaint((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		g2.setComposite(composite);
-		g2.setStroke(defaultStroke);
-		g2.fill(rubberBand);
-		g2.dispose();
+
+		if (rubberBand.getBounds().getWidth() > 0 && rubberBand.getBounds().getHeight() > 0) {
+			Graphics2D g2 = (Graphics2D) g;
+			Stroke defaultStroke = g2.getStroke();
+			g2.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			g2.setStroke(dashed);
+			g2.draw(rubberBand);
+			g2.setColor(new Color(g2.getColor().getRed(), g2.getColor().getGreen(), g2.getColor().getBlue(), 50));
+			g2.setStroke(defaultStroke);
+			g2.fill(rubberBand);
+		}
 	}
 
 	public interface CustomDNDListener<E> {

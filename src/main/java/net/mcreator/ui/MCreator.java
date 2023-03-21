@@ -283,7 +283,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
 
-			new Thread(this.workspaceFileBrowser::reloadTree).start();
+			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
@@ -309,7 +309,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 
 			// reinit (preload) MCItems so workspace is more snappy when loaded
-			workspace.getModElements().forEach(ModElement::getMCItems);
+			new Thread(() -> {
+				workspace.getModElements().forEach(ModElement::getMCItems);
+				LOG.debug("MCItems preload for mod elements completed");
+			}, "ME preloader").start();
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
