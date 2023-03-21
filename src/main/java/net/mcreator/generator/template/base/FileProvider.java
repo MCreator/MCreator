@@ -27,7 +27,9 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class FileProvider {
@@ -45,11 +47,17 @@ import java.util.Map;
 	public String file(@Nonnull String file) {
 		try {
 			if (!CACHE.containsKey(file)) { // cache miss, add to cache
-				InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(
-						generator.getGeneratorName() + "/" + file);
-				if (stream != null) {
-					String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
-					CACHE.put(file, contents);
+				List<String> templateLoaderPaths = new ArrayList<>();
+				templateLoaderPaths.add(generator.getGeneratorName());
+				templateLoaderPaths.addAll(generator.getGeneratorConfiguration().getImports());
+
+				for (String path : templateLoaderPaths) {
+					InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(path + "/" + file);
+					if (stream != null) {
+						String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
+						CACHE.put(file, contents);
+						break;
+					}
 				}
 			}
 
