@@ -1,4 +1,4 @@
-<#include "../mcitems.ftl">
+<#include "mcitems.ftl">
 {
     "replace": false,
     "values": [

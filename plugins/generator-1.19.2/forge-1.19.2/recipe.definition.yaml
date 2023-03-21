@@ -1,29 +1,29 @@
 templates:
-  - template: json/recipe/smelting.json.ftl
+  - template: recipe/smelting.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smelting"
-  - template: json/recipe/blasting.json.ftl
+  - template: recipe/blasting.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Blasting"
-  - template: json/recipe/campfire_cooking.json.ftl
+  - template: recipe/campfire_cooking.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Campfire cooking"
-  - template: json/recipe/smoking.json.ftl
+  - template: recipe/smoking.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smoking"
-  - template: json/recipe/crafting.json.ftl
+  - template: recipe/crafting.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Crafting"
-  - template: json/recipe/stonecutting.json.ftl
+  - template: recipe/stonecutting.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Stone cutting"
-  - template: json/recipe/smithing.json.ftl
+  - template: recipe/smithing.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smithing"

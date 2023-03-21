@@ -23,23 +23,36 @@ import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.plugin.PluginLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TemplateGeneratorConfiguration {
 
 	private final DefaultFreemarkerConfiguration configuration;
 
-	public TemplateGeneratorConfiguration(String generatorName, String generatorSubfolder) {
+	public TemplateGeneratorConfiguration(GeneratorConfiguration generatorConfiguration, String generatorSubfolder) {
 		configuration = new DefaultFreemarkerConfiguration();
 
-		ClassTemplateLoader baseLoader = new ClassTemplateLoader(PluginLoader.INSTANCE,
-				"/" + generatorName + "/" + generatorSubfolder + "/");
-		ClassTemplateLoader utilLoader = new ClassTemplateLoader(PluginLoader.INSTANCE,
-				"/" + generatorName + "/utils/");
-		MultiTemplateLoader loader = new MultiTemplateLoader(new TemplateLoader[] { baseLoader, utilLoader });
+		List<String> templateLoaderPaths = new ArrayList<>();
+		templateLoaderPaths.add(generatorConfiguration.getGeneratorName());
+		templateLoaderPaths.addAll(generatorConfiguration.getImports());
 
-		configuration.setTemplateLoader(loader);
+		List<TemplateLoader> templateLoaderList = new ArrayList<>();
+		for (String templateLoaderPath : templateLoaderPaths) {
+			ClassTemplateLoader baseLoader = new ClassTemplateLoader(PluginLoader.INSTANCE,
+					"/" + templateLoaderPath + "/" + generatorSubfolder + "/");
+			ClassTemplateLoader utilLoader = new ClassTemplateLoader(PluginLoader.INSTANCE,
+					"/" + templateLoaderPath + "/utils/");
+
+			templateLoaderList.add(baseLoader);
+			templateLoaderList.add(utilLoader);
+		}
+
+		configuration.setTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0])));
 	}
 
 	public Configuration getConfiguration() {
