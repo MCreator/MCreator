@@ -59,8 +59,8 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.validation.validators.ConditionalTileHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -552,8 +552,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		blockBase.addActionListener(e -> {
 			if (blockBase.getSelectedItem() != null) {
-				texturesPanelLayout.show(texturesPanel,
-						blockBase.getSelectedItem().equals("Sign") ? "sign" : "normal");
+				texturesPanelLayout.show(texturesPanel, blockBase.getSelectedItem().equals("Sign") ? "sign" : "normal");
 			}
 		});
 
@@ -1223,13 +1222,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane9.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(enderpanel2)));
 
-		if (blockBase.getSelectedItem().equals("Sign")) {
-			signTexture.setValidator(new TileHolderValidator(signTexture));
-			page1group.addValidationElement(signTexture);
-		} else {
-			texture.setValidator(new TileHolderValidator(texture));
-			page1group.addValidationElement(texture);
-		}
+		signTexture.setValidator(new ConditionalTileHolderValidator(signTexture, blockBase, "Sign"));
+		texture.setValidator(new ConditionalTileHolderValidator(texture, blockBase, "Sign", false));
+
+		page1group.addValidationElement(signTexture);
+		page1group.addValidationElement(texture);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();

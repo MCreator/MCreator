@@ -255,7 +255,8 @@ import java.util.stream.Collectors;
 	@Override public boolean isFullCube() {
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
-				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase) || "Sign".equals(blockBase))
+				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
+				|| "Sign".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
@@ -339,7 +340,8 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getSignTexture() {
-		return getModElement().getFolderManager().getTextureImageIcon("entity/signs/" + signTexture, TextureType.OTHER).getImage();
+		return getModElement().getFolderManager().getTextureImageIcon("entity/signs/" + signTexture, TextureType.OTHER)
+				.getImage();
 	}
 
 	@Override public String getRenderType() {
@@ -363,10 +365,13 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File baseSignTextureLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(signTexture), TextureType.ENTITY);
-		FileIO.copyFile(baseSignTextureLocation, new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-				"entity/signs/" + getModElement().getRegistryName() + ".png"));
+		if (blockBase != null && blockBase.equals("Sign")) {
+			File baseSignTextureLocation = getModElement().getFolderManager()
+					.getTextureFile(FilenameUtilsPatched.removeExtension(signTexture), TextureType.ENTITY);
+			FileIO.copyFile(baseSignTextureLocation,
+					new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+							"entity/signs/" + getModElement().getRegistryName() + ".png"));
+		}
 	}
 
 }
