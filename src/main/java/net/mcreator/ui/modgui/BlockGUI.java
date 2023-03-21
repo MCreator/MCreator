@@ -56,11 +56,12 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.ConditionalTileHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -551,8 +552,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		blockBase.addActionListener(e -> {
-			if (blockBase.getSelectedItem() != null) {
-				texturesPanelLayout.show(texturesPanel, blockBase.getSelectedItem().equals("Sign") ? "sign" : "normal");
+			if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Sign")) {
+				signTexture.setValidator(new TileHolderValidator(signTexture));
+				texture.setValidator(() -> Validator.ValidationResult.PASSED);
+				texturesPanelLayout.show(texturesPanel, "sign");
+			} else {
+				signTexture.setValidator(() -> Validator.ValidationResult.PASSED);
+				texture.setValidator(new TileHolderValidator(texture));
+				texturesPanelLayout.show(texturesPanel, "normal");
 			}
 		});
 
@@ -1221,9 +1228,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane9.setOpaque(false);
 
 		pane9.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(enderpanel2)));
-
-		signTexture.setValidator(new ConditionalTileHolderValidator(signTexture, blockBase, "Sign"));
-		texture.setValidator(new ConditionalTileHolderValidator(texture, blockBase, "Sign", false));
 
 		page1group.addValidationElement(signTexture);
 		page1group.addValidationElement(texture);

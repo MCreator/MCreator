@@ -388,10 +388,14 @@ templates:
     condition: "blockBase %= Sign"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/sign_wall_states.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockbases/@registryname_wall.json"
   - template: json/txblock/sign.json.ftl
     condition: "blockBase %= Sign"
     writer: json
-    name: "@MODASSETSROOT/models/blocks/@registryname.json"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
 
 localizationkeys:
   - key: block.@modid.@registryname
