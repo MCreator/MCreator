@@ -1,17 +1,20 @@
 <#function mappedBlockToBlockStateCode mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
-    <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+    </#if>
+    <#local markers = ["/*@?*/", "/*@->*/"]>
+    <#local markerIndex = markers?map(e -> mappedBlock?index_of(e))?filter(e -> e gt -1)>
+    <#if markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[0])> <#-- ternary operator -->
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlockStateCode(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlockStateCode(outputs?keep_after("/*@:*/")) + ")">
-    <#elseif mappedBlock?contains("/*@->*/")>
-        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
-        <#assign result = mappedBlock>
+    <#elseif markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[1])> <#-- switch operator -->
+        <#local outputs = thelper.toString(mappedBlock).split("(?=/\\*@->\\*/)|(?<=/\\*@;\\*/)")>
+        <#local result = mappedBlock>
         <#list outputs as output>
             <#if output?contains("/*@->*/")>
-                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
-                <#assign result = result.replace(output, "-> " + mappedBlockToBlockStateCode(mappedElement))>
+                <#local mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#local result = result?replace(output, "-> " + mappedBlockToBlockStateCode(mappedElement))>
             </#if>
         </#list>
         <#return result>
@@ -23,17 +26,20 @@
 <#function mappedBlockToBlock mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
-    <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+    </#if>
+    <#local markers = ["/*@?*/", "/*@->*/"]>
+    <#local markerIndex = markers?map(e -> mappedBlock?index_of(e))?filter(e -> e gt -1)>
+    <#if markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[0])> <#-- ternary operator -->
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlock(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
-    <#elseif mappedBlock?contains("/*@->*/")>
-        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
-        <#assign result = mappedBlock>
+    <#elseif markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[1])> <#-- switch operator -->
+        <#local outputs = thelper.toString(mappedBlock).split("(?=/\\*@->\\*/)|(?<=/\\*@;\\*/)")>
+        <#local result = mappedBlock>
         <#list outputs as output>
             <#if output?contains("/*@->*/")>
-                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
-                <#assign result = result.replace(output, "-> " + mappedBlockToBlock(mappedElement))>
+                <#local mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#local result = result?replace(output, "-> " + mappedBlockToBlock(mappedElement))>
             </#if>
         </#list>
         <#return result>
@@ -47,17 +53,20 @@
 <#function mappedMCItemToItemStackCode mappedBlock amount=1>
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
-    <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+    </#if>
+    <#local markers = ["/*@?*/", "/*@->*/"]>
+    <#local markerIndex = markers?map(e -> mappedBlock?index_of(e))?filter(e -> e gt -1)>
+    <#if markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[0])> <#-- ternary operator -->
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
             + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
-    <#elseif mappedBlock?contains("/*@->*/")>
-        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
-        <#assign result = mappedBlock>
+    <#elseif markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[1])> <#-- switch operator -->
+        <#local outputs = thelper.toString(mappedBlock).split("(?=/\\*@->\\*/)|(?<=/\\*@;\\*/)")>
+        <#local result = mappedBlock>
         <#list outputs as output>
             <#if output?contains("/*@->*/")>
-                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
-                <#assign result = result.replace(output, "-> " + mappedMCItemToItemStackCode(mappedElement))>
+                <#local mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#local result = result?replace(output, "-> " + mappedMCItemToItemStackCode(mappedElement))>
             </#if>
         </#list>
         <#return result>
@@ -79,17 +88,20 @@
 <#function mappedMCItemToItem mappedBlock>
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
-    <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+    </#if>
+    <#local markers = ["/*@?*/", "/*@->*/"]>
+    <#local markerIndex = markers?map(e -> mappedBlock?index_of(e))?filter(e -> e gt -1)>
+    <#if markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[0])> <#-- ternary operator -->
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItem(outputs?keep_before("/*@:*/"))
             + ":" + mappedMCItemToItem(outputs?keep_after("/*@:*/")) + ")">
-    <#elseif mappedBlock?contains("/*@->*/")>
-        <#assign outputs = mappedBlock.toString().split("(?=/\\*@->\\*/|(?<=/\\*@;\\*/))")>
-        <#assign result = mappedBlock>
+    <#elseif markerIndex?has_content && markerIndex?min == mappedBlock?index_of(markers[1])> <#-- switch operator -->
+        <#local outputs = thelper.toString(mappedBlock).split("(?=/\\*@->\\*/)|(?<=/\\*@;\\*/)")>
+        <#local result = mappedBlock>
         <#list outputs as output>
             <#if output?contains("/*@->*/")>
-                <#assign mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
-                <#assign result = result.replace(output, "-> " + mappedMCItemToItem(mappedElement))>
+                <#local mappedElement = output?keep_after("/*@->*/")?keep_before("/*@;*/")>
+                <#local result = result?replace(output, "-> " + mappedMCItemToItem(mappedElement))>
             </#if>
         </#list>
         <#return result>

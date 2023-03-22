@@ -109,7 +109,7 @@ function validateInputTypes(inputNames = [], repeatingInputNames = [], sourceInp
             for (let i = 0; i < inputNames.length; i++)
                 this.getInput(inputNames[i]).setCheck(targetTypes);
             for (let i = 0; i < repeatingInputNames.length; i++) {
-                for (let j = 0; this.inputsCount; j++)
+                for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++)
                     this.getInput(repeatingInputNames[i] + j).setCheck(targetTypes);
             }
         }

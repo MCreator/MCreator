@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import net.mcreator.util.StringUtils;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.Random;
 
 @SuppressWarnings("unused") public class TemplateHelper {
@@ -58,6 +59,10 @@ import java.util.Random;
 
 	public String obj2str(Object object) {
 		return new Gson().toJson(object);
+	}
+
+	public String toString(Object object) {
+		return Objects.requireNonNullElse(object, "").toString();
 	}
 
 	public String lowercaseFirstLetter(String str) {
