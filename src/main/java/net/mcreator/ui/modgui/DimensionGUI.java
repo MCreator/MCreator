@@ -79,6 +79,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			"elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
+	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.dimension.new_igniter");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator, true, false);
@@ -95,9 +96,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final DataListComboBox igniterTab = new DataListComboBox(mcreator);
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-
-	private final JRadioButton customIgniter = L10N.radiobutton("elementgui.dimension_custom_igniter");
-	private final JRadioButton newIgniter = L10N.radiobutton("elementgui.dimension_new_igniter");
 
 	private ProcedureSelector portalMakeCondition;
 	private ProcedureSelector portalUseCondition;
@@ -214,9 +212,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
 		enablePortal.setOpaque(false);
+		enableIgniter.setOpaque(false);
 
 		// Currently only Java based mods support dimension portals
 		enablePortal.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA);
+		enableIgniter.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA);
 
 		JPanel proper = new JPanel(new GridLayout(5, 2, 10, 2));
@@ -225,14 +226,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		proper.setOpaque(false);
 		proper22.setOpaque(false);
-
-		ButtonGroup typeSelect = new ButtonGroup();
-		typeSelect.add(customIgniter);
-		typeSelect.add(newIgniter);
-
-		newIgniter.setSelected(true);
-		customIgniter.setOpaque(false);
-		newIgniter.setOpaque(false);
 
 		proper.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -265,8 +258,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper.add(luminance);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/igniter_type"),
-				L10N.label("elementgui.dimension_igniter_type")));
-		proper22.add(PanelUtils.join(FlowLayout.LEFT, newIgniter, customIgniter));
+				L10N.label("elementgui.dimension.enable_new_igniter")));
+		proper22.add(enableIgniter);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.dimension.portal_igniter_name")));
@@ -313,8 +306,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ComponentUtils.deriveFont(igniterName, 16);
 
 		enablePortal.addActionListener(e -> updatePortalElements());
-		customIgniter.addActionListener(e -> updatePortalElements());
-		newIgniter.addActionListener(e -> updatePortalElements());
+		enableIgniter.addActionListener(e -> updatePortalElements());
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 8, 8));
 		events.add(whenPortaTriggerlUsed);
@@ -326,9 +318,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.setOpaque(false);
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
-				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), newIgniter, true));
+				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
 		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
-		texture.setValidator(new TileHolderValidator(texture, newIgniter));
+		texture.setValidator(new TileHolderValidator(texture, enableIgniter));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
@@ -361,14 +353,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setEnabled(enablePortal.isSelected());
 		portalSound.setEnabled(enablePortal.isSelected());
 		luminance.setEnabled(enablePortal.isSelected());
-		igniterName.setEnabled(enablePortal.isSelected() && newIgniter.isSelected());
-		igniterTab.setEnabled(enablePortal.isSelected() && newIgniter.isSelected());
-		texture.setEnabled(enablePortal.isSelected() && newIgniter.isSelected());
+		igniterName.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
+		igniterTab.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
+		texture.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
 		portalMakeCondition.setEnabled(enablePortal.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
-		customIgniter.setEnabled(enablePortal.isSelected());
-		newIgniter.setEnabled(enablePortal.isSelected());
+		enableIgniter.setEnabled(enablePortal.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -401,8 +392,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		mainFillerBlock.setBlock(dimension.mainFillerBlock);
 		fluidBlock.setBlock(dimension.fluidBlock);
 		portalSound.setSound(dimension.portalSound);
-		newIgniter.setSelected(!dimension.customIgniterType);
-		customIgniter.setSelected(dimension.customIgniterType);
+		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
@@ -446,7 +436,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.hasSkyLight = hasSkyLight.isSelected();
 		dimension.enablePortal = enablePortal.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
-		dimension.customIgniterType = customIgniter.isSelected();
+		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();

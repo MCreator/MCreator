@@ -66,7 +66,7 @@ import java.util.List;
 	public Particle portalParticles;
 	public int portalLuminance;
 	public Sound portalSound;
-	public boolean customIgniterType;
+	public boolean enableIgniter;
 	public String igniterName;
 	public TabEntry igniterTab;
 	public String texture;
@@ -86,12 +86,12 @@ import java.util.List;
 
 		// DEFAULT VALUES
 		this.enablePortal = true;
-		this.customIgniterType = false;
+		this.enableIgniter = true;
 		this.sleepResult = "ALLOW";
 	}
 
 	public boolean newDimensionIgniter() {
-		return enablePortal && !customIgniterType;
+		return enablePortal && enableIgniter;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
