@@ -52,9 +52,9 @@ base_templates:
   - template: elementinits/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-#  - template: modbase/variableslist.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
-#    condition: hasVariables()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
 #  - template: modbase/accesstransformer.cfg.ftl
 #    writer: file
 #    name: "@RESROOT/META-INF/accesstransformer.cfg"
