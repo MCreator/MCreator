@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
 	}
 
 	private static final String PROTOCOL_VERSION = "1";

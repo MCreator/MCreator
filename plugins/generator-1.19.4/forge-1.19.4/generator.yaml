@@ -26,14 +26,14 @@ mod_data_root: "@RESROOT/data/@modid"
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
 #structures_dir: "@MODDATAROOT/structures"
-#other_textures_dir: "@MODASSETSROOT/textures"
-#block_textures_dir: "@MODASSETSROOT/textures/blocks"
-#item_textures_dir: "@MODASSETSROOT/textures/items"
+#block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
 #entity_textures_dir: "@MODASSETSROOT/textures/entities"
 #effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+#other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
   - template: modbase/mod.java.ftl
