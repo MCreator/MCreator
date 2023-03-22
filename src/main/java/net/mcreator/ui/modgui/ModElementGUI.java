@@ -448,26 +448,17 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
 					Stack<Component> hierarchy = new Stack<>();
-					hierarchy.push(source);
+					hierarchy.push(source); // add the root component
 					String[] path = entry.split("\\.");
 					for (int i = 0; i < path.length; i++) {
-						Component prevObj = hierarchy.peek();
-						Field field = prevObj.getClass().getDeclaredField(path[i]);
-						Class<?> type = field.getType();
-						if (!Component.class.isAssignableFrom(type) && !Collection.class.isAssignableFrom(type)) {
-							hierarchy.clear(); // clear hierarchy cache to skip current entry
-							break;
-						}
-
-						field.setAccessible(true);
-						Object obj = field.get(prevObj);
-
-						if (obj instanceof Component comp) {
-							hierarchy.push(comp);
-						} else {
-							if (prevObj instanceof JEntriesList entriesList && obj instanceof Collection<?>) {
-								Class<?> childType = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
-								if (Component.class.isAssignableFrom(childType) && i + 1 < path.length) {
+						Field field = hierarchy.peek().getClass().getDeclaredField(path[i]);
+						if (!Component.class.isAssignableFrom(field.getType())) {
+							// this may target a list of potential child entries of JEntriesList
+							if (hierarchy.peek() instanceof JEntriesList entriesList
+									&& Collection.class.isAssignableFrom(field.getType()) && i + 1 < path.length
+									&& field.getGenericType() instanceof ParameterizedType parameterizedType) {
+								Class<?> childType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+								if (Component.class.isAssignableFrom(childType)) { // Collection<? extends Component>
 									Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(
 											entriesList, e -> new HashMap<>()).computeIfAbsent(childType,
 											e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
@@ -479,6 +470,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 							hierarchy.clear(); // clear hierarchy cache to skip current entry
 							break;
 						}
+
+						field.setAccessible(true);
+						Component obj = (Component) field.get(hierarchy.peek());
+						if (obj == null) {
+							hierarchy.clear(); // clear hierarchy cache to skip current entry
+							break;
+						}
+
+						hierarchy.push(obj);
 					}
 
 					// only process current entry if its target component is found
