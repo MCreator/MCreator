@@ -767,7 +767,7 @@ Blockly.defineBlocksWithJsonArray([
         "output": null,
         "colour": "#888888",
         "extensions": [
-            "logic_ternary"
+            "logic_ternary_onchange_mixin"
         ],
         "mutator": "mark_attached_to_block_item"
     },
