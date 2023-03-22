@@ -56,7 +56,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.Flow;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
