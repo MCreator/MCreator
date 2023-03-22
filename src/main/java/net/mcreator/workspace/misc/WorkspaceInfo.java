@@ -258,7 +258,7 @@ import java.util.*;
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tab = tabElement.getCreativeTab();
-				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry" )) {
+				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry")) {
 					if (!tabElement.getCreativeTabItems().isEmpty())
 						return true;
 				}
@@ -298,6 +298,15 @@ import java.util.*;
 	public boolean hasItemsInVanillaTabs(Map<String, List<MItemBlock>> creativeTabMap) {
 		for (String tab : creativeTabMap.keySet()) {
 			if (!tab.startsWith("CUSTOM:")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasItemsInCustomTabs(Map<String, List<MItemBlock>> creativeTabMap) {
+		for (String tab : creativeTabMap.keySet()) {
+			if (tab.startsWith("CUSTOM:")) {
 				return true;
 			}
 		}

@@ -44,27 +44,35 @@ package ${package}.init;
 
 	<#if w.hasItemsInVanillaTabs(tabMap)>
 	@SubscribeEvent public static void buildContentsVanilla(CreativeModeTabEvent.BuildContents tabData) {
-
+		<#list tabMap.keySet() as tabName>
+			<#if !tabName.startsWith("CUSTOM:")>
+				<#if !tabName?is_first>else </#if>if (tabData.getTab() == ${generator.map(tabName, "tabs")}) {
+					<#list tabMap.get(tabName) as tabElement>
+					tabData.accept(${mappedMCItemToItem(tabElement)});
+					</#list>
+			}
+			</#if>
+		</#list>
 	}
 	</#if>
 
-	<#if w.hasElementsOfType('tab')>
+	<#if w.hasItemsInCustomTabs(tabMap)>
 	@SubscribeEvent public static void buildContentsModded(CreativeModeTabEvent.Register event) {
-		<#list w.getElementsOfType("tab") as mod>
-			<#assign tab = mod.getGeneratableElement()>
-			event.registerCreativeModeTab(new ResourceLocation("${modid}", "${tab.getModElement().getRegistryName()}"), builder -> builder
-				.title(Component.translatable("item_group.${modid}.${tab.getModElement().getRegistryName()}"))
-				.icon(() -> ${mappedMCItemToItemStackCode(tab.icon, 1)})
-				<#if tabMap.containsKey("CUSTOM:" + mod.getName())>
-					<#assign tabContents = tabMap.get("CUSTOM:" + mod.getName())>
-					.displayItems((parameters, tabData) -> {
-						<#list tabContents as tabElement>
+		<#list w.getElementsOfType("tab") as tabME>
+			<#if tabMap.containsKey("CUSTOM:" + tabME.getName())>
+				<#assign tab = tabME.getGeneratableElement()>
+				<#assign tabContents = tabMap.get("CUSTOM:" + tabME.getName())>
+				event.registerCreativeModeTab(new ResourceLocation("${modid}", "${tabME.getRegistryName()}"), builder -> builder
+					.title(Component.translatable("item_group.${modid}.${tabME.getRegistryName()}"))
+					.icon(() -> ${mappedMCItemToItemStackCode(tab.icon, 1)})
+						.displayItems((parameters, tabData) -> {
+							<#list tabContents as tabElement>
 							tabData.accept(${mappedMCItemToItem(tabElement)});
-						</#list>
-					})
-				</#if>
-				<#if tab.showSearch>.withSearchBar()</#if>
-			);
+							</#list>
+						})
+					<#if tab.showSearch>.withSearchBar()</#if>
+				);
+			</#if>
 		</#list>
 	}
 	</#if>

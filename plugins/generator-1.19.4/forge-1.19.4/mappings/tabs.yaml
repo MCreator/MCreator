@@ -1,6 +1,5 @@
-_default: CreativeModeTabs.
+_default: CreativeModeTabs.BUILDING_BLOCKS
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@JavaModNameTabs.@REGISTRYNAME"
 No creative tab entry: null
 BUILDING_BLOCKS: CreativeModeTabs.BUILDING_BLOCKS
 DECORATIONS: CreativeModeTabs.NATURAL_BLOCKS
