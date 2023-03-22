@@ -425,24 +425,20 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			openInEditingMode(generatableElement);
 		}
 
-		// disable unsupported fields
 		List<String> exclusions = mcreator.getGeneratorConfiguration()
 				.getUnsupportedDefinitionFields(modElement.getType());
-
 		List<String> inclusions = mcreator.getGeneratorConfiguration()
 				.getSupportedDefinitionFields(modElement.getType());
-
-		if (exclusions != null && inclusions != null) // can't exclude and include together
-			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
-		else
-			disableUnsupportedFields(this, exclusions, inclusions);
+		disableUnsupportedFields(this, exclusions, inclusions);
 
 		elementUpdateListener.registerUI(pages.size() > 1 ? parameters : centerComponent);
 		listeningEnabled = true;
 	}
 
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
-		if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
+		if (exclusions != null && inclusions != null) { // can't exclude and include together
+			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
+		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
