@@ -55,6 +55,11 @@ base_templates:
   - template: modbase/variableslist.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
+  - template: elementinits/tabs.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
+    condition_any:
+      - hasItemsInTabs()
+      - ${w.hasElementsOfType('tab')}
 #  - template: modbase/accesstransformer.cfg.ftl
 #    writer: file
 #    name: "@RESROOT/META-INF/accesstransformer.cfg"
