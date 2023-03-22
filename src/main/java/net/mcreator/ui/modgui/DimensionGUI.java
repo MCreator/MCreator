@@ -256,7 +256,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_luminance")));
 		proper.add(luminance);
 
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/igniter_type"),
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 				L10N.label("elementgui.dimension.enable_new_igniter")));
 		proper22.add(enableIgniter);
 
