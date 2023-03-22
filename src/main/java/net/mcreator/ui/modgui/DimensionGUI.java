@@ -356,7 +356,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		igniterTab.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
 		texture.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
-		portalMakeCondition.setEnabled(enablePortal.isSelected());
+		portalMakeCondition.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
 		enableIgniter.setEnabled(enablePortal.isSelected());
 	}
