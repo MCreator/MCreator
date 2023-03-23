@@ -743,7 +743,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
-		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
+		selp3.add(useLootTableForDrops);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));

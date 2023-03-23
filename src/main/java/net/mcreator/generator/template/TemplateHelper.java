@@ -61,6 +61,10 @@ import java.util.Random;
 		return new Gson().toJson(object);
 	}
 
+	public String lowercaseFirstLetter(String str) {
+		return StringUtils.lowercaseFirstLetter(str);
+	}
+
 	public List<String> splitCommaSeparatedStringListWithEscapes(String specialString) {
 		return StringUtils.splitCommaSeparatedStringListWithEscapes(specialString);
 	}
