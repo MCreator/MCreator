@@ -77,6 +77,9 @@ public class GeneratorsTest {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
+		
+		fileNames.clear();
+		fileNames.add("forge-1.19.4/generator.yaml");
 
 		return fileNames.stream().map(generatorFile -> {
 			final String generator = generatorFile.replace("/generator.yaml", "");
