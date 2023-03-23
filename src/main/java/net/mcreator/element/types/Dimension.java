@@ -112,6 +112,12 @@ import java.util.List;
 		return Collections.emptyList();
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		if (this.enablePortal)
+			return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
+		return Collections.emptyList();
+	}
+
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("portal".equals(suffix))
 			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);

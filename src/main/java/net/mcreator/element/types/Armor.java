@@ -328,6 +328,10 @@ import java.util.*;
 		return retval;
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return switch (suffix) {
 			case "helmet" -> workspace.getFolderManager().getTextureImageIcon(textureHelmet, TextureType.ITEM);
