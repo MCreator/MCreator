@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2022, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,48 +19,26 @@
 
 package net.mcreator.preferences.entries;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.ui.component.JEmptyBox;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.EventObject;
 import java.util.function.Consumer;
 
-public class StringEntry extends PreferencesEntry<String> {
+public abstract class HiddenEntry<T> extends PreferencesEntry<T> {
 
-	private transient final String[] choices;
-	private transient final boolean editable;
-
-	public StringEntry(String id, String value, String... choices) {
-		this(id, value, false, choices);
-	}
-
-	public StringEntry(String id, String value, boolean editable, String... choices) {
+	public HiddenEntry(String id, T value) {
 		super(id, value);
-		this.choices = choices;
-		this.editable = editable;
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		JComboBox<String> box = new JComboBox<>(choices);
-		box.setEditable(editable);
-		box.setSelectedItem(value);
-		box.addActionListener(fct::accept);
-		return box;
+		return new JEmptyBox();
 	}
 
 	@Override public void setValueFromComponent(JComponent component) {
-		value = (String) ((JComboBox<?>) component).getSelectedItem();
-	}
 
-	@Override public void setValueFromJsonElement(JsonElement object) {
-		value = object.getAsString();
-	}
-
-	@Override public JsonElement getSerializedValue() {
-		return new JsonPrimitive(value);
 	}
 
 }

@@ -21,11 +21,9 @@ package net.mcreator.ui.dialogs.preferences;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
-import net.mcreator.preferences.data.PreferencesData;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
@@ -112,7 +110,9 @@ public class PreferencesDialog extends MCreatorDialog {
 					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
-				PreferencesManager.reset();
+				PreferencesManager.getPreferencesRegistry()
+						.forEach((identifier, entries) -> PreferencesManager.resetFromList(entries));
+
 				setVisible(false);
 				new PreferencesDialog(parent, sections.getSelectedValue());
 			}
@@ -161,12 +161,13 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private void loadSections() {
 		// Add preference entries
-		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.stream()
-				.filter(e -> e.getSection().isVisible()).toList().forEach(entry -> {
-					if (!sectionPanels.containsKey(entry.getSectionKey()))
-						createPreferenceSection(entry.getSectionKey());
-					entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSectionKey())));
-				}));
+		PreferencesManager.getPreferencesRegistry().forEach(
+				(identifier, preferences) -> preferences.stream().filter(e -> e.getSection().isVisible()).toList()
+						.forEach(entry -> {
+							if (!sectionPanels.containsKey(entry.getSectionKey()))
+								createPreferenceSection(entry.getSectionKey());
+							entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSectionKey())));
+						}));
 
 		sections.setSelectedIndex(0);
 
@@ -212,20 +213,10 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void savePreferences() {
-		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> {
-			preferences.forEach(entry -> {
-				JComponent component = entries.get(entry);
-				if (component instanceof JSpinner spinner) {
-					entry.set(spinner.getValue());
-				} else if (component instanceof JCheckBox box) {
-					entry.set(box.isSelected());
-				} else if (component instanceof JComboBox<?> box) {
-					entry.set(box.getSelectedItem());
-				} else if (component instanceof JColor color) {
-					entry.set(color.getColor());
-				}
-			});
-		});
+		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.forEach(entry -> {
+			if (entries.containsKey(entry))
+				entry.setValueFromComponent(entries.get(entry));
+		}));
 		PreferencesManager.PREFERENCES.hidden.uiTheme.set(themes.getSelectedTheme());
 		PreferencesManager.savePreferences();
 	}

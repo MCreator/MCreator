@@ -19,6 +19,8 @@
 
 package net.mcreator.preferences.entries;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
 
 import javax.swing.*;
@@ -46,4 +48,17 @@ public class IntegerEntry extends PreferencesEntry<Integer> {
 		spinner.addChangeListener(fct::accept);
 		return spinner;
 	}
+
+	@Override public void setValueFromComponent(JComponent component) {
+		this.value = (Integer) ((JSpinner) component).getValue();
+	}
+
+	@Override public void setValueFromJsonElement(JsonElement object) {
+		this.value = object.getAsInt();
+	}
+
+	@Override public JsonElement getSerializedValue() {
+		return new JsonPrimitive(value);
+	}
+
 }

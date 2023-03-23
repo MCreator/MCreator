@@ -19,8 +19,10 @@
 
 package net.mcreator.preferences.data;
 
+import com.google.gson.JsonElement;
 import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.ColorEntry;
@@ -71,6 +73,18 @@ public class UISection extends PreferencesSection {
 				box.setSelectedItem(this.value);
 				box.addActionListener(fct::accept);
 				return box;
+			}
+
+			@Override public void setValueFromComponent(JComponent component) {
+				this.value = (Locale) ((JComboBox<?>) component).getSelectedItem();
+			}
+
+			@Override public void setValueFromJsonElement(JsonElement object) {
+				this.value = PreferencesManager.gson.fromJson(object, Locale.class);
+			}
+
+			@Override public JsonElement getSerializedValue() {
+				return PreferencesManager.gson.toJsonTree(value, Locale.class);
 			}
 		});
 

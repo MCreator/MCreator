@@ -21,7 +21,7 @@ package net.mcreator.preferences.data;
 
 public class PreferencesData {
 
-	private static final String CORE_PREFERENCES_KEY = "mcreator";
+	public static final String CORE_PREFERENCES_KEY = "core";
 
 	public final UISection ui;
 	public final NotificationsSection notifications;

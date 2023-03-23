@@ -19,6 +19,8 @@
 
 package net.mcreator.preferences.entries;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
 
 import javax.swing.*;
@@ -38,4 +40,17 @@ public class BooleanEntry extends PreferencesEntry<Boolean> {
 		box.addActionListener(fct::accept);
 		return box;
 	}
+
+	@Override public void setValueFromComponent(JComponent component) {
+		this.value = ((JCheckBox) component).isSelected();
+	}
+
+	@Override public void setValueFromJsonElement(JsonElement object) {
+		this.value = object.getAsBoolean();
+	}
+
+	@Override public JsonElement getSerializedValue() {
+		return new JsonPrimitive(value);
+	}
+
 }

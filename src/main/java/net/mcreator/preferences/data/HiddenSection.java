@@ -19,10 +19,14 @@
 
 package net.mcreator.preferences.data;
 
+import com.google.gson.JsonElement;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.HiddenEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
+import net.mcreator.preferences.entries.StringEntry;
 
 import java.io.File;
 
@@ -34,20 +38,44 @@ public class HiddenSection extends PreferencesSection {
 	public BooleanEntry workspaceSortAscending;
 	public PreferencesEntry<SortType> workspaceSortType;
 	public PreferencesEntry<File> java_home;
-	public PreferencesEntry<String> uiTheme;
+	public StringEntry uiTheme;
 	public BooleanEntry enableJavaPlugins;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		workspaceModElementIconSize = addEntry(new PreferencesEntry<>("workspaceModElementIconSize", IconSize.TILES));
+		workspaceModElementIconSize = addEntry(new HiddenEntry<>("workspaceModElementIconSize", IconSize.TILES) {
+			@Override public void setValueFromJsonElement(JsonElement object) {
+				this.value = IconSize.valueOf(object.getAsString());
+			}
+
+			@Override public JsonElement getSerializedValue() {
+				return PreferencesManager.gson.toJsonTree(value, IconSize.class);
+			}
+		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
 		projectTreeSplitPos = addEntry(new IntegerEntry("projectTreeSplitPos", 0));
 		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", true));
-		workspaceSortType = addEntry(new PreferencesEntry<>("workspaceSortType", SortType.CREATED));
-		java_home = addEntry(new PreferencesEntry<>("java_home", null));
-		uiTheme = addEntry(new PreferencesEntry<>("uiTheme", "default_dark"));
-		enableJavaPlugins = addEntry(new BooleanEntry("fullScreen", false));
+		workspaceSortType = addEntry(new HiddenEntry<>("workspaceSortType", SortType.CREATED) {
+			@Override public void setValueFromJsonElement(JsonElement object) {
+				this.value = SortType.valueOf(object.getAsString());
+			}
+
+			@Override public JsonElement getSerializedValue() {
+				return PreferencesManager.gson.toJsonTree(value, SortType.class);
+			}
+		});
+		java_home = addEntry(new HiddenEntry<>("java_home", null) {
+			@Override public void setValueFromJsonElement(JsonElement object) {
+				this.value = new File(object.getAsString());
+			}
+
+			@Override public JsonElement getSerializedValue() {
+				return PreferencesManager.gson.toJsonTree(value, File.class);
+			}
+		});
+		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
+		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
 	}
 
 	@Override public boolean isVisible() {

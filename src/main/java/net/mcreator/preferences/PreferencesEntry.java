@@ -19,7 +19,7 @@
 
 package net.mcreator.preferences;
 
-import net.mcreator.ui.component.JEmptyBox;
+import com.google.gson.JsonElement;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 
 import javax.swing.*;
@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  *
  * @param <T> <p>The type of the stored value.</p>
  */
-public class PreferencesEntry<T> {
+public abstract class PreferencesEntry<T> {
 
 	private final String id;
 	protected T value;
@@ -60,9 +60,13 @@ public class PreferencesEntry<T> {
 	 * @param fct    <p>This is the {@link Consumer} used to enable the apply button when the value of the {@link JComponent} is changed.</p>
 	 * @return <p>The {@link JComponent} to use inside the {@link PreferencesDialog} for all preference entries using the same type.</p>
 	 */
-	public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		return new JEmptyBox();
-	}
+	public abstract JComponent getComponent(Window parent, Consumer<EventObject> fct);
+
+	public abstract void setValueFromComponent(JComponent component);
+
+	public abstract void setValueFromJsonElement(JsonElement object);
+
+	public abstract JsonElement getSerializedValue();
 
 	public String getID() {
 		return id;
@@ -76,8 +80,8 @@ public class PreferencesEntry<T> {
 		this.value = defaultValue;
 	}
 
-	public void set(Object object) {
-		this.value = (T) object;
+	public void set(T newValue) {
+		this.value = newValue;
 	}
 
 	public String getSectionKey() {

@@ -20,47 +20,40 @@
 package net.mcreator.preferences;
 
 import com.google.gson.*;
-import com.google.gson.internal.LinkedTreeMap;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
-import net.mcreator.preferences.data.HiddenSection;
 import net.mcreator.preferences.data.PreferencesData;
-import net.mcreator.preferences.entries.IntegerEntry;
-import net.mcreator.preferences.entries.StringEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
+import javax.annotation.Nullable;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 public class PreferencesManager {
 
-	private static final Logger LOG = LogManager.getLogger("Preferences Manager");
+	public static final Logger LOG = LogManager.getLogger("Preferences Manager");
 
-	private static final File file = UserFolderManager.getFileFromUserFolder("preferences.json");
+	private static final File PREFERENCES_FILE = UserFolderManager.getFileFromUserFolder("userpreferences");
 
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
-	/**
-	 * <p>When this variable is true, MCreator will not try to load preferences from an existing file.
-	 * It will skip the loading to use default values.</p>
-	 */
-	private static boolean firstLoading = false;
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
 
 	/**
-	 * <p>Store values when the preferences' file is loaded</p>
+	 * <p>Stores values when the preferences file is loaded</p>
 	 */
-	private static Map<String, Map<String, List<LinkedTreeMap<?, ?>>>> loadedPreferences;
+	@Nullable private static PreferencesFileCache preferencesFileCache;
 
 	/**
 	 * <p>Store all preferences using an identifier </p>
 	 */
-	private static Map<String, List<PreferencesEntry<?>>> PREFERENCES_REGISTRY;
+	private static final Map<String, List<PreferencesEntry<?>>> PREFERENCES_REGISTRY = new HashMap<>();
 
 	/**
-	 * <p>MCreator's preferences</p>
+	 * <p>MCreator's preferences structure holder</p>
 	 */
 	public static PreferencesData PREFERENCES;
 
@@ -68,37 +61,24 @@ public class PreferencesManager {
 	 * <p>Init the system and load MCreator's preferences, so entries used inside the launcher can be get.</p>
 	 */
 	public static void init() {
-		PREFERENCES_REGISTRY = new HashMap<>();
 		PREFERENCES = new PreferencesData();
 
-		if (!file.isFile() && UserFolderManager.getFileFromUserFolder("preferences").exists()) {
-			LOG.debug("Old preferences detected. Converting them to the new format.");
+		if (!PREFERENCES_FILE.isFile() && UserFolderManager.getFileFromUserFolder("preferences").exists()) {
+			LOG.info("Old preferences file found. Converting the file to the new format.");
 			convertOldPreferences();
-		} else if (!file.exists()) {
-			LOG.debug("File not found. Generating preferences from default values");
-			firstLoading = true;
-		} else {
-			try {
-				loadedPreferences = gson.fromJson(FileIO.readFileToString(file), Map.class);
-			} catch (JsonSyntaxException e) {
-				LOG.error("The preferences file could not be loaded. Default values will be used.", e);
-			}
-			loadPreferences("mcreator");
 		}
+
+		loadPreferences(PreferencesData.CORE_PREFERENCES_KEY);
 	}
 
 	/**
 	 * <p>Once plugins are loaded, we can now load preferences registered by them with {@link ApplicationLoadedEvent}.</p>
 	 */
 	public static void initNonCore() {
-		if (!firstLoading) {
-			PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
-				if (!identifier.equals("mcreator"))
-					loadPreferences(identifier);
-			});
-		} else {
-			savePreferences(); // if this is the first time, we save preferences for the next time
-		}
+		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
+			if (!identifier.equals(PreferencesData.CORE_PREFERENCES_KEY))
+				loadPreferences(identifier);
+		});
 	}
 
 	/**
@@ -107,30 +87,44 @@ public class PreferencesManager {
 	 * @param identifier <p> The identifier used to get the preference file to load</p>
 	 */
 	public static void loadPreferences(String identifier) {
+		// Load preferences data from file and cache it
+		if (preferencesFileCache == null && PREFERENCES_FILE.isFile()) {
+			try {
+				preferencesFileCache = gson.fromJson(FileIO.readFileToString(PREFERENCES_FILE),
+						PreferencesFileCache.class);
+			} catch (JsonSyntaxException e) {
+				LOG.error("The preferences file could not be loaded. Default values will be used.", e);
+			}
+		}
+
+		boolean failedToLoad = false;
+
 		try {
 			LOG.debug("Loading preferences from " + identifier);
-			if (loadedPreferences.containsKey(identifier)) {
+			if (preferencesFileCache != null && preferencesFileCache.containsKey(identifier)) {
 				// Convert values from the file to properly work
-				loadedPreferences.get(identifier).forEach((category, entries) -> entries.forEach(
-						entry -> getPreferencesRegistry().get(identifier).stream()
-								.filter(preference -> preference.getID().equals(entry.get("id")))
-								.forEach(preference -> {
-									if (preference.get() instanceof Locale)
-										preference.set(
-												Locale.forLanguageTag(((String) entry.get("value")).replace("_", "-")));
-									else if (preference.get() instanceof Color)
-										preference.set(new Color((int) (double) entry.get("value")));
-									else if (entry.get("value") instanceof Double d)
-										preference.set(d.intValue());
-									else
-										preference.set(entry.get("value"));
+				preferencesFileCache.get(identifier).forEach((section, entries) -> entries.keySet().forEach(
+						entryKey -> PREFERENCES_REGISTRY.get(identifier).stream()
+								.filter(preference -> preference.getID().equals(entryKey) && preference.getSectionKey()
+										.equals(section)).forEach(preference -> {
+									JsonElement value = entries.get(entryKey);
+									if (value != null && value != JsonNull.INSTANCE) {
+										preference.setValueFromJsonElement(value);
+									}
 								})));
 			} else {
-				LOG.debug(identifier + " has no saved values. Default values will be used.");
+				LOG.warn("Preferences with identifier " + identifier
+						+ " have no saved values. Default values will be used.");
+				failedToLoad = true;
 			}
 		} catch (Exception e) {
-			LOG.error("Failed to load preferences. Reloading defaults.", e);
-			resetSpecific(identifier);
+			LOG.warn("Failed to load preferences. Reloading defaults for identifier " + identifier, e);
+			failedToLoad = true;
+		}
+
+		if (failedToLoad) {
+			resetFromList(PREFERENCES_REGISTRY.get(identifier));
+			savePreferences(); // defaults were reloaded, save the preferences file
 		}
 	}
 
@@ -138,24 +132,16 @@ public class PreferencesManager {
 	 * <p>Save preferences of all identifiers registered inside PREFERENCES_REGISTRY.</p>
 	 */
 	public static void savePreferences() {
-		Map<String, Map<String, List<PreferencesEntry<?>>>> allPreferences = new HashMap<>();
+		PreferencesFileCache allPreferences = new PreferencesFileCache();
 
 		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
-			Map<String, List<PreferencesEntry<?>>> identifierPrefs = new HashMap<>();
+			PreferencesFileCacheIdentifierGroup identifierPrefs = new PreferencesFileCacheIdentifierGroup();
 			preferences.forEach(entry -> {
 				// We check if the section doesn't exist to add it
 				if (!identifierPrefs.containsKey(entry.getSectionKey()))
-					identifierPrefs.put(entry.getSectionKey(), new ArrayList<>());
+					identifierPrefs.put(entry.getSectionKey(), new JsonObject());
 
-				// We change the registered value for some types, so we can load them correctly
-				if (entry.get() instanceof Color color)
-					identifierPrefs.get(entry.getSectionKey())
-							.add(new IntegerEntry(entry.getID(), color.getRGB()));
-				else if (entry.get() instanceof Locale locale)
-					identifierPrefs.get(entry.getSectionKey())
-							.add(new StringEntry(entry.getID(), locale.toString()));
-				else
-					identifierPrefs.get(entry.getSectionKey()).add(entry);
+				identifierPrefs.get(entry.getSectionKey()).add(entry.getID(), entry.getSerializedValue());
 
 				if (!allPreferences.containsKey(identifier)) {
 					allPreferences.put(identifier, identifierPrefs);
@@ -165,7 +151,7 @@ public class PreferencesManager {
 			});
 		});
 
-		FileIO.writeStringToFile(gson.toJson(allPreferences), file);
+		FileIO.writeStringToFile(gson.toJson(preferencesFileCache = allPreferences), PREFERENCES_FILE);
 	}
 
 	/**
@@ -174,45 +160,22 @@ public class PreferencesManager {
 	private static void convertOldPreferences() {
 		File file = UserFolderManager.getFileFromUserFolder("preferences");
 		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
-		PREFERENCES_REGISTRY.get("mcreator").forEach(entry -> {
+		PREFERENCES_REGISTRY.get(PreferencesData.CORE_PREFERENCES_KEY).forEach(entry -> {
 			JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject()
 					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
 							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
-			if (value == null)
-				return; // we use the default value
 
-			if (entry.get() instanceof Number)
-				entry.set(value.getAsInt());
-			else if (entry.get() instanceof String)
-				entry.set(value.getAsString());
-			else if (entry.get() instanceof Boolean)
-				entry.set(value.getAsBoolean());
-			else if (entry.get() instanceof Locale)
-				entry.set(Locale.forLanguageTag(value.getAsString().replace("_", "-")));
-			else if (entry.get() instanceof Color)
-				entry.set(new Color(value.getAsJsonObject().get("value").getAsInt()));
-			else if (entry.get() instanceof HiddenSection.IconSize)
-				entry.set(HiddenSection.IconSize.valueOf(value.getAsString()));
-			else if (entry.get() instanceof HiddenSection.SortType)
-				entry.set(HiddenSection.SortType.valueOf(value.getAsString()));
+			if (value == null || value == JsonNull.INSTANCE)
+				return; // not defined in old preferences, we use the default value
+
+			entry.setValueFromJsonElement(value);
 		});
+
+		// We save the new preferences
 		savePreferences();
 	}
 
-	/**
-	 * <p>Reset to default values all preferences from all identifiers</p>
-	 */
-	public static void reset() {
-		LOG.debug("Restoring default values for all preferences");
-		PREFERENCES_REGISTRY.forEach((identifier, entries) -> resetFromList(entries));
-	}
-
-	public static void resetSpecific(String identifier) {
-		LOG.debug("Restoring default values for: " + identifier);
-		resetFromList(PREFERENCES_REGISTRY.get(identifier));
-	}
-
-	private static void resetFromList(List<PreferencesEntry<?>> entries) {
+	public static void resetFromList(List<PreferencesEntry<?>> entries) {
 		entries.forEach(PreferencesEntry::reset);
 	}
 
@@ -229,4 +192,9 @@ public class PreferencesManager {
 	public static Map<String, List<PreferencesEntry<?>>> getPreferencesRegistry() {
 		return PREFERENCES_REGISTRY;
 	}
+
+	private static class PreferencesFileCache extends HashMap<String, PreferencesFileCacheIdentifierGroup> {}
+
+	private static class PreferencesFileCacheIdentifierGroup extends HashMap<String, JsonObject> {}
+
 }

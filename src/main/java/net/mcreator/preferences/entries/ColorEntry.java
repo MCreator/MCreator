@@ -19,7 +19,9 @@
 
 package net.mcreator.preferences.entries;
 
+import com.google.gson.JsonElement;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.JColor;
 
 import javax.swing.*;
@@ -47,4 +49,17 @@ public class ColorEntry extends PreferencesEntry<Color> {
 		box.setColorSelectedListener(fct::accept);
 		return box;
 	}
+
+	@Override public void setValueFromComponent(JComponent component) {
+		this.value = ((JColor) component).getColor();
+	}
+
+	@Override public void setValueFromJsonElement(JsonElement object) {
+		this.value = PreferencesManager.gson.fromJson(object, Color.class);
+	}
+
+	@Override public JsonElement getSerializedValue() {
+		return PreferencesManager.gson.toJsonTree(value, Color.class);
+	}
+
 }
