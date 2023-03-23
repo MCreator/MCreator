@@ -205,7 +205,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals("")) {
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
 		} else if ((int) minCountPerChunk.getValue() > (int) maxCountPerChunk.getValue()) {
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_count_chunk"));
+			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_group_size_min_max"));
 		} else {
 			return new AggregatedValidationResult(page1group);
 		}
