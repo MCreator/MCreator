@@ -932,7 +932,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 						.collect(Collectors.toList()));
 		} else if (page == 6) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
-				return new AggregatedValidationResult.FAIL("Minimal mob group size can't be bigger than maximal size");
+				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.living_entity.error_entities_group_size"));
 			}
 		}
 		return new AggregatedValidationResult.PASS();
