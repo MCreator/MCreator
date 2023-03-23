@@ -171,7 +171,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if ((int) minLevel.getValue() >= (int) maxLevel.getValue()) {
+		if ((int) minLevel.getValue() > (int) maxLevel.getValue()) {
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.enchantment.error_enchantment_levels"));
 		}
 		return new AggregatedValidationResult(page1group);
