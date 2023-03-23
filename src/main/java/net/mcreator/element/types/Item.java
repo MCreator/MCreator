@@ -146,6 +146,10 @@ import java.util.Map;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 	public boolean hasNormalModel() {
 		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Normal");
 	}

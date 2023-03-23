@@ -120,4 +120,7 @@ import java.util.Map;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
 }

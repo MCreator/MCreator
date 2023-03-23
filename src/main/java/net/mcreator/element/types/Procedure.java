@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Procedure extends GeneratableElement {
@@ -121,7 +122,7 @@ public class Procedure extends GeneratableElement {
 				this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
 						.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
 								null :
-								blocklyToJava.getReturnType().getName().toLowerCase());
+								blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
 			}
 
 			additionalData.put("dependencies", reloadDependencies());

@@ -315,6 +315,10 @@ public class GTProcedureBlocks {
 					procedure.procedurexml = wrapWithBaseTestXML(
 							"<block type=\"return_itemstack\"><value name=\"return\">" + testXML + "</value></block>");
 					break;
+				case "Entity":
+					procedure.procedurexml = wrapWithBaseTestXML(
+							"<block type=\"return_entity\"><value name=\"return\">" + testXML + "</value></block>");
+					break;
 				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
 					procedure.procedurexml = wrapWithBaseTestXML("""
 							<block type="projectile_shoot_from_entity">
@@ -423,7 +427,7 @@ public class GTProcedureBlocks {
 			processed++;
 		}
 		case "field_mcitem_selector" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
+			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
 			processed++;
 		}
 		case "field_data_list_selector" -> {

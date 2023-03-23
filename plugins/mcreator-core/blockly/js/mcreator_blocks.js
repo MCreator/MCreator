@@ -227,6 +227,35 @@ Blockly.Blocks['java_code_get'] = {
     }
 };
 
+Blockly.Blocks['logic_ternary_op'] = {
+    init: function () {
+        this.appendValueInput('condition').setCheck('Boolean')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.if"));
+        this.appendValueInput('THEN')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.then"));
+        this.appendValueInput('ELSE')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.else"));
+        this.setInputsInline(true);
+        this.setOutput(true);
+        this.setColour('#888888');
+        Blockly.Extensions.apply('logic_ternary', this, false);
+        Blockly.Extensions.apply('mark_attached_to_block_item', this, true);
+    }
+};
+
+Blockly.Blocks['controls_while'] = {
+    init: function () {
+        this.appendValueInput('BOOL').setCheck('Boolean')
+            .appendField(javabridge.t("blockly.block.controls_while"));
+        this.appendStatementInput('DO')
+            .appendField('%{BKY_CONTROLS_REPEAT_INPUT_DO}');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour('%{BKY_LOOPS_HUE}');
+        Blockly.Extensions.apply('is_custom_loop', this, false);
+    }
+};
+
 Blockly.Blocks['math_from_text'] = {
     init: function () {
         this.appendValueInput('NUMTEXT').setCheck('String')
@@ -458,7 +487,7 @@ Blockly.Blocks['time_week_of_year'] = {
 
 // Mutator block for "Any/All of" block predicates
 Blockly.Blocks['block_predicate_mutator_container'] = {
-    init: function() {
+    init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.container"));
         this.appendStatementInput('STACK');
         this.contextMenu = false;
@@ -468,12 +497,34 @@ Blockly.Blocks['block_predicate_mutator_container'] = {
 
 // Mutator block for "Any/All of" block predicates
 Blockly.Blocks['block_predicate_mutator_input'] = {
-    init: function() {
-      this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.input"));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.setColour('%{BKY_LOGIC_HUE}');
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
+// Mutator block for "Block list" mixin
+Blockly.Blocks['block_list_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.container'));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(45);
+    }
+};
+
+// Mutator block for "Block list" mixin
+Blockly.Blocks['block_list_mutator_input'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.input'));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.fieldValues_ = [];
+        this.setColour(45);
     }
 };
 
@@ -652,54 +703,6 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "logic_ternary_op",
-        "message0": "if %1 then %2 else %3",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "condition",
-                "check": "Boolean"
-            },
-            {
-                "type": "input_value",
-                "name": "THEN"
-            },
-            {
-                "type": "input_value",
-                "name": "ELSE"
-            }
-        ],
-        "inputsInline": true,
-        "output": null,
-        "colour": "#888888",
-        "extensions": [
-            "logic_ternary"
-        ],
-        "mutator": "mark_attached_to_block_item"
-    },
-    {
-        "type": "controls_while",
-        "message0": "while %1",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "BOOL",
-                "check": "Boolean"
-            }
-        ],
-        "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
-        "args1": [{
-            "type": "input_statement",
-            "name": "DO"
-        }],
-        "extensions": [
-            "is_custom_loop"
-        ],
-        "previousStatement": null,
-        "nextStatement": null,
-        "colour": "%{BKY_LOOPS_HUE}"
     },
     {
         "type": "coord_x",

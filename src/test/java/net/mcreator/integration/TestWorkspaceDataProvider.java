@@ -101,8 +101,8 @@ public class TestWorkspaceDataProvider {
 				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
 				|| type == ModElementType.CODE) {
 			generatableElements.add(
-					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random, true,
-							true, 0));
+					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
+							true, true, 0));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -276,7 +276,7 @@ public class TestWorkspaceDataProvider {
 	 * Provides list of GEs for tests
 	 *
 	 * @param modElement ME for this GE
-	 * @param uiTest true if test is UI test and not generator test
+	 * @param uiTest     true if test is UI test and not generator test
 	 * @return List of GEs for tests
 	 */
 	private static GeneratableElement getExampleFor(ModElement modElement, boolean uiTest, Random random, boolean _true,

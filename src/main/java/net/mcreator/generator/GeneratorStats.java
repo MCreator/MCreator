@@ -27,6 +27,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -120,9 +121,17 @@ public class GeneratorStats {
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
-		baseCoverageInfo.put("textures", generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
-				CoverageStatus.NONE :
-				CoverageStatus.FULL);
+		CoverageStatus texturesCoverage = CoverageStatus.NONE;
+		int supportedTextureTypes = 0;
+		for (TextureType textureType : TextureType.values()) {
+			if (generatorConfiguration.getSpecificRoot(textureType.getID() + "_textures_dir") != null) {
+				texturesCoverage = CoverageStatus.PARTIAL;
+				supportedTextureTypes++;
+			}
+		}
+		if (supportedTextureTypes == TextureType.values().length)
+			texturesCoverage = CoverageStatus.FULL;
+		baseCoverageInfo.put("textures", texturesCoverage);
 
 		baseCoverageInfo.put("i18n", generatorConfiguration.getLanguageFileSpecification().isEmpty() ?
 				CoverageStatus.NONE :
@@ -145,10 +154,16 @@ public class GeneratorStats {
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
 	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
-		Set<String> blocks = PluginLoader.INSTANCE.getResources(
-						genConfig.getGeneratorName() + "." + type.registryName(), ftlFile).stream()
-				.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-				.filter(e -> !e.startsWith("_")).collect(Collectors.toSet());
+		List<String> templateLoaderPaths = new ArrayList<>();
+		templateLoaderPaths.add(genConfig.getGeneratorName());
+		templateLoaderPaths.addAll(genConfig.getImports());
+
+		Set<String> blocks = new HashSet<>();
+		for (String path : templateLoaderPaths) {
+			blocks.addAll(PluginLoader.INSTANCE.getResources(path + "." + type.registryName(), ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()));
+		}
 
 		coverageInfo.put(type.registryName(), Math.min(
 				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
@@ -158,10 +173,15 @@ public class GeneratorStats {
 	}
 
 	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
-		procedureTriggers.addAll(
-				PluginLoader.INSTANCE.getResources(genConfig.getGeneratorName() + ".triggers", ftlFile).stream()
-						.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-						.collect(Collectors.toSet()));
+		List<String> templateLoaderPaths = new ArrayList<>();
+		templateLoaderPaths.add(genConfig.getGeneratorName());
+		templateLoaderPaths.addAll(genConfig.getImports());
+
+		for (String path : templateLoaderPaths) {
+			procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(path + ".triggers", ftlFile).stream()
+					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+					.collect(Collectors.toSet()));
+		}
 
 		coverageInfo.put("triggers", Math.min(
 				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()

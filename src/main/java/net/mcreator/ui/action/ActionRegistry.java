@@ -89,7 +89,6 @@ public class ActionRegistry {
 	public final BasicAction runClient;
 	public final BasicAction runServer;
 	public final BasicAction runGradleTask;
-	public final BasicAction buildClean;
 	public final BasicAction buildGradleOnly;
 	public final BasicAction reloadGradleProject;
 	public final BasicAction clearAllGradleCaches;
@@ -201,8 +200,6 @@ public class ActionRegistry {
 		this.runClient = new RunClientAction(this).setIcon(UIRES.get("16px.runclient"));
 		this.runServer = new RunServerAction(this).setIcon(UIRES.get("16px.runserver"));
 		this.runGradleTask = new RunGradleTaskAction(this);
-		this.buildClean = new GradleAction(this, L10N.t("action.gradle.clean_build"),
-				e -> mcreator.getGradleConsole().exec("clean"));
 		this.exportToJAR = new ExportWorkspaceForDistAction(this).setIcon(UIRES.get("16px.exporttojar"));
 		this.exportToDeobfJAR = new ExportWorkspaceForDistAction.Deobf(this);
 		this.workspaceSettings = new WorkspaceSettingsAction(this).setIcon(UIRES.get("16px.wrksett"));

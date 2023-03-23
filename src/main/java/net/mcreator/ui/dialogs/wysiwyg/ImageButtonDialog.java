@@ -99,7 +99,8 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		options.add(PanelUtils.northAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"), hoveredTextureSelector)));
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"),
+						hoveredTextureSelector)));
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -141,9 +142,9 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 				String imageTxt = textureSelector.getSelectedItem();
 				if (imageTxt != null) {
 					if (button == null) {
-						String name = textToMachineName(editor.getComponentList(), "imagebutton_", Objects.requireNonNull(
-										FilenameUtilsPatched.removeExtension(imageTxt))
-								.toLowerCase(Locale.ENGLISH));
+						String name = textToMachineName(editor.getComponentList(), "imagebutton_",
+								Objects.requireNonNull(FilenameUtilsPatched.removeExtension(imageTxt))
+										.toLowerCase(Locale.ENGLISH));
 
 						ImageButton component = new ImageButton(name, 0, 0, imageTxt,
 								hoveredTextureSelector.getSelectedItem(), onClick.getSelectedProcedure(),

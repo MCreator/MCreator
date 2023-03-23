@@ -179,4 +179,11 @@ public class ZipIO {
 		}
 	}
 
+	public static boolean checkIfJMod(File zipfile) {
+		try (RandomAccessFile raf = new RandomAccessFile(zipfile, "r")) {
+			return raf.readInt() == 0x4a4d0100;
+		} catch (IOException e) {
+			return false;
+		}
+	}
 }
