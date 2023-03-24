@@ -664,7 +664,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 					super.travel(new Vec3(strafe, 0, forward));
 				}
-				
+
+				double d1 = this.getX() - this.xo;
+				double d0 = this.getZ() - this.zo;
+				float f1 = (float) Math.sqrt(d1 * d1 + d0 * d0) * 4;
+				if (f1 > 1.0F) f1 = 1.0F;
+				this.walkAnimation.setSpeed(this.walkAnimation.speed() + (f1 - this.walkAnimation.speed()) * 0.4F);
+				this.walkAnimation.position(this.walkAnimation.position() + this.walkAnimation.speed());
 				return;
 			}
 			this.maxUpStep = 0.5F;
