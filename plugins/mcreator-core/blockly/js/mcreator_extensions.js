@@ -37,21 +37,54 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
-// marks in the xml if the block is attached to a block/item input, for proper mapping
-Blockly.Extensions.registerMutator('mark_attached_to_block_item',
+// Helper function to use in Blockly extensions that check if output types of some children blocks are the same
+// If sourceInput name is provided, types of inputs are compared to input with that name
+// Otherwise, if the block is connected to a value input, types of inputs are compared to types accepted by that input
+function validateInputTypes(inputNames, repeatingInputNames = [], sourceInput) {
+    if (inputNames.length == 0 && repeatingInputNames.length == 0)
+        return {};
+    return {
+        onchange: function (changeEvent) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            const targetConnection = sourceInput ?
+                this.getInput(sourceInput) && this.getInput(sourceInput).connection.targetConnection :
+                this.outputConnection && this.outputConnection.targetConnection;
+            const targetTypes = targetConnection && targetConnection.getCheck();
+            const group = Blockly.Events.getGroup();
+            // Makes it so the block change and the disable event get undone together.
+            for (let i = 0; i < inputNames.length; i++) {
+                Blockly.Events.setGroup(changeEvent.group);
+                this.getInput(inputNames[i]).setCheck(targetTypes);
+                Blockly.Events.setGroup(group);
+            }
+            for (let i = 0; i < repeatingInputNames.length; i++) {
+                for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++) {
+                    Blockly.Events.setGroup(changeEvent.group);
+                    this.getInput(repeatingInputNames[i] + j).setCheck(targetTypes);
+                    Blockly.Events.setGroup(group);
+                }
+            }
+        }
+    };
+}
+
+Blockly.Extensions.registerMixin('logic_ternary_onchange_mixin', validateInputTypes(['THEN', 'ELSE']));
+
+// marks in the xml if the block is attached to a specific input that accepts values requiring proper mapping
+Blockly.Extensions.registerMutator('mark_attachment_requires_mapping',
     {
         mutationToDom: function () {
             var container = document.createElement('mutation');
-            var parentConnection = this.outputConnection.targetConnection;
-            if (parentConnection == null)
-                return null;
-            else {
-                var connectionChecks = parentConnection.getCheck();
-                var shouldMark = connectionChecks &&
-                    (connectionChecks.indexOf('MCItem') != -1 || connectionChecks.indexOf('MCItemBlock') != -1);
-                container.setAttribute('mark', shouldMark);
+            if (setMarkerStatus(container, this))
                 return container;
-            }
+            else
+                return null;
         },
 
         domToMutation: function (xmlElement) {

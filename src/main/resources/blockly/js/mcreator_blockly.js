@@ -90,6 +90,20 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
+function setMarkerStatus(container, block) {
+    var parentConnection = block.outputConnection && block.outputConnection.targetConnection;
+    if (parentConnection && parentConnection.getCheck()) {
+        var types = parentConnection.getCheck();
+        for (const mark of javabridge.getMarkerRequiringTypes()) {
+            if (types.indexOf('' + mark) != -1) { // add empty string to "convert" Java strings to JS strings
+                container.setAttribute('marker', mark);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 // Helper function to use in Blockly extensions that append a dropdown
 function appendDropDown(listType, fieldName) {
     return function () {

@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.*;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
@@ -105,6 +106,7 @@ public class BlocklyBlockCodeGenerator {
 
 		// we get the list of all elements present in the actual xml
 		List<Element> elements = XMLUtil.getDirectChildren(block);
+		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 
 		// check for all fields if they exist, if they do, add them to data model
 		if (toolboxBlock.getFields() != null) {
@@ -229,7 +231,6 @@ public class BlocklyBlockCodeGenerator {
 						.filter(e -> e.getNodeName().equals("field") && e.getAttribute("name")
 								.matches(fieldName + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 				Map<Integer, String> processedElements = new HashMap<>();
 				for (int i = 0; mutation != null && mutation.hasAttribute("inputs") ?
 						i < Integer.parseInt(mutation.getAttribute("inputs")) :
@@ -261,7 +262,6 @@ public class BlocklyBlockCodeGenerator {
 						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
 								.matches(inputName + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 				Map<Integer, String> processedElements = new HashMap<>();
 				for (int i = 0; mutation != null && mutation.hasAttribute("inputs") ?
 						i < Integer.parseInt(mutation.getAttribute("inputs")) :
@@ -292,7 +292,6 @@ public class BlocklyBlockCodeGenerator {
 						.filter(e -> e.getNodeName().equals("value") && e.getAttribute("name")
 								.matches(advancedInput.name() + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 				Map<Integer, String> processedElements = new HashMap<>();
 				for (int i = 0; mutation != null && mutation.hasAttribute("inputs") ?
 						i < Integer.parseInt(mutation.getAttribute("inputs")) :
@@ -339,7 +338,6 @@ public class BlocklyBlockCodeGenerator {
 						.filter(e -> e.getNodeName().equals("statement") && e.getAttribute("name")
 								.matches(statementInput.name() + "\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 				Map<Integer, String> processedElements = new HashMap<>();
 				for (int i = 0; mutation != null && mutation.hasAttribute("inputs") ?
 						i < Integer.parseInt(mutation.getAttribute("inputs")) :
@@ -395,6 +393,8 @@ public class BlocklyBlockCodeGenerator {
 
 		if (templateGenerator != null) {
 			dataModel.put("customBlockIndex", customBlockIndex);
+			if (mutation != null && mutation.hasAttribute("marker"))
+				dataModel.put("outputMarker", ProcedureCodeOptimizer.mapMarker(mutation.getAttribute("marker")));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);

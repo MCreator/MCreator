@@ -238,8 +238,8 @@ Blockly.Blocks['logic_ternary_op'] = {
         this.setInputsInline(true);
         this.setOutput(true);
         this.setColour('#888888');
-        Blockly.Extensions.apply('logic_ternary', this, false);
-        Blockly.Extensions.apply('mark_attached_to_block_item', this, true);
+        Blockly.Extensions.apply('logic_ternary_onchange_mixin', this, false);
+        Blockly.Extensions.apply('mark_attachment_requires_mapping', this, true);
     }
 };
 

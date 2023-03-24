@@ -19,23 +19,25 @@
 
 package net.mcreator.blockly.java.blocks;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TernaryOperatorBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
 		Element condition = null, thenBlock = null, elseBlock = null;
-		boolean useMarkers = false; // Used to properly map blocks and items
+		String markerType = ""; // used to properly map blocks and items
 		for (Element element : elements) {
 			if (element.getAttribute("name").equals("condition"))
 				condition = element;
@@ -43,28 +45,27 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 				thenBlock = element;
 			else if (element.getAttribute("name").equals("ELSE"))
 				elseBlock = element;
-			else if (element.getAttribute("mark").equals("true"))
-				useMarkers = true;
+			else if (element.hasAttribute("marker"))
+				markerType = element.getAttribute("marker");
 		}
 		if (thenBlock != null && elseBlock != null) {
-			if ("logic_ternary_op".equals(BlocklyBlockUtil.getInputBlockType(thenBlock)) || "logic_ternary_op".equals(
-					BlocklyBlockUtil.getInputBlockType(elseBlock))) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.ternary_operator.nesting")));
-			} else {
-				if (condition != null) {
-					master.append("(");
-					master.processOutputBlockWithoutParentheses(condition, "?:");
-					master.append(useMarkers ? "/*@?*/" : "?");
-					master.processOutputBlockWithoutParentheses(thenBlock, "?:");
-					master.append(useMarkers ? "/*@:*/" : ":");
-					master.processOutputBlockWithoutParentheses(elseBlock, "?:");
-					master.append(")");
-				} else {
-					master.processOutputBlock(thenBlock);
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.warnings.ternary_operator.no_condition")));
+			if (condition != null) {
+				Map<String, Object> dataModel = new HashMap<>();
+				dataModel.put("outputMarker", JavaKeywordsMap.MARKER_TYPES.getOrDefault(markerType, ""));
+				dataModel.put("condition", BlocklyToCode.directProcessOutputBlock(master, condition));
+				dataModel.put("ifTrue", BlocklyToCode.directProcessOutputBlock(master, thenBlock));
+				dataModel.put("ifFalse", BlocklyToCode.directProcessOutputBlock(master, elseBlock));
+				org.apache.logging.log4j.LogManager.getLogger("TernaryOp").trace(dataModel.get("outputMarker"));
+
+				if (master.getTemplateGenerator() != null) {
+					String code = master.getTemplateGenerator()
+							.generateFromTemplate("_logic_ternary.java.ftl", dataModel);
+					master.append(code);
 				}
+			} else {
+				master.processOutputBlock(thenBlock);
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.ternary_operator.no_condition")));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

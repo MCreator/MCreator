@@ -22,6 +22,7 @@ package net.mcreator.ui.blockly;
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
+import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
@@ -264,6 +265,10 @@ public class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public String getGlobalTriggers() {
 		return new Gson().toJson(ext_triggers, Map.class);
+	}
+
+	@SuppressWarnings("unused") public String[] getMarkerRequiringTypes() {
+		return JavaKeywordsMap.MARKER_TYPES.keySet().toArray(String[]::new);
 	}
 
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
