@@ -1351,7 +1351,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
 		else if (page == 7) {
 			if ((int) minGenerateHeight.getValue() >= (int) maxGenerateHeight.getValue()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.block.error_minimal_generation_height"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.block.gen_height")));
 			}
 		}
 		return new AggregatedValidationResult.PASS();
