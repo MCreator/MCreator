@@ -1,4 +1,4 @@
 {
-  "type": "${modid}:${registryname}",
-  "config": {}
+    "type": "${modid}:${registryname}",
+    "config": {}
 }
