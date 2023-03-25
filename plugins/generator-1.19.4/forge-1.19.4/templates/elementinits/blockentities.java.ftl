@@ -36,42 +36,19 @@
 
 package ${package}.init;
 
-<#assign hasBlocks = false>
-<#assign hasDoubleBlocks = false>
+public class ${JavaModName}BlockEntities {
 
-public class ${JavaModName}Items {
+	public static final DeferredRegister<BlockEntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ${JavaModName}.MODID);
 
-	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
-
-	<#list items as item>
-		<#if item.getModElement().getType().getBaseType()?string == "BLOCK">
-			<#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
-				<#assign hasDoubleBlocks = true>
-					public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-						doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
-			<#else>
-				<#assign hasBlocks = true>
-					public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-						block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
-			</#if>
-		<#else>
-		public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
-		</#if>
+	<#list blockentities as blockentity>
+	public static final RegistryObject<BlockEntityType<?>> ${blockentity.getModElement().getRegistryNameUpper()} =
+		register("${blockentity.getModElement().getRegistryName()}", ${JavaModName}Blocks.${blockentity.getModElement().getRegistryNameUpper()},
+			${blockentity.getModElement().getName()}BlockEntity::new);
 	</#list>
 
-	<#if hasBlocks>
-	private static RegistryObject<Item> block(RegistryObject<Block> block) {
-		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
+	private static RegistryObject<BlockEntityType<?>> register(String registryname, RegistryObject<Block> block, BlockEntityType.BlockEntitySupplier<?> supplier) {
+		return REGISTRY.register(registryname, () -> BlockEntityType.Builder.of(supplier, block.get()).build(null));
 	}
-	</#if>
-
-	<#if hasDoubleBlocks>
-	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block) {
-		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
-	}
-	</#if>
 
 }
-
 <#-- @formatter:on -->
