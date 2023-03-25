@@ -22,7 +22,6 @@ package net.mcreator.plugin.events.workspace;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.workspace.Workspace;
 
-
 public class WorkspaceSavedEvent extends MCREvent {
 	private final Workspace workspace;
 

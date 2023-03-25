@@ -52,6 +52,7 @@ public class BlocklyLoader {
 		add("placements");
 		add("heightplacements");
 		add("blockpredicates");
+		add("blocks");
 	}};
 	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;

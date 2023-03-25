@@ -101,8 +101,8 @@ public class TestWorkspaceDataProvider {
 				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
 				|| type == ModElementType.CODE) {
 			generatableElements.add(
-					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random, true,
-							true, 0));
+					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
+							true, true, 0));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -276,7 +276,7 @@ public class TestWorkspaceDataProvider {
 	 * Provides list of GEs for tests
 	 *
 	 * @param modElement ME for this GE
-	 * @param uiTest true if test is UI test and not generator test
+	 * @param uiTest     true if test is UI test and not generator test
 	 * @return List of GEs for tests
 	 */
 	private static GeneratableElement getExampleFor(ModElement modElement, boolean uiTest, Random random, boolean _true,
@@ -532,6 +532,11 @@ public class TestWorkspaceDataProvider {
 
 			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
 			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
+			components.add(
+					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
+			components.add(
+					new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null), 30,
+							90, false));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";
@@ -604,6 +609,11 @@ public class TestWorkspaceDataProvider {
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
 				components.add(new Checkbox("checkbox1", 100, 100, "Text", new Procedure("condition1")));
 				components.add(new Checkbox("checkbox2", 125, 125, "Other text", new Procedure("condition2")));
+				components.add(
+						new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, _true));
+				components.add(
+						new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null),
+								30, 270, !_true));
 			}
 			gui.components = components;
 			return gui;

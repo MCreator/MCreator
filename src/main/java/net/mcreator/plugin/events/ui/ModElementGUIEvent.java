@@ -31,8 +31,9 @@ public class ModElementGUIEvent extends TabEvent {
 	/**
 	 * <p>These events are triggered at different states of a {@link ModElementGUI} loading.
 	 * However, this constructor is never called outside this class.</p>
-	 * @param mcreator <p>The {@link MCreator} instance where the mod element is.</p>
-	 * @param tab <p>The {@link MCreatorTabs.Tab} that is opened for the {@link ModElementGUI}.</p>
+	 *
+	 * @param mcreator      <p>The {@link MCreator} instance where the mod element is.</p>
+	 * @param tab           <p>The {@link MCreatorTabs.Tab} that is opened for the {@link ModElementGUI}.</p>
 	 * @param modElementGUI <p>The {@link ModElementGUI} that calls each event.</p>
 	 */
 	protected ModElementGUIEvent(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI) {
@@ -80,6 +81,7 @@ public class ModElementGUIEvent extends TabEvent {
 		 * <p>{@code True} when the user clicks on Save only. {@code False} when the mod element is saved and then, closed.</p>
 		 */
 		private final boolean savesOnly;
+
 		public WhenSaving(MCreator mcreator, MCreatorTabs.Tab tab, ModElementGUI<?> modElementGUI, boolean savesOnly) {
 			super(mcreator, tab, modElementGUI);
 			this.savesOnly = savesOnly;
