@@ -94,9 +94,9 @@ function setMarkerStatus(container, block) {
     var parentConnection = block.outputConnection && block.outputConnection.targetConnection;
     if (parentConnection && parentConnection.getCheck()) {
         var types = parentConnection.getCheck();
-        for (const mark of javabridge.getMarkerRequiringTypes()) {
-            if (types.indexOf('' + mark) != -1) { // add empty string to "convert" Java strings to JS strings
-                container.setAttribute('marker', mark);
+        for (const type of javabridge.getMarkerRequiringTypes()) {
+            if (types.indexOf('' + type) != -1) { // add empty string to "convert" Java strings to JS strings
+                container.setAttribute('marker', type);
                 return true;
             }
         }

@@ -55,31 +55,37 @@ function validateInputTypes(inputNames, repeatingInputNames = [], sourceInput) {
             const targetConnection = sourceInput ?
                 this.getInput(sourceInput) && this.getInput(sourceInput).connection.targetConnection :
                 this.outputConnection && this.outputConnection.targetConnection;
+            const targetTypes = targetConnection && targetConnection.getCheck();
             const group = Blockly.Events.getGroup();
             // Makes it so the block change and the unplug event get undone together
             Blockly.Events.setGroup(changeEvent.group);
-            for (let i = 0; i < inputNames.length; i++)
-                this.checkInputConnection_(inputNames[i], targetConnection);
-            for (let i = 0; i < repeatingInputNames.length; i++) {
-                for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++)
-                    this.checkInputConnection_(repeatingInputNames[i] + j, targetConnection);
+            for (const inputName of inputNames) {
+                const prevTypes = this.getInput(inputName).connection.getCheck();
+                this.getInput(inputName).setCheck(targetTypes);
+                Blockly.Events.fire(new InputCheckChange(this, inputName, prevTypes, targetTypes));
+            }
+            for (const repeatingInputName of repeatingInputNames) {
+                for (let j = 0; this.getInput(repeatingInputName + j); j++) {
+                    const prevTypes = this.getInput(repeatingInputName + j).connection.getCheck();
+                    this.getInput(repeatingInputName + j).setCheck(targetTypes);
+                    Blockly.Events.fire(new InputCheckChange(this, repeatingInputName + j, prevTypes, targetTypes));
+                }
             }
             Blockly.Events.setGroup(group);
-        },
-
-        checkInputConnection_: function (inputName, targetConnection) {
-            const inputBlock = this.getInputTargetBlock(inputName);
-            if (inputBlock && targetConnection && !workspace.connectionChecker.doTypeChecks(
-                    inputBlock.outputConnection, targetConnection)) {
-                inputBlock.unplug();
-                inputBlock.bumpNeighbours();
-            }
-            // Update accepted types directly to fix child blocks not connecting back when undoing
-            const targetTypes = targetConnection && targetConnection.getCheck();
-            this.getInput(inputName).check_ = targetTypes
-                && (Array.isArray(targetTypes) ? targetTypes : [targetTypes]);
         }
     };
+}
+
+class InputCheckChange extends Blockly.Events.BlockChange {
+    constructor(block, name, oldValue, newValue) {
+        super(block, null, name, oldValue, newValue);
+    }
+
+    run(forward) {
+        const block = this.blockId && this.getEventWorkspace_().getBlockById(this.blockId);
+        if (block)
+            block.getInput(this.name).setCheck(forward ? this.newValue : this.oldValue);
+    }
 }
 
 Blockly.Extensions.registerMixin('logic_ternary_onchange_mixin', validateInputTypes(['THEN', 'ELSE']));
