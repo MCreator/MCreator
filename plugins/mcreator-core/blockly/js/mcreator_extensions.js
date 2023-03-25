@@ -57,19 +57,15 @@ function validateInputTypes(inputNames, repeatingInputNames = [], sourceInput) {
                 this.outputConnection && this.outputConnection.targetConnection;
             const targetTypes = targetConnection && targetConnection.getCheck();
             const group = Blockly.Events.getGroup();
-            // Makes it so the block change and the disable event get undone together.
-            for (let i = 0; i < inputNames.length; i++) {
-                Blockly.Events.setGroup(changeEvent.group);
+            // Makes it so the block change and the unplug event get undone together.
+            Blockly.Events.setGroup(changeEvent.group);
+            for (let i = 0; i < inputNames.length; i++)
                 this.getInput(inputNames[i]).setCheck(targetTypes);
-                Blockly.Events.setGroup(group);
-            }
             for (let i = 0; i < repeatingInputNames.length; i++) {
-                for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++) {
-                    Blockly.Events.setGroup(changeEvent.group);
+                for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++)
                     this.getInput(repeatingInputNames[i] + j).setCheck(targetTypes);
-                    Blockly.Events.setGroup(group);
-                }
             }
+            Blockly.Events.setGroup(group);
         }
     };
 }
