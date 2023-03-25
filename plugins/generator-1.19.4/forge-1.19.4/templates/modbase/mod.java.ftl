@@ -64,5 +64,6 @@ import org.apache.logging.log4j.Logger;
 			workQueue.removeAll(actions);
 		}
 	}
+
 }
 <#-- @formatter:on -->
