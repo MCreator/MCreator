@@ -55,17 +55,29 @@ function validateInputTypes(inputNames, repeatingInputNames = [], sourceInput) {
             const targetConnection = sourceInput ?
                 this.getInput(sourceInput) && this.getInput(sourceInput).connection.targetConnection :
                 this.outputConnection && this.outputConnection.targetConnection;
-            const targetTypes = targetConnection && targetConnection.getCheck();
             const group = Blockly.Events.getGroup();
-            // Makes it so the block change and the unplug event get undone together.
+            // Makes it so the block change and the unplug event get undone together
             Blockly.Events.setGroup(changeEvent.group);
             for (let i = 0; i < inputNames.length; i++)
-                this.getInput(inputNames[i]).setCheck(targetTypes);
+                this.checkInputConnection_(inputNames[i], targetConnection);
             for (let i = 0; i < repeatingInputNames.length; i++) {
                 for (let j = 0; this.getInput(repeatingInputNames[i] + j); j++)
-                    this.getInput(repeatingInputNames[i] + j).setCheck(targetTypes);
+                    this.checkInputConnection_(repeatingInputNames[i] + j, targetConnection);
             }
             Blockly.Events.setGroup(group);
+        },
+
+        checkInputConnection_: function (inputName, targetConnection) {
+            const inputBlock = this.getInputTargetBlock(inputName);
+            if (inputBlock && targetConnection && !workspace.connectionChecker.doTypeChecks(
+                    inputBlock.outputConnection, targetConnection)) {
+                inputBlock.unplug();
+                inputBlock.bumpNeighbours();
+            }
+            // Update accepted types directly to fix child blocks not connecting back when undoing
+            const targetTypes = targetConnection && targetConnection.getCheck();
+            this.getInput(inputName).check_ = targetTypes
+                && (Array.isArray(targetTypes) ? targetTypes : [targetTypes]);
         }
     };
 }

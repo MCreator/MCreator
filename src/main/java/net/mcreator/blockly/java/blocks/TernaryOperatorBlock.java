@@ -55,7 +55,6 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 				dataModel.put("condition", BlocklyToCode.directProcessOutputBlock(master, condition));
 				dataModel.put("ifTrue", BlocklyToCode.directProcessOutputBlock(master, thenBlock));
 				dataModel.put("ifFalse", BlocklyToCode.directProcessOutputBlock(master, elseBlock));
-				org.apache.logging.log4j.LogManager.getLogger("TernaryOp").trace(dataModel.get("outputMarker"));
 
 				if (master.getTemplateGenerator() != null) {
 					String code = master.getTemplateGenerator()
