@@ -83,12 +83,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
 		boolean anyPlaced = false;
 		if ((context.random().nextInt(1000000) + 1) <= ${data.spawnProbability}) {
-			int count = context.random().nextInt(
-			<#if ((data.maxCountPerChunk) > (data.minCountPerChunk))>
-			${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
-			<#else>
-			${data.minCountPerChunk - data.maxCountPerChunk + 1}) + ${data.maxCountPerChunk};
-			</#if>
+			int count = context.random().nextInt(${data.maxCountPerChunk - data.minCountPerChunk + 1}) + ${data.minCountPerChunk};
 			for (int a = 0; a < count; a++) {
 				int i = context.origin().getX() + context.random().nextInt(16);
 				int k = context.origin().getZ() + context.random().nextInt(16);
