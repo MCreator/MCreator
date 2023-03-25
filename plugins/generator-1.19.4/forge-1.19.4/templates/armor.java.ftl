@@ -41,13 +41,13 @@ import net.minecraft.client.model.Model;
 
 public abstract class ${name}Item extends ArmorItem {
 
-	public ${name}Item(ArmorMaterial material, ArmorItem.Type type, Item.Properties properties) {
+	public ${name}Item(ArmorItem.Type type, Item.Properties properties) {
 		super(new ArmorMaterial() {
 			@Override public int getDurabilityForType(ArmorItem.Type type) {
 				return new int[]{13, 15, 16, 11}[type.getSlot().getIndex()] * ${data.maxDamage};
 			}
 
-			@Override public int getDefenseForSlot(ArmorItem.Type type) {
+			@Override public int getDefenseForType(ArmorItem.Type type) {
 				return new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} }[type.getSlot().getIndex()];
 			}
 
@@ -85,7 +85,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlot.HEAD, new Item.Properties()<#if data.helmetImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.HELMET, new Item.Properties()<#if data.helmetImmuneToFire>.fireResistant()</#if>);
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -135,7 +135,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlot.CHEST, new Item.Properties()<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.CHESTPLATE, new Item.Properties()<#if data.bodyImmuneToFire>.fireResistant()</#if>);
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -185,7 +185,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlot.LEGS, new Item.Properties()<#if data.leggingsImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.LEGGINGS, new Item.Properties()<#if data.leggingsImmuneToFire>.fireResistant()</#if>);
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -235,7 +235,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlot.FEET, new Item.Properties()<#if data.bootsImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.BOOTS, new Item.Properties()<#if data.bootsImmuneToFire>.fireResistant()</#if>);
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
