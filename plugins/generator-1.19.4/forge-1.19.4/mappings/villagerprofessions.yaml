@@ -1,4 +1,5 @@
-_default: VillagerProfession.ARMORER
+_default: VillagerProfession.NONE
+NONE: VillagerProfession.NONE
 ARMORER: VillagerProfession.ARMORER
 BUTCHER: VillagerProfession.BUTCHER
 CARTOGRAPHER: VillagerProfession.CARTOGRAPHER
