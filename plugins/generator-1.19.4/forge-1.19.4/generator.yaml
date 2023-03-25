@@ -32,7 +32,7 @@ item_textures_dir: "@MODASSETSROOT/textures/item"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 #other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
