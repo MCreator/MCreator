@@ -70,3 +70,21 @@
   type: logic
 - DO_WARDEN_SPAWNING:
   type: logic
+- BLOCK_EXPLOSION_DROP_DECAY:
+  type: logic
+- MOB_EXPLOSION_DROP_DECAY:
+  type: logic
+- TNT_EXPLOSION_DROP_DECAY:
+  type: logic
+- SNOW_ACCUMULATION_HEIGHT:
+  type: number
+- WATER_SOURCE_CONVERSION:
+  type: logic
+- LAVA_SOURCE_CONVERSION:
+  type: logic
+- GLOBAL_SOUND_EVENTS:
+  type: logic
+- DO_VINES_SPREAD:
+  type: logic
+- COMMAND_MODIFICATION_BLOCK_LIMIT:
+  type: number

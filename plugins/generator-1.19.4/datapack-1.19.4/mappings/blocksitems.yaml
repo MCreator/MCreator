@@ -3767,18 +3767,6 @@ Items.SPAWN_EGG#101:
 Items.SPAWN_EGG#120:
   - Items.VILLAGER_SPAWN_EGG
   - "villager_spawn_egg"
-Items.SPAWN_EGG#121:
-  - Items.IRON_GOLEM_SPAWN_EGG
-  - "iron_golem_spawn_egg"
-Items.SPAWN_EGG#122:
-  - Items.SNOW_GOLEM_SPAWN_EGG
-  - "snow_golem_spawn_egg"
-Items.SPAWN_EGG#123:
-  - Items.WITHER_SPAWN_EGG
-  - "wither_spawn_egg"
-Items.SPAWN_EGG#124:
-  - Items.ENDER_DRAGON_SPAWN_EGG
-  - "ender_dragon_spawn_egg"
 Items.EXPERIENCE_BOTTLE:
   - Items.EXPERIENCE_BOTTLE
   - "experience_bottle"
@@ -4184,3 +4172,15 @@ Items.GOAT_HORN:
 Items.ECHO_SHARD:
   - Items.ECHO_SHARD
   - "echo_shard"
+Items.IRON_GOLEM_SPAWN_EGG:
+  - Items.IRON_GOLEM_SPAWN_EGG
+  - "iron_golem_spawn_egg"
+Items.SNOW_GOLEM_SPAWN_EGG:
+  - Items.SNOW_GOLEM_SPAWN_EGG
+  - "snow_golem_spawn_egg"
+Items.WITHER_SPAWN_EGG:
+  - Items.WITHER_SPAWN_EGG
+  - "wither_spawn_egg"
+Items.ENDER_DRAGON_SPAWN_EGG:
+  - Items.ENDER_DRAGON_SPAWN_EGG
+  - "ender_dragon_spawn_egg"
