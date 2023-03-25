@@ -37,13 +37,6 @@ package ${package}.world.features;
 <#compress>
 public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
-	public static ${name}Feature FEATURE = null;
-
-	public static Feature<?> feature() {
-		FEATURE = new ${name}Feature();
-		return FEATURE;
-	}
-
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType == "Surface">

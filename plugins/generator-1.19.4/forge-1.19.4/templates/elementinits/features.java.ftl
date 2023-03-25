@@ -42,13 +42,9 @@ package ${package}.init;
 
 	<#list features as feature>
 	public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${feature.getModElement().getRegistryName()}",
-		<#if feature.getModElement().getTypeString() == "feature">
-		${feature.getModElement().getName()}Feature::new
-		<#else>
-		${feature.getModElement().getName()}Feature::feature
-		</#if>);
+		REGISTRY.register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::new);
 	</#list>
+
 }
 
 <#-- @formatter:on -->
