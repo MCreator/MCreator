@@ -48,12 +48,13 @@ import net.minecraft.world.entity.npc.VillagerTrades;
                 <#if tradeEntry.villagerProfession == "WanderingTrader">
                     <#list tradeEntry.entries as entry>
                         event.getGenericTrades().add(
-                        new BasicItemListing(
-                        ${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
-                        <#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
-                        ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)},
-                        ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f
-                        ));
+                            new BasicItemListing(
+                                ${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
+                                <#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
+                                ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)},
+                                ${entry.maxTrades}, ${entry.xp}, ${entry.priceMultiplier}f
+                            )
+                        );
                     </#list>
                 </#if>
             </#list>
