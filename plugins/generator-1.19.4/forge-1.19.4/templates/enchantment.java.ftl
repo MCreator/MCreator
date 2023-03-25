@@ -59,7 +59,7 @@ public class ${name}Enchantment extends Enchantment {
 
 	<#if data.compatibleEnchantments?has_content>
 		@Override protected boolean checkCompatibility(Enchantment ench) {
-			return <#if data.excludeEnchantments>!</#if>List.of(
+			return <#if data.excludeEnchantments>this != ench && !</#if>List.of(
 				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
 		}
 	</#if>
