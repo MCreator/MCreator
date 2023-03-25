@@ -74,6 +74,30 @@
 </#if>
 </#macro>
 
+<#macro onBlockDestroyedWith procedure="" hurtStack=false>
+<#if hasProcedure(procedure) || hurtStack>
+@Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
+	<#if hurtStack>
+		itemstack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+	<#else>
+		boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
+	</#if>
+	<#if hasProcedure(procedure)>
+		<@procedureCode procedure, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"entity": "entity",
+			"itemstack": "itemstack",
+			"blockstate": "blockstate"
+		}/>
+	</#if>
+	return <#if hurtStack>true<#else>retval</#if>;
+}
+</#if>
+</#macro>
+
 <#macro onRightClickedInAir procedure="">
 <#if hasProcedure(procedure)>
 @Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
@@ -138,4 +162,25 @@
 	}/>
 }
 </#if>
+</#macro>
+
+<#macro hasGlow procedure="">
+@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
+	<#if hasProcedure(procedure)>
+	<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+	<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+	Entity entity = Minecraft.getInstance().player;
+	</#if>
+	return <@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"entity": "entity",
+		"world": "entity.level",
+		"itemstack": "itemstack"
+	}/>
+	<#else>
+	return true;
+	</#if>
+}
 </#macro>
