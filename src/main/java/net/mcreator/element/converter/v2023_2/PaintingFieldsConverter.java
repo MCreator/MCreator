@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Painting;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +36,7 @@ public class PaintingFieldsConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Painting painting = (Painting) input;
 		try {
-			painting.displayName = painting.getModElement().getRegistryName();
+			painting.displayName = StringUtils.machineToReadableName(painting.getModElement().getRegistryName());
 			painting.author = "Unknown";
 		} catch (Exception e) {
 			LOG.warn("Could not define new fields for: " + painting.getModElement().getName());
