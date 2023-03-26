@@ -1,10 +1,10 @@
 {
   "name": "Default Dark",
   "colorScheme": {
-    "secondAltBackgroundColor": "0x1e1e1e",
-    "backgroundColor": "0x323232",
-    "altBackgroundColor": "0x505050",
-    "altForegroundColor": "0xc2c2c2",
-    "foregroundColor": "0xf5f5f5"
+    "secondAltBackgroundColor": "0x141414",
+    "backgroundColor": "0x242424",
+    "altBackgroundColor": "0x424242",
+    "altForegroundColor": "0xb9b9b9",
+    "foregroundColor": "0xe1e1e1"
   }
 }

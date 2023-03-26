@@ -345,7 +345,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		itemEventsWrap.setOpaque(false);
 		itemEventsWrap.add(itemEvents);
 		itemEventsWrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 2),
 				L10N.t("elementgui.ranged_item.item_events"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -362,7 +362,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		bulletEventsWrap.setOpaque(false);
 		bulletEventsWrap.add(bulletEvents);
 		bulletEventsWrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 2),
 				L10N.t("elementgui.ranged_item.bullet_events"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 

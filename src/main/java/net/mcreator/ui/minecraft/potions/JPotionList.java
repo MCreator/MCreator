@@ -61,7 +61,7 @@ public class JPotionList extends JEntriesList {
 		add("Center", PanelUtils.pullElementUp(entries));
 
 		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 2),
 				L10N.t("elementgui.potion.effects"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}

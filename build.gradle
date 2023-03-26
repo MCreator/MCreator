@@ -92,7 +92,6 @@ dependencies {
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.13.0' // needed by discord-rpc.jar
 
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'

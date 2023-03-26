@@ -18,6 +18,7 @@
 
 package net.mcreator.ui;
 
+import net.mcreator.io.OS;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
@@ -47,21 +48,23 @@ public class MainMenuBar extends JMenuBar {
 
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		JMenu logo = new JMenu("  MCreator");
-		logo.setMnemonic('M');
-		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("icon").getImage(), 14, 14)));
+		if ("false".equals(System.getProperty("apple.laf.useScreenMenuBar")) && (OS.getOS() == OS.MAC)) {
+			JMenu logo = new JMenu("  MCreator");
+			logo.setMnemonic('M');
+			logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("icon").getImage(), 14, 14)));
 
-		logo.add(mcreator.actionRegistry.mcreatorWebsite);
-		logo.add(mcreator.actionRegistry.mcreatorCommunity);
-		SocialButtons socialButtons = new SocialButtons();
-		socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
-		logo.add(socialButtons);
-		logo.addSeparator();
-		logo.add(mcreator.actionRegistry.donate);
-		logo.addSeparator();
-		logo.add(mcreator.actionRegistry.mcreatorPublish);
+			logo.add(mcreator.actionRegistry.mcreatorWebsite);
+			logo.add(mcreator.actionRegistry.mcreatorCommunity);
+			SocialButtons socialButtons = new SocialButtons();
+			socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
+			logo.add(socialButtons);
+			logo.addSeparator();
+			logo.add(mcreator.actionRegistry.donate);
+			logo.addSeparator();
+			logo.add(mcreator.actionRegistry.mcreatorPublish);
 
-		add(logo);
+			add(logo);
+		}
 
 		JMenu file = L10N.menu("menubar.file");
 		file.setMnemonic('F');
@@ -243,6 +246,13 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu help = L10N.menu("menubar.help");
 		addHelpSearch(help);
+
+		if ("true".equals(System.getProperty("apple.laf.useScreenMenuBar")) && (OS.getOS() == OS.MAC)) {
+			help.add(mcreator.actionRegistry.mcreatorWebsite);
+			help.add(mcreator.actionRegistry.mcreatorCommunity);
+			help.add(mcreator.actionRegistry.mcreatorPublish);
+			help.addSeparator();
+		}
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);
 		help.add(mcreator.actionRegistry.knowledgeBase);

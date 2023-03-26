@@ -40,7 +40,7 @@ import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.component.util.DiscordClient;
+
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
@@ -84,7 +84,7 @@ public final class MCreatorApplication {
 	private WorkspaceSelector workspaceSelector;
 	private DeviceInfo deviceInfo;
 	private GoogleAnalytics analytics;
-	private DiscordClient discordClient;
+
 	private TaskbarIntegration taskbarIntegration;
 
 	private MCreatorApplication(List<String> launchArguments) {
@@ -189,10 +189,7 @@ public final class MCreatorApplication {
 
 			isInternet = MCreatorApplication.WEB_API.initAPI();
 
-			discordClient = new DiscordClient();
 
-			// Do not externalize this text
-			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
 
 			try {
 				SwingUtilities.invokeAndWait(() -> {
@@ -395,7 +392,6 @@ public final class MCreatorApplication {
 		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
-		discordClient.close(); // close discord client
 
 		SoundUtils.close();
 
@@ -435,9 +431,7 @@ public final class MCreatorApplication {
 		return openMCreators;
 	}
 
-	public DiscordClient getDiscordClient() {
-		return discordClient;
-	}
+
 
 	public TaskbarIntegration getTaskbarIntegration() {
 		return taskbarIntegration;
