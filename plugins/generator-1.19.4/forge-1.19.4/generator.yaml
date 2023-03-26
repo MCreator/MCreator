@@ -28,12 +28,12 @@ sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 item_textures_dir: "@MODASSETSROOT/textures/item"
-#entity_textures_dir: "@MODASSETSROOT/textures/entities"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
-#other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
   - template: modbase/mod.java.ftl
