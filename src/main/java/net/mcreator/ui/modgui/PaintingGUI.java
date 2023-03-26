@@ -30,6 +30,7 @@ import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
@@ -95,7 +96,17 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
 
 		texture.setValidator(new TileHolderValidator(texture));
+
+		displayName.setValidator(
+				new TextFieldValidator(displayName, L10N.t("elementgui.painting.painting_needs_display_name")));
+		displayName.enableRealtimeValidation();
+
+		author.setValidator(new TextFieldValidator(author, L10N.t("elementgui.painting.painting_needs_author")));
+		author.enableRealtimeValidation();
+
 		page1group.addValidationElement(texture);
+		page1group.addValidationElement(displayName);
+		page1group.addValidationElement(author);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 

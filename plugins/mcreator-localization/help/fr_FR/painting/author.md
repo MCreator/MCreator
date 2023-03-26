@@ -1,3 +1,3 @@
 Ce paramètre définit l'auteur du tableau.
 
-NOTE: Seulement disponible pour les versions 1.19.4+
+NOTE: Obligatoire, mais seulement utilisé par les versions 1.19.4+

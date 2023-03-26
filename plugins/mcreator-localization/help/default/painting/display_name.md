@@ -1,3 +1,3 @@
 This parameter defines the in-game display name of the painting.
 
-NOTE: Only available for 1.19.4+
+NOTE: Required, but only used for 1.19.4+

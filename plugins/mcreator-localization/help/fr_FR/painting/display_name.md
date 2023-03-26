@@ -1,3 +1,3 @@
 Ce paramètre définit le nom d'affichage du tableau en jeu.
 
-NOTE: Seulement disponible pour les versions 1.19.4+
+NOTE: Obligatoire, mais seulement utilisé par les versions 1.19.4+
