@@ -4,3 +4,9 @@ global_templates:
   - template: json/paintingtag.json.ftl
     writer: json
     name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname.title
+    mapto: displayName
+  - key: item.@modid.@registryname.author
+    mapto: author

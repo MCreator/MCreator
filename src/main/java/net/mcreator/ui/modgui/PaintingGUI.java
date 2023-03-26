@@ -29,6 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
@@ -44,6 +45,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
+	private final VTextField displayName = new VTextField(20);
+	private final VTextField author = new VTextField(20);
 
 	private TextureHolder texture;
 
@@ -66,8 +69,19 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(2, 2, 50, 2));
+		ComponentUtils.deriveFont(displayName, 16);
+		ComponentUtils.deriveFont(author, 16);
+
+		JPanel selp = new JPanel(new GridLayout(4, 2, 50, 2));
 		selp.setOpaque(false);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/display_name"),
+				L10N.label("elementgui.painting.painting_display_name")));
+		selp.add(displayName);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("paintings/author"),
+				L10N.label("elementgui.painting.painting_author")));
+		selp.add(author);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/width"),
 				L10N.label("elementgui.painting.painting_width")));
@@ -84,6 +98,12 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		page1group.addValidationElement(texture);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+
+		if (!isEditingMode()) {
+			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(
+					modElement.getName());
+			displayName.setText(readableNameFromModElement);
+		}
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -93,6 +113,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override public void openInEditingMode(Painting painting) {
+		displayName.setText(painting.displayName);
+		author.setText(painting.author);
 		width.setValue(painting.width);
 		height.setValue(painting.height);
 		texture.setTextureFromTextureName(
@@ -101,6 +123,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	@Override public Painting getElementFromGUI() {
 		Painting painting = new Painting(modElement);
+		painting.displayName = displayName.getText();
+		painting.author = author.getText();
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
 		painting.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension

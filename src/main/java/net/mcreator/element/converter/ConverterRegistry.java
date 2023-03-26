@@ -40,6 +40,7 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
+import net.mcreator.element.converter.v2023_2.PaintingFieldsConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +68,7 @@ public class ConverterRegistry {
 		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
+		put(ModElementType.PAINTING, List.of(new PaintingFieldsConverter()));
 		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
