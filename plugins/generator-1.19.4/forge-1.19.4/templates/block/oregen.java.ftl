@@ -36,34 +36,6 @@ package ${package}.world.features.ores;
 
 public class ${name}Feature extends OreFeature {
 
-	public static ${name}Feature FEATURE = null;
-	public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = null;
-	public static Holder<PlacedFeature> PLACED_FEATURE = null;
-
-	public static Feature<?> feature() {
-		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
-			new OreConfiguration(
-				List.of(
-					<#list data.blocksToReplace as replacementBlock>
-						OreConfiguration.target(
-							new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}),
-							${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState()
-						)<#sep>,
-					</#list>
-				),
-				${data.frequencyOnChunk}
-			)
-		);
-		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
-			CountPlacement.of(${data.frequencyPerChunks}),
-			InSquarePlacement.spread(),
-			HeightRangePlacement.${data.generationShape?lower_case}(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight})),
-			BiomeFilter.biome()
-		));
-		return FEATURE;
-	}
-
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
 			<#if worldType == "Surface">
