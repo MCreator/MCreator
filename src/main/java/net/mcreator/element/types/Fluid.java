@@ -162,6 +162,13 @@ import java.util.List;
 		return retval;
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		ArrayList<MCItem> retval = new ArrayList<>();
+		if (this.generateBucket)
+			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
+		return retval;
+	}
+
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present

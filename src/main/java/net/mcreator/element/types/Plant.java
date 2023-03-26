@@ -230,4 +230,8 @@ import java.util.stream.Collectors;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 }
