@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,8 +33,8 @@
 <#include "../mcitems.ftl">
 
 /*
-*    MCreator note: This file will be REGENERATED on each build.
-*/
+ *    MCreator note: This file will be REGENERATED on each build.
+ */
 
 package ${package}.init;
 
@@ -42,43 +42,43 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ${JavaModName}VillagerProfessions {
 
-    public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
+	public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
+	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
-    <#list villagerprofessions as villagerprofession>
-        public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
-            registerProfession(
-			    "${villagerprofession.getModElement().getRegistryName()}",
-                ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-                () -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}"))
-            );
-    </#list>
+	<#list villagerprofessions as villagerprofession>
+		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
+			registerProfession(
+				"${villagerprofession.getModElement().getRegistryName()}",
+				${mappedBlockToBlock(villagerprofession.pointOfInterest)},
+				() -> new SoundEvent(new ResourceLocation("${villagerprofession.actionSound}"))
+			);
+	</#list>
 
 	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, Supplier<SoundEvent> soundEventSupplier) {
 		Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 
 		if (existingCheck.isPresent()) {
-            ${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
+			${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 			return null;
 		}
 
 		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
-        return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
-    }
+		return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
+	}
 
-    public static class RegistrySafeVillagerProfession extends VillagerProfession {
+	public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
-        private final Supplier<SoundEvent> soundEventSupplier;
+		private final Supplier<SoundEvent> soundEventSupplier;
 
-        public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, Supplier<SoundEvent> soundEventSupplier) {
-            super(name, pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
-            this.soundEventSupplier = soundEventSupplier;
-        }
+		public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, Supplier<SoundEvent> soundEventSupplier) {
+			super(name, pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
+			this.soundEventSupplier = soundEventSupplier;
+		}
 
-        @Override public SoundEvent getWorkSound() {
-            return soundEventSupplier.get();
-        }
-    }
+		@Override public SoundEvent getWorkSound() {
+			return soundEventSupplier.get();
+		}
+	}
 
 }
 <#-- @formatter:on -->
