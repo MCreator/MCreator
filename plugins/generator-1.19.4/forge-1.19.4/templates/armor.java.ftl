@@ -59,7 +59,7 @@ public abstract class ${name}Item extends ArmorItem {
 				<#if data.equipSound??>
 				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
-				return null;
+				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("intentionally_empty"));
 				</#if>
 			}
 
