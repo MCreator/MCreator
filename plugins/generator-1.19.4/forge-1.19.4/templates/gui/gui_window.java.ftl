@@ -82,10 +82,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(ms);
-		if (!this.getChildAt(mouseX, mouseY).equals(Optional.empty())
-				? (this.getChildAt(mouseX, mouseY).get() instanceof Button button && button.isFocused()) || (this.getChildAt(mouseX, mouseY).get() instanceof ImageButton imageButton && imageButton.isFocused())
-						|| (this.getChildAt(mouseX, mouseY).get() instanceof Checkbox checkbox && checkbox.isFocused())
-				: false)
+		if (!this.getChildAt(mouseX, mouseY).equals(Optional.empty()) ? (this.getChildAt(mouseX, mouseY).get() instanceof Button button && button.isFocused()) || (this.getChildAt(mouseX, mouseY).get() instanceof ImageButton imageButton && imageButton.isFocused()) || (this.getChildAt (mouseX, mouseY).get() instanceof Checkbox checkbox && checkbox.isFocused()) : false)
 			((AbstractWidget) this.getChildAt(mouseX, mouseY).get()).setFocused(false);
 		super.render(ms, mouseX, mouseY, partialTicks);
 		this.renderTooltip(ms, mouseX, mouseY);
