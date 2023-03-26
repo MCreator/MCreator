@@ -25,7 +25,7 @@ mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
-#structures_dir: "@MODDATAROOT/structures"
+structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
