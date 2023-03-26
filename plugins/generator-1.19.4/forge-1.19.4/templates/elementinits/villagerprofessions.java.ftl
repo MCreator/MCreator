@@ -50,7 +50,7 @@ public class ${JavaModName}VillagerProfessions {
 			registerProfession(
 					"${villagerprofession.getModElement().getRegistryName()}",
 					${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-					new SoundEvent.createVariableRangeEvent(new ResourceLocation("${modid}", "${villagerprofession.actionSound}"))
+					SoundEvent.createVariableRangeEvent(new ResourceLocation("${modid}", "${villagerprofession.actionSound}"))
 			);
 	</#list>
 
