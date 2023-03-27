@@ -48,6 +48,6 @@ public class SpecialInformationConverter<T extends ISpecialInformationHolder> im
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 40;
+		return 41;
 	}
 }

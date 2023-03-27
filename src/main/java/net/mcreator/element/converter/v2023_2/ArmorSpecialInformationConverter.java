@@ -68,6 +68,6 @@ public class ArmorSpecialInformationConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 40;
+		return 41;
 	}
 }
