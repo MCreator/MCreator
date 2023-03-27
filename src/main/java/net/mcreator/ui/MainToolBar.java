@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 public class MainToolBar extends JToolBar {
 
 	MainToolBar(MCreator mcreator) {
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		setBorder(BorderFactory.createMatteBorder(30, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 		setFloatable(false);
 
 		add(new JEmptyBox(4, 4));
@@ -97,7 +97,7 @@ public class MainToolBar extends JToolBar {
 
 	@Override public JButton add(Action action) {
 		JButton button = super.add(action);
-		button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		button.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {
 				super.mouseEntered(mouseEvent);

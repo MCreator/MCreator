@@ -1,33 +1,15 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/windows/x64/jdk/hotspot/normal/adoptopenjdk'
+// This may lack the the home and content subdir.
 def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/linux/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_mac_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/mac/x64/jdk/hotspot/normal/adoptopenjdk'
+def jdk17_mac_64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-aarch64.tar.gz'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
 
 def mkisofs_url = 'https://netix.dl.sourceforge.net/project/mkisofs-md5/mkisofs-md5-v2.01/mkisofs-md5-2.01-Binary.zip'
 
-tasks.register('downloadJDKWin64') {
-    group 'setup'
-    doLast {
-        if (!file('jdk/jdk17_win_64/bin/java.exe').exists()) {
-            mkdir 'jdk/jdk17_win_64'
 
-            download.run {
-                src jdk17_win_64
-                dest 'build/tmp/jdk17_win_64'
-                overwrite false
-            }
-            copy { from zipTree('build/tmp/jdk17_win_64') into file('jdk/jdk17_win_64/') }
-            delete 'build/tmp/jdk17_win_64'
-
-            copy { from file('jdk/jdk17_win_64/jdk-17.0.5+8') into file('jdk/jdk17_win_64/') }
-            delete 'jdk/jdk17_win_64/jdk-17.0.5+8'
-        }
-    }
-}
 
 tasks.register('downloadJDKLinux64') {
     group 'setup'
@@ -72,57 +54,16 @@ tasks.register('downloadJDKMac64') {
 // export environment setup task
 tasks.register('downloadNSIS') {
     group 'setup'
-    doLast {
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            if (!file('build/tools/nsis/').exists()) {
-                download.run {
-                    src nsis_url
-                    dest 'build/tmp/nsis'
-                    overwrite false
-                }
-                copy { from zipTree(file('build/tmp/nsis')) into file('build/tools/') }
-                file('build/tools/nsis-3.08').renameTo(file('build/tools/nsis'))
-                delete 'build/tmp/nsis'
-
-                download.run {
-                    src nsis_lockedlist_plugin_url
-                    dest 'build/tmp/nsis_lockedlist_plugin'
-                    overwrite false
-                }
-                copy { from zipTree(file('build/tmp/nsis_lockedlist_plugin')) into file('build/tools/nsis/') }
-                delete 'build/tmp/nsis_lockedlist_plugin'
-            }
-        }
-    }
 }
 
 tasks.register('downloadMKISOFS') {
     group 'setup'
-    doLast {
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            if (!file('build/tools/mkisofs/').exists()) {
-                download.run {
-                    src mkisofs_url
-                    dest 'build/tmp/mkisofs'
-                    overwrite false
-                }
-                copy {
-                    from zipTree(file('build/tmp/mkisofs'))
-                    into file('build/tools/')
-                }
-                file('build/tools/Binary').renameTo(file('build/tools/mkisofs'))
-                delete 'build/tmp/mkisofs'
-            }
-        }
-    }
 }
 
 tasks.register('initialSetup') {
     group 'setup'
 
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        dependsOn downloadJDKWin64
-    } else if (Os.isFamily(Os.FAMILY_MAC)) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
         dependsOn downloadJDKMac64
     } else if (Os.isFamily(Os.FAMILY_UNIX)) {
         dependsOn downloadJDKLinux64

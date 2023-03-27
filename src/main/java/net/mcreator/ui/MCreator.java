@@ -140,8 +140,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		else
 			setSize(1002, 640);
 
-		if (OS.getOS() == OS.MAC)
-			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
+		getRootPane().putClientProperty("apple.awt.fullscreenable", true);
+		getRootPane().putClientProperty( "apple.awt.transparentTitleBar", true );
+		getRootPane().putClientProperty( "apple.awt.fullWindowContent", true );
 
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -368,6 +369,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			setVisible(false); // close the window
 
 			application.getOpenMCreators().remove(this);
+
 
 			if (application.getOpenMCreators()
 					.isEmpty()) { // no MCreator windows left, close the app, or return to project selector if selected

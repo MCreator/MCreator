@@ -89,16 +89,13 @@ tasks.register('generateExportReport') {
     }
 }
 
-apply from: 'platform/windows/windows.gradle'
 apply from: 'platform/linux/linux.gradle'
 apply from: 'platform/mac/mac.gradle'
 
-exportRelease.dependsOn(exportWindowsAll)
 exportRelease.dependsOn(exportMac)
 exportRelease.dependsOn(exportLinux)
 exportRelease.dependsOn(generateExportReport)
 
-exportSnapshot.dependsOn(exportWindowsZIP)
 exportSnapshot.dependsOn(exportMac)
 exportSnapshot.dependsOn(exportLinux)
 exportSnapshot.dependsOn(generateExportReport)
