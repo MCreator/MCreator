@@ -89,11 +89,11 @@ public class ${name}Block extends
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${data.breakSound}")),
-				() -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${data.stepSound}")),
-				() -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${data.placeSound}")),
-				() -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${data.hitSound}")),
-				() -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${data.fallSound}")))
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}")))
 			)
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
