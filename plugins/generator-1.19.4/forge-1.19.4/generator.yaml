@@ -5,10 +5,10 @@ buildfileversion: 45.0.18
 import:
   - datapack-1.19.4
 
-#java_models:
-#  key: mojmap-1.19.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
+java_models:
+  key: mojmap-1.19.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
 gradle:
@@ -26,13 +26,13 @@ mod_data_root: "@RESROOT/data/@modid"
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structures"
-#block_textures_dir: "@MODASSETSROOT/textures/block"
+block_textures_dir: "@MODASSETSROOT/textures/block"
 item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
@@ -65,15 +65,15 @@ base_templates:
 #      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
 #      - ${w.hasElementsOfType('dimension')}
 #      - ${w.hasElementsOfType('biome')}
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
 language_file:
   format: json
@@ -84,10 +84,10 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-#  - task: copy_models
-#    type: OBJ_inlinetextures
-#    prefix: "@modid:blocks/"
-#    to: "@MODASSETSROOT/models/item"
-#  - task: copy_models
-#    type: JSON_noinlinetextures
-#    to: "@MODASSETSROOT/models/custom"
+  - task: copy_models
+    type: OBJ_inlinetextures
+    prefix: "@modid:block/"
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

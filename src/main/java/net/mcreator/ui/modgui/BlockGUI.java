@@ -74,10 +74,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -271,8 +269,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
-		blocksToReplace.setListElements(
-				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
+		// emulate base_stone_overworld
+		blocksToReplace.setListElements(List.of(
+				//@formatter:off
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"),
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#1"),
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#3"),
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
+				//@formatter:on
+		));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
