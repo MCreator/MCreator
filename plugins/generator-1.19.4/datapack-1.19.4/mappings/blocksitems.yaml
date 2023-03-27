@@ -11,3 +11,6 @@ Blocks.AIR:
 Blocks.STONE:
   - Blocks.STONE
   - "#forge:stone"
+Blocks.STONE#0:
+  - Blocks.STONE
+  - "stone"

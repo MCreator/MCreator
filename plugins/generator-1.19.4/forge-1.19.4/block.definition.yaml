@@ -14,11 +14,11 @@ templates:
     condition: doesGenerateInWorld()
     name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
     variables: "step=underground_ores"
-  - template: structure/configured_structure.json.ftl
+  - template: block/configured_oregen.json.ftl
     writer: json
     condition: doesGenerateInWorld()
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
-  - template: structure/placed_structure.json.ftl
+  - template: block/placed_oregen.json.ftl
     writer: json
     condition: doesGenerateInWorld()
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"

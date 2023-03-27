@@ -272,7 +272,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		boundingBoxList = new JBoundingBoxList(mcreator, this);
 
 		blocksToReplace.setListElements(
-				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
+				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"))));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
