@@ -36,7 +36,7 @@ public class PaintingFieldsConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Painting painting = (Painting) input;
 		try {
-			painting.displayName = StringUtils.machineToReadableName(painting.getModElement().getRegistryName());
+			painting.title = StringUtils.machineToReadableName(painting.getModElement().getRegistryName());
 			painting.author = "Unknown";
 		} catch (Exception e) {
 			LOG.warn("Could not define new fields for: " + painting.getModElement().getName());

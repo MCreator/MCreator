@@ -2,4 +2,4 @@ global_templates:
   - template: elementinits/paintings.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNamePaintings.java"
 
-field_exclusions: [displayName, author]
+field_exclusions: [title, author]

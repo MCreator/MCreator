@@ -46,7 +46,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
-	private final VTextField displayName = new VTextField(20);
+	private final VTextField title = new VTextField(20);
 	private final VTextField author = new VTextField(20);
 
 	private TextureHolder texture;
@@ -70,15 +70,15 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		ComponentUtils.deriveFont(displayName, 16);
+		ComponentUtils.deriveFont(title, 16);
 		ComponentUtils.deriveFont(author, 16);
 
 		JPanel selp = new JPanel(new GridLayout(4, 2, 50, 2));
 		selp.setOpaque(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/display_name"),
-				L10N.label("elementgui.painting.painting_display_name")));
-		selp.add(displayName);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/title"),
+				L10N.label("elementgui.painting.painting_title")));
+		selp.add(title);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("paintings/author"),
 				L10N.label("elementgui.painting.painting_author")));
@@ -97,15 +97,15 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 		texture.setValidator(new TileHolderValidator(texture));
 
-		displayName.setValidator(
-				new TextFieldValidator(displayName, L10N.t("elementgui.painting.painting_needs_display_name")));
-		displayName.enableRealtimeValidation();
+		title.setValidator(
+				new TextFieldValidator(title, L10N.t("elementgui.painting.painting_needs_title")));
+		title.enableRealtimeValidation();
 
 		author.setValidator(new TextFieldValidator(author, L10N.t("elementgui.painting.painting_needs_author")));
 		author.enableRealtimeValidation();
 
 		page1group.addValidationElement(texture);
-		page1group.addValidationElement(displayName);
+		page1group.addValidationElement(title);
 		page1group.addValidationElement(author);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
@@ -113,7 +113,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(
 					modElement.getName());
-			displayName.setText(readableNameFromModElement);
+			title.setText(readableNameFromModElement);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override public void openInEditingMode(Painting painting) {
-		displayName.setText(painting.displayName);
+		title.setText(painting.title);
 		author.setText(painting.author);
 		width.setValue(painting.width);
 		height.setValue(painting.height);
@@ -134,7 +134,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	@Override public Painting getElementFromGUI() {
 		Painting painting = new Painting(modElement);
-		painting.displayName = displayName.getText();
+		painting.title = title.getText();
 		painting.author = author.getText();
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();

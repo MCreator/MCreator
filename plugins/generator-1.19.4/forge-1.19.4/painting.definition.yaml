@@ -7,6 +7,6 @@ global_templates:
 
 localizationkeys:
   - key: item.@modid.@registryname.title
-    mapto: displayName
+    mapto: title
   - key: item.@modid.@registryname.author
     mapto: author

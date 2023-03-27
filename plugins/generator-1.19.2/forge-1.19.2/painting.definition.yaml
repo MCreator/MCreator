@@ -5,4 +5,4 @@ global_templates:
     writer: json
     name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
 
-field_exclusions: [displayName, author]
+field_exclusions: [title, author]
