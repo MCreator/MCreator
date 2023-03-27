@@ -40,6 +40,7 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
+import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.DimensionIgniterConverter;
 
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class ConverterRegistry {
 				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter()));
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
-						new BlockRequiresCorrectToolConverter()));
+						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer(), new DimensionIgniterConverter()));

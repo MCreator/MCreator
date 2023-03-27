@@ -1,0 +1,6 @@
+tasks.register('build', Zip.class) {
+    from 'src/main'
+    archiveFileName = 'export.zip'
+    destinationDirectory = file('build/export/')
+}
+
