@@ -41,6 +41,7 @@ import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
 import net.mcreator.element.converter.v2023_2.ArmorSpecialInformationConverter;
+import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.SpecialInformationConverter;
 import net.mcreator.element.converter.v2023_2.TooltipProcedureConverter;
 import net.mcreator.element.types.*;
@@ -58,8 +59,9 @@ public class ConverterRegistry {
 				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter()));
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
-						new BlockRequiresCorrectToolConverter(), new SpecialInformationConverter<Block>()));
-		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer(), new SpecialInformationConverter<Plant>()));
+						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
+						new SpecialInformationConverter<Block>()));
+		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter(),
