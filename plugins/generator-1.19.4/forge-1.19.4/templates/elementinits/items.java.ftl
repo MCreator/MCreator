@@ -44,15 +44,32 @@ public class ${JavaModName}Items {
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
 
 	<#list items as item>
-		<#if item.getModElement().getType().getBaseType()?string == "BLOCK">
+		<#if item.getModElement().getTypeString() == "armor">
+			<#if item.enableHelmet>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
+			</#if>
+			<#if item.enableBody>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
+			</#if>
+			<#if item.enableLeggings>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
+			</#if>
+			<#if item.enableBoots>
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
+			</#if>
+		<#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
 			<#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
 				<#assign hasDoubleBlocks = true>
-					public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-						doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
 			<#else>
 				<#assign hasBlocks = true>
-					public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-						block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
 			</#if>
 		<#else>
 		public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
