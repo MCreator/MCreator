@@ -29,11 +29,16 @@ import org.apache.logging.log4j.Logger;
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("fluid")>
+			${JavaModName}Fluids.REGISTRY.register(bus);
+			${JavaModName}FluidTypes.REGISTRY.register(bus);
+		</#if>
 	}
 
 	private static final String PROTOCOL_VERSION = "1";
