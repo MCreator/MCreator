@@ -4,5 +4,3 @@ global_templates:
   - template: json/paintingtag.json.ftl
     writer: json
     name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
-
-field_exclusions: [title, author]
