@@ -9,9 +9,9 @@
 			{
 				"target": {
 					"predicate_type": "blockstate_match",
-					"block_state": ${mappedBlockToBlockStateProvider(mappedMCItemToBlockStateJSON(replacementBlock))}
+					"block_state": ${mappedMCItemToBlockStateJSON(replacementBlock)}
 				},
-				"state": "${modid}:${data.getModElement().getRegistryName()}"
+				"state": ${mappedMCItemToBlockStateJSON(w.itemBlock("CUSTOM:" + data.getModElement().getName()))}
 			}<#sep>,
 			</#list>
 		]
