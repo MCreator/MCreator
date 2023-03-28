@@ -40,10 +40,7 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
-import net.mcreator.element.converter.v2023_2.ArmorSpecialInformationConverter;
-import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
-import net.mcreator.element.converter.v2023_2.SpecialInformationConverter;
-import net.mcreator.element.converter.v2023_2.TooltipProcedureConverter;
+import net.mcreator.element.converter.v2023_2.*;
 import net.mcreator.element.types.*;
 
 import java.util.HashMap;
@@ -77,6 +74,7 @@ public class ConverterRegistry {
 		put(ModElementType.MUSICDISC, List.of(new SpecialInformationConverter<MusicDisc>()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
+		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
 		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
