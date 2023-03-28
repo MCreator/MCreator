@@ -46,8 +46,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
-	private final VTextField title = new VTextField(20);
-	private final VTextField author = new VTextField(20);
+	private final VTextField title = new VTextField(28);
+	private final VTextField author = new VTextField(28);
 
 	private TextureHolder texture;
 
@@ -63,7 +63,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
 		texture.setOpaque(false);
 
-		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
+		JComponent textureComponent = PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), texture),
 				L10N.t("elementgui.common.texture")));
 
@@ -93,7 +93,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		selp.add(height);
 
 		pane3.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 25, 25)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 

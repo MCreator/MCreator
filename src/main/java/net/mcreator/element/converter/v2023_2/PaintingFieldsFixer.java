@@ -25,26 +25,19 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Painting;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-public class PaintingFieldsConverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger(PaintingFieldsConverter.class);
+public class PaintingFieldsFixer implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Painting painting = (Painting) input;
-		try {
-			painting.title = StringUtils.machineToReadableName(painting.getModElement().getRegistryName());
-			painting.author = "Unknown";
-		} catch (Exception e) {
-			LOG.warn("Could not define new fields for: " + painting.getModElement().getName());
-		}
+		painting.title = StringUtils.machineToReadableName(painting.getModElement().getName());
+		painting.author = "Unknown";
 		return painting;
 	}
 
 	@Override public int getVersionConvertingTo() {
 		return 41;
 	}
+
 }
