@@ -305,7 +305,3 @@
     </#if>
     <#return '{ "Name": "minecraft:air" }'>
 </#function>
-
-<#function toMappedMCItem unmappedValue>
-    <#return generator.toMappedMItemBlock(unmappedValue)>
-</#function>
