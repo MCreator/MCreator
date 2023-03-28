@@ -22,7 +22,6 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.*;
-import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
@@ -393,8 +392,7 @@ public class BlocklyBlockCodeGenerator {
 
 		if (templateGenerator != null) {
 			dataModel.put("customBlockIndex", customBlockIndex);
-			if (mutation != null && mutation.hasAttribute("marker"))
-				dataModel.put("outputMarker", ProcedureCodeOptimizer.mapMarker(mutation.getAttribute("marker")));
+			dataModel.put("mappingNeeded", mutation != null && mutation.getAttribute("mark").equals("true"));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);

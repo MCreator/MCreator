@@ -267,10 +267,6 @@ public class BlocklyJavascriptBridge {
 		return new Gson().toJson(ext_triggers, Map.class);
 	}
 
-	@SuppressWarnings("unused") public String[] getMarkerRequiringTypes() {
-		return JavaKeywordsMap.MARKER_TYPES.keySet().toArray(String[]::new);
-	}
-
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
 		return getListOfForWorkspace(mcreator.getWorkspace(), type);
 	}

@@ -90,13 +90,17 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
+function getMarkerRequiringTypes() {
+    return ['MCItem', 'MCItemBlock'];
+}
+
 function setMarkerStatus(container, block) {
     var parentConnection = block.outputConnection && block.outputConnection.targetConnection;
     if (parentConnection && parentConnection.getCheck()) {
         var types = parentConnection.getCheck();
-        for (const type of javabridge.getMarkerRequiringTypes()) {
-            if (types.indexOf('' + type) != -1) { // add empty string to "convert" Java strings to JS strings
-                container.setAttribute('marker', type);
+        for (const type of getMarkerRequiringTypes()) {
+            if (types.indexOf(type) != -1) {
+                container.setAttribute('mark', true);
                 return true;
             }
         }

@@ -22,53 +22,42 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class TernaryOperatorBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		List<Element> elements = XMLUtil.getDirectChildren(block);
-
 		Element condition = null, thenBlock = null, elseBlock = null;
-		String markerType = ""; // used to properly map blocks and items
-		for (Element element : elements) {
+		boolean useMarkers = false; // Used to properly map blocks and items
+
+		for (Element element : XMLUtil.getDirectChildren(block)) {
 			if (element.getAttribute("name").equals("condition"))
 				condition = element;
 			else if (element.getAttribute("name").equals("THEN"))
 				thenBlock = element;
 			else if (element.getAttribute("name").equals("ELSE"))
 				elseBlock = element;
-			else if (element.hasAttribute("marker"))
-				markerType = element.getAttribute("marker");
+			else if (element.getAttribute("mark").equals("true"))
+				useMarkers = true;
 		}
-		if (thenBlock != null && elseBlock != null) {
-			if (condition != null) {
-				Map<String, Object> dataModel = new HashMap<>();
-				dataModel.put("outputMarker", JavaKeywordsMap.MARKER_TYPES.getOrDefault(markerType, ""));
-				dataModel.put("condition", BlocklyToCode.directProcessOutputBlock(master, condition));
-				dataModel.put("ifTrue", BlocklyToCode.directProcessOutputBlock(master, thenBlock));
-				dataModel.put("ifFalse", BlocklyToCode.directProcessOutputBlock(master, elseBlock));
 
-				if (master.getTemplateGenerator() != null) {
-					String code = master.getTemplateGenerator()
-							.generateFromTemplate("_logic_ternary.java.ftl", dataModel);
-					master.append(code);
-				}
-			} else {
-				master.processOutputBlock(thenBlock);
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warnings.ternary_operator.no_condition")));
-			}
-		} else {
+		if (thenBlock == null || elseBlock == null) {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.ternary_operator.no_output")));
+		} else if (condition == null) {
+			master.processOutputBlock(thenBlock);
+			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.ternary_operator.no_condition")));
+		} else {
+			master.append("(");
+			master.processOutputBlockWithoutParentheses(condition, "?:");
+			master.append(useMarkers ? "?/*@$*/" : "?");
+			master.processOutputBlockWithoutParentheses(thenBlock, "?:");
+			master.append(useMarkers ? "/*@;*/:/*@$*/" : ":");
+			master.processOutputBlockWithoutParentheses(elseBlock, "?:");
+			master.append(useMarkers ? "/*@;*/)" : ")");
 		}
 	}
 

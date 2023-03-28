@@ -85,8 +85,4 @@ public final class JavaKeywordsMap {
 		put("NAN", "Double.NaN");
 	}};
 
-	public static final HashMap<String, String> MARKER_TYPES = new HashMap<>() {{
-		put("MCItem", "/*@ItemStack*/");
-		put("MCItemBlock", "/*@BlockState*/");
-	}};
 }

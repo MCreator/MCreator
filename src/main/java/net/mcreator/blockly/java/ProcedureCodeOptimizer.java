@@ -159,22 +159,15 @@ public class ProcedureCodeOptimizer {
 	}
 
 	/**
-	 * This method maps the passed string to a marker comment for proper mapping of adjacent value by the generator
-	 *
-	 * @param marker The string to map
-	 * @return The proper marker comment
-	 */
-	public static String mapMarker(String marker) {
-		return JavaKeywordsMap.MARKER_TYPES.getOrDefault(marker, "");
-	}
-
-	/**
-	 * This method removes blockstate/itemstack/int markers from the given code
+	 * This method removes blockstate/itemstack/int/float/mapping/etc. markers from the given code
 	 *
 	 * @param code The code to optimize
-	 * @return The code without blockstate/itemstack markers
+	 * @return The code without technical marker comments
 	 */
 	public static String removeMarkers(String code) {
-		return code.replaceAll("(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/|/\\*@float\\*/)", "");
+		return code.replaceAll(
+				"(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/|/\\*@float\\*/"
+			//	+ "|/\\*@\\$\\*/|/\\*@;\\*/" // TODO: Uncomment after more testing (if needed) or revert if obsolete
+				+ ")", "");
 	}
 }
