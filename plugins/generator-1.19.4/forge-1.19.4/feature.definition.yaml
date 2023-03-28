@@ -1,0 +1,13 @@
+templates:
+  - template: feature/feature.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/@NAMEFeature.java"
+    condition: hasGenerationConditions()
+  - template: json/feature/feature_biome_modifier.json.ftl
+    writer: json
+    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+  - template: json/feature/configured_feature.json.ftl
+    writer: json
+    name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
+  - template: json/feature/placed_feature.json.ftl
+    writer: json
+    name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
