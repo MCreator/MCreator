@@ -43,6 +43,6 @@ public class DimensionIgniterConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 41;
+		return 42;
 	}
 }
