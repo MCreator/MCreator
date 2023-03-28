@@ -6,7 +6,7 @@ global_templates:
     name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
 
 localizationkeys:
-  - key: item.@modid.@registryname.title
+  - key: painting.@modid.@registryname.title
     mapto: title
-  - key: item.@modid.@registryname.author
+  - key: painting.@modid.@registryname.author
     mapto: author
