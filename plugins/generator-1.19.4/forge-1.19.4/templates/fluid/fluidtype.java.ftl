@@ -66,8 +66,8 @@ public class ${name}FluidType extends FluidType {
 
 	@Override public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 		consumer.accept(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("${modid}:blocks/${data.textureStill}"),
-				FLOWING_TEXTURE = new ResourceLocation("${modid}:blocks/${data.textureFlowing}");
+			private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("${modid}:block/${data.textureStill}"),
+				FLOWING_TEXTURE = new ResourceLocation("${modid}:block/${data.textureFlowing}");
 
 				@Override public ResourceLocation getStillTexture() {
 					return STILL_TEXTURE;
