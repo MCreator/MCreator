@@ -70,4 +70,9 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 }
