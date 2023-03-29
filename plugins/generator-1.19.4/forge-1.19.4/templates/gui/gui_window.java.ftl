@@ -130,7 +130,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	@Override public boolean keyPressed(int key, int b, int c) {
 		if (key == 256) {
-			this.setFocused(false);
 			this.minecraft.player.closeContainer();
 			return true;
 		}
@@ -162,7 +161,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	}
 
 	@Override public void onClose() {
-		this.setFocused(false);
 		super.onClose();
 	}
 
@@ -245,8 +243,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			guistate.put("checkbox:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 		</#list>
-		
-		this.setInitialFocus(this.getFocused());
 	}
 
 }
