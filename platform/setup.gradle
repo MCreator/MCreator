@@ -2,8 +2,8 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 // This may lack the the home and content subdir.
 def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/linux/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_mac_64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-aarch64.tar.gz'
-def jdk17_mac_x64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-amd64.tar.gz'
+def jdk17_mac_64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-aarch64-full.tar.gz'
+def jdk17_mac_x64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-amd64-full.tar.gz'
 
 
 
@@ -41,8 +41,8 @@ tasks.register('downloadJDKMac64') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_64')) into file('jdk/jdk17_mac_64/') }
             delete 'build/tmp/jdk17_mac_64'
 
-            copy { from file('jdk/jdk17_mac_64/jdk-17.0.5+8/') into file('jdk/jdk17_mac_64/') }
-            delete 'jdk/jdk17_mac_64/jdk-17.0.5+8/'
+            copy { from file('jdk/jdk17_mac_64/jdk-17.0.6-full.jdk/') into file('jdk/jdk17_mac_64/') }
+            delete 'jdk/jdk17_mac_64/jdk-17.0.6-full.jdk/'
         }
     }
 }
@@ -61,8 +61,8 @@ tasks.register('downloadJDKMacX64') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_x64')) into file('jdk/jdk17_mac_x64/') }
             delete 'build/tmp/jdk17_mac_x64'
 
-            copy { from file('jdk/jdk17_mac_x64/jdk-17.0.6.jdk/') into file('jdk/jdk17_mac_x64/') }
-            delete 'jdk/jdk17_mac_x64/jdk-17.0.6.jdk/'
+            copy { from file('jdk/jdk17_mac_x64/jdk-17.0.6-full.jdk/') into file('jdk/jdk17_mac_x64/') }
+            delete 'jdk/jdk17_mac_x64/jdk-17.0.6-full.jdk/'
         }
     }
 }
