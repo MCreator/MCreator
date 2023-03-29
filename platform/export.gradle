@@ -89,9 +89,9 @@ tasks.register('generateExportReport') {
     }
 }
 
+apply from: 'platform/windows/windows.gradle'
 apply from: 'platform/linux/linux.gradle'
 apply from: 'platform/mac/mac.gradle'
-apply from: 'platform/windows/windows.gradle'
 
 exportRelease.dependsOn(exportWindowsAll)
 exportRelease.dependsOn(exportMac)
