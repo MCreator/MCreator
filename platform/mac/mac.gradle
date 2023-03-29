@@ -59,7 +59,7 @@ tasks.register('exportMacX64', Copy.class) {
         from file('platform/mac/mcreator.icns')
     }
     into('MacOS') {
-        from file('platform/mac/mcreator')
+        from file('platform/mac/mcreator_x86') rename('mcreator_x86', 'mcreator')
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
