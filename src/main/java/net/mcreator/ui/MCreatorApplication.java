@@ -40,7 +40,6 @@ import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
-
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
@@ -84,7 +83,6 @@ public final class MCreatorApplication {
 	private WorkspaceSelector workspaceSelector;
 	private DeviceInfo deviceInfo;
 	private GoogleAnalytics analytics;
-
 	private TaskbarIntegration taskbarIntegration;
 
 	private MCreatorApplication(List<String> launchArguments) {
