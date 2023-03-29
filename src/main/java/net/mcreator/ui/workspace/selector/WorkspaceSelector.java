@@ -231,7 +231,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		recentPanel.setBorder(
 				BorderFactory.createEmptyBorder(30, 0, 0, 0));
-		recentPanel.setPreferredSize(new Dimension(220, 10));
+		recentPanel.setPreferredSize(new Dimension(290, 10));
 
 
 		initWebsitePanel();
@@ -240,7 +240,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
-		setSize(790, 460);
+		setSize(850, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
@@ -342,11 +342,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 
 		recentPanel.removeAll();
-
 		if (recentWorkspaces != null && recentWorkspaces.getList().size() > 0) {
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+			recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			recentsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -395,10 +396,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
+			recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
 			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		} else {
+			recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
