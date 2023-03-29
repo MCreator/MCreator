@@ -41,6 +41,7 @@ public class ProgressDialog extends MCreatorDialog {
 	@Nullable private MCreator mcreator = null;
 
 	public ProgressDialog(Window w, String title) {
+
 		super(w, title, true);
 
 		if (w instanceof MCreator) {

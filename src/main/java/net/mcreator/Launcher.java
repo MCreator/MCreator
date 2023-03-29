@@ -97,7 +97,9 @@ public class Launcher {
 		// if the OS is macOS, we enable javafx single thread mode to avoid some deadlocks with JFXPanel
 		if (OS.getOS() == OS.MAC) {
 			System.setProperty("javafx.embed.singleThread", "true");
+			System.setProperty( "apple.awt.application.appearance", "system" );
 		}
+
 
 		if ("true".equals(System.getProperty("javafx.embed.singleThread"))) {
 			LOG.warn("Running in javafx.embed.singleThread environment. "
