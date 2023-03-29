@@ -1,9 +1,13 @@
+<#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onMCreatorLinkPinChanged(LinkDigitalPinChangedEvent event){
-		Map<String, Object> dependencies = new HashMap<>();
-		dependencies.put("pin",event.getPin());
-		dependencies.put("value",(int)event.getValue());
-		dependencies.put("risingEdge",event.isRisingEdge());
-		dependencies.put("event",event);
-		execute(dependencies);
+		<#assign dependenciesCode><#compress>
+			<@procedureDependenciesCode dependencies, {
+				"pin": "event.getPin()",
+				"value": "(int) event.getValue()",
+				"risingEdge": "event.isRisingEdge()",
+				"event": "event"
+			}/>
+		</#compress></#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

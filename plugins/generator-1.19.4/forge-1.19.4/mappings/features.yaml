@@ -1,0 +1,12 @@
+_default:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+  - "minecraft:no_op"
+feature_lake:
+  - LakeFeature
+  - LakeFeature.Configuration
+  - "minecraft:lake"
+feature_simple_block:
+  - SimpleBlockFeature
+  - SimpleBlockConfiguration
+  - "minecraft:simple_block"
