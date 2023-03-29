@@ -44,8 +44,6 @@ import net.minecraft.world.level.material.Material;
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
-	<#elseif data.blockBase?has_content && data.blockBase == "Button">
-		<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 	<#elseif data.blockBase?has_content>
 		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
 	<#else>
@@ -151,18 +149,32 @@ public class ${name}Block extends
 
 	public ${name}Block() {
 		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-		super(() -> Blocks.AIR.defaultBlockState(),
+			super(() -> Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
-		        super(Sensitivity.EVERYTHING,
+		    <#if data.material.getUnmappedValue() == "WOOD">
+		        super(Sensitivity.EVERYTHING, <@blockProperties/>, BlockSetType.OAK);
 		    <#else>
-		        super(Sensitivity.MOBS,
+		        super(Sensitivity.MOBS, <@blockProperties/>, BlockSetType.IRON);
 		    </#if>
+		<#elseif data.blockBase?has_content && data.blockBase == "Button">
+			<#if data.material.getUnmappedValue() == "WOOD">
+		        super(<@blockProperties/>, BlockSetType.OAK, 30, true);
+			<#else>
+		        super(<@blockProperties/>, BlockSetType.STONE, 20, false);
+			</#if>
+		<#elseif data.blockBase?has_content && (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
+			<#if data.material.getUnmappedValue() == "IRON">
+				super(<@blockProperties/>, BlockSetType.IRON);
+			<#elseif data.material.getUnmappedValue() == "WOOD">
+				super(<@blockProperties/>, BlockSetType.OAK);
+			<#else>
+				super(<@blockProperties/>, BlockSetType.STONE);
+			</#if>
+		<#elseif data.blockBase?has_content && data.blockBase == "FenceGate">
+			super(<@blockProperties/>, WoodType.OAK);
 		<#else>
-		super(
+			super(<@blockProperties/>);
 		</#if>
-			<@blockProperties/>
-		);
 
 	    <#if data.rotationMode != 0 || data.isWaterloggable>
 	    this.registerDefaultState(this.stateDefinition.any()
