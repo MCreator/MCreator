@@ -11,7 +11,7 @@ DIR=$(cd "$(dirname "$0")"; pwd)
 
 cd "$DIR"
 
-./jdk/Contents/Home/bin/java \
+./jdk/bin/java \
   --add-opens=java.base/java.lang=ALL-UNNAMED \
   -Xdock:name=MCreator \
   -Xdock:icon=../Resources/mcreatorapp.icns \

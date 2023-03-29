@@ -41,12 +41,13 @@ public class ProgressDialog extends MCreatorDialog {
 	@Nullable private MCreator mcreator = null;
 
 	public ProgressDialog(Window w, String title) {
+
 		super(w, title, true);
 
 		if (w instanceof MCreator) {
 			mcreator = (MCreator) w;
 		}
-
+		setUndecorated(true);
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 		setClosable(false);
