@@ -22,7 +22,6 @@ package net.mcreator.ui.blockly;
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;

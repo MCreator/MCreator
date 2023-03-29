@@ -61,6 +61,9 @@ public class ProcedureCodeOptimizer {
 		} else if (code.startsWith("/*@float*/")) {
 			prefix = "/*@float*/";
 			toClean = toClean.substring(10);
+		} else if (toClean.startsWith("/*@WrappingOp*/")) {
+			prefix = "/*@WrappingOp*/";
+			toClean = toClean.substring(15);
 		}
 		return canRemoveParentheses(toClean, blacklist) ? prefix + toClean.substring(1, toClean.length() - 1) : code;
 	}
@@ -159,15 +162,13 @@ public class ProcedureCodeOptimizer {
 	}
 
 	/**
-	 * This method removes blockstate/itemstack/int/float/mapping/etc. markers from the given code
+	 * This method removes blockstate/itemstack/int/float/etc. markers from the given code
 	 *
 	 * @param code The code to optimize
 	 * @return The code without technical marker comments
 	 */
 	public static String removeMarkers(String code) {
 		return code.replaceAll(
-				"(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/|/\\*@float\\*/"
-			//	+ "|/\\*@\\$\\*/|/\\*@;\\*/" // TODO: Uncomment after more testing (if needed) or revert if obsolete
-				+ ")", "");
+				"(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/|/\\*@float\\*/|/\\*@WrappingOp\\*/)", "");
 	}
 }

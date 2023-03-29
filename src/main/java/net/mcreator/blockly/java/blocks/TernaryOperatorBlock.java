@@ -51,7 +51,7 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.ternary_operator.no_condition")));
 		} else {
-			master.append("(");
+			master.append(useMarkers ? "/*@WrappingOp*/(" : "(");
 			master.processOutputBlockWithoutParentheses(condition, "?:");
 			master.append(useMarkers ? "?/*@$*/" : "?");
 			master.processOutputBlockWithoutParentheses(thenBlock, "?:");

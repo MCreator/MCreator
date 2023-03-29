@@ -2,15 +2,10 @@
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
     <#elseif mappedBlock?contains("/*@$*/")>
-        <#local result = mappedBlock>
-        <#local outputs = mappedBlock.toString().split("(?=/\\*@\\$\\*/|(?<=/\\*@;\\*/))")>
-        <#list outputs as output>
-            <#if output?contains("/*@$*/")>
-                <#local result = result.replace(output,
-                    mappedBlockToBlockStateCode(output.replace("/*@$*/", "").replace("/*@;*/", "")))>
-            </#if>
-        </#list>
-        <#return result>
+        <#return ("\"" + mappedBlock?replace("\"", "\\\"")?replace("/*@$*/", "\" + mappedBlockToBlockStateCode(\"")
+            ?replace("/*@;*/", "\") + \"") + "\"")?eval>
+    <#elseif mappedBlock?starts_with("/*@WrappingOp*/")>
+        <#return mappedBlock?replace("/*@WrappingOp*/", "")>
     <#else>
         <#return mappedBlockToBlock(mappedBlock) + ".defaultBlockState()">
     </#if>
@@ -20,15 +15,10 @@
     <#if mappedBlock?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
     <#elseif mappedBlock?contains("/*@$*/")>
-        <#local result = mappedBlock>
-        <#local outputs = mappedBlock.toString().split("(?=/\\*@\\$\\*/|(?<=/\\*@;\\*/))")>
-        <#list outputs as output>
-            <#if output?contains("/*@$*/")>
-                <#local result = result.replace(output,
-                    mappedBlockToBlock(output.replace("/*@$*/", "").replace("/*@;*/", "")))>
-            </#if>
-        </#list>
-        <#return result>
+        <#return ("\"" + mappedBlock?replace("\"", "\\\"")?replace("/*@$*/", "\" + mappedBlockToBlock(\"")
+            ?replace("/*@;*/", "\") + \"") + "\"")?eval>
+    <#elseif mappedBlock?starts_with("/*@WrappingOp*/")>
+        <#return mappedBlock?replace("/*@WrappingOp*/", "")>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return mappedElementToRegistryEntry(mappedBlock)>
     <#else>
@@ -40,15 +30,10 @@
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock?contains("/*@$*/")>
-        <#local result = mappedBlock>
-        <#local outputs = mappedBlock.toString().split("(?=/\\*@\\$\\*/|(?<=/\\*@;\\*/))")>
-        <#list outputs as output>
-            <#if output?contains("/*@$*/")>
-                <#local result = result.replace(output,
-                    mappedMCItemToItemStackCode(output.replace("/*@$*/", "").replace("/*@;*/", ""), amount))>
-            </#if>
-        </#list>
-        <#return result>
+        <#return ("\"" + mappedBlock?replace("\"", "\\\"")?replace("/*@$*/", "\" + mappedMCItemToItemStackCode(\"")
+            ?replace("/*@;*/", "\") + \"") + "\"")?eval>
+    <#elseif mappedBlock?starts_with("/*@WrappingOp*/")>
+        <#return mappedBlock?replace("/*@WrappingOp*/", "")>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return toItemStack(mappedElementToRegistryEntry(mappedBlock), amount)>
     <#else>
@@ -68,15 +53,10 @@
     <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
     <#elseif mappedBlock?contains("/*@$*/")>
-        <#local result = mappedBlock>
-        <#local outputs = mappedBlock.toString().split("(?=/\\*@\\$\\*/|(?<=/\\*@;\\*/))")>
-        <#list outputs as output>
-            <#if output?contains("/*@$*/")>
-                <#local result = result.replace(output,
-                    mappedMCItemToItem(output.replace("/*@$*/", "").replace("/*@;*/", "")))>
-            </#if>
-        </#list>
-        <#return result>
+        <#return ("\"" + mappedBlock?replace("\"", "\\\"")?replace("/*@$*/", "\" + mappedMCItemToItem(\"")
+            ?replace("/*@;*/", "\") + \"") + "\"")?eval>
+    <#elseif mappedBlock?starts_with("/*@WrappingOp*/")>
+        <#return mappedBlock?replace("/*@WrappingOp*/", "")>
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return mappedElementToRegistryEntry(mappedBlock) + generator.isBlock(mappedBlock)?then(".asItem()", "")>
     <#else>
