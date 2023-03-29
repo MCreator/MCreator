@@ -1,5 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/windows/x64/jdk/hotspot/normal/adoptopenjdk'
 def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/linux/x64/jdk/hotspot/normal/adoptopenjdk'
 def jdk17_mac_64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-aarch64-full.tar.gz'
 def jdk17_mac_x64 = 'https://download.bell-sw.com/java/17.0.6+10/bellsoft-jdk17.0.6+10-macos-amd64-full.tar.gz'

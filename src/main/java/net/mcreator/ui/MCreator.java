@@ -140,9 +140,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		else
 			setSize(1002, 640);
 
-		getRootPane().putClientProperty("apple.awt.fullscreenable", true);
-		getRootPane().putClientProperty( "apple.awt.transparentTitleBar", true );
-		getRootPane().putClientProperty( "apple.awt.fullWindowContent", true );
+		if (OS.getOS() == OS.MAC) {
+			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
+			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+		}
 
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
