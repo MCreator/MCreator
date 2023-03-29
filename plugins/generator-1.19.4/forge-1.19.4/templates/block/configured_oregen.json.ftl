@@ -11,7 +11,9 @@
 					"predicate_type": "blockstate_match",
 					"block_state": ${mappedMCItemToBlockStateJSON(replacementBlock)}
 				},
-				"state": ${mappedMCItemToBlockStateJSON(w.itemBlock("CUSTOM:" + data.getModElement().getName()))}
+				"state": {
+                  "Name": "${modid}:${registryname}"
+                }
 			}<#sep>,
 			</#list>
 		]
