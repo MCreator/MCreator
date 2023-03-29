@@ -69,7 +69,7 @@ tasks.register('exportMacX64', Copy.class) {
         from configurations.export
         from configurations.mac64
     }
-    into('MacOS/jdk/') { from 'jdk/jdk17_mac_x64/' }
+    into('MacOS/jdk') { from 'jdk/jdk17_mac_x64/' }
     doLast {
         convertCRLF(file(exportPathX64 + '/Info.plistdos'), file(exportPathX64 + '/Info.plist'))
         delete exportPathX64 + '/Info.plistdos'

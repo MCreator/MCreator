@@ -50,7 +50,7 @@ tasks.register('downloadJDKMac64') {
 tasks.register('downloadJDKMacX64') {
     group 'setup'
     doLast {
-        if (!file('jdk/jdk17_mac_x64/').exists()) {
+        if (!file('jdk/jdk17_mac_x64/bin').exists()) {
             mkdir 'jdk/jdk17_mac_x64'
 
             download.run {
@@ -61,11 +61,12 @@ tasks.register('downloadJDKMacX64') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_x64')) into file('jdk/jdk17_mac_x64/') }
             delete 'build/tmp/jdk17_mac_x64'
 
-            copy { from file('jdk/jdk17_mac_x64/bellsoft-jdk17.0.6+10-macos-amd64/') into file('jdk/jdk17_mac_x64/') }
-            delete 'jdk/jdk17_mac_x64/bellsoft-jdk17.0.6+10-macos-amd64/'
+            copy { from file('jdk/jdk17_mac_x64/jdk-17.0.6.jdk/') into file('jdk/jdk17_mac_x64/') }
+            delete 'jdk/jdk17_mac_x64/jdk-17.0.6.jdk/'
         }
     }
 }
+
 
 // export environment setup task
 tasks.register('downloadNSIS') {
