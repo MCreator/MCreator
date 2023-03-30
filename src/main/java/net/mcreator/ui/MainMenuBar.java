@@ -48,7 +48,7 @@ public class MainMenuBar extends JMenuBar {
 
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		if ("false".equals(System.getProperty("apple.laf.useScreenMenuBar")) && (OS.getOS() == OS.MAC)) {
+		if ("false".equals(System.getProperty("apple.laf.useScreenMenuBar"))) {
 			JMenu logo = new JMenu("  MCreator");
 			logo.setMnemonic('M');
 			logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("icon").getImage(), 14, 14)));
