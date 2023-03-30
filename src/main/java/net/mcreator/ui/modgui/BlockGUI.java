@@ -38,6 +38,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JMinMaxIntSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -177,8 +178,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
-	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, -2032, 2016, 1));
-	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, -2032, 2016, 1));
+	private final JMinMaxIntSpinner generateHeight = new JMinMaxIntSpinner(0, 64, -2032, 2016, 1);
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
@@ -1076,7 +1076,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel enderpanel2 = new JPanel(new BorderLayout(30, 15));
 
-		JPanel genPanel = new JPanel(new GridLayout(8, 2, 20, 2));
+		JPanel genPanel = new JPanel(new GridLayout(7, 2, 20, 2));
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
 				L10N.label("elementgui.block.spawn_world_types")));
@@ -1102,12 +1102,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.gen_group_size")));
 		genPanel.add(frequencyOnChunk);
 
-		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_min_height"),
-				L10N.label("elementgui.block.gen_min_height")));
-		genPanel.add(minGenerateHeight);
-		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_max_height"),
-				L10N.label("elementgui.block.gen_max_height")));
-		genPanel.add(maxGenerateHeight);
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_height"),
+				L10N.label("elementgui.block.gen_height")));
+		genPanel.add(generateHeight);
 
 		genPanel.setOpaque(false);
 
@@ -1354,12 +1351,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(page3group);
 		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 7) {
-			if ((int) minGenerateHeight.getValue() >= (int) maxGenerateHeight.getValue()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.block.gen_height")));
-			}
-		}
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -1404,8 +1395,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
-		maxGenerateHeight.setValue(block.maxGenerateHeight);
-		minGenerateHeight.setValue(block.minGenerateHeight);
+		generateHeight.setMinValue(block.minGenerateHeight);
+		generateHeight.setMaxValue(block.maxGenerateHeight);
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
@@ -1582,8 +1573,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.frequencyOnChunk = (int) frequencyOnChunk.getValue();
 		block.generationShape = (String) generationShape.getSelectedItem();
-		block.minGenerateHeight = (int) minGenerateHeight.getValue();
-		block.maxGenerateHeight = (int) maxGenerateHeight.getValue();
+		block.minGenerateHeight = generateHeight.getMinValue();
+		block.maxGenerateHeight = generateHeight.getMaxValue();
 		block.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		block.onNeighbourBlockChanges = onNeighbourBlockChanges.getSelectedProcedure();
 		block.onTickUpdate = onTickUpdate.getSelectedProcedure();
