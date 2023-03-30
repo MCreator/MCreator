@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 45.0.18
+buildfileversion: 45.0.39
 
 import:
   - datapack-1.19.4
