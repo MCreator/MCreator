@@ -60,6 +60,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
@@ -390,8 +391,13 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			if (mcreatorTabs.getCurrentTab() != null) {
 				tabAddition = " - " + mcreatorTabs.getCurrentTab().getText();
 			}
-
-
+			// Do not externalize this text
+			application.getDiscordClient()
+					.updatePresence("Working on " + workspace.getWorkspaceSettings().getModName() + tabAddition,
+							Launcher.version.getMajorString() + " for " + workspace.getGenerator()
+									.getGeneratorMinecraftVersion(),
+							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
+									.toLowerCase(Locale.ENGLISH));
 		}
 	}
 

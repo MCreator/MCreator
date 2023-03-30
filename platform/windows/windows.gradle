@@ -88,11 +88,11 @@ tasks.register('buildInstallerWin64', Exec.class) {
 tasks.register('exportWindowsAll') {
     group 'export'
 
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        dependsOn zipWin64
+    } else {
         dependsOn exportWin64
         dependsOn buildInstallerWin64
-    } else {
-        dependsOn zipWin64
     }
 
     doLast {
