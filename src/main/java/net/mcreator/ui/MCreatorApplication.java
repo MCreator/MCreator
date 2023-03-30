@@ -40,7 +40,6 @@ import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
-
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
@@ -84,7 +83,6 @@ public final class MCreatorApplication {
 	private WorkspaceSelector workspaceSelector;
 	private DeviceInfo deviceInfo;
 	private GoogleAnalytics analytics;
-
 	private TaskbarIntegration taskbarIntegration;
 
 	private MCreatorApplication(List<String> launchArguments) {
@@ -392,7 +390,6 @@ public final class MCreatorApplication {
 		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
-
 		SoundUtils.close();
 
 		// we close all windows and exit fx platform
@@ -430,8 +427,6 @@ public final class MCreatorApplication {
 	public List<MCreator> getOpenMCreators() {
 		return openMCreators;
 	}
-
-
 
 	public TaskbarIntegration getTaskbarIntegration() {
 		return taskbarIntegration;

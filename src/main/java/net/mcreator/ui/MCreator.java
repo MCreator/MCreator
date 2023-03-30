@@ -60,7 +60,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
 
@@ -140,11 +139,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		else
 			setSize(1002, 640);
 
-		if (OS.getOS() == OS.MAC) {
+		if (OS.getOS() == OS.MAC)
 			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
-			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
-			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
-		}
 
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -371,7 +367,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			setVisible(false); // close the window
 
 			application.getOpenMCreators().remove(this);
-
 
 			if (application.getOpenMCreators()
 					.isEmpty()) { // no MCreator windows left, close the app, or return to project selector if selected
