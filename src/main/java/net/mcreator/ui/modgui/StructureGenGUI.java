@@ -25,7 +25,7 @@ import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JMinMaxIntSpinner;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -70,7 +70,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	private final JSpinner spawnOffsetX = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 	private final JSpinner spawnOffsetZ = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 
-	private final JMinMaxIntSpinner countPerChunk = new JMinMaxIntSpinner(1, 1, 1, 16, 1);
+	private final JMinMaxSpinner countPerChunk = new JMinMaxSpinner(1, 1, 1, 16, 1);
 
 	private BiomeListField restrictionBiomes;
 	private MCItemListField restrictionBlocks;
@@ -106,6 +106,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
+		countPerChunk.setAllowEqualValues(true);
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
 
@@ -232,8 +233,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		structure.spawnHeightOffset = (int) spawnHeightOffset.getValue();
 		structure.spawnXOffset = (int) spawnOffsetX.getValue();
 		structure.spawnZOffset = (int) spawnOffsetZ.getValue();
-		structure.minCountPerChunk = countPerChunk.getMinValue();
-		structure.maxCountPerChunk = countPerChunk.getMaxValue();
+		structure.minCountPerChunk = countPerChunk.getIntMinValue();
+		structure.maxCountPerChunk = countPerChunk.getIntMaxValue();
 		structure.spawnWorldTypes = spawnWorldTypes.getListElements();
 		structure.spawnLocation = (String) spawnLocation.getSelectedItem();
 		structure.ignoreBlocks = (String) ignoreBlocks.getSelectedItem();

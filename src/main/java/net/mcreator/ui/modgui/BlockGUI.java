@@ -38,7 +38,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JMinMaxIntSpinner;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -178,7 +178,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
-	private final JMinMaxIntSpinner generateHeight = new JMinMaxIntSpinner(0, 64, -2032, 2016, 1);
+	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1);
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
@@ -278,6 +278,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
 				//@formatter:on
 		));
+		generateHeight.setAllowEqualValues(true);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
@@ -1573,8 +1574,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.frequencyOnChunk = (int) frequencyOnChunk.getValue();
 		block.generationShape = (String) generationShape.getSelectedItem();
-		block.minGenerateHeight = generateHeight.getMinValue();
-		block.maxGenerateHeight = generateHeight.getMaxValue();
+		block.minGenerateHeight = generateHeight.getIntMinValue();
+		block.maxGenerateHeight = generateHeight.getIntMaxValue();
 		block.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		block.onNeighbourBlockChanges = onNeighbourBlockChanges.getSelectedProcedure();
 		block.onTickUpdate = onTickUpdate.getSelectedProcedure();

@@ -30,30 +30,58 @@ public class JMinMaxSpinner extends JPanel {
 
 	private final JSpinner min;
 	private final JSpinner max;
+	private boolean allowEqualValues = false;
 
 	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step) {
 		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
 		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
 
+		init();
+
+		if (step < 0.001) {
+			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(6);
+			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(6);
+		}
+	}
+
+	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step) {
+		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
+		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
+
+		init();
+	}
+
+	private void init() {
 		setLayout(new GridLayout(1, 2, 5, 0));
 		setOpaque(false);
 
 		min.addChangeListener(e -> {
-			if ((double) min.getValue() > (double) max.getValue())
-				max.setValue(min.getValue());
+			Number minVal = ((SpinnerNumberModel) min.getModel()).getNumber();
+			Number maxVal = ((SpinnerNumberModel) max.getModel()).getNumber();
+			if (minVal.doubleValue() >= maxVal.doubleValue()) {
+				max.setValue(minVal); // update maximum to not be lower than minimum
+				if (!allowEqualValues) {
+					max.setValue(max.getNextValue()); // update maximum to be higher than minimum
+					if (((SpinnerNumberModel) max.getModel()).getNumber().doubleValue() == maxVal.doubleValue())
+						min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
+				}
+			}
 		});
 		max.addChangeListener(e -> {
-			if ((double) max.getValue() < (double) min.getValue())
-				min.setValue(max.getValue());
+			Number minVal = ((SpinnerNumberModel) min.getModel()).getNumber();
+			Number maxVal = ((SpinnerNumberModel) max.getModel()).getNumber();
+			if (maxVal.doubleValue() <= minVal.doubleValue()) {
+				min.setValue(maxVal); // update minimum to not be higher than maximum
+				if (!allowEqualValues) {
+					min.setValue(min.getPreviousValue()); // update minimum to be lower than maximum
+					if (((SpinnerNumberModel) min.getModel()).getNumber().doubleValue() == minVal.doubleValue())
+						max.setValue(max.getNextValue()); // if fails, cancel maximum value update
+				}
+			}
 		});
 
 		add(PanelUtils.westAndCenterElement(L10N.label("minmaxspinner.min"), min, 5, 0));
 		add(PanelUtils.westAndCenterElement(L10N.label("minmaxspinner.max"), max, 5, 0));
-
-		if (step < 0.001) {
-			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(4);
-			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(4);
-		}
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -74,11 +102,23 @@ public class JMinMaxSpinner extends JPanel {
 		return (double) max.getValue();
 	}
 
+	public int getIntMinValue() {
+		return (int) min.getValue();
+	}
+
+	public int getIntMaxValue() {
+		return (int) max.getValue();
+	}
+
 	public void setMinValue(double val) {
 		min.setValue(val);
 	}
 
 	public void setMaxValue(double val) {
 		max.setValue(val);
+	}
+
+	public void setAllowEqualValues(boolean allowEqualValues) {
+		this.allowEqualValues = allowEqualValues;
 	}
 }

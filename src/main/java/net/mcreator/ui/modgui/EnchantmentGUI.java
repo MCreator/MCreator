@@ -23,7 +23,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JMinMaxIntSpinner;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -52,7 +52,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JComboBox<String> rarity = new JComboBox<>(
 			new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 
-	private final JMinMaxIntSpinner level = new JMinMaxIntSpinner(1, 1, 0, 64000, 1);
+	private final JMinMaxSpinner level = new JMinMaxSpinner(1, 1, 0, 64000, 1);
 
 	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -74,6 +74,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected void initGUI() {
+		level.setAllowEqualValues(true);
 		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems, true);
 		compatibleEnchantments = new EnchantmentListField(mcreator);
 
@@ -193,8 +194,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.name = name.getText();
 		enchantment.type = (String) type.getSelectedItem();
 		enchantment.rarity = (String) rarity.getSelectedItem();
-		enchantment.minLevel = level.getMinValue();
-		enchantment.maxLevel = level.getMaxValue();
+		enchantment.minLevel = level.getIntMinValue();
+		enchantment.maxLevel = level.getIntMaxValue();
 		enchantment.damageModifier = (int) damageModifier.getValue();
 		enchantment.compatibleEnchantments = compatibleEnchantments.getListElements();
 		enchantment.excludeEnchantments = compatibleEnchantments.isExclusionMode();

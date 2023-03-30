@@ -42,7 +42,7 @@ import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JMinMaxIntSpinner;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -119,7 +119,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner rangedAttackRadius = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 0.1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxIntSpinner numberOfMobsPerGroup = new JMinMaxIntSpinner(4, 4, 1, 1000, 1);
+	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
 
 	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
@@ -346,6 +346,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
@@ -1133,8 +1134,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
 		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
 		livingEntity.rangedItemType = (String) rangedItemType.getSelectedItem();
-		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getMinValue();
-		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getMaxValue();
+		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
+		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();
 		livingEntity.restrictionBiomes = restrictionBiomes.getListElements();
 		livingEntity.spawnInDungeons = spawnInDungeons.isSelected();
 		livingEntity.modelWidth = (double) modelWidth.getValue();
