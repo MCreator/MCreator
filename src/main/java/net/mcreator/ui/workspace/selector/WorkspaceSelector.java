@@ -231,7 +231,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		recentPanel.setBorder(
 				BorderFactory.createEmptyBorder(30, 0, 0, 0));
-		recentPanel.setPreferredSize(new Dimension(290, 10));
+		recentPanel.setPreferredSize(new Dimension(270, 10));
 
 
 		initWebsitePanel();
@@ -240,7 +240,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
-		setSize(850, 460);
+		setSize(830, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
