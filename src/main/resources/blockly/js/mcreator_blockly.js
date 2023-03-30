@@ -41,6 +41,22 @@ Blockly.Block.prototype.setHelpUrl = function () {
     return '';
 }
 
+const markerRequiringTypes = ['MCItem', 'MCItemBlock'];
+
+function setMarkerStatus(container, block) {
+    var parentConnection = block.outputConnection && block.outputConnection.targetConnection;
+    if (parentConnection && parentConnection.getCheck()) {
+        var types = parentConnection.getCheck();
+        for (const type of markerRequiringTypes) {
+            if (types.indexOf(type) != -1) {
+                container.setAttribute('mark', true);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 // modify blockly to export all variables, not only used ones
 Blockly.Variables.allUsedVarModels = function () {
     return workspace.getVariableMap().getAllVariables();
@@ -88,24 +104,6 @@ function jsonToBlocklyDropDownArray(json) {
         retval.push(["" + map[key], "" + key]);
     });
     return retval;
-}
-
-function getMarkerRequiringTypes() {
-    return ['MCItem', 'MCItemBlock'];
-}
-
-function setMarkerStatus(container, block) {
-    var parentConnection = block.outputConnection && block.outputConnection.targetConnection;
-    if (parentConnection && parentConnection.getCheck()) {
-        var types = parentConnection.getCheck();
-        for (const type of getMarkerRequiringTypes()) {
-            if (types.indexOf(type) != -1) {
-                container.setAttribute('mark', true);
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 // Helper function to use in Blockly extensions that append a dropdown
