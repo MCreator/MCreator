@@ -193,7 +193,7 @@ public class TestWorkspaceDataProvider {
 				if (scope != VariableType.Scope.LOCAL) {
 					VariableElement variable = new VariableElement();
 					variable.setName("blockstate" + (idx++));
-					variable.setValue("UP");
+					variable.setValue("Blocks.AIR");
 					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
 					variable.setScope(scope);
 					workspace.addVariableElement(variable);
