@@ -1,1 +1,1 @@
-Le niveau minimal et maximum supporté par votre enchantement.
+Le niveau minimal et maximal de l'enchantement.
