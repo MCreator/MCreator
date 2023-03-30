@@ -26,12 +26,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class JMinMaxSpinner extends JPanel {
+public class JMinMaxIntSpinner extends JPanel {
 
 	private final JSpinner min;
 	private final JSpinner max;
 
-	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step) {
+	public JMinMaxIntSpinner(int minVal, int maxVal, int smin, int smax, int step) {
 		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
 		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
 
@@ -39,21 +39,16 @@ public class JMinMaxSpinner extends JPanel {
 		setOpaque(false);
 
 		min.addChangeListener(e -> {
-			if ((double) min.getValue() > (double) max.getValue())
+			if ((int) min.getValue() > (int) max.getValue())
 				max.setValue(min.getValue());
 		});
 		max.addChangeListener(e -> {
-			if ((double) max.getValue() < (double) min.getValue())
+			if ((int) max.getValue() < (int) min.getValue())
 				min.setValue(max.getValue());
 		});
 
 		add(PanelUtils.westAndCenterElement(L10N.label("minmaxspinner.min"), min, 5, 0));
 		add(PanelUtils.westAndCenterElement(L10N.label("minmaxspinner.max"), max, 5, 0));
-
-		if (step < 0.001) {
-			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(4);
-			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(4);
-		}
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -66,19 +61,19 @@ public class JMinMaxSpinner extends JPanel {
 		max.addChangeListener(listener);
 	}
 
-	public double getMinValue() {
-		return (double) min.getValue();
+	public int getMinValue() {
+		return (int) min.getValue();
 	}
 
-	public double getMaxValue() {
-		return (double) max.getValue();
+	public int getMaxValue() {
+		return (int) max.getValue();
 	}
 
-	public void setMinValue(double val) {
+	public void setMinValue(int val) {
 		min.setValue(val);
 	}
 
-	public void setMaxValue(double val) {
+	public void setMaxValue(int val) {
 		max.setValue(val);
 	}
 }
