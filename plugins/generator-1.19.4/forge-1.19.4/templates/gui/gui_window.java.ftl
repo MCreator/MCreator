@@ -204,13 +204,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-			${component.getName()} = new Button(new Button.Builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
-				.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, ${component.width}, ${component.height}))
-			<#if !hasProcedure(buttonDisplayCondition)>
-			{}
-			<#else>
-			<@buttonDisplayCondition component/>
-			</#if>;
+			${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
+				.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, ${component.width}, ${component.height})
+				<#if hasProcedure(component.displayCondition)>
+				.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
+				<#else>
+				.build();
+				</#if>
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
