@@ -240,7 +240,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
-		setSize(830, 460);
+		setSize(820, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
