@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -74,14 +75,27 @@ public class GeneratorsTest {
 	}
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
-		LOG.info("Generators found: " + fileNames);
-
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		return fileNames.stream().map(generatorFile -> {
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+
+		// Sort generators, so they are tested in predictable order
+		List<String> fileNamesSorted = fileNames.stream().sorted((a, b) -> {
+			String[] ap = a.split("/")[0].split("-");
+			String[] bp = b.split("/")[0].split("-");
+
+			if (ap[0].equals(bp[0])) { // same type, sort by version
+				return bp[1].compareTo(ap[1]);
+			} else { // different status, sort by status
+				return bp[0].compareTo(ap[0]);
+			}
+		}).toList();
+
+		LOG.info("Generators found: " + fileNamesSorted);
+
+		return fileNamesSorted.stream().map(generatorFile -> {
 			final String generator = generatorFile.replace("/generator.yaml", "");
 			return DynamicTest.dynamicTest("Test generator: " + generator, () -> {
 				LOG.info("================");
@@ -108,6 +122,9 @@ public class GeneratorsTest {
 						.getWorkspaceFolder());
 
 				TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+
+				LOG.info("[" + generator + "] ----- Attempting to stop all Gradle daemons");
+				GradleDaemonUtils.stopAllDaemons(workspace);
 
 				LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
 				WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
