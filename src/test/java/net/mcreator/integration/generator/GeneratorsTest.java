@@ -123,9 +123,6 @@ public class GeneratorsTest {
 
 				TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
-				LOG.info("[" + generator + "] ----- Attempting to stop all Gradle daemons");
-				GradleDaemonUtils.stopAllDaemons(workspace);
-
 				LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
 				WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
 
@@ -185,6 +182,11 @@ public class GeneratorsTest {
 				// We also need to verify JSON files
 				LOG.info("[" + generator + "] ----- Verifying workspace JSON files");
 				verifyGeneratedJSON(workspace);
+
+				LOG.info("[" + generator + "] ----- Attempting to stop all Gradle daemons");
+				GradleDaemonUtils.stopAllDaemons(workspace);
+
+				workspace.close();
 			});
 		});
 	}
