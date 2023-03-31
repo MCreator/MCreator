@@ -305,7 +305,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ComponentUtils.deriveFont(igniterName, 16);
 
 		enablePortal.addActionListener(e -> updatePortalElements());
-		enableIgniter.addActionListener(e -> updatePortalElements());
+		enableIgniter.addActionListener(e -> updateIgniterElements());
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 8, 8));
 		events.add(whenPortaTriggerlUsed);
@@ -352,13 +352,18 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setEnabled(enablePortal.isSelected());
 		portalSound.setEnabled(enablePortal.isSelected());
 		luminance.setEnabled(enablePortal.isSelected());
-		igniterName.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
-		igniterTab.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
-		texture.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
-		portalMakeCondition.setEnabled(enablePortal.isSelected() && enableIgniter.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
 		enableIgniter.setEnabled(enablePortal.isSelected());
+		enableIgniter.setSelected(enablePortal.isSelected());
+		updateIgniterElements();
+	}
+
+	private void updateIgniterElements() {
+		igniterName.setEnabled(enableIgniter.isSelected());
+		igniterTab.setEnabled(enableIgniter.isSelected());
+		texture.setEnabled(enableIgniter.isSelected());
+		portalMakeCondition.setEnabled(enableIgniter.isSelected());
 	}
 
 	@Override public void reloadDataLists() {

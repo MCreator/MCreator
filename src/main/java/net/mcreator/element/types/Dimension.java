@@ -90,10 +90,6 @@ import java.util.List;
 		this.sleepResult = "ALLOW";
 	}
 
-	public boolean newDimensionIgniter() {
-		return enablePortal && enableIgniter;
-	}
-
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
 				getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
