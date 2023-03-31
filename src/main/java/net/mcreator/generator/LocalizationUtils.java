@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.io.FileIO;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.Tuple;
 import net.mcreator.workspace.Workspace;
 
@@ -99,17 +100,25 @@ public class LocalizationUtils {
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
-								GeneratorTokens.replaceTokens(generator.getWorkspace(),
-										keytpl.replace("@NAME", element.getModElement().getName()).replace("@modid",
-														generator.getWorkspace().getWorkspaceSettings().getModID())
-												.replace("@registryname", element.getModElement().getRegistryName())));
+								GeneratorTokens.replaceTokens(generator.getWorkspace(), keytpl
+												//@formatter:off
+												.replace("@NAME", element.getModElement().getName())
+												.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
+												.replace("@registryname", element.getModElement().getRegistryName())
+												.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
+												//@formatter:on
+								));
 						keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, entry));
 					}
 				} else {
-					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
-							keytpl.replace("@NAME", element.getModElement().getName())
+					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(), keytpl
+									//@formatter:off
+									.replace("@NAME", element.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-									.replace("@registryname", element.getModElement().getRegistryName()));
+									.replace("@registryname", element.getModElement().getRegistryName())
+									.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
+									//@formatter:on
+					);
 					keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, element));
 				}
 			}
