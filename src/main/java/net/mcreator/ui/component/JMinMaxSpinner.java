@@ -56,25 +56,23 @@ public class JMinMaxSpinner extends JPanel {
 		setOpaque(false);
 
 		min.addChangeListener(e -> {
-			Number minVal = ((SpinnerNumberModel) min.getModel()).getNumber();
-			Number maxVal = ((SpinnerNumberModel) max.getModel()).getNumber();
+			Number minVal = getMinNumber(), maxVal = getMaxNumber();
 			if (minVal.doubleValue() >= maxVal.doubleValue()) {
 				max.setValue(minVal); // update maximum to not be lower than minimum
 				if (!allowEqualValues) {
 					max.setValue(max.getNextValue()); // update maximum to be higher than minimum
-					if (((SpinnerNumberModel) max.getModel()).getNumber().doubleValue() == maxVal.doubleValue())
+					if (getMaxNumber().doubleValue() == maxVal.doubleValue())
 						min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
 				}
 			}
 		});
 		max.addChangeListener(e -> {
-			Number minVal = ((SpinnerNumberModel) min.getModel()).getNumber();
-			Number maxVal = ((SpinnerNumberModel) max.getModel()).getNumber();
+			Number minVal = getMinNumber(), maxVal = getMaxNumber();
 			if (maxVal.doubleValue() <= minVal.doubleValue()) {
 				min.setValue(maxVal); // update minimum to not be higher than maximum
 				if (!allowEqualValues) {
 					min.setValue(min.getPreviousValue()); // update minimum to be lower than maximum
-					if (((SpinnerNumberModel) min.getModel()).getNumber().doubleValue() == minVal.doubleValue())
+					if (getMinNumber().doubleValue() == minVal.doubleValue())
 						max.setValue(max.getNextValue()); // if fails, cancel maximum value update
 				}
 			}
@@ -94,6 +92,14 @@ public class JMinMaxSpinner extends JPanel {
 		max.addChangeListener(listener);
 	}
 
+	private Number getMinNumber() {
+		return ((SpinnerNumberModel) min.getModel()).getNumber();
+	}
+
+	private Number getMaxNumber() {
+		return ((SpinnerNumberModel) max.getModel()).getNumber();
+	}
+
 	public double getMinValue() {
 		return (double) min.getValue();
 	}
@@ -103,11 +109,11 @@ public class JMinMaxSpinner extends JPanel {
 	}
 
 	public int getIntMinValue() {
-		return (int) min.getValue();
+		return getMinNumber().intValue();
 	}
 
 	public int getIntMaxValue() {
-		return (int) max.getValue();
+		return getMaxNumber().intValue();
 	}
 
 	public void setMinValue(double val) {
