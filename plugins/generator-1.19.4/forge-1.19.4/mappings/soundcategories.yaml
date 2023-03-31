@@ -1,6 +1,15 @@
 _default:
   - NEUTRAL
   - neutral
+ambient:
+  - AMBIENT
+  - ambient
+block:
+  - BLOCKS
+  - block
+hostile:
+  - HOSTILE
+  - hostile
 neutral:
   - NEUTRAL
   - neutral
@@ -10,24 +19,15 @@ master:
 music:
   - MUSIC
   - music
-record:
-  - RECORDS
-  - record
-weather:
-  - WEATHER
-  - weather
-block:
-  - BLOCKS
-  - block
-hostile:
-  - HOSTILE
-  - hostile
 player:
   - PLAYERS
   - player
-ambient:
-  - AMBIENT
-  - ambient
+record:
+  - RECORDS
+  - record
 voice:
   - VOICE
   - voice
+weather:
+  - WEATHER
+  - weather
