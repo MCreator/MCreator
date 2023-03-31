@@ -193,7 +193,7 @@ public class TestWorkspaceDataProvider {
 				if (scope != VariableType.Scope.LOCAL) {
 					VariableElement variable = new VariableElement();
 					variable.setName("blockstate" + (idx++));
-					variable.setValue("UP");
+					variable.setValue("Blocks.AIR");
 					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
 					variable.setScope(scope);
 					workspace.addVariableElement(variable);
@@ -1512,6 +1512,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
 			painting.texture = "test.png";
+			painting.title = modElement.getName();
+			painting.author = modElement.getName() + " author";
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
