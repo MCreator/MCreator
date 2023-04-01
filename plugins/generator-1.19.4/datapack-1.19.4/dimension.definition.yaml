@@ -1,0 +1,19 @@
+templates:
+  - template: dimension/dimension_type.json.ftl
+    writer: json
+    name: "@MODDATAROOT/dimension_type/@registryname.json"
+  - template: dimension/dimension_overworld.json.ftl
+    writer: json
+    condition: "worldGenType %= Normal world gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/dimension_nether.json.ftl
+    writer: json
+    condition: "worldGenType %= Nether like gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/dimension_end.json.ftl
+    writer: json
+    condition: "worldGenType %= End like gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+
+field_inclusions: [mainFillerBlock, fluidBlock, biomesInDimension, imitateOverworldBehaviour, canRespawnHere,
+                   hasFog, isDark, doesWaterVaporize, sleepResult, hasSkyLight, imitateOverworldBehaviour, worldGenType]
