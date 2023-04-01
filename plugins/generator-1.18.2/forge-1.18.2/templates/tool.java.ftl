@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-<#include "itemlists.java.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
 
@@ -66,7 +65,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				}
 
    				public Ingredient getRepairIngredient() {
-					return <@ingredientBasedItemList data.repairItems/>;
+					return ${mappedMCItemsToIngredient(data.repairItems)};
 				}
 			},
 
@@ -168,13 +167,17 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		return <@blockListBasedOnDirectChecks data.blocksAffected "blockstate"/> ? ${data.efficiency}f : 1;
+    	return List.of(
+			<#list data.blocksAffected as restrictionBlock>
+			${mappedBlockToBlock(restrictionBlock)}<#sep>,
+			</#list>
+		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
 
 	<@onEntityHitWith data.onEntityHitWith, true/>
-
+	
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	@Override public int getEnchantmentValue() {
@@ -209,9 +212,13 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairItem) {
-			return <@itemListBasedOnDirectChecks data.repairItems "repairItem"/>;
-		}
+	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		return List.of(
+			<#list data.repairItems as repairItem>
+				${mappedMCItemToItem(repairItem)}<#sep>,
+				</#list>
+		).contains(repairitem.getItem());
+	}
 	</#if>
 
 	@Override public int getEnchantmentValue() {
@@ -221,7 +228,7 @@ public class ${name}Item extends FishingRodItem {
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool/>
 
 	<@onEntityHitWith data.onEntityHitWith/>
-
+    
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		ItemStack itemstack = entity.getItemInHand(hand);
 		if (entity.fishing != null) {
@@ -255,7 +262,7 @@ public class ${name}Item extends FishingRodItem {
 			entity.awardStat(Stats.ITEM_USED.get(this));
 			world.gameEvent(entity, GameEvent.FISHING_ROD_CAST, entity);
 		}
-
+		
 		<#if hasProcedure(data.onRightClickedInAir)>
 			<@procedureCode data.onRightClickedInAir, {
 				"x": "entity.getX()",

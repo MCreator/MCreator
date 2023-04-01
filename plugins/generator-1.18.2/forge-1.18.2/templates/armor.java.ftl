@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-<#include "itemlists.java.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
 
@@ -63,7 +62,7 @@ public abstract class ${name}Item extends ArmorItem {
 			}
 
 			@Override public Ingredient getRepairIngredient() {
-				return <@ingredientBasedItemList data.repairItems/>;
+				return ${mappedMCItemsToIngredient(data.repairItems)};
 			}
 
 			@Override public String getName() {

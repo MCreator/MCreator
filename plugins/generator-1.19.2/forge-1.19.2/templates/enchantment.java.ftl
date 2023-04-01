@@ -30,11 +30,9 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-<#include "itemlists.java.ftl">
 
 package ${package}.enchantment;
 
-<#compress>
 public class ${name}Enchantment extends Enchantment {
 
 	public ${name}Enchantment(EquipmentSlot... slots) {
@@ -61,14 +59,16 @@ public class ${name}Enchantment extends Enchantment {
 
 	<#if data.compatibleEnchantments?has_content>
 		@Override protected boolean checkCompatibility(Enchantment ench) {
-			return <#if data.excludeEnchantments>!</#if>List.of(
-				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
+		    return <#if data.excludeEnchantments>this != ench && !</#if>List.of(
+                <#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
 		}
 	</#if>
 
 	<#if data.compatibleItems?has_content>
-		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
-		    return <@itemListBasedOnDirectChecks data.compatibleItems "itemstack" data.excludeItems/>;
+		@Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+			Item item = stack.getItem();
+			return <#if data.excludeItems>!</#if>List.of(
+                <#list data.compatibleItems as compatibleItem>${mappedMCItemToItem(compatibleItem)}<#sep>,</#list>).contains(item);
 		}
 	</#if>
 
@@ -102,5 +102,4 @@ public class ${name}Enchantment extends Enchantment {
 		}
 	</#if>
 }
-</#compress>
 <#-- @formatter:on -->

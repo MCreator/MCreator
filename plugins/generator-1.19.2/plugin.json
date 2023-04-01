@@ -1,7 +1,7 @@
 {
   "id": "generator-1.19.2",
-  "minversion": 202200200000,
+  "minversion": 202300100000,
   "info": {
-    "name": "Minecraft Forge 1.19.2 generator"
+    "name": "Minecraft 1.19.2 Java Edition generator"
   }
 }
