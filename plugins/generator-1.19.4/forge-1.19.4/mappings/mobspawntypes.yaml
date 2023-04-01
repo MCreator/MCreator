@@ -1,9 +1,9 @@
 _default: MobCategory.MONSTER
+monster: MobCategory.MONSTER
+creature: MobCategory.CREATURE
 ambient: MobCategory.AMBIENT
 axolotls: MobCategory.AXOLOTLS
-creature: MobCategory.CREATURE
-misc: MobCategory.MISC
-monster: MobCategory.MONSTER
 undergroundWaterCreature: MobCategory.UNDERGROUND_WATER_CREATURE
-waterAmbient: MobCategory.WATER_AMBIENT
 waterCreature: MobCategory.WATER_CREATURE
+waterAmbient: MobCategory.WATER_AMBIENT
+misc: MobCategory.MISC
