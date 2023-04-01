@@ -57,6 +57,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 				editor.mcreator, textField,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		labelText.refreshList();
+		labelText.addProcedureCreatedListener(e -> setVisible(false));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,

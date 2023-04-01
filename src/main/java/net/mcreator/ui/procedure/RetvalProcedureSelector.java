@@ -161,6 +161,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 						refreshList();
 						setSelectedProcedure(modName);
 					});
+					procedureCreatedListeners.forEach(l -> l.actionPerformed(e));
 				}
 			}
 		});

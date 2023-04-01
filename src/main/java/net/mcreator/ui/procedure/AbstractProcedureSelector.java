@@ -38,6 +38,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.*;
 
@@ -53,6 +54,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	protected final JButton edit = new JButton(UIRES.get("18px.edit"));
 	protected final JButton add = new JButton(UIRES.get("18px.add"));
+	protected final List<ActionListener> procedureCreatedListeners = new ArrayList<>();
 
 	protected CBoxEntry oldItem;
 
@@ -197,6 +199,10 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	public void setSelectedProcedure(Procedure procedure) {
 		if (procedure != null)
 			procedures.setSelectedItem(new CBoxEntry(procedure.getName(), null));
+	}
+
+	public void addProcedureCreatedListener(ActionListener listener) {
+		procedureCreatedListeners.add(listener);
 	}
 
 	public AbstractProcedureSelector makeReturnValueOptional() {
