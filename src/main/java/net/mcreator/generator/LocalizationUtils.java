@@ -28,6 +28,7 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -130,9 +131,22 @@ public class LocalizationUtils {
 	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
 			String mapto = (String) template.get("mapto");
-			String value = (String) (mapto.contains("()") ?
-					entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
-					entry.getClass().getField(mapto.trim()).get(entry));
+			String value;
+			if (mapto.matches("^\\w+\\(.*\\)$")) {
+				// Get method name and arguments from mapto string
+				int argStartIndex = mapto.indexOf("(");
+				String methodName = mapto.substring(0, argStartIndex);
+				String[] arguments = mapto.substring(argStartIndex + 1, mapto.length() - 1).split(",");
+
+				// Get method from reflection
+				Method method = entry.getClass().getMethod(methodName, String[].class);
+
+				// Invoke method with arguments
+				value = (String) method.invoke(entry, (Object) arguments);
+			} else {
+				// Get field value using reflection
+				value = (String) entry.getClass().getField(mapto.trim()).get(entry);
+			}
 
 			String suffix = (String) template.get("suffix");
 			if (suffix != null)
