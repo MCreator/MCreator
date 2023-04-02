@@ -1,0 +1,12 @@
+global_templates:
+  - template: elementinits/bannerpatterns.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerPatterns.java"
+  - template: json/item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: title
+  - key: item.@modid.@registryname.desc
+    mapto: description

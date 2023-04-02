@@ -61,6 +61,10 @@ public class ${JavaModName}Items {
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
                 REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
             </#if>
+        <#elseif item.getModElement().getTypeString() == "bannerpattern">
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new BannerPatternItem(${JavaModName}BannerPatterns.${item.getModElement().getRegistryNameUpper()},
+                    new Item.Properties().stacksTo(1).tab(${item.creativeTab})));
         <#elseif item.getModElement().getTypeString() == "dimension">
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
                 REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
