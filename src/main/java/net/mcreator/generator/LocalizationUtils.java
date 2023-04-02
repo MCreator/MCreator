@@ -138,11 +138,15 @@ public class LocalizationUtils {
 				String methodName = mapto.substring(0, argStartIndex);
 				String[] arguments = mapto.substring(argStartIndex + 1, mapto.length() - 1).split(",");
 
-				// Get method from reflection
-				Method method = entry.getClass().getMethod(methodName, String[].class);
-
-				// Invoke method with arguments
-				value = (String) method.invoke(entry, (Object) arguments);
+				// Get and invoke method from reflection
+				Method method;
+				if (arguments.length > 0) {
+					method = entry.getClass().getMethod(methodName, String[].class);
+					value = (String) method.invoke(entry, (Object) arguments);
+				} else {
+					method = entry.getClass().getMethod(methodName);
+					value = (String) method.invoke(entry);
+				}
 			} else {
 				// Get field value using reflection
 				value = (String) entry.getClass().getField(mapto.trim()).get(entry);
