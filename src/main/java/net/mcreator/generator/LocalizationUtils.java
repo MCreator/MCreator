@@ -28,7 +28,6 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -138,9 +137,13 @@ public class LocalizationUtils {
 				String methodName = mapto.substring(0, argStartIndex);
 				String[] arguments = mapto.substring(argStartIndex + 1, mapto.length() - 1).split(",");
 
+				// Remove any empty strings from arguments array
+				arguments = Arrays.stream(arguments).map(String::trim).filter(s -> !s.isEmpty()).toArray(String[]::new);
+
 				// Get and invoke method from reflection
 				value = (String) (arguments.length > 0 ?
-						entry.getClass().getMethod(methodName.trim(), String[].class).invoke(entry, (Object) arguments) :
+						entry.getClass().getMethod(methodName.trim(), String[].class)
+								.invoke(entry, (Object) arguments) :
 						entry.getClass().getMethod(methodName.trim()).invoke(entry));
 			} else {
 				// Get field value using reflection
