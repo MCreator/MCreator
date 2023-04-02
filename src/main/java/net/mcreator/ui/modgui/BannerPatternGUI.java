@@ -82,7 +82,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		ComponentUtils.deriveFont(title, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel components = new JPanel(new GridLayout(4, 2, 10, 2));
+		JPanel components = new JPanel(new GridLayout(3, 2, 10, 10));
 		components.setOpaque(false);
 
 		components.add(HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/title"),
@@ -93,16 +93,15 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 				L10N.label("elementgui.bannerpattern.description")));
 		components.add(description);
 
-		components.add(HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/item_texture"),
-				L10N.label("elementgui.bannerpattern.item_texture")));
-		components.add(PanelUtils.centerInPanel(texture));
-
 		components.add(HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/creative_tab"),
 				L10N.label("elementgui.bannerpattern.creative_tab")));
 		components.add(creativeTab);
 
-		mainPanel.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, components, 25, 25)));
+		mainPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
+				PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2,
+						HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/item_texture"),
+								L10N.label("elementgui.bannerpattern.item_texture")),
+						PanelUtils.centerInPanel(texture)), components), 25, 25)));
 
 		bannerTexture.setValidator(new TileHolderValidator(bannerTexture));
 		shieldTexture.setValidator(new TileHolderValidator(shieldTexture));
