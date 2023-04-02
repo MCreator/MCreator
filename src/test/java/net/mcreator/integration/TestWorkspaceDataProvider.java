@@ -315,6 +315,15 @@ public class TestWorkspaceDataProvider {
 					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
 							+ "<block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>";
 			return achievement;
+		} else if (ModElementType.BANNERPATTERN.equals(modElement.getType())) {
+			BannerPattern bannerPattern = new BannerPattern(modElement);
+			bannerPattern.bannerTexture = "test.png";
+			bannerPattern.shieldTexture = "test.png";
+			bannerPattern.title = modElement.getName();
+			bannerPattern.description = modElement.getName() + " description";
+			bannerPattern.creativeTab = new TabEntry(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			return bannerPattern;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
