@@ -19,22 +19,32 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.swing.*;
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
-public class BannerPattern extends GeneratableElement {
+@SuppressWarnings("unused") public class BannerPattern extends GeneratableElement
+		implements ICommonType, ITabContainedElement, IMCItemProvider {
 
 	public String bannerTexture;
 	public String shieldTexture;
 	public String title;
 	public String description;
+	public String texture;
 	public TabEntry creativeTab;
 
 	public BannerPattern(ModElement element) {
@@ -57,5 +67,25 @@ public class BannerPattern extends GeneratableElement {
 		File newShieldTextureFileLocation = new File(vanillaTextureFolder,
 				"entity/shield/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalShieldTextureFileLocation, newShieldTextureFileLocation);
+	}
+
+	@Override public TabEntry getCreativeTab() {
+		return creativeTab;
+	}
+
+	@Override public Collection<BaseType> getBaseTypesProvided() {
+		return List.of(BaseType.ITEM);
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Banner Pattern"));
+	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Banner Pattern"));
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
 	}
 }

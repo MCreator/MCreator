@@ -47,6 +47,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 
 	private TextureHolder bannerTexture;
 	private TextureHolder shieldTexture;
+	private TextureHolder texture;
 
 	private final VTextField title = new VTextField(28);
 	private final VTextField description = new VTextField(28);
@@ -65,6 +66,8 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		bannerTexture.setOpaque(false);
 		shieldTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
 		shieldTexture.setOpaque(false);
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.centerInPanel(PanelUtils.centerAndEastElement(
 				ComponentUtils.squareAndBorder(
@@ -79,7 +82,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		ComponentUtils.deriveFont(title, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel components = new JPanel(new GridLayout(3, 2, 50, 2));
+		JPanel components = new JPanel(new GridLayout(4, 2, 10, 2));
 		components.setOpaque(false);
 
 		components.add(HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/title"),
@@ -90,6 +93,10 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 				L10N.label("elementgui.bannerpattern.description")));
 		components.add(description);
 
+		components.add(HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/item_texture"),
+				L10N.label("elementgui.bannerpattern.item_texture")));
+		components.add(PanelUtils.centerInPanel(texture));
+
 		components.add(HelpUtils.wrapWithHelpButton(this.withEntry("bannerpattern/creative_tab"),
 				L10N.label("elementgui.bannerpattern.creative_tab")));
 		components.add(creativeTab);
@@ -99,6 +106,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 
 		bannerTexture.setValidator(new TileHolderValidator(bannerTexture));
 		shieldTexture.setValidator(new TileHolderValidator(shieldTexture));
+		texture.setValidator(new TileHolderValidator(texture));
 
 		title.setValidator(new TextFieldValidator(title, L10N.t("elementgui.bannerpattern.needs_title")));
 		title.enableRealtimeValidation();
@@ -109,6 +117,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 
 		page1group.addValidationElement(bannerTexture);
 		page1group.addValidationElement(shieldTexture);
+		page1group.addValidationElement(texture);
 		page1group.addValidationElement(title);
 		page1group.addValidationElement(description);
 
@@ -137,6 +146,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 	@Override public void openInEditingMode(BannerPattern bannerPattern) {
 		bannerTexture.setTextureFromTextureName(bannerPattern.bannerTexture);
 		shieldTexture.setTextureFromTextureName(bannerPattern.shieldTexture);
+		texture.setTextureFromTextureName(bannerPattern.texture);
 		title.setText(bannerPattern.title);
 		description.setText(bannerPattern.description);
 		creativeTab.setSelectedItem(bannerPattern.creativeTab.getUnmappedValue());
@@ -146,6 +156,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		BannerPattern bannerPattern = new BannerPattern(modElement);
 		bannerPattern.bannerTexture = bannerTexture.getID();
 		bannerPattern.shieldTexture = shieldTexture.getID();
+		bannerPattern.texture = texture.getID();
 		bannerPattern.title = title.getText();
 		bannerPattern.description = description.getText();
 		bannerPattern.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());

@@ -319,6 +319,7 @@ public class TestWorkspaceDataProvider {
 			BannerPattern bannerPattern = new BannerPattern(modElement);
 			bannerPattern.bannerTexture = "test.png";
 			bannerPattern.shieldTexture = "test.png";
+			bannerPattern.texture = "test";
 			bannerPattern.title = modElement.getName();
 			bannerPattern.description = modElement.getName() + " description";
 			bannerPattern.creativeTab = new TabEntry(modElement.getWorkspace(),
