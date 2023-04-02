@@ -22,6 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.IColors;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -39,7 +40,7 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class BannerPattern extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider {
+		implements ICommonType, ITabContainedElement, IMCItemProvider, IColors {
 
 	public String bannerTexture;
 	public String shieldTexture;
@@ -50,10 +51,6 @@ import java.util.List;
 
 	public BannerPattern(ModElement element) {
 		super(element);
-	}
-
-	public String bannerDescription(String color) {
-		return L10N.t("elementgui.bannerpattern.color_" + color) + " " + description;
 	}
 
 	@Override public void finalizeModElementGeneration() {
@@ -92,5 +89,28 @@ import java.util.List;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
+	}
+
+	@Override public List<ColorEntry> colorEntries() {
+		return List.of(new BannerPattern.ColorEntry("blue", description),
+				new BannerPattern.ColorEntry("white", description), new BannerPattern.ColorEntry("orange", description),
+				new BannerPattern.ColorEntry("magenta", description),
+				new BannerPattern.ColorEntry("light_blue", description),
+				new BannerPattern.ColorEntry("yellow", description), new BannerPattern.ColorEntry("lime", description),
+				new BannerPattern.ColorEntry("pink", description), new BannerPattern.ColorEntry("gray", description),
+				new BannerPattern.ColorEntry("light_gray", description),
+				new BannerPattern.ColorEntry("cyan", description), new BannerPattern.ColorEntry("purple", description),
+				new BannerPattern.ColorEntry("brown", description), new BannerPattern.ColorEntry("green", description),
+				new BannerPattern.ColorEntry("red", description), new BannerPattern.ColorEntry("black", description));
+	}
+
+	public record ColorEntry(String color, String description) {
+		public String getColor() {
+			return color;
+		}
+
+		public String getDescription() {
+			return L10N.t("elementgui.bannerpattern.color_" + color, description);
+		}
 	}
 }
