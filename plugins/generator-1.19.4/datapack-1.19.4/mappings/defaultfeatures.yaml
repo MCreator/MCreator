@@ -1,0 +1,6 @@
+_merge_with_existing: false
+_default: Caves
+Caves: Caves
+Ores: Ores
+Lakes: Lakes
+MonsterRooms: MonsterRooms
