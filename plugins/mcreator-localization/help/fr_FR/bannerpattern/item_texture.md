@@ -1,0 +1,1 @@
+La texture de l'item de votre motif qui sera dans l'inventaire.

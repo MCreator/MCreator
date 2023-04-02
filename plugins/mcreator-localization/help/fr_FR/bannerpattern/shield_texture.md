@@ -1,0 +1,1 @@
+La texture du motif qui sera utilisée sur les Boucliers.
