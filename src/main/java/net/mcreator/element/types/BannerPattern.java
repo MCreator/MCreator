@@ -27,6 +27,7 @@ import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
@@ -49,6 +50,10 @@ import java.util.List;
 
 	public BannerPattern(ModElement element) {
 		super(element);
+	}
+
+	public String bannerDescription(String color) {
+		return L10N.t("elementgui.bannerpattern.color_" + color) + " " + description;
 	}
 
 	@Override public void finalizeModElementGeneration() {

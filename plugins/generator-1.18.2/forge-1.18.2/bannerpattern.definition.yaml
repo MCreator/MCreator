@@ -12,3 +12,35 @@ localizationkeys:
     mapto: title
   - key: item.@modid.@registryname.desc
     mapto: description
+  - key: block.minecraft.banner.@registryname.blue
+    mapto: bannerDescription("blue")
+  - key: block.minecraft.banner.@registryname.white
+    mapto: bannerDescription("white")
+  - key: block.minecraft.banner.@registryname.orange
+    mapto: bannerDescription("orange")
+  - key: block.minecraft.banner.@registryname.magenta
+    mapto: bannerDescription("magenta")
+  - key: block.minecraft.banner.@registryname.light_blue
+    mapto: bannerDescription("light_blue")
+  - key: block.minecraft.banner.@registryname.yellow
+    mapto: bannerDescription("yellow")
+  - key: block.minecraft.banner.@registryname.lime
+    mapto: bannerDescription("lime")
+  - key: block.minecraft.banner.@registryname.pink
+    mapto: bannerDescription("pink")
+  - key: block.minecraft.banner.@registryname.gray
+    mapto: bannerDescription("gray")
+  - key: block.minecraft.banner.@registryname.light_gray
+    mapto: bannerDescription("light_gray")
+  - key: block.minecraft.banner.@registryname.cyan
+    mapto: bannerDescription("cyan")
+  - key: block.minecraft.banner.@registryname.purple
+    mapto: bannerDescription("purple")
+  - key: block.minecraft.banner.@registryname.brown
+    mapto: bannerDescription("brown")
+  - key: block.minecraft.banner.@registryname.green
+    mapto: bannerDescription("green")
+  - key: block.minecraft.banner.@registryname.red
+    mapto: bannerDescription("red")
+  - key: block.minecraft.banner.@registryname.black
+    mapto: bannerDescription("black")
