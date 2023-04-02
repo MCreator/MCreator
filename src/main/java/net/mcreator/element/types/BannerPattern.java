@@ -21,7 +21,13 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.io.FileIO;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+
+import java.io.File;
 
 public class BannerPattern extends GeneratableElement {
 
@@ -33,8 +39,23 @@ public class BannerPattern extends GeneratableElement {
 
 	public BannerPattern(ModElement element) {
 		super(element);
+	}
 
-		// DEFAULT VALUE
-		this.title = "Banner Pattern";
+	@Override public void finalizeModElementGeneration() {
+		Workspace workspace = getModElement().getWorkspace();
+		String workspaceRoot = workspace.getWorkspaceFolder().getAbsolutePath();
+		File vanillaTextureFolder = new File(workspaceRoot, "src/main/resources/assets/minecraft/textures");
+
+		File originalBannerTextureFileLocation = getModElement().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(bannerTexture), TextureType.OTHER);
+		File newBannerTextureFileLocation = new File(vanillaTextureFolder,
+				"entity/banner/" + getModElement().getRegistryName() + ".png");
+		FileIO.copyFile(originalBannerTextureFileLocation, newBannerTextureFileLocation);
+
+		File originalShieldTextureFileLocation = getModElement().getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(shieldTexture), TextureType.OTHER);
+		File newShieldTextureFileLocation = new File(vanillaTextureFolder,
+				"entity/shield/" + getModElement().getRegistryName() + ".png");
+		FileIO.copyFile(originalShieldTextureFileLocation, newShieldTextureFileLocation);
 	}
 }

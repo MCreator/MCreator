@@ -117,6 +117,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(
 					modElement.getName());
+			title.setText(L10N.t("elementgui.bannerpattern.default_name"));
 			description.setText(readableNameFromModElement);
 		}
 	}
