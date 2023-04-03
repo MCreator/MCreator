@@ -13,5 +13,5 @@ localizationkeys:
   - key: item.@modid.@registryname.desc
     mapto: description
   - fromlist: data.getColorEntries()
-    key: block.minecraft.banner.@registryname.@[getColor()]
+    key: block.minecraft.banner.@registryname.@[color()]
     mapto: getDescription()

@@ -28,7 +28,6 @@ import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
@@ -91,26 +90,7 @@ import java.util.List;
 		return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
 	}
 
-	@Override public List<ColorEntry> colorEntries() {
-		return List.of(new BannerPattern.ColorEntry("blue", description),
-				new BannerPattern.ColorEntry("white", description), new BannerPattern.ColorEntry("orange", description),
-				new BannerPattern.ColorEntry("magenta", description),
-				new BannerPattern.ColorEntry("light_blue", description),
-				new BannerPattern.ColorEntry("yellow", description), new BannerPattern.ColorEntry("lime", description),
-				new BannerPattern.ColorEntry("pink", description), new BannerPattern.ColorEntry("gray", description),
-				new BannerPattern.ColorEntry("light_gray", description),
-				new BannerPattern.ColorEntry("cyan", description), new BannerPattern.ColorEntry("purple", description),
-				new BannerPattern.ColorEntry("brown", description), new BannerPattern.ColorEntry("green", description),
-				new BannerPattern.ColorEntry("red", description), new BannerPattern.ColorEntry("black", description));
-	}
-
-	public record ColorEntry(String color, String description) {
-		public String getColor() {
-			return color;
-		}
-
-		public String getDescription() {
-			return L10N.t("elementgui.bannerpattern.color_" + color, description);
-		}
+	public Collection<ColorEntry> getColorEntries() {
+		return colorEntries(description, "elementgui.bannerpattern.color_");
 	}
 }

@@ -19,16 +19,26 @@
 
 package net.mcreator.element.types.interfaces;
 
-import net.mcreator.element.types.BannerPattern;
+import net.mcreator.ui.init.L10N;
 
-import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public interface IColors {
 
-	List<BannerPattern.ColorEntry> colorEntries();
+	default List<ColorEntry> colorEntries(String description, String key) {
+		return List.of(new ColorEntry("blue", description, key), new ColorEntry("white", description, key),
+				new ColorEntry("orange", description, key), new ColorEntry("magenta", description, key),
+				new ColorEntry("light_blue", description, key), new ColorEntry("yellow", description, key),
+				new ColorEntry("lime", description, key), new ColorEntry("pink", description, key),
+				new ColorEntry("gray", description, key), new ColorEntry("light_gray", description, key),
+				new ColorEntry("cyan", description, key), new ColorEntry("purple", description, key),
+				new ColorEntry("brown", description, key), new ColorEntry("green", description, key),
+				new ColorEntry("red", description, key), new ColorEntry("black", description, key));
+	}
 
-	default Collection<BannerPattern.ColorEntry> getColorEntries() {
-		return colorEntries();
+	record ColorEntry(String color, String description, String key) {
+		public String getDescription() {
+			return L10N.t(key + color, description);
+		}
 	}
 }
