@@ -72,7 +72,7 @@ public class ${JavaModName}Blocks {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
 					<#if block.tintType != "No tint">
-						 ${block.getModElement().getName()}Block.blockColorLoad(event);
+						${block.getModElement().getName()}Block.blockColorLoad(event);
 					</#if>
 				</#if>
 			</#list>
@@ -84,7 +84,7 @@ public class ${JavaModName}Blocks {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
 					<#if block.tintType != "No tint" && block.isItemTinted>
-						 ${block.getModElement().getName()}Block.itemColorLoad(event);
+						${block.getModElement().getName()}Block.itemColorLoad(event);
 					</#if>
 				</#if>
 			</#list>
