@@ -197,7 +197,6 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							refreshList();
 							setSelectedProcedure(modName);
 						});
-						procedureCreatedListeners.forEach(l -> l.actionPerformed(e));
 					}
 				}
 			});
