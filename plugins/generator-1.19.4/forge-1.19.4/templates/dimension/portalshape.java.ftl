@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,48 +29,23 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 
-package ${package}.world.features.ores;
+package ${package}.world.teleporter;
 
-public class ${name}Feature extends OreFeature {
+import javax.annotation.Nullable;
 
-	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
-				Level.OVERWORLD
-			<#elseif worldType == "Nether">
-				Level.NETHER
-			<#elseif worldType == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registries.DIMENSION,
-						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-
-	public ${name}Feature() {
-		super(OreConfiguration.CODEC);
-	}
-
-	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
-		WorldGenLevel world = context.level();
-		if (!generate_dimensions.contains(world.getLevel().dimension()))
-			return false;
-
-		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
-			return false;
-		</#if>
-
-		return super.place(context);
-	}
-
-}
+public class ${name}PortalShape ${mcc.getClassBody("net.minecraft.world.level.portal.PortalShape")
+        .replace("class PortalShape", "class " + name + "PortalShape")
+        .replace("public PortalShape", "public " + name + "PortalShape")
+        .replace("new PortalShape(", "new " + name + "PortalShape(")
+        .replace("Optional<PortalShape>", "Optional<" + name + "PortalShape>")
+        .replace("Predicate<PortalShape>", "Predicate<" + name + "PortalShape>")
+        .replace("blockstate, 18);", "blockstate, 18);\nif (this.level instanceof ServerLevel) ((ServerLevel) this.level).getPoiManager().add(p_77725_, " + name + "Teleporter.poi);")
+        .replace("blockstate.is(Blocks.NETHER_PORTAL)", "blockstate.getBlock() == " + JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+        .replace("p_77718_.is(BlockTags.FIRE) || p_77718_.is(Blocks.NETHER_PORTAL)", "p_77718_.getBlock() == " + JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
+        .replace("Blocks.NETHER_PORTAL.defaultBlockState()", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get().defaultBlockState()")
+        .replace("return p_77720_.isPortalFrame(p_77721_, p_77722_);", "return p_77720_.getBlock() ==" + mappedBlockToBlock(data.portalFrame) + ";")}
 
 <#-- @formatter:on -->
+

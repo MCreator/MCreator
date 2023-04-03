@@ -30,53 +30,47 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-<#include "../mcitems.ftl">
 
-package ${package}.world.features;
+package ${package}.item;
 
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+public class ${name}Item extends Item {
 
-<#assign configuration = generator.map(featuretype, "features", 1)>
+	public ${name}Item() {
+		super(new Item.Properties().durability(64));
+	}
 
-<#compress>
-public class ${name}Feature extends ${generator.map(featuretype, "features")} {
-	<#if data.restrictionDimensions?has_content>
-	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
-		<#list data.restrictionDimensions as dimension>
-			<#if dimension == "Surface">
-				Level.OVERWORLD
-			<#elseif dimension == "Nether">
-				Level.NETHER
-			<#elseif dimension == "End">
-				Level.END
+	@Override public InteractionResult useOn(UseOnContext context) {
+		Player entity = context.getPlayer();
+		BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
+		ItemStack itemstack = context.getItemInHand();
+		Level world = context.getLevel();
+		if (!entity.mayUseItemAt(pos, context.getClickedFace(), itemstack)) {
+			return InteractionResult.FAIL;
+		} else {
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			boolean success = false;
+
+			if (world.isEmptyBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
+				${name}PortalBlock.portalSpawn(world, pos);
+				itemstack.hurtAndBreak(1, entity, c -> c.broadcastBreakEvent(context.getHand()));
+				success = true;
+			}
+
+			<#if hasProcedure(data.whenPortaTriggerlUsed)>
+				<#if hasReturnValueOf(data.whenPortaTriggerlUsed, "actionresulttype")>
+					InteractionResult result = <@procedureOBJToInteractionResultCode data.whenPortaTriggerlUsed/>;
+					return success ? InteractionResult.SUCCESS : result;
+				<#else>
+					<@procedureOBJToCode data.whenPortaTriggerlUsed/>
+					return InteractionResult.SUCCESS;
+				</#if>
 			<#else>
-				ResourceKey.create(Registries.DIMENSION,
-						new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-	</#if>
-
-	public ${name}Feature() {
-		super(${configuration}.CODEC);
+				return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+			</#if>
+		}
 	}
+}
 
-	public boolean place(FeaturePlaceContext<${configuration}> context) {
-		WorldGenLevel world = context.level();
-		<#if data.restrictionDimensions?has_content>
-		if (!generateDimensions.contains(world.getLevel().dimension()))
-			return false;
-		</#if>
-
-		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
-			return false;
-		</#if>
-
-		return super.place(context);
-	}
-}</#compress>
+<#-- @formatter:on -->
