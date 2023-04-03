@@ -151,16 +151,16 @@ public class ${name}Block extends
 		<#if data.blockBase?has_content && data.blockBase == "Stairs">
 			super(() -> Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if data.material.getUnmappedValue() == "WOOD">
-		        super(Sensitivity.EVERYTHING, <@blockProperties/>, BlockSetType.OAK);
-		    <#else>
-		        super(Sensitivity.MOBS, <@blockProperties/>, BlockSetType.IRON);
-		    </#if>
+			<#if data.material.getUnmappedValue() == "WOOD">
+				super(Sensitivity.EVERYTHING, <@blockProperties/>, BlockSetType.OAK);
+			<#else>
+				super(Sensitivity.MOBS, <@blockProperties/>, BlockSetType.IRON);
+			</#if>
 		<#elseif data.blockBase?has_content && data.blockBase == "Button">
 			<#if data.material.getUnmappedValue() == "WOOD">
-		        super(<@blockProperties/>, BlockSetType.OAK, 30, true);
+				super(<@blockProperties/>, BlockSetType.OAK, 30, true);
 			<#else>
-		        super(<@blockProperties/>, BlockSetType.STONE, 20, false);
+				super(<@blockProperties/>, BlockSetType.STONE, 20, false);
 			</#if>
 		<#elseif data.blockBase?has_content && (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
 			<#if data.material.getUnmappedValue() == "IRON">
@@ -176,41 +176,50 @@ public class ${name}Block extends
 			super(<@blockProperties/>);
 		</#if>
 
-	    <#if data.rotationMode != 0 || data.isWaterloggable>
-	    this.registerDefaultState(this.stateDefinition.any()
-	    	<#if data.rotationMode == 1 || data.rotationMode == 3>
-	    	.setValue(FACING, Direction.NORTH)
-	    	    <#if data.enablePitch>
-	    	    .setValue(FACE, AttachFace.WALL)
-	    	    </#if>
-	    	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
-	    	.setValue(FACING, Direction.NORTH)
-	    	<#elseif data.rotationMode == 5>
-	    	.setValue(AXIS, Direction.Axis.Y)
-	    	</#if>
-	    	<#if data.isWaterloggable>
-	    	.setValue(WATERLOGGED, false)
-	    	</#if>
-	    );
+		<#if data.rotationMode != 0 || data.isWaterloggable>
+		this.registerDefaultState(this.stateDefinition.any()
+			<#if data.rotationMode == 1 || data.rotationMode == 3>
+			.setValue(FACING, Direction.NORTH)
+				<#if data.enablePitch>
+				.setValue(FACE, AttachFace.WALL)
+				</#if>
+			<#elseif data.rotationMode == 2 || data.rotationMode == 4>
+			.setValue(FACING, Direction.NORTH)
+			<#elseif data.rotationMode == 5>
+			.setValue(AXIS, Direction.Axis.Y)
+			</#if>
+			<#if data.isWaterloggable>
+			.setValue(WATERLOGGED, false)
+			</#if>
+		);
 		</#if>
 	}
 
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">
-   	@Override public float getExplosionResistance() {
+	@Override public float getExplosionResistance() {
 		return ${data.resistance}f;
-   	}
+	}
 
-   	@Override public boolean isRandomlyTicking(BlockState state) {
+	@Override public boolean isRandomlyTicking(BlockState state) {
 		return ${data.tickRandomly?c};
-   	}
+	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-	    </#list>
+	<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
+	@Override public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, blockGetter, list, flag);
+		<#if hasProcedure(data.specialInformation)>
+			Entity entity = itemstack.getEntityRepresentation();
+			Level world = (Level) blockGetter;
+			double x = entity != null ? entity.getX() : 0.0;
+			double y = entity != null ? entity.getY() : 0.0;
+			double z = entity != null ? entity.getZ() : 0.0;
+			list.add(Component.literal(<@procedureOBJToStringCode data.specialInformation/>));
+		<#else>
+			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedValue()) as entry>
+				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		</#if>
 	}
 	</#if>
 
@@ -286,9 +295,9 @@ public class ${name}Block extends
 		<#if data.rotationMode != 3>
 		return this.defaultBlockState()
 			<#if data.rotationMode == 1>
-			    <#if data.enablePitch>
-			    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
-			    </#if>
+				<#if data.enablePitch>
+				.setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
+				</#if>
 			.setValue(FACING, context.getHorizontalDirection().getOpposite())
 			<#elseif data.rotationMode == 2>
 			.setValue(FACING, context.getNearestLookingDirection().getOpposite())
@@ -301,26 +310,26 @@ public class ${name}Block extends
 			.setValue(WATERLOGGED, flag)
 			</#if>;
 		<#elseif data.rotationMode == 3>
-	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
-	        return this.defaultBlockState()
-	    		<#if data.enablePitch>
-	    		    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
-	    		    .setValue(FACING, context.getHorizontalDirection())
-	    		<#else>
-	    		    .setValue(FACING, Direction.NORTH)
-	    		</#if>
-	    		<#if data.isWaterloggable>
-	    		.setValue(WATERLOGGED, flag)
-	    		</#if>;
+		if (context.getClickedFace().getAxis() == Direction.Axis.Y)
+			return this.defaultBlockState()
+				<#if data.enablePitch>
+					.setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+					.setValue(FACING, context.getHorizontalDirection())
+				<#else>
+					.setValue(FACING, Direction.NORTH)
+				</#if>
+				<#if data.isWaterloggable>
+				.setValue(WATERLOGGED, flag)
+				</#if>;
 
-	    return this.defaultBlockState()
-	    	<#if data.enablePitch>
-	    	    .setValue(FACE, AttachFace.WALL)
-	    	</#if>
-	    	.setValue(FACING, context.getClickedFace())
-	    	<#if data.isWaterloggable>
-	    	.setValue(WATERLOGGED, flag)
-	    	</#if>;
+		return this.defaultBlockState()
+			<#if data.enablePitch>
+				.setValue(FACE, AttachFace.WALL)
+			</#if>
+			.setValue(FACING, context.getClickedFace())
+			<#if data.isWaterloggable>
+			.setValue(WATERLOGGED, flag)
+			</#if>;
 		</#if>
 	}
 	</#if>
@@ -371,13 +380,13 @@ public class ${name}Block extends
 
 	<#if data.isWaterloggable>
 	@Override public FluidState getFluidState(BlockState state) {
-	    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 	</#if>
 
 	<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 	@Override public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-	    <#if data.isWaterloggable>
+		<#if data.isWaterloggable>
 		if (state.getValue(WATERLOGGED)) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -625,17 +634,17 @@ public class ${name}Block extends
 		}
 
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		    return new ${name}BlockEntity(pos, state);
+			return new ${name}BlockEntity(pos, state);
 		}
 
-	    @Override
+		@Override
 		public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
 			super.triggerEvent(state, world, pos, eventID, eventParam);
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
 		}
 
-	    <#if data.inventoryDropWhenDestroyed>
+		<#if data.inventoryDropWhenDestroyed>
 		@Override public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
 			if (state.getBlock() != newState.getBlock()) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -647,21 +656,21 @@ public class ${name}Block extends
 				super.onRemove(state, world, pos, newState, isMoving);
 			}
 		}
-	    </#if>
+		</#if>
 
-	    <#if data.inventoryComparatorPower>
-	    @Override public boolean hasAnalogOutputSignal(BlockState state) {
+		<#if data.inventoryComparatorPower>
+		@Override public boolean hasAnalogOutputSignal(BlockState state) {
 			return true;
 		}
 
-	    @Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
+		@Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
 			BlockEntity tileentity = world.getBlockEntity(pos);
 			if (tileentity instanceof ${name}BlockEntity be)
 				return AbstractContainerMenu.getRedstoneSignalFromContainer(be);
 			else
 				return 0;
 		}
-	    </#if>
+		</#if>
 	</#if>
 
 	<#if data.tintType != "No tint">
