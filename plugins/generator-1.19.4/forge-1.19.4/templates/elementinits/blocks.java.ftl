@@ -36,6 +36,26 @@
 
 package ${package}.init;
 
+<#assign hasTintedBlocks = false>
+<#assign hasTintedBlockItems = false>
+<#list blocks as block>
+	<#if block.getModElement().getTypeString() == "block">
+		<#if block.tintType != "No tint">
+			<#assign hasTintedBlocks = true>
+			<#if block.isItemTinted>
+				<#assign hasTintedBlockItems = true>
+			</#if>
+		</#if>
+	<#elseif block.getModElement().getTypeString() == "plant">
+		<#if block.tintType != "No tint">
+			<#assign hasTintedBlocks = true>
+			<#if block.isItemTinted>
+				<#assign hasTintedBlockItems = true>
+			</#if>
+		</#if>
+	</#if>
+</#list>
+
 public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
@@ -44,6 +64,34 @@ public class ${JavaModName}Blocks {
 		public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
 			REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
 	</#list>
+
+	<#if hasTintedBlocks || hasTintedBlockItems>
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+		<#if hasTintedBlocks>
+		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
+			<#list blocks as block>
+				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
+					<#if block.tintType != "No tint">
+						 ${block.getModElement().getName()}Block.blockColorLoad(event);
+					</#if>
+				</#if>
+			</#list>
+		}
+		</#if>
+
+		<#if hasTintedBlockItems>
+		@SubscribeEvent public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
+			<#list blocks as block>
+				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
+					<#if block.tintType != "No tint" && block.isItemTinted>
+						 ${block.getModElement().getName()}Block.itemColorLoad(event);
+					</#if>
+				</#if>
+			</#list>
+		}
+		</#if>
+	}
+	</#if>
 
 }
 
