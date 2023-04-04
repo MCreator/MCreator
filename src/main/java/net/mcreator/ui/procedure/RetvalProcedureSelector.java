@@ -71,8 +71,6 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			}
 		});
 
-		setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-
 		setOpaque(true);
 		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -128,6 +126,8 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 				Objects.requireNonNullElse(fixedValue, new JEmptyBox(1, 1)));
 
 		if (allowInlineEditor) {
+			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+
 			add.setContentAreaFilled(false);
 			add.setOpaque(false);
 			add.setMargin(new Insets(0, 0, 0, 0));
@@ -188,6 +188,8 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			add("Center", PanelUtils.westAndEastElement(procwrap,
 					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit))));
 		} else {
+			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 1));
+
 			add("Center", procwrap);
 		}
 
