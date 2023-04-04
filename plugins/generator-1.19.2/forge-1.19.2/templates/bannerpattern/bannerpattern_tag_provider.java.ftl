@@ -44,7 +44,6 @@ public class ${JavaModName}BannerTagProvider extends TagsProvider<BannerPattern>
 
 	protected void addTags() {
 	<#list bannerpatterns as bannerpattern>
-		${JavaModName}.LOGGER.debug("Creating banner tag for " + ${bannerpattern.getModElement().getRegistryName()});
 		this.tag(${JavaModName}BannerPatterns.PATTERN_ITEM_${bannerpattern.getModElement().getRegistryNameUpper()}).add(${JavaModName}BannerPatterns.${bannerpattern.getModElement().getRegistryNameUpper()}.get());
 	</#list>
 	}
