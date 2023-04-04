@@ -426,8 +426,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("MISC"));
+		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(colorOnMap,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
