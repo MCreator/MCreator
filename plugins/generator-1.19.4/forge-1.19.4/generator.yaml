@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 45.0.18
+buildfileversion: 45.0.39
 
 import:
   - datapack-1.19.4
@@ -30,7 +30,7 @@ block_textures_dir: "@MODASSETSROOT/textures/block"
 item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-#particle_textures_dir: "@MODASSETSROOT/textures/particle"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
@@ -58,11 +58,11 @@ base_templates:
   - template: elementinits/tabs.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: hasItemsInTabs()
-#  - template: modbase/accesstransformer.cfg.ftl
-#    writer: file
-#    name: "@RESROOT/META-INF/accesstransformer.cfg"
-#    condition_any:
-#      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
+  - template: modbase/accesstransformer.cfg.ftl
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
+      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
 #      - ${w.hasElementsOfType('dimension')}
 #      - ${w.hasElementsOfType('biome')}
   - template: elementinits/javamodels.java.ftl
