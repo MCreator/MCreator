@@ -63,7 +63,7 @@ public class ${JavaModName}Items {
 			</#if>
 		<#elseif item.getModElement().getTypeString() == "bannerpattern">
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new BannerPatternItem(${JavaModName}BannerPatterns.PATTERN_ITEM_${item.getModElement().getRegistryNameUpper()},
+				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new BannerPatternItem(${JavaModName}BannerPatterns.${item.getModElement().getRegistryNameUpper()}_PATTERN_ITEM,
 				new Item.Properties().stacksTo(1).tab(${item.creativeTab})));
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
