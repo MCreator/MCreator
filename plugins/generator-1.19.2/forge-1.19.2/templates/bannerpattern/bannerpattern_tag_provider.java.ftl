@@ -36,13 +36,17 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DataGenerator {
+public class ${JavaModName}BannerTagProvider extends TagsProvider<BannerPattern> {
 
-	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
-		DataGenerator gen = event.getGenerator();
-		gen.addProvider(event.includeServer(), new ${JavaModName}BannerTagProvider(gen, event.getExistingFileHelper()));
+	public ${JavaModName}BannerTagProvider(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
+		super(dataGenerator, Registry.BANNER_PATTERN, ${JavaModName}.MODID, existingFileHelper);
 	}
 
+	protected void addTags() {
+	<#list bannerpatterns as bannerpattern>
+		${JavaModName}.LOGGER.debug("Creating banner tag for " + ${bannerpattern.getModElement().getRegistryName()});
+		this.tag(${JavaModName}BannerPatterns.PATTERN_ITEM_${bannerpattern.getModElement().getRegistryNameUpper()}).add(${JavaModName}BannerPatterns.${bannerpattern.getModElement().getRegistryNameUpper()}.get());
+	</#list>
+	}
 }
 <#-- @formatter:on -->

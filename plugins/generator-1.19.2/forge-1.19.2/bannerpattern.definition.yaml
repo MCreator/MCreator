@@ -1,10 +1,8 @@
 global_templates:
-  - template: elementinits/bannerpatterns.java.ftl
+  - template: bannerpattern/bannerpattern.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerPatterns.java"
-  - template: elementinits/bannerpatterntagprovider.java.ftl
+  - template: bannerpattern/bannerpattern_tag_provider.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerTagProvider.java"
-  - template: elementinits/datagenerator.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDataGenerator.java"
 
 templates:
   - template: json/item.json.ftl

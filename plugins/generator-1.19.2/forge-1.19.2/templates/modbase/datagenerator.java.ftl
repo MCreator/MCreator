@@ -34,18 +34,17 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 
-package ${package}.init;
+package ${package};
 
-public class ${JavaModName}BannerTagProvider extends TagsProvider<BannerPattern> {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DataGenerator {
 
-	public ${JavaModName}BannerTagProvider(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
-		super(dataGenerator, Registry.BANNER_PATTERN, ${JavaModName}.MODID, existingFileHelper);
+	@SubscribeEvent
+	public static void gatherData(GatherDataEvent event) {
+		DataGenerator gen = event.getGenerator();
+		<#if w.hasElementsOfType("bannerpattern")>
+			gen.addProvider(event.includeServer(), new ${JavaModName}BannerTagProvider(gen, event.getExistingFileHelper()));
+		</#if>
 	}
 
-	protected void addTags() {
-	<#list bannerpatterns as bannerpattern>
-		this.tag(${JavaModName}BannerPatterns.PATTERN_ITEM_${bannerpattern.getModElement().getRegistryNameUpper()}).add(${JavaModName}BannerPatterns.${bannerpattern.getModElement().getRegistryNameUpper()}.get());
-	</#list>
-	}
 }
 <#-- @formatter:on -->
