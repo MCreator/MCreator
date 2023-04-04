@@ -1,0 +1,24 @@
+global_templates:
+  - template: elementinits/bannerpatterns.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerPatterns.java"
+  - template: elementinits/bannerpatterntagprovider.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerTagProvider.java"
+  - template: elementinits/datagenerator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDataGenerator.java"
+
+templates:
+  - template: json/item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/bannerpattern_item_tag.json.ftl
+    name: "@RESROOT/data/@modid/tags/banner_patterns/pattern_item/@registryname.json"
+    writer: json
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: title
+  - key: item.@modid.@registryname.desc
+    mapto: description
+  - fromlist: data.getColorEntries()
+    key: block.minecraft.banner.@registryname.@[color()]
+    mapto: getDescription()

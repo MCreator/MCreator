@@ -36,6 +36,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("bannerpattern")>
+			${JavaModName}BannerPatterns.REGISTRY.register(bus);
+			bus.addListener(${JavaModName}DataGenerator::gatherData);
+		</#if>
 		<#if w.hasElementsOfType("fluid")>
 			${JavaModName}Fluids.REGISTRY.register(bus);
 			${JavaModName}FluidTypes.REGISTRY.register(bus);
