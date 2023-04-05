@@ -30,7 +30,7 @@ public class CollapsiblePanel extends JPanel {
 
 	private String title = "";
 	private final TitledBorder border;
-	protected final JPanel contentHolder = new JPanel();
+	protected final JPanel contentHolder = new JPanel(new BorderLayout());
 
 	public CollapsiblePanel(String text, JComponent content) {
 		this(text, content, true);
