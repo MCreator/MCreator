@@ -78,7 +78,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			"elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
-	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.dimension.new_igniter");
+	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.common.enable");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator, true, false);
