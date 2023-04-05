@@ -62,7 +62,18 @@ public class CollapsiblePanel extends JPanel {
 
 	@Override protected void addImpl(Component comp, Object constraints, int index) {
 		contentHolder.add(comp, constraints, index);
-		updateBorderTitle();
+	}
+
+	@Override public void remove(int index) {
+		contentHolder.remove(index);
+	}
+
+	@Override public void remove(Component comp) {
+		contentHolder.remove(comp);
+	}
+
+	@Override public void removeAll() {
+		contentHolder.removeAll();
 	}
 
 	public void toggleVisibility() {
