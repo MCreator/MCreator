@@ -219,10 +219,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		enableIgniter.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA);
 
-		JPanel proper = new JPanel(new GridLayout(4, 2, 10, 2));
+		JPanel proper = new JPanel(new GridLayout(4, 2, 5, 2));
 		proper.setOpaque(false);
 
-		JPanel proper22 = new JPanel(new GridLayout(3, 2, 10, 2));
+		JPanel proper22 = new JPanel(new GridLayout(3, 2, 5, 2));
 		proper22.setOpaque(false);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
