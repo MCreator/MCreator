@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -45,12 +46,10 @@ public class TextSubstring implements IBlockGenerator {
 		if (text != null && from != null && (to != null || block.getAttribute("type").equals("text_substring_from"))) {
 			master.append("(");
 			master.processOutputBlock(text);
-			master.append(".substring(");
-			master.processIntOutputBlock(from);
-			if (to != null) {
-				master.append(", ");
-				master.processIntOutputBlock(to);
-			}
+			master.append(
+					".substring(" + ProcedureCodeOptimizer.toInt(BlocklyToCode.directProcessOutputBlock(master, from)));
+			if (to != null)
+				master.append(", " + ProcedureCodeOptimizer.toInt(BlocklyToCode.directProcessOutputBlock(master, to)));
 			master.append("))");
 		} else {
 			master.addCompileNote(
