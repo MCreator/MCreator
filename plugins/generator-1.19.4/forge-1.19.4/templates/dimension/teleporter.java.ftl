@@ -68,7 +68,7 @@ package ${package}.world.teleporter;
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "canHostFrame", "BlockPos", "BlockPos.MutableBlockPos", "Direction", "int")}
 
 	@Override
-	public Entity placeEntity(Entity entity, ServerLevel ServerLevel, ServerLevel server, float yaw,
+	public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel server, float yaw,
 			Function<Boolean, Entity> repositionEntity) {
 		PortalInfo portalinfo = getPortalInfo(entity, server);
 
@@ -80,6 +80,8 @@ package ${package}.world.teleporter;
 			entity.setXRot(portalinfo.xRot % 360.0F);
 
 			entity.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z);
+
+			CriteriaTriggers.CHANGED_DIMENSION.trigger(player, currentWorld.dimension(), server.dimension());
 
 			return entity;
 		} else {
