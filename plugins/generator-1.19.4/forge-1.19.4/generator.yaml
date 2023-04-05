@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 45.0.18
+buildfileversion: 45.0.39
 
 import:
   - datapack-1.19.4
@@ -58,12 +58,11 @@ base_templates:
   - template: elementinits/tabs.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: hasItemsInTabs()
-#  - template: modbase/accesstransformer.cfg.ftl
-#    writer: file
-#    name: "@RESROOT/META-INF/accesstransformer.cfg"
-#    condition_any:
-#      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
-#      - ${w.hasElementsOfType('dimension')}
+  - template: modbase/accesstransformer.cfg.ftl
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
+      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
 #      - ${w.hasElementsOfType('biome')}
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"

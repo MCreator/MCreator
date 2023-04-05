@@ -51,7 +51,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 			<#elseif dimension == "End">
 				Level.END
 			<#else>
-				ResourceKey.create(Registry.DIMENSION_REGISTRY,
+				ResourceKey.create(Registries.DIMENSION,
 						new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}"))
 			</#if><#sep>,
 		</#list>
