@@ -11,7 +11,7 @@ templates:
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
   - template: dimension/portaltrigger.java.ftl
-    condition: enablePortal
+    condition: enableIgniter
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
   - template: dimension/dimension_type.json.ftl # loaded from datapack generator
@@ -45,7 +45,7 @@ templates:
   - template: json/item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
-    condition: enablePortal
+    condition: enableIgniter
 
 global_templates:
   - template: json/carvertag.json.ftl
