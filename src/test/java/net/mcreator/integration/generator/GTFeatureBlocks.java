@@ -63,8 +63,6 @@ public class GTFeatureBlocks {
 			StringBuilder additionalXML = new StringBuilder();
 
 			if (!generatorBlocks.contains(featureBlock.getMachineName())) {
-				LOG.warn("[" + generatorName + "] Skipping feature block that is not defined by generator: "
-						+ featureBlock.getMachineName());
 				continue;
 			}
 

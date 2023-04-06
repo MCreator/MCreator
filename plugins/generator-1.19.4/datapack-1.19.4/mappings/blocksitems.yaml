@@ -1,0 +1,37 @@
+_mcreator_prefix: "CUSTOM:"
+_bypass_prefix:
+  - "TAG:"
+  - "POTION:"
+_default:
+  - Blocks.AIR
+  - "air"
+Blocks.AIR:
+  - Blocks.AIR
+  - "air"
+Blocks.STONE:
+  - Blocks.STONE
+  - "#forge:stone"
+Blocks.STONE#0:
+  - Blocks.STONE
+  - "stone"
+Blocks.STONE#1:
+  - Blocks.GRANITE
+  - "granite"
+Blocks.STONE#2:
+  - Blocks.POLISHED_GRANITE
+  - "polished_granite"
+Blocks.STONE#3:
+  - Blocks.DIORITE
+  - "diorite"
+Blocks.STONE#4:
+  - Blocks.POLISHED_DIORITE
+  - "polished_diorite"
+Blocks.STONE#5:
+  - Blocks.ANDESITE
+  - "andesite"
+Blocks.STONE#6:
+  - Blocks.POLISHED_ANDESITE
+  - "polished_andesite"
+Blocks.GRASS:
+  - Blocks.GRASS_BLOCK
+  - "grass_block"
