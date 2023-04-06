@@ -62,8 +62,8 @@ public class ${JavaModName}Items {
                 REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
             </#if>
         <#elseif item.getModElement().getTypeString() == "dimension" && item.enableIgniter>
-			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+                REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
         <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
                 REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
