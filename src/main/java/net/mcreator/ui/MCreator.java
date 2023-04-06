@@ -288,9 +288,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
 					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch) {
-				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
+				SwingUtilities.invokeLater(() -> ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
+								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true));
 			}
 
 			// if we need to set up the workspace, we do so
