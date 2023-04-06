@@ -67,6 +67,7 @@ import java.util.List;
 	public int portalLuminance;
 	public Sound portalSound;
 	public String igniterName;
+	public List<String> igniterSpecialInfo;
 	public TabEntry igniterTab;
 	public String texture;
 	public String portalTexture;

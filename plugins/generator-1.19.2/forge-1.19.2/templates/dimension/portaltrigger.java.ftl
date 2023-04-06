@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,6 +38,15 @@ public class ${name}Item extends Item {
 	public ${name}Item() {
 		super(new Item.Properties().tab(${data.igniterTab}).durability(64));
 	}
+
+	<#if data.specialInfo?has_content>
+	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, world, list, flag);
+		<#list data.specialInfo as entry>
+		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
+		</#list>
+	}
+	</#if>
 
 	@Override public InteractionResult useOn(UseOnContext context) {
 		Player entity = context.getPlayer();
