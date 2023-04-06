@@ -35,6 +35,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -87,6 +88,7 @@ import java.util.List;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.sleepResult = "ALLOW";
+		this.specialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
