@@ -38,15 +38,15 @@ public class JMinMaxSpinner extends JPanel {
 
 		init();
 
-		if (step % 0.00001 != 0) {
+		if (step < 0.00001) {
 			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(6);
 			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(6);
-		} else if (step % 0.0001 != 0) {
+		} else if (step < 0.0001) {
 			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(5);
 			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(5);
-		} else if (step % 0.001 != 0) {
-			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(6);
-			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(6);
+		} else if (step < 0.001) {
+			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(4);
+			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(4);
 		}
 	}
 
