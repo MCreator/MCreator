@@ -27,6 +27,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -120,9 +121,17 @@ public class GeneratorStats {
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
-		baseCoverageInfo.put("textures", generatorConfiguration.getSpecificRoot("other_textures_dir") == null ?
-				CoverageStatus.NONE :
-				CoverageStatus.FULL);
+		CoverageStatus texturesCoverage = CoverageStatus.NONE;
+		int supportedTextureTypes = 0;
+		for (TextureType textureType : TextureType.values()) {
+			if (generatorConfiguration.getSpecificRoot(textureType.getID() + "_textures_dir") != null) {
+				texturesCoverage = CoverageStatus.PARTIAL;
+				supportedTextureTypes++;
+			}
+		}
+		if (supportedTextureTypes == TextureType.values().length)
+			texturesCoverage = CoverageStatus.FULL;
+		baseCoverageInfo.put("textures", texturesCoverage);
 
 		baseCoverageInfo.put("i18n", generatorConfiguration.getLanguageFileSpecification().isEmpty() ?
 				CoverageStatus.NONE :
