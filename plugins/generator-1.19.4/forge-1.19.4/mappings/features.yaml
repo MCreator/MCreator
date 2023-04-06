@@ -66,3 +66,15 @@ feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
   - "minecraft:block_column"
+feature_ore:
+  - OreFeature
+  - OreConfiguration
+  - "minecraft:ore"
+feature_scattered_ore:
+  - ScatteredOreFeature
+  - OreConfiguration
+  - "minecraft:scattered_ore"
+feature_replace_single_block:
+  - ReplaceBlockFeature
+  - ReplaceBlockConfiguration
+  - "minecraft:replace_single_block"
