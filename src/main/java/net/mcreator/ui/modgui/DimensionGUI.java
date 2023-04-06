@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(14);
-	private final JTextField igniterSpecialInfo = new JTextField(20);
+	private final JTextField specialInfo = new JTextField(20);
 
 	private TextureHolder portalTexture;
 	private TextureHolder texture;
@@ -249,7 +249,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.dimension.igniter_tooltip_tip")));
-		proper.add(igniterSpecialInfo);
+		proper.add(specialInfo);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.dimension.portal_igniter_tab")));
@@ -281,7 +281,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(dsg)));
 
 		ComponentUtils.deriveFont(igniterName, 16);
-		ComponentUtils.deriveFont(igniterSpecialInfo, 16);
+		ComponentUtils.deriveFont(specialInfo, 16);
 
 		enablePortal.addActionListener(e -> updatePortalElements());
 
@@ -331,7 +331,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalSound.setEnabled(enablePortal.isSelected());
 		luminance.setEnabled(enablePortal.isSelected());
 		igniterName.setEnabled(enablePortal.isSelected());
-		igniterSpecialInfo.setEnabled(enablePortal.isSelected());
+		specialInfo.setEnabled(enablePortal.isSelected());
 		igniterTab.setEnabled(enablePortal.isSelected());
 		texture.setEnabled(enablePortal.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
@@ -370,7 +370,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		fluidBlock.setBlock(dimension.fluidBlock);
 		portalSound.setSound(dimension.portalSound);
 		igniterName.setText(dimension.igniterName);
-		igniterSpecialInfo.setText(dimension.igniterSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
+		specialInfo.setText(dimension.specialInfo.stream().map(info -> info.replace(",", "\\,"))
 				.collect(Collectors.joining(",")));
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
@@ -415,8 +415,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.enablePortal = enablePortal.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.igniterName = igniterName.getText();
-		dimension.igniterSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-				igniterSpecialInfo.getText());
+		dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+				specialInfo.getText());
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();
 		dimension.mainFillerBlock = mainFillerBlock.getBlock();

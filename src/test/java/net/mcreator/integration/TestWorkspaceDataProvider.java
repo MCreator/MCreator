@@ -799,10 +799,10 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
 			if (!emptyLists) {
-				dimension.igniterSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+				dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
 						"info 1, info 2, test \\, is this, another one");
 			} else {
-				dimension.igniterSpecialInfo = new ArrayList<>();
+				dimension.specialInfo = new ArrayList<>();
 			}
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
