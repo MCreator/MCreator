@@ -19,6 +19,12 @@
       "type": "field_data_list_selector",
       "name": "entity",
       "datalist": "spawnableEntity"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,

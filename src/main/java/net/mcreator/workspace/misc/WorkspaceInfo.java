@@ -23,9 +23,11 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.Workspace;
@@ -244,6 +246,68 @@ import java.util.*;
 					if (itemExtension.compostLayerChance > 0)
 						return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	public boolean hasItemsInTabs() {
+		List<GeneratableElement> elementsList = workspace.getModElements().stream()
+				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
+
+		for (GeneratableElement element : elementsList) {
+			if (element instanceof ITabContainedElement tabElement) {
+				TabEntry tab = tabElement.getCreativeTab();
+				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry")) {
+					if (!tabElement.getCreativeTabItems().isEmpty())
+						return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public Map<String, List<MItemBlock>> getCreativeTabMap() {
+		List<GeneratableElement> elementsList = workspace.getModElements().stream()
+				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
+				.filter(Objects::nonNull).toList();
+
+		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
+
+		for (GeneratableElement element : elementsList) {
+			if (element instanceof ITabContainedElement tabElement) {
+				TabEntry tabEntry = tabElement.getCreativeTab();
+				if (tabEntry != null) {
+					String tab = tabEntry.getUnmappedValue();
+					if (tab != null && !tab.equals("No creative tab entry")) {
+						if (!tabMap.containsKey(tab)) {
+							tabMap.put(tab, new ArrayList<>());
+						}
+
+						tabMap.get(tab).addAll(tabElement.getCreativeTabItems().stream()
+								.map(e -> new MItemBlock(workspace, e.getName())).toList());
+					}
+				}
+			}
+		}
+
+		return tabMap;
+	}
+
+	public boolean hasItemsInVanillaTabs(Map<String, List<MItemBlock>> creativeTabMap) {
+		for (String tab : creativeTabMap.keySet()) {
+			if (!tab.startsWith("CUSTOM:")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasItemsInCustomTabs(Map<String, List<MItemBlock>> creativeTabMap) {
+		for (String tab : creativeTabMap.keySet()) {
+			if (tab.startsWith("CUSTOM:")) {
+				return true;
 			}
 		}
 		return false;
