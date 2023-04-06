@@ -27,12 +27,7 @@
     </#if>
     "criteria": {
       "${registryname}": ${triggercode}
-    },
-    "requirements": [
-      [
-        "${registryname}"
-      ]
-    ]
+    }
     <#if data.hasRewards()>,
     "rewards": {
         "experience": ${data.rewardXP}

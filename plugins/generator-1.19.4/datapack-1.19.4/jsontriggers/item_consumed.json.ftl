@@ -4,7 +4,7 @@
     "item": {
         "items": [
             "${input$item}"
-  		]
+        ]
     }
   }
 }
