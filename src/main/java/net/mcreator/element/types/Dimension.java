@@ -93,7 +93,7 @@ import java.util.List;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
 				getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-				getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame);
+				getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame, enableIgniter);
 	}
 
 	@Override public TabEntry getCreativeTab() {

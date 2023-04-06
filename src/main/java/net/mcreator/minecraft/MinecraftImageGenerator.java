@@ -675,7 +675,7 @@ public class MinecraftImageGenerator {
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static BufferedImage generateDimensionPreviewPicture(Workspace workspace, File portalTexture,
-				File triggerTexture, MItemBlock portalFrameTexture) {
+				File triggerTexture, MItemBlock portalFrameTexture, boolean isIgniterEnabled) {
 			if (!portalTexture.isFile())
 				return null;
 
@@ -703,7 +703,7 @@ public class MinecraftImageGenerator {
 				graphics2D.drawImage(tex, 8, 17, 6, 6, null);
 				graphics2D.drawImage(tex, 14, 17, 6, 6, null);
 
-				if (triggerTexture.isFile()) {
+				if (isIgniterEnabled) {
 					BufferedImage igniter = ImageUtils.autoCropTile(ImageIO.read(triggerTexture));
 					graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
 				}
