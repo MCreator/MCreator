@@ -41,7 +41,6 @@ import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
-import net.mcreator.element.converter.v2023_2.DimensionIgniterConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 
 import java.util.HashMap;
@@ -60,7 +59,7 @@ public class ConverterRegistry {
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer(), new DimensionIgniterConverter()));
+		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter()));
 		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
