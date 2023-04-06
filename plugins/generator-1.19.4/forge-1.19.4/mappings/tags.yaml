@@ -2,6 +2,8 @@ _default: none
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
 acacia_logs: minecraft:block/acacia_logs
+# Coming in 1.20 update
+# all_hanging_signs: minecraft:block/all_hanging_signs
 all_signs: minecraft:block/all_signs
 ancient_city_replaceable: minecraft:block/ancient_city_replaceable
 animals_spawnable_on: minecraft:block/animals_spawnable_on
@@ -9,6 +11,8 @@ anvil: minecraft:block/anvil
 axolotls_spawnable_on: minecraft:block/axolotls_spawnable_on
 azalea_grows_on: minecraft:block/azalea_grows_on
 azalea_root_replaceable: minecraft:block/azalea_root_replaceable
+# Coming in 1.20 update
+# bamboo_blocks: minecraft:block/bamboo_blocks
 bamboo_plantable_on: minecraft:block/bamboo_plantable_on
 banners: minecraft:block/banners
 base_stone_nether: minecraft:block/base_stone_nether
@@ -25,6 +29,10 @@ candle_cakes: minecraft:block/candle_cakes
 candles: minecraft:block/candles
 cauldrons: minecraft:block/cauldrons
 cave_vines: minecraft:block/cave_vines
+# Coming in 1.20 update
+# ceiling_hanging_signs: minecraft:block/ceiling_hanging_signs
+# Coming in 1.20 update
+# cherry_logs: minecraft:block/cherry_logs
 climbable: minecraft:block/climbable
 coal_ores: minecraft:block/coal_ores
 completes_find_tree_tutorial: minecraft:block/completes_find_tree_tutorial
@@ -107,7 +115,10 @@ prevent_mob_spawning_inside: minecraft:block/prevent_mob_spawning_inside
 rabbits_spawnable_on: minecraft:block/rabbits_spawnable_on
 rails: minecraft:block/rails
 redstone_ores: minecraft:block/redstone_ores
+# Leaving in 1.20 update
 replaceable_plants: minecraft:block/replaceable_plants
+# Coming in 1.20 update
+# replaceable_by_trees: minecraft:block/replaceable_by_trees
 sand: minecraft:block/sand
 saplings: minecraft:block/saplings
 sculk_replaceable: minecraft:block/sculk_replaceable
@@ -119,6 +130,8 @@ small_dripleaf_placeable: minecraft:block/small_dripleaf_placeable
 small_flowers: minecraft:block/small_flowers
 smelts_to_glass: minecraft:block/smelts_to_glass
 snaps_goat_horn: minecraft:block/snaps_goat_horn
+# Coming in 1.20 update
+# sniffer_diggable_block: minecraft:block/sniffer_diggable_block
 snow_layer_can_survive_on: minecraft:block/snow_layer_can_survive_on
 snow_layer_cannot_survive_on: minecraft:block/snow_layer_cannot_survive_on
 snow: minecraft:block/snow
@@ -131,6 +144,8 @@ stone_bricks: minecraft:block/stone_bricks
 stone_ore_replaceables: minecraft:block/stone_ore_replaceables
 stone_pressure_plates: minecraft:block/stone_pressure_plates
 strider_warm_blocks: minecraft:block/strider_warm_blocks
+# Coming in 1.20 update
+# sword_efficient: minecraft:block/sword_efficient
 tall_flowers: minecraft:block/tall_flowers
 terracotta: minecraft:block/terracotta
 trapdoors: minecraft:block/trapdoors
@@ -139,6 +154,8 @@ unstable_bottom_center: minecraft:block/unstable_bottom_center
 valid_spawn: minecraft:block/valid_spawn
 walls: minecraft:block/walls
 wall_corals: minecraft:block/wall_corals
+# Coming in 1.20 update
+# wall_hanging_signs: minecraft:block/wall_hanging_signs
 wall_post_override: minecraft:block/wall_post_override
 wall_signs: minecraft:block/wall_signs
 warped_stems: minecraft:block/warped_stems
@@ -159,6 +176,8 @@ arrows: minecraft:entity_type/arrows
 axolotl_always_hostiles: minecraft:entity_type/axolotl_always_hostiles
 axolotl_hunt_targets: minecraft:entity_type/axolotl_hunt_targets
 beehive_inhabitors: minecraft:entity_type/beehive_inhabitors
+dismounts_underwater: minecraft:entity_type/dismounts_underwater
+fall_damage_immune: minecraft:entity_type/fall_damage_immune
 freeze_hurts_extra_types: minecraft:entity_type/freeze_hurts_extra_types
 freeze_immune_entity_types: minecraft:entity_type/freeze_immune_entity_types
 frog_food: minecraft:entity_type/frog_food
@@ -171,14 +190,22 @@ water: minecraft:fluid/water
 acacia_logs_item: minecraft:item/acacia_logs
 anvil_item: minecraft:item/anvil
 arrows_item: minecraft:item/arrows
+axes: minecraft:item/axes
 axolotl_tempt_items: minecraft:item/axolotl_tempt_items
+# Coming in 1.20 update
+# bamboo_blocks: minecraft:item/bamboo_blocks
 banners_item: minecraft:item/banners
 beacon_payment_items: minecraft:item/beacon_payment_items
 beds_item: minecraft:item/beds
 birch_logs_item: minecraft:item/birch_logs
 boats: minecraft:item/boats
+# Coming in 1.20 update
+# bookshelf_books: minecraft:item/bookshelf_books
+breaks_decorated_pots: minecraft:item/breaks_decorated_pots
 buttons_item: minecraft:item/buttons
 candles_item: minecraft:item/candles
+# Coming in 1.20 update
+# cherry_logs: minecraft:item/cherry_logs
 chest_boats: minecraft:item/chest_boats
 cluster_max_harvestables: minecraft:item/cluster_max_harvestables
 coal_ores_item: minecraft:item/coal_ores
@@ -191,6 +218,8 @@ creeper_igniters: minecraft:item/creeper_igniters
 crimson_stems_item: minecraft:item/crimson_stems
 dampens_vibrations_item: minecraft:item/dampens_vibrations
 dark_oak_logs_item: minecraft:item/dark_oak_logs
+# Coming in 1.20 update
+# decorated_pot_shards: minecraft:item/decorated_pot_shards
 diamond_ores_item: minecraft:item/diamond_ores
 dirt_item: minecraft:item/dirt
 doors_item: minecraft:item/doors
@@ -202,6 +231,9 @@ flowers_item: minecraft:item/flowers
 fox_food: minecraft:item/fox_food
 freeze_immune_wearables: minecraft:item/freeze_immune_wearables
 gold_ores_item: minecraft:item/gold_ores
+# Coming in 1.20 update
+# hanging_signs: minecraft:item/hanging_signs
+hoes: minecraft:item/hoes
 ignored_by_piglin_babies: minecraft:item/ignored_by_piglin_babies
 iron_ores_item: minecraft:item/iron_ores
 jungle_logs_item: minecraft:item/jungle_logs
@@ -213,7 +245,10 @@ logs_that_burn_item: minecraft:item/logs_that_burn
 mangrove_logs_item: minecraft:item/mangrove_logs
 music_discs: minecraft:item/music_discs
 non_flammable_wood: minecraft:item/non_flammable_wood
+# Coming in 1.20 update
+# noteblock_top_instruments: minecraft:item/noteblock_top_instruments
 oak_logs_item: minecraft:item/oak_logs
+pickaxes: minecraft:item/pickaxes
 piglin_food: minecraft:item/piglin_food
 piglin_loved: minecraft:item/piglin_loved
 piglin_repellents_item: minecraft:item/piglin_repellents
@@ -222,19 +257,30 @@ rails_item: minecraft:item/rails
 redstone_ores_item: minecraft:item/redstone_ores
 sand_item: minecraft:item/sand
 saplings_item: minecraft:item/saplings
+shovels: minecraft:item/shovels
 signs_item: minecraft:item/signs
 slabs_item: minecraft:item/slabs
 small_flowers_item: minecraft:item/small_flowers
 smelts_to_glass_item: minecraft:item/smelts_to_glass
+# Coming in 1.20 update
+# sniffer_food: minecraft:item/sniffer_food
 soul_fire_base_blocks_item: minecraft:item/soul_fire_base_blocks
 spruce_logs_item: minecraft:item/spruce_logs
 stairs_item: minecraft:item/stairs
 stone_bricks_item: minecraft:item/stone_bricks
 stone_crafting_materials: minecraft:item/stone_crafting_materials
 stone_tool_materials: minecraft:item/stone_tool_materials
+swords: minecraft:item/swords
 tall_flowers_item: minecraft:item/tall_flowers
 terracotta_item: minecraft:item/terracotta
+tools: minecraft:item/tools
 trapdoors_item: minecraft:item/trapdoors
+# Coming in 1.20 update
+# trim_materials: minecraft:item/trim_materials
+# Coming in 1.20 update
+# trim_templates: minecraft:item/trim_templates
+# Coming in 1.20 update
+# trimmable_armor: minecraft:item/trimmable_armor
 walls_item: minecraft:item/walls
 warped_stems_item: minecraft:item/warped_stems
 wart_blocks_item: minecraft:item/wart_blocks
@@ -282,6 +328,7 @@ has_structure/village_savanna: minecraft:worldgen/biome/has_structure/village_sa
 has_structure/village_snowy: minecraft:worldgen/biome/has_structure/village_snowy
 has_structure/village_taiga: minecraft:worldgen/biome/has_structure/village_taiga
 has_structure/woodland_mansion: minecraft:worldgen/biome/has_structure/woodland_mansion
+increased_fire_burnout: minecraft:worldgen/biome/increased_fire_burnout
 is_badlands: minecraft:worldgen/biome/is_badlands
 is_beach: minecraft:worldgen/biome/is_beach
 is_deep_ocean: minecraft:worldgen/biome/is_deep_ocean
@@ -303,9 +350,12 @@ polar_bears_spawn_on_alternate_blocks: minecraft:worldgen/biome/polar_bears_spaw
 produces_corals_from_bonemeal: minecraft:worldgen/biome/produces_corals_from_bonemeal
 reduce_water_ambient_spawns: minecraft:worldgen/biome/reduce_water_ambient_spawns
 required_ocean_monument_surrounding: minecraft:worldgen/biome/required_ocean_monument_surrounding
+snow_golem_melts: minecraft:worldgen/biome/snow_golem_melts
 spawns_cold_variant_frogs: minecraft:worldgen/biome/spawns_cold_variant_frogs
-only_allows_snow_and_gold_rabbits: minecraft:worldgen/biome/only_allows_snow_and_gold_rabbits
+spawns_gold_rabbits: minecraft:worldgen/biome/spawns_gold_rabbits
+spawns_snow_foxes: minecraft:worldgen/biome/spawns_snow_foxes
 spawns_warm_variant_frogs: minecraft:worldgen/biome/spawns_warm_variant_frogs
+spawns_white_rabbits: minecraft:worldgen/biome/spawns_white_rabbits
 stronghold_biased_to: minecraft:worldgen/biome/stronghold_biased_to
 water_on_map_outlines: minecraft:worldgen/biome/water_on_map_outlines
 without_patrol_spawns: minecraft:worldgen/biome/without_patrol_spawns

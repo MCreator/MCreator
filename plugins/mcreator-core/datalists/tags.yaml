@@ -224,6 +224,8 @@
   type: blocks
 - replaceable_plants:
   type: blocks
+- replaceable_by_trees:
+  type: blocks
 - sand:
   type: blocks
 - saplings:
@@ -272,6 +274,8 @@
 - stone_pressure_plates:
   type: blocks
 - strider_warm_blocks:
+  type: blocks
+- sword_efficient:
   type: blocks
 - tall_flowers:
   type: blocks
@@ -333,12 +337,10 @@
   type: entities
 - beehive_inhabitors:
   type: entities
-# Coming in 1.19.4 update
-# - dismounts_underwater:
-#   type: entities
-# Coming in 1.19.4 update
-# - fall_damage_immune:
-#   type: entities
+- dismounts_underwater:
+  type: entities
+- fall_damage_immune:
+  type: entities
 - freeze_hurts_extra_types:
   type: entities
 - freeze_immune_entity_types:
@@ -365,9 +367,8 @@
   type: items
 - arrows_item:
   type: items
-# Coming in 1.19.4 update
-# - axes:
-#   type: items
+- axes:
+  type: items
 - axolotl_tempt_items:
   type: items
 # Coming in 1.20 update
@@ -386,9 +387,8 @@
 # Coming in 1.20 update
 # - bookshelf_books:
 #   type: items
-# Coming in 1.19.4 update
-# - breaks_decorated_pots:
-#   type: items
+- breaks_decorated_pots:
+  type: items
 - buttons_item:
   type: items
 - candles_item:
@@ -448,9 +448,8 @@
 # Coming in 1.20 update
 # - hanging_signs:
 #   type: items
-# Coming in 1.19.4 update
-# - hoes:
-#   type: items
+- hoes:
+  type: items
 - ignored_by_piglin_babies:
   type: items
 - iron_ores_item:
@@ -478,9 +477,8 @@
 #   type: items
 - oak_logs_item:
   type: items
-# Coming in 1.19.4 update
-# - pickaxes:
-#   type: items
+- pickaxes:
+  type: items
 - piglin_food:
   type: items
 - piglin_loved:
@@ -497,9 +495,8 @@
   type: items
 - saplings_item:
   type: items
-# Coming in 1.19.4 update
-# - shovels:
-#   type: items
+- shovels:
+  type: items
 - signs_item:
   type: items
 - slabs_item:
@@ -523,16 +520,14 @@
   type: items
 - stone_tool_materials:
   type: items
-# Coming in 1.19.4 update
-# - swords:
-#   type: items
+- swords:
+  type: items
 - tall_flowers_item:
   type: items
 - terracotta_item:
   type: items
-# Coming in 1.19.4 update
-# - tools:
-#   type: items
+- tools:
+  type: items
 - trapdoors_item:
   type: items
 # Coming in 1.20 update
@@ -639,9 +634,8 @@
   type: biomes
 - has_structure/woodland_mansion:
   type: biomes
-# Coming in 1.19.4 update
-# - increased_fire_burnout:
-#   type: biomes
+- increased_fire_burnout:
+  type: biomes
 - is_badlands:
   type: biomes
 - is_beach:
@@ -684,25 +678,20 @@
   type: biomes
 - required_ocean_monument_surrounding:
   type: biomes
-# Coming in 1.19.4 update
-# - snow_golem_melts:
-#   type: biomes
+- snow_golem_melts:
+  type: biomes
 - spawns_cold_variant_frogs:
   type: biomes
-# Coming in 1.19.4 update
-# - spawns_gold_rabbits:
-#   type: biomes
-# Leaving in 1.19.4 update
+- spawns_gold_rabbits:
+  type: biomes
 - only_allows_snow_and_gold_rabbits:
   type: biomes
-# Coming in 1.19.4 update
-# - spawns_snow_foxes:
-#   type: biomes
+- spawns_snow_foxes:
+  type: biomes
 - spawns_warm_variant_frogs:
   type: biomes
-# Coming in 1.19.4 update
-# - spawns_white_rabbits:
-#   type: biomes
+- spawns_white_rabbits:
+  type: biomes
 - stronghold_biased_to:
   type: biomes
 - water_on_map_outlines:
