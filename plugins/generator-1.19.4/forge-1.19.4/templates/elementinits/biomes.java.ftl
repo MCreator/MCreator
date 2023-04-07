@@ -71,36 +71,39 @@ public class ${JavaModName}Biomes {
 
 		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 			MinecraftServer server = event.getServer();
-			Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
-			Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-			WorldGenSettings worldGenSettings = server.getWorldData().worldGenSettings();
+			Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE);
+			Registry<LevelStem> levelStemTypeRegistry = server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
+			Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registries.BIOME);
 
-			for (Map.Entry<ResourceKey<LevelStem>, LevelStem> entry : worldGenSettings.dimensions().entrySet()) {
-				DimensionType dimensionType = entry.getValue().typeHolder().value();
+			for (ServerLevel level : server.getAllLevels()) {
+				ResourceKey<LevelStem> levelStemKey = Registries.levelToLevelStem(level.dimension());
+				LevelStem levelStem = levelStemTypeRegistry.getOrThrow(levelStemKey);
+
+				DimensionType dimensionType = levelStem.type().value();
 
 				<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
 				if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.OVERWORLD)) {
-					ChunkGenerator chunkGenerator = entry.getValue().generator();
+					ChunkGenerator chunkGenerator = levelStem.generator();
 
 					// Inject biomes to biome source
 					if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
-						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
+						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
 
 						<#list spawn_overworld as biome>
 						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
-							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolderOrThrow(
-									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getHolderOrThrow(
+									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						}
 						</#list>
 
 						<#list spawn_overworld_caves as biome>
 						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.UNDERGROUND_PARAMETER_POINTS) {
-							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolderOrThrow(
-									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getHolderOrThrow(
+									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						}
 						</#list>
 						
-						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
+						chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList(parameters));
 						chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
 								FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
 										chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
@@ -115,7 +118,7 @@ public class ${JavaModName}Biomes {
 
 							<#list spawn_overworld_caves as biome>
 							surfaceRules.add(1, anySurfaceRule(
-								ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
+								ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()),
 								${mappedBlockToBlockStateCode(biome.groundBlock)},
 								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
@@ -124,7 +127,7 @@ public class ${JavaModName}Biomes {
 
 							<#list spawn_overworld as biome>
 							surfaceRules.add(1, preliminarySurfaceRule(
-								ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
+								ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()),
 								${mappedBlockToBlockStateCode(biome.groundBlock)},
 								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
@@ -152,7 +155,7 @@ public class ${JavaModName}Biomes {
 				
 				<#if spawn_nether?has_content>
 				if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.NETHER)) {
-					ChunkGenerator chunkGenerator = entry.getValue().generator();
+					ChunkGenerator chunkGenerator = levelStem.generator();
 
 					// Inject biomes to biome source
 					if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
@@ -160,8 +163,8 @@ public class ${JavaModName}Biomes {
 
 						<#list spawn_nether as biome>
 						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
-							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getOrCreateHolderOrThrow(
-									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
+							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getHolderOrThrow(
+									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
 						}
 						</#list>
 
@@ -180,7 +183,7 @@ public class ${JavaModName}Biomes {
 
 							<#list spawn_nether as biome>
 							surfaceRules.add(2, anySurfaceRule(
-									ResourceKey.create(Registry.BIOME_REGISTRY, ${biome.getModElement().getRegistryNameUpper()}.getId()),
+									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()),
 								${mappedBlockToBlockStateCode(biome.groundBlock)},
 								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
