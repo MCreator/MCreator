@@ -222,7 +222,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel proper = new JPanel(new GridLayout(4, 2, 5, 2));
 		proper.setOpaque(false);
 
-		JPanel proper22 = new JPanel(new GridLayout(3, 2, 5, 2));
+		JPanel proper22 = new JPanel(new GridLayout(2, 2, 5, 2));
 		proper22.setOpaque(false);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
@@ -241,10 +241,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_luminance")));
 		proper.add(luminance);
 
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
-				L10N.label("elementgui.dimension.enable_new_igniter")));
-		proper22.add(enableIgniter);
-
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.dimension.portal_igniter_name")));
 		proper22.add(igniterName);
@@ -259,11 +255,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 2));
 		igniterPanel.setOpaque(false);
-		igniterPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				PanelUtils.gridElements(1, 2, PanelUtils.totalCenterInPanel(
+		igniterPanel.add("North", PanelUtils.gridElements(2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
+						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter,
+				PanelUtils.totalCenterInPanel(
 						HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
-								L10N.label("elementgui.dimension.portal_igniter_texture"))), PanelUtils.join(texture)),
-				proper22)));
+								L10N.label("elementgui.dimension.portal_igniter_texture"))), PanelUtils.join(texture)));
+		igniterPanel.add("Center", PanelUtils.totalCenterInPanel(proper22));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
