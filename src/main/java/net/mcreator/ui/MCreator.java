@@ -293,10 +293,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 			}
 
-			// if we need to setup the workspace, we do so
+			// if we need to set up the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage
+								&& !Launcher.version.isDevelopment());
 			}
 
 			if (workspace.getMCreatorVersion()
