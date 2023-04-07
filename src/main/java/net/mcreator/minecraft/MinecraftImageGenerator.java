@@ -672,6 +672,7 @@ public class MinecraftImageGenerator {
 		 * @param portalTexture      <p>This texture is used for portal's inner filler.</p>
 		 * @param triggerTexture     <p>This texture is used for portal's igniter texture above portal.</p>
 		 * @param portalFrameTexture <p>The item provided is used to calculate it's average color for portal's frame.</p>
+		 * @param isIgniterEnabled   <p>Wether the portal's igniter is enabled or not.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static BufferedImage generateDimensionPreviewPicture(Workspace workspace, File portalTexture,
