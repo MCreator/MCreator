@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-new BlockMatchTest(${mappedBlockToBlock(toMappedMCItem(field$block))})
+new BlockMatchTest(${mappedBlockToBlock(w.itemBlock(field$block))})
