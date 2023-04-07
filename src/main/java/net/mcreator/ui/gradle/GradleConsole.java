@@ -766,9 +766,7 @@ public class GradleConsole extends JPanel {
 			} catch (Exception ignored) {  // workspace can be null or we can fail to parse error link
 				// if we fail to print styled, fallback to plaintext
 				//if it is exception
-				if (text.contains("Exception")){
-					append(text,new Color(255,0,0),false);
-				} else append(text, Color.white, false);
+				append(text, Color.white, false);
 			}
 			scrollToBottom();
 		}
