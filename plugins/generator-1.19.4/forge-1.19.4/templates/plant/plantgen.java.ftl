@@ -32,9 +32,14 @@
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 
-package ${package}.world.features.ores;
+package ${package}.world.features.plants;
 
-public class ${name}Feature extends OreFeature {
+import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+
+<#compress>
+public class ${name}Feature extends RandomPatchFeature {
 
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
 		<#list data.spawnWorldTypes as worldType>
@@ -52,10 +57,10 @@ public class ${name}Feature extends OreFeature {
 	);
 
 	public ${name}Feature() {
-		super(OreConfiguration.CODEC);
+		super(RandomPatchConfiguration.CODEC);
 	}
 
-	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
+	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
 		WorldGenLevel world = context.level();
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
@@ -72,5 +77,6 @@ public class ${name}Feature extends OreFeature {
 	}
 
 }
+</#compress>
 
 <#-- @formatter:on -->

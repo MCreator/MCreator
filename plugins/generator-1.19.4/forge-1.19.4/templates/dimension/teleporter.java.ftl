@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -103,8 +103,7 @@ package ${package}.world.teleporter;
 		double d2 = Math.min(2.9999872E7D, worldborder.getMaxX() - 16.);
 		double d3 = Math.min(2.9999872E7D, worldborder.getMaxZ() - 16.);
 		double d4 = DimensionType.getTeleportationScale(entity.level.dimensionType(), server.dimensionType());
-		BlockPos blockpos1 = new BlockPos(Mth.clamp(entity.getX() * d4, d0, d2), entity.getY(),
-				Mth.clamp(entity.getZ() * d4, d1, d3));
+		BlockPos blockpos1 = BlockPos.containing(Mth.clamp(entity.getX() * d4, d0, d2), entity.getY(), Mth.clamp(entity.getZ() * d4, d1, d3));
 		return this.getExitPortal(entity, blockpos1, worldborder).map(repositioner -> {
 			BlockState blockstate = entity.level.getBlockState(this.entityEnterPos);
 			Direction.Axis direction$axis;
@@ -120,8 +119,7 @@ package ${package}.world.teleporter;
 				vector3d = new Vec3(0.5, 0, 0);
 			}
 
-			return ${name}PortalShape.createPortalInfo(server, repositioner, direction$axis, vector3d, entity.getDimensions(entity.getPose()),
-							entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
+			return ${name}PortalShape.createPortalInfo(server, repositioner, direction$axis, vector3d, entity, entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
 		}).orElse(new PortalInfo(entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot()));
 	}
 
@@ -138,6 +136,11 @@ package ${package}.world.teleporter;
 		} else {
 			return optional;
 		}
+	}
+
+	private boolean canPortalReplaceBlock(BlockPos.MutableBlockPos pos) {
+		BlockState blockstate = this.level.getBlockState(pos);
+		return blockstate.canBeReplaced() && blockstate.getFluidState().isEmpty();
 	}
 
 }
