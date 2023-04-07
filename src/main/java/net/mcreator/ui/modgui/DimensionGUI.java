@@ -259,27 +259,15 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 2));
 		igniterPanel.setOpaque(false);
-		igniterPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(proper22,
-				PanelUtils.gridElements(1, 2,
+		igniterPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.gridElements(1, 2, PanelUtils.totalCenterInPanel(
 						HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
-								L10N.label("elementgui.dimension.portal_igniter_texture")),
-						PanelUtils.join(texture)))));
+								L10N.label("elementgui.dimension.portal_igniter_texture"))), PanelUtils.join(texture)),
+				proper22)));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
-		propertiesPanel.setOpaque(false);
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
-						L10N.label("elementgui.dimension.portal_block_texture")), PanelUtils.join(portalTexture)),
-				proper)));
-
-		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		JPanel conditions = new JPanel(new GridLayout(2, 1, 5, 2));
@@ -287,9 +275,23 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		conditions.add(portalMakeCondition);
 		conditions.add(portalUseCondition);
 
+		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
+		propertiesPanel.setOpaque(false);
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.gridElements(1, 2, PanelUtils.totalCenterInPanel(
+								HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
+										L10N.label("elementgui.dimension.portal_block_texture"))),
+						PanelUtils.join(portalTexture)), proper)));
+		propertiesPanel.add("South", conditions);
+
+		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
 		JPanel dsg = new JPanel(new BorderLayout(5, 2));
 		dsg.setOpaque(false);
-		dsg.add("West", PanelUtils.centerAndSouthElement(propertiesPanel, conditions, 5, 2));
+		dsg.add("West", propertiesPanel);
 		dsg.add("East", PanelUtils.northAndCenterElement(igniterPanel, new JEmptyBox(), 5, 2));
 
 		JPanel portalPanel = new JPanel(new BorderLayout(5, 2));
@@ -306,7 +308,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ComponentUtils.deriveFont(igniterName, 16);
 
 		enablePortal.addActionListener(e -> updatePortalElements());
-		enableIgniter.addActionListener(e -> updateIgniterElements());
+		enableIgniter.addActionListener(e -> updateIgniterElements(enableIgniter.isSelected()));
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 8, 8));
 		events.add(whenPortaTriggerlUsed);
@@ -356,14 +358,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalTexture.setEnabled(enablePortal.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
 		enableIgniter.setEnabled(enablePortal.isSelected());
-		updateIgniterElements();
+		updateIgniterElements(enablePortal.isSelected() && enableIgniter.isSelected());
 	}
 
-	private void updateIgniterElements() {
-		igniterName.setEnabled(enableIgniter.isSelected());
-		igniterTab.setEnabled(enableIgniter.isSelected());
-		texture.setEnabled(enableIgniter.isSelected());
-		portalMakeCondition.setEnabled(enableIgniter.isSelected());
+	private void updateIgniterElements(boolean enabled) {
+		igniterName.setEnabled(enabled);
+		igniterTab.setEnabled(enabled);
+		texture.setEnabled(enabled);
+		portalMakeCondition.setEnabled(enabled);
 	}
 
 	@Override public void reloadDataLists() {
