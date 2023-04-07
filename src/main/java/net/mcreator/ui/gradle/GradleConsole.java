@@ -21,6 +21,7 @@ package net.mcreator.ui.gradle;
 import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
+import net.mcreator.io.UserFolderManager;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
@@ -37,6 +38,7 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -55,6 +57,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,6 +104,14 @@ public class GradleConsole extends JPanel {
 		setLayout(new BorderLayout());
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				if (!e.getURL().getProtocol().equals("file")){
+					try {
+						DesktopUtils.browse(e.getURL().toURI());
+					} catch (URISyntaxException ex) {
+						ex.printStackTrace();
+					}
+					return;
+				}
 				String url = e.getURL().toString().replace("file:", "");
 				String fileurl = url.replaceAll(":[0-9]+", "");
 				String[] split = url.split(":");
@@ -304,7 +315,8 @@ public class GradleConsole extends JPanel {
 					+ "-bit, " + ref.getApplication().getDeviceInfo().getRamAmountMB() + " MB, " + ref.getApplication()
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
-					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime())
+					+ ", Gradle_User_Home: "+ UserFolderManager.getGradleHome();
 			append(deviceInfo, new Color(127, 120, 120));
 			append(" ");
 			taskOut.append(deviceInfo);
@@ -753,7 +765,10 @@ public class GradleConsole extends JPanel {
 				pan.insertString(")" + text.split("\\(")[1].split("\\)")[1], keyWord);
 			} catch (Exception ignored) {  // workspace can be null or we can fail to parse error link
 				// if we fail to print styled, fallback to plaintext
-				append(text, Color.white, false);
+				//if it is exception
+				if (text.contains("Exception")){
+					append(text,new Color(255,0,0),false);
+				} else append(text, Color.white, false);
 			}
 			scrollToBottom();
 		}
@@ -768,7 +783,7 @@ public class GradleConsole extends JPanel {
 			StyleConstants.setItalic(keyWord, a);
 			StyleConstants.setForeground(keyWord, c);
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-			pan.insertString("" + text, keyWord);
+			pan.insertString(text, keyWord);
 		}
 		scrollToBottom();
 	}
