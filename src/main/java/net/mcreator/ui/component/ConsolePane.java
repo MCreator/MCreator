@@ -30,6 +30,8 @@ import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConsolePane extends JTextPane {
 
@@ -61,12 +63,21 @@ public class ConsolePane extends JTextPane {
 		setEditorKit(kit = new HTMLEditorKit());
 	}
 
+
+	Pattern url = Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?");
 	public void insertString(String s, SimpleAttributeSet set) {
 		if (DEBUG_CONTENTS_TO_LOG && !s.trim().isEmpty())
 			LOG.info(s.trim());
 
-		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + s.replace("<", "&lt;").replace(">", "&gt;")
-				.replace("\n", "<br>") + "</span>");
+		Matcher matcher = url.matcher(s.replace("<", "&lt;").replace(">", "&gt;"));
+		StringBuilder result = new StringBuilder();
+		while (matcher.find()){
+			matcher.appendReplacement(result, "<a href=\"" + matcher.group() + "\" style=\"color: 0080FF;\">" + matcher.group() + "</a>");
+		}
+		matcher.appendTail(result);
+		s = result.toString();
+
+		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + s.replace("\n", "<br>") + "</span>");
 	}
 
 	public void insertLink(String link, String text, String textAfter, SimpleAttributeSet set) {
