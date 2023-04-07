@@ -28,26 +28,21 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
 
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private ThemesPanel themes;
 
 	private final Map<String, JPanel> sectionPanels = new HashMap<>();
 
@@ -169,11 +164,9 @@ public class PreferencesDialog extends MCreatorDialog {
 							entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSectionKey())));
 						}));
 
-		sections.setSelectedIndex(0);
-
 		new PluginsPanel(this);
 
-		themes = new ThemesPanel(this);
+		new ThemesPanel(this);
 
 		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
 		addEditTemplatesPanel("texture_templates", "templates/textures/texturemaker", "png");
@@ -183,6 +176,8 @@ public class PreferencesDialog extends MCreatorDialog {
 				.forEach(this::addEditTemplatesPanel);
 
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
+
+		sections.setSelectedIndex(0);
 	}
 
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
@@ -209,7 +204,6 @@ public class PreferencesDialog extends MCreatorDialog {
 		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
 
 		sectionPanels.put(section, sectionPanel);
-
 	}
 
 	private void savePreferences() {
@@ -217,7 +211,6 @@ public class PreferencesDialog extends MCreatorDialog {
 			if (entries.containsKey(entry))
 				entry.setValueFromComponent(entries.get(entry));
 		}));
-		PreferencesManager.PREFERENCES.hidden.uiTheme.set(themes.getSelectedTheme());
 		PreferencesManager.savePreferences();
 	}
 
@@ -228,7 +221,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			description = "";
 
 		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
-		JComponent component = entry.getComponent(parent, e -> apply.setEnabled(true));
+		JComponent component = entry.getComponent(parent, e -> markChanged());
 		if (component != null)
 			placeInside.add(PanelUtils.westAndEastElement(label, component), getConstraints());
 		else
@@ -249,67 +242,6 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	public void markChanged() {
 		apply.setEnabled(true);
-	}
-
-	public static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
-
-		private int uiTextsPercent = 0;
-		private int helpTipsPercent = 0;
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			setOpaque(isSelected);
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			setForeground(Color.white);
-			setBorder(new EmptyBorder(0, 1, 0, 0));
-
-			ComponentUtils.deriveFont(this, 12);
-			setText(" " + value.getDisplayName(Locale.ROOT));
-
-			uiTextsPercent = L10N.getUITextsLocaleSupport(value);
-			helpTipsPercent = L10N.getHelpTipsSupport(value);
-
-			try {
-				String flagpath = "/flags/" + value.toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
-				@SuppressWarnings("ConstantConditions") BufferedImage image = ImageIO.read(
-						getClass().getResourceAsStream(flagpath));
-				setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (Exception ignored) { // flag not found, ignore
-			}
-
-			return this;
-		}
-
-		@Override public Dimension getPreferredSize() {
-			return new Dimension(super.getPreferredSize().width, super.getPreferredSize().height + 15);
-		}
-
-		@Override protected void paintComponent(Graphics gx) {
-			Graphics2D g = (Graphics2D) gx;
-
-			g.translate(0, -5);
-			super.paintComponent(g);
-			g.translate(0, 5);
-
-			g.setColor(Color.lightGray);
-			g.fillRect(0, getHeight() - 11, getWidth(), 11);
-
-			g.setColor(Color.getHSBColor((float) (1 / 3d - ((100 - uiTextsPercent) / 3d / 100d)), 0.65f, 0.9f));
-			g.fillRect(0, getHeight() - 11, (int) ((getWidth() / 2 - 2) * (uiTextsPercent / 100d)), 11);
-
-			g.setColor(Color.getHSBColor((float) (1 / 3d - ((100 - helpTipsPercent) / 3d / 100d)), 0.65f, 0.9f));
-			g.fillRect(getWidth() / 2 + 2, getHeight() - 11, (int) ((getWidth() / 2 - 2) * (helpTipsPercent / 100d)),
-					11);
-
-			g.setFont(getFont().deriveFont(9f));
-			g.setColor(Color.darkGray);
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-			g.drawString("Texts: " + uiTextsPercent + "%", 2, getHeight() - 2);
-			g.drawString("Tips: " + helpTipsPercent + "%", getWidth() / 2 + 2 + 2, getHeight() - 2);
-		}
-
 	}
 
 }

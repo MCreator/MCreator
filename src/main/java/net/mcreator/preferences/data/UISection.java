@@ -19,25 +19,17 @@
 
 package net.mcreator.preferences.data;
 
-import com.google.gson.JsonElement;
 import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesEntry;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.ColorEntry;
+import net.mcreator.preferences.entries.LocaleEntry;
 import net.mcreator.preferences.entries.StringEntry;
-import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 public class UISection extends PreferencesSection {
 
@@ -57,37 +49,7 @@ public class UISection extends PreferencesSection {
 	public UISection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		language = addEntry(new PreferencesEntry<>("language", L10N.DEFAULT_LOCALE) {
-			@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-				List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
-				locales.sort((a, b) -> {
-					int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
-					int sb = L10N.getUITextsLocaleSupport(b) + L10N.getHelpTipsSupport(b);
-					if (sa == sb)
-						return a.getDisplayName().compareTo(b.getDisplayName());
-
-					return sb - sa;
-				});
-				JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
-				box.setRenderer(new PreferencesDialog.LocaleListRenderer());
-				box.setSelectedItem(this.value);
-				box.addActionListener(fct::accept);
-				return box;
-			}
-
-			@Override public void setValueFromComponent(JComponent component) {
-				this.value = (Locale) ((JComboBox<?>) component).getSelectedItem();
-			}
-
-			@Override public void setValueFromJsonElement(JsonElement object) {
-				this.value = PreferencesManager.gson.fromJson(object, Locale.class);
-			}
-
-			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, Locale.class);
-			}
-		});
-
+		language = addEntry(new LocaleEntry("language", L10N.DEFAULT_LOCALE));
 		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT));
 		backgroundSource = addEntry(
 				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
@@ -107,4 +69,5 @@ public class UISection extends PreferencesSection {
 	@Override public String getSectionKey() {
 		return "ui";
 	}
+
 }
