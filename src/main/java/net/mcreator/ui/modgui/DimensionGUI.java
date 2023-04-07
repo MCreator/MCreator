@@ -258,9 +258,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		igniterPanel.add("North", PanelUtils.gridElements(2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter,
-				PanelUtils.totalCenterInPanel(
-						HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
-								L10N.label("elementgui.dimension.portal_igniter_texture"))), PanelUtils.join(texture)));
+				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
+						L10N.label("elementgui.dimension.portal_igniter_texture")), PanelUtils.join(texture)));
 		igniterPanel.add("Center", PanelUtils.totalCenterInPanel(proper22));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
@@ -276,10 +275,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
 		propertiesPanel.setOpaque(false);
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				PanelUtils.gridElements(1, 2, PanelUtils.totalCenterInPanel(
-								HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
-										L10N.label("elementgui.dimension.portal_block_texture"))),
-						PanelUtils.join(portalTexture)), proper)));
+				PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
+						L10N.label("elementgui.dimension.portal_block_texture")), PanelUtils.join(portalTexture)),
+				proper)));
 		propertiesPanel.add("South", conditions);
 
 		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
