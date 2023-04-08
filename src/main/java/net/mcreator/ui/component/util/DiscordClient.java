@@ -40,7 +40,8 @@ public class DiscordClient implements Closeable {
 	private final Timer timer = new Timer();
 
 	public DiscordClient() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || System.getProperty("os.arch").toLowerCase()
+				.startsWith("aarch"))
 			return;
 
 		try {
@@ -67,7 +68,8 @@ public class DiscordClient implements Closeable {
 	}
 
 	public void updatePresence(String state, String details, String smallImage) {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || System.getProperty("os.arch").toLowerCase()
+				.startsWith("aarch"))
 			return;
 
 		new Thread(() -> {
@@ -86,7 +88,8 @@ public class DiscordClient implements Closeable {
 	}
 
 	@Override public void close() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || System.getProperty("os.arch").toLowerCase()
+				.startsWith("aarch"))
 			return;
 
 		try {
