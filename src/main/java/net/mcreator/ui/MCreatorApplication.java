@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
@@ -215,7 +216,7 @@ public final class MCreatorApplication {
 					Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
 
 				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
-					Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+					Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null,this));
 
 				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
 					Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
@@ -279,11 +280,15 @@ public final class MCreatorApplication {
 		return deviceInfo;
 	}
 
+	private static MCreatorApplication instance;
 	public static void createApplication(List<String> arguments) {
 		if (!applicationStarted) {
-			SwingUtilities.invokeLater(() -> new MCreatorApplication(arguments));
+			SwingUtilities.invokeLater(() -> instance = new MCreatorApplication(arguments));
 			applicationStarted = true;
 		}
+	}
+	public static MCreatorApplication getInstance(){
+		return instance;
 	}
 
 	public WorkspaceSelector getWorkspaceSelector() {
@@ -378,7 +383,11 @@ public final class MCreatorApplication {
 				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE));
 	}
 
-	public void closeApplication() {
+	public void closeApplication(){
+		closeApplication(false);
+	}
+
+	public void closeApplication(boolean restart) {
 		LOG.debug("Closing any potentially open MCreator windows");
 
 		ThreadUtil.runOnSwingThreadAndWait(() -> {
@@ -411,6 +420,16 @@ public final class MCreatorApplication {
 			PluginLoader.INSTANCE.close();
 		} catch (IOException e) {
 			LOG.warn("Failed to close plugin loader", e);
+		}
+
+		if (restart){
+			try {
+				if (Runtime.getRuntime().exec(OS.getRestartShell()).isAlive()){
+					LOG.debug("Restart successfully");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		try {
