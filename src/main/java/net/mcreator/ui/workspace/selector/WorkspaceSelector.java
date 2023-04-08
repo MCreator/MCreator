@@ -343,6 +343,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+			recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			recentsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -391,10 +393,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
+			recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
 			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		} else {
+			recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
