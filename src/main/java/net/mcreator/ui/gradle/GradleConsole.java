@@ -104,7 +104,7 @@ public class GradleConsole extends JPanel {
 		setLayout(new BorderLayout());
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-				if (!e.getURL().getProtocol().equals("file")){
+				if (e.getURL().getProtocol().equals("https")||e.getURL().getProtocol().equals("http")){
 					try {
 						DesktopUtils.browse(e.getURL().toURI());
 					} catch (URISyntaxException ex) {
