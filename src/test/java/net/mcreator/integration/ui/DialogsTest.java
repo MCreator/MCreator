@@ -111,7 +111,7 @@ public class DialogsTest {
 	}
 
 	@Test public void testPreferencesDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null,mcreator.getApplication()));
 	}
 
 	@Test public void testMCItemSelector() throws Throwable {

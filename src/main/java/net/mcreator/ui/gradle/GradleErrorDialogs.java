@@ -95,7 +95,7 @@ public class GradleErrorDialogs {
 				L10N.t("gradle.errors.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
 				options[0]);
 		if (option == 0) {
-			new PreferencesDialog(whereToShow, "Gradle settings");
+			new PreferencesDialog(whereToShow, "Gradle settings",MCreatorApplication.getInstance());
 		}
 	}
 
@@ -120,7 +120,7 @@ public class GradleErrorDialogs {
 				L10N.t("gradle.errors.title"), JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
 				options[0]);
 		if (option == 0) {
-			new PreferencesDialog(whereToShow, L10N.t("preferences.section.gradle"));
+			new PreferencesDialog(whereToShow, L10N.t("preferences.section.gradle"),MCreatorApplication.getInstance());
 		}
 	}
 
