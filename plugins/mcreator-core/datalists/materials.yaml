@@ -34,12 +34,8 @@
   texture: CARPET#3
 - GLASS:
   texture: GLASS
-- REDSTONE_LIGHT:
-  texture: LIT_REDSTONE_LAMP
 - TNT:
   texture: TNT
-- CORAL:
-  texture: WATERLILY
 - ICE:
   texture: ICE
 - PACKED_ICE:
