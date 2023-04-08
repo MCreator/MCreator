@@ -91,6 +91,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 
+		getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+		getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+		getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
+
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {
 			NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
@@ -168,8 +172,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		logoPanel.add("Center", socialButtons);
 		logoPanel.add("South", version);
 
-		logoPanel.setBorder(BorderFactory.createEmptyBorder(45, 26 + 25, 0, 10));
-		actions.setBorder(BorderFactory.createEmptyBorder(25, 24 + 25, 2, 10));
+		logoPanel.setBorder(BorderFactory.createEmptyBorder(30, 26 + 25, 0, 10));
+		actions.setBorder(BorderFactory.createEmptyBorder(40, 24 + 25, 2, 10));
 
 		JPanel southcenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		southcenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 26, 60 - 1));
@@ -223,8 +227,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		add("Center",
 				PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(logoPanel, actions), southcenter));
 
-		recentPanel.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		recentPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
 		recentPanel.setPreferredSize(new Dimension(220, 10));
 
 		initWebsitePanel();
@@ -233,7 +236,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
-		setSize(790, 460);
+		setSize(820, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
