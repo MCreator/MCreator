@@ -1,0 +1,18 @@
+_default: ""
+_mcreator_prefix: "CUSTOM:"
+ambient.cave: ambient.cave
+ambient.underwater.enter: ambient.underwater.enter
+ambient.underwater.exit: ambient.underwater.exit
+ambient.underwater.loop: ambient.underwater.loop
+ambient.underwater.loop.additions: ambient.underwater.loop.additions
+ambient.underwater.loop.additions.rare: ambient.underwater.loop.additions.rare
+ambient.underwater.loop.additions.ultra_rare: ambient.underwater.loop.additions.ultra_rare
+block.anvil.break: block.anvil.break
+block.anvil.destroy: block.anvil.destroy
+block.anvil.fall: block.anvil.fall
+block.anvil.hit: block.anvil.hit
+block.anvil.land: block.anvil.land
+block.anvil.place: block.anvil.place
+block.anvil.step: block.anvil.step
+block.anvil.use: block.anvil.use
+# just some copied from 1.19.2 for test use, replace with proper mappings
