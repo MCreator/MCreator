@@ -1,0 +1,18 @@
+_default:
+  - Zombie
+  - EntityType.ZOMBIE
+  - zombie
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "@NAMEEntity"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+EntityZombie:
+  - Zombie
+  - EntityType.ZOMBIE
+  - zombie
+EntityBee:
+  - Bee
+  - EntityType.BEE
+  - bee
+# just some copied from 1.19.2 for test use, replace with proper mappings
