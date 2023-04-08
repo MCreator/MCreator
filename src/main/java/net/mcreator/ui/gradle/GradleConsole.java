@@ -764,7 +764,6 @@ public class GradleConsole extends JPanel {
 				pan.insertString(")" + text.split("\\(")[1].split("\\)")[1], keyWord);
 			} catch (Exception ignored) {  // workspace can be null or we can fail to parse error link
 				// if we fail to print styled, fallback to plaintext
-				//if it is exception
 				append(text, Color.white, false);
 			}
 			scrollToBottom();
