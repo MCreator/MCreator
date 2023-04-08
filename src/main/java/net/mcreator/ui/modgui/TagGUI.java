@@ -176,7 +176,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 	@Override protected void afterGeneratableElementStored() {
 		super.afterGeneratableElementStored();
 		modElement.clearMetadata();
-		modElement.putMetadata("type", type.getSelectedItem().toString().toLowerCase());
+		modElement.putMetadata("type",
+				type.getSelectedItem() != null ? type.getSelectedItem().toString().toLowerCase() : "block");
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
