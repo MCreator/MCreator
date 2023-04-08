@@ -1,20 +1,4 @@
 
-		<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-		    .ambientLoopSound(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow((new ResourceLocation("${data.ambientSound}"))))
-		</#if>
-		<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-		    .ambientMoodSound(new AmbientMoodSettings(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
-		</#if>
-		<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-		    .ambientAdditionsSound(new AmbientAdditionsSettings(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.additionsSound}")), 0.0111D))
-		</#if>
-		<#if data.music?has_content && data.music.getMappedValue()?has_content>
-		    .backgroundMusic(new Music(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.music}")), 12000, 24000, true))
-		</#if>
-		<#if data.spawnParticles>
-		    .ambientParticle(new AmbientParticleSettings(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
-		</#if>
-
         <#if (data.treesPerChunk > 0)>
         	<#assign ct = data.treeType == data.TREES_CUSTOM>
 

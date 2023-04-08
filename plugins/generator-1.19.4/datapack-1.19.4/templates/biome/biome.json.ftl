@@ -5,6 +5,39 @@
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
     "effects": {
+		<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
+		"ambient_sound": "${data.ambientSound}",
+		</#if>
+	  	<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
+		"mood_sound": {
+			"sound": "${data.moodSound}",
+			"tick_delay": ${data.moodSoundDelay},
+			"offset": 8,
+			"block_search_extent": 2
+		},
+	  	</#if>
+	  	<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
+		"additions_sound": {
+			"sound": "${data.additionsSound}",
+		  	"tick_chance": 0.0111
+		},
+	  	</#if>
+	  	<#if data.music?has_content && data.music.getMappedValue()?has_content>
+		"music": {
+			"sound": "${data.music}",
+			"min_delay": 12000,
+			"max_delay": 24000,
+			"replace_current_music": true
+        },
+	  	</#if>
+	  	<#if data.spawnParticles>
+		"particle": {
+			"options": {
+				"type": "${generator.map(data.particleToSpawn.getUnmappedValue(), "particles", 1)}"
+			},
+			"probability": ${data.particlesProbability / 100}
+        },
+		</#if>
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
     	"sky_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)},
