@@ -1,108 +1,19 @@
-<#--
- # MCreator (https://mcreator.net/)
- # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
- #
- # This program is free software: you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # This program is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along setValue this program.  If not, see <https://www.gnu.org/licenses/>.
- #
- # Additional permission for code generator templates (*.ftl files)
- #
- # As a special exception, you may create a larger work that contains part or
- # all of the MCreator code generator templates (*.ftl files) and distribute
- # that work under terms of your choice, so long as that work isn't itself a
- # template for code generation. Alternatively, if you modify or redistribute
- # the template itself, you may (at your option) remove this special exception,
- # which will cause the template and the resulting code generator output files
- # to be licensed under the GNU General Public License without this special
- # exception.
--->
 
-<#-- @formatter:off -->
-<#include "../mcitems.ftl">
-
-package ${package}.world.biome;
-
-import net.minecraftforge.common.BiomeManager;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-
-public class ${name}Biome {
-
-	<#if data.spawnBiome || data.spawnBiomeNether>
-	public static final List<Climate.ParameterPoint> PARAMETER_POINTS = List.of(
-	    new Climate.ParameterPoint(
-	        Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
-	        Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
-	        Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
-	        Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
-	        Climate.Parameter.point(0.0f),
-	        Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
-	        0 <#-- offset -->
-	    ),
-        new Climate.ParameterPoint(
-			Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
-			Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
-			Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
-			Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
-            Climate.Parameter.point(1.0f),
-			Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
-            0 <#-- offset -->
-        )
-    );
-	</#if>
-
-	<#if data.spawnInCaves>
-	public static final List<Climate.ParameterPoint> UNDERGROUND_PARAMETER_POINTS = List.of(
-        new Climate.ParameterPoint(
-			Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
-			Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
-			Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
-			Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
-			Climate.Parameter.span(0.2f, 0.9f),
-			Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
-			0 <#-- offset -->
-	    )
-	);
-    </#if>
-
-    public static Biome createBiome() {
-            BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
-                .fogColor(${data.airColor?has_content?then(data.airColor.getRGB(), 12638463)})
-                .waterColor(${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)})
-                .waterFogColor(${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)})
-                .skyColor(${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)})
-                .foliageColorOverride(${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)})
-                .grassColorOverride(${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)})
-                <#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-                    .ambientLoopSound(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow((new ResourceLocation("${data.ambientSound}"))))
-                </#if>
-                <#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-                    .ambientMoodSound(new AmbientMoodSettings(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
-                </#if>
-                <#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-                    .ambientAdditionsSound(new AmbientAdditionsSettings(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.additionsSound}")), 0.0111D))
-                </#if>
-                <#if data.music?has_content && data.music.getMappedValue()?has_content>
-                    .backgroundMusic(new Music(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.music}")), 12000, 24000, true))
-                </#if>
-                <#if data.spawnParticles>
-                    .ambientParticle(new AmbientParticleSettings(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
-                </#if>
-                .build();
-
-        BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder();
+		<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
+		    .ambientLoopSound(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow((new ResourceLocation("${data.ambientSound}"))))
+		</#if>
+		<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
+		    .ambientMoodSound(new AmbientMoodSettings(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.moodSound}")), ${data.moodSoundDelay}, 8, 2))
+		</#if>
+		<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
+		    .ambientAdditionsSound(new AmbientAdditionsSettings(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.additionsSound}")), 0.0111D))
+		</#if>
+		<#if data.music?has_content && data.music.getMappedValue()?has_content>
+		    .backgroundMusic(new Music(ForgeRegistries.SOUND_EVENTS.getDelegateOrThrow(new ResourceLocation("${data.music}")), 12000, 24000, true))
+		</#if>
+		<#if data.spawnParticles>
+		    .ambientParticle(new AmbientParticleSettings(${data.particleToSpawn}, ${data.particlesProbability / 100}f))
+		</#if>
 
         <#if (data.treesPerChunk > 0)>
         	<#assign ct = data.treeType == data.TREES_CUSTOM>
@@ -302,7 +213,6 @@ public class ${name}Biome {
         </#if>
 
         <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
-            <#-- Some features don't work well with nether biomes -->
             <#if data.spawnBiomeNether &&
                     (defaultFeature == "Caves" ||
                      defaultFeature == "ExtraEmeraldOre" ||
@@ -318,39 +228,3 @@ public class ${name}Biome {
             BiomeDefaultFeatures.add${mfeat}(biomeGenerationSettings);
         	</#if>
         </#list>
-
-        MobSpawnSettings.Builder mobSpawnInfo = new MobSpawnSettings.Builder();
-        <#list data.spawnEntries as spawnEntry>
-			<#assign entity = generator.map(spawnEntry.entity.getUnmappedValue(), "entities", 1)!"null">
-			<#if entity != "null">
-			mobSpawnInfo.addSpawn(${generator.map(spawnEntry.spawnType, "mobspawntypes")},
-				new MobSpawnSettings.SpawnerData(${entity}, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
-			</#if>
-        </#list>
-
-        return new Biome.BiomeBuilder()
-            .precipitation(Biome.Precipitation.<#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>RAIN<#else>SNOW</#if><#else>NONE</#if>)
-            .temperature(${data.temperature}f)
-            .downfall(${data.rainingPossibility}f)
-            .specialEffects(effects)
-            .mobSpawnSettings(mobSpawnInfo.build())
-            .generationSettings(biomeGenerationSettings.build())
-            .build();
-    }
-
-}
-
-<#macro vinesAndFruits>
-.decorators(ImmutableList.of(
-	<#if data.hasVines()>
-		${name}LeaveDecorator.INSTANCE,
-		${name}TrunkDecorator.INSTANCE
-	</#if>
-
-	<#if data.hasFruits()>
-	    <#if data.hasVines()>,</#if>
-        ${name}FruitDecorator.INSTANCE
-	</#if>
-))
-</#macro>
-<#-- @formatter:on -->

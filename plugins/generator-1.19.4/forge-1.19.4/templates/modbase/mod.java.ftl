@@ -43,7 +43,6 @@ import org.apache.logging.log4j.Logger;
 			${JavaModName}Fluids.REGISTRY.register(bus);
 			${JavaModName}FluidTypes.REGISTRY.register(bus);
 		</#if>
-		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 	}
 
 	private static final String PROTOCOL_VERSION = "1";

@@ -16,9 +16,11 @@
 		"monster": [<@generateEntityList data.spawnEntries "monster"/>],
 		"creature": [<@generateEntityList data.spawnEntries "creature"/>],
 		"ambient": [<@generateEntityList data.spawnEntries "ambient"/>],
-		"water_creature": [<@generateEntityList data.spawnEntries "waterCreature"/>],
-		"water_ambient": [],
-		"misc": []
+      	"axolotls": [<@generateEntityList data.spawnEntries "axolotls"/>],
+      	"underground_water_creature": [<@generateEntityList data.spawnEntries "undergroundWaterCreature"/>],
+      	"water_creature": [<@generateEntityList data.spawnEntries "waterCreature"/>],
+		"water_ambient": [<@generateEntityList data.spawnEntries "waterAmbient"/>],
+		"misc": [<@generateEntityList data.spawnEntries "misc"/>]
 	},
 	"spawn_costs": {},
     "carvers": {

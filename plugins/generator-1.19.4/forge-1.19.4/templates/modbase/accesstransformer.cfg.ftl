@@ -7,9 +7,7 @@ public net.minecraft.world.level.GameRules$BooleanValue m_46250_(Z)Lnet/minecraf
 </#if>
 
 <#if w.hasElementsOfType("biome")>
-public net.minecraft.world.level.biome.MultiNoiseBiomeSource <init>(Lnet/minecraft/world/level/biome/Climate$ParameterList;Ljava/util/Optional;)V #constructor
-public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48438_ #preset
-public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48435_ #parameters
+public net.minecraft.world.level.biome.MultiNoiseBiomeSource m_274409_()Lnet/minecraft/world/level/biome/Climate$ParameterList; #parameters()
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_62137_ #biomeSource
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_223020_ #featuresPerStep
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_223021_ #generationSettingsGetter

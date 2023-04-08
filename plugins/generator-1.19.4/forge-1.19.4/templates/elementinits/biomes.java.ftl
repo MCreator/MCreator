@@ -55,86 +55,175 @@ import com.mojang.datafixers.util.Pair;
 	</#if>
 </#list>
 
-<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
-@Mod.EventBusSubscriber
-</#if>
-public class ${JavaModName}Biomes {
+@Mod.EventBusSubscriber public class ${JavaModName}Biomes {
 
-	public static final DeferredRegister<Biome> REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, ${JavaModName}.MODID);
+	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
+		MinecraftServer server = event.getServer();
+		Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE);
+		Registry<LevelStem> levelStemTypeRegistry = server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
+		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registries.BIOME);
 
-    <#list biomes as biome>
-    public static final RegistryObject<Biome> ${biome.getModElement().getRegistryNameUpper()}
-        = REGISTRY.register("${biome.getModElement().getRegistryName()}", ${biome.getModElement().getName()}Biome::createBiome);
-    </#list>
+		for (LevelStem levelStem : levelStemTypeRegistry.stream().toList()) {
+			DimensionType dimensionType = levelStem.type().value();
 
-	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
+			<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
+			if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.OVERWORLD)) {
+				ChunkGenerator chunkGenerator = levelStem.generator();
 
-		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-			MinecraftServer server = event.getServer();
-			Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE);
-			Registry<LevelStem> levelStemTypeRegistry = server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
-			Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registries.BIOME);
+				// Inject biomes to biome source
+				if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
+					List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
 
-			for (ServerLevel level : server.getAllLevels()) {
-				ResourceKey<LevelStem> levelStemKey = Registries.levelToLevelStem(level.dimension());
-				LevelStem levelStem = levelStemTypeRegistry.getOrThrow(levelStemKey);
+					<#list spawn_overworld as biome>
+					parameters.add(new Pair<>(
+						new Climate.ParameterPoint(
+							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+							Climate.Parameter.point(0.0f),
+							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+							0 <#-- offset -->
+						),
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+					));
+					parameters.add(new Pair<>(
+						new Climate.ParameterPoint(
+							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+							Climate.Parameter.point(1.0f),
+							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+							0 <#-- offset -->
+						),
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+					));
+					</#list>
 
-				DimensionType dimensionType = levelStem.type().value();
+					<#list spawn_overworld_caves as biome>
+					parameters.add(new Pair<>(
+						new Climate.ParameterPoint(
+							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+							Climate.Parameter.span(0.2f, 0.9f),
+							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+							0 <#-- offset -->
+						),
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+					));
+					</#list>
 
-				<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-				if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.OVERWORLD)) {
-					ChunkGenerator chunkGenerator = levelStem.generator();
+					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
+					chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
+							FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
+									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
+				}
 
-					// Inject biomes to biome source
-					if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
-						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
-
-						<#list spawn_overworld as biome>
-						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
-							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getHolderOrThrow(
-									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
-						}
-						</#list>
+				// Inject surface rules
+				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+					NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
+					SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
+					if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 						<#list spawn_overworld_caves as biome>
-						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.UNDERGROUND_PARAMETER_POINTS) {
-							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getHolderOrThrow(
-									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
-						}
+						surfaceRules.add(1, anySurfaceRule(
+							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
+							${mappedBlockToBlockStateCode(biome.groundBlock)},
+							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+						));
 						</#list>
-						
-						chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList(parameters));
-						chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
-								FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
-										chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
+
+						<#list spawn_overworld as biome>
+						surfaceRules.add(1, preliminarySurfaceRule(
+							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
+							${mappedBlockToBlockStateCode(biome.groundBlock)},
+							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+						));
+						</#list>
+
+						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
+							noiseGeneratorSettings.noiseSettings(),
+							noiseGeneratorSettings.defaultBlock(),
+							noiseGeneratorSettings.defaultFluid(),
+							noiseGeneratorSettings.noiseRouter(),
+							SurfaceRules.sequence(surfaceRules.toArray(SurfaceRules.RuleSource[]::new)),
+							noiseGeneratorSettings.spawnTarget(),
+							noiseGeneratorSettings.seaLevel(),
+							noiseGeneratorSettings.disableMobGeneration(),
+							noiseGeneratorSettings.aquifersEnabled(),
+							noiseGeneratorSettings.oreVeinsEnabled(),
+							noiseGeneratorSettings.useLegacyRandomSource()
+						);
+						noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
 					}
+				}
+			}
+			</#if>
 
-					// Inject surface rules
-					if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-						NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
-						SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
-						if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
-							List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
+			<#if spawn_nether?has_content>
+			if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.NETHER)) {
+				ChunkGenerator chunkGenerator = levelStem.generator();
 
-							<#list spawn_overworld_caves as biome>
-							surfaceRules.add(1, anySurfaceRule(
-								ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()),
-								${mappedBlockToBlockStateCode(biome.groundBlock)},
-								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-							));
-							</#list>
+				// Inject biomes to biome source
+				if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
+					List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
 
-							<#list spawn_overworld as biome>
-							surfaceRules.add(1, preliminarySurfaceRule(
-								ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()),
-								${mappedBlockToBlockStateCode(biome.groundBlock)},
-								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-							));
-							</#list>
+					<#list spawn_nether as biome>
+					parameters.add(new Pair<>(
+						new Climate.ParameterPoint(
+							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+							Climate.Parameter.point(0.0f),
+							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+							0 <#-- offset -->
+						),
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+					));
+					parameters.add(new Pair<>(
+						new Climate.ParameterPoint(
+							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+							Climate.Parameter.point(1.0f),
+							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+							0 <#-- offset -->
+						),
+						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
+					));
+					</#list>
 
-							NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
+					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
+					chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
+							FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
+									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
+				}
+
+				// Inject surface rules
+				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+					NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
+					SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
+					if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
+
+						<#list spawn_nether as biome>
+						surfaceRules.add(2, anySurfaceRule(
+								ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
+							${mappedBlockToBlockStateCode(biome.groundBlock)},
+							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+						));
+						</#list>
+
+						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
 								noiseGeneratorSettings.noiseSettings(),
 								noiseGeneratorSettings.defaultBlock(),
 								noiseGeneratorSettings.defaultFluid(),
@@ -146,96 +235,19 @@ public class ${JavaModName}Biomes {
 								noiseGeneratorSettings.aquifersEnabled(),
 								noiseGeneratorSettings.oreVeinsEnabled(),
 								noiseGeneratorSettings.useLegacyRandomSource()
-							);
-							noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
-						}
+						);
+						noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
 					}
 				}
-				</#if>
-				
-				<#if spawn_nether?has_content>
-				if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.NETHER)) {
-					ChunkGenerator chunkGenerator = levelStem.generator();
-
-					// Inject biomes to biome source
-					if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
-						List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters.values());
-
-						<#list spawn_nether as biome>
-						for (Climate.ParameterPoint parameterPoint : ${biome.getModElement().getName()}Biome.PARAMETER_POINTS) {
-							parameters.add(new Pair<>(parameterPoint, biomeRegistry.getHolderOrThrow(
-									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()))));
-						}
-						</#list>
-
-						chunkGenerator.biomeSource = new MultiNoiseBiomeSource(new Climate.ParameterList<>(parameters), noiseSource.preset);
-						chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
-								FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
-										chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
-					}
-
-					// Inject surface rules
-					if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-						NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
-						SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
-						if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
-							List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
-
-							<#list spawn_nether as biome>
-							surfaceRules.add(2, anySurfaceRule(
-									ResourceKey.create(Registries.BIOME, ${biome.getModElement().getRegistryNameUpper()}.getId()),
-								${mappedBlockToBlockStateCode(biome.groundBlock)},
-								${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-								${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-							));
-							</#list>
-
-							NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
-									noiseGeneratorSettings.noiseSettings(),
-									noiseGeneratorSettings.defaultBlock(),
-									noiseGeneratorSettings.defaultFluid(),
-									noiseGeneratorSettings.noiseRouter(),
-									SurfaceRules.sequence(surfaceRules.toArray(SurfaceRules.RuleSource[]::new)),
-									noiseGeneratorSettings.spawnTarget(),
-									noiseGeneratorSettings.seaLevel(),
-									noiseGeneratorSettings.disableMobGeneration(),
-									noiseGeneratorSettings.aquifersEnabled(),
-									noiseGeneratorSettings.oreVeinsEnabled(),
-									noiseGeneratorSettings.useLegacyRandomSource()
-							);
-							noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
-						}
-					}
-				}
-				</#if>
 			}
+			</#if>
 		}
+	}
 
-		<#if spawn_overworld?has_content>
-		private static SurfaceRules.RuleSource preliminarySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
-			return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
-				SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
-					SurfaceRules.sequence(
-						SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-							SurfaceRules.sequence(
-								SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
-									SurfaceRules.state(groundBlock)
-								),
-								SurfaceRules.state(underwaterBlock)
-							)
-						),
-						SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
-							SurfaceRules.state(undergroundBlock)
-						)
-					)
-				)
-			);
-		}
-		</#if>
-
-		<#if spawn_nether?has_content || spawn_overworld_caves?has_content>
-		private static SurfaceRules.RuleSource anySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
-			return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
+	<#if spawn_overworld?has_content>
+	private static SurfaceRules.RuleSource preliminarySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
+		return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
+			SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
 				SurfaceRules.sequence(
 					SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
 						SurfaceRules.sequence(
@@ -249,10 +261,29 @@ public class ${JavaModName}Biomes {
 						SurfaceRules.state(undergroundBlock)
 					)
 				)
-			);
-		}
-		</#if>
+			)
+		);
+	}
+	</#if>
 
+	<#if spawn_nether?has_content || spawn_overworld_caves?has_content>
+	private static SurfaceRules.RuleSource anySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
+		return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
+			SurfaceRules.sequence(
+				SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
+					SurfaceRules.sequence(
+						SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
+							SurfaceRules.state(groundBlock)
+						),
+						SurfaceRules.state(underwaterBlock)
+					)
+				),
+				SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
+					SurfaceRules.state(undergroundBlock)
+				)
+			)
+		);
+	}
 	</#if>
 
 }

@@ -1,6 +1,7 @@
 templates:
-  - template: biome/biome.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
+  - template: biome/biome.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/worldgen/biome/@registryname.json"
   - template: biome/tree_fruits_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMEFruitDecorator.java"
     condition: hasFruits()
@@ -12,9 +13,10 @@ templates:
     condition: hasVines()
 
 global_templates:
-  - template: elementinits/biomes.java.ftl
+  - template: elementinits/biomes.java.ftl # TODO: generate only when needed, also the access transformer part
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
+
   - template: biome/biometag.json.ftl # loaded from datapack generator
     writer: json
     variables: "type=mineshaft"
