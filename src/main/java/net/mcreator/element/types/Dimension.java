@@ -91,9 +91,13 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-				getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-				getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame, enableIgniter);
+		if (this.enablePortal) {
+			return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
+					getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
+					getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame, enableIgniter);
+		} else {
+			return null;
+		}
 	}
 
 	@Override public TabEntry getCreativeTab() {
