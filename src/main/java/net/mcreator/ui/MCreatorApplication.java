@@ -395,7 +395,7 @@ public final class MCreatorApplication {
 			List<MCreator> mcreatorsTmp = new ArrayList<>(openMCreators);
 			for (MCreator mcreator : mcreatorsTmp) {
 				LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
-				if (!mcreator.closeThisMCreator(false))
+				if (!mcreator.closeThisMCreator(false,restart))
 					return; // if we fail to close all windows, we cancel the application close
 			}
 		});
@@ -422,19 +422,23 @@ public final class MCreatorApplication {
 			LOG.warn("Failed to close plugin loader", e);
 		}
 
+		try {
+			Thread.sleep(1000); // additional sleep for more robustness
+		} catch (Exception ignored) {
+		}
+
+		LOG.debug("Restart:"+restart);
 		if (restart){
 			try {
-				if (Runtime.getRuntime().exec(OS.getRestartShell()).isAlive()){
+				if (new ProcessBuilder(OS.getRestartShell()).directory(
+						new File(System.getProperty("user.dir"))).start().isAlive()){
 					LOG.debug("Restart successfully");
+				} else {
+					LOG.warn("Restart fail");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-
-		try {
-			Thread.sleep(1000); // additional sleep for more robustness
-		} catch (Exception ignored) {
 		}
 
 		LOG.debug("Exiting MCreator");

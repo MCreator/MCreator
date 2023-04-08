@@ -340,6 +340,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	}
 
 	public boolean closeThisMCreator(boolean returnToProjectSelector) {
+		return closeThisMCreator(returnToProjectSelector,false);
+	}
+	public boolean closeThisMCreator(boolean returnToProjectSelector,boolean restart) {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
 			if (gradleConsole.isGradleSetupTaskRunning()) {
@@ -375,7 +378,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				if (returnToProjectSelector)
 					application.showWorkspaceSelector();
 				else
-					application.closeApplication();
+					application.closeApplication(restart);
 			}
 
 			return true;
