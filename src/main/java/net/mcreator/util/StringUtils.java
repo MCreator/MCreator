@@ -36,6 +36,8 @@ public class StringUtils {
 	private static final Pattern underscoreReducer = Pattern.compile("(?<=\\d)_(?=\\d)");
 	private static final Pattern nonescapedCommaSplitter = Pattern.compile("(?<!\\\\),");
 
+	private static final Pattern url = Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?");
+
 	public static String abbreviateString(String input, int maxLength) {
 		return abbreviateString(input, maxLength, true);
 	}
@@ -111,6 +113,16 @@ public class StringUtils {
 			count++;
 
 		return count;
+	}
+
+	public static String matchUrl(String s){
+		Matcher matcher = url.matcher(s.replace("<", "&lt;").replace(">", "&gt;"));
+		StringBuilder result = new StringBuilder();
+		while (matcher.find()){
+			matcher.appendReplacement(result, "<a href=\"" + matcher.group() + "\" style=\"color: 0080FF;\">" + matcher.group() + "</a>");
+		}
+		matcher.appendTail(result);
+		return result.toString();
 	}
 
 }
