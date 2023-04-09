@@ -18,6 +18,8 @@
 
 package net.mcreator.generator.mapping;
 
+import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.types.Tag;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -82,21 +84,41 @@ public class NameMapper {
 
 			if (toMapTemplate != null) {
 				origName = origName.replace(mcreator_prefix, "");
-				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
-						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
-						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
-				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")) {
+				String retval = GeneratorTokens.replaceTokens(workspace,
+						toMapTemplate.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH)));
+				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")
+						|| toMapTemplate.contains("@namespace") || toMapTemplate.contains("@NAMESPACE")
+						|| toMapTemplate.contains("@registrytype")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {
 						retval = retval.replace("@registryname", element.getRegistryName())
 								.replace("@REGISTRYNAME", element.getRegistryNameUpper());
+						if (element.getGeneratableElement() instanceof NamespacedGeneratableElement namespaceGE) {
+							retval = retval.replace("@namespace",
+											namespaceGE.getNamespace().toLowerCase(Locale.ENGLISH))
+									.replace("@NAMESPACE", namespaceGE.getNamespace().toLowerCase(Locale.ENGLISH));
+							if (namespaceGE instanceof Tag tag) {
+								retval = retval.replace("@registrytype", tag.tagRegistryType());
+							} else {
+								LOG.warn("Failed to convert generatable element " + origName + " to tag");
+								retval = retval.replace("@registrytype", UNKNOWN_ELEMENT);
+							}
+						} else {
+							LOG.warn("Failed to get generatable element for: " + origName);
+							retval = retval.replace("@namespace", UNKNOWN_ELEMENT)
+									.replace("@NAMESPACE", UNKNOWN_ELEMENT.toLowerCase(Locale.ENGLISH))
+									.replace("@registrytype", UNKNOWN_ELEMENT);
+						}
 					} else {
 						LOG.warn("Failed to determine registry name for: " + origName);
 						retval = retval.replace("@registryname", UNKNOWN_ELEMENT)
-								.replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH));
+								.replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH))
+								.replace("@namespace", UNKNOWN_ELEMENT)
+								.replace("@NAMESPACE", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH))
+								.replace("@registrytype", UNKNOWN_ELEMENT);
 					}
 				}
-				return retval;
+				return retval.replace("@NAME", origName).replace("@name", origName.toLowerCase(Locale.ENGLISH));
 			} else {
 				return origName;
 			}

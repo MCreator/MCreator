@@ -53,6 +53,12 @@ import java.util.Locale;
 		return type.toLowerCase(Locale.ENGLISH);
 	}
 
+	public String tagRegistryType() {
+		if (tagType().length() > 0 && tagType().charAt(tagType().length() - 1) == 's')
+			return tagType().substring(0, tagType().length() - 1);
+		return tagType();
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}

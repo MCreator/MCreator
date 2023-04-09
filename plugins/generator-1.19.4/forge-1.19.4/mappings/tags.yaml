@@ -1,6 +1,6 @@
 _default: none
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@modid:@registryname"
+_mcreator_map_template: "@namespace:@registrytype/@registryname"
 minecraft:block/acacia_logs: minecraft:block/acacia_logs
 # Coming in 1.20 update
 # minecraft:block/all_hanging_signs: minecraft:block/all_hanging_signs

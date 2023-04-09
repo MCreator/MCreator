@@ -1,6 +1,6 @@
 _default: none
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@modid:@registryname"
+_mcreator_map_template: "@namespace:@registrytype/@registryname"
 minecraft:block/acacia_logs: minecraft:block/acacia_logs
 minecraft:block/all_signs: minecraft:block/all_signs
 minecraft:block/ancient_city_replaceable: minecraft:block/ancient_city_replaceable
