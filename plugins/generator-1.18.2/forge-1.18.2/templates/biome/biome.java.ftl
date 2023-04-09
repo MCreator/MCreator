@@ -194,27 +194,6 @@ public class ${name}Biome {
             )));
         </#if>
 
-        <#if (data.grassPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                PlacementUtils.register("${modid}:grass_${registryname}", VegetationFeatures.PATCH_GRASS, List.of(
-				    NoiseThresholdCountPlacement.of(-0.8D, 5, ${data.grassPerChunk}),
-                    InSquarePlacement.spread(),
-                    PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
-                    BiomeFilter.biome()
-            )));
-        </#if>
-
-        <#if (data.flowersPerChunk > 0)>
-            biomeGenerationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-			    PlacementUtils.register("${modid}:flower_${registryname}", VegetationFeatures.FLOWER_DEFAULT, List.of(
-				    CountPlacement.of(${data.flowersPerChunk}),
-                    RarityFilter.onAverageOnceEvery(32),
-                    InSquarePlacement.spread(),
-                    PlacementUtils.HEIGHTMAP,
-                    BiomeFilter.biome()
-            )));
-        </#if>
-
         <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         	<#if mfeat != "null">

@@ -61,8 +61,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final VTextField name = new VTextField(20);
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
-	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
-	private final JSpinner flowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
 
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
@@ -354,23 +352,15 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(3, 2, 10, 2));
+		JPanel sbbp3 = new JPanel(new GridLayout(1, 2, 0, 0));
 		sbbp3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.biome.vanilla_features"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_per_chunk"),
-				L10N.label("elementgui.biome.grass_per_chunk")));
-		sbbp3.add(grassPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/flowers_per_chunk"),
-				L10N.label("elementgui.biome.flowers_per_chunk")));
-		sbbp3.add(flowersPerChunk);
-
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
-		defaultFeatures.setPreferredSize(new Dimension(280, 36));
+		defaultFeatures.setPreferredSize(new Dimension(340, 36));
 		sbbp3.add(defaultFeatures);
 
 		sbbp3.setOpaque(false);
@@ -393,7 +383,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/tree_definition"),
 				L10N.label("elementgui.biome.tree_definition")));
-		sbbp5.add(PanelUtils.gridElements(1, 2, vanillaTrees, customTrees));
+		sbbp5.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees));
 
 		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/minimal_tree_height"),
 				L10N.label("elementgui.biome.minimal_tree_height")));
@@ -415,8 +405,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.fruits_block")));
 		sbbp5.add(PanelUtils.join(treeFruits));
 
-		pane3.add("Center" , PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(sbbp5), PanelUtils.pullElementUp(sbbp3))));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(sbbp3, sbbp5)));
 
 		JPanel sbbp4 = new JPanel(new GridLayout(8, 2, 35, 2));
 
@@ -692,8 +681,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterColor.setColor(biome.waterColor);
 		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
-		grassPerChunk.setValue(biome.grassPerChunk);
-		flowersPerChunk.setValue(biome.flowersPerChunk);
 		rainingPossibility.setValue(biome.rainingPossibility);
 		spawnBiome.setSelected(biome.spawnBiome);
 		spawnBiomeNether.setSelected(biome.spawnBiomeNether);
@@ -767,8 +754,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.particlesProbability = (double) particlesProbability.getValue();
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
-		biome.grassPerChunk = (int) grassPerChunk.getValue();
-		biome.flowersPerChunk = (int) flowersPerChunk.getValue();
 		biome.rainingPossibility = (double) rainingPossibility.getValue();
 		biome.temperature = (double) temperature.getValue();
 		biome.defaultFeatures = defaultFeatures.getListElements();

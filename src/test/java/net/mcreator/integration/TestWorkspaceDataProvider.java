@@ -347,8 +347,6 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			biome.particlesProbability = 0.0123;
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
-			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
 			biome.spawnShipwreck = _true;
 			biome.spawnShipwreckBeached = _true;
 			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });

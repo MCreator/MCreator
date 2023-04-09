@@ -72,8 +72,7 @@ import java.util.Locale;
 	public ClimatePoint genErosion;
 	public ClimatePoint genWeirdness;
 
-	public int grassPerChunk;
-	public int flowersPerChunk;
+	// TODO: converter that checks if those counts were enabled and if yes, enables appropriate default features
 
 	public int treesPerChunk;
 	public String vanillaTreeType;
@@ -84,8 +83,7 @@ import java.util.Locale;
 	public MItemBlock treeVines;
 	public MItemBlock treeFruits;
 
-	// TODO: decide if do this, or inline all default features in json
-	public List<String> defaultFeatures; // TODO: (we will need converter for this) replace with checkboxes, keep: ores, caves, water lakes, frozen top layer, monster rooms,
+	public List<String> defaultFeatures;
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;
