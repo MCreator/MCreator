@@ -13,8 +13,9 @@ templates:
     condition: hasVines()
 
 global_templates:
-  - template: elementinits/biomes.java.ftl # TODO: generate only when needed, also the access transformer part
+  - template: elementinits/biomes.java.ftl
     writer: java
+    condition: hasBiomesInVanillaDimensions()
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
 
   - template: biome/biometag.json.ftl # loaded from datapack generator
