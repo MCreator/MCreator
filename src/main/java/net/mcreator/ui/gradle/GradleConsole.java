@@ -104,7 +104,7 @@ public class GradleConsole extends JPanel {
 		setLayout(new BorderLayout());
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-				if (e.getURL().getProtocol().equals("https")||e.getURL().getProtocol().equals("http")){
+				if (e.getURL().getProtocol().matches("http(s)?")){
 					try {
 						DesktopUtils.browse(e.getURL().toURI());
 					} catch (URISyntaxException ex) {
@@ -710,7 +710,7 @@ public class GradleConsole extends JPanel {
 
 	private final Pattern cepattern = Pattern.compile("\\.java:\\d+: error:");
 	private final Pattern cwpattern = Pattern.compile("\\.java:\\d+: warning:");
-	private final Pattern repattern = Pattern.compile("\\(.*\\.java:\\d+\\)|Native Method|Exception");
+	private final Pattern repattern = Pattern.compile("\\(.*\\.java:\\d+|Native Method\\)|Exception");
 
 	public void append(String text, Color c) {
 		Matcher compileError = cepattern.matcher(text);
