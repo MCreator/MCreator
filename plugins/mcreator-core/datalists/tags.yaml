@@ -1,709 +1,709 @@
-- acacia_logs:
+- minecraft:block/acacia_logs:
   type: blocks
 # Coming in 1.20 update
-# - all_hanging_signs:
+# - minecraft:block/all_hanging_signs:
 #   type: blocks
-- all_signs:
+- minecraft:block/all_signs:
   type: blocks
-- ancient_city_replaceable:
+- minecraft:block/ancient_city_replaceable:
   type: blocks
-- animals_spawnable_on:
+- minecraft:block/animals_spawnable_on:
   type: blocks
-- anvil:
+- minecraft:block/anvil:
   type: blocks
-- axolotls_spawnable_on:
+- minecraft:block/axolotls_spawnable_on:
   type: blocks
-- azalea_grows_on:
+- minecraft:block/azalea_grows_on:
   type: blocks
-- azalea_root_replaceable:
+- minecraft:block/azalea_root_replaceable:
   type: blocks
 # Coming in 1.20 update
-# - bamboo_blocks:
+# - minecraft:block/bamboo_blocks:
 #   type: blocks
-- bamboo_plantable_on:
+- minecraft:block/bamboo_plantable_on:
   type: blocks
-- banners:
+- minecraft:block/banners:
   type: blocks
-- base_stone_nether:
+- minecraft:block/base_stone_nether:
   type: blocks
-- base_stone_overworld:
+- minecraft:block/base_stone_overworld:
   type: blocks
-- beacon_base_blocks:
+- minecraft:block/beacon_base_blocks:
   type: blocks
-- beds:
+- minecraft:block/beds:
   type: blocks
-- beehives:
+- minecraft:block/beehives:
   type: blocks
-- bee_growables:
+- minecraft:block/bee_growables:
   type: blocks
-- big_dripleaf_placeable:
+- minecraft:block/big_dripleaf_placeable:
   type: blocks
-- birch_logs:
+- minecraft:block/birch_logs:
   type: blocks
-- buttons:
+- minecraft:block/buttons:
   type: blocks
-- campfires:
+- minecraft:block/campfires:
   type: blocks
-- candle_cakes:
+- minecraft:block/candle_cakes:
   type: blocks
-- candles:
+- minecraft:block/candles:
   type: blocks
-- cauldrons:
+- minecraft:block/cauldrons:
   type: blocks
-- cave_vines:
+- minecraft:block/cave_vines:
   type: blocks
 # Coming in 1.20 update
-# - ceiling_hanging_signs:
+# - minecraft:block/ceiling_hanging_signs:
 #   type: blocks
 # Coming in 1.20 update
-# - cherry_logs:
+# - minecraft:block/cherry_logs:
 #   type: blocks
-- climbable:
+- minecraft:block/climbable:
   type: blocks
-- coal_ores:
+- minecraft:block/coal_ores:
   type: blocks
-- completes_find_tree_tutorial:
+- minecraft:block/completes_find_tree_tutorial:
   type: blocks
-- convertable_to_mud:
+- minecraft:block/convertable_to_mud:
   type: blocks
-- copper_ores:
+- minecraft:block/copper_ores:
   type: blocks
-- corals:
+- minecraft:block/corals:
   type: blocks
-- coral_blocks:
+- minecraft:block/coral_blocks:
   type: blocks
-- coral_plants:
+- minecraft:block/coral_plants:
   type: blocks
-- crimson_stems:
+- minecraft:block/crimson_stems:
   type: blocks
-- crops:
+- minecraft:block/crops:
   type: blocks
-- crystal_sound_blocks:
+- minecraft:block/crystal_sound_blocks:
   type: blocks
-- dampens_vibrations:
+- minecraft:block/dampens_vibrations:
   type: blocks
-- dark_oak_logs:
+- minecraft:block/dark_oak_logs:
   type: blocks
-- dead_bush_may_place_on:
+- minecraft:block/dead_bush_may_place_on:
   type: blocks
-- deepslate_ore_replaceables:
+- minecraft:block/deepslate_ore_replaceables:
   type: blocks
-- diamond_ores:
+- minecraft:block/diamond_ores:
   type: blocks
-- dirt:
+- minecraft:block/dirt:
   type: blocks
-- doors:
+- minecraft:block/doors:
   type: blocks
-- dragon_immune:
+- minecraft:block/dragon_immune:
   type: blocks
-- dragon_transparent:
+- minecraft:block/dragon_transparent:
   type: blocks
-- dripstone_replaceable_blocks:
+- minecraft:block/dripstone_replaceable_blocks:
   type: blocks
-- emerald_ores:
+- minecraft:block/emerald_ores:
   type: blocks
-- enderman_holdable:
+- minecraft:block/enderman_holdable:
   type: blocks
-- fall_damage_resetting:
+- minecraft:block/fall_damage_resetting:
   type: blocks
-- features_cannot_replace:
+- minecraft:block/features_cannot_replace:
   type: blocks
-- fence_gates:
+- minecraft:block/fence_gates:
   type: blocks
-- fences:
+- minecraft:block/fences:
   type: blocks
-- fire:
+- minecraft:block/fire:
   type: blocks
-- flower_pots:
+- minecraft:block/flower_pots:
   type: blocks
-- flowers:
+- minecraft:block/flowers:
   type: blocks
-- foxes_spawnable_on:
+- minecraft:block/foxes_spawnable_on:
   type: blocks
-- frog_prefer_jump_to:
+- minecraft:block/frog_prefer_jump_to:
   type: blocks
-- frogs_spawnable_on:
+- minecraft:block/frogs_spawnable_on:
   type: blocks
-- geode_invalid_blocks:
+- minecraft:block/geode_invalid_blocks:
   type: blocks
-- goats_spawnable_on:
+- minecraft:block/goats_spawnable_on:
   type: blocks
-- gold_ores:
+- minecraft:block/gold_ores:
   type: blocks
-- guarded_by_piglins:
+- minecraft:block/guarded_by_piglins:
   type: blocks
-- hoglin_repellents:
+- minecraft:block/hoglin_repellents:
   type: blocks
-- ice:
+- minecraft:block/ice:
   type: blocks
-- impermeable:
+- minecraft:block/impermeable:
   type: blocks
-- infiniburn_end:
+- minecraft:block/infiniburn_end:
   type: blocks
-- infiniburn_nether:
+- minecraft:block/infiniburn_nether:
   type: blocks
-- infiniburn_overworld:
+- minecraft:block/infiniburn_overworld:
   type: blocks
-- inside_step_sound_blocks:
+- minecraft:block/inside_step_sound_blocks:
   type: blocks
-- invalid_spawn_inside:
+- minecraft:block/invalid_spawn_inside:
   type: blocks
-- iron_ores:
+- minecraft:block/iron_ores:
   type: blocks
-- jungle_logs:
+- minecraft:block/jungle_logs:
   type: blocks
-- lapis_ores:
+- minecraft:block/lapis_ores:
   type: blocks
-- lava_pool_stone_cannot_replace:
+- minecraft:block/lava_pool_stone_cannot_replace:
   type: blocks
-- lava_pool_cannot_replace:
+- minecraft:block/lava_pool_cannot_replace:
   type: blocks
-- leaves:
+- minecraft:block/leaves:
   type: blocks
-- logs:
+- minecraft:block/logs:
   type: blocks
-- logs_that_burn:
+- minecraft:block/logs_that_burn:
   type: blocks
-- lush_ground_replaceable:
+- minecraft:block/lush_ground_replaceable:
   type: blocks
-- mangrove_logs:
+- minecraft:block/mangrove_logs:
   type: blocks
-- mangrove_logs_can_grow_through:
+- minecraft:block/mangrove_logs_can_grow_through:
   type: blocks
-- mangrove_roots_can_grow_through:
+- minecraft:block/mangrove_roots_can_grow_through:
   type: blocks
-- mineable/axe:
+- minecraft:block/mineable/axe:
   type: blocks
-- mineable/hoe:
+- minecraft:block/mineable/hoe:
   type: blocks
-- mineable/pickaxe:
+- minecraft:block/mineable/pickaxe:
   type: blocks
-- mineable/shovel:
+- minecraft:block/mineable/shovel:
   type: blocks
-- mooshrooms_spawnable_on:
+- minecraft:block/mooshrooms_spawnable_on:
   type: blocks
-- moss_replaceable:
+- minecraft:block/moss_replaceable:
   type: blocks
-- mushroom_grow_block:
+- minecraft:block/mushroom_grow_block:
   type: blocks
-- needs_diamond_tool:
+- minecraft:block/needs_diamond_tool:
   type: blocks
-- needs_iron_tool:
+- minecraft:block/needs_iron_tool:
   type: blocks
-- needs_stone_tool:
+- minecraft:block/needs_stone_tool:
   type: blocks
-- nether_carver_replaceables:
+- minecraft:block/nether_carver_replaceables:
   type: blocks
-- nylium:
+- minecraft:block/nylium:
   type: blocks
-- oak_logs:
+- minecraft:block/oak_logs:
   type: blocks
-- overworld_carver_replaceables:
+- minecraft:block/overworld_carver_replaceables:
   type: blocks
-- overworld_natural_logs:
+- minecraft:block/overworld_natural_logs:
   type: blocks
-- parrots_spawnable_on:
+- minecraft:block/parrots_spawnable_on:
   type: blocks
-- piglin_repellents:
+- minecraft:block/piglin_repellents:
   type: blocks
-- planks:
+- minecraft:block/planks:
   type: blocks
-- polar_bears_spawnable_on_alternate:
+- minecraft:block/polar_bears_spawnable_on_alternate:
   type: blocks
-- portals:
+- minecraft:block/portals:
   type: blocks
-- pressure_plates:
+- minecraft:block/pressure_plates:
   type: blocks
-- prevent_mob_spawning_inside:
+- minecraft:block/prevent_mob_spawning_inside:
   type: blocks
-- rabbits_spawnable_on:
+- minecraft:block/rabbits_spawnable_on:
   type: blocks
-- rails:
+- minecraft:block/rails:
   type: blocks
-- redstone_ores:
+- minecraft:block/redstone_ores:
   type: blocks
-- replaceable_plants:
+- minecraft:block/replaceable_plants:
   type: blocks
-- replaceable_by_trees:
+- minecraft:block/replaceable_by_trees:
   type: blocks
-- sand:
+- minecraft:block/sand:
   type: blocks
-- saplings:
+- minecraft:block/saplings:
   type: blocks
-- sculk_replaceable:
+- minecraft:block/sculk_replaceable:
   type: blocks
-- sculk_replaceable_worldgen:
+- minecraft:block/sculk_replaceable_worldgen:
   type: blocks
-- shulker_boxes:
+- minecraft:block/shulker_boxes:
   type: blocks
-- signs:
+- minecraft:block/signs:
   type: blocks
-- slabs:
+- minecraft:block/slabs:
   type: blocks
-- small_dripleaf_placeable:
+- minecraft:block/small_dripleaf_placeable:
   type: blocks
-- small_flowers:
+- minecraft:block/small_flowers:
   type: blocks
-- smelts_to_glass:
+- minecraft:block/smelts_to_glass:
   type: blocks
-- snaps_goat_horn:
+- minecraft:block/snaps_goat_horn:
   type: blocks
 # Coming in 1.20 update
-# - sniffer_diggable_block:
+# - minecraft:block/sniffer_diggable_block:
 #   type: blocks
-- snow_layer_can_survive_on:
+- minecraft:block/snow_layer_can_survive_on:
   type: blocks
-- snow_layer_cannot_survive_on:
+- minecraft:block/snow_layer_cannot_survive_on:
   type: blocks
-- snow:
+- minecraft:block/snow:
   type: blocks
-- soul_fire_base_blocks:
+- minecraft:block/soul_fire_base_blocks:
   type: blocks
-- soul_speed_blocks:
+- minecraft:block/soul_speed_blocks:
   type: blocks
-- spruce_logs:
+- minecraft:block/spruce_logs:
   type: blocks
-- stairs:
+- minecraft:block/stairs:
   type: blocks
-- standing_signs:
+- minecraft:block/standing_signs:
   type: blocks
-- stone_bricks:
+- minecraft:block/stone_bricks:
   type: blocks
-- stone_ore_replaceables:
+- minecraft:block/stone_ore_replaceables:
   type: blocks
-- stone_pressure_plates:
+- minecraft:block/stone_pressure_plates:
   type: blocks
-- strider_warm_blocks:
+- minecraft:block/strider_warm_blocks:
   type: blocks
-- sword_efficient:
+- minecraft:block/sword_efficient:
   type: blocks
-- tall_flowers:
+- minecraft:block/tall_flowers:
   type: blocks
-- terracotta:
+- minecraft:block/terracotta:
   type: blocks
-- trapdoors:
+- minecraft:block/trapdoors:
   type: blocks
-- underwater_bonemeals:
+- minecraft:block/underwater_bonemeals:
   type: blocks
-- unstable_bottom_center:
+- minecraft:block/unstable_bottom_center:
   type: blocks
-- valid_spawn:
+- minecraft:block/valid_spawn:
   type: blocks
-- walls:
+- minecraft:block/walls:
   type: blocks
-- wall_corals:
+- minecraft:block/wall_corals:
   type: blocks
 # Coming in 1.20 update
-# - wall_hanging_signs:
+# - minecraft:block/wall_hanging_signs:
 #   type: blocks
-- wall_post_override:
+- minecraft:block/wall_post_override:
   type: blocks
-- wall_signs:
+- minecraft:block/wall_signs:
   type: blocks
-- warped_stems:
+- minecraft:block/warped_stems:
   type: blocks
-- wart_blocks:
+- minecraft:block/wart_blocks:
   type: blocks
-- wither_immune:
+- minecraft:block/wither_immune:
   type: blocks
-- wither_summon_base_blocks:
+- minecraft:block/wither_summon_base_blocks:
   type: blocks
-- wolves_spawnable_on:
+- minecraft:block/wolves_spawnable_on:
   type: blocks
-- wooden_buttons:
+- minecraft:block/wooden_buttons:
   type: blocks
-- wooden_doors:
+- minecraft:block/wooden_doors:
   type: blocks
-- wooden_fences:
+- minecraft:block/wooden_fences:
   type: blocks
-- wooden_pressure_plates:
+- minecraft:block/wooden_pressure_plates:
   type: blocks
-- wooden_slabs:
+- minecraft:block/wooden_slabs:
   type: blocks
-- wooden_stairs:
+- minecraft:block/wooden_stairs:
   type: blocks
-- wooden_trapdoors:
+- minecraft:block/wooden_trapdoors:
   type: blocks
-- wool_carpets:
+- minecraft:block/wool_carpets:
   type: blocks
-- wool:
+- minecraft:block/wool:
   type: blocks
 
-- arrows:
+- minecraft:entity_type/arrows:
   type: entities
-- axolotl_always_hostiles:
+- minecraft:entity_type/axolotl_always_hostiles:
   type: entities
-- axolotl_hunt_targets:
+- minecraft:entity_type/axolotl_hunt_targets:
   type: entities
-- beehive_inhabitors:
+- minecraft:entity_type/beehive_inhabitors:
   type: entities
-- dismounts_underwater:
+- minecraft:entity_type/dismounts_underwater:
   type: entities
-- fall_damage_immune:
+- minecraft:entity_type/fall_damage_immune:
   type: entities
-- freeze_hurts_extra_types:
+- minecraft:entity_type/freeze_hurts_extra_types:
   type: entities
-- freeze_immune_entity_types:
+- minecraft:entity_type/freeze_immune_entity_types:
   type: entities
-- frog_food:
+- minecraft:entity_type/frog_food:
   type: entities
-- impact_projectiles:
+- minecraft:entity_type/impact_projectiles:
   type: entities
-- powder_snow_walkable_mobs:
+- minecraft:entity_type/powder_snow_walkable_mobs:
   type: entities
-- raiders:
+- minecraft:entity_type/raiders:
   type: entities
-- skeletons:
+- minecraft:entity_type/skeletons:
   type: entities
 
-- lava:
+- minecraft:fluid/lava:
   type: fluids
-- water:
+- minecraft:fluid/water:
   type: fluids
 
-- acacia_logs_item:
+- minecraft:item/acacia_logs_item:
   type: items
-- anvil_item:
+- minecraft:item/anvil_item:
   type: items
-- arrows_item:
+- minecraft:item/arrows_item:
   type: items
-- axes:
+- minecraft:item/axes:
   type: items
-- axolotl_tempt_items:
-  type: items
-# Coming in 1.20 update
-# - bamboo_blocks:
-#   type: items
-- banners_item:
-  type: items
-- beacon_payment_items:
-  type: items
-- beds_item:
-  type: items
-- birch_logs_item:
-  type: items
-- boats:
+- minecraft:item/axolotl_tempt_items:
   type: items
 # Coming in 1.20 update
-# - bookshelf_books:
+# - minecraft:item/bamboo_blocks:
 #   type: items
-- breaks_decorated_pots:
+- minecraft:item/banners_item:
   type: items
-- buttons_item:
+- minecraft:item/beacon_payment_items:
   type: items
-- candles_item:
+- minecraft:item/beds_item:
+  type: items
+- minecraft:item/birch_logs_item:
+  type: items
+- minecraft:item/boats:
   type: items
 # Coming in 1.20 update
-# - cherry_logs:
+# - minecraft:item/bookshelf_books:
 #   type: items
-- chest_boats:
+- minecraft:item/breaks_decorated_pots:
   type: items
-- cluster_max_harvestables:
+- minecraft:item/buttons_item:
   type: items
-- coal_ores_item:
-  type: items
-- coals:
-  type: items
-- compasses:
-  type: items
-- completes_find_tree_tutorial:
-  type: items
-- copper_ores_item:
-  type: items
-- creeper_drop_music_discs:
-  type: items
-- creeper_igniters:
-  type: items
-- crimson_stems_item:
-  type: items
-- dampens_vibrations_item:
-  type: items
-- dark_oak_logs_item:
+- minecraft:item/candles_item:
   type: items
 # Coming in 1.20 update
-# - decorated_pot_shards:
+# - minecraft:item/cherry_logs:
 #   type: items
-- diamond_ores_item:
+- minecraft:item/chest_boats:
   type: items
-- dirt_item:
+- minecraft:item/cluster_max_harvestables:
   type: items
-- doors_item:
+- minecraft:item/coal_ores_item:
   type: items
-- emerald_ores_item:
+- minecraft:item/coals:
   type: items
-- fence_gates_item:
+- minecraft:item/compasses:
   type: items
-- fences_item:
+- minecraft:item/completes_find_tree_tutorial:
   type: items
-- fishes:
+- minecraft:item/copper_ores_item:
   type: items
-- flowers_item:
+- minecraft:item/creeper_drop_music_discs:
   type: items
-- fox_food:
+- minecraft:item/creeper_igniters:
   type: items
-- freeze_immune_wearables:
+- minecraft:item/crimson_stems_item:
   type: items
-- gold_ores_item:
+- minecraft:item/dampens_vibrations_item:
+  type: items
+- minecraft:item/dark_oak_logs_item:
   type: items
 # Coming in 1.20 update
-# - hanging_signs:
+# - minecraft:item/decorated_pot_shards:
 #   type: items
-- hoes:
+- minecraft:item/diamond_ores_item:
   type: items
-- ignored_by_piglin_babies:
+- minecraft:item/dirt_item:
   type: items
-- iron_ores_item:
+- minecraft:item/doors_item:
   type: items
-- jungle_logs_item:
+- minecraft:item/emerald_ores_item:
   type: items
-- lapis_ores_item:
+- minecraft:item/fence_gates_item:
   type: items
-- leaves_item:
+- minecraft:item/fences_item:
   type: items
-- lectern_books:
+- minecraft:item/fishes:
   type: items
-- logs_item:
+- minecraft:item/flowers_item:
   type: items
-- logs_that_burn_item:
+- minecraft:item/fox_food:
   type: items
-- mangrove_logs_item:
+- minecraft:item/freeze_immune_wearables:
   type: items
-- music_discs:
-  type: items
-- non_flammable_wood:
+- minecraft:item/gold_ores_item:
   type: items
 # Coming in 1.20 update
-# - noteblock_top_instruments:
+# - minecraft:item/hanging_signs:
 #   type: items
-- oak_logs_item:
+- minecraft:item/hoes:
   type: items
-- pickaxes:
+- minecraft:item/ignored_by_piglin_babies:
   type: items
-- piglin_food:
+- minecraft:item/iron_ores_item:
   type: items
-- piglin_loved:
+- minecraft:item/jungle_logs_item:
   type: items
-- piglin_repellents_item:
+- minecraft:item/lapis_ores_item:
   type: items
-- planks_item:
+- minecraft:item/leaves_item:
   type: items
-- rails_item:
+- minecraft:item/lectern_books:
   type: items
-- redstone_ores_item:
+- minecraft:item/logs_item:
   type: items
-- sand_item:
+- minecraft:item/logs_that_burn_item:
   type: items
-- saplings_item:
+- minecraft:item/mangrove_logs_item:
   type: items
-- shovels:
+- minecraft:item/music_discs:
   type: items
-- signs_item:
-  type: items
-- slabs_item:
-  type: items
-- small_flowers_item:
-  type: items
-- smelts_to_glass_item:
+- minecraft:item/non_flammable_wood:
   type: items
 # Coming in 1.20 update
-# - sniffer_food:
+# - minecraft:item/noteblock_top_instruments:
 #   type: items
-- soul_fire_base_blocks_item:
+- minecraft:item/oak_logs_item:
   type: items
-- spruce_logs_item:
+- minecraft:item/pickaxes:
   type: items
-- stairs_item:
+- minecraft:item/piglin_food:
   type: items
-- stone_bricks_item:
+- minecraft:item/piglin_loved:
   type: items
-- stone_crafting_materials:
+- minecraft:item/piglin_repellents_item:
   type: items
-- stone_tool_materials:
+- minecraft:item/planks_item:
   type: items
-- swords:
+- minecraft:item/rails_item:
   type: items
-- tall_flowers_item:
+- minecraft:item/redstone_ores_item:
   type: items
-- terracotta_item:
+- minecraft:item/sand_item:
   type: items
-- tools:
+- minecraft:item/saplings_item:
   type: items
-- trapdoors_item:
+- minecraft:item/shovels:
+  type: items
+- minecraft:item/signs_item:
+  type: items
+- minecraft:item/slabs_item:
+  type: items
+- minecraft:item/small_flowers_item:
+  type: items
+- minecraft:item/smelts_to_glass_item:
   type: items
 # Coming in 1.20 update
-# - trim_materials:
+# - minecraft:item/sniffer_food:
+#   type: items
+- minecraft:item/soul_fire_base_blocks_item:
+  type: items
+- minecraft:item/spruce_logs_item:
+  type: items
+- minecraft:item/stairs_item:
+  type: items
+- minecraft:item/stone_bricks_item:
+  type: items
+- minecraft:item/stone_crafting_materials:
+  type: items
+- minecraft:item/stone_tool_materials:
+  type: items
+- minecraft:item/swords:
+  type: items
+- minecraft:item/tall_flowers_item:
+  type: items
+- minecraft:item/terracotta_item:
+  type: items
+- minecraft:item/tools:
+  type: items
+- minecraft:item/trapdoors_item:
+  type: items
+# Coming in 1.20 update
+# - minecraft:item/trim_materials:
 #   type: items
 # Coming in 1.20 update
-# - trim_templates:
+# - minecraft:item/trim_templates:
 #   type: items
 # Coming in 1.20 update
-# - trimmable_armor:
+# - minecraft:item/trimmable_armor:
 #   type: items
-- walls_item:
+- minecraft:item/walls_item:
   type: items
-- warped_stems_item:
+- minecraft:item/warped_stems_item:
   type: items
-- wart_blocks_item:
+- minecraft:item/wart_blocks_item:
   type: items
-- wooden_buttons_item:
+- minecraft:item/wooden_buttons_item:
   type: items
-- wooden_doors_item:
+- minecraft:item/wooden_doors_item:
   type: items
-- wooden_fences_item:
+- minecraft:item/wooden_fences_item:
   type: items
-- wooden_pressure_plates_item:
+- minecraft:item/wooden_pressure_plates_item:
   type: items
-- wooden_slabs_item:
+- minecraft:item/wooden_slabs_item:
   type: items
-- wooden_stairs_item:
+- minecraft:item/wooden_stairs_item:
   type: items
-- wooden_trapdoors_item:
+- minecraft:item/wooden_trapdoors_item:
   type: items
-- wool_carpets_item:
+- minecraft:item/wool_carpets_item:
   type: items
-- wool_item:
+- minecraft:item/wool_item:
   type: items
 
-- allows_surface_slime_spawns:
+- minecraft:worldgen/biome/allows_surface_slime_spawns:
   type: biomes
-- allows_tropical_fish_spawns_at_any_height:
+- minecraft:worldgen/biome/allows_tropical_fish_spawns_at_any_height:
   type: biomes
-- has_closer_water_fog:
+- minecraft:worldgen/biome/has_closer_water_fog:
   type: biomes
-- has_structure/ancient_city:
+- minecraft:worldgen/biome/has_structure/ancient_city:
   type: biomes
-- has_structure/bastion_remnant:
+- minecraft:worldgen/biome/has_structure/bastion_remnant:
   type: biomes
-- has_structure/buried_treasure:
+- minecraft:worldgen/biome/has_structure/buried_treasure:
   type: biomes
-- has_structure/desert_pyramid:
+- minecraft:worldgen/biome/has_structure/desert_pyramid:
   type: biomes
-- has_structure/end_city:
+- minecraft:worldgen/biome/has_structure/end_city:
   type: biomes
-- has_structure/igloo:
+- minecraft:worldgen/biome/has_structure/igloo:
   type: biomes
-- has_structure/jungle_temple:
+- minecraft:worldgen/biome/has_structure/jungle_temple:
   type: biomes
-- has_structure/mineshaft_mesa:
+- minecraft:worldgen/biome/has_structure/mineshaft_mesa:
   type: biomes
-- has_structure/mineshaft:
+- minecraft:worldgen/biome/has_structure/mineshaft:
   type: biomes
-- has_structure/nether_fortress:
+- minecraft:worldgen/biome/has_structure/nether_fortress:
   type: biomes
-- has_structure/nether_fossil:
+- minecraft:worldgen/biome/has_structure/nether_fossil:
   type: biomes
-- has_structure/ocean_monument:
+- minecraft:worldgen/biome/has_structure/ocean_monument:
   type: biomes
-- has_structure/ocean_ruin_cold:
+- minecraft:worldgen/biome/has_structure/ocean_ruin_cold:
   type: biomes
-- has_structure/ocean_ruin_warm:
+- minecraft:worldgen/biome/has_structure/ocean_ruin_warm:
   type: biomes
-- has_structure/pillager_outpost:
+- minecraft:worldgen/biome/has_structure/pillager_outpost:
   type: biomes
-- has_structure/ruined_portal_desert:
+- minecraft:worldgen/biome/has_structure/ruined_portal_desert:
   type: biomes
-- has_structure/ruined_portal_jungle:
+- minecraft:worldgen/biome/has_structure/ruined_portal_jungle:
   type: biomes
-- has_structure/ruined_portal_mountain:
+- minecraft:worldgen/biome/has_structure/ruined_portal_mountain:
   type: biomes
-- has_structure/ruined_portal_nether:
+- minecraft:worldgen/biome/has_structure/ruined_portal_nether:
   type: biomes
-- has_structure/ruined_portal_ocean:
+- minecraft:worldgen/biome/has_structure/ruined_portal_ocean:
   type: biomes
-- has_structure/ruined_portal_standard:
+- minecraft:worldgen/biome/has_structure/ruined_portal_standard:
   type: biomes
-- has_structure/ruined_portal_swamp:
+- minecraft:worldgen/biome/has_structure/ruined_portal_swamp:
   type: biomes
-- has_structure/shipwreck_beached:
+- minecraft:worldgen/biome/has_structure/shipwreck_beached:
   type: biomes
-- has_structure/shipwreck:
+- minecraft:worldgen/biome/has_structure/shipwreck:
   type: biomes
-- has_structure/stronghold:
+- minecraft:worldgen/biome/has_structure/stronghold:
   type: biomes
-- has_structure/swamp_hut:
+- minecraft:worldgen/biome/has_structure/swamp_hut:
   type: biomes
-- has_structure/village_desert:
+- minecraft:worldgen/biome/has_structure/village_desert:
   type: biomes
-- has_structure/village_plains:
+- minecraft:worldgen/biome/has_structure/village_plains:
   type: biomes
-- has_structure/village_savanna:
+- minecraft:worldgen/biome/has_structure/village_savanna:
   type: biomes
-- has_structure/village_snowy:
+- minecraft:worldgen/biome/has_structure/village_snowy:
   type: biomes
-- has_structure/village_taiga:
+- minecraft:worldgen/biome/has_structure/village_taiga:
   type: biomes
-- has_structure/woodland_mansion:
+- minecraft:worldgen/biome/has_structure/woodland_mansion:
   type: biomes
-- increased_fire_burnout:
+- minecraft:worldgen/biome/increased_fire_burnout:
   type: biomes
-- is_badlands:
+- minecraft:worldgen/biome/is_badlands:
   type: biomes
-- is_beach:
+- minecraft:worldgen/biome/is_beach:
   type: biomes
-- is_deep_ocean:
+- minecraft:worldgen/biome/is_deep_ocean:
   type: biomes
-- is_end:
+- minecraft:worldgen/biome/is_end:
   type: biomes
-- is_forest:
+- minecraft:worldgen/biome/is_forest:
   type: biomes
-- is_hill:
+- minecraft:worldgen/biome/is_hill:
   type: biomes
-- is_jungle:
+- minecraft:worldgen/biome/is_jungle:
   type: biomes
-- is_mountain:
+- minecraft:worldgen/biome/is_mountain:
   type: biomes
-- is_nether:
+- minecraft:worldgen/biome/is_nether:
   type: biomes
-- is_ocean:
+- minecraft:worldgen/biome/is_ocean:
   type: biomes
-- is_overworld:
+- minecraft:worldgen/biome/is_overworld:
   type: biomes
-- is_river:
+- minecraft:worldgen/biome/is_river:
   type: biomes
-- is_savanna:
+- minecraft:worldgen/biome/is_savanna:
   type: biomes
-- is_taiga:
+- minecraft:worldgen/biome/is_taiga:
   type: biomes
-- mineshaft_blocking:
+- minecraft:worldgen/biome/mineshaft_blocking:
   type: biomes
-- more_frequent_drowned_spawns:
+- minecraft:worldgen/biome/more_frequent_drowned_spawns:
   type: biomes
-- plays_underwater_music:
+- minecraft:worldgen/biome/plays_underwater_music:
   type: biomes
-- polar_bears_spawn_on_alternate_blocks:
+- minecraft:worldgen/biome/polar_bears_spawn_on_alternate_blocks:
   type: biomes
-- produces_corals_from_bonemeal:
+- minecraft:worldgen/biome/produces_corals_from_bonemeal:
   type: biomes
-- reduce_water_ambient_spawns:
+- minecraft:worldgen/biome/reduce_water_ambient_spawns:
   type: biomes
-- required_ocean_monument_surrounding:
+- minecraft:worldgen/biome/required_ocean_monument_surrounding:
   type: biomes
-- snow_golem_melts:
+- minecraft:worldgen/biome/snow_golem_melts:
   type: biomes
-- spawns_cold_variant_frogs:
+- minecraft:worldgen/biome/spawns_cold_variant_frogs:
   type: biomes
-- spawns_gold_rabbits:
+- minecraft:worldgen/biome/spawns_gold_rabbits:
   type: biomes
-- only_allows_snow_and_gold_rabbits:
+- minecraft:worldgen/biome/only_allows_snow_and_gold_rabbits:
   type: biomes
-- spawns_snow_foxes:
+- minecraft:worldgen/biome/spawns_snow_foxes:
   type: biomes
-- spawns_warm_variant_frogs:
+- minecraft:worldgen/biome/spawns_warm_variant_frogs:
   type: biomes
-- spawns_white_rabbits:
+- minecraft:worldgen/biome/spawns_white_rabbits:
   type: biomes
-- stronghold_biased_to:
+- minecraft:worldgen/biome/stronghold_biased_to:
   type: biomes
-- water_on_map_outlines:
+- minecraft:worldgen/biome/water_on_map_outlines:
   type: biomes
-- without_patrol_spawns:
+- minecraft:worldgen/biome/without_patrol_spawns:
   type: biomes
-- without_wandering_trader_spawns:
+- minecraft:worldgen/biome/without_wandering_trader_spawns:
   type: biomes
-- without_zombie_sieges:
+- minecraft:worldgen/biome/without_zombie_sieges:
   type: biomes
 
-- load:
+- minecraft:load:
   type: functions
-- tick:
+- minecraft:tick:
   type: functions
