@@ -354,8 +354,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
-		defaultFeatures.setPreferredSize(new Dimension(340, 36));
-
 		JPanel sbbp3 = new JPanel(new GridLayout(3, 2, 10, 2));
 		sbbp3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -372,12 +370,13 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
+		defaultFeatures.setPreferredSize(new Dimension(280, 36));
 		sbbp3.add(defaultFeatures);
 
 		sbbp3.setOpaque(false);
 		pane3.setOpaque(false);
 
-		JPanel sbbp5 = new JPanel(new GridLayout(8, 2, 10, 2));
+		JPanel sbbp5 = new JPanel(new GridLayout(8, 2, 0, 2));
 		sbbp5.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
@@ -417,7 +416,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp5.add(PanelUtils.join(treeFruits));
 
 		pane3.add("Center" , PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(sbbp3), PanelUtils.pullElementUp(sbbp5))));
+				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(sbbp5), PanelUtils.pullElementUp(sbbp3))));
 
 		JPanel sbbp4 = new JPanel(new GridLayout(8, 2, 35, 2));
 
