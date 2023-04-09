@@ -42,9 +42,16 @@ import java.util.function.Function;
 public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> {
 	final JList<T> list = new JList<>(model);
 	final JLabel message = new JLabel("");
+	final boolean customValue;
+	final JButton customValueButton = L10N.button("dialog.item_selector.use_custom");
 
 	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider) {
+		this(mcreator, entryProvider, false);
+	}
+
+	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider, boolean customValue) {
 		super(mcreator, entryProvider);
+		this.customValue = customValue;
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -59,8 +66,17 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 
 		JButton selectButton = L10N.button("dialog.item_selector.use_selected");
 		selectButton.addActionListener(e -> {
-			setVisible(false);
-			dispose();
+			T selectedValue = list.getSelectedValue();
+			if (selectedValue == null && customValue) {
+				String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
+				if (inputValue != null && !inputValue.isEmpty()) {
+					model.addElement((T) inputValue);
+					list.setSelectedValue((T) inputValue, true);
+				}
+			} else {
+				setVisible(false);
+				dispose();
+			}
 		});
 
 		message.setBorder(BorderFactory.createEmptyBorder(7, 2, 2, 0));
@@ -76,8 +92,20 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 0));
 		mainComponent.add("Center", scrollPane);
 
+		if (customValue) {
+			customValueButton.addActionListener(e -> {
+				String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
+				if (inputValue != null && !inputValue.isEmpty()) {
+					model.addElement((T) inputValue);
+					list.setSelectedValue((T) inputValue, true);
+				}
+			});
+		}
+
 		add("Center", mainComponent);
-		add("South", PanelUtils.centerInPanel(selectButton));
+		add("South", PanelUtils.centerInPanel(customValue ?
+				PanelUtils.westAndEastElement(selectButton, customValueButton) :
+				PanelUtils.centerInPanel(selectButton)));
 
 		setSize(360, 360);
 

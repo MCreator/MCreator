@@ -208,18 +208,33 @@ public class BlocklyJavascriptBridge {
 	 * @return A "value,value" pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
+		return openStringEntrySelector(entryProvider, type, false);
+	}
+
+	/**
+	 * Opens a string selector window for the searchable Blockly selectors
+	 *
+	 * @param entryProvider The function that provides the strings from a given workspace
+	 * @param type          The type of the data list, used for the selector title and message
+	 * @param customValue   Defines if a custom value can be used instead of given strings
+	 * @return A "value,value" pair (strings don't have readable names!), or the default entry if no string was selected
+	 */
+	private String openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type,
+			boolean customValue) {
 		String retval = "," + L10N.t("blockly.extension.data_list_selector.no_entry");
 		String title = L10N.t("dialog.selector." + type + ".title");
 		String message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
-			String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message);
+			String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message,
+					customValue);
 			if (selected != null)
 				retval = selected + "," + selected;
 		} else {
 			FutureTask<String> query = new FutureTask<>(
-					() -> StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message));
+					() -> StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message,
+							customValue));
 			try {
 				SwingUtilities.invokeLater(query);
 				String selected = query.get();
