@@ -58,6 +58,7 @@ public class PreferencesData {
 		@PreferencesEntry public boolean autoreloadTabs = true;
 		@PreferencesEntry public boolean remindOfUnsavedChanges = false;
 		@PreferencesEntry public boolean discordRichPresenceEnable = true;
+
 	}
 
 	public static class NotificationSettings {

@@ -86,6 +86,7 @@ public final class MCreatorApplication {
 	private GoogleAnalytics analytics;
 	private DiscordClient discordClient;
 	private TaskbarIntegration taskbarIntegration;
+
 	private MCreatorApplication(List<String> launchArguments) {
 		final SplashScreen splashScreen = new SplashScreen();
 
@@ -394,7 +395,9 @@ public final class MCreatorApplication {
 		LOG.debug("Performing exit tasks");
 		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
+
 		discordClient.close(); // close discord client
+
 		SoundUtils.close();
 
 		// we close all windows and exit fx platform
