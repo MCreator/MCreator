@@ -73,14 +73,7 @@ import java.util.Locale;
 	public ClimatePoint genWeirdness;
 
 	public int grassPerChunk;
-	public int seagrassPerChunk;
 	public int flowersPerChunk;
-	public int mushroomsPerChunk;
-	public int bigMushroomsChunk;
-	public int sandPatchesPerChunk;
-	public int gravelPatchesPerChunk;
-	public int reedsPerChunk;
-	public int cactiPerChunk;
 
 	public int treesPerChunk;
 	public String vanillaTreeType;
@@ -90,6 +83,9 @@ import java.util.Locale;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
 	public MItemBlock treeFruits;
+
+	// TODO: decide if do this, or inline all default features in json
+	public List<String> defaultFeatures; // TODO: (we will need converter for this) replace with checkboxes, keep: ores, caves, water lakes, frozen top layer, monster rooms,
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;
@@ -111,8 +107,6 @@ import java.util.Locale;
 	public boolean spawnBastionRemnant;
 	public boolean spawnEndCity;
 	public String spawnRuinedPortal;
-
-	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
 
