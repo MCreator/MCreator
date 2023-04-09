@@ -223,25 +223,16 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("villagerprofessions");
 	}
 
-	public static List<DataListEntry> loadAllTags(Workspace workspace) {
-		return loadDataListAndElements(workspace, "tags", false, null, "tag");
-	}
-
-	public static List<DataListEntry> getAllTags(Workspace workspace, String type) {
-		List<DataListEntry> retval = getCustomElements(workspace, modElement -> {
-			if (modElement.getType() == ModElementType.TAG)
-				return modElement.getMetadata("type").equals(type);
-			return false;
-		});
-
-		retval.addAll(DataListLoader.loadDataList("tags").stream().filter(typeMatches(type)).toList());
-		return retval;
-	}
-
 	public static Function<Workspace, String[]> getTags(String tagType) {
 		return workspace -> {
-			List<DataListEntry> allTags = getAllTags(workspace, tagType);
-			return allTags.stream().map(DataListEntry::getName).toArray(String[]::new);
+			List<DataListEntry> retval = getCustomElements(workspace, modElement -> {
+				if (modElement.getType() == ModElementType.TAG)
+					return modElement.getMetadata("type").equals(tagType);
+				return false;
+			});
+
+			retval.addAll(DataListLoader.loadDataList("tags").stream().filter(typeMatches(tagType)).toList());
+			return retval.stream().map(DataListEntry::getName).toArray(String[]::new);
 		};
 	}
 
