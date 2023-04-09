@@ -62,4 +62,15 @@ public class OS {
 		}
 	}
 
+	public static String getArchitecture() {
+		String osArch = System.getProperty("os.arch");
+		if (osArch.contains("x86_64") || osArch.contains("amd64")) {
+			return "x86_64";
+		} else if (osArch.contains("aarch64")) {
+			return "aarch64";
+		} else {
+			return osArch;
+		}
+	}
+
 }
