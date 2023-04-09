@@ -31,7 +31,7 @@ tasks.register('exportMac64', Copy.class) {
     into('MacOS/lib') {
         from 'build/libs'
         from configurations.export
-        from configurations.mac64
+        from configurations.macArm64
     }
     into('MacOS/jdk/') { from 'jdk/jdk17_mac_arm64/' }
     doLast {

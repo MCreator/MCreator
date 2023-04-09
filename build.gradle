@@ -59,6 +59,7 @@ configurations {
 
     win64
     mac64
+    macArm64
     linux64
 }
 
@@ -112,6 +113,13 @@ dependencies {
     mac64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac'
     mac64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac'
     mac64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac'
+
+    macArm64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac-aarch64'
+    macArm64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac-aarch64'
+    macArm64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac-aarch64'
+    macArm64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac-aarch64'
+    macArm64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac-aarch64'
+    macArm64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac-aarch64'
 
     linux64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'linux'
     linux64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'linux'
