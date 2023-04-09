@@ -21,7 +21,6 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Tag;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -34,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -234,9 +234,15 @@ public class ElementUtil {
 			return false;
 		});
 
-		retval.addAll(DataListLoader.loadDataList("tags").stream()
-				.filter(typeMatches(type)).toList());
+		retval.addAll(DataListLoader.loadDataList("tags").stream().filter(typeMatches(type)).toList());
 		return retval;
+	}
+
+	public static Function<Workspace, String[]> getTags(String tagType) {
+		return workspace -> {
+			List<DataListEntry> allTags = getAllTags(workspace, tagType);
+			return allTags.stream().map(DataListEntry::getName).toArray(String[]::new);
+		};
 	}
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
