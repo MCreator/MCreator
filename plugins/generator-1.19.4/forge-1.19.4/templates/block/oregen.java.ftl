@@ -45,7 +45,7 @@ public class ${name}Feature extends OreFeature {
 			<#elseif worldType == "End">
 				Level.END
 			<#else>
-				ResourceKey.create(Registry.DIMENSION_REGISTRY,
+				ResourceKey.create(Registries.DIMENSION,
 						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
 			</#if><#sep>,
 		</#list>
