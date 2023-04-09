@@ -4,10 +4,12 @@
       "type": "input_value",
       "name": "a",
       "check": "MCItem"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "itemtag",
+      "datalist": "itemtag"
     }
-  ],
-  "extensions": [
-    "itemtag_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",

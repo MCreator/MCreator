@@ -143,7 +143,10 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
+			case "blocktag" -> openStringEntrySelector(ElementUtil.getTags("blocks"), "tag", true);
+			case "itemtag" -> openStringEntrySelector(ElementUtil.getTags("items"), "tag", true);
 			case "entitytag" -> openStringEntrySelector(ElementUtil.getTags("entities"), "tag", true);
+			case "biometag" -> openStringEntrySelector(ElementUtil.getTags("biomes"), "tag", true);
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
@@ -205,7 +208,7 @@ public class BlocklyJavascriptBridge {
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
-	 * @param type          Defines if a custom value can be used instead of given strings
+	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A "value,value" pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
@@ -343,24 +346,6 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "blocktag":
-			return ElementUtil.getAllTags(workspace, "blocks").stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "itemtag":
-			return ElementUtil.getAllTags(workspace, "items").stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "entitytag":
-			return ElementUtil.getAllTags(workspace, "entities").stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "fluidtag":
-			return ElementUtil.getAllTags(workspace, "fluids").stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "biometag":
-			return ElementUtil.getAllTags(workspace, "biomes").stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "functiontag":
-			return ElementUtil.getAllTags(workspace, "functions").stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
