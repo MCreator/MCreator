@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
@@ -78,6 +79,7 @@ public final class MCreatorApplication {
 	public static boolean isInternet = true;
 
 	private static boolean applicationStarted = false;
+	private static boolean restarted;
 
 	private final List<MCreator> openMCreators = new ArrayList<>();
 
@@ -219,6 +221,8 @@ public final class MCreatorApplication {
 
 				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
 					Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+
+				PreferencesDialog.setApplication(this);
 			} catch (Exception e) {
 				LOG.warn("Failed to register desktop handlers", e);
 			}
@@ -378,6 +382,10 @@ public final class MCreatorApplication {
 				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE));
 	}
 
+	public void markNeedRestart(){
+		restarted = true;
+	}
+
 	public void closeApplication() {
 		LOG.debug("Closing any potentially open MCreator windows");
 
@@ -411,6 +419,16 @@ public final class MCreatorApplication {
 			PluginLoader.INSTANCE.close();
 		} catch (IOException e) {
 			LOG.warn("Failed to close plugin loader", e);
+		}
+
+		if (restarted){
+			try {
+				if (Runtime.getRuntime().exec(OS.getRestartShell()).isAlive()){
+					LOG.debug("Restart successfully");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		try {
