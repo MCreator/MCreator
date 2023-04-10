@@ -61,6 +61,10 @@ public class ${JavaModName}Items {
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
 			</#if>
+		<#elseif item.getModElement().getTypeString() == "livingentity">
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
 			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
