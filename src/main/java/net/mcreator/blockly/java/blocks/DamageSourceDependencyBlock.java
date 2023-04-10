@@ -24,7 +24,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import org.w3c.dom.Element;
 
-public class DamageSourceBlock implements IBlockGenerator {
+public class DamageSourceDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		master.append("source");
