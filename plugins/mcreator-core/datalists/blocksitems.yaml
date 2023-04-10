@@ -6804,6 +6804,22 @@
   type: item
   texture: GLOW_SQUID_SPAWN_EGG
 
+- Items.IRON_GOLEM_SPAWN_EGG:
+  readable_name: "Iron Golem Spawn Egg"
+  type: item
+
+- Items.SNOW_GOLEM_SPAWN_EGG:
+  readable_name: "Snow Golem Spawn Egg"
+  type: item
+
+- Items.WITHER_SPAWN_EGG:
+  readable_name: "Wither Spawn Egg"
+  type: item
+
+- Items.ENDER_DRAGON_SPAWN_EGG:
+  readable_name: "Ender Dragon Spawn Egg"
+  type: item
+
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
   type: item
