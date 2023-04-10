@@ -130,12 +130,16 @@ import java.util.Locale;
 		defaultFeatures = new ArrayList<>();
 	}
 
+	public boolean hasTrees() {
+		return treesPerChunk > 0;
+	}
+
 	public boolean hasFruits() {
-		return treeFruits != null && !treeFruits.isEmpty();
+		return hasTrees() && treeFruits != null && !treeFruits.isEmpty();
 	}
 
 	public boolean hasVines() {
-		return treeVines != null && !treeVines.isEmpty();
+		return hasTrees() && treeVines != null && !treeVines.isEmpty();
 	}
 
 	public boolean hasStructure(String structureType) {
