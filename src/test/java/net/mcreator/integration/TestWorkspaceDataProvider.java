@@ -205,7 +205,7 @@ public class TestWorkspaceDataProvider {
 				if (scope != VariableType.Scope.LOCAL) {
 					VariableElement variable = new VariableElement();
 					variable.setName("damagesource" + (idx++));
-					variable.setValue("GENERIC");
+					variable.setValue("DamageSource.GENERIC");
 					variable.setType(VariableTypeLoader.BuiltInTypes.DAMAGESOURCE);
 					variable.setScope(scope);
 					workspace.addVariableElement(variable);

@@ -87,9 +87,6 @@ public class Dependency implements Comparable<Dependency> {
 		case "immediatesourceentity":
 			blockXml.append("<block type=\"immediate_source_entity_from_deps\"></block>");
 			break;
-		case "damage":
-			blockXml.append("<block type=\"damage_from_deps\"></block>");
-			break;
 		case "direction":
 			blockXml.append("<block type=\"direction_from_deps\"></block>");
 			break;
@@ -98,6 +95,15 @@ public class Dependency implements Comparable<Dependency> {
 			break;
 		case "blockstate":
 			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
+			break;
+		case "damageamount":
+			blockXml.append("<block type=\"damage_from_deps\"></block>");
+			break;
+		case "originalblockedamount":
+			blockXml.append("<block type=\"original_blocked_amount_from_deps\"></block>");
+			break;
+		case "blockedamount":
+			blockXml.append("<block type=\"blocked_amount_from_deps\"></block>");
 			break;
 		case "damagesource":
 			blockXml.append("<block type=\"damagesource_from_deps\"></block>");
@@ -130,7 +136,6 @@ public class Dependency implements Comparable<Dependency> {
 			case "advancement" -> new Color(0x68712E);
 			case "dimensiontype" -> new Color(0x609963);
 			case "cmdcontext" -> new Color(0x8C5BA5);
-			case "damagesource" -> new Color(0xA65C9F);
 			default -> Color.white;
 		};
 	}
