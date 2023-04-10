@@ -41,7 +41,7 @@ public class ${JavaModName}BannerPatterns {
 	public static final DeferredRegister<BannerPattern> REGISTRY = DeferredRegister.create(Registry.BANNER_PATTERN_REGISTRY, ${JavaModName}.MODID);
 
 	<#list bannerpatterns as bannerpattern>
-		public static final TagKey<BannerPattern> ${bannerpattern.getModElement().getRegistryNameUpper()}_PATTERN_ITEM =
+		public static final TagKey<BannerPattern> ${bannerpattern.getModElement().getRegistryNameUpper()}_PATTERN_TAG =
 			createPatternTag("${bannerpattern.getModElement().getRegistryName()}");
 		public static final RegistryObject<BannerPattern> ${bannerpattern.getModElement().getRegistryNameUpper()} =
 			createPattern("${bannerpattern.getModElement().getRegistryName()}");
@@ -52,7 +52,7 @@ public class ${JavaModName}BannerPatterns {
 	}
 
 	private static RegistryObject<BannerPattern> createPattern(String name) {
-		return REGISTRY.register(name, () -> new BannerPattern(${JavaModName}.MODID + name));
+		return REGISTRY.register(name, () -> new BannerPattern(${JavaModName}.MODID + "_" + name));
 	}
 }
 <#-- @formatter:on -->

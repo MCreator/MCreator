@@ -36,7 +36,9 @@
 
 package ${package};
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DataGenerator {
+@Mod.EventBusSubscriber(modid = ${modid}, bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DataGenerator {
+
+	private ${JavaModName}DataGenerator() {}
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
