@@ -9,6 +9,7 @@
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level",
 				"entity": "event.getEntity()",
+				"source": "event.getSource()",
 				"sourceentity": "event.getSource().getEntity()",
 				"event": "event"
 				}/>

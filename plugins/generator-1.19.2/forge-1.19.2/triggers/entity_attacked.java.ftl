@@ -10,6 +10,7 @@
 				"amount": "event.getAmount()",
 				"world": "event.getEntity().level",
 				"entity": "event.getEntity()",
+				"source": "event.getSource()",
 				"sourceentity": "event.getSource().getEntity()",
 				"immediatesourceentity": "event.getSource().getDirectEntity()",
 				"event": "event"
