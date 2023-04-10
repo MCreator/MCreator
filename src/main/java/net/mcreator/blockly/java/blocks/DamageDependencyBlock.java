@@ -27,8 +27,8 @@ import org.w3c.dom.Element;
 public class DamageDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("amount");
-		master.addDependency(new Dependency("amount", "number"));
+		master.append("damageamount");
+		master.addDependency(new Dependency("damageamount", "number"));
 	}
 
 	@Override public String[] getSupportedBlocks() {

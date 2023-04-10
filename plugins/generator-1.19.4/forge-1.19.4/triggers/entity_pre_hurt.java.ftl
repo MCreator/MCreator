@@ -8,7 +8,7 @@
 				"y": "event.getEntity().getY()",
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level",
-				"amount": "event.getAmount()",
+				"damageamount": "event.getAmount()",
 				"entity": "event.getEntity()",
 				"source": "event.getSource()",
 				"sourceentity": "event.getSource().getEntity()",
