@@ -10,8 +10,8 @@
 				"world": "event.getEntity().level",
 				"entity": "event.getEntity()",
 				"source": "event.getDamageSource()",
-				"sourceentity": "event.getSource().getEntity()",
-				"immediatesourceentity": "event.getSource().getDirectEntity()",
+				"sourceentity": "event.getDamageSource().getEntity()",
+				"immediatesourceentity": "event.getDamageSource().getDirectEntity()",
 				"originalblockedamount": "event.getOriginalBlockedDamage()",
 				"blockedamount": "event.getBlockedDamage()",
 				"event": "event"
