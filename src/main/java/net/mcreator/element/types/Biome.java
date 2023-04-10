@@ -72,8 +72,6 @@ import java.util.Locale;
 	public ClimatePoint genErosion;
 	public ClimatePoint genWeirdness;
 
-	// TODO: converter that checks if those counts were enabled and if yes, enables appropriate default features
-
 	public int treesPerChunk;
 	public String vanillaTreeType;
 	public int treeType;
