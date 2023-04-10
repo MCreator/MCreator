@@ -11,9 +11,6 @@
         <block type="source_entity_from_deps"/>
         <block type="immediate_source_entity_from_deps"/>
         <block type="entity_iterator"/>
-        <block type="damage_from_deps"/>
-        <block type="original_blocked_amount_from_deps"/>
-        <block type="blocked_amount_from_deps"/>
         <block type="damagesource_from_deps"/>
         <block type="damagesource_constant"/>
         <block type="direction_constant"/>

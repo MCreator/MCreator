@@ -190,30 +190,6 @@ Blockly.Blocks['entity_none'] = {
     }
 };
 
-Blockly.Blocks['damage_from_deps'] = {
-    init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.damage_from_deps"));
-        this.setColour('%{BKY_MATH_HUE}');
-        this.setOutput(true, 'Number');
-    }
-}
-
-Blockly.Blocks['original_blocked_amount_from_deps'] = {
-    init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.original_blocked_amount_from_deps"));
-        this.setColour('%{BKY_MATH_HUE}');
-        this.setOutput(true, 'Number');
-    }
-}
-
-Blockly.Blocks['blocked_amount_from_deps'] = {
-    init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.blocked_amount_from_deps"));
-        this.setColour('%{BKY_MATH_HUE}');
-        this.setOutput(true, 'Number');
-    }
-}
-
 Blockly.Blocks['damagesource_from_deps'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.damagesource_from_deps"));

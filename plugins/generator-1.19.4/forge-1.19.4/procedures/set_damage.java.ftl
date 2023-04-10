@@ -1,0 +1,1 @@
+event.setAmount(${opt.toFloat(input$value)});

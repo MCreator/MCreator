@@ -199,18 +199,6 @@ public class TestWorkspaceDataProvider {
 					workspace.addVariableElement(variable);
 				}
 			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("damagesource" + (idx++));
-					variable.setValue("DamageSource.GENERIC");
-					variable.setType(VariableTypeLoader.BuiltInTypes.DAMAGESOURCE);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
 		}
 
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
