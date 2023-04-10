@@ -62,4 +62,13 @@ public class OS {
 		}
 	}
 
+	public static String getRestartShell(){
+		//It's more convenient to use these
+		if (getOS() == WINDOWS){
+			return "mcreator.bat";
+		} else {
+			return "mcreator.sh";
+		}
+	}
+
 }

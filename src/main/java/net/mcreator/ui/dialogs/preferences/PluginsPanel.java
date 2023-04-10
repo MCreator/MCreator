@@ -67,6 +67,7 @@ class PluginsPanel {
 						new File(UserFolderManager.getFileFromUserFolder("plugins"), f.getName())));
 				PluginLoader.initInstance(); // reload plugin loader
 				reloadPluginList();
+				preferencesDialog.markChanged();
 			}
 		});
 
@@ -85,15 +86,19 @@ class PluginsPanel {
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
-		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
-		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins);
+		JCheckBox enableJavaPlugins = L10N.checkbox("dialog.preferences.java_plugins");
+		enableJavaPlugins.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins);
 
-		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins = box.isSelected());
+		enableJavaPlugins.addActionListener(e -> {
+					PreferencesManager.PREFERENCES.hidden.enableJavaPlugins = enableJavaPlugins.isSelected();
+					preferencesDialog.markChanged();
+				}
+		);
 
 		openPluginFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(opts, box, 10, 10),
+		sectionPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(opts, enableJavaPlugins, 10, 10),
 				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.plugins_list"),
 						new JScrollPane(plugins), 3, 3), 10, 10));
 

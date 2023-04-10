@@ -25,6 +25,7 @@ import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -50,6 +51,15 @@ import java.util.List;
 import java.util.*;
 
 public class PreferencesDialog extends MCreatorDialog {
+
+	private static MCreatorApplication application;
+
+	public static void setApplication(MCreatorApplication app){
+		if (application == null) {
+			//Prevent plugin developers from re assigning values
+			application = app;
+		}
+	}
 
 	private static final Logger LOG = LogManager.getLogger("Preferences UI");
 
@@ -253,6 +263,17 @@ public class PreferencesDialog extends MCreatorDialog {
 		data.hidden.uiTheme = themes.getSelectedTheme();
 
 		PreferencesManager.storePreferences(data);
+
+		if (needRestart){
+			int opt = JOptionPane.showConfirmDialog(this,L10N.t("dialog.preferences.ask_restart"),"Restart Now?"
+					,JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+			if (opt == JOptionPane.YES_OPTION){
+				application.markNeedRestart();
+				application.closeApplication();
+			} else {
+				needRestart = false;
+			}
+		}
 	}
 
 	private JComponent generateEntryComponent(Field actualField, String sectionid, PreferencesEntry entry, Object value,
@@ -277,13 +298,13 @@ public class PreferencesDialog extends MCreatorDialog {
 			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) value), (int) entry.min(), max,
 					1);
 			JSpinner spinner = new JSpinner(model);
-			spinner.addChangeListener(e -> apply.setEnabled(true));
+			spinner.addChangeListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, spinner), cons);
 			return spinner;
 		} else if (actualField.getType().equals(boolean.class) || actualField.getType().equals(Boolean.class)) {
 			JCheckBox box = new JCheckBox();
 			box.setSelected((boolean) value);
-			box.addActionListener(e -> apply.setEnabled(true));
+			box.addActionListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(String.class)) {
@@ -292,7 +313,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setEditable(entry.arrayDataEditable());
 			box.setSelectedItem(value);
-			box.addActionListener(e -> apply.setEnabled(true));
+			box.addActionListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Color.class)) {
@@ -300,7 +321,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			if (entry.visualWidth() != -1)
 				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
 			box.setColor((Color) value);
-			box.setColorSelectedListener(e -> apply.setEnabled(true));
+			box.setColorSelectedListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(Locale.class)) {
@@ -316,7 +337,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
 			box.setRenderer(new LocaleListRenderer());
 			box.setSelectedItem(value);
-			box.addActionListener(e -> apply.setEnabled(true));
+			box.addActionListener(e -> markChanged());
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		}
@@ -340,7 +361,11 @@ public class PreferencesDialog extends MCreatorDialog {
 		return null;
 	}
 
+	boolean needRestart;
 	public void markChanged() {
+		if (sections.getSelectedIndex() == 0 || sections.getSelectedIndex() == 7){
+			needRestart = true;
+		}
 		apply.setEnabled(true);
 	}
 
