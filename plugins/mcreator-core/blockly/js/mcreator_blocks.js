@@ -190,6 +190,22 @@ Blockly.Blocks['entity_none'] = {
     }
 };
 
+Blockly.Blocks['damage_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.damage_from_deps"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+}
+
+Blockly.Blocks['damagesource_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.damagesource_from_deps"));
+        this.setColour(20);
+        this.setOutput(true, 'Damagesource');
+    }
+}
+
 Blockly.Blocks['direction_from_deps'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.direction_from_deps"));
