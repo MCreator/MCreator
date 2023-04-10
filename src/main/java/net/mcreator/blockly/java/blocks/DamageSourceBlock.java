@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 public class DamageSourceBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append("amount");
+		master.append("source");
 		master.addDependency(new Dependency("source", "damagesource"));
 	}
 
