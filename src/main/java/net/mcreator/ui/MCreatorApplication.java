@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
@@ -189,7 +190,6 @@ public final class MCreatorApplication {
 
 			isInternet = MCreatorApplication.WEB_API.initAPI();
 
-
 			discordClient = new DiscordClient();
 
 			// Do not externalize this text
@@ -203,6 +203,11 @@ public final class MCreatorApplication {
 					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
 						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
 								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
+					}
+
+					if (OS.getArchitecture().equals("aarch64")) {
+						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.aarch_loading.text"),
+								L10N.t("action.aarch_loading.title"), JOptionPane.WARNING_MESSAGE);
 					}
 				});
 			} catch (Exception e) {
