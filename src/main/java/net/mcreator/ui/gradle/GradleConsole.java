@@ -21,7 +21,6 @@ package net.mcreator.ui.gradle;
 import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
-import net.mcreator.io.UserFolderManager;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
@@ -57,7 +56,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,11 +103,7 @@ public class GradleConsole extends JPanel {
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				if (e.getURL().getProtocol().matches("http(s)?")){
-					try {
-						DesktopUtils.browse(e.getURL().toURI());
-					} catch (URISyntaxException ex) {
-						ex.printStackTrace();
-					}
+						DesktopUtils.browseSafe(e.getURL().toString());
 					return;
 				}
 				String url = e.getURL().toString().replace("file:", "");

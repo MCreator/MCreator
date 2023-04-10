@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -115,11 +116,13 @@ public class StringUtils {
 		return count;
 	}
 
-	public static String matchUrl(String s){
-		Matcher matcher = url.matcher(s.replace("<", "&lt;").replace(">", "&gt;"));
+	public static String matchUrl(String s, Function<String, String> work) {
+		Matcher matcher = url.matcher(s);
 		StringBuilder result = new StringBuilder();
-		while (matcher.find()){
-			matcher.appendReplacement(result, "<a href=\"" + matcher.group() + "\" style=\"color: 0080FF;\">" + matcher.group() + "</a>");
+		while (matcher.find()) {
+			var result1 = work.apply(matcher.group());
+			if (result1 != null)
+				matcher.appendReplacement(result, result1);
 		}
 		matcher.appendTail(result);
 		return result.toString();

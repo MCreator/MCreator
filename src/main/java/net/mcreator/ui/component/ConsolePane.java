@@ -65,11 +65,11 @@ public class ConsolePane extends JTextPane {
 	public void insertString(String s, SimpleAttributeSet set) {
 		if (DEBUG_CONTENTS_TO_LOG && !s.trim().isEmpty())
 			LOG.info(s.trim());
-		
+
 		//If this is moved elsewhere, the corresponding function will not be implemented
-		s= StringUtils.matchUrl(s);
-		
-		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + s.replace("\n", "<br>") + "</span>");
+		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + StringUtils.matchUrl(
+				s.replace("<", "&lt;").replace(">", "&gt;"),
+				a -> "<a href=\"" + a + "\" style=\"color: 0080FF;\">" + a + "</a>").replace("\n", "<br>") + "</span>");
 	}
 
 	public void insertLink(String link, String text, String textAfter, SimpleAttributeSet set) {
