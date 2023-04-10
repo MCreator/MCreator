@@ -201,7 +201,7 @@ Blockly.Blocks['damage_from_deps'] = {
 Blockly.Blocks['damagesource_from_deps'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.damagesource_from_deps"));
-        this.setColour(20);
+        this.setColour(306);
         this.setOutput(true, 'Damagesource');
     }
 }
@@ -754,6 +754,6 @@ Blockly.defineBlocksWithJsonArray([
             "damagesource_list_provider"
         ],
         "output": "Damagesource",
-        "colour": "20"
+        "colour": "306"
     }
 ]);
