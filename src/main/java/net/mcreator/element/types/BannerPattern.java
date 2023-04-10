@@ -55,18 +55,17 @@ import java.util.List;
 	@Override public void finalizeModElementGeneration() {
 		Workspace workspace = getModElement().getWorkspace();
 		String workspaceRoot = workspace.getWorkspaceFolder().getAbsolutePath();
-		File vanillaTextureFolder = new File(workspaceRoot, "src/main/resources/assets/minecraft/textures");
 
 		File originalBannerTextureFileLocation = getModElement().getFolderManager()
 				.getTextureFile(FilenameUtilsPatched.removeExtension(bannerTexture), TextureType.OTHER);
-		File newBannerTextureFileLocation = new File(vanillaTextureFolder,
-				"entity/banner/" + getModElement().getRegistryName() + ".png");
+		File newBannerTextureFileLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.BANNER),
+				"banner/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalBannerTextureFileLocation, newBannerTextureFileLocation);
 
 		File originalShieldTextureFileLocation = getModElement().getFolderManager()
 				.getTextureFile(FilenameUtilsPatched.removeExtension(shieldTexture), TextureType.OTHER);
-		File newShieldTextureFileLocation = new File(vanillaTextureFolder,
-				"entity/shield/" + getModElement().getRegistryName() + ".png");
+		File newShieldTextureFileLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.BANNER),
+				"shield/" + getModElement().getRegistryName() + ".png");
 		FileIO.copyFile(originalShieldTextureFileLocation, newShieldTextureFileLocation);
 	}
 

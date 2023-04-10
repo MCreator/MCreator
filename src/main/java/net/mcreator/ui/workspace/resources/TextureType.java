@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public enum TextureType {
 	BLOCK("block"), ITEM("item"), ENTITY("entity"), EFFECT("effect"), PARTICLE("particle"), SCREEN("screen"), ARMOR(
-			"armor"), OTHER("other");
+			"armor"), BANNER("banner"), OTHER("other");
 
 	private final String id;
 

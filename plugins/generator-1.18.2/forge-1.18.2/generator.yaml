@@ -31,6 +31,7 @@ effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+banner_textures_dir: "@RESROOT/assets/minecraft/textures/entity"
 
 base_templates:
   - template: modbase/mod.java.ftl
