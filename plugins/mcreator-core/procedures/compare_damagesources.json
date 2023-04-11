@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "DamageSource"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "DamageSource"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 306,
+  "mcreator": {
+    "toolbox_id": "logicoperations",
+    "toolbox_init": [
+      "~<value name=\"a\"><block type=\"damagesource_from_deps\"></block></value>",
+      "~<value name=\"b\"><block type=\"damagesource_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}
