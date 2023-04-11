@@ -1,1 +1,3 @@
-event.setAmount(${opt.toFloat(input$value)});
+if (event != null) {
+	event.setAmount(${opt.toFloat(input$value)});
+}
