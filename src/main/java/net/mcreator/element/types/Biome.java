@@ -135,11 +135,11 @@ import java.util.Locale;
 	}
 
 	public boolean hasFruits() {
-		return hasTrees() && treeFruits != null && !treeFruits.isEmpty();
+		return hasTrees() && treeType == TREES_CUSTOM && treeFruits != null && !treeFruits.isEmpty();
 	}
 
 	public boolean hasVines() {
-		return hasTrees() && treeVines != null && !treeVines.isEmpty();
+		return hasTrees() && treeType == TREES_CUSTOM && treeVines != null && !treeVines.isEmpty();
 	}
 
 	public boolean hasStructure(String structureType) {

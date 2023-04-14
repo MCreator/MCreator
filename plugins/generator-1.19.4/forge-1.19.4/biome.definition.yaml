@@ -2,6 +2,14 @@ templates:
   - template: biome/biome.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
+  - template: biome/configured_tree.json.ftl
+    writer: json
+    condition: hasTrees()
+    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
+  - template: biome/placed_tree.json.ftl
+    writer: json
+    condition: hasTrees()
+    name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
   - template: biome/tree_fruits_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMEFruitDecorator.java"
     condition: hasFruits()
