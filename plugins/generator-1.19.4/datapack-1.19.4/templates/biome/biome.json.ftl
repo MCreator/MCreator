@@ -59,11 +59,9 @@
 	</#if>
 </#list>
 
-<#-- TODO:add tree featrue to features_vegetal_decoration
 <#if data.hasTrees()>
 	<#assign features_vegetal_decoration = features_vegetal_decoration + ["${modid}:${registryname}_tree"]>
 </#if>
--->
 
 <#-- now in dimension: surface and underground block -->
 {
@@ -128,17 +126,17 @@
 		</#if>
     },
     "features": [
-    	<#--RAW_GENERATION-->[<#list features_raw_generation as feature>"${feature}"<#sep>,</#list>],
-		<#--LAKES-->[<#list features_lakes as feature>"${feature}"<#sep>,</#list>],
-		<#--LOCAL_MODIFICATIONS-->[<#list features_local_modifications as feature>"${feature}"<#sep>,</#list>],
-		<#--UNDERGROUND_STRUCTURES-->[<#list features_underground_structures as feature>"${feature}"<#sep>,</#list>],
-		<#--SURFACE_STRUCTURES-->[<#list features_surface_structures as feature>"${feature}"<#sep>,</#list>],
-		<#--STRONGHOLDS-->[<#list features_strongholds as feature>"${feature}"<#sep>,</#list>],
-		<#--UNDERGROUND_ORES-->[<#list features_underground_ores as feature>"${feature}"<#sep>,</#list>],
-		<#--UNDERGROUND_DECORATION-->[<#list features_underground_decorations as feature>"${feature}"<#sep>,</#list>],
-		<#--FLUID_SPRINGS-->[<#list features_fluid_springs as feature>"${feature}"<#sep>,</#list>],
-		<#--VEGETAL_DECORATION-->[<#list features_vegetal_decoration as feature>"${feature}"<#sep>,</#list>],
-		<#--TOP_LAYER_MODIFICATION-->[<#list features_top_layer_modification as feature>"${feature}"<#sep>,</#list>]
+    	<#--RAW_GENERATION-->[<#list thelper.removeDuplicates(features_raw_generation) as feature>"${feature}"<#sep>,</#list>],
+		<#--LAKES-->[<#list thelper.removeDuplicates(features_lakes) as feature>"${feature}"<#sep>,</#list>],
+		<#--LOCAL_MODIFICATIONS-->[<#list thelper.removeDuplicates(features_local_modifications) as feature>"${feature}"<#sep>,</#list>],
+		<#--UNDERGROUND_STRUCTURES-->[<#list thelper.removeDuplicates(features_underground_structures) as feature>"${feature}"<#sep>,</#list>],
+		<#--SURFACE_STRUCTURES-->[<#list thelper.removeDuplicates(features_surface_structures) as feature>"${feature}"<#sep>,</#list>],
+		<#--STRONGHOLDS-->[<#list thelper.removeDuplicates(features_strongholds) as feature>"${feature}"<#sep>,</#list>],
+		<#--UNDERGROUND_ORES-->[<#list thelper.removeDuplicates(features_underground_ores) as feature>"${feature}"<#sep>,</#list>],
+		<#--UNDERGROUND_DECORATION-->[<#list thelper.removeDuplicates(features_underground_decorations) as feature>"${feature}"<#sep>,</#list>],
+		<#--FLUID_SPRINGS-->[<#list thelper.removeDuplicates(features_fluid_springs) as feature>"${feature}"<#sep>,</#list>],
+		<#--VEGETAL_DECORATION-->[<#list thelper.removeDuplicates(features_vegetal_decoration) as feature>"${feature}"<#sep>,</#list>],
+		<#--TOP_LAYER_MODIFICATION-->[<#list thelper.removeDuplicates(features_top_layer_modification) as feature>"${feature}"<#sep>,</#list>]
     ]
 }
 

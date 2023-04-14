@@ -29,25 +29,26 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.world.features.treedecorators;
+
 <#include "../mcitems.ftl">
 
-public class ${name}TrunkDecorator extends TrunkVineDecorator {
+package ${package}.world.features.treedecorators;
 
-    public static final ${name}TrunkDecorator INSTANCE = new ${name}TrunkDecorator();
+import com.mojang.serialization.Codec;
 
-    public static com.mojang.serialization.Codec<${name}TrunkDecorator> codec;
-    public static TreeDecoratorType<?> tdt;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}TrunkDecorator extends TrunkVineDecorator {
 
-    static {
-        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-        tdt = new TreeDecoratorType<>(codec);
-        ForgeRegistries.TREE_DECORATOR_TYPES.register("${registryname}_tree_trunk_decorator", tdt);
-    }
+    public static Codec<${name}TrunkDecorator> CODEC = Codec.unit(${name}TrunkDecorator::new);
+
+    public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
+
+	@SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.TREE_DECORATOR_TYPES, registerHelper -> registerHelper.register("${registryname}_tree_trunk_decorator", DECORATOR_TYPE));
+	}
 
     @Override
     protected TreeDecoratorType<?> type() {
-        return tdt;
+        return DECORATOR_TYPE;
     }
 
     @Override

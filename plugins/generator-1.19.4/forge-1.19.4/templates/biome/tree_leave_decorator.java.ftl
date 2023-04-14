@@ -29,21 +29,22 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.world.features.treedecorators;
+
 <#include "../mcitems.ftl">
 
-public class ${name}LeaveDecorator extends LeaveVineDecorator {
+package ${package}.world.features.treedecorators;
 
-    public static final ${name}LeaveDecorator INSTANCE = new ${name}LeaveDecorator();
+import com.mojang.serialization.Codec;
 
-    public static com.mojang.serialization.Codec<LeaveVineDecorator> codec;
-    public static TreeDecoratorType<?> tdt;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}LeaveDecorator extends LeaveVineDecorator {
 
-    static {
-        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-        tdt = new TreeDecoratorType<>(codec);
-        ForgeRegistries.TREE_DECORATOR_TYPES.register("${registryname}_tree_leave_decorator", tdt);
-    }
+    public static Codec<LeaveVineDecorator> CODEC = Codec.unit(${name}LeaveDecorator::new);
+
+    public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
+
+	@SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.TREE_DECORATOR_TYPES, registerHelper -> registerHelper.register("${registryname}_tree_leave_decorator", DECORATOR_TYPE));
+	}
 
 	public ${name}LeaveDecorator() {
 		super(0.25f);
@@ -51,7 +52,7 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
 
     @Override
     protected TreeDecoratorType<?> type() {
-        return tdt;
+        return DECORATOR_TYPE;
     }
 
     @Override

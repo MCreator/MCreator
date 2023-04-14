@@ -29,20 +29,21 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.world.features.treedecorators;
+
 <#include "../mcitems.ftl">
 
-public class ${name}FruitDecorator extends CocoaDecorator {
+package ${package}.world.features.treedecorators;
 
-    public static final ${name}FruitDecorator INSTANCE = new ${name}FruitDecorator();
+import com.mojang.serialization.Codec;
 
-    public static com.mojang.serialization.Codec<${name}FruitDecorator> codec;
-    public static TreeDecoratorType<?> tdt;
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}FruitDecorator extends CocoaDecorator {
 
-    static {
-        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-        tdt = new TreeDecoratorType<>(codec);
-        ForgeRegistries.TREE_DECORATOR_TYPES.register("${registryname}_tree_fruit_decorator", tdt);
+    public static Codec<${name}FruitDecorator> CODEC = Codec.unit(${name}FruitDecorator::new);
+
+    public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
+
+    @SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
+        event.register(ForgeRegistries.Keys.TREE_DECORATOR_TYPES, registerHelper -> registerHelper.register("${registryname}_tree_fruit_decorator", DECORATOR_TYPE));
     }
 
     public ${name}FruitDecorator() {
@@ -50,7 +51,7 @@ public class ${name}FruitDecorator extends CocoaDecorator {
     }
 
     @Override protected TreeDecoratorType<?> type() {
-        return tdt;
+        return DECORATOR_TYPE;
     }
 
     @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "TreeDecorator.Context")
