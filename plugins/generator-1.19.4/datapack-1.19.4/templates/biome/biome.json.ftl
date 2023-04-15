@@ -13,6 +13,10 @@
 <#assign features_vegetal_decoration = []>
 <#assign features_top_layer_modification = []>
 
+<#if data.hasTrees()>
+	<#assign features_vegetal_decoration = features_vegetal_decoration + ["${modid}:${registryname}_tree"]>
+</#if>
+
 <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
 	<#if data.spawnBiomeNether &&
 	(defaultFeature == "Caves" ||
@@ -58,10 +62,6 @@
 		</#list>
 	</#if>
 </#list>
-
-<#if data.hasTrees()>
-	<#assign features_vegetal_decoration = features_vegetal_decoration + ["${modid}:${registryname}_tree"]>
-</#if>
 
 <#-- now in dimension: surface and underground block -->
 {
