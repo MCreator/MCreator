@@ -435,11 +435,34 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		listeningEnabled = true;
 	}
 
+	/**
+	 * This method disables UI elements representing mod element parameters not supported by the selected generator
+	 * based on provided lists of excluded/included component entries. These can follow a few different formats,
+	 * depending on what child component does an entry target:
+	 * <ul>
+	 *     <li><b>&lt;fieldName&gt;</b> - will handle a component named "fieldName" directly
+	 *     on the source/initial UI element;</li>
+	 *     <li><b>&lt;fieldName&gt;.&lt;deeperFieldName&gt;</b> - will handle a component named "deeperFieldName"
+	 *     on the UI element named "fieldName" (note that the entry part after the dot can follow the same format);</li>
+	 *     <li><b>&lt;fieldName&gt;.&lt;childList&gt;.&lt;deeperFieldName&gt;</b> - will handle a component
+	 *     named "deeperFieldName" on a list named "childList" holding potential child entries of the component
+	 *     named "fieldName" (note that the entry part after the last dot can follow the same format).</li>
+	 * </ul>
+	 * Note that the part after the last dot in each of the examples above can follow any of these formats as well.
+	 *
+	 * @param source     The topmost component from which the process is initiated.
+	 * @param exclusions List of child UI components of the {@code source} object that will be disabled.
+	 * @param inclusions List of child UI components of the {@code source} object that will be enabled.
+	 * @apiNote Only one of the lists described above should be different from {@code null} and not empty
+	 *          for this method to take proper action.
+	 */
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
 		if (exclusions != null && inclusions != null) { // can't exclude and include together
-			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
+			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them (the "
+					+ source.getClass().getName() + " instance will not be affected)");
 		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
+			// this contains mapped exclusions/inclusions for each child component type for all entries lists found
 			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
@@ -450,8 +473,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						Field field = hierarchy.peek().getClass().getDeclaredField(path[i]);
 						if (!Component.class.isAssignableFrom(field.getType())) {
 							// this may target a list of potential child entries of JEntriesList
-							if (hierarchy.peek() instanceof JEntriesList entriesList
-									&& Collection.class.isAssignableFrom(field.getType()) && i + 1 < path.length
+							if (i + 1 < path.length && hierarchy.peek() instanceof JEntriesList entriesList
+									&& Collection.class.isAssignableFrom(field.getType())
 									&& field.getGenericType() instanceof ParameterizedType parameterizedType) {
 								Class<?> childType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 								if (Component.class.isAssignableFrom(childType)) { // Collection<? extends Component>
