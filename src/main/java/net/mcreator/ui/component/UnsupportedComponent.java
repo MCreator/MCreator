@@ -34,7 +34,7 @@ public class UnsupportedComponent extends JPanel {
 	 */
 	public static void markUnsupported(Component comp) {
 		Container parent = comp.getParent();
-		if (parent != null) {
+		if (parent != null && !(parent instanceof UnsupportedComponent)) {
 			int index = Arrays.asList(parent.getComponents()).indexOf(comp);
 			parent.remove(index);
 			parent.add(new UnsupportedComponent(comp), index);
@@ -55,6 +55,8 @@ public class UnsupportedComponent extends JPanel {
 		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
 		Arrays.stream(origin.getMouseListeners()).forEach(origin::removeMouseListener);
+		Arrays.stream(origin.getMouseMotionListeners()).forEach(origin::removeMouseMotionListener);
+		Arrays.stream(origin.getMouseWheelListeners()).forEach(origin::removeMouseWheelListener);
 		Arrays.stream(origin.getKeyListeners()).forEach(origin::removeKeyListener);
 
 		add(origin);

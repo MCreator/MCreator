@@ -440,15 +440,17 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * based on provided lists of excluded/included component entries. These can follow a few different formats,
 	 * depending on what child component does an entry target:
 	 * <ul>
-	 *     <li><b>&lt;fieldName&gt;</b> - will handle a component named "fieldName" directly
+	 *     <li><b>{@code <fieldName>}</b> - will handle a component named "fieldName" directly
 	 *     on the source/initial UI element;</li>
-	 *     <li><b>&lt;fieldName&gt;.&lt;deeperFieldName&gt;</b> - will handle a component named "deeperFieldName"
-	 *     on the UI element named "fieldName" (note that the entry part after the dot can follow the same format);</li>
-	 *     <li><b>&lt;fieldName&gt;.&lt;childList&gt;.&lt;deeperFieldName&gt;</b> - will handle a component
-	 *     named "deeperFieldName" on a list named "childList" holding potential child entries of the component
-	 *     named "fieldName" (note that the entry part after the last dot can follow the same format).</li>
+	 *     <li><b>{@code <fieldName>.<childFieldName>}</b> - will handle a component named "childFieldName"
+	 *     on the UI element named "fieldName";</li>
+	 *     <li><b>{@code <fieldName>.<childList>.<childFieldName>}</b> - will handle a component
+	 *     named "childFieldName" on a list named "childList" holding potential child entries of the component
+	 *     named "fieldName".</li>
 	 * </ul>
-	 * Note that the part after the last dot in each of the examples above can follow any of these formats as well.
+	 * Note that the part after the last dot in each of the examples above can follow any of these formats as well
+	 * (only the last component in the "path" is affected). However, if one of UI elements has been disabled earlier
+	 * within this method, any exclusion/inclusion entries targeting its child components will be ignored.
 	 *
 	 * @param source     The topmost component from which the process is initiated.
 	 * @param exclusions List of child UI components of the {@code source} object that will be disabled.
@@ -461,6 +463,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them (the "
 					+ source.getClass().getName() + " instance will not be affected)");
 		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
+			Set<Component> excludedComponents = new HashSet<>();
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			// this contains mapped exclusions/inclusions for each child component type for all entries lists found
 			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
@@ -492,7 +495,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 						field.setAccessible(true);
 						Component obj = (Component) field.get(hierarchy.peek());
-						if (obj == null) {
+						if (obj == null || excludedComponents.contains(obj)) {
 							hierarchy.clear(); // clear hierarchy cache to skip current entry
 							break;
 						}
@@ -508,13 +511,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					if (inclusions != null) // register component to exclude its "neighbors" later
 						includedComponents.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
 					else // exclude the component itself
-						UnsupportedComponent.markUnsupported(c);
+						excludedComponents.add(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
 					LOG.warn("Failed to access component: " + entry, e);
 				}
 			}
 
-			if (inclusions != null) { // "include" components registered before
+			if (exclusions != null) { // exclude detected components
+				excludedComponents.forEach(UnsupportedComponent::markUnsupported);
+			} else if (inclusions != null) { // "include" components registered before
 				includedComponents.forEach((parent, includes) -> {
 					for (Field field : parent.getClass().getDeclaredFields()) {
 						if (!Component.class.isAssignableFrom(field.getType()))
@@ -537,7 +542,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				if (classes.containsKey(e.getClass())) {
 					if (exclusions != null)
 						disableUnsupportedFields(e, classes.get(e.getClass()).x(), null);
-					else
+					else if (inclusions != null)
 						disableUnsupportedFields(e, null, classes.get(e.getClass()).y());
 				}
 			}));
