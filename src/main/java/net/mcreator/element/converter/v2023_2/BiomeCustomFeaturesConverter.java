@@ -55,18 +55,18 @@ public class BiomeCustomFeaturesConverter implements IConverter {
 			}
 
 			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("reedsPerChunk") != null) {
-				int mushroomsPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+				int reedsPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 						.get("reedsPerChunk").getAsInt();
-				if (mushroomsPerChunk > 0) {
+				if (reedsPerChunk > 0) {
 					if (!biome.defaultFeatures.contains("DesertFeatures"))
 						biome.defaultFeatures.add("DesertFeatures");
 				}
 			}
 
 			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("cactiPerChunk") != null) {
-				int mushroomsPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+				int cactiPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 						.get("cactiPerChunk").getAsInt();
-				if (mushroomsPerChunk > 0) {
+				if (cactiPerChunk > 0) {
 					if (!biome.defaultFeatures.contains("DesertFeatures"))
 						biome.defaultFeatures.add("DesertFeatures");
 				}
