@@ -521,7 +521,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 		case "Block":
 			ResourcePointer resource = ListUtils.getRandomItem(templatesSorted.stream()
 					.filter(e -> e.toString().contains("block") || e.toString().contains("pattern") || e.toString()
-							.contains("noise") || e.toString().contains("machine") || e.toString().contains("plank"))
+							.contains("noise") || e.toString().contains("machine") || e.toString().contains("plank")
+							|| e.toString().contains("log") || e.toString().contains("wood") || e.toString()
+							.contains("leaves") || e.toString().contains("stone") || e.toString().contains("dirt"))
 					.toList());
 			cbs2.setSelectedItem(resource);
 			cbs.setSelectedItem(
