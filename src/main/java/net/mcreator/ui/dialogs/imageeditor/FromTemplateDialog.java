@@ -519,23 +519,24 @@ public class FromTemplateDialog extends MCreatorDialog {
 			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 270, 0, 0 }));
 			break;
 		case "Block":
-			ResourcePointer resource = ListUtils.getRandomItem(templatesSorted.stream()
+			ResourcePointer randomTexture = ListUtils.getRandomItem(templatesSorted.stream()
 					.filter(e -> e.toString().contains("block") || e.toString().contains("pattern") || e.toString()
 							.contains("noise") || e.toString().contains("machine") || e.toString().contains("plank")
 							|| e.toString().contains("log") || e.toString().contains("wood") || e.toString()
 							.contains("leaves") || e.toString().contains("stone") || e.toString().contains("dirt"))
 					.toList());
-			cbs2.setSelectedItem(resource);
-			cbs.setSelectedItem(
-					resource.toString().contains("noise") ? ListUtils.getRandomItem(templatesSorted) : resource);
-			cbs3.setSelectedItem(resource.toString().contains("machine") ? randomNoise : noimage);
+			cbs.setSelectedItem(randomTexture.toString().contains("noise") ?
+					ListUtils.getRandomItem(templatesSorted) :
+					randomTexture);
+			cbs2.setSelectedItem(randomTexture);
+			cbs3.setSelectedItem(randomTexture.toString().contains("machine") ? randomNoise : noimage);
 			cbs4.setSelectedItem(noimage);
 			col1.setColor(ListUtils.getRandomItem(presetColors));
 			col2.setColor(ListUtils.getRandomItem(presetColors));
 			type1.setSelected(Math.random() < 0.4);
 			type2.setSelected(Math.random() < 0.4);
-			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 270, 0, 0 }));
-			ang2.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 270, 0, 0 }));
+			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			ang2.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
 			break;
 		default:
 			randomizeSetup();
