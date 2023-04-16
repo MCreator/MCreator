@@ -75,6 +75,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
 					"Campfire cooking", "Smithing" });
 
+	private final JComboBox<String> cookingBookCategory = new JComboBox<>(
+			new String[] { "MISC", "FOOD", "BLOCKS" });
+
+	private final JComboBox<String> craftingBookCategory = new JComboBox<>(
+			new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
+
 	private final CardLayout recipesPanelLayout = new CardLayout();
 	private final JPanel recipesPanel = new JPanel(recipesPanelLayout);
 
@@ -84,6 +90,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private JComponent cookingTimePanel;
 	private JComponent groupPanel;
 	private JComponent shapelessPanel;
+	private JComponent cookingBookCategoryPanel;
+	private JComponent craftingBookCategoryPanel;
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -172,6 +180,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		northPanel.add(groupPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/group_name"),
 				L10N.label("elementgui.recipe.group")), group));
 
+		northPanel.add(craftingBookCategoryPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/crafting_book_category"),
+				L10N.label("elementgui.recipe.crafting_book_category")), craftingBookCategory));
+
+		northPanel.add(cookingBookCategoryPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_book_category"),
+				L10N.label("elementgui.recipe.cooking_book_category")), cookingBookCategory));
+
 		northPanel.add(shapelessPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"),
 				L10N.label("elementgui.recipe.is_shapeless")), recipeShapeless));
 
@@ -184,13 +198,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		pane5.setOpaque(false);
 		pane5.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(northPanel), PanelUtils.pullElementUp(recwrap), 15, 15)));
 
-		xpReward.setEnabled(false);
-		cookingTime.setEnabled(false);
-
 		recipeType.addActionListener(e -> updateUIFields());
 
 		group.enableRealtimeValidation();
 		group.setValidator(new RegistryNameValidator(group, "Recipe group").setAllowEmpty(true).setMaxLength(128));
+
+		updateUIFields();
 
 		addPage(pane5);
 	}
@@ -201,15 +214,18 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			boolean isCookingRecipe = List.of("Smelting", "Blasting", "Smoking", "Campfire cooking").contains(recipeTypeValue);
 			xpRewardPanel.setVisible(isCookingRecipe);
 			cookingTimePanel.setVisible(isCookingRecipe);
+			cookingBookCategoryPanel.setVisible(isCookingRecipe);
 
 			boolean isRecipeJSON = List.of("Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing").contains(recipeTypeValue);
 			groupPanel.setVisible(isRecipeJSON);
 			namespacePanel.setVisible(isRecipeJSON);
 			namePanel.setVisible(isRecipeJSON);
 
-			shapelessPanel.setVisible(recipeTypeValue.equals("Crafting"));
+			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
+			shapelessPanel.setVisible(isRecipeCrafting);
+			craftingBookCategoryPanel.setVisible(isRecipeCrafting);
 
-			if (!isEditingMode() && cookingTime.isEnabled()) {
+			if (!isEditingMode() && isCookingRecipe) {
 				if (recipeTypeValue.equals("Smelting")) {
 					cookingTime.setValue(200);
 				} else if (recipeTypeValue.equals("Campfire cooking")) {
@@ -279,6 +295,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		name.getEditor().setItem(recipe.name);
 
 		group.setText(recipe.group);
+
+		cookingBookCategory.setSelectedItem(recipe.cookingBookCategory);
+		craftingBookCategory.setSelectedItem(recipe.craftingBookCategory);
 
 		if ("Crafting".equals(recipe.recipeType)) {
 			recipeShapeless.setSelected(recipe.recipeShapeless);
@@ -386,6 +405,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipe.name = name.getEditor().getItem().toString();
 
 		recipe.group = group.getText();
+
+		recipe.cookingBookCategory = (String) cookingBookCategory.getSelectedItem();
+		recipe.craftingBookCategory = (String) craftingBookCategory.getSelectedItem();
 
 		return recipe;
 	}

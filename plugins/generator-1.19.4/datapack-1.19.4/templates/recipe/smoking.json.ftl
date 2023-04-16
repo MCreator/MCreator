@@ -3,7 +3,7 @@
 {
     "type": "minecraft:smoking",
     <#if data.group?has_content>"group": "${data.group}",</#if>
-    "category": "misc", <#-- can be any value from CookingBookCategory -->
+    "category": "${data.cookingBookCategory?lower_case}",
     "experience": ${data.xpReward},
 	"cookingtime": ${data.cookingTime},
     "ingredient": {
