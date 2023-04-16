@@ -60,6 +60,9 @@ public class JMinMaxSpinner extends JPanel {
 	private void init() {
 		setLayout(new GridLayout(1, 2, 5, 0));
 		setOpaque(false);
+		setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
 		min.addChangeListener(e -> {
 			Number minVal = getMinNumber(), maxVal = getMaxNumber();
