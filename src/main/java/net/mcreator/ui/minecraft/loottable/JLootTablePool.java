@@ -55,6 +55,14 @@ public class JLootTablePool extends JEntriesList {
 
 		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
 
+		rolls.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		rolls.setAllowEqualValues(true);
+		bonusrolls.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		bonusrolls.setAllowEqualValues(true);
 		hasbonusrolls.setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));

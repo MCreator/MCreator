@@ -53,7 +53,13 @@ public class JLootTableEntry extends JPanel {
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
 		item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		count.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		count.setAllowEqualValues(true);
+		enchantmentsLevel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		enchantmentsLevel.setAllowEqualValues(true);
 
 		final JComponent container = PanelUtils.expandHorizontally(this);

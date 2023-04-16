@@ -38,6 +38,7 @@ public class JMinMaxSpinner extends JPanel {
 
 		init();
 
+		// increase visible fraction part if needed
 		if (step < 0.00001) {
 			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(6);
 			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(6);
@@ -60,9 +61,6 @@ public class JMinMaxSpinner extends JPanel {
 	private void init() {
 		setLayout(new GridLayout(1, 2, 5, 0));
 		setOpaque(false);
-		setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
 		min.addChangeListener(e -> {
 			Number minVal = getMinNumber(), maxVal = getMaxNumber();
@@ -125,11 +123,11 @@ public class JMinMaxSpinner extends JPanel {
 		return getMaxNumber().intValue();
 	}
 
-	public void setMinValue(double val) {
+	public void setMinValue(Number val) {
 		min.setValue(val);
 	}
 
-	public void setMaxValue(double val) {
+	public void setMaxValue(Number val) {
 		max.setValue(val);
 	}
 

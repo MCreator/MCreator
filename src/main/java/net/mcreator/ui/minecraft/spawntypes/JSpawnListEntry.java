@@ -56,6 +56,9 @@ public class JSpawnListEntry extends JPanel {
 		entryList.add(this);
 
 		ElementUtil.loadAllSpawnableEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
+		numberOfMobsPerGroup.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		add(L10N.label("dialog.spawn_list_entry.entity"));
