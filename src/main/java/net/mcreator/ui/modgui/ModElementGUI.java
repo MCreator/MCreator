@@ -467,6 +467,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			// this contains mapped exclusions/inclusions for each child component type for all entries lists found
 			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
+			Map<JEntriesList, List<Container>> childEntries = new HashMap<>();
+
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
 				try {
 					Stack<Component> hierarchy = new Stack<>();
@@ -480,12 +482,19 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 									&& Collection.class.isAssignableFrom(field.getType())
 									&& field.getGenericType() instanceof ParameterizedType parameterizedType) {
 								Class<?> childType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-								if (Component.class.isAssignableFrom(childType)) { // Collection<? extends Component>
+								if (Container.class.isAssignableFrom(childType)) { // Collection<? extends Container>
 									Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(
 											entriesList, e -> new HashMap<>()).computeIfAbsent(childType,
 											e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
 									(exclusions != null ? currTuple.x() : currTuple.y()).add(
 											String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
+
+									// some initial entries could have been added before call of this method
+									field.setAccessible(true);
+									for (Object obj : (Collection<?>) field.get(hierarchy.peek())) {
+										childEntries.computeIfAbsent(entriesList, e -> new ArrayList<>())
+												.add((Container) obj);
+									}
 								}
 							}
 
@@ -544,6 +553,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						disableUnsupportedFields(e, classes.get(e.getClass()).x(), null);
 					else if (inclusions != null)
 						disableUnsupportedFields(e, null, classes.get(e.getClass()).y());
+				}
+			}));
+			childEntries.forEach((list, children) -> children.forEach(e -> {
+				if (entryLists.get(list).containsKey(e.getClass())) {
+					if (exclusions != null)
+						disableUnsupportedFields(e, entryLists.get(list).get(e.getClass()).x(), null);
+					else if (inclusions != null)
+						disableUnsupportedFields(e, null, entryLists.get(list).get(e.getClass()).y());
 				}
 			}));
 		}
