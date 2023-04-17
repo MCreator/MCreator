@@ -36,4 +36,8 @@ public class TechnicalButton extends JButton {
 	public TechnicalButton(String text) {
 		super(text);
 	}
+
+	@Override public String getName() {
+		return "TechnicalComponent";
+	}
 }

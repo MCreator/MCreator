@@ -56,6 +56,9 @@ public interface ModElementChangedListener
 	 */
 	default void registerUI(JComponent container) {
 		for (Component component : container.getComponents()) {
+			if ("TechnicalComponent".equals(component.getName()))
+				continue; // don't add listeners if component triggers actions not affecting mod element directly
+
 			if (component instanceof MCItemHolder itemHolder) {
 				itemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
