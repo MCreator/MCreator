@@ -42,7 +42,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 public class TooltipProcedureConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("TooltypeProcedureConverter");
+	private static final Logger LOG = LogManager.getLogger(TooltipProcedureConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -56,7 +56,7 @@ public class TooltipProcedureConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 42;
+		return 43;
 	}
 
 	protected String fixXML(String xml) throws Exception {
@@ -80,7 +80,6 @@ public class TooltipProcedureConverter implements IConverter {
 				element.appendChild(itemType);
 
 			}
-
 
 		}
 
