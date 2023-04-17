@@ -1,15 +1,20 @@
 templates:
-  - template: tool.java.ftl
+  - template: item/item.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
-  - template: json/tool.json.ftl
-    writer: json
-    condition: "renderType #= 0"
-    name: "@MODASSETSROOT/models/item/@registryname.json"
-  - template: json/handheld_rod.json.ftl
+  - template: item/item_container.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/inventory/@NAMEInventoryCapability.java"
+    condition: hasInventory()
+  - template: json/item.json.ftl
     writer: json
     condition:
       - "renderType #= 0"
-      - "toolType %= Fishing rod"
+      - "hasNormalModel()"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/tool.json.ftl
+    writer: json
+    condition:
+      - "renderType #= 0"
+      - "hasToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json
