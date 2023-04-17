@@ -4,6 +4,14 @@
       "type": "input_value",
       "name": "entity",
       "check": "Entity"
+    },
+    {
+      "type": "input_dummy",
+      "name": "customEntityField"
+    },
+    {
+      "type": "input_dummy",
+      "name": "accessorField"
     }
   ],
   "extensions": [
@@ -13,12 +21,13 @@
   "colour": "%{BKY_LOGIC_HUE}",
   "output": "Boolean",
   "mcreator": {
+    "group": "data_accessors",
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "fields": [
-      "customentity",
+      "customEntity",
       "accessor"
     ],
     "inputs": [
