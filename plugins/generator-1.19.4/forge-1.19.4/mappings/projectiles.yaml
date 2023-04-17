@@ -1,0 +1,40 @@
+_default:
+  - Snowball
+  - EntityType.SNOWBALL
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "@NAMEEntity"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
+Arrow:
+  - Arrow
+  - EntityType.ARROW
+DragonFireball:
+  - DragonFireball
+  - EntityType.DRAGON_FIREBALL
+Egg:
+  - ThrownEgg
+  - EntityType.EGG
+EnderPearl:
+  - ThrownEnderpearl
+  - EntityType.ENDER_PEARL
+ExperienceBottle:
+  - ThrownExperienceBottle
+  - EntityType.EXPERIENCE_BOTTLE
+LargeFireball:
+  - LargeFireball
+  - EntityType.FIREBALL
+LlamaSpit:
+  - LlamaSpit
+  - EntityType.LLAMA_SPIT
+SmallFireball:
+  - SmallFireball
+  - EntityType.SMALL_FIREBALL
+Snowball:
+  - Snowball
+  - EntityType.SNOWBALL
+SpectralArrow:
+  - SpectralArrow
+  - EntityType.SPECTRAL_ARROW
+WitherSkull:
+  - WitherSkull
+  - EntityType.WITHER_SKULL
