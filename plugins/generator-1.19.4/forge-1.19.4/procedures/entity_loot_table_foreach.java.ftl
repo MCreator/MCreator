@@ -2,7 +2,7 @@
 <#-- @formatter:off -->
 if (${input$entity} instanceof LivingEntity _entLootTbl && !_entLootTbl.level.isClientSide() && _entLootTbl.getServer() != null) {
 	DamageSource _dsLootTbl = _entLootTbl.getLastDamageSource();
-	if (_dsLootTbl == null) _dsLootTbl = new DamageSource(_entLootTbl.level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.GENERIC));
+	if (_dsLootTbl == null) _dsLootTbl = _entLootTbl.damageSources().generic();
 	for (ItemStack itemstackiterator : _entLootTbl.getServer().getLootTables().get(${toResourceLocation(input$location)})
 			.getRandomItems(new LootContext.Builder((ServerLevel) _entLootTbl.level)
 					.withParameter(LootContextParams.THIS_ENTITY, _entLootTbl)
