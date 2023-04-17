@@ -20,6 +20,7 @@ package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
