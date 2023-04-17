@@ -455,7 +455,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * @param source     The topmost component from which the process is initiated.
 	 * @param exclusions List of child UI components of the {@code source} object that will be disabled.
 	 * @param inclusions List of child UI components of the {@code source} object that will be enabled.
-	 * @apiNote Only one of the lists described above should be different from {@code null} and not empty
+	 * @apiNote Only one of the lists described above should be different from {@code null} (and not empty)
 	 *          for this method to take proper action.
 	 */
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
@@ -465,8 +465,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Set<Component> excludedComponents = new HashSet<>();
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
-			// this contains mapped exclusions/inclusions for each child component type for all entries lists found
+			// this stores mapped exclusions/inclusions for each child component/entry type for all JEntriesLists found
 			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
+			// and this contains child entries loaded initially
 			Map<JEntriesList, List<Container>> childEntries = new HashMap<>();
 
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
@@ -486,6 +487,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 									Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(
 											entriesList, e -> new HashMap<>()).computeIfAbsent(childType,
 											e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
+									// we add the mapped exclusion/inclusion "path" to the proper list
 									(exclusions != null ? currTuple.x() : currTuple.y()).add(
 											String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
 
