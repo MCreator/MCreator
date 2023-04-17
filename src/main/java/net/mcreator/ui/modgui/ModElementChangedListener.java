@@ -21,7 +21,6 @@ package net.mcreator.ui.modgui;
 
 import javafx.embed.swing.JFXPanel;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
@@ -70,7 +69,7 @@ public interface ModElementChangedListener
 					modElementChanged();
 				});
 				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button && !(button instanceof TechnicalButton)) {
+			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner spinner) {
 				spinner.addChangeListener(this);
