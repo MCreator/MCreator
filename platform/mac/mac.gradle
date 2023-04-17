@@ -6,8 +6,8 @@ static void convertCRLF(File input, File out) {
     out << input.text.replaceAll('\r\n', '\n')
 }
 
-tasks.register('exportMac64', Copy.class) {
-    dependsOn downloadJDKMac64
+tasks.register('exportMacAarch64', Copy.class) {
+    dependsOn downloadJDKMacAarch64
     dependsOn jar
     dependsOn exportPlugins
 
@@ -23,7 +23,7 @@ tasks.register('exportMac64', Copy.class) {
         from file('platform/mac/mcreator.icns')
     }
     into('MacOS') {
-        from file('platform/mac/mcreator_arm64') rename('mcreator_arm64', 'mcreator')
+        from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
@@ -31,9 +31,9 @@ tasks.register('exportMac64', Copy.class) {
     into('MacOS/lib') {
         from 'build/libs'
         from configurations.export
-        from configurations.macArm64
+        from configurations.macAarch64
     }
-    into('MacOS/jdk/') { from 'jdk/jdk17_mac_arm64/' }
+    into('MacOS/jdk/') { from 'jdk/jdk17_mac_aarch64/' }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
         delete exportPath + '/Info.plistdos'
@@ -59,7 +59,7 @@ tasks.register('exportMacX64', Copy.class) {
         from file('platform/mac/mcreator.icns')
     }
     into('MacOS') {
-        from file('platform/mac/mcreator_x86') rename('mcreator_x86', 'mcreator')
+        from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
@@ -67,7 +67,7 @@ tasks.register('exportMacX64', Copy.class) {
     into('MacOS/lib') {
         from 'build/libs'
         from configurations.export
-        from configurations.mac64
+        from configurations.macX64
     }
     into('MacOS/jdk') { from 'jdk/jdk17_mac_x64/' }
     doLast {
@@ -76,9 +76,9 @@ tasks.register('exportMacX64', Copy.class) {
     }
 }
 
-tasks.register('dmgMac64') {
+tasks.register('dmgMacAarch64') {
     dependsOn downloadMKISOFS
-    dependsOn exportMac64, exportMacX64
+    dependsOn exportMacAarch64, exportMacX64
 
     doLast {
         def mkisofs_binary
@@ -92,12 +92,12 @@ tasks.register('dmgMac64') {
             exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
         }
 
-        // Create arm64 DMG
+        // Create Aarch64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac arm64.dmg')
+            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac Aarch64.dmg')
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -106,12 +106,12 @@ tasks.register('dmgMac64') {
             arg(value: new File(buildDir, 'export/mac64'))
         }
 
-        // Create x86_64 DMG
+        // Create x64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac x86_64.dmg')
+            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac x64.dmg')
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -125,7 +125,7 @@ tasks.register('dmgMac64') {
 tasks.register('exportMac') {
     group 'export'
 
-    dependsOn dmgMac64
+    dependsOn dmgMacAarch64
 
     doLast {
         delete 'build/export/mac64'

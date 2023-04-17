@@ -2,7 +2,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/windows/x64/jdk/hotspot/normal/adoptopenjdk'
 def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/linux/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_mac_arm64 = 'https://api.adoptium.net/v3/binary/latest/17/ga/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_mac_aarch64 = 'https://api.adoptium.net/v3/binary/latest/17/ga/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
 def jdk17_mac_x64 = 'https://api.adoptium.net/v3/binary/latest/17/ga/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08.zip'
@@ -51,22 +51,22 @@ tasks.register('downloadJDKLinux64') {
     }
 }
 
-tasks.register('downloadJDKMac64') {
+tasks.register('downloadJDKMacAarch64') {
     group 'setup'
     doLast {
-        if (!file('jdk/jdk17_mac_arm64/').exists()) {
-            mkdir 'jdk/jdk17_mac_arm64'
+        if (!file('jdk/jdk17_mac_aarch64/').exists()) {
+            mkdir 'jdk/jdk17_mac_aarch64'
 
             download.run {
-                src jdk17_mac_arm64
-                dest 'build/tmp/jdk17_mac_arm64'
+                src jdk17_mac_aarch64
+                dest 'build/tmp/jdk17_mac_aarch64'
                 overwrite false
             }
-            copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_arm64/')) into file('jdk/jdk17_mac_arm64/') }
-            delete 'build/tmp/jdk17_mac_arm64'
+            copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_aarch64/')) into file('jdk/jdk17_mac_aarch64/') }
+            delete 'build/tmp/jdk17_mac_aarch64'
 
-            copy { from file('jdk/jdk17_mac_arm64/jdk-17.0.6+10/Contents/Home') into file('jdk/jdk17_mac_arm64/') }
-            delete 'jdk/jdk17_mac_arm64/jdk-17.0.6+10/'
+            copy { from file('jdk/jdk17_mac_aarch64/jdk-17.0.6+10/Contents/Home') into file('jdk/jdk17_mac_aarch64/') }
+            delete 'jdk/jdk17_mac_aarch64/jdk-17.0.6+10/'
         }
     }
 }
@@ -146,7 +146,7 @@ tasks.register('initialSetup') {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         dependsOn downloadJDKWin64
     } else if (Os.isFamily(Os.FAMILY_MAC)) {
-        dependsOn downloadJDKMac64, downloadJDKMacX64
+        dependsOn downloadJDKMacAarch64, downloadJDKMacX64
     } else if (Os.isFamily(Os.FAMILY_UNIX)) {
         dependsOn downloadJDKLinux64
     }

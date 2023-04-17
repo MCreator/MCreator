@@ -26,6 +26,8 @@ public class OS {
 
 	public static final int BIT32 = 32;
 	public static final int BIT64 = 64;
+	public static final String X86_64 = "x86_64";
+	public static final String AARCH64 = "aarch64";
 
 	public static int getOS() {
 		String os = System.getProperty("os.name");
@@ -64,10 +66,10 @@ public class OS {
 
 	public static String getArchitecture() {
 		String osArch = System.getProperty("os.arch");
-		if (osArch.contains("x86_64") || osArch.contains("amd64")) {
-			return "x86_64";
-		} else if (osArch.contains("aarch64")) {
-			return "aarch64";
+		if (osArch.contains(X86_64) || osArch.contains("amd64")) {
+			return X86_64;
+		} else if (osArch.contains(AARCH64)) {
+			return AARCH64;
 		} else {
 			return osArch;
 		}
