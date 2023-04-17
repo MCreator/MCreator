@@ -48,8 +48,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
@@ -241,6 +241,10 @@ import java.util.List;
 		if (hasSpawnEgg)
 			return List.of(new MCItem.Custom(this.getModElement(), "spawn_egg", "item", "Spawn egg"));
 		return Collections.emptyList();
+	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {

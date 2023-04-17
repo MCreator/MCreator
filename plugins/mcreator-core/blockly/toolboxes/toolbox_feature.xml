@@ -3,6 +3,10 @@
         <custom-features/>
     </category>
     <sep/>
+    <category name="${t:blockly.category.blocks.feature}" colour="60">
+        <block type="mcitem_allblocks"/>
+        <custom-blocks/>
+    </category>
     <category name="${t:blockly.category.intproviders}" colour="230">
         <custom-intproviders/>
     </category>

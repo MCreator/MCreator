@@ -95,7 +95,8 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(),
 						new String[] { "." + FilenameUtilsPatched.getExtension(exportFile) });
 				if (loc != null) {
-					actionRegistry.getMCreator().getApplication().getAnalytics().trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, task);
+					actionRegistry.getMCreator().getApplication().getAnalytics()
+							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, task);
 
 					FileIO.copyFile(new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile), loc);
 				}

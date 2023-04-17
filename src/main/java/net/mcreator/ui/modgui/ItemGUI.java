@@ -468,8 +468,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("MISC"));
+		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, tool),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
