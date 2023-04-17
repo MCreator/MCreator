@@ -56,7 +56,7 @@ public abstract class ${name}Item extends ArmorItem {
 			}
 
 			@Override public SoundEvent getEquipSound() {
-				<#if data.equipSound?? && data.equipSound.getUnmappedValue()?has_content>
+				<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
 				return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"));
 				<#else>
 				return SoundEvents.EMPTY;

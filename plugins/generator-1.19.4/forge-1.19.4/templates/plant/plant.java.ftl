@@ -64,12 +64,22 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}")))
-			)
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+					"${(data.breakSound?has_content && data.breakSound.getMappedValue()?has_content)?then(data.breakSound, "intentionally_empty")}"
+				)),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+					"${(data.stepSound?has_content && data.stepSound.getMappedValue()?has_content)?then(data.stepSound, "intentionally_empty")}"
+				)),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+					"${(data.placeSound?has_content && data.placeSound.getMappedValue()?has_content)?then(data.placeSound, "intentionally_empty")}"
+				)),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+					"${(data.hitSound?has_content && data.hitSound.getMappedValue()?has_content)?then(data.hitSound, "intentionally_empty")}"
+				)),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+					"${(data.fallSound?has_content && data.fallSound.getMappedValue()?has_content)?then(data.fallSound, "intentionally_empty")}"
+				))
+			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
 		</#if>

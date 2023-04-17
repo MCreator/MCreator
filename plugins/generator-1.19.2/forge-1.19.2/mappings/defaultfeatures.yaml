@@ -1,8 +1,10 @@
 _default: null
+ForestFlowers: ForestFlowers
 TaigaLargeFerns: Ferns
 JungleTreeForest: JungleTrees
 PlainsTallGrass: SavannaGrass
 TaigaGrassAndMushrooms: TaigaGrass
+ForestGrass: ForestGrass
 Icebergs: Icebergs
 AmethystGeodes: DefaultCrystalFormations
 Bamboo: BambooVegetation
@@ -25,8 +27,3 @@ MonsterRooms: DefaultMonsterRoom
 ReedsAndPumpkins: DefaultExtraVegetation
 TaigaRocks: MossyStoneBlock
 TallSeagrassLush: DefaultSeagrass
-Sculk: Sculk
-
-# These are now part of other default features
-Lakes: null
-OceanCaves: null

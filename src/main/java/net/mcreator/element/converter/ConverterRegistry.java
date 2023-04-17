@@ -53,7 +53,8 @@ public class ConverterRegistry {
 		put(ModElementType.ADVANCEMENT, List.of(new AchievementFixer(), new AdvancementTextureConverter()));
 		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter(), new ArmorSpecialInformationConverter()));
 		put(ModElementType.BIOME, List.of(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
-				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter()));
+				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter(),
+				new BiomeCustomFeaturesConverter()));
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
