@@ -97,6 +97,7 @@ import java.util.*;
 	public boolean waterMob;
 	public boolean flyingMob;
 
+	public boolean canTrade;
 	public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -178,6 +179,7 @@ import java.util.*;
 
 		this.followRange = 16;
 
+		this.canTrade = false;
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

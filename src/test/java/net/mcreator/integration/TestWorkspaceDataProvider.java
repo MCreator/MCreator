@@ -673,6 +673,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.ridable = _true;
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
+			livingEntity.canTrade = _true;
 			livingEntity.guiBoundTo = "<NONE>";
 			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());

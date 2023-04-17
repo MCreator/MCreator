@@ -163,6 +163,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private MCItemHolder equipmentBoots;
 	private MCItemHolder equipmentOffHand;
 
+	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
@@ -352,6 +353,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobModelGlowTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
+		canTrade.setOpaque(false);
+		canTrade.addActionListener(e -> updateInventoryElements());
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
 				String selected = (String) guiBoundTo.getSelectedItem();
@@ -828,23 +831,30 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane5.setOpaque(false);
 
-		JPanel props = new JPanel(new GridLayout(3, 2, 35, 2));
-		props.setOpaque(false);
+		JPanel inventoryProperties = new JPanel(new GridLayout(4, 2, 35, 2));
+		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		inventoryProperties.setOpaque(false);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bind_gui"),
+		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_trade"),
+				L10N.label("elementgui.living_entity.can_trade")));
+		inventoryProperties.add(canTrade);
+
+		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bind_gui"),
 				L10N.label("elementgui.living_entity.bind_to_gui")));
-		props.add(guiBoundTo);
+		inventoryProperties.add(guiBoundTo);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
+		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
 				L10N.label("elementgui.living_entity.inventory_size")));
-		props.add(inventorySize);
+		inventoryProperties.add(inventorySize);
 
-		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"),
+		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
-		props.add(inventoryStackSize);
+		inventoryProperties.add(inventoryStackSize);
 
-		pane7.add(PanelUtils.totalCenterInPanel(props));
-		pane7.setOpaque(false);
+		pane7.add("Center", PanelUtils.totalCenterInPanel(inventoryProperties));
 		pane7.setOpaque(false);
 
 		mobModelTexture.setValidator(() -> {
@@ -873,6 +883,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		}
 
 		editorReady = true;
+	}
+
+	private void updateInventoryElements() {
+		guiBoundTo.setEnabled(!canTrade.isSelected());
+		inventorySize.setEnabled(!canTrade.isSelected());
+		inventoryStackSize.setEnabled(!canTrade.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -1029,6 +1045,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		armorBaseValue.setValue(livingEntity.armorBaseValue);
 		waterMob.setSelected(livingEntity.waterMob);
 		flyingMob.setSelected(livingEntity.flyingMob);
+		canTrade.setSelected(livingEntity.canTrade);
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
@@ -1160,6 +1177,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
+		livingEntity.canTrade = canTrade.isSelected();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		return livingEntity;
 	}
