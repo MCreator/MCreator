@@ -69,7 +69,7 @@ public class ProcedureTagFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 42;
+		return 43;
 	}
 
 	protected String fixXML(String xml) throws Exception {
