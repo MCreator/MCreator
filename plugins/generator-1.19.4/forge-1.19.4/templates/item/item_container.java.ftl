@@ -34,6 +34,7 @@ package ${package}.item.inventory;
 
 import javax.annotation.Nullable;
 
+<#compress>
 @Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
@@ -80,5 +81,6 @@ import javax.annotation.Nullable;
 	}
 
 }
+</#compress>
 
 <#-- @formatter:on -->
