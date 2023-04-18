@@ -29,7 +29,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -362,18 +361,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		canTrade.setOpaque(false);
-		canTrade.addActionListener(e -> {
-			tradeEntryList.setEnabled(canTrade.isSelected());
-			fullUpdateSound.setEnabled(canTrade.isSelected());
-			emptyUpdateSound.setEnabled(canTrade.isSelected());
-			notificationSound.setEnabled(canTrade.isSelected());
-			guiBoundTo.setEnabled(!canTrade.isSelected());
-			inventorySize.setEnabled(!canTrade.isSelected());
-			inventoryStackSize.setEnabled(!canTrade.isSelected());
-			aiBase.setEnabled(!canTrade.isSelected());
-			breedable.setEnabled(!canTrade.isSelected());
-			tameable.setEnabled(!canTrade.isSelected());
-		});
+		canTrade.addActionListener(e -> updateTradingConditions());
+		updateTradingConditions();
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
 				String selected = (String) guiBoundTo.getSelectedItem();
@@ -929,13 +918,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
-			fullUpdateSound.setEnabled(false);
-			emptyUpdateSound.setEnabled(false);
-			notificationSound.setEnabled(false);
-			tradeEntryList.setEnabled(false);
 		}
 
 		editorReady = true;
+	}
+
+	private void updateTradingConditions() {
+		tradeEntryList.setEnabled(canTrade.isSelected());
+		fullUpdateSound.setEnabled(canTrade.isSelected());
+		emptyUpdateSound.setEnabled(canTrade.isSelected());
+		notificationSound.setEnabled(canTrade.isSelected());
+		guiBoundTo.setEnabled(!canTrade.isSelected());
+		inventorySize.setEnabled(!canTrade.isSelected());
+		inventoryStackSize.setEnabled(!canTrade.isSelected());
+		aiBase.setEnabled(!canTrade.isSelected());
+		breedable.setEnabled(!canTrade.isSelected());
+		tameable.setEnabled(!canTrade.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -1133,6 +1131,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		disableMobModelCheckBoxListener = false;
 		editorReady = true;
+		updateTradingConditions();
 	}
 
 	@Override public LivingEntity getElementFromGUI() {
