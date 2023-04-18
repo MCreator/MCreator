@@ -105,6 +105,8 @@ import java.util.*;
 	public int inventorySize;
 	public int inventoryStackSize;
 
+	public List<VillagerTrade.CustomTradeEntry.Entry> tradeEntryList;
+
 	public boolean disableCollisions;
 
 	public boolean ridable;
@@ -185,6 +187,8 @@ import java.util.*;
 		this.canTrade = false;
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+
+		this.tradeEntryList = new ArrayList<>();
 	}
 
 	@Override public Model getEntityModel() {
