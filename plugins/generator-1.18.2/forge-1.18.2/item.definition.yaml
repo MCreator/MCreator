@@ -28,7 +28,7 @@ templates:
 
 list_templates:
   - name: "Custom models"
-    listData: data.modelsMap.values()
+    listData: data.filterModels()
     forEach:
       - template: json/item.json.ftl
         writer: json

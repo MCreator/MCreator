@@ -7,9 +7,9 @@
             "layer0": "${modid}:items/${(item??)?then(item, data).texture}"
         </#if>
     }
-    <#if data?? && data.getModElement().getTypeString() == "item" && data.modelsMap?has_content>,
+    <#if data?? && data.getModElement().getTypeString() == "item" && data.filterModels()?has_content>,
     "overrides": [
-        <#list data.modelsMap.entrySet() as model>
+        <#list data.filterModels().entrySet() as model>
         {
             "predicate": {
             <#list model.getKey().split(",") as state>

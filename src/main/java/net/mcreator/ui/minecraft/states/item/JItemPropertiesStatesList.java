@@ -31,7 +31,6 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
@@ -255,7 +254,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	public void setStates(LinkedHashMap<String, Item.ModelEntry> states) {
 		Set<LinkedHashMap<PropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 		states.forEach((state, model) -> {
-			LinkedHashMap<PropertyData<?>, Object> stateMap = JStateLabel.passStateToMap(state, buildPropertiesList());
+			LinkedHashMap<PropertyData<?>, Object> stateMap = PropertyData.passStateToMap(state, buildPropertiesList());
 			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
 				addStatesEntry().setEntry(state, model);
 		});

@@ -95,7 +95,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setState(String state) {
-		stateMap = passStateToMap(state, properties.get());
+		stateMap = PropertyData.passStateToMap(state, properties.get());
 		refreshState();
 	}
 
@@ -123,17 +123,5 @@ public class JStateLabel extends JPanel {
 		stateMap.forEach((k, v) -> stateParts.add(StringUtils.snakeToCamel(k.getName()) + " = " + k.toString(v)));
 		label.setText(L10N.t("elementgui.common.custom_state.when",
 				stateParts.isEmpty() ? L10N.t("elementgui.common.custom_state.empty") : String.join("; ", stateParts)));
-	}
-
-	public static LinkedHashMap<PropertyData<?>, Object> passStateToMap(String state,
-			List<PropertyData<?>> properties) {
-		LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
-		Map<String, String> values = Arrays.stream(state.split(","))
-				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-		for (PropertyData<?> property : properties) {
-			if (values.containsKey(property.getName()))
-				stateMap.put(property, property.parseObj(values.get(property.getName())));
-		}
-		return stateMap;
 	}
 }

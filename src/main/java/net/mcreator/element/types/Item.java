@@ -26,6 +26,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -35,10 +36,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -178,6 +176,23 @@ import java.util.Map;
 
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
+	}
+
+	public LinkedHashMap<String, ModelEntry> filterModels() {
+		LinkedHashMap<String, ModelEntry> models = new LinkedHashMap<>();
+		List<String> builtinProperties = DataListLoader.loadDataMap("itemproperties").entrySet().stream()
+				.filter(e -> e.getValue().isSupportedInWorkspace(getModElement().getWorkspace())).map(Map.Entry::getKey)
+				.toList();
+		modelsMap.forEach((state, model) -> {
+			StringBuilder stateBuilder = new StringBuilder();
+			for (String match : state.split(",")) {
+				String property = match.split("=")[0];
+				if (customProperties.containsKey(property) || builtinProperties.contains(property))
+					stateBuilder.append(",").append(match);
+			}
+			models.putIfAbsent(stateBuilder.toString().replaceFirst(",", ""), model);
+		});
+		return models;
 	}
 
 	public static class ModelEntry {
