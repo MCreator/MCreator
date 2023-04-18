@@ -674,6 +674,12 @@ public class TestWorkspaceDataProvider {
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
 			livingEntity.canTrade = _true;
+			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			livingEntity.notificationSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.guiBoundTo = "<NONE>";
 			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());

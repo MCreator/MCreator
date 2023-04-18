@@ -98,6 +98,9 @@ import java.util.*;
 	public boolean flyingMob;
 
 	public boolean canTrade;
+	public Sound fullUpdateSound;
+	public Sound emptyUpdateSound;
+	public Sound notificationSound;
 	public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;

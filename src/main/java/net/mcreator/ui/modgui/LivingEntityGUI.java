@@ -164,6 +164,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private MCItemHolder equipmentOffHand;
 
 	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
+	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
+	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
+	private final SoundSelector notificationSound = new SoundSelector(mcreator);
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
@@ -354,7 +357,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		canTrade.setOpaque(false);
-		canTrade.addActionListener(e -> updateInventoryElements());
+		canTrade.addActionListener(e -> {
+			fullUpdateSound.setEnabled(canTrade.isSelected());
+			emptyUpdateSound.setEnabled(canTrade.isSelected());
+			notificationSound.setEnabled(canTrade.isSelected());
+			guiBoundTo.setEnabled(!canTrade.isSelected());
+			inventorySize.setEnabled(!canTrade.isSelected());
+			inventoryStackSize.setEnabled(!canTrade.isSelected());
+			aiBase.setEnabled(!canTrade.isSelected());
+			breedable.setEnabled(!canTrade.isSelected());
+			tameable.setEnabled(!canTrade.isSelected());
+		});
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
 				String selected = (String) guiBoundTo.getSelectedItem();
@@ -474,6 +487,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
 		deathSound.setText("entity.generic.death");
+		fullUpdateSound.setText("");
+		emptyUpdateSound.setText("");
+		notificationSound.setText("");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);
@@ -831,28 +847,55 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane5.setOpaque(false);
 
-		JPanel inventoryProperties = new JPanel(new GridLayout(4, 2, 35, 2));
-		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
+		JPanel inventory = new JPanel(new GridLayout(3, 2, 5, 2));
+		inventory.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		inventoryProperties.setOpaque(false);
+		inventory.setOpaque(false);
 
-		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_trade"),
-				L10N.label("elementgui.living_entity.can_trade")));
-		inventoryProperties.add(canTrade);
-
-		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bind_gui"),
+		inventory.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bind_gui"),
 				L10N.label("elementgui.living_entity.bind_to_gui")));
-		inventoryProperties.add(guiBoundTo);
+		inventory.add(guiBoundTo);
 
-		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
+		inventory.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
 				L10N.label("elementgui.living_entity.inventory_size")));
-		inventoryProperties.add(inventorySize);
+		inventory.add(inventorySize);
 
-		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"),
+		inventory.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
-		inventoryProperties.add(inventoryStackSize);
+		inventory.add(inventoryStackSize);
+
+		JPanel villagerSounds = new JPanel(new GridLayout(3, 2, 5, 2));
+		villagerSounds.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.living_entity.villager_sounds"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		villagerSounds.setOpaque(false);
+
+		villagerSounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
+				L10N.label("elementgui.living_entity.full_update_sound")));
+		villagerSounds.add(fullUpdateSound);
+
+		villagerSounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/empty_update_sound"),
+				L10N.label("elementgui.living_entity.empty_update_sound")));
+		villagerSounds.add(emptyUpdateSound);
+
+		villagerSounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/notification_sound"),
+				L10N.label("elementgui.living_entity.notification_sound")));
+		villagerSounds.add(notificationSound);
+
+		JPanel dsg = new JPanel(new BorderLayout(5, 2));
+		dsg.setOpaque(false);
+		dsg.add("West", inventory);
+		dsg.add("East", villagerSounds);
+
+		JPanel inventoryProperties = new JPanel(new BorderLayout(5, 2));
+		inventoryProperties.setOpaque(false);
+		inventoryProperties.add("North", PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_trade"),
+						L10N.label("elementgui.living_entity.can_trade")), canTrade));
+		inventoryProperties.add("Center", dsg);
 
 		pane7.add("Center", PanelUtils.totalCenterInPanel(inventoryProperties));
 		pane7.setOpaque(false);
@@ -880,15 +923,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
+			fullUpdateSound.setEnabled(false);
+			emptyUpdateSound.setEnabled(false);
+			notificationSound.setEnabled(false);
 		}
 
 		editorReady = true;
-	}
-
-	private void updateInventoryElements() {
-		guiBoundTo.setEnabled(!canTrade.isSelected());
-		inventorySize.setEnabled(!canTrade.isSelected());
-		inventoryStackSize.setEnabled(!canTrade.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -1046,6 +1086,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		waterMob.setSelected(livingEntity.waterMob);
 		flyingMob.setSelected(livingEntity.flyingMob);
 		canTrade.setSelected(livingEntity.canTrade);
+		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
+		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
+		notificationSound.setSound(livingEntity.notificationSound);
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
@@ -1178,6 +1221,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.canTrade = canTrade.isSelected();
+		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
+		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
+		livingEntity.notificationSound = notificationSound.getSound();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		return livingEntity;
 	}
