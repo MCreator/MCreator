@@ -6,12 +6,28 @@
     "particle": "${modid}:item/${data.getItemTextureFor(var_item)}"
   }
 <#else>
-  "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
+  <#assign source = (item??)?then(item, data)>
+  "parent": "${modid}:custom/${source.customModelName.split(":")[0]}",
   "textures": {
-    <@textures data.getTextureMap()/>
-    "particle": "${modid}:item/${data.texture}"
+    <@textures (item??)?then(item.getTextureMap(w.getWorkspace()), data.getTextureMap())/>
+    "particle": "${modid}:item/${source.texture}"
   }
 </#if>
+    <#if data?? && data.getModElement().getTypeString() == "item" && data.filterModels()?has_content>,
+    "overrides": [
+        <#list data.filterModels().entrySet() as model>
+        {
+            "predicate": {
+            <#list model.getKey().split(",") as state>
+                <#assign prop = generator.map(state.split("=")[0], "itemproperties")>
+                "${prop}": ${(state.split("=")[1]?number?float * 1000)?int / 1000}<#sep>,
+            </#list>
+            },
+            "model": "${modid}:item/${registryname}_${model?index}"
+        }<#sep>,
+        </#list>
+    ]
+    </#if>
 }
 
 <#macro textures textureMap>
