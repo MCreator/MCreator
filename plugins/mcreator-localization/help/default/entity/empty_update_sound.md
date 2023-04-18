@@ -1,0 +1,1 @@
+The sound played when there is no new trade available.

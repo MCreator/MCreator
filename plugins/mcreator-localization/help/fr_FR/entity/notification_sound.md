@@ -1,0 +1,1 @@
+Le son joué quand il y a une notification d'échange.
