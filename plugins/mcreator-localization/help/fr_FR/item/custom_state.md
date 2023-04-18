@@ -4,6 +4,7 @@ d'une propriété, cela n'affectera en aucune façon cet état.
 En plus des propriétés personnalisées, vous pouvez également utiliser les propriétés d'item intégrées:
 
 * `damaged`: Renvoie 1.0 si l'item est endommagé et 0.0 dans le cas contraire;
-* `damage`: Renvoie les dommages de l'article (entre 0.0 et 1.0);
+* `damage`: Renvoie les dommages de l'item (entre 0.0 et 1.0);
 * `lefthanded`: Renvoie 1.0 si l'item est tenu dans la main gauche d'une entité et 0.0 sinon;
-* `cooldown`: Renvoie le temps de recharge restant de l'objet (entre 0.0 et 1.0).
+* `cooldown`: Renvoie le temps de recharge restant de l'item (entre 0.0 et 1.0);
+* `trim_type`: Renvoie l'"ID" fractionné du type d'ornement d'armure appliqué à l'item (entre 0.0 et 1.0).

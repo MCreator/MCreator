@@ -178,6 +178,13 @@ import java.util.*;
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
 
+	public LinkedHashMap<String, Procedure> filterProperties() {
+		DataListLoader.loadDataMap("itemproperties").entrySet().stream()
+				.filter(e -> e.getValue().isSupportedInWorkspace(getModElement().getWorkspace()))
+				.forEach(property -> customProperties.remove(property.getKey()));
+		return customProperties;
+	}
+
 	public LinkedHashMap<String, ModelEntry> filterModels() {
 		LinkedHashMap<String, ModelEntry> models = new LinkedHashMap<>();
 		List<String> builtinProperties = DataListLoader.loadDataMap("itemproperties").entrySet().stream()
