@@ -234,13 +234,28 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.canTrade>
 	protected void updateTrades() {
-		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = VillagerTrades.TRADES.get(${data.professionTrade});
+		<#assign professions = w.filterBrokenReferences(data.professionTrade)>
+		List<VillagerProfession> professions = List.of(
+			<#list professions as prof>
+				${prof}<#if prof?has_next>,</#if>
+			</#list>
+		);
+		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>();
+		VillagerTrades.TRADES.forEach((key, value) -> {
+			if (professions.contains(key)) {
+				value.int2ObjectEntrySet().forEach(ent -> trades.put(ent.getIntKey(), Arrays.copyOf(ent.getValue(), ent.getValue().length)));
+			}
+		});
 		if (trades != null && !trades.isEmpty()) {
-			VillagerTrades.ItemListing[] leveledTrades = trades.get(this.getVillagerData().getLevel());
+			VillagerTrades.ItemListing[] leveledTrades = trades.get(1);
 			if (leveledTrades != null) {
 				this.addOffersFromItemListings(this.getOffers(), leveledTrades, 2);
 			}
 		}
+	}
+
+	public boolean showProgressBar() {
+		return false;
 	}
 
 	protected void rewardTradeXp(MerchantOffer offer) {
