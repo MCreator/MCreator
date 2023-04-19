@@ -95,7 +95,7 @@ import java.util.*;
 	public boolean flyingMob;
 
 	public boolean canTrade;
-	public VillagerProfession professionTrade;
+	public List<VillagerProfession> professionTrade;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;
@@ -181,6 +181,7 @@ import java.util.*;
 		this.followRange = 16;
 
 		this.canTrade = false;
+		this.professionTrade = new ArrayList<>();
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

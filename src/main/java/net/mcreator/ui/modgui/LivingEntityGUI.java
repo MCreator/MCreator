@@ -27,7 +27,6 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.VillagerProfession;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -54,6 +53,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.villagers.ProfessionListField;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -165,7 +165,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private MCItemHolder equipmentOffHand;
 
 	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
-	private final DataListComboBox professionTrade = new DataListComboBox(mcreator);
+	private ProfessionListField professionTrade;
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector notificationSound = new SoundSelector(mcreator);
@@ -351,6 +351,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
+		professionTrade = new ProfessionListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 
 		mobModelTexture.setRenderer(
@@ -924,11 +925,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		emptyUpdateSound.setEnabled(canTrade.isSelected());
 		notificationSound.setEnabled(canTrade.isSelected());
 		guiBoundTo.setEnabled(!canTrade.isSelected());
+		guiBoundTo.setSelectedItem("<NONE>");
 		inventorySize.setEnabled(!canTrade.isSelected());
 		inventoryStackSize.setEnabled(!canTrade.isSelected());
 		aiBase.setEnabled(!canTrade.isSelected());
+		aiBase.setSelectedItem("(none)");
 		breedable.setEnabled(!canTrade.isSelected());
+		breedable.setSelected(false);
 		tameable.setEnabled(!canTrade.isSelected());
+		tameable.setSelected(false);
 	}
 
 	@Override public void reloadDataLists() {
@@ -970,8 +975,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				mcreator.getWorkspace().getModElements().stream()
 						.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
 						.collect(Collectors.toList())), "Default item");
-
-		ComboBoxUtil.updateComboBoxContents(professionTrade, ElementUtil.loadAllVillagerProfessions());
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
@@ -1088,7 +1091,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		waterMob.setSelected(livingEntity.waterMob);
 		flyingMob.setSelected(livingEntity.flyingMob);
 		canTrade.setSelected(livingEntity.canTrade);
-		professionTrade.setSelectedItem(livingEntity.professionTrade);
+		professionTrade.setListElements(livingEntity.professionTrade);
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
 		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
 		notificationSound.setSound(livingEntity.notificationSound);
@@ -1225,8 +1228,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.canTrade = canTrade.isSelected();
-		livingEntity.professionTrade = new VillagerProfession(mcreator.getWorkspace(),
-				professionTrade.getSelectedItem());
+		livingEntity.professionTrade = professionTrade.getListElements();
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
 		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
 		livingEntity.notificationSound = notificationSound.getSound();

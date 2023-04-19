@@ -218,7 +218,7 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "potions", false, null, "potion");
 	}
 
-	public static List<DataListEntry> loadAllVillagerProfessions() {
+	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
 		return DataListLoader.loadDataList("villagerprofessions");
 	}
 

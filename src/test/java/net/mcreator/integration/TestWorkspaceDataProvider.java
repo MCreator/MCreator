@@ -284,6 +284,7 @@ public class TestWorkspaceDataProvider {
 		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
 		List<MCItem> blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		List<DataListEntry> biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
+		List<DataListEntry> professions = ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace());
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
 			Achievement achievement = new Achievement(modElement);
@@ -674,8 +675,16 @@ public class TestWorkspaceDataProvider {
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
 			livingEntity.canTrade = _true;
-			livingEntity.professionTrade = new VillagerProfession(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions()));
+			livingEntity.professionTrade = new ArrayList<>();
+			if (!emptyLists) {
+				livingEntity.professionTrade.addAll(
+						professions.stream().skip(_true ? 0 : ((long) (professions.size() / 4) * valueIndex))
+								.limit(professions.size() / 4)
+								.map(e -> new VillagerProfession(modElement.getWorkspace(), e.getName())).toList());
+			} else {
+				livingEntity.professionTrade.add(
+						new VillagerProfession(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
+			}
 			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),
@@ -1557,7 +1566,7 @@ public class TestWorkspaceDataProvider {
 				for (int i = 0; i < tradeEntries; i++) {
 					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
 					trade.villagerProfession = new VillagerProfession(modElement.getWorkspace(),
-							getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions()));
+							getRandomDataListEntry(random, professions));
 					trade.entries = new ArrayList<>();
 
 					int entries = random.nextInt(10) + 1;

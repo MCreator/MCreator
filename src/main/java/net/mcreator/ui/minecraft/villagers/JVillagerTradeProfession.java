@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 public class JVillagerTradeProfession extends JEntriesList {
 
 	private final DataListComboBox villagerProfession = new DataListComboBox(mcreator,
-			ElementUtil.loadAllVillagerProfessions());
+			ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace()));
 
 	private final List<JVillagerTradeEntry> entryList = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions());
+		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions(workspace));
 	}
 
 	public void addInitialEntry() {
