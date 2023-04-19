@@ -96,6 +96,7 @@ import java.util.*;
 
 	public boolean canTrade;
 	public List<VillagerProfession> professionTrade;
+	public String tradingType;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;
@@ -182,6 +183,7 @@ import java.util.*;
 
 		this.canTrade = false;
 		this.professionTrade = new ArrayList<>();
+		this.tradingType = "Villager";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

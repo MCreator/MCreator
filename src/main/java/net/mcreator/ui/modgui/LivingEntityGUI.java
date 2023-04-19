@@ -166,6 +166,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
 	private ProfessionListField professionTrade;
+	private final JComboBox<String> tradingType = new JComboBox<>(new String[] { "Villager", "Wandering Trader" });
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector notificationSound = new SoundSelector(mcreator);
@@ -361,6 +362,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		canTrade.setOpaque(false);
 		canTrade.addActionListener(e -> updateTradingConditions());
+		tradingType.addActionListener(e -> updateTradingType());
+		updateTradingType();
 		updateTradingConditions();
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -860,7 +863,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
-		JPanel villagerProperties = new JPanel(new GridLayout(5, 2, 5, 2));
+		JPanel villagerProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		villagerProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.villager_properties"), TitledBorder.LEADING,
@@ -875,6 +878,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.profession_trade")));
 		villagerProperties.add(professionTrade);
 
+		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/trading_type"),
+				L10N.label("elementgui.living_entity.trading_type")));
+		villagerProperties.add(tradingType);
+
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
 				L10N.label("elementgui.living_entity.full_update_sound")));
 		villagerProperties.add(fullUpdateSound);
@@ -888,7 +895,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		villagerProperties.add(notificationSound);
 
 		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(props), villagerProperties)));
+				PanelUtils.northAndCenterElement(PanelUtils.pullElementUp(props), villagerProperties)));
 		pane7.setOpaque(false);
 
 		mobModelTexture.setValidator(() -> {
@@ -919,8 +926,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		editorReady = true;
 	}
 
+	private void updateTradingType() {
+		if (tradingType.getSelectedItem() != null && tradingType.getSelectedItem().equals("Villager")) {
+			aiBase.setSelectedItem("Villager");
+		} else {
+			aiBase.setSelectedItem("(none)");
+		}
+	}
+
 	private void updateTradingConditions() {
 		professionTrade.setEnabled(canTrade.isSelected());
+		tradingType.setEnabled(canTrade.isSelected());
 		fullUpdateSound.setEnabled(canTrade.isSelected());
 		emptyUpdateSound.setEnabled(canTrade.isSelected());
 		notificationSound.setEnabled(canTrade.isSelected());
@@ -934,6 +950,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		breedable.setSelected(false);
 		tameable.setEnabled(!canTrade.isSelected());
 		tameable.setSelected(false);
+		updateTradingType();
 	}
 
 	@Override public void reloadDataLists() {
@@ -1092,6 +1109,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		flyingMob.setSelected(livingEntity.flyingMob);
 		canTrade.setSelected(livingEntity.canTrade);
 		professionTrade.setListElements(livingEntity.professionTrade);
+		tradingType.setSelectedItem(livingEntity.tradingType);
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
 		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
 		notificationSound.setSound(livingEntity.notificationSound);
@@ -1132,6 +1150,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		disableMobModelCheckBoxListener = false;
 		editorReady = true;
 		updateTradingConditions();
+		updateTradingType();
 	}
 
 	@Override public LivingEntity getElementFromGUI() {
@@ -1229,6 +1248,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.canTrade = canTrade.isSelected();
 		livingEntity.professionTrade = professionTrade.getListElements();
+		livingEntity.tradingType = (String) tradingType.getSelectedItem();
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
 		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
 		livingEntity.notificationSound = notificationSound.getSound();
