@@ -40,7 +40,6 @@ import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
-import net.mcreator.util.Tuple;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -456,7 +455,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * @param exclusions List of child UI components of the {@code source} object that will be disabled.
 	 * @param inclusions List of child UI components of the {@code source} object that will be enabled.
 	 * @apiNote Only one of the lists described above should be different from {@code null} (and not empty)
-	 *          for this method to take proper action.
+	 * for this method to take proper action.
 	 */
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
 		if (exclusions != null && inclusions != null) { // can't exclude and include together
@@ -466,7 +465,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			Set<Component> excludedComponents = new HashSet<>();
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			// this stores mapped exclusions/inclusions for each child component/entry type for all JEntriesLists found
-			Map<JEntriesList, Map<Class<?>, Tuple<List<String>, List<String>>>> entryLists = new HashMap<>();
+			Map<JEntriesList, Map<Class<?>, List<String>>> entryLists = new HashMap<>();
 			// and this contains child entries loaded initially
 			Map<JEntriesList, List<Container>> childEntries = new HashMap<>();
 
@@ -484,12 +483,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 									&& field.getGenericType() instanceof ParameterizedType parameterizedType) {
 								Class<?> childType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 								if (Container.class.isAssignableFrom(childType)) { // Collection<? extends Container>
-									Tuple<List<String>, List<String>> currTuple = entryLists.computeIfAbsent(
-											entriesList, e -> new HashMap<>()).computeIfAbsent(childType,
-											e -> new Tuple<>(new ArrayList<>(), new ArrayList<>()));
-									// we add the mapped exclusion/inclusion "path" to the proper list
-									(exclusions != null ? currTuple.x() : currTuple.y()).add(
-											String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
+									entryLists.computeIfAbsent(entriesList, e -> new HashMap<>())
+											.computeIfAbsent(childType, e -> new ArrayList<>())
+											.add(String.join(".", Arrays.copyOfRange(path, i + 1, path.length)));
 
 									// some initial entries could have been added before call of this method
 									field.setAccessible(true);
@@ -552,17 +548,17 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			entryLists.forEach((list, classes) -> list.addEntryRegisterListener(e -> {
 				if (classes.containsKey(e.getClass())) {
 					if (exclusions != null)
-						disableUnsupportedFields(e, classes.get(e.getClass()).x(), null);
+						disableUnsupportedFields(e, classes.get(e.getClass()), null);
 					else if (inclusions != null)
-						disableUnsupportedFields(e, null, classes.get(e.getClass()).y());
+						disableUnsupportedFields(e, null, classes.get(e.getClass()));
 				}
 			}));
 			childEntries.forEach((list, children) -> children.forEach(e -> {
 				if (entryLists.get(list).containsKey(e.getClass())) {
 					if (exclusions != null)
-						disableUnsupportedFields(e, entryLists.get(list).get(e.getClass()).x(), null);
+						disableUnsupportedFields(e, entryLists.get(list).get(e.getClass()), null);
 					else if (inclusions != null)
-						disableUnsupportedFields(e, null, entryLists.get(list).get(e.getClass()).y());
+						disableUnsupportedFields(e, null, entryLists.get(list).get(e.getClass()));
 				}
 			}));
 		}
