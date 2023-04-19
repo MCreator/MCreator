@@ -125,19 +125,6 @@ public class JVillagerTradeEntry extends JPanel {
 		parent.repaint();
 	}
 
-	public JVillagerTradeEntry setEntryEnabled(boolean enabled) {
-		price1.setEnabled(enabled);
-		price2.setEnabled(enabled);
-		offer.setEnabled(enabled);
-		countOffer.setEnabled(enabled);
-		level.setEnabled(enabled);
-		maxTrades.setEnabled(enabled);
-		xp.setEnabled(enabled);
-		priceMultiplier.setEnabled(enabled);
-
-		return this;
-	}
-
 	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
 		if (!price1.containsItem())
 			return null;

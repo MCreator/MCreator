@@ -674,7 +674,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
 			livingEntity.canTrade = _true;
-			livingEntity.tradeEntryList = new ArrayList<>();
+			livingEntity.professionTrade = new VillagerProfession(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions()));
 			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),

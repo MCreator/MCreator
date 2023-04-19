@@ -23,10 +23,7 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
@@ -98,14 +95,13 @@ import java.util.*;
 	public boolean flyingMob;
 
 	public boolean canTrade;
+	public VillagerProfession professionTrade;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;
 	public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
-
-	public List<VillagerTrade.CustomTradeEntry.Entry> tradeEntryList;
 
 	public boolean disableCollisions;
 
@@ -187,8 +183,6 @@ import java.util.*;
 		this.canTrade = false;
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
-
-		this.tradeEntryList = new ArrayList<>();
 	}
 
 	@Override public Model getEntityModel() {

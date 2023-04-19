@@ -234,16 +234,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.canTrade>
 	protected void updateTrades() {
-		VillagerTrades.ItemListing[] tradesLevel1 = ${JavaModName}Trades.ENTITY_TRADES.get(1);
-		VillagerTrades.ItemListing[] tradesLevel2 = ${JavaModName}Trades.ENTITY_TRADES.get(2);
-		if (tradesLevel1 != null && tradesLevel2 != null) {
-			MerchantOffers merchantOffers = this.getOffers();
-			this.addOffersFromItemListings(merchantOffers, tradesLevel1, 5);
-			int i = this.random.nextInt(tradesLevel2.length);
-			VillagerTrades.ItemListing tradeLevel2 = tradesLevel2[i];
-			MerchantOffer merchantOffer = tradeLevel2.getOffer(this, this.random);
-			if (merchantOffer != null) {
-				merchantOffers.add(merchantOffer);
+		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = VillagerTrades.TRADES.get(${data.professionTrade});
+		if (trades != null && !trades.isEmpty()) {
+			VillagerTrades.ItemListing[] leveledTrades = trades.get(this.getVillagerData().getLevel());
+			if (leveledTrades != null) {
+				this.addOffersFromItemListings(this.getOffers(), leveledTrades, 2);
 			}
 		}
 	}
