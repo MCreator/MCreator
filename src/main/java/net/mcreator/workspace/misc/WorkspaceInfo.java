@@ -83,6 +83,16 @@ import java.util.*;
 				.toString();
 	}
 
+	public <T extends MappableElement> Set<MappableElement.Unique> exclude(Set<MappableElement.Unique> uniqueSet,
+			String exclude) {
+		Set<MappableElement.Unique> retval = new HashSet<>();
+		uniqueSet.forEach(setValue -> {
+			if (!setValue.getUnmappedValue().equals(exclude))
+				retval.add(setValue);
+		});
+		return retval;
+	}
+
 	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
 		if (input == null)
 			return Collections.emptySet();

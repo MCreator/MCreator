@@ -234,10 +234,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.canTrade()>
 	protected void updateTrades() {
-		<#assign professions = w.filterBrokenReferences(data.professionTrade)>
+		<#assign professions = w.exclude(w.filterBrokenReferences(data.professionTrade), "WANDERING_TRADER")>
 		List<VillagerProfession> professions = List.of(
-			<#list professions as prof>
-				${prof}<#if prof?has_next>,</#if>
+			<#list professions as profession>
+				${profession}<#if profession?has_next>,</#if>
 			</#list>
 		);
 		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>();
@@ -246,6 +246,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				value.int2ObjectEntrySet().forEach(ent -> trades.put(ent.getIntKey(), Arrays.copyOf(ent.getValue(), ent.getValue().length)));
 			}
 		});
+		<#if data.professionTrade?contains("WanderingTrader")>
+		VillagerTrades.WANDERING_TRADER_TRADES.int2ObjectEntrySet().forEach(e -> trades.put(e.getIntKey(), Arrays.copyOf(e.getValue(), e.getValue().length)));
+		</#if>
 		if (trades != null && !trades.isEmpty()) {
 			VillagerTrades.ItemListing[] leveledTrades = trades.get(<#if data.tradingType == "Wandering Trader">1<#else>this.getVillagerData().getLevel()</#if>);
 			if (leveledTrades != null) {
