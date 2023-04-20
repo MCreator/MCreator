@@ -1,0 +1,8 @@
+templates:
+  - template: overlay.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/screens/@NAMEOverlay.java"
+
+localizationkeys:
+  - fromlist: data.getFixedTextLabels()
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: getRenderText()

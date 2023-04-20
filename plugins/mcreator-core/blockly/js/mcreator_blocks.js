@@ -227,6 +227,35 @@ Blockly.Blocks['java_code_get'] = {
     }
 };
 
+Blockly.Blocks['logic_ternary_op'] = {
+    init: function () {
+        this.appendValueInput('condition').setCheck('Boolean')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.if"));
+        this.appendValueInput('THEN')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.then"));
+        this.appendValueInput('ELSE')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.else"));
+        this.setInputsInline(true);
+        this.setOutput(true);
+        this.setColour('#888888');
+        Blockly.Extensions.apply('logic_ternary', this, false);
+        Blockly.Extensions.apply('mark_attached_to_block_item', this, true);
+    }
+};
+
+Blockly.Blocks['controls_while'] = {
+    init: function () {
+        this.appendValueInput('BOOL').setCheck('Boolean')
+            .appendField(javabridge.t("blockly.block.controls_while"));
+        this.appendStatementInput('DO')
+            .appendField('%{BKY_CONTROLS_REPEAT_INPUT_DO}');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour('%{BKY_LOOPS_HUE}');
+        Blockly.Extensions.apply('is_custom_loop', this, false);
+    }
+};
+
 Blockly.Blocks['math_from_text'] = {
     init: function () {
         this.appendValueInput('NUMTEXT').setCheck('String')
@@ -674,54 +703,6 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "output": "Number",
         "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "logic_ternary_op",
-        "message0": "if %1 then %2 else %3",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "condition",
-                "check": "Boolean"
-            },
-            {
-                "type": "input_value",
-                "name": "THEN"
-            },
-            {
-                "type": "input_value",
-                "name": "ELSE"
-            }
-        ],
-        "inputsInline": true,
-        "output": null,
-        "colour": "#888888",
-        "extensions": [
-            "logic_ternary"
-        ],
-        "mutator": "mark_attached_to_block_item"
-    },
-    {
-        "type": "controls_while",
-        "message0": "while %1",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "BOOL",
-                "check": "Boolean"
-            }
-        ],
-        "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
-        "args1": [{
-            "type": "input_statement",
-            "name": "DO"
-        }],
-        "extensions": [
-            "is_custom_loop"
-        ],
-        "previousStatement": null,
-        "nextStatement": null,
-        "colour": "%{BKY_LOOPS_HUE}"
     },
     {
         "type": "coord_x",

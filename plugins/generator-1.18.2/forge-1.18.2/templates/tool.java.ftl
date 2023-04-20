@@ -65,15 +65,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				}
 
    				public Ingredient getRepairIngredient() {
-					<#if data.repairItems?has_content>
-					return Ingredient.of(
-						<#list data.repairItems as repairItem>
-						${mappedMCItemToItemStackCode(repairItem,1)}<#sep>,
-						</#list>
-					);
-					<#else>
-					return Ingredient.EMPTY;
-					</#if>
+					return ${mappedMCItemsToIngredient(data.repairItems)};
 				}
 			},
 

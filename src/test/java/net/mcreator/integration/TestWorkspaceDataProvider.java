@@ -193,7 +193,7 @@ public class TestWorkspaceDataProvider {
 				if (scope != VariableType.Scope.LOCAL) {
 					VariableElement variable = new VariableElement();
 					variable.setName("blockstate" + (idx++));
-					variable.setValue("UP");
+					variable.setValue("Blocks.AIR");
 					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
 					variable.setScope(scope);
 					workspace.addVariableElement(variable);
@@ -347,15 +347,6 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			biome.particlesProbability = 0.0123;
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
-			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
-			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
-			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
-			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
-			biome.sandPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 6;
-			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
-			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
-			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.spawnShipwreck = _true;
 			biome.spawnShipwreckBeached = _true;
 			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
@@ -1512,6 +1503,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
 			painting.texture = "test.png";
+			painting.title = modElement.getName();
+			painting.author = modElement.getName() + " author";
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
@@ -1747,6 +1740,9 @@ public class TestWorkspaceDataProvider {
 			boolean _true) {
 		Recipe recipe = new Recipe(modElement);
 		recipe.group = modElement.getName().toLowerCase(Locale.ENGLISH);
+		recipe.cookingBookCategory = getRandomItem(random, new String[] { "MISC", "FOOD", "BLOCKS" });
+		recipe.craftingBookCategory = getRandomItem(random,
+				new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
 		recipe.recipeType = recipeType;
 		if ("Crafting".equals(recipe.recipeType)) {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
