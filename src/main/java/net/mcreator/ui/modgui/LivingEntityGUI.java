@@ -921,6 +921,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private void updateTradingConditions() {
 		boolean noTrades = tradingType.getSelectedItem() != null && tradingType.getSelectedItem().equals("<NONE>");
 		aiBase.setSelectedItem("(none)");
+		guiBoundTo.setSelectedItem("<NONE>");
 		if (tradingType.getSelectedItem() != null && tradingType.getSelectedItem().equals("Villager"))
 			aiBase.setSelectedItem("Villager");
 		professionTrade.setEnabled(!noTrades);
@@ -928,14 +929,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		emptyUpdateSound.setEnabled(!noTrades);
 		notificationSound.setEnabled(!noTrades);
 		guiBoundTo.setEnabled(noTrades);
-		guiBoundTo.setSelectedItem("<NONE>");
 		inventorySize.setEnabled(noTrades);
 		inventoryStackSize.setEnabled(noTrades);
 		aiBase.setEnabled(noTrades);
 		breedable.setEnabled(noTrades);
-		breedable.setSelected(false);
 		tameable.setEnabled(noTrades);
-		tameable.setSelected(false);
 	}
 
 	@Override public void reloadDataLists() {
