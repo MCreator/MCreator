@@ -28,13 +28,11 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -61,15 +59,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final VTextField name = new VTextField(20);
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
-	private final JSpinner grassPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
-	private final JSpinner seagrassPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner flowersPerChunk = new JSpinner(new SpinnerNumberModel(4, 0, 256, 1));
-	private final JSpinner mushroomsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner bigMushroomsChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner sandPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner gravelPatchesPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner reedsPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
-	private final JSpinner cactiPerChunk = new JSpinner(new SpinnerNumberModel(0, 0, 256, 1));
 
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
@@ -86,6 +75,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnBiome = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnInCaves = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBiomeNether = L10N.checkbox("elementgui.common.enable");
+
 	private final JCheckBox spawnStronghold = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnMineshaft = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnMineshaftMesa = L10N.checkbox("elementgui.common.enable");
@@ -116,9 +106,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder underwaterBlock;
 
 	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 32, 1));
-	private MCItemHolder treeVines;
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
+	private MCItemHolder treeVines;
 	private MCItemHolder treeFruits;
 
 	private final JColor airColor = new JColor(mcreator, true, false);
@@ -141,6 +131,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 					"Mega spruce trees" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
+	private final ValidationGroup page2group = new ValidationGroup();
+	private final ValidationGroup page3group = new ValidationGroup();
 
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
 
@@ -204,11 +196,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.add(spawnPillagerOutpost);
 		spawnPillagerOutpost.setOpaque(false);
 
-		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village"),
-				L10N.label("elementgui.biome.generate_village")));
-		sbbp2.add(villageType);
-		villageType.setPreferredSize(new Dimension(200, 36));
-
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_woodland_mansions"),
 				L10N.label("elementgui.biome.generate_mansions")));
 		sbbp2.add(spawnWoodlandMansion);
@@ -255,12 +242,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2b.add(spawnBuriedTreasure);
 		spawnBuriedTreasure.setOpaque(false);
 
-		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_ruins"),
-				L10N.label("elementgui.biome.generate_ocean_ruins")));
-		sbbp2b.add(oceanRuinType);
-
-		oceanRuinType.setPreferredSize(new Dimension(200, 36));
-
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_bridges"),
 				L10N.label("elementgui.biome.generate_nether_bridges")));
 		sbbp2b.add(spawnNetherBridge);
@@ -276,15 +257,24 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2b.add(spawnBastionRemnant);
 		spawnBastionRemnant.setOpaque(false);
 
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_end_cities"),
+				L10N.label("elementgui.biome.generate_end_cities")));
+		sbbp2b.add(spawnEndCity);
+		spawnEndCity.setOpaque(false);
+
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portals"),
 				L10N.label("elementgui.biome.generate_ruined_portals")));
 		sbbp2b.add(spawnRuinedPortal);
 		spawnRuinedPortal.setPreferredSize(new Dimension(200, 36));
 
-		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_end_cities"),
-				L10N.label("elementgui.biome.generate_end_cities")));
-		sbbp2b.add(spawnEndCity);
-		spawnEndCity.setOpaque(false);
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_ruins"),
+				L10N.label("elementgui.biome.generate_ocean_ruins")));
+		sbbp2b.add(oceanRuinType);
+
+		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village"),
+				L10N.label("elementgui.biome.generate_village")));
+		sbbp2.add(villageType);
+		villageType.setPreferredSize(new Dimension(200, 36));
 
 		pane2.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(sbbp2b), 20, 20)));
@@ -294,29 +284,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(11, 2, 5, 2));
-		spawnproperties.setOpaque(false);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/temperature"),
-				L10N.label("elementgui.biome.temperature")));
-		spawnproperties.add(temperature);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
-				L10N.label("elementgui.biome.raining_possibility")));
-		spawnproperties.add(rainingPossibility);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
-				L10N.label("elementgui.biome.generate_overworld")));
-		spawnproperties.add(spawnBiome);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
-				L10N.label("elementgui.biome.generate_overworld_caves")));
-		spawnproperties.add(spawnInCaves);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
-				L10N.label("elementgui.biome.generate_nether")));
-		spawnproperties.add(spawnBiomeNether);
-
 		spawnBiome.setSelected(true);
 		spawnBiome.setOpaque(false);
 		spawnInCaves.setOpaque(false);
@@ -324,6 +291,21 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnBiomeNether.setOpaque(false);
 
 		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
+
+		JPanel spawnproperties = new JPanel(new GridLayout(12, 2, 25, 2));
+		spawnproperties.setOpaque(false);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
+				L10N.label("elementgui.biome.ground_block")));
+		spawnproperties.add(PanelUtils.join(groundBlock));
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underground_block"),
+				L10N.label("elementgui.biome.undeground_block")));
+		spawnproperties.add(PanelUtils.join(undergroundBlock));
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underwater_block"),
+				L10N.label("elementgui.biome.underwater_block")));
+		spawnproperties.add(PanelUtils.join(underwaterBlock));
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/coverage_estimate"),
 				L10N.label("elementgui.biome.coverage_estimate")));
@@ -349,6 +331,18 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.gen_weirdness")));
 		spawnproperties.add(genWeirdness);
 
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
+				L10N.label("elementgui.biome.generate_overworld")));
+		spawnproperties.add(spawnBiome);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
+				L10N.label("elementgui.biome.generate_overworld_caves")));
+		spawnproperties.add(spawnInCaves);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
+				L10N.label("elementgui.biome.generate_nether")));
+		spawnproperties.add(spawnBiomeNether);
+
 		genTemperature.addChangeListener(e -> estimateGenCoverage());
 		genHumidity.addChangeListener(e -> estimateGenCoverage());
 		genContinentalness.addChangeListener(e -> estimateGenCoverage());
@@ -357,78 +351,75 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
-		JPanel sbbp3 = new JPanel(new GridLayout(11, 2, 10, 2));
-
-		defaultFeatures.setPreferredSize(new Dimension(340, 36));
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"),
-				L10N.label("elementgui.biome.trees_per_chunk")));
-		sbbp3.add(treesPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_per_chunk"),
-				L10N.label("elementgui.biome.grass_per_chunk")));
-		sbbp3.add(grassPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/seagrass_per_chunk"),
-				L10N.label("elementgui.biome.seagrass_per_chunk")));
-		sbbp3.add(seagrassPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/flowers_per_chunk"),
-				L10N.label("elementgui.biome.flowers_per_chunk")));
-		sbbp3.add(flowersPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mushrooms_per_chunk"),
-				L10N.label("elementgui.biome.mushrooms_per_chunk")));
-		sbbp3.add(mushroomsPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/big_mushrooms_per_chunk"),
-				L10N.label("elementgui.biome.big_mushrooms_per_chunk")));
-		sbbp3.add(bigMushroomsChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/sand_patches_per_chunk"),
-				L10N.label("elementgui.biome.sand_patches_per_chunk")));
-		sbbp3.add(sandPatchesPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gravel_patches_per_chunk"),
-				L10N.label("elementgui.biome.gravel_patches_per_chunk")));
-		sbbp3.add(gravelPatchesPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/reeds_per_chunk"),
-				L10N.label("elementgui.biome.reeds_per_chunk")));
-		sbbp3.add(reedsPerChunk);
-
-		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/cacti_per_chunk"),
-				L10N.label("elementgui.biome.cacti_per_chunk")));
-		sbbp3.add(cactiPerChunk);
+		JPanel sbbp3 = new JPanel(new GridLayout(1, 2, 0, 0));
+		sbbp3.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.biome.vanilla_features"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
+		defaultFeatures.setPreferredSize(new Dimension(340, 36));
 		sbbp3.add(defaultFeatures);
 
 		sbbp3.setOpaque(false);
 		pane3.setOpaque(false);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(sbbp3));
+		JPanel sbbp5 = new JPanel(new GridLayout(8, 2, 0, 2));
+		sbbp5.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		sbbp5.setOpaque(false);
 
-		JPanel sbbp4 = new JPanel(new GridLayout(7, 2, 0, 2));
-		JPanel sbbp4n = new JPanel(new GridLayout(3, 2, 0, 2));
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"),
+				L10N.label("elementgui.biome.trees_per_chunk")));
+		sbbp5.add(treesPerChunk);
 
-		sbbp4n.setOpaque(false);
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/tree_shape"),
+				L10N.label("elementgui.biome.tree_shape")));
+		sbbp5.add(vanillaTreeType);
+
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/tree_definition"),
+				L10N.label("elementgui.biome.tree_definition")));
+		sbbp5.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees));
+
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/minimal_tree_height"),
+				L10N.label("elementgui.biome.minimal_tree_height")));
+		sbbp5.add(minHeight);
+
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/stem_block"),
+				L10N.label("elementgui.biome.stem_block")));
+		sbbp5.add(PanelUtils.join(treeStem));
+
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/branch_block"),
+				L10N.label("elementgui.biome.branch_block")));
+		sbbp5.add(PanelUtils.join(treeBranch));
+
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/vines_block"),
+				L10N.label("elementgui.biome.vines_block")));
+		sbbp5.add(PanelUtils.join(treeVines));
+
+		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fruits_block"),
+				L10N.label("elementgui.biome.fruits_block")));
+		sbbp5.add(PanelUtils.join(treeFruits));
+
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(sbbp3, sbbp5)));
+
+		JPanel sbbp4 = new JPanel(new GridLayout(8, 2, 35, 2));
+
+		name.setPreferredSize(new Dimension(350, 36));
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"), L10N.label("elementgui.biome.name")));
 		sbbp4.add(name);
 
-		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
-				L10N.label("elementgui.biome.ground_block"), new Color(206, 109, 109).brighter()));
-		sbbp4n.add(PanelUtils.join(groundBlock));
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
+				L10N.label("elementgui.biome.raining_possibility")));
+		sbbp4.add(rainingPossibility);
 
-		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underground_block"),
-				L10N.label("elementgui.biome.undeground_block"), new Color(179, 94, 26).brighter()));
-		sbbp4n.add(PanelUtils.join(undergroundBlock));
-
-		sbbp4n.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underwater_block"),
-				L10N.label("elementgui.biome.underwater_block")));
-		sbbp4n.add(PanelUtils.join(underwaterBlock));
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/temperature"),
+				L10N.label("elementgui.biome.temperature")));
+		sbbp4.add(temperature);
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
 				L10N.label("elementgui.biome.air_color")));
@@ -450,31 +441,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		sbbp4.add(waterFogColor);
 
-		sbbp4.add(PanelUtils.join(FlowLayout.LEFT, vanillaTrees, customTrees, new JEmptyBox(15, 2),
-				L10N.label("elementgui.biome.tree_type")));
-		sbbp4.add(vanillaTreeType);
-
-		JPanel sbbp5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-		sbbp5.add(L10N.label("elementgui.biome.minimal_height"));
-		sbbp5.add(minHeight);
-
-		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/stem_block"),
-				L10N.label("elementgui.biome.stem_block"), new Color(49, 148, 53)));
-		sbbp5.add(PanelUtils.join(treeStem));
-
-		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/branch_block"),
-				L10N.label("elementgui.biome.branch_block"), new Color(196, 104, 205)));
-		sbbp5.add(PanelUtils.join(treeBranch));
-
-		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/vines_block"),
-				L10N.label("elementgui.biome.vines_block"), new Color(148, 248, 252)));
-		sbbp5.add(PanelUtils.join(treeVines));
-
-		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fruits_block"),
-				L10N.label("elementgui.biome.fruits_block"), new Color(255, 255, 0)));
-		sbbp5.add(PanelUtils.join(treeFruits));
-
 		customTrees.addActionListener(event -> updateBiomeTreesForm());
 		vanillaTrees.addActionListener(event -> updateBiomeTreesForm());
 
@@ -484,20 +450,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		sbbp4.setOpaque(false);
 		pane4.setOpaque(false);
-		sbbp5.setOpaque(false);
 
-		sbbp5.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel panels = new JPanel(new BorderLayout(10, 10));
-		panels.setOpaque(false);
-
-		panels.add("Center", PanelUtils.northAndCenterElement(sbbp4n, sbbp4, 5, 5));
-		panels.add("East", PanelUtils.pullElementUp(new JLabel(UIRES.get("biomeblocks"))));
-
-		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(panels, sbbp5, 15, 15)));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(sbbp4));
 
 		JPanel pane1 = new JPanel(new GridLayout());
 
@@ -570,10 +524,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
 
 		page1group.addValidationElement(name);
-		page1group.addValidationElement(groundBlock);
-		page1group.addValidationElement(undergroundBlock);
-		page1group.addValidationElement(treeStem);
-		page1group.addValidationElement(treeBranch);
+		page2group.addValidationElement(groundBlock);
+		page2group.addValidationElement(undergroundBlock);
+		page3group.addValidationElement(treeStem);
+		page3group.addValidationElement(treeBranch);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.biome.needs_name")));
 		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
@@ -582,11 +536,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
 
 		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
+		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
 		addPage(L10N.t("elementgui.biome.features"), pane3);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
-		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1);
-		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
+		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 
 		updateBiomeTreesForm();
 		updateParticleParameters();
@@ -635,6 +589,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
+		else if (page == 1)
+			return new AggregatedValidationResult(page2group);
+		else if (page == 2)
+			return new AggregatedValidationResult(page3group);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -722,13 +680,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterColor.setColor(biome.waterColor);
 		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
-		grassPerChunk.setValue(biome.grassPerChunk);
-		seagrassPerChunk.setValue(biome.seagrassPerChunk);
-		flowersPerChunk.setValue(biome.flowersPerChunk);
-		mushroomsPerChunk.setValue(biome.mushroomsPerChunk);
-		sandPatchesPerChunk.setValue(biome.sandPatchesPerChunk);
-		reedsPerChunk.setValue(biome.reedsPerChunk);
-		cactiPerChunk.setValue(biome.cactiPerChunk);
 		rainingPossibility.setValue(biome.rainingPossibility);
 		spawnBiome.setSelected(biome.spawnBiome);
 		spawnBiomeNether.setSelected(biome.spawnBiomeNether);
@@ -755,8 +706,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnRuinedPortal.setSelectedItem(biome.spawnRuinedPortal);
 
 		temperature.setValue(biome.temperature);
-		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
-		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
 		spawnEntries.setSpawns(biome.spawnEntries);
@@ -804,15 +753,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.particlesProbability = (double) particlesProbability.getValue();
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
-		biome.grassPerChunk = (int) grassPerChunk.getValue();
-		biome.seagrassPerChunk = (int) seagrassPerChunk.getValue();
-		biome.flowersPerChunk = (int) flowersPerChunk.getValue();
-		biome.mushroomsPerChunk = (int) mushroomsPerChunk.getValue();
-		biome.bigMushroomsChunk = (int) bigMushroomsChunk.getValue();
-		biome.sandPatchesPerChunk = (int) sandPatchesPerChunk.getValue();
-		biome.gravelPatchesPerChunk = (int) gravelPatchesPerChunk.getValue();
-		biome.reedsPerChunk = (int) reedsPerChunk.getValue();
-		biome.cactiPerChunk = (int) cactiPerChunk.getValue();
 		biome.rainingPossibility = (double) rainingPossibility.getValue();
 		biome.temperature = (double) temperature.getValue();
 		biome.defaultFeatures = defaultFeatures.getListElements();

@@ -45,6 +45,12 @@
       "name": "particle",
       "datalist": "particles",
       "customEntryProviders": "particle"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,

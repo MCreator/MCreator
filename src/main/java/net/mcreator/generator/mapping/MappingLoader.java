@@ -39,12 +39,18 @@ public class MappingLoader {
 	private final Map<String, Map<?, ?>> mappings = new ConcurrentHashMap<>();
 
 	@SuppressWarnings({ "unchecked", "rawtypes" }) public MappingLoader(GeneratorConfiguration generatorConfiguration) {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
-				generatorConfiguration.getGeneratorName() + ".mappings", Pattern.compile(".*\\.yaml"));
+		List<String> templateLoaderPaths = new ArrayList<>();
+		templateLoaderPaths.add(generatorConfiguration.getGeneratorName());
+		templateLoaderPaths.addAll(generatorConfiguration.getImports());
 
-		for (String res : fileNames) {
-			String mappingName = res.split("mappings/")[1].replace(".yaml", "");
-			String mappingResource = generatorConfiguration.getGeneratorName() + "/mappings/" + mappingName + ".yaml";
+		Set<String> fileNames = new LinkedHashSet<>();
+		for (String templateLoaderPath : templateLoaderPaths) {
+			fileNames.addAll(
+					PluginLoader.INSTANCE.getResources(templateLoaderPath + ".mappings", Pattern.compile(".*\\.yaml")));
+		}
+
+		for (String mappingResource : fileNames) {
+			String mappingName = mappingResource.split("mappings/")[1].replace(".yaml", "");
 
 			try {
 				Enumeration<URL> resources = PluginLoader.INSTANCE.getResources(mappingResource);
@@ -56,12 +62,17 @@ public class MappingLoader {
 					try {
 						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
 								new LinkedHashMap<>((Map<?, ?>) reader.read()));
+
+						boolean mergeWithExisting = true;
+						if (mappingsFromFile.containsKey("_merge_with_existing"))
+							mergeWithExisting = Boolean.parseBoolean(mappingsFromFile.get("_merge_with_existing").toString());
+
 						if (mappings.get(mappingName) == null) {
 							mappings.put(mappingName, mappingsFromFile);
-						} else {
+						} else if (mergeWithExisting) { // merge new mappings with existing (existing have priority), if mappings allow this
 							Map merged = Collections.synchronizedMap(new LinkedHashMap());
-							merged.putAll(mappings.get(mappingName));
-							merged.putAll(mappingsFromFile);
+							merged.putAll(mappingsFromFile); // put new mappings first
+							merged.putAll(mappings.get(mappingName)); // so they are overriden by old ones in this statement
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {
