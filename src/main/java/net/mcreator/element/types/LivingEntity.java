@@ -94,9 +94,8 @@ import java.util.*;
 	public boolean waterMob;
 	public boolean flyingMob;
 
-	public boolean canTrade;
-	public List<VillagerProfession> professionTrade;
 	public String tradingType;
+	public List<VillagerProfession> professionTrade;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;
@@ -181,9 +180,8 @@ import java.util.*;
 
 		this.followRange = 16;
 
-		this.canTrade = false;
+		this.tradingType = "<NONE>";
 		this.professionTrade = new ArrayList<>();
-		this.tradingType = "Villager";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}
@@ -218,6 +216,10 @@ import java.util.*;
 
 	public boolean hasCustomProjectile() {
 		return ranged && "Default item".equals(rangedItemType) && !rangedAttackItem.isEmpty();
+	}
+
+	public boolean canTrade() {
+		return tradingType != null && (tradingType.equals("Villager") || tradingType.equals("Wandering Trader"));
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

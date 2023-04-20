@@ -50,15 +50,15 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 
-<#if data.breedable && data.aiBase == "(none)">
+<#if data.breedable>
 	<#assign extendsClass = "Animal">
 </#if>
 
-<#if (data.tameable && data.breedable && data.aiBase == "(none)")>
+<#if (data.tameable && data.breedable)>
 	<#assign extendsClass = "TamableAnimal">
 </#if>
 
-<#if data.canTrade && data.tradingType == "Wandering Trader">
+<#if data.canTrade() && data.tradingType == "Wandering Trader">
 	<#assign extendsClass = "AbstractVillager">
 </#if>
 
@@ -186,11 +186,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.hasAI || (data.canTrade && data.tradingType == "Wandering Trader")>
+	<#if data.hasAI || (data.canTrade() && data.tradingType == "Wandering Trader")>
 	@Override protected void registerGoals() {
 		super.registerGoals();
 
-		<#if data.canTrade && data.tradingType == "Wandering Trader">
+		<#if data.canTrade() && data.tradingType == "Wandering Trader">
 			this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
 			this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
 		</#if>
@@ -232,7 +232,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
    	}
 	</#if>
 
-	<#if data.canTrade>
+	<#if data.canTrade()>
 	protected void updateTrades() {
 		<#assign professions = w.filterBrokenReferences(data.professionTrade)>
 		List<VillagerProfession> professions = List.of(
@@ -299,7 +299,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
 
-	<#if data.canTrade && data.tradingType == "Wandering Trader">
+	<#if data.canTrade() && data.tradingType == "Wandering Trader">
 	protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.fullUpdateSound}" : "${data.emptyUpdateSound}"));
 	}
@@ -479,16 +479,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     }
     </#if>
 
-	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade>
+	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade()>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
 		InteractionResult retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 
-		<#if (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade>
+		<#if (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade()>
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
-			<#if data.canTrade>
+			<#if data.canTrade()>
 				if (
 					<#if data.hasSpawnEgg>
 					itemstack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_SPAWN_EGG.get() &&
@@ -589,7 +589,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				}
 			}
 		<#else>
-			<#if !data.canTrade>
+			<#if !data.canTrade()>
 			super.mobInteract(sourceentity, hand);
 			</#if>
 		</#if>
@@ -611,7 +611,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				return retval;
 			</#if>
 		<#else>
-			<#if !data.canTrade>
+			<#if !data.canTrade()>
 			return retval;
 			</#if>
 		</#if>
@@ -678,9 +678,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
     </#if>
 
-	<#if data.breedable || (data.canTrade && data.tradingType == "Wandering Trader")>
-	<#if data.canTrade && data.tradingType == "Wandering Trader">@Nullable<#else>@Override</#if> public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-		<#if data.canTrade && data.tradingType == "Wandering Trader">return null;<#else>
+	<#if data.breedable || (data.canTrade() && data.tradingType == "Wandering Trader")>
+	<#if data.canTrade()>@Nullable<#else>@Override</#if> public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+		<#if data.canTrade()>return null;<#else>
 		${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
 		retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
 		return retval;
