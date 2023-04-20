@@ -7,7 +7,9 @@
     {
       "name": "${modid}:${file}",
       "stream": <#if sound.getCategory() == "record" || sound.getCategory() == "music">true<#else>false</#if>
-    }<#sep>,</#list>
+    }<#sep>,
+    </#list>
   ]
-}<#sep>,</#list>
+}<#sep>,
+</#list>
 }
