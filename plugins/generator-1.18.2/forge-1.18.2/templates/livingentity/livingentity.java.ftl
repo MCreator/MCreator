@@ -50,11 +50,11 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 
-<#if data.breedable>
+<#if data.breedable && data.aiBase == "(none)">
 	<#assign extendsClass = "Animal">
 </#if>
 
-<#if (data.tameable && data.breedable)>
+<#if (data.tameable && data.breedable && data.aiBase == "(none)")>
 	<#assign extendsClass = "TamableAnimal">
 </#if>
 
@@ -489,7 +489,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
 			<#if data.canTrade>
-				if (itemstack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_SPAWN_EGG.get() && this.isAlive() && !this.isTrading() && !this.isBaby() <#if data.tradingType == "Villager">&& !this.isSleeping()</#if>) {
+				if (
+					<#if data.hasSpawnEgg>
+					itemstack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_SPAWN_EGG.get() &&
+					</#if>
+					this.isAlive() && !this.isTrading() && !this.isBaby()
+					<#if data.tradingType == "Villager">&& !this.isSleeping()</#if>
+				) {
 					if (hand == InteractionHand.MAIN_HAND) {
 						sourceentity.awardStat(Stats.TALKED_TO_VILLAGER);
 					}
