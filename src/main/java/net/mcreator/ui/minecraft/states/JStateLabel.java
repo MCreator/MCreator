@@ -50,6 +50,7 @@ public class JStateLabel extends JPanel {
 
 		label.setEditable(false);
 		label.setOpaque(false);
+		refreshState();
 
 		JScrollPane statePane = new JScrollPane(label);
 		statePane.setOpaque(false);
@@ -57,12 +58,20 @@ public class JStateLabel extends JPanel {
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add(statePane);
 
-		edit.setOpaque(false);
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setBorder(BorderFactory.createEmptyBorder());
-		edit.setContentAreaFilled(false);
-		edit.setToolTipText(L10N.t("elementgui.common.custom_state.edit"));
-		edit.addActionListener(e -> editButtonListener.run());
+		JPanel controls = new JPanel();
+		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		add(controls);
+
+		if (editButtonListener != null) {
+			edit.setOpaque(false);
+			edit.setMargin(new Insets(0, 0, 0, 0));
+			edit.setBorder(BorderFactory.createEmptyBorder());
+			edit.setContentAreaFilled(false);
+			edit.setToolTipText(L10N.t("elementgui.common.custom_state.edit"));
+			edit.addActionListener(e -> editButtonListener.run());
+			addPropertyChangeListener("enabled", e -> edit.setEnabled((boolean) e.getNewValue()));
+			controls.add(edit);
+		}
 
 		JButton copy = new JButton(UIRES.get("16px.copyclipboard")) {
 			@Override public String getName() {
@@ -76,17 +85,7 @@ public class JStateLabel extends JPanel {
 		copy.setToolTipText(L10N.t("elementgui.common.custom_state.copy"));
 		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
 				.setContents(new StringSelection(getState()), null));
-
-		JPanel controls = new JPanel();
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		controls.add(edit);
 		controls.add(copy);
-		add(controls);
-	}
-
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		edit.setEnabled(enabled);
 	}
 
 	public String getState() {

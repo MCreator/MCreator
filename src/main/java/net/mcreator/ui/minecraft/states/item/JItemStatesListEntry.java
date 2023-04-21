@@ -66,7 +66,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData<?>>> properties,
 			Consumer<JItemStatesListEntry> editButtonListener) {
-		super(new BorderLayout());
+		super(new FlowLayout(FlowLayout.LEFT));
 		this.mcreator = mcreator;
 
 		setOpaque(false);
@@ -88,6 +88,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		CollapsiblePanel override = new CollapsiblePanel(L10N.t("elementgui.item.custom_state.overridden_params"),
 				PanelUtils.join(ito, imo));
 		override.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
+		add(PanelUtils.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, stateLabel), override));
 
 		JComponent container = PanelUtils.expandHorizontally(this);
 		parent.add(container);
@@ -100,11 +101,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 			parent.revalidate();
 			parent.repaint();
 		});
-
-		JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		contents.add(PanelUtils.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, stateLabel), override));
-		contents.add(remove);
-		add(contents);
+		add(remove);
 
 		parent.revalidate();
 		parent.repaint();

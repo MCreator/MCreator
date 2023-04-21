@@ -80,6 +80,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				}
 			}
 		});
+		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
+				L10N.t("elementgui.item.custom_property.name"), name, 3));
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),
@@ -89,9 +91,6 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.setDefaultName(L10N.t("elementgui.item.custom_property.value.default"));
 		value.setValidator(new ProcedureSelectorValidator(value));
 		reloadDataLists(); // we make sure that selector can be properly shown
-
-		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
-				L10N.t("elementgui.item.custom_property.name"), name, 3));
 		add(value);
 
 		JComponent container = PanelUtils.expandHorizontally(this);
