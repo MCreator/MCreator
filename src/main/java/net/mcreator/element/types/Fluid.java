@@ -21,13 +21,13 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -146,16 +146,23 @@ import java.util.List;
 
 	@Override public List<MCItem> providedMCItems() {
 		ArrayList<MCItem> retval = new ArrayList<>();
-		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Fluid block"));
+		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Block"));
 		if (this.generateBucket)
-			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Fluid bucket"));
+			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
+		return retval;
+	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		ArrayList<MCItem> retval = new ArrayList<>();
+		if (this.generateBucket)
+			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
 		return retval;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present
-			if (!textureBucket.isEmpty()) {
+			if (textureBucket != null && !textureBucket.isEmpty()) {
 				return workspace.getFolderManager().getTextureImageIcon(textureBucket, TextureType.ITEM);
 			}
 			// Otherwise, fallback to the generated fluid bucket icon

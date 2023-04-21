@@ -29,6 +29,8 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,8 +38,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 public class MCItem extends DataListEntry {
+
+	private static final Logger LOG = LogManager.getLogger(MCItem.class);
 
 	public static final ImageIcon DEFAULT_ICON = UIRES.get("mod");
 	public static final ImageIcon TAG_ICON = UIRES.get("tag");
@@ -56,6 +61,7 @@ public class MCItem extends DataListEntry {
 		setType(entry.getType());
 		setTexture(entry.getTexture());
 		setRequiredAPIs(entry.getRequiredAPIs());
+		setOther(entry.getOther());
 		setIcon(BlockItemIcons.getIconForItem(entry.getTexture()));
 	}
 
@@ -88,14 +94,22 @@ public class MCItem extends DataListEntry {
 				String suffix = StringUtils.substringAfterLast(name, ".");
 				boolean hasGeneratableIcon = false;
 
-				// First, try to get the icon from the generatable element
-				if (workspace.getModElementByName(elementName).getGeneratableElement() instanceof IMCItemProvider provider) {
+				ModElement modElement = workspace.getModElementByName(elementName);
+
+				// if the element is not found, use the default icon
+				if (modElement == null) {
+					retval = DEFAULT_ICON;
+					hasGeneratableIcon = true;
+				}
+				// try to get the icon from the generatable element
+				else if (modElement.getGeneratableElement() instanceof IMCItemProvider provider) {
 					ImageIcon providedIcon = provider.getIconForMCItem(workspace, suffix);
 					if (providedIcon != null) {
 						retval = providedIcon;
 						hasGeneratableIcon = true;
 					}
 				}
+
 				// Otherwise, try using the mod element icon
 				if (!hasGeneratableIcon && new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 						elementName + ".png").isFile()) {
@@ -133,7 +147,8 @@ public class MCItem extends DataListEntry {
 				}
 			}
 
-		} catch (Exception ignored) {
+		} catch (Exception e) {
+			LOG.warn("Failed to load icon for item: " + name, e);
 		}
 
 		return DEFAULT_ICON;
@@ -145,12 +160,20 @@ public class MCItem extends DataListEntry {
 			this(element, fieldName, type, null);
 		}
 
-		public Custom(ModElement element, String fieldName, String type, @Nullable String description) {
+		public Custom(ModElement element, String fieldName, String type, @Nullable String descriptor) {
 			super("CUSTOM:" + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
-			setReadableName(element.getName() + " - " + element.getType().getReadableName());
+
+			if (descriptor != null) {
+				setReadableName(
+						element.getName() + " - " + element.getType().getReadableName() + " " + descriptor.toLowerCase(
+								Locale.ENGLISH));
+			} else {
+				setReadableName(element.getName() + " - " + element.getType().getReadableName());
+			}
+
 			setIcon(getBlockIconBasedOnName(element.getWorkspace(), getName()));
 			setType(type);
-			setDescription(description);
+			setDescription(element.getType().getDescription());
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {

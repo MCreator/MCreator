@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "field_image",
+      "src": "./res/null.png",
+      "width": 8,
+      "height": 24
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "entity",
+      "datalist": "spawnableEntity"
+    }
+  ],
+  "output": "Entity",
+  "colour": 195,
+  "mcreator": {
+    "toolbox_id": "advanced",
+    "fields": [
+      "entity"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
