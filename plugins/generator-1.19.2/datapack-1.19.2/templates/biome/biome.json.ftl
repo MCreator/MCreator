@@ -32,7 +32,7 @@
     "features": [
     	<#--RAW_GENERATION-->[],
 		<#--LAKES-->[
-		<#if data.defaultFeatures?contains("Lakes")>
+		<#if data.defaultFeatures?contains("Caves")>
 			"minecraft:lake_water",
 			"minecraft:lake_lava"
 		</#if>

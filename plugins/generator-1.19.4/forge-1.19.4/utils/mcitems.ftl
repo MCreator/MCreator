@@ -70,7 +70,7 @@
     </#if>
 </#function>
 
-<#function mappedMCItemsToIngredient mappedBlocks>
+<#function mappedMCItemsToIngredient mappedBlocks=[]>
     <#if !mappedBlocks??>
         <#return "Ingredient.EMPTY">
     <#elseif mappedBlocks?size == 1>
@@ -304,8 +304,4 @@
         </#if>
     </#if>
     <#return '{ "Name": "minecraft:air" }'>
-</#function>
-
-<#function toMappedMCItem unmappedValue>
-    <#return generator.toMappedMItemBlock(unmappedValue)>
 </#function>

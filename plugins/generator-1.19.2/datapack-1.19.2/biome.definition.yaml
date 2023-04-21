@@ -166,8 +166,8 @@ field_inclusions: [rainingPossibility, temperature,
                    spawnMineshaftMesa, spawnPillagerOutpost, villageType, spawnWoodlandMansion,
                    spawnJungleTemple, spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument,
                    spawnShipwreck, spawnShipwreckBeached, spawnBuriedTreasure, oceanRuinType,
-                   spawnNetherBridge, spawnNetherFossil, spawnBastionRemnant, spawnEndCity,
-                   spawnRuinedPortal]
+                   spawnNetherBridge, spawnNetherFossil, spawnBastionRemnant, spawnEndCity, spawnRuinedPortal,
+                   genTemperature, genHumidity, genContinentalness, genErosion, genWeirdness]
 
 localizationkeys:
   - key: biome.@modid.@registryname
