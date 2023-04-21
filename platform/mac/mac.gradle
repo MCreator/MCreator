@@ -76,7 +76,7 @@ tasks.register('exportMacX64', Copy.class) {
     }
 }
 
-tasks.register('dmgMacAarch64') {
+tasks.register('dmgMac') {
     dependsOn downloadMKISOFS
     dependsOn exportMacAarch64, exportMacX64
 
@@ -125,7 +125,7 @@ tasks.register('dmgMacAarch64') {
 tasks.register('exportMac') {
     group 'export'
 
-    dependsOn dmgMacAarch64
+    dependsOn dmgMac
 
     doLast {
         delete 'build/export/mac64'
