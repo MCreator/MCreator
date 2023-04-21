@@ -79,6 +79,10 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
 		return Arrays.asList(onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
 				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing);

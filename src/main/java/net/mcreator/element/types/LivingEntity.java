@@ -242,6 +242,10 @@ import java.util.*;
 		return Collections.emptyList();
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("spawn_egg".equals(suffix)) {
 			return MinecraftImageGenerator.generateSpawnEggIcon(spawnEggBaseColor, spawnEggDotColor);

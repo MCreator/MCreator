@@ -130,6 +130,10 @@ import java.util.*;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
 		entries.add(ammoItem);

@@ -4,10 +4,10 @@ def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/
 def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/linux/x64/jdk/hotspot/normal/adoptopenjdk'
 def jdk17_mac_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/mac/x64/jdk/hotspot/normal/adoptopenjdk'
 
-def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.05/nsis-3.05.zip'
+def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
 
-def mkisofs_url = 'https://netix.dl.sourceforge.net/project/mkisofs-md5/mkisofs-md5-v2.01/mkisofs-md5-2.01-Sample.zip'
+def mkisofs_url = 'https://netix.dl.sourceforge.net/project/mkisofs-md5/mkisofs-md5-v2.01/mkisofs-md5-2.01-Binary.zip'
 
 tasks.register('downloadJDKWin64') {
     group 'setup'
@@ -81,7 +81,7 @@ tasks.register('downloadNSIS') {
                     overwrite false
                 }
                 copy { from zipTree(file('build/tmp/nsis')) into file('build/tools/') }
-                file('build/tools/nsis-3.05').renameTo(file('build/tools/nsis'))
+                file('build/tools/nsis-3.08').renameTo(file('build/tools/nsis'))
                 delete 'build/tmp/nsis'
 
                 download.run {
@@ -106,7 +106,10 @@ tasks.register('downloadMKISOFS') {
                     dest 'build/tmp/mkisofs'
                     overwrite false
                 }
-                copy { from zipTree(file('build/tmp/mkisofs')) into file('build/tools/') }
+                copy {
+                    from zipTree(file('build/tmp/mkisofs'))
+                    into file('build/tools/')
+                }
                 file('build/tools/Binary').renameTo(file('build/tools/mkisofs'))
                 delete 'build/tmp/mkisofs'
             }

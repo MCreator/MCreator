@@ -21,15 +21,19 @@ package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.minecraft.MCItem;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public interface ITabContainedElement extends IOtherModElementsDependent {
 
 	@Nullable TabEntry getCreativeTab();
+
+	List<MCItem> getCreativeTabItems();
 
 	@Override default Collection<? extends MappableElement> getUsedElementMappings() {
 		return new ArrayList<>(Collections.singleton(getCreativeTab()));

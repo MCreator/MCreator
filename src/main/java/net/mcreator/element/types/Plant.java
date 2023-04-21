@@ -226,6 +226,10 @@ import java.util.stream.Collectors;
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
 	}
 
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
 	@Override public Collection<String> getUsedElementNames() {
 		return new ArrayList<>(spawnWorldTypes);
 	}
