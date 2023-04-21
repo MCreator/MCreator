@@ -1,0 +1,1 @@
+This parameter defines on what tree type the custom tree feature shape should be based on.

@@ -251,6 +251,18 @@ import java.util.*;
 		return false;
 	}
 
+	public boolean hasBiomesInVanillaDimensions() {
+		for (ModElement element : workspace.getModElements()) {
+			if (element.getType() == ModElementType.BIOME) {
+				if (element.getGeneratableElement() instanceof Biome biome) {
+					if (biome.spawnBiome || biome.spawnInCaves || biome.spawnBiomeNether)
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean hasItemsInTabs() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
