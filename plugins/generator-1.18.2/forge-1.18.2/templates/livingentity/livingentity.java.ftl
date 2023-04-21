@@ -257,6 +257,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 	}
 
+	<#if data.tradingType == "Villager">@Override</#if>public boolean canRestock() {
+		return ${data.canRestock};
+	}
+
 	<#if data.tradingType == "Villager">
 	@Override protected void customServerAiStep() {
 		this.level.getProfiler().push("villagerBrain");

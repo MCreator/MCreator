@@ -166,6 +166,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final JComboBox<String> tradingType = new JComboBox<>(new String[] { "<NONE>", "Villager", "Wandering Trader" });
 	private ProfessionListField professionTrade;
+	private final JCheckBox canRestock = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector notificationSound = new SoundSelector(mcreator);
@@ -859,7 +860,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
-		JPanel villagerProperties = new JPanel(new GridLayout(5, 2, 5, 2));
+		JPanel villagerProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		villagerProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.villager_properties"), TitledBorder.LEADING,
@@ -873,6 +874,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/profession_trade"),
 				L10N.label("elementgui.living_entity.profession_trade")));
 		villagerProperties.add(professionTrade);
+
+		canRestock.setOpaque(false);
+		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_restock"),
+				L10N.label("elementgui.living_entity.can_restock")));
+		villagerProperties.add(canRestock);
 
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
 				L10N.label("elementgui.living_entity.full_update_sound")));
@@ -925,6 +931,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		if (tradingType.getSelectedItem() != null && tradingType.getSelectedItem().equals("Villager"))
 			aiBase.setSelectedItem("Villager");
 		professionTrade.setEnabled(!noTrades);
+		canRestock.setEnabled(!noTrades);
 		fullUpdateSound.setEnabled(!noTrades);
 		emptyUpdateSound.setEnabled(!noTrades);
 		notificationSound.setEnabled(!noTrades);
@@ -1092,6 +1099,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		flyingMob.setSelected(livingEntity.flyingMob);
 		tradingType.setSelectedItem(livingEntity.tradingType);
 		professionTrade.setListElements(livingEntity.professionTrade);
+		canRestock.setSelected(livingEntity.canRestock);
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
 		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
 		notificationSound.setSound(livingEntity.notificationSound);
@@ -1229,6 +1237,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.tradingType = (String) tradingType.getSelectedItem();
 		livingEntity.professionTrade = professionTrade.getListElements();
+		livingEntity.canRestock = canRestock.isSelected();
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
 		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
 		livingEntity.notificationSound = notificationSound.getSound();

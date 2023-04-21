@@ -685,6 +685,7 @@ public class TestWorkspaceDataProvider {
 				livingEntity.professionTrade.add(
 						new VillagerProfession(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
 			}
+			livingEntity.canRestock = _true;
 			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),
