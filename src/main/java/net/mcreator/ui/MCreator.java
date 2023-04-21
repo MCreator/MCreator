@@ -46,6 +46,7 @@ import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -282,7 +283,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
 
-			new Thread(this.workspaceFileBrowser::reloadTree).start();
+			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
@@ -292,10 +293,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 			}
 
-			// if we need to setup MCreator, we do so
+			// if we need to set up the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage
+								&& !Launcher.version.isDevelopment());
 			}
 
 			if (workspace.getMCreatorVersion()
@@ -303,9 +305,15 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 				workspace.setMCreatorVersion(Launcher.version.versionlong);
 				workspace.getFileManager().saveWorkspaceDirectlyAndWait();
-			} else if (workspace.isRegenerateRequired()) {
+			} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
+
+			// reinit (preload) MCItems so workspace is more snappy when loaded
+			new Thread(() -> {
+				workspace.getModElements().forEach(ModElement::getMCItems);
+				LOG.debug("MCItems preload for mod elements completed");
+			}, "ME preloader").start();
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}

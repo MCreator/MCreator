@@ -64,15 +64,7 @@ public abstract class ${name}Item extends ArmorItem {
 			}
 
 			@Override public Ingredient getRepairIngredient() {
-				<#if data.repairItems?has_content>
-				return Ingredient.of(
-							<#list data.repairItems as repairItem>
-								${mappedMCItemToItemStackCode(repairItem,1)}<#if repairItem?has_next>,</#if>
-							</#list>
-				);
-				<#else>
-				return Ingredient.EMPTY;
-				</#if>
+				return ${mappedMCItemsToIngredient(data.repairItems)};
 			}
 
 			@Override public String getName() {

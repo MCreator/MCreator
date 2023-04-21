@@ -87,10 +87,6 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	public MItemBlock toMappedMItemBlock(String unmappedValue) {
-		return new MItemBlock(this.getWorkspace(), unmappedValue);
-	}
-
 	/**
 	 * Removes the "CUSTOM:" prefix and any eventual suffix (if present, it's after the last .)
 	 *

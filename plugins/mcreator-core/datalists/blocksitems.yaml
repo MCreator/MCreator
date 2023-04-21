@@ -3414,12 +3414,12 @@
   texture: WOOL#15
 
 - Blocks.HARDENED_CLAY:
-  readable_name: "Hardened Clay"
+  readable_name: "Terracotta"
   type: block
   texture: HARDENED_CLAY
 
 - Blocks.STAINED_HARDENED_CLAY:
-  readable_name: "Terracotta"
+  readable_name: "Any Terracotta"
   type: block
   subtypes: true
   texture: STAINED_HARDENED_CLAY
@@ -6803,6 +6803,26 @@
   readable_name: "Glow Squid Spawn Egg"
   type: item
   texture: GLOW_SQUID_SPAWN_EGG
+
+- Items.IRON_GOLEM_SPAWN_EGG:
+  readable_name: "Iron Golem Spawn Egg"
+  type: item
+  texture: IRON_GOLEM_SPAWN_EGG
+
+- Items.SNOW_GOLEM_SPAWN_EGG:
+  readable_name: "Snow Golem Spawn Egg"
+  type: item
+  texture: SNOW_GOLEM_SPAWN_EGG
+
+- Items.WITHER_SPAWN_EGG:
+  readable_name: "Wither Spawn Egg"
+  type: item
+  texture: WITHER_SPAWN_EGG
+
+- Items.ENDER_DRAGON_SPAWN_EGG:
+  readable_name: "Ender Dragon Spawn Egg"
+  type: item
+  texture: ENDER_DRAGON_SPAWN_EGG
 
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"

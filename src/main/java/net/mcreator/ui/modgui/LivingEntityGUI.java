@@ -341,7 +341,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("condition.common.false")).makeInline();
 		solidBoundingBox = new LogicProcedureSelector(this.withEntry("entity/condition_solid_bounding_box"), mcreator,
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 300, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				L10N.checkbox("elementgui.common.enable"), 300,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -607,8 +608,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(7, 7), modelHeight, new JEmptyBox(7, 7), modelShadowSize,
-				new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7), disableCollisions));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(7, 7), modelHeight,
+				new JEmptyBox(7, 7), modelShadowSize, new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7),
+				disableCollisions));
 
 		spo2.add(new JEmptyBox());
 		spo2.add(solidBoundingBox);
@@ -923,14 +925,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 5) {
+		} else if (page == 4) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 6) {
+		} else if (page == 5) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
-				return new AggregatedValidationResult.FAIL("Minimal mob group size can't be bigger than maximal size");
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.living_entity.group_size")));
 			}
 		}
 		return new AggregatedValidationResult.PASS();
