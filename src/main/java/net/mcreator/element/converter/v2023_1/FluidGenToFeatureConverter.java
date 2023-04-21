@@ -33,6 +33,8 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 public class FluidGenToFeatureConverter implements IConverter {
 	private static final Logger LOG = LogManager.getLogger(FluidGenToFeatureConverter.class);
 
@@ -43,7 +45,8 @@ public class FluidGenToFeatureConverter implements IConverter {
 			// If the list of restriction dimensions is empty, there's no feature to convert
 			if (fluid.get("spawnWorldTypes") != null && !fluid.getAsJsonArray("spawnWorldTypes").isEmpty()) {
 				String modElementName = input.getModElement().getName();
-				Feature feature = new Feature(new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
+				Feature feature = new Feature(
+						new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
 
 				int rarity = 5;
 				if (fluid.get("frequencyOnChunks") != null) {
@@ -53,7 +56,8 @@ public class FluidGenToFeatureConverter implements IConverter {
 				feature.generationStep = "LAKES";
 
 				if (fluid.get("spawnWorldTypes") != null) {
-					fluid.getAsJsonArray("spawnWorldTypes").iterator().forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
+					fluid.getAsJsonArray("spawnWorldTypes").iterator()
+							.forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
 				} else {
 					feature.restrictionDimensions.add("Surface");
 				}
@@ -86,15 +90,22 @@ public class FluidGenToFeatureConverter implements IConverter {
 								<value name="condition"><block type="block_predicate_is_air"></block></value>
 							</block></value>
 						<next><block type="placement_biome_filter">
-						</block></next></block></next></block></next></block></next></block></next></block></xml>"""
-						.formatted(modElementName, rarity);
+						</block></next></block></next></block></next></block></next></block></next></block></xml>""".formatted(
+						modElementName, rarity);
 
-				feature.getModElement().setParentFolder(
-						FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+				feature.getModElement()
+						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
 				workspace.getModElementManager().storeModElementPicture(feature);
 				workspace.addModElement(feature.getModElement());
 				workspace.getGenerator().generateElement(feature);
 				workspace.getModElementManager().storeModElement(feature);
+
+				// If porting 1.19.2 FG workspace, there may be biome modifier present that break workspaces
+				// 2022.3 does not cache files to remove yet, so we need to do a hacky removal here
+				// Fixes #3641
+				new File(workspace.getGenerator().getModDataRoot(),
+						"forge/biome_modifier/" + input.getModElement().getRegistryName()
+								+ "_biome_modifier.json").delete();
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to move fluid generation settings to feature mod element", e);

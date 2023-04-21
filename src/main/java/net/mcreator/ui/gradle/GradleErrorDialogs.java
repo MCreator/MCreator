@@ -37,28 +37,30 @@ public class GradleErrorDialogs {
 	private static final Logger LOG = LogManager.getLogger("Gradle Error Dialogs");
 
 	public static int showErrorDialog(int errorCode, MCreator whereToShow) {
-		if (errorCode == GradleErrorCodes.JAVA_JVM_CRASH_ERROR)
-			showJVMCrashErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.JAVA_XMX_INVALID_VALUE)
-			showXMXInvalidErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.JAVA_XMS_INVALID_VALUE)
-			showXMSInvalidErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.JAVA_JVM_HEAP_SPACE)
-			showJVMHeapSpaceErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.GRADLE_NO_INTERNET)
-			showNoInternetErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.GRADLE_INTERNET_INTERRUPTED)
-			showInternetInterruptedErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.GRADLE_BUILD_FAILED)
-			showGradleBuildFailedErrorDialog(whereToShow);
-		else if (errorCode == GradleErrorCodes.GRADLE_REOBF_FAILED)
-			showGradleReobfFailedErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_ERROR)
-			showGradleCacheDataErrorDialog(whereToShow, errorCode);
-		else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED)
-			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
-		else
-			LOG.warn("Error with code " + errorCode + " was reported, but no response is registered.");
+		SwingUtilities.invokeLater(() -> {
+			if (errorCode == GradleErrorCodes.JAVA_JVM_CRASH_ERROR)
+				showJVMCrashErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.JAVA_XMX_INVALID_VALUE)
+				showXMXInvalidErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.JAVA_XMS_INVALID_VALUE)
+				showXMSInvalidErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.JAVA_JVM_HEAP_SPACE)
+				showJVMHeapSpaceErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.GRADLE_NO_INTERNET)
+				showNoInternetErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.GRADLE_INTERNET_INTERRUPTED)
+				showInternetInterruptedErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.GRADLE_BUILD_FAILED)
+				showGradleBuildFailedErrorDialog(whereToShow);
+			else if (errorCode == GradleErrorCodes.GRADLE_REOBF_FAILED)
+				showGradleReobfFailedErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_ERROR)
+				showGradleCacheDataErrorDialog(whereToShow, errorCode);
+			else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED)
+				showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
+			else
+				LOG.warn("Error with code " + errorCode + " was reported, but no response is registered.");
+		});
 
 		return errorCode;
 	}

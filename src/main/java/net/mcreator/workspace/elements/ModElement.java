@@ -240,7 +240,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return sortid;
 	}
 
-	@Nonnull public List<MCItem> getMCItems() {
+	@Nonnull public synchronized List<MCItem> getMCItems() {
 		if (mcItems == null) {
 			mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
 					provider.providedMCItems() :

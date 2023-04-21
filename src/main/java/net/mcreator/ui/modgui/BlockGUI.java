@@ -74,10 +74,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -271,8 +269,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
-		blocksToReplace.setListElements(
-				new ArrayList<>(Collections.singleton(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE"))));
+		// emulate base_stone_overworld
+		blocksToReplace.setListElements(List.of(
+				//@formatter:off
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"),
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#1"),
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#3"),
+				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
+				//@formatter:on
+		));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
@@ -335,8 +340,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic")).makeInline();
 		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -741,7 +746,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
-		selp3.add(PanelUtils.centerInPanel(useLootTableForDrops));
+		selp3.add(useLootTableForDrops);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));
@@ -1169,9 +1174,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 		});
 
-		pane7.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(advancedWithCondition, PanelUtils.pullElementUp(
-						PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
+		pane7.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(advancedWithCondition,
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1353,7 +1357,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
 		else if (page == 7) {
 			if ((int) minGenerateHeight.getValue() >= (int) maxGenerateHeight.getValue()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.block.error_minimal_generation_height"));
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.block.gen_height")));
 			}
 		}
 		return new AggregatedValidationResult.PASS();

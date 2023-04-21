@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
@@ -57,7 +56,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
-	private final boolean editingMode;
+	private boolean editingMode;
 	private MCreatorTabs.Tab tabIn;
 
 	private boolean changed, listeningEnabled = false;
@@ -531,9 +530,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// add it before generating so all references are loaded
 		mcreator.getWorkspace().addModElement(modElement);
 
-		// we perform any custom defined before the generatable element is generated
-		beforeGeneratableElementGenerated();
-
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
 
@@ -554,8 +550,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		afterGeneratableElementGenerated();
 
-		mcreator.getApplication().getAnalytics()
-				.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		if (editingMode) {
+			mcreator.getApplication().getAnalytics()
+					.trackEvent(AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT, modElement.getType().getRegistryName());
+		} else {
+			mcreator.getApplication().getAnalytics()
+					.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		}
 
 		// build if selected and needed
 		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
@@ -573,6 +574,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
+
+		// at this point, ME is stored so if session was not marked as editingMode before, now it is
+		editingMode = true;
 	}
 
 	public @Nonnull ModElement getModElement() {
@@ -582,9 +586,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected abstract void initGUI();
 
 	protected abstract AggregatedValidationResult validatePage(int page);
-
-	protected void beforeGeneratableElementGenerated() {
-	}
 
 	protected void afterGeneratableElementStored() {
 	}

@@ -1,0 +1,1 @@
+/*@BlockState*/(BlockStateArgument.getBlock(arguments, "${field$param}").getState())
