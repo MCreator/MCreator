@@ -40,8 +40,7 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerParticles(RegisterParticleProvidersEvent event) {
 		<#list particles as particle>
-		event.register(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(),
-					${particle.getModElement().getName()}Particle::provider);
+		event.registerSpriteSet(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::provider);
 		</#list>
 	}
 
