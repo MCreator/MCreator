@@ -135,6 +135,12 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
+	public List<String> getImports() {
+		return (generatorConfig.get("import") != null) ?
+				((List<?>) generatorConfig.get("import")).stream().map(Object::toString).toList() :
+				new ArrayList<>();
+	}
+
 	public GeneratorFlavor getGeneratorFlavor() {
 		return generatorFlavor;
 	}
@@ -227,7 +233,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		if (templateGeneratorConfigs.containsKey(name))
 			return templateGeneratorConfigs.get(name);
 		else {
-			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(generatorName, name);
+			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(this, name);
 			templateGeneratorConfigs.put(name, tpl);
 			return tpl;
 		}
