@@ -56,7 +56,7 @@ public class TooltipProcedureConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 43;
+		return 44;
 	}
 
 	protected String fixXML(String xml) throws Exception {
