@@ -9,8 +9,8 @@
 # To compile the intel binary on an aarch64 machine, re-brew shc under rosetta
 # Use the prefix /opt/homebrew/bin/shc for aarch64 and /usr/local/bin/shc for x86_64
 
+setopt +o nomatch
 DIR=$(cd "$(dirname "$0")"; pwd)
-
 cd "$DIR"
 
 ./jdk/bin/java \
