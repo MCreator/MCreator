@@ -65,6 +65,7 @@ public class ExplodeProcedureConverter implements IConverter {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();
+		BlocklyHelper bh = new BlocklyHelper(doc);
 
 		NodeList nodeList = doc.getElementsByTagName("block");
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -76,7 +77,7 @@ public class ExplodeProcedureConverter implements IConverter {
 					case "DESTROY" -> "BLOCK";
 					default -> "NONE";
 				};
-				Element modeNew = new BlocklyHelper(doc).createField("mode", explosionMode);
+				Element modeNew = bh.createField("mode", explosionMode);
 				if (modeOld == null) // for workspaces before 2021.1
 					element.appendChild(modeNew);
 				else
