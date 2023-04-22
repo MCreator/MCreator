@@ -5,7 +5,7 @@
 # zsh is now used due to bash being missing on newer macOS distributions
 # ---------------------------------------------------------------------
 
-# WARNING: WHEN CHANGING THIS FILE, MCREATOR BINARIES NEED TO BE RECOMPILED WITH SHC
+# WARNING: WHEN CHANGING THIS FILE, MCREATOR BINARIES NEED TO BE RECOMPILED WITH SHC (UNDER RELAXED MODE)
 # To compile the intel binary on an aarch64 machine, re-brew shc under rosetta
 # Use the prefix /opt/homebrew/bin/shc for aarch64 and /usr/local/bin/shc for x86_64
 
