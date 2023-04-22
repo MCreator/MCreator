@@ -40,10 +40,7 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
-import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
-import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
-import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
-import net.mcreator.element.converter.v2023_2.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_2.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +79,8 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter(), new ProcedureDamageSourceFixer()));
+				new ToolToItemTypeProcedureConverter(), new ExplodeProcedureConverter(),
+				new ProcedureDamageSourceFixer()));
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
