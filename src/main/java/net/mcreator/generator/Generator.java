@@ -272,7 +272,7 @@ public class Generator implements IGenerator, Closeable {
 			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
 					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
-			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
+			LocalizationUtils.generateLocalizationKeys(workspace, this, element, (List<?>) map.get("localizationkeys"));
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();

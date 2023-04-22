@@ -80,10 +80,10 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static void generateLocalizationKeys(Generator generator, GeneratableElement element,
+	public static void generateLocalizationKeys(Workspace workspace, Generator generator, GeneratableElement element,
 			@Nullable List<?> localizationkeys) {
 		processDefinitionToLocalizationKeys(generator, element, localizationkeys).forEach(
-				(k, v) -> addLocalizationEntry(generator, k, v.x(), v.y()));
+				(k, v) -> addLocalizationEntry(workspace, generator, k, v.x(), v.y()));
 	}
 
 	static Map<String, Tuple<Map<?, ?>, Object>> processDefinitionToLocalizationKeys(Generator generator,
@@ -127,7 +127,20 @@ public class LocalizationUtils {
 		return keysToEntries;
 	}
 
-	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
+	public static boolean shouldBeSkippedBasedOnCondition(Workspace workspace, Generator generator,
+			Map<?, ?> template) {
+		TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+		String conditionRaw = (String) template.get("condition");
+		if (conditionRaw == null) {
+			conditionRaw = (String) template.get("condition_any");
+			operator = TemplateExpressionParser.Operator.OR;
+		}
+		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw,
+				workspace.getWorkspaceInfo(), operator);
+	}
+
+	private static void addLocalizationEntry(Workspace workspace, Generator generator, String key, Map<?, ?> template,
+			Object entry) {
 		try {
 			String mapto = (String) template.get("mapto");
 			String value = (String) (mapto.contains("()") ?
@@ -143,6 +156,9 @@ public class LocalizationUtils {
 				value = prefix + value;
 
 			generator.getWorkspace().setLocalization(key, value);
+			if (shouldBeSkippedBasedOnCondition(workspace, generator, template))
+				// If localization key is skipped, we remove the localization entry
+				generator.getWorkspace().removeLocalizationEntryByKey(key);
 		} catch (ReflectiveOperationException e) {
 			generator.getLogger().error("Failed to parse values", e);
 		}
