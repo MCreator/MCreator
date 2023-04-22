@@ -85,7 +85,8 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter(), new TooltipProcedureConverter()));
+				new ToolToItemTypeProcedureConverter(), new ExplodeProcedureConverter(),
+				new TooltipProcedureConverter()));
 		put(ModElementType.RANGEDITEM,
 				List.of(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
