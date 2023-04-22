@@ -1,12 +1,13 @@
-#!/bin/bash
-#
-# ---------------------------------------------------------------------
-# MCreator Launcher file for MacOS
-# ---------------------------------------------------------------------
-#
+#!/bin/zsh
 
-# WARNING: WHEN CHANGING THIS FILE, "mcreator" binary needs to be recompiled using "shc -v -r -f mcreator.sh"
-# TO COMPILE FOR INTEL ON AN AARCH64 MACHINE, USE "arch -x86_64" PREFIX
+# ---------------------------------------------------------------------
+# MCreator Launcher file for macOS
+# zsh is now used due to bash being missing on newer macOS distributions
+# ---------------------------------------------------------------------
+
+# WARNING: WHEN CHANGING THIS FILE, MCREATOR BINARIES NEED TO BE RECOMPILED WITH SHC
+# To compile the intel binary on an aarch64 machine, re-brew shc under rosetta
+# Use the prefix /opt/homebrew/bin/shc for aarch64 and /usr/local/bin/shc for x86_64
 
 DIR=$(cd "$(dirname "$0")"; pwd)
 
