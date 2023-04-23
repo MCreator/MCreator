@@ -80,8 +80,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				}
 			}
 		});
-		add(HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/custom_property_name"),
-				L10N.t("elementgui.item.custom_property.name"), name, 3));
+		add(PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_property_name"),
+				L10N.label("elementgui.item.custom_property.name")), name));
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
 				L10N.t("elementgui.item.custom_property.value"),

@@ -135,16 +135,11 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			}
 		});
 
-		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topbar.setOpaque(false);
-
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
-		addProperty.addActionListener(e -> addPropertiesEntry());
-		topbar.add(addProperty);
-
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
+
+		addProperty.addActionListener(e -> addPropertiesEntry());
 		addState.addActionListener(e -> editState(null)); // passing null here means a new entry should be created
-		topbar.add(addState);
 
 		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
 		left.setOpaque(false);
@@ -165,8 +160,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JComponent merger = PanelUtils.gridElements(1, 0, left, right);
 		merger.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
-		add("North", PanelUtils.centerInPanel(
-				HelpUtils.wrapWithHelpButton(gui.withEntry("common/custom_states"), topbar, SwingConstants.LEFT)));
+		add("North", PanelUtils.centerInPanel(HelpUtils.wrapWithHelpButton(gui.withEntry("common/custom_states"),
+				PanelUtils.join(addProperty, addState))));
 		add("Center", merger);
 	}
 

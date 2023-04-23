@@ -36,11 +36,6 @@ public class JStateLabel extends JPanel {
 	private LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
 
 	private final JTextField label = new JTextField();
-	private final JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
 
 	public JStateLabel(Supplier<List<PropertyData<?>>> properties, Runnable editButtonListener) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
@@ -63,11 +58,16 @@ public class JStateLabel extends JPanel {
 		add(controls);
 
 		if (editButtonListener != null) {
+			JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
+				@Override public String getName() {
+					return "TechnicalButton";
+				}
+			};
 			edit.setOpaque(false);
 			edit.setMargin(new Insets(0, 0, 0, 0));
 			edit.setBorder(BorderFactory.createEmptyBorder());
 			edit.setContentAreaFilled(false);
-			edit.setToolTipText(L10N.t("elementgui.common.custom_state.edit"));
+			edit.setToolTipText(L10N.t("components.state_label.edit"));
 			edit.addActionListener(e -> editButtonListener.run());
 			addPropertyChangeListener("enabled", e -> edit.setEnabled((boolean) e.getNewValue()));
 			controls.add(edit);
@@ -82,7 +82,7 @@ public class JStateLabel extends JPanel {
 		copy.setMargin(new Insets(0, 0, 0, 0));
 		copy.setBorder(BorderFactory.createEmptyBorder());
 		copy.setContentAreaFilled(false);
-		copy.setToolTipText(L10N.t("elementgui.common.custom_state.copy"));
+		copy.setToolTipText(L10N.t("components.state_label.copy"));
 		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
 				.setContents(new StringSelection(getState()), null));
 		controls.add(copy);
@@ -120,7 +120,7 @@ public class JStateLabel extends JPanel {
 	private void refreshState() {
 		List<String> stateParts = new ArrayList<>();
 		stateMap.forEach((k, v) -> stateParts.add(StringUtils.snakeToCamel(k.getName()) + " = " + k.toString(v)));
-		label.setText(L10N.t("elementgui.common.custom_state.when",
-				stateParts.isEmpty() ? L10N.t("elementgui.common.custom_state.empty") : String.join("; ", stateParts)));
+		label.setText(L10N.t("components.state_label.when",
+				stateParts.isEmpty() ? L10N.t("condition.common.true") : String.join("; ", stateParts)));
 	}
 }

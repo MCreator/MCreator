@@ -76,9 +76,11 @@ public class StateEditorDialog {
 		});
 		cancel.addActionListener(e -> dialog.setVisible(false));
 
-		Component editor = HelpUtils.stackHelpTextAndComponent(IHelpContext.NONE.withEntry(helpPath),
-				L10N.t("dialog.state_editor.header"), new JScrollPane(PanelUtils.pullElementUp(entries)), 7);
-		dialog.getContentPane().add(PanelUtils.centerAndSouthElement(editor, PanelUtils.join(ok, cancel)));
+		dialog.getContentPane().add("North", PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry(helpPath),
+						L10N.label("dialog.state_editor.header"))));
+		dialog.getContentPane().add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
+		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);

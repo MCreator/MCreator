@@ -59,8 +59,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final JStateLabel stateLabel;
 
 	private final TextureHolder texture;
-	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model tool = new Model.BuiltInModel("Tool");
+	private static final Model normal = new Model.BuiltInModel("Normal");
+	private static final Model tool = new Model.BuiltInModel("Tool");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { normal, tool });
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
@@ -69,7 +69,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		super(new FlowLayout(FlowLayout.LEFT));
 		this.mcreator = mcreator;
 
-		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 
 		stateLabel = new JStateLabel(properties, () -> editButtonListener.accept(this));
@@ -83,8 +82,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		reloadDataLists(); // we make sure that combo box can be properly shown
 
 		JPanel ito = ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"));
-		Component imo = HelpUtils.stackHelpTextAndComponent(gui.withEntry("item/model"),
-				L10N.t("elementgui.item.custom_state.model"), model, 3);
+		Component imo = PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/model"),
+				L10N.label("elementgui.item.custom_state.model")), model);
 		CollapsiblePanel override = new CollapsiblePanel(L10N.t("elementgui.item.custom_state.overridden_params"),
 				PanelUtils.join(ito, imo));
 		override.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);

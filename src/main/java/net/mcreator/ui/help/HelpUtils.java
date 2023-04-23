@@ -20,7 +20,6 @@ package net.mcreator.ui.help;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
@@ -138,26 +137,4 @@ public class HelpUtils {
 		return lab;
 	}
 
-	public static Component stackHelpTextAndComponent(IHelpContext context, String text, Component ca, int gap) {
-		return stackHelpTextAndComponent(context, text, ca, gap, SwingConstants.NORTH, SwingConstants.LEFT);
-	}
-
-	public static Component stackHelpTextAndComponent(IHelpContext context, String text, Component ca, int gap,
-			int direction, int helpAlign) {
-		Component button = wrapWithHelpButton(context, new JLabel(text), helpAlign);
-
-		JComponent helpLabel = switch (helpAlign) {
-			case SwingConstants.LEFT -> PanelUtils.westAndCenterElement(button, new JEmptyBox());
-			case SwingConstants.RIGHT -> PanelUtils.centerAndEastElement(new JEmptyBox(), button);
-			default -> PanelUtils.join(button);
-		};
-		helpLabel.setOpaque(false);
-		helpLabel.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
-
-		return switch (direction) {
-			case SwingConstants.NORTH -> PanelUtils.northAndCenterElement(helpLabel, ca);
-			case SwingConstants.SOUTH -> PanelUtils.centerAndSouthElement(ca, helpLabel);
-			default -> PanelUtils.westAndCenterElement(helpLabel, ca);
-		};
-	}
 }
