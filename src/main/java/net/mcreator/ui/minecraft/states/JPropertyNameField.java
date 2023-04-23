@@ -33,21 +33,14 @@ import java.awt.event.FocusEvent;
 public class JPropertyNameField extends JPanel implements IValidable {
 	private final VTextField field = new VTextField(20);
 	private String cachedName;
-	private final JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
 
 	public JPropertyNameField(String initialPropertyName) {
 		super(new FlowLayout(FlowLayout.CENTER, 7, 7));
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
 		field.setEditable(false);
-		field.setToolTipText(L10N.t("elementgui.item.custom_property.name_renaming"));
+		field.setToolTipText(L10N.t("components.property_name_field.renaming"));
 		field.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		field.addPropertyChangeListener("enabled", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
-		field.addPropertyChangeListener("editable", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
 		field.addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
 				field.setEditable(false);
@@ -58,15 +51,22 @@ public class JPropertyNameField extends JPanel implements IValidable {
 		renameTo(initialPropertyName);
 		add(field);
 
+		JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
+			@Override public String getName() {
+				return "TechnicalButton";
+			}
+		};
 		rename.setOpaque(false);
 		rename.setMargin(new Insets(0, 0, 0, 0));
 		rename.setBorder(BorderFactory.createEmptyBorder());
 		rename.setContentAreaFilled(false);
-		rename.setToolTipText(L10N.t("elementgui.item.custom_property.rename"));
+		rename.setToolTipText(L10N.t("components.property_name_field.rename"));
 		rename.addActionListener(e -> {
 			field.setEditable(true);
 			field.requestFocus();
 		});
+		field.addPropertyChangeListener("enabled", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
+		field.addPropertyChangeListener("editable", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
 
 		JPanel butPan = new JPanel();
 		butPan.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
