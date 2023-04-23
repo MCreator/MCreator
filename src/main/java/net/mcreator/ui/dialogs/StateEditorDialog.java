@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class StateEditorDialog {
 
@@ -41,43 +41,43 @@ public class StateEditorDialog {
 	 *
 	 * @param mcreator   The workspace window this method was called from.
 	 * @param properties List of properties that can be used to form the resulting state.
-	 * @param stateMap   The property-object map representation of the state to be edited.
-	 * @param newState   Whether the state is just being created.
-	 * @param helpPath   The path to the help context file used as dialog's tooltip.
-	 * @return True if user chose OK option after editing properties' values, false if it was cancel/close option.
+	 * @param stateMap   The property-to-object map representation of the state to be edited, or {@code null} in case
+	 *                   it is just being created.
+	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
+	 * has been canceled (via cancel/close button).
 	 */
-	public static boolean open(MCreator mcreator, List<PropertyData<?>> properties,
-			LinkedHashMap<PropertyData<?>, Object> stateMap, boolean newState, String helpPath) {
-		AtomicBoolean retVal = new AtomicBoolean();
+	public static LinkedHashMap<PropertyData<?>, Object> open(MCreator mcreator, List<PropertyData<?>> properties,
+			LinkedHashMap<PropertyData<?>, ?> stateMap) {
+		AtomicReference<LinkedHashMap<PropertyData<?>, Object>> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
 		Map<PropertyData<?>, StatePart> entryMap = new HashMap<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		for (PropertyData<?> param : properties) {
-			StatePart part = new StatePart(param.getName(), param.getComponent(mcreator, stateMap.get(param)));
-			part.useEntry.setSelected(stateMap.containsKey(param) || newState);
+			Object value = stateMap != null ? stateMap.get(param) : null;
+			StatePart part = new StatePart(param.getName(), param.getComponent(mcreator, value));
+			part.useEntry.setSelected(stateMap == null || value != null);
 			entryMap.put(param, part);
 			entries.add(PanelUtils.expandHorizontally(part));
 		}
 
-		JButton ok = newState ? L10N.button("dialog.state_editor.create") : L10N.button("dialog.state_editor.save");
+		JButton ok = L10N.button("dialog.state_editor.save");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
 
 		ok.addActionListener(e -> {
-			stateMap.clear();
+			retVal.set(new LinkedHashMap<>());
 			for (PropertyData<?> param : properties) {
 				StatePart part = entryMap.get(param);
 				if (part.useEntry.isSelected())
-					stateMap.put(param, param.getValue(part.entryComponent));
+					retVal.get().put(param, param.getValue(part.entryComponent));
 			}
-			retVal.set(true);
 			dialog.setVisible(false);
 		});
 		cancel.addActionListener(e -> dialog.setVisible(false));
 
 		dialog.getContentPane().add("North", PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry(helpPath),
+				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/state_definition"),
 						L10N.label("dialog.state_editor.header"))));
 		dialog.getContentPane().add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));

@@ -107,6 +107,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			}
 		});
 
+		setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		setOpaque(false);
 		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		propertyEntries.setOpaque(false);
@@ -157,12 +158,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				L10N.t("elementgui.item.custom_states.title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent merger = PanelUtils.gridElements(1, 0, left, right);
-		merger.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-
-		add("North", PanelUtils.centerInPanel(HelpUtils.wrapWithHelpButton(gui.withEntry("common/custom_states"),
+		add("North", PanelUtils.centerInPanel(HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_states"),
 				PanelUtils.join(addProperty, addState))));
-		add("Center", merger);
+		add("Center", PanelUtils.gridElements(1, 0, left, right));
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -203,10 +201,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private void editState(JItemStatesListEntry entry) {
 		if (new AggregatedValidationResult(propertiesList.stream().map(JItemPropertiesListEntry::getNameField)
 				.toArray(IValidable[]::new)).validateIsErrorFree()) {
-			LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
-			if (entry != null) // copy state definition map if in editing mode
-				stateMap.putAll(entry.getStateLabel().getStateMap());
-			if (!StateEditorDialog.open(mcreator, buildPropertiesList(), stateMap, entry == null))
+			LinkedHashMap<PropertyData<?>, Object> stateMap = StateEditorDialog.open(mcreator, buildPropertiesList(),
+					entry == null ? null : entry.getStateLabel().getStateMap());
+			if (stateMap == null)
 				return;
 
 			if (stateMap.isEmpty()) { // all properties were unchecked - not acceptable by items

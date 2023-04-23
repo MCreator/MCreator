@@ -190,7 +190,7 @@ public class DialogsTest {
 		if (rng.nextBoolean())
 			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomString(rng, meTypes));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, List.copyOf(testProps.values()), testState, false));
+				() -> StateEditorDialog.open(mcreator, List.copyOf(testProps.values()), testState));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
