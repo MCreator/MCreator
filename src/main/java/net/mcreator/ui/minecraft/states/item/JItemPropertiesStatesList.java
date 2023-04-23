@@ -206,7 +206,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
 			if (entry != null) // copy state definition map if in editing mode
 				stateMap.putAll(entry.getStateLabel().getStateMap());
-			if (!StateEditorDialog.open(mcreator, buildPropertiesList(), stateMap, entry == null, "item/custom_state"))
+			if (!StateEditorDialog.open(mcreator, buildPropertiesList(), stateMap, entry == null))
 				return;
 
 			if (stateMap.isEmpty()) { // all properties were unchecked - not acceptable by items
