@@ -177,7 +177,6 @@ public class MainMenuBar extends JMenuBar {
 		build.setMnemonic('B');
 		build.add(mcreator.actionRegistry.buildWorkspace);
 		build.add(mcreator.actionRegistry.buildGradleOnly);
-		build.add(mcreator.actionRegistry.buildClean);
 		build.addSeparator();
 		build.add(mcreator.actionRegistry.regenerateCode);
 		build.addSeparator();
