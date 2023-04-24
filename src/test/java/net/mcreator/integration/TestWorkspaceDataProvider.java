@@ -1740,6 +1740,9 @@ public class TestWorkspaceDataProvider {
 			boolean _true) {
 		Recipe recipe = new Recipe(modElement);
 		recipe.group = modElement.getName().toLowerCase(Locale.ENGLISH);
+		recipe.cookingBookCategory = getRandomItem(random, new String[] { "MISC", "FOOD", "BLOCKS" });
+		recipe.craftingBookCategory = getRandomItem(random,
+				new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
 		recipe.recipeType = recipeType;
 		if ("Crafting".equals(recipe.recipeType)) {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
