@@ -20,8 +20,6 @@ package net.mcreator.ui.workspace.selector;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -77,9 +75,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	@Nullable private final MCreatorApplication application;
 
-	private final JComponent centerComponent;
-
-	private final List<BalloonTip> tips = new ArrayList<>();
+	private final WorkspaceSelectorTips selectorTips = new WorkspaceSelectorTips(this);
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -226,7 +222,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 		southcenter.add(prefs);
 
-		centerComponent = PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(logoPanel, actions), southcenter);
+		JComponent centerComponent = PanelUtils.centerAndSouthElement(
+				PanelUtils.northAndCenterElement(logoPanel, actions), southcenter);
+
+		selectorTips.setAnchor(centerComponent);
 
 		add("Center", centerComponent);
 
@@ -238,9 +237,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		add("West", recentPanel);
 
-		addTip("Tip 1");
-		addTip("Tip 2");
-		addTip("Tip 3");
+		selectorTips.addTip(null, "Tip 2");
+		selectorTips.addTip("Title 3", "Tip 3");
+		selectorTips.addTip("Plugin updates available",
+				"Some of the plugins can be updated to a more recent version.<br>Check the website for more details.",
+				new WorkspaceSelectorTips.ActionButton("Action 1", e -> {
+					// do something
+				}));
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
@@ -506,32 +509,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		soim.add(south);
 
 		add("South", soim);
-	}
-
-	private void addTip(String text) {
-		BalloonTip balloonTip = new BalloonTip(centerComponent, new JLabel(text),
-				new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.RIGHT_ABOVE,
-				BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
-
-		JButton closeButton = new JButton();
-		closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		closeButton.setContentAreaFilled(false);
-		closeButton.setIcon(UIRES.get("close_small"));
-		balloonTip.setCloseButton(closeButton, false);
-
-		balloonTip.setVisible(true);
-
-		if (tips.size() > 0) {
-			BalloonTip previous = tips.get(tips.size() - 1);
-			previous.setVisible(false);
-			closeButton.addActionListener(e -> {
-				previous.setVisible(true);
-				tips.remove(balloonTip);
-			});
-		}
-
-		tips.add(balloonTip);
 	}
 
 	@Nonnull public RecentWorkspaces getRecentWorkspaces() {
