@@ -46,10 +46,12 @@ public class TextSubstring implements IBlockGenerator {
 		if (text != null && from != null && (to != null || block.getAttribute("type").equals("text_substring_from"))) {
 			master.append("(");
 			master.processOutputBlock(text);
-			master.append(
-					".substring(" + ProcedureCodeOptimizer.toInt(BlocklyToCode.directProcessOutputBlock(master, from)));
-			if (to != null)
-				master.append(", " + ProcedureCodeOptimizer.toInt(BlocklyToCode.directProcessOutputBlock(master, to)));
+			master.append(".substring(");
+			master.processOutputBlockToInt(from);
+			if (to != null) {
+				master.append(", ");
+				master.processOutputBlockToInt(to);
+      }
 			master.append("))");
 		} else {
 			master.addCompileNote(
