@@ -523,8 +523,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 					.filter(e -> e.toString().contains("block") || e.toString().contains("pattern") || e.toString()
 							.contains("noise") || e.toString().contains("machine") || e.toString().contains("plank")
 							|| e.toString().contains("log") || e.toString().contains("wood") || e.toString()
-							.contains("leaves") || e.toString().contains("stone") || e.toString().contains("dirt"))
-					.toList());
+							.contains("leaves") || e.toString().contains("stone_") || e.toString()
+							.contains("stonebrick") || e.toString().contains("dirt")).toList());
 			cbs.setSelectedItem(randomTexture.toString().contains("noise") ?
 					ListUtils.getRandomItem(templatesSorted) :
 					randomTexture);
