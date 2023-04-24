@@ -51,7 +51,7 @@ public class TextSubstring implements IBlockGenerator {
 			if (to != null) {
 				master.append(", ");
 				master.processOutputBlockToInt(to);
-      }
+			}
 			master.append("))");
 		} else {
 			master.addCompileNote(
