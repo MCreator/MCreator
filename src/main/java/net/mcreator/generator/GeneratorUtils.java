@@ -25,26 +25,36 @@ import java.io.File;
 public class GeneratorUtils {
 
 	public static File getSourceRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getSourceRoot()));
+		return new File(
+				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
+						generatorConfiguration.getSourceRoot()));
 	}
 
 	public static File getResourceRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getResourceRoot()));
+		return new File(
+				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
+						generatorConfiguration.getResourceRoot()));
 	}
 
 	public static File getModAssetsRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getModAssetsRoot()));
+		return new File(
+				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
+						generatorConfiguration.getModAssetsRoot()));
 	}
 
 	public static File getModDataRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getModDataRoot()));
+		return new File(
+				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
+						generatorConfiguration.getModDataRoot()));
 	}
 
 	public static File getSpecificRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration,
 			String root) {
 		String rootString = generatorConfiguration.getSpecificRoot(root);
 		if (rootString != null)
-			return new File(GeneratorTokens.replaceTokens(workspace, rootString));
+			return new File(
+					GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
+							rootString));
 		else
 			return null;
 	}
