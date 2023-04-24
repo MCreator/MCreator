@@ -1,5 +1,5 @@
 <#include "mcelements.ftl">
-(new Object(){
+/*@int*/(new Object(){
 	public int getHarvestLevel(Block _bl) {
 		return TierSortingRegistry.getSortedTiers().stream().filter(t -> t.getTag() != null && _bl.defaultBlockState().is(t.getTag()))
                     .map(Tier::getLevel).findFirst().orElse(0);
