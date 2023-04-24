@@ -1,9 +1,9 @@
 <#if field$dimension=="Surface">
-	(Level.OVERWORLD)
+	Level.OVERWORLD
 <#elseif field$dimension=="Nether">
-	(Level.NETHER)
+	Level.NETHER
 <#elseif field$dimension=="End">
-	(Level.END)
+	Level.END
 <#else>
 	(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))}")))
 </#if>
