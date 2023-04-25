@@ -72,16 +72,6 @@ import java.util.Locale;
 	public ClimatePoint genErosion;
 	public ClimatePoint genWeirdness;
 
-	public int grassPerChunk;
-	public int seagrassPerChunk;
-	public int flowersPerChunk;
-	public int mushroomsPerChunk;
-	public int bigMushroomsChunk;
-	public int sandPatchesPerChunk;
-	public int gravelPatchesPerChunk;
-	public int reedsPerChunk;
-	public int cactiPerChunk;
-
 	public int treesPerChunk;
 	public String vanillaTreeType;
 	public int treeType;
@@ -90,6 +80,8 @@ import java.util.Locale;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
 	public MItemBlock treeFruits;
+
+	public List<String> defaultFeatures;
 
 	public boolean spawnStronghold;
 	public boolean spawnMineshaft;
@@ -111,8 +103,6 @@ import java.util.Locale;
 	public boolean spawnBastionRemnant;
 	public boolean spawnEndCity;
 	public String spawnRuinedPortal;
-
-	public List<String> defaultFeatures;
 
 	public List<SpawnEntry> spawnEntries;
 
@@ -140,12 +130,16 @@ import java.util.Locale;
 		defaultFeatures = new ArrayList<>();
 	}
 
+	public boolean hasTrees() {
+		return treesPerChunk > 0;
+	}
+
 	public boolean hasFruits() {
-		return treeFruits != null && !treeFruits.isEmpty();
+		return hasTrees() && treeType == TREES_CUSTOM && treeFruits != null && !treeFruits.isEmpty();
 	}
 
 	public boolean hasVines() {
-		return treeVines != null && !treeVines.isEmpty();
+		return hasTrees() && treeType == TREES_CUSTOM && treeVines != null && !treeVines.isEmpty();
 	}
 
 	public boolean hasStructure(String structureType) {

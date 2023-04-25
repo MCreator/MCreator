@@ -25,16 +25,20 @@
       "name": "mode",
       "options": [
         [
-          "BREAK",
-          "BREAK"
-        ],
-        [
-          "DESTROY",
-          "DESTROY"
-        ],
-        [
           "NONE",
           "NONE"
+        ],
+        [
+          "BLOCK",
+          "BLOCK"
+        ],
+        [
+          "MOB",
+          "MOB"
+        ],
+        [
+          "TNT",
+          "TNT"
         ]
       ]
     },

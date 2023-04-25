@@ -48,7 +48,7 @@ public class TextBinaryOperationsBlock implements IBlockGenerator {
 			master.processOutputBlockWithoutParentheses(b);
 			master.append("))");
 		} else {
-			master.append("(true)");
+			master.append("true");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.empty_compare_text")));
 		}
