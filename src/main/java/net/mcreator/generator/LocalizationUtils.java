@@ -155,10 +155,12 @@ public class LocalizationUtils {
 			if (prefix != null)
 				value = prefix + value;
 
-			generator.getWorkspace().setLocalization(key, value);
-			if (shouldBeSkippedBasedOnCondition(workspace, generator, template))
+			if (shouldBeSkippedBasedOnCondition(workspace, generator, template)) {
 				// If localization key is skipped, we remove the localization entry
 				generator.getWorkspace().removeLocalizationEntryByKey(key);
+			} else {
+				generator.getWorkspace().setLocalization(key, value);
+			}
 		} catch (ReflectiveOperationException e) {
 			generator.getLogger().error("Failed to parse values", e);
 		}
