@@ -1,1 +1,0 @@
-AlwaysTrueTest.INSTANCE
