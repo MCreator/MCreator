@@ -44,16 +44,21 @@ public class UpdatePluginDialog {
 			pan.setPreferredSize(new Dimension(560, 250));
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
-				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
+				StringBuilder usb = new StringBuilder(L10N.t("dialog.plugin_update_notify.version_message",
 						pluginUpdateInfo.plugin().getInfo().getName(), pluginUpdateInfo.plugin().getInfo().getVersion(),
-						pluginUpdateInfo.newVersion());
+						pluginUpdateInfo.newVersion()));
+				if (pluginUpdateInfo.recentChanges() != null) {
+					usb.append("<br>").append(L10N.t("dialog.plugin_update_notify.changes_message")).append("<ul>");
+					for (String change : pluginUpdateInfo.recentChanges())
+						usb.append("<li>").append(change).append("</li>");
+				}
 
+				JLabel label = new JLabel(usb.toString());
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
 				update.addActionListener(e -> DesktopUtils.browseSafe(
 						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.plugin().getInfo()
 								.getPluginPageID()));
-
-				plugins.add(PanelUtils.westAndEastElement(label, update));
+				plugins.add(PanelUtils.westAndEastElement(label, PanelUtils.join(update)));
 			}
 
 			JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
