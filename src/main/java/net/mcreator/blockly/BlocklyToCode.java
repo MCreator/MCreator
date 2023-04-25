@@ -275,4 +275,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		return ProcedureCodeOptimizer.removeParentheses(directProcessOutputBlock(this, element));
 	}
 
+	/**
+	 * Helper method to process an output block and cast to int when needed
+	 *
+	 * @param element The element to process
+	 * @throws TemplateGeneratorException If the template can't be generated
+	 */
+	public final void processOutputBlockToInt(Element element) throws TemplateGeneratorException {
+		String code = directProcessOutputBlock(this, element);
+		this.append(ProcedureCodeOptimizer.toInt(code));
+	}
+
 }
