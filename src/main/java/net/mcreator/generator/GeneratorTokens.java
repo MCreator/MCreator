@@ -35,17 +35,26 @@ public class GeneratorTokens {
 	}
 
 	public static String replaceTokens(Workspace workspace, WorkspaceSettings workspaceSettings, String rawname) {
-		if (rawname.contains("@SRCROOT"))
-			rawname = rawname.replace("@SRCROOT", workspace.getGenerator().getSourceRoot().getAbsolutePath());
+		return replaceTokens(workspace, workspace.getGeneratorConfiguration(), workspaceSettings, rawname);
+	}
 
-		if (rawname.contains("@RESROOT"))
-			rawname = rawname.replace("@RESROOT", workspace.getGenerator().getResourceRoot().getAbsolutePath());
+	public static String replaceTokens(Workspace workspace, GeneratorConfiguration generatorConfiguration,
+			WorkspaceSettings workspaceSettings, String rawname) {
+		if (rawname.contains("@SRCROOT")) // we need this check to prevent infinite recursion
+			rawname = rawname.replace("@SRCROOT",
+					GeneratorUtils.getSourceRoot(workspace, generatorConfiguration).getAbsolutePath());
 
-		if (rawname.contains("@MODASSETSROOT"))
-			rawname = rawname.replace("@MODASSETSROOT", workspace.getGenerator().getModAssetsRoot().getAbsolutePath());
+		if (rawname.contains("@RESROOT")) // we need this check to prevent infinite recursion
+			rawname = rawname.replace("@RESROOT",
+					GeneratorUtils.getResourceRoot(workspace, generatorConfiguration).getAbsolutePath());
 
-		if (rawname.contains("@MODDATAROOT"))
-			rawname = rawname.replace("@MODDATAROOT", workspace.getGenerator().getModDataRoot().getAbsolutePath());
+		if (rawname.contains("@MODASSETSROOT")) // we need this check to prevent infinite recursion
+			rawname = rawname.replace("@MODASSETSROOT",
+					GeneratorUtils.getModAssetsRoot(workspace, generatorConfiguration).getAbsolutePath());
+
+		if (rawname.contains("@MODDATAROOT")) // we need this check to prevent infinite recursion
+			rawname = rawname.replace("@MODDATAROOT",
+					GeneratorUtils.getModDataRoot(workspace, generatorConfiguration).getAbsolutePath());
 
 		//@formatter:off
 		return rawname

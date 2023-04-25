@@ -61,6 +61,7 @@ import java.util.List;
 		return additionalData -> {
 			var blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()),
 					additionalData).setTemplateExtension(
