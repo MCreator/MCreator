@@ -525,6 +525,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 							|| e.toString().contains("log") || e.toString().contains("wood") || e.toString()
 							.contains("leaves") || e.toString().contains("stone_") || e.toString()
 							.contains("stonebrick") || e.toString().contains("dirt")).toList());
+			// We want cbs and cbs2 to be the same if "randomTexture" isn't a noise.
+			// If "randomTexture" is a noise, then we set cbs2 to be that noise, and cbs can be completely random. (won't be filtered like "randomTexture")
+			// If "randomTexture" is not a noise, we set cbs and cbs2 to be that "randomTexture"
 			cbs.setSelectedItem(randomTexture.toString().contains("noise") ?
 					ListUtils.getRandomItem(templatesSorted) :
 					randomTexture);
