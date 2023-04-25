@@ -44,10 +44,10 @@ import org.apache.logging.log4j.Logger;
 			${JavaModName}Fluids.REGISTRY.register(bus);
 			${JavaModName}FluidTypes.REGISTRY.register(bus);
 		</#if>
-    <#if w.hasElementsOfType("villagerprofession")>
+		<#if w.hasElementsOfType("villagerprofession")>
 			${JavaModName}VillagerProfessions.POI.register(bus);
 			${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);
-    </#if>
+		</#if>
 	}
 
 	private static final String PROTOCOL_VERSION = "1";
