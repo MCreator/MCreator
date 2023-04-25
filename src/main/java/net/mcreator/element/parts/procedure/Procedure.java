@@ -67,12 +67,15 @@ import java.util.List;
 	}
 
 	public String getReturnValueType(Workspace workspace) {
-		GeneratableElement generatableElement = workspace.getModElementByName(name).getGeneratableElement();
-		if (generatableElement instanceof net.mcreator.element.types.Procedure) {
-			try {
-				return ((net.mcreator.element.types.Procedure) generatableElement).getBlocklyToProcedure(
-						new HashMap<>()).getReturnType().getName();
-			} catch (Exception ignored) {
+		ModElement modElement = workspace.getModElementByName(name);
+		if (modElement != null) { // procedure ME may be removed and thus cause NPE here
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof net.mcreator.element.types.Procedure) {
+				try {
+					return ((net.mcreator.element.types.Procedure) generatableElement).getBlocklyToProcedure(
+							new HashMap<>()).getReturnType().getName();
+				} catch (Exception ignored) {
+				}
 			}
 		}
 
