@@ -1,1 +1,0 @@
-ConstantInt.of(${field$value})

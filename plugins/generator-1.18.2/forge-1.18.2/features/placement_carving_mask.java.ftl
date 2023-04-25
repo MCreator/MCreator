@@ -1,1 +1,0 @@
-CarvingMaskPlacement.forStep(GenerationStep.Carving.${field$carver?upper_case})
