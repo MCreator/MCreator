@@ -11,7 +11,11 @@ tasks.register('exportLinux64', Copy.class) {
     into('') {
         from file('LICENSE.txt')
         from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
-        from file('src/main/resources/net/mcreator/ui/res/icon.png')
+        if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+            from file('src/main/resources/net/mcreator/ui/res/icon_eap.png')
+        } else {
+            from file('src/main/resources/net/mcreator/ui/res/icon.png')
+        }
     }
     into('lib') {
         from 'build/libs'

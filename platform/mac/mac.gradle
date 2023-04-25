@@ -19,8 +19,13 @@ tasks.register('exportMac64', Copy.class) {
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from file('platform/mac/mcreatorapp.icns')
-        from file('platform/mac/mcreator.icns')
+        if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+            from file('platform/mac/mcreatorapp_eap.icns')
+            from file('platform/mac/mcreator_eap.icns')
+        } else {
+            from file('platform/mac/mcreatorapp.icns')
+            from file('platform/mac/mcreator.icns')
+        }
     }
     into('MacOS') {
         from file('platform/mac/mcreator')

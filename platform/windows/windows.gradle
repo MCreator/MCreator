@@ -26,7 +26,11 @@ createExe {
     productName = "MCreator"
     companyName = "Pylo"
 
-    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
+    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+        icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon_eap.ico"
+    } else {
+        icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
+    }
 }
 
 tasks.register('exportWin64', Copy.class) {
