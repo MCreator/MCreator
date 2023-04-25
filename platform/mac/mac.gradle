@@ -11,8 +11,8 @@ tasks.register('exportMac64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    icon = "mcreator.icns"
-    appIcon = "mcreatorapp.icns"
+    def icon = "mcreator.icns"
+    def appIcon = "mcreatorapp.icns"
     if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
         icon = "mcreator_eap.icns"
         appIcon = "mcreatorapp_eap.icns"
