@@ -36,19 +36,25 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
 			Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 50, providedDependencies);
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 50,
+				providedDependencies);
 	}
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
 			int width, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, width,
 				providedDependencies);
 	}
 
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			@Nullable JSpinner fixedValue, int width, Dependency... providedDependencies) {
-		super(VariableTypeLoader.BuiltInTypes.NUMBER, helpContext, mcreator, eventName, side, fixedValue, width,
-				providedDependencies);
+		this(helpContext, mcreator, eventName, side, true, fixedValue, width, providedDependencies);
+	}
+
+	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
+			boolean allowInlineEditor, @Nullable JSpinner fixedValue, int width, Dependency... providedDependencies) {
+		super(VariableTypeLoader.BuiltInTypes.NUMBER, helpContext, mcreator, eventName, side, allowInlineEditor,
+				fixedValue, width, providedDependencies);
 
 		this.fixedValue = fixedValue;
 	}

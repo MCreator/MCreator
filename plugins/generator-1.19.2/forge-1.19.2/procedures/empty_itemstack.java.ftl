@@ -1,1 +1,1 @@
-/*@ItemStack*/(ItemStack.EMPTY)
+/*@ItemStack*/ItemStack.EMPTY
